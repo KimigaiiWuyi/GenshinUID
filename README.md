@@ -12,6 +12,7 @@
 - [指令](#指令)
 - [相关仓库](#相关仓库)
 - [使用许可](#使用许可)
+- [其他](#其他)
 
 ## 安装
 
@@ -48,3 +49,9 @@ $ pip3 install -r requirements.txt
 ## 相关仓库
 
 - [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它
+
+## 其他
+
+​	代码写的很烂，勿喷，有问题可以发issues~
+
+​	顺便求个star~

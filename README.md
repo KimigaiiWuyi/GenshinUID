@@ -6,7 +6,7 @@
 
 ​	未完成：深渊数据导出，角色详细信息列表（包括武器信息，和全角色）
 
-​	示例：	![1](C:\Users\44483\Desktop\1.PNG)
+​	示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
 
 - [安装](#安装)
 - [指令](#指令)
@@ -38,13 +38,13 @@ $ pip3 install -r requirements.txt
 
 1、触发词uid后面跟九位uid即可。
 
-![Snipaste_2021-08-02_23-06-56](C:\Users\44483\Desktop\Snipaste_2021-08-02_23-06-56.png)
+![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.png)
 
 2、触发词后跟九位uid后跟一张任意大小的图片（不能是GIF），可以自定义背景
 
-![Snipaste_2021-08-02_22-46-55](C:\Users\44483\Desktop\Snipaste_2021-08-02_22-46-55.png)
+![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.png)
 
-![Snipaste_2021-08-02_23-06-45](C:\Users\44483\Desktop\Snipaste_2021-08-02_23-06-45.png)
+![4](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/4.png)
 
 ## 相关仓库
 

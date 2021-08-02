@@ -1,0 +1,4 @@
+nonebot==1.8.2
+requests==2.25.1
+httpx==0.18.1
+Pillow==8.3.1

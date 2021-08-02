@@ -1,1 +1,50 @@
 # GenshinUID
+
+​	一个HoshinoBot插件，用于查询原神UID信息。
+
+​	已完成：角色排序（星级>等级>好感），背景图自定义（通过传参形式）
+
+​	未完成：深渊数据导出，角色详细信息列表（包括武器信息，和全角色）
+
+​	示例：	![1](C:\Users\44483\Desktop\1.PNG)
+
+- [安装](#安装)
+- [指令](#指令)
+- [相关仓库](#相关仓库)
+- [使用许可](#使用许可)
+
+## 安装
+
+​	基于[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 的插件，请确保你知晓HoshinoBot的插件安装方法和go-cqhttp的使用方法。
+
+1、在hoshino/modules目录下执行
+
+```sh
+$ git clone https://github.com/KimigaiiWuyi/GenshinUID.git
+```
+
+2、进入GenshinUID文件夹内，安装依赖库
+
+```sh
+$ pip3 install -r requirements.txt
+```
+
+3、在GenshinUID的文件夹下打开getData.py，修改其中三条cookies的值（改成自己的）
+
+4、在hoshino/config的`__bot__.py`文件中，添加GenshinUID
+
+## 指令
+
+1、触发词uid后面跟九位uid即可。
+
+![Snipaste_2021-08-02_23-06-56](C:\Users\44483\Desktop\Snipaste_2021-08-02_23-06-56.png)
+
+2、触发词后跟九位uid后跟一张任意大小的图片（不能是GIF），可以自定义背景
+
+![Snipaste_2021-08-02_22-46-55](C:\Users\44483\Desktop\Snipaste_2021-08-02_22-46-55.png)
+
+![Snipaste_2021-08-02_23-06-45](C:\Users\44483\Desktop\Snipaste_2021-08-02_23-06-45.png)
+
+## 相关仓库
+
+- [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它

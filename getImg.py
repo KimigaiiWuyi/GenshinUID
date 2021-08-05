@@ -55,6 +55,8 @@ async def draw_pic(uid,nickname,image = None):
         new_h = math.ceil(800/float(scale))
         if w > h:
             bg_img2 = edit_bg.resize((new_w, 1200),Image.ANTIALIAS)
+        elif float(scale) > 0.66:
+            bg_img2 = edit_bg.resize((new_w, 1200),Image.ANTIALIAS)
         else:
             bg_img2 = edit_bg.resize((800, new_h),Image.ANTIALIAS)
         bg_img = bg_img2.crop((0, 0, 800, 1200))
@@ -69,7 +71,7 @@ async def draw_pic(uid,nickname,image = None):
     #img = Image.open(bg_path)
     area = (37, 268, 764, 1154)
     img_bb = bg_img.crop(area)
-    img_blur = img_bb.filter(ImageFilter.GaussianBlur(5))
+    img_blur = img_bb.filter(ImageFilter.GaussianBlur(4))
     
     bg_img.paste(img_blur, (37,268),mask_img)
 

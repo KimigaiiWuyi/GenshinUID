@@ -1,6 +1,8 @@
-# GenshinUID
+# GenshinUID / 原神UID查询
 
 ​	一个HoshinoBot插件，用于查询原神UID信息。
+
+​	注意：本插件不包含本体，您应该配合[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 使用，本插件的作用是利用米游社API查询指定原神UID信息（Cookies获取可前往[YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info)查看教程）
 
 ​	已完成：角色排序（星级>等级>好感），背景图自定义（通过传参形式）
 
@@ -36,15 +38,31 @@ $ pip3 install -r requirements.txt
 
 ## 更新记录
 
-2021-8-01	添加自定义背景图
+#### 2021-8-05
 
-2021-7-29	优化排序算法
+​	修复自定义图片时，竖屏图片可能造成黑边问题
 
-2021-7-28	添加排序算法
+​	降低高斯模糊值
 
-2021-7-26	完成主体
+#### 2021-8-01
 
-2021-7-18	本项目开坑
+​	添加自定义背景图
+
+#### 2021-7-29
+
+​	优化排序算法
+
+#### 2021-7-28
+
+​	添加排序算法
+
+#### 2021-7-26
+
+​	完成主体
+
+#### 2021-7-18
+
+​	本项目开坑
 
 ## 指令
 

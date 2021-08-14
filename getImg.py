@@ -210,11 +210,11 @@ async def draw_char_pic(uid,nickname,image = None):
     else:
         pass
 
-    bg_list = ['bg_img_1.png','bg_img_2.png']
+    bg_list = ['bg_img_1.png','bg_img_2.png',"bg_img_3.png"]
     bg_path = os.path.join(TEXT_PATH,"bg.png")
     bg2_path = os.path.join(TEXT_PATH,random.choice(bg_list))
-    fg_path = os.path.join(TEXT_PATH,"fg_img_1.png")
-    mask_path = os.path.join(TEXT_PATH,"mask_img.png")
+    fg_path = os.path.join(TEXT_PATH,"char_fg_img.png")
+    mask_path = os.path.join(TEXT_PATH,"char_mask_img.png")
 
     if is_edit == True:
         bg_path_edit = os.path.join(TEXT_PATH,f"{nickname}.png")

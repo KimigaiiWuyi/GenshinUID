@@ -10,6 +10,8 @@
 
 ​	示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
 
+![5](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/5.PNG)
+
 - [安装](#安装)
 - [更新记录](#更新记录)
 - [指令](#指令)
@@ -85,6 +87,10 @@ $ pip3 install -r requirements.txt
 ![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.png)
 
 ![4](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/4.png)
+
+3、触发词后跟九位uid后跟角色，可以输出一张全角色+武器的信息图（beta）
+
+![6](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/6.PNG)
 
 ## 相关仓库
 

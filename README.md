@@ -32,37 +32,47 @@ $ git clone https://github.com/KimigaiiWuyi/GenshinUID.git
 $ pip3 install -r requirements.txt
 ```
 
-3、在GenshinUID的文件夹下打开getData.py，修改其中三条cookies的值（改成自己的）
+3、在GenshinUID的文件夹下打开getData.py，添加自己的cookies到函数cache_Cookie()中的cookie_list中。
 
 4、在hoshino/config的`__bot__.py`文件中，添加GenshinUID
 
 ## 更新记录
 
+#### 2021-8-14
+
+​	修复宵宫和早柚可能导致的输入错误bug。
+
+​	增加了简易的cookies池，现在填写cookies的方法在函数cache_Cookie()中的cookie_list中，支持多个cookies共同使用。
+
+​	增加了新功能（beta），使用uid+九位数字+角色的方式触发，获取全部角色+武器信息。
+
+​	增加了新的默认随机图，简单修改了部分ui。
+
 #### 2021-8-05
 
-​	修复自定义图片时，竖屏图片可能造成黑边问题
+​	修复自定义图片时，竖屏图片可能造成黑边问题。
 
-​	降低高斯模糊值
+​	降低高斯模糊值。
 
 #### 2021-8-01
 
-​	添加自定义背景图
+​	添加自定义背景图。
 
 #### 2021-7-29
 
-​	优化排序算法
+​	优化排序算法。
 
 #### 2021-7-28
 
-​	添加排序算法
+​	添加排序算法。
 
 #### 2021-7-26
 
-​	完成主体
+​	完成主体。
 
 #### 2021-7-18
 
-​	本项目开坑
+​	本项目开坑。
 
 ## 指令
 

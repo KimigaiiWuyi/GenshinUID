@@ -31,6 +31,7 @@ mhyVersion = "2.7.0"
 
 
 def cache_Cookie():
+    cookie_list = ['']#在这里输入cookies
     return random.choice(cookie_list)
 
 
@@ -65,7 +66,7 @@ async def GetInfo(Uid, ServerID="cn_gf01",Schedule_type="1"):
                     'Accept-Encoding': 'gzip, deflate',
                     'Accept-Language': 'zh-CN,en-US;q=0.8',
                     'X-Requested-With': 'com.mihoyo.hyperion',
-                    "Cookie": ''})
+                    "Cookie": cache_Cookie()})
             data1 = json.loads(req.text)
         async with AsyncClient() as client:
             req = await client.get(
@@ -74,7 +75,7 @@ async def GetInfo(Uid, ServerID="cn_gf01",Schedule_type="1"):
                     'Accept': 'application/json, text/plain, */*',
                     'DS': DSGet(),
                     'Origin': 'https://webstatic.mihoyo.com',
-                    'Cookie': '',#自己获取                
+                    'Cookie': cache_Cookie(),               
                     'x-rpc-app_version': mhyVersion,
                     'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.2.0',
                     'x-rpc-client_type': '2',
@@ -86,7 +87,6 @@ async def GetInfo(Uid, ServerID="cn_gf01",Schedule_type="1"):
                 )
             data2 = json.loads(req.text)
         data = data1
-        #data3 = data1 + data2
         #f=open("/root/hoshino/HoshinoBot/hoshino/modules/GenshinUID/mys/chars/666.txt",'w') 
         #f.write(str(data))
         return data
@@ -95,8 +95,7 @@ async def GetInfo(Uid, ServerID="cn_gf01",Schedule_type="1"):
         print("访问失败，请重试！")
         sys.exit(1)
 
-def GetCharacter(Uid,Character_ids, ServerID="cn_gf01"):
-    print("8")
+async def GetCharacter(Uid,Character_ids, ServerID="cn_gf01"):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
     try:
@@ -106,7 +105,7 @@ def GetCharacter(Uid,Character_ids, ServerID="cn_gf01"):
                 'Accept': 'application/json, text/plain, */*',
                 'DS': DSGet(),
                 'Origin': 'https://webstatic.mihoyo.com',
-                'Cookie': '',#自己获取
+                'Cookie': cache_Cookie(),
                 'x-rpc-app_version': mhyVersion,
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.2.0',
                 'x-rpc-client_type': '2',
@@ -118,7 +117,7 @@ def GetCharacter(Uid,Character_ids, ServerID="cn_gf01"):
             json = {"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID }
         )
         data2 = json.loads(req.text)
-        #f=open("/root/hoshino/HoshinoBot/hoshino/modules/Genshin/mys/chars/555.txt",'w') 
+        #f=open("/root/hoshino/HoshinoBot/hoshino/modules/GenshinUID/mys/chars/555.txt",'w') 
         #f.write(str(data2))
         return data2
 

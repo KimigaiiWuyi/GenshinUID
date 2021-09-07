@@ -50,15 +50,15 @@ $ pip3 install -r requirements.txt
 
 ​	uid命令现在可以根据角色数量自动设定长宽，并且自定义背景仍然适用！并且添加了角色当前携带的武器ui界面。
 
-​	![8](C:\Users\44483\Desktop\GenshinUID\readme\8.PNG)
+​	![8](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/8.PNG)
 
 ​	UID命令在uid命令的基础上删除了武器的ui界面。
 
-​	![7](C:\Users\44483\Desktop\GenshinUID\readme\7.PNG)
+​	![7](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/7.PNG)
 
 ​	添加了深渊查询，指令：uidxxxxxx深渊xx，例如uid123456789深渊12，只能查指定楼层（beta）
 
-​	![9](C:\Users\44483\Desktop\GenshinUID\readme\9.PNG)
+​	![9](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/9.PNG)
 
 ​	删除角色命令。
 

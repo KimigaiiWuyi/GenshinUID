@@ -3,7 +3,7 @@ import re
 #from nonebot import on_command
 #from nonebot.adapters.cqhttp import Event, Bot, Message
 
-from .getImg import draw_pic,draw_char_pic,new_draw_pic,draw_abyss_pic
+from .getImg import draw_char_pic,new_draw_pic,draw_abyss_pic
 
 from nonebot import *
 import json

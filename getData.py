@@ -1,10 +1,5 @@
 # https://github.com/Womsxd/YuanShen_User_Info
-#import hashlib
-#import json
-#import random
-#import string
 import sys
-#import time
 
 from httpx import AsyncClient
 
@@ -31,7 +26,7 @@ mhyVersion = "2.11.1"
 
 
 def cache_Cookie():
-    cookie_list = []
+    cookie_list = ['']
     return random.choice(cookie_list)
 
 
@@ -100,7 +95,7 @@ async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        print("1访问失败，请重试！")
         sys.exit(1)
 
 
@@ -127,8 +122,29 @@ async def GetCharacter(Uid,Character_ids, ServerID="cn_gf01"):
         )
         data2 = json.loads(req.text)
         return data2
+    except:
+        print("访问失败，请重试！")
+        sys.exit(1)
 
+async def GetMysInfo(mysid):
+    try:
+        async with AsyncClient() as client:
+            req = await client.get(
+                url="https://api-takumi.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
+                headers={
+                    #'Accept': 'application/json, text/plain, */*',
+                    'DS': DSGet("uid="+mysid),
+                    #'Origin': 'https://webstatic.mihoyo.com',
+                    'x-rpc-app_version': mhyVersion,
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    #'Accept-Encoding': 'gzip, deflate',
+                    #'Accept-Language': 'zh-CN,en-US;q=0.8',
+                    #'X-Requested-With': 'com.mihoyo.hyperion',
+                    "Cookie": cache_Cookie()})
+            data = json.loads(req.text)
+        return data
     except:
         print ("访问失败，请重试！")
-        #sys.exit (1)
         return

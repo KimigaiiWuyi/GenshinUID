@@ -4,13 +4,9 @@
 
 ​	注意：本插件不包含本体，您应该配合[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 使用，本插件的作用是利用米游社API查询指定原神UID信息（Cookies获取可前往[YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info)查看教程）
 
-​	已完成：角色排序（星级>等级>好感），背景图自定义（通过传参形式）
-
-​	未完成：深渊数据导出，角色详细信息列表（包括武器信息，和全角色）
+​	已完成：角色排序（星级>等级>好感），mysid/uid查询，mysid/uid绑定qq号，cookies池，每日自动记录uid查询使用的cookies，下次再查询时仍然调用该cookies（防止浪费），mysid/uid查询深渊单独层数，以上所有输出图片均可支持背景图片自定义。
 
 ​	示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
-
-![5](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/5.PNG)
 
 - [安装](#安装)
 - [更新记录](#更新记录)
@@ -34,11 +30,29 @@ $ git clone https://github.com/KimigaiiWuyi/GenshinUID.git
 $ pip3 install -r requirements.txt
 ```
 
-3、在GenshinUID的文件夹下打开getData.py，添加自己的cookies到函数cache_Cookie()中的cookie_list中。
+3、在hoshino/config的`__bot__.py`文件中，添加GenshinUID
 
-4、在hoshino/config的`__bot__.py`文件中，添加GenshinUID
+4、启动HoshinoBot后，私聊机器人，发送
+
+```sh
+添加 cookies
+```
+
+注意事项：可以添加多条，但一次只能添加一条，添加两个字的之后必须带有空格，cookies填入你自己的，并且不要泄露给任何人，如果添加了错误的cookies，会导致一系列问题，如果想删除错误的cookies，请操作sqlite数据库完成。
+
+5、进入机器人在的群聊，即可正常使用本插件。
 
 ## 更新记录
+
+#### 2021-9-27
+
+​	新增：Cookies次数防浪费机制（查过的mysid/uid会锁定使用过的cookies，当天再查时会使用同样的cookies防止次数浪费，每日零点清空。）
+
+​	优化：Cookies填入现在需要私聊bot，可以设置多条，并且不会随着git pull而需要重新设置。
+
+​	优化：白色底图现在的透明度会更高。
+
+​	修复：使用心海刷新深渊记录时，尝试查询深渊时无法输出正确的结果。
 
 #### 2021-9-20
 
@@ -116,19 +130,37 @@ $ pip3 install -r requirements.txt
 
 ## 指令
 
-1、触发词uid后面跟九位uid即可。
+1、仅私聊状态下生效，触发词添加 后跟cookies即可添加Cookies（添加两字后需要带空格）
+
+![10](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/10.png)
+
+2、群聊状态下生效，绑定uid/绑定mys后跟uid/mysid即可完成绑定
+
+![11](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/11.png)
+
+3、群聊状态下生效，而且必须绑定过uid/mysid才可生效，输出查询可以获取角色图
+
+![12](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/12.png)
+
+4、群聊状态下生效，而且必须绑定过uid/mysid才可生效，输出查询深渊xx可以获取当期深渊层数图
+
+![13](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/13.png)
+
+5、群聊状态下生效，触发词uid后面跟九位uid即可/触发词mys后面跟米游社通行证即可。
 
 ![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.png)
 
-2、触发词后跟九位uid后跟一张任意大小的图片（不能是GIF），可以自定义背景
+6、群聊状态下生效，mysid/uid后跟相应数字后跟深渊后跟相应层数即可。
+
+![14](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/14.png)
+
+7、以上所有可输出图片的触发词后跟一张任意大小的图片（不能是GIF），可以自定义背景
 
 ![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.png)
 
 ![4](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/4.png)
 
-3、触发词后跟九位uid后跟角色，可以输出一张全角色+武器的信息图（beta）
 
-![6](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/6.PNG)
 
 ## 相关仓库
 

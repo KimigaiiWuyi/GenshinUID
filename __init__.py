@@ -5,7 +5,7 @@ import re
 
 from .getImg import draw_pic,draw_abyss_pic
 from .getData import GetMysInfo
-from .getDB import connectDB,selectDB
+from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache
 
 from nonebot import *
 import json
@@ -17,6 +17,7 @@ from hoshino.util import FreqLimiter,pic2b64
 import hoshino
 import asyncio
 import time
+import datetime
 import string
 import random
 import hashlib
@@ -34,6 +35,22 @@ bot = get_bot()
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')
 Texture_PATH = os.path.join(FILE2_PATH,'texture2d')
+
+
+@sv.scheduled_job('cron', hour='0')
+async def delete():
+    deletecache()
+
+@bot.on_message('private')
+async def setting(ctx):
+    message = ctx['raw_message']
+    sid=int(ctx["self_id"])
+    uid=int(ctx["sender"]["user_id"])
+    gid=0
+    if '添加 ' in message:
+        mes = message.replace('添加 ','')
+        await cookiesDB(mes)
+        await bot.send_msg(self_id=sid, user_id=uid, group_id=gid, message=f'添加cookies成功！')
 
 @sv.on_prefix('uid')
 async def _(bot:HoshinoBot,  ev: CQEvent):

@@ -30,7 +30,10 @@ def get_char_pic(id,url):
 
 def get_chardone_pic(id,url,star):
     urllib.request.urlretrieve(f'{url}', os.path.join(CHAR_DONE_PATH,f'{id}.png'))
+    char_path = os.path.join(CHAR_DONE_PATH,f'{id}.png')
     if star == 4:
+        star4_1_path = os.path.join(TEXT_PATH,'4star_1.png')
+        star4_2_path = os.path.join(TEXT_PATH,'4star_2.png')
         star4_1 = Image.open(star4_1_path)
         star4_2 = Image.open(star4_2_path)
         char_path = os.path.join(CHAR_DONE_PATH,str(id) + '.png')
@@ -40,6 +43,8 @@ def get_chardone_pic(id,url,star):
         star4_1.paste(star4_2,(0,0),star4_2)
         star4_1.save(os.path.join(CHAR_DONE_PATH,str(id) + '.png'))
     else:
+        star5_1_path = os.path.join(TEXT_PATH,'5star_1.png')
+        star5_2_path = os.path.join(TEXT_PATH,'5star_2.png')
         star5_1 = Image.open(star5_1_path)
         star5_2 = Image.open(star5_2_path)
         char_path = os.path.join(CHAR_DONE_PATH,str(id) + '.png')
@@ -62,13 +67,17 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
 
     if mode == 3:
         mys_data = await GetMysInfo(uid)
+        mysid_data = mys_data[1]
+        mys_data = mys_data[0]
         uid = mys_data['data']['list'][0]['game_role_id']
         nickname = mys_data['data']['list'][0]['nickname']
         #role_region = mys_data['data']['list'][0]['region']
-        #role_level = mys_data['data']['list'][0]['level']
-
-    raw_data = await GetSpiralAbyssInfo(uid)
-    raw_char_data = await GetInfo(uid)
+        role_level = mys_data['data']['list'][0]['level']
+        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01","1",mysid_data)
+        raw_char_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
+    else:
+        raw_data = await GetSpiralAbyssInfo(uid)
+        raw_char_data = await GetInfo(uid)
 
     if (raw_data["retcode"] != 0):
         if (raw_data["retcode"] == 10001):
@@ -158,7 +167,7 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
         avatars = based_data['levels'][j]['battles'][0]['avatars'] + based_data['levels'][j]['battles'][1]['avatars']
         for i in based_data['levels'][j]['battles'][0]['avatars']:
             if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
-                get_chardone_pic(char_data[num_1]['id'],char_data[num_1]['image'],char_data[num_1]['rarity'])
+                get_chardone_pic(i['id'],i['icon'],i['rarity'])
             char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
             char_img = Image.open(char)
             char_draw = ImageDraw.Draw(char_img)
@@ -166,8 +175,8 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
                 if k['id'] == i['id']:
                     char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),ys_font(18))
                     char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
-                    if str(k["fetter"]) == "10":
-                        char_draw.text((95.3,40.5),"F",(21,21,21),ys_font(17))
+                    if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                        char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                     else:
                         char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
             char_crop = (41 + 125*(num_1%4),46)
@@ -176,7 +185,7 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
         num_2 = 0
         for i in based_data['levels'][j]['battles'][1]['avatars']:
             if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
-                get_chardone_pic(char_data[num_2]['id'],char_data[num_2]['image'],char_data[num_2]['rarity'])
+                get_chardone_pic(i['id'],i['icon'],i['rarity'])
             char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
             char_img = Image.open(char)
             char_draw = ImageDraw.Draw(char_img)
@@ -184,8 +193,8 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
                 if k['id'] == i['id']:
                     char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),ys_font(18))
                     char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
-                    if str(k["fetter"]) == "10":
-                        char_draw.text((95.3,40.5),"F",(21,21,21),ys_font(17))
+                    if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                        char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                     else:
                         char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
             char_crop = (41 + 125*(num_2%4),180)
@@ -225,10 +234,10 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
 
     text_draw.text((171.6,89.3), f"{nickname}", (217,217,217), ys_font(32))
     text_draw.text((189.6, 126.3), 'UID ' + f"{uid}", (217,217,217), ys_font(14))
-    if floor_num == 9:
-        text_draw.text((642, 78), f"{floor_num}", (29,30,63), ys_font(60))
+    if floor_num == "9":
+        text_draw.text((650, 79), f"{floor_num}", (29,30,63), ys_font(50))
     else:
-        text_draw.text((623.3, 76), f"{floor_num}", (29,30,63), ys_font(60))
+        text_draw.text((630, 79), f"{floor_num}", (29,30,63), ys_font(50))
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()
@@ -248,12 +257,15 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
 
     if mode == 3:
         mys_data = await GetMysInfo(uid)
+        mysid_data = mys_data[1]
+        mys_data = mys_data[0]
         uid = mys_data['data']['list'][0]['game_role_id']
         nickname = mys_data['data']['list'][0]['nickname']
         #role_region = mys_data['data']['list'][0]['region']
         role_level = mys_data['data']['list'][0]['level']
-
-    raw_data = await GetInfo(uid)
+        raw_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
+    else:
+        raw_data = await GetInfo(uid)
 
     if (raw_data["retcode"] != 0):
         if (raw_data["retcode"] == 10001):
@@ -284,7 +296,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     raw_data = raw_data['data']
     char_data = raw_data["avatars"]
     char_num = len(raw_data["avatars"])
-    if mode == 2 or mode == 3:
+    if mode == 2:
         char_ids = []
         char_rawdata = []
         
@@ -292,6 +304,16 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             char_ids.append(i["id"])
 
         char_rawdata = await GetCharacter(uid,char_ids)
+        char_datas = char_rawdata["data"]["avatars"]
+
+    elif mode == 3:
+        char_ids = []
+        char_rawdata = []
+        
+        for i in char_data:
+            char_ids.append(i["id"])
+
+        char_rawdata = await GetCharacter(uid,char_ids,"cn_gf01",mysid_data)
         char_datas = char_rawdata["data"]["avatars"]
         
     char_hang = 1 + (char_num-1)//6
@@ -393,8 +415,8 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             char_draw = ImageDraw.Draw(char_img)
             char_draw.text((40,108),f'Lv.{str(char_data[num]["level"])}',(21,21,21),ys_font(18))
             char_draw.text((95.3,19),f'{str(char_data[num]["actived_constellation_num"])}','white',ys_font(18))
-            if str(char_data[num]["fetter"]) == "10":
-                char_draw.text((95.3,40.5),"F",(21,21,21),ys_font(17))
+            if str(char_data[num]["fetter"]) == "10" or str(char_data[num]["name"]) == "旅行者":
+                char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
             else:
                 char_draw.text((95.3,40.5),f'{str(char_data[num]["fetter"])}',(21,21,21),ys_font(18))
         
@@ -440,6 +462,8 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             for k in i['constellations']:
                 if  k['is_actived'] == True:
                     char_mingzuo += 1
+
+            char_name = i["name"]
             char_id = i["id"]
             char_level = i["level"]
             char_fetter = i['fetter']
@@ -513,7 +537,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             char_draw.text((38,106),f'Lv.{str(char_level)}',(21,21,21),ys_font(18))
             char_draw.text((104.5,91.5),f'{str(char_weapon_jinglian)}','white',ys_font(10))
             char_draw.text((99,19.5),f'{str(char_mingzuo)}','white',ys_font(18))
-            if str(i["fetter"]) == "10":
+            if str(i["fetter"]) == "10" or str(char_name) == "旅行者":
                 char_draw.text((98,42),"♥",(21,21,21),ys_font(14))
             else:
                 char_draw.text((100,41),f'{str(char_fetter)}',(21,21,21),ys_font(16))

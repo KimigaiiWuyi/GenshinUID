@@ -174,11 +174,11 @@ $ pip3 install -r requirements.txt
 
 ###深渊查询：
 
-![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.PNG)
+![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.png)
 
 ###当前状态：
 
-![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.PNG)
+![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.png)
 
 ## 相关仓库
 

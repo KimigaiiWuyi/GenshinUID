@@ -7,7 +7,7 @@ import math
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from .getData import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo
+from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo
 
 import os
 import json
@@ -57,14 +57,7 @@ def get_chardone_pic(id,url,star):
 def get_weapon_pic(url):
     urllib.request.urlretrieve(url, os.path.join(WEAPON_PATH, url.split('/')[-1]))
 
-async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
-    is_edit = False
-    if image != None:
-        image_file= image.group(1)
-        image_data = image.group(2)
-        urllib.request.urlretrieve(f'{image_data}', os.path.join(TEXT_PATH,nickname + '.png'))
-        is_edit = True
-
+async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
     if mode == 3:
         mys_data = await GetMysInfo(uid)
         mysid_data = mys_data[1]
@@ -73,11 +66,11 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
         nickname = mys_data['data']['list'][0]['nickname']
         #role_region = mys_data['data']['list'][0]['region']
         role_level = mys_data['data']['list'][0]['level']
-        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01","1",mysid_data)
-        raw_char_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
+        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date,mysid_data)
+        raw_char_data = await GetInfo(uid,"cn_gf01",date,mysid_data)
     else:
-        raw_data = await GetSpiralAbyssInfo(uid)
-        raw_char_data = await GetInfo(uid)
+        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date)
+        raw_char_data = await GetInfo(uid,"cn_gf01",date)
 
     if (raw_data["retcode"] != 0):
         if (raw_data["retcode"] == 10001):
@@ -96,6 +89,295 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
     raw_data = raw_data["data"]
     raw_char_data = raw_char_data['data']["avatars"]
 
+    is_edit = False
+    if image != None:
+        image_file= image.group(1)
+        image_data = image.group(2)
+        urllib.request.urlretrieve(f'{image_data}', os.path.join(TEXT_PATH,nickname + '.png'))
+        is_edit = True
+
+    bg_list = random.choice([x for x in os.listdir(BG_PATH)
+            if os.path.isfile(os.path.join(BG_PATH, x))])
+
+    bg2_path = os.path.join(BG_PATH,bg_list)
+
+    abyss0_path = os.path.join(TEXT_PATH,"abyss_0.png")
+    abyss2_path = os.path.join(TEXT_PATH,"abyss_2.png")
+    abyss3_path = os.path.join(TEXT_PATH,"abyss_3.png")
+    abyss_star0_path = os.path.join(TEXT_PATH,"abyss_star0.png")
+    abyss_star1_path = os.path.join(TEXT_PATH,"abyss_star1.png")
+
+    floors_data = raw_data['floors'][-1]
+    levels_num = len(floors_data['levels'])
+
+    based_w = 900
+    based_h = 880+levels_num*315
+    based_scale = '%.3f' % (based_w/based_h)
+
+    if is_edit == True:
+        bg_path_edit = os.path.join(TEXT_PATH,f"{nickname}.png")
+    else:
+        bg_path_edit = bg2_path
+
+    edit_bg = Image.open(bg_path_edit)
+    w, h = edit_bg.size
+    scale_f = '%.3f' % (w / h)
+    new_w = math.ceil(based_h*float(scale_f))
+    new_h = math.ceil(based_w/float(scale_f))
+    if scale_f > based_scale:
+        bg_img2 = edit_bg.resize((new_w, based_h),Image.ANTIALIAS)
+    else:
+        bg_img2 = edit_bg.resize((based_w, new_h),Image.ANTIALIAS)
+
+    bg_img = bg_img2.crop((0, 0, based_w, based_h))
+
+    x1, y1 = 45, 271
+    radius = 10
+    cropped_img1 = bg_img.crop((x1, y1, 857, 831))
+    blurred_img1 = cropped_img1.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
+    bg_img.paste(blurred_img1, (x1, y1), create_rounded_rectangle_mask(cropped_img1,radius))
+
+    for i in range(0,len(floors_data['levels'])):
+        x2, y2 = 45, 850 + 315*i 
+        radius = 10
+        cropped_img2 = bg_img.crop((x2, y2, 855, 1145+315*i))
+        blurred_img2 = cropped_img2.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
+        bg_img.paste(blurred_img2, (x2, y2), create_rounded_rectangle_mask(cropped_img2,radius))
+
+    abyss0 = Image.open(abyss0_path)
+    abyss3 = Image.open(abyss3_path)
+    abyss_star0 = Image.open(abyss_star0_path)
+    abyss_star1 = Image.open(abyss_star1_path)
+
+    for i in range(0,4):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["reveal_rank"][i]["avatar_id"]) + ".png")):
+            get_chardone_pic(raw_data["reveal_rank"][i]["avatar_id"],raw_data["reveal_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH,str(raw_data["reveal_rank"][i]["avatar_id"]) + ".png")
+        char_img = Image.open(char)
+        char_draw = ImageDraw.Draw(char_img)
+        for k in raw_char_data:
+            if k['id'] == raw_data["reveal_rank"][i]["avatar_id"]:
+                char_draw.text((63.5,117),f'{str(raw_data["reveal_rank"][i]["value"])}次',(21,21,21),ys_font(18), anchor="mm")
+                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                    char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                else:
+                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+        char_crop = (70 + 123*i,331)
+        abyss0.paste(char_img,char_crop,char_img)
+    
+    for i in range(0,1):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["damage_rank"][i]["avatar_id"]) + ".png")):
+            get_chardone_pic(raw_data["damage_rank"][i]["avatar_id"],raw_data["damage_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH,str(raw_data["damage_rank"][i]["avatar_id"]) + ".png")
+        char_img = Image.open(char)
+        char_draw = ImageDraw.Draw(char_img)
+        for k in raw_char_data:
+            if k['id'] == raw_data["damage_rank"][i]["avatar_id"]:
+                char_draw.text((63.5,117),f'{str(raw_data["damage_rank"][i]["value"])}',(21,21,21),ys_font(18), anchor="mm")
+                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                    char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                else:
+                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+        char_crop = (592,331)
+        abyss0.paste(char_img,char_crop,char_img)
+
+    for i in range(0,3):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")):
+            get_chardone_pic(raw_data["defeat_rank"][i]["avatar_id"],raw_data["defeat_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH,str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")
+        char_img = Image.open(char)
+        char_draw = ImageDraw.Draw(char_img)
+        for k in raw_char_data:
+            if k['id'] == raw_data["defeat_rank"][i]["avatar_id"]:
+                char_draw.text((63.5,117),f'{str(raw_data["defeat_rank"][i]["value"])}',(21,21,21),ys_font(18), anchor="mm")
+                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                    char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                else:
+                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+        char_crop = (70 + 123*i,503)
+        abyss0.paste(char_img,char_crop,char_img)
+
+    for i in range(0,3):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")):
+            get_chardone_pic(raw_data["take_damage_rank"][i]["avatar_id"],raw_data["take_damage_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH,str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")
+        char_img = Image.open(char)
+        char_draw = ImageDraw.Draw(char_img)
+        for k in raw_char_data:
+            if k['id'] == raw_data["take_damage_rank"][i]["avatar_id"]:
+                char_draw.text((63.5,117),f'{str(raw_data["take_damage_rank"][i]["value"])}',(21,21,21),ys_font(18), anchor="mm")
+                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                    char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                else:
+                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+        char_crop = (466 + 123*i,503)
+        abyss0.paste(char_img,char_crop,char_img)
+
+    for i in range(0,3):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")):
+            get_chardone_pic(raw_data["normal_skill_rank"][i]["avatar_id"],raw_data["normal_skill_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH,str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")
+        char_img = Image.open(char)
+        char_draw = ImageDraw.Draw(char_img)
+        for k in raw_char_data:
+            if k['id'] == raw_data["normal_skill_rank"][i]["avatar_id"]:
+                char_draw.text((63.5,117),f'{str(raw_data["normal_skill_rank"][i]["value"])}',(21,21,21),ys_font(18), anchor="mm")
+                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                    char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                else:
+                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+        char_crop = (70 + 123*i,676)
+        abyss0.paste(char_img,char_crop,char_img)
+
+    for i in range(0,3):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")):
+            get_chardone_pic(raw_data["energy_skill_rank"][i]["avatar_id"],raw_data["energy_skill_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH,str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")
+        char_img = Image.open(char)
+        char_draw = ImageDraw.Draw(char_img)
+        for k in raw_char_data:
+            if k['id'] == raw_data["energy_skill_rank"][i]["avatar_id"]:
+                char_draw.text((63.5,118),f'{str(raw_data["energy_skill_rank"][i]["value"])}',(21,21,21),ys_font(18), anchor="mm")
+                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                    char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                else:
+                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+        char_crop = (466 + 123*i,676)
+        abyss0.paste(char_img,char_crop,char_img)
+
+    bg_img.paste(abyss0,(0,0),abyss0)
+
+    for j in range(0,len(floors_data["levels"])):
+        abyss2 = Image.open(abyss2_path)
+        num_1 = 0
+        for i in floors_data['levels'][j]['battles'][0]['avatars']:
+            if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
+                get_chardone_pic(i['id'],i['icon'],i['rarity'])
+            char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
+            char_img = Image.open(char)
+            char_draw = ImageDraw.Draw(char_img)
+            for k in raw_char_data:
+                if k['id'] == i['id']:
+                    char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),ys_font(18))
+                    char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                    if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                        char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                    else:
+                        char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+            char_crop = (70 + 125*(num_1%4),46)
+            abyss2.paste(char_img,char_crop,char_img)
+            num_1 = num_1 + 1
+        num_2 = 0
+        for i in floors_data['levels'][j]['battles'][1]['avatars']:
+            if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
+                get_chardone_pic(i['id'],i['icon'],i['rarity'])
+            char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
+            char_img = Image.open(char)
+            char_draw = ImageDraw.Draw(char_img)
+            for k in raw_char_data:
+                if k['id'] == i['id']:
+                    char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),ys_font(18))
+                    char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',ys_font(18))
+                    if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
+                        char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
+                    else:
+                        char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
+            char_crop = (70 + 125*(num_2%4),180)
+            abyss2.paste(char_img,char_crop,char_img)
+            num_2 = num_2 + 1
+        star_num = floors_data['levels'][j]['star']
+        if star_num == 1:
+            abyss2.paste(abyss_star1,(640,155),abyss_star1)
+            abyss2.paste(abyss_star0,(685,155),abyss_star0)
+            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+        elif star_num == 0:
+            abyss2.paste(abyss_star0,(640,155),abyss_star0)
+            abyss2.paste(abyss_star0,(685,155),abyss_star0)
+            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+        elif star_num == 2:
+            abyss2.paste(abyss_star1,(640,155),abyss_star1)
+            abyss2.paste(abyss_star1,(685,155),abyss_star1)
+            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+        else:
+            abyss2.paste(abyss_star1,(640,155),abyss_star1)
+            abyss2.paste(abyss_star1,(685,155),abyss_star1)
+            abyss2.paste(abyss_star1,(730,155),abyss_star1)
+        abyss2_text_draw = ImageDraw.Draw(abyss2)
+        abyss2_text_draw.text((87,30),f"第{j+1}间", (20,20,20), ys_font(21))
+        timeStamp1 = int(floors_data['levels'][j]['battles'][0]['timestamp'])
+        timeStamp2 = int(floors_data['levels'][j]['battles'][1]['timestamp'])
+        timeArray1 = time.localtime(timeStamp1)
+        timeArray2 = time.localtime(timeStamp2)
+        otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
+        otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
+        abyss2_text_draw.text((167,33), f"{otherStyleTime1}/{otherStyleTime2}", (40,40,40), ys_font(19))
+        bg_img.paste(abyss2,(0,830+j*315),abyss2)
+    
+    bg_img.paste(abyss3,(0,len(floors_data["levels"])*315+840),abyss3)
+ 
+    text_draw = ImageDraw.Draw(bg_img)
+
+    text_draw.text((250, 85), f"{nickname}", (217,217,217), ys_font(32))
+    text_draw.text((260, 125), 'UID ' + f"{uid}", (217,217,217), ys_font(14))
+
+    text_draw.text((690, 52),raw_data['max_floor'], (65, 65, 65), ys_font(26))
+    text_draw.text((690, 97),str(raw_data['total_battle_times']), (65, 65, 65), ys_font(26))
+    text_draw.text((690, 142),str(raw_data['total_star']), (65, 65, 65), ys_font(26))
+
+    bg_img = bg_img.convert('RGB')
+    result_buffer = BytesIO()
+    bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+    #bg_img.save(result_buffer, format='PNG')
+    imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
+    resultmes = f"[CQ:image,file={imgmes}]"
+    return resultmes
+
+async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"):
+    if mode == 3:
+        mys_data = await GetMysInfo(uid)
+        mysid_data = mys_data[1]
+        mys_data = mys_data[0]
+        uid = mys_data['data']['list'][0]['game_role_id']
+        nickname = mys_data['data']['list'][0]['nickname']
+        #role_region = mys_data['data']['list'][0]['region']
+        role_level = mys_data['data']['list'][0]['level']
+        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date,mysid_data)
+        raw_char_data = await GetInfo(uid,"cn_gf01",date,mysid_data)
+    else:
+        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date)
+        raw_char_data = await GetInfo(uid,"cn_gf01",date)
+
+    if (raw_data["retcode"] != 0):
+        if (raw_data["retcode"] == 10001):
+            return ("Cookie错误/过期，请重置Cookie")
+        elif (raw_data["retcode"] == 10101):
+            return ("当前cookies已达到30人上限！")
+        elif (raw_data["retcode"] == 10102):
+            return ("当前查询id已经设置了隐私，无法查询！")
+        return (
+            "Api报错，返回内容为：\r\n"
+            + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+        )
+    else:
+        pass
+
+    
+    is_edit = False
+    if image != None:
+        image_file= image.group(1)
+        image_data = image.group(2)
+        urllib.request.urlretrieve(f'{image_data}', os.path.join(TEXT_PATH,nickname + '.png'))
+        is_edit = True
+
+    raw_data = raw_data["data"]
+    raw_char_data = raw_char_data['data']["avatars"]
+
     floors_data = raw_data['floors']
 
     based_data = []
@@ -103,12 +385,12 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
         if str(i['index']) == floor_num:
             based_data = i
 
-    floor_star = based_data['star']
-    floors1_star = based_data['levels'][0]['star']
-    floors2_star = based_data['levels'][1]['star']
-    floors3_star = based_data['levels'][2]['star']
-    start_time1 = based_data['levels'][0]['battles'][0]['timestamp']
-    start_time2 = based_data['levels'][0]['battles'][1]['timestamp']
+    #floor_star = based_data['star']
+    #floors1_star = based_data['levels'][0]['star']
+    #floors2_star = based_data['levels'][1]['star']
+    #floors3_star = based_data['levels'][2]['star']
+    #start_time1 = based_data['levels'][0]['battles'][0]['timestamp']
+    #start_time2 = based_data['levels'][0]['battles'][1]['timestamp']
 
     bg_list = random.choice([x for x in os.listdir(BG_PATH)
                if os.path.isfile(os.path.join(BG_PATH, x))])
@@ -123,9 +405,9 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
 
     levels_num = len(based_data['levels'])
 
-    based_w = 800
+    based_w = 900
     based_h = 240+levels_num*340
-    based_scale = math.ceil(based_w/based_h)
+    based_scale = '%.3f' % (based_w/based_h)
 
     if is_edit == True:
         bg_path_edit = os.path.join(TEXT_PATH,f"{nickname}.png")
@@ -134,23 +416,20 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
 
     edit_bg = Image.open(bg_path_edit)
     w, h = edit_bg.size
-    scale_f = math.ceil(w / h)
-    new_w = math.ceil(based_w/float(scale_f))
-    new_h = math.ceil(based_h*float(scale_f))
-    if w > h:
-        bg_img2 = edit_bg.resize((new_h, based_h),Image.ANTIALIAS)
+    scale_f = '%.3f' % (w / h)
+    new_w = math.ceil(based_h*float(scale_f))
+    new_h = math.ceil(based_w/float(scale_f))
+    if scale_f > based_scale:
+        bg_img2 = edit_bg.resize((new_w, based_h),Image.ANTIALIAS)
     else:
-        if scale_f > based_scale:
-            bg_img2 = edit_bg.resize((900, new_h),Image.ANTIALIAS)
-        else:
-            bg_img2 = edit_bg.resize((900, new_h),Image.ANTIALIAS)
+        bg_img2 = edit_bg.resize((based_w, new_h),Image.ANTIALIAS)
 
     bg_img = bg_img2.crop((0, 0, based_w, based_h))
 
     for i in range(0,len(based_data['levels'])):
-        x, y = 40, 220 + 340*i 
-        radius = 40
-        cropped_img = bg_img.crop((x, y, 760, 518+340*i))
+        x, y = 45, 220 + 340*i 
+        radius = 10
+        cropped_img = bg_img.crop((x, y, 855, 517+340*i))
         blurred_img = cropped_img.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
         bg_img.paste(blurred_img, (x, y), create_rounded_rectangle_mask(cropped_img,radius))
 
@@ -179,7 +458,7 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
                         char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                     else:
                         char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-            char_crop = (41 + 125*(num_1%4),46)
+            char_crop = (70 + 125*(num_1%4),46)
             abyss2.paste(char_img,char_crop,char_img)
             num_1 = num_1 + 1
         num_2 = 0
@@ -197,47 +476,47 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
                         char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                     else:
                         char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-            char_crop = (41 + 125*(num_2%4),180)
+            char_crop = (70 + 125*(num_2%4),180)
             abyss2.paste(char_img,char_crop,char_img)
             num_2 = num_2 + 1
         star_num = based_data['levels'][j]['star']
         if star_num == 1:
-            abyss2.paste(abyss_star1,(570,155),abyss_star1)
-            abyss2.paste(abyss_star0,(615,155),abyss_star0)
-            abyss2.paste(abyss_star0,(660,155),abyss_star0)
+            abyss2.paste(abyss_star1,(640,155),abyss_star1)
+            abyss2.paste(abyss_star0,(685,155),abyss_star0)
+            abyss2.paste(abyss_star0,(730,155),abyss_star0)
         elif star_num == 0:
-            abyss2.paste(abyss_star0,(570,155),abyss_star0)
-            abyss2.paste(abyss_star0,(615,155),abyss_star0)
-            abyss2.paste(abyss_star0,(660,155),abyss_star0)
+            abyss2.paste(abyss_star0,(640,155),abyss_star0)
+            abyss2.paste(abyss_star0,(685,155),abyss_star0)
+            abyss2.paste(abyss_star0,(730,155),abyss_star0)
         elif star_num == 2:
-            abyss2.paste(abyss_star1,(570,155),abyss_star1)
-            abyss2.paste(abyss_star1,(615,155),abyss_star1)
-            abyss2.paste(abyss_star0,(660,155),abyss_star0)
+            abyss2.paste(abyss_star1,(640,155),abyss_star1)
+            abyss2.paste(abyss_star1,(685,155),abyss_star1)
+            abyss2.paste(abyss_star0,(730,155),abyss_star0)
         else:
-            abyss2.paste(abyss_star1,(570,155),abyss_star1)
-            abyss2.paste(abyss_star1,(615,155),abyss_star1)
-            abyss2.paste(abyss_star1,(660,155),abyss_star1)
+            abyss2.paste(abyss_star1,(640,155),abyss_star1)
+            abyss2.paste(abyss_star1,(685,155),abyss_star1)
+            abyss2.paste(abyss_star1,(730,155),abyss_star1)
         abyss2_text_draw = ImageDraw.Draw(abyss2)
-        abyss2_text_draw.text((58,30),f"第{j+1}间", (20,20,20), ys_font(21))
+        abyss2_text_draw.text((87,30),f"第{j+1}间", (20,20,20), ys_font(21))
         timeStamp1 = int(based_data['levels'][j]['battles'][0]['timestamp'])
         timeStamp2 = int(based_data['levels'][j]['battles'][1]['timestamp'])
         timeArray1 = time.localtime(timeStamp1)
         timeArray2 = time.localtime(timeStamp2)
         otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
         otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
-        abyss2_text_draw.text((138,33), f"{otherStyleTime1}/{otherStyleTime2}", (40,40,40), ys_font(19))
+        abyss2_text_draw.text((167,33), f"{otherStyleTime1}/{otherStyleTime2}", (40,40,40), ys_font(19))
         bg_img.paste(abyss2,(0,200+j*340),abyss2)
     
     bg_img.paste(abyss3,(0,len(based_data['levels'])*340+200),abyss3)
  
     text_draw = ImageDraw.Draw(bg_img)
 
-    text_draw.text((171.6,89.3), f"{nickname}", (217,217,217), ys_font(32))
-    text_draw.text((189.6, 126.3), 'UID ' + f"{uid}", (217,217,217), ys_font(14))
+    text_draw.text((210,77), f"{nickname}", (217,217,217), ys_font(32))
+    text_draw.text((228, 110), 'UID ' + f"{uid}", (217,217,217), ys_font(14))
     if floor_num == "9":
-        text_draw.text((650, 79), f"{floor_num}", (29,30,63), ys_font(50))
+        text_draw.text((687, 67), f"{floor_num}", (29,30,63), ys_font(50))
     else:
-        text_draw.text((630, 79), f"{floor_num}", (29,30,63), ys_font(50))
+        text_draw.text((670, 67), f"{floor_num}", (29,30,63), ys_font(50))
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()
@@ -248,25 +527,17 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2):
     return resultmes
 
 async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
-    is_edit = False
-    if image:
-        image_file= image.group(1)
-        image_data = image.group(2)
-        urllib.request.urlretrieve(f'{image_data}', os.path.join(TEXT_PATH,nickname + '.png'))
-        is_edit = True
-
     if mode == 3:
         mys_data = await GetMysInfo(uid)
         mysid_data = mys_data[1]
         mys_data = mys_data[0]
         uid = mys_data['data']['list'][0]['game_role_id']
         nickname = mys_data['data']['list'][0]['nickname']
-        #role_region = mys_data['data']['list'][0]['region']
         role_level = mys_data['data']['list'][0]['level']
         raw_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
     else:
         raw_data = await GetInfo(uid)
-
+        
     if (raw_data["retcode"] != 0):
         if (raw_data["retcode"] == 10001):
             return ("Cookie错误/过期，请重置Cookie")
@@ -320,8 +591,15 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     char_lie = char_num%6
 
     based_w = 900
-    based_h = 840+char_hang*130
+    based_h = 890+char_hang*130
     based_scale = '%.3f' % (based_w/based_h)
+
+    is_edit = False
+    if image:
+        image_file= image.group(1)
+        image_data = image.group(2)
+        urllib.request.urlretrieve(f'{image_data}', os.path.join(TEXT_PATH,nickname + '.png'))
+        is_edit = True
 
     if is_edit == True:
         bg_path_edit = os.path.join(TEXT_PATH,f"{nickname}.png")
@@ -352,8 +630,8 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
 
     bg_img.paste(panle1,(0,0),panle1)
     for i in range(0,char_hang):
-        bg_img.paste(panle2,(0,750+i*130),panle2)
-    bg_img.paste(panle3,(0,char_hang*130+750),panle3)
+        bg_img.paste(panle2,(0,800+i*130),panle2)
+    bg_img.paste(panle3,(0,char_hang*130+800),panle3)
  
     text_draw = ImageDraw.Draw(bg_img)
 
@@ -367,42 +645,47 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     text_draw.text((640, 139.3),str(raw_data['stats']['achievement_number']), (65, 65, 65), ys_font(26))
     text_draw.text((640, 183.9),raw_data['stats']['spiral_abyss'], (65, 65, 65), ys_font(26))
 
-    text_draw.text((241, 390),str(raw_data['stats']['common_chest_number']),(65, 65, 65), ys_font(26))
-    text_draw.text((241, 432),str(raw_data['stats']['exquisite_chest_number']),(65, 65, 65), ys_font(26))
-    text_draw.text((241, 474),str(raw_data['stats']['precious_chest_number']), (65, 65, 65), ys_font(26))
-    text_draw.text((241, 516),str(raw_data['stats']['luxurious_chest_number']), (65, 65, 65), ys_font(26))
+    text_draw.text((258, 382.4),str(raw_data['stats']['magic_chest_number']), (65, 65, 65), ys_font(24))
+    text_draw.text((258, 442),str(raw_data['stats']['common_chest_number']),(65, 65, 65), ys_font(24))
+    text_draw.text((258, 501.6),str(raw_data['stats']['exquisite_chest_number']),(65, 65, 65), ys_font(24))
+    text_draw.text((258, 561.2),str(raw_data['stats']['precious_chest_number']), (65, 65, 65), ys_font(24))
+    text_draw.text((258, 620.8),str(raw_data['stats']['luxurious_chest_number']), (65, 65, 65), ys_font(24))
 
-    text_draw.text((241, 558),str(raw_data['stats']['avatar_number']),(65, 65, 65), ys_font(26))
-    text_draw.text((241, 600),str(raw_data['stats']['way_point_number']),(65, 65, 65), ys_font(26))
-    text_draw.text((241, 642),str(raw_data['stats']['domain_number']),(65, 65, 65), ys_font(26))
+    text_draw.text((258, 680.4),str(raw_data['stats']['avatar_number']),(65, 65, 65), ys_font(24))
+
+    text_draw.text((745, 474.5),str(raw_data['stats']['way_point_number']),(65, 65, 65), ys_font(24))
+    text_draw.text((745, 514),str(raw_data['stats']['domain_number']),(65, 65, 65), ys_font(24))
 
     #蒙德
-    text_draw.text((480, 380),str(raw_data['world_explorations'][3]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(23))
-    text_draw.text((480, 410),'lv.' + str(raw_data['world_explorations'][3]['level']),(65, 65, 65), ys_font(23))
-    text_draw.text((505, 440), str(raw_data['stats']['anemoculus_number']), (65, 65, 65), ys_font(23))
+    text_draw.text((490, 370),str(raw_data['world_explorations'][3]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(22))
+    text_draw.text((490, 400),'lv.' + str(raw_data['world_explorations'][3]['level']),(65, 65, 65), ys_font(22))
+    text_draw.text((513, 430), str(raw_data['stats']['anemoculus_number']), (65, 65, 65), ys_font(22))
 
     #璃月
-    text_draw.text((715, 380),str(raw_data['world_explorations'][2]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(23))
-    text_draw.text((715, 410),'lv.' + str(raw_data['world_explorations'][2]['level']),(65, 65, 65), ys_font(23))
-    text_draw.text((740, 440), str(raw_data['stats']['geoculus_number']), (65, 65, 65), ys_font(23))
+    text_draw.text((490, 490),str(raw_data['world_explorations'][2]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(22))
+    text_draw.text((490, 520),'lv.' + str(raw_data['world_explorations'][2]['level']),(65, 65, 65), ys_font(22))
+    text_draw.text((513, 550), str(raw_data['stats']['geoculus_number']), (65, 65, 65), ys_font(22))
 
     #雪山
-    text_draw.text((480, 522),str(raw_data['world_explorations'][1]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(23))
-    text_draw.text((480, 556),'lv.' + str(raw_data['world_explorations'][1]['level']),(65, 65, 65), ys_font(23))
+    text_draw.text((745, 379.5),str(raw_data['world_explorations'][1]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(22))
+    text_draw.text((745, 413.1),'lv.' + str(raw_data['world_explorations'][1]['level']),(65, 65, 65), ys_font(22))
 
     #稻妻
-    text_draw.text((715, 497),str(raw_data['world_explorations'][0]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(23))
-    text_draw.text((715, 525),'lv.' + str(raw_data['world_explorations'][0]['level']),(65, 65, 65), ys_font(23))
-    text_draw.text((715, 553),'lv.' + str(raw_data['world_explorations'][0]['offerings'][0]['level']),(65, 65, 65), ys_font(23))
-    text_draw.text((740, 581), str(raw_data['stats']['electroculus_number']), (65, 65, 65), ys_font(23))
+    text_draw.text((490, 608),str(raw_data['world_explorations'][0]['exploration_percentage']/10) + '%',(65, 65, 65), ys_font(22))
+    text_draw.text((490, 635),'lv.' + str(raw_data['world_explorations'][0]['level']),(65, 65, 65), ys_font(22))
+    text_draw.text((490, 662),'lv.' + str(raw_data['world_explorations'][0]['offerings'][0]['level']),(65, 65, 65), ys_font(22))
+    text_draw.text((513, 689), str(raw_data['stats']['electroculus_number']), (65, 65, 65), ys_font(22))
 
     if len(raw_data['homes']):
-        text_draw.text((480, 622),'lv.' + str(raw_data['homes'][0]['level']),(65, 65, 65), ys_font(24))
-        text_draw.text((480, 653),str(raw_data['homes'][0]['visit_num']),(65, 65, 65), ys_font(24))
-        text_draw.text((715, 622),str(raw_data['homes'][0]['item_num']),(65, 65, 65), ys_font(24))
-        text_draw.text((715, 653),str(raw_data['homes'][0]['comfort_num']),(65, 65, 65), ys_font(24))
+        text_draw.text((693, 572.4),'lv.' + str(raw_data['homes'][0]['level']),(65, 65, 65), ys_font(22))
+        text_draw.text((693, 610.4),str(raw_data['homes'][0]['visit_num']),(65, 65, 65), ys_font(22))
+        text_draw.text((693, 648.4),str(raw_data['homes'][0]['item_num']),(65, 65, 65), ys_font(22))
+        text_draw.text((693, 686.4),str(raw_data['homes'][0]['comfort_num']),(65, 65, 65), ys_font(22))
     else:
-        text_draw.text((650, 640),'未开',(0, 0, 0), ys_font(26))
+        text_draw.text((693, 572.4),"未开",(65, 65, 65), ys_font(22))
+        text_draw.text((693, 610.4),"未开",(65, 65, 65), ys_font(22))
+        text_draw.text((693, 648.4),"未开",(65, 65, 65), ys_font(22))
+        text_draw.text((693, 686.4),"未开",(65, 65, 65), ys_font(22))
     
     if mode == 1:
         char_data.sort(key=lambda x: (-x['rarity'],-x['level'],-x['fetter']))
@@ -420,7 +703,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             else:
                 char_draw.text((95.3,40.5),f'{str(char_data[num]["fetter"])}',(21,21,21),ys_font(18))
         
-            char_crop = (68+129*(num%6),750+130*(num//6))
+            char_crop = (68+129*(num%6),800+130*(num//6))
             bg_img.paste(char_img,char_crop,char_img)
             num = num+1
     else:
@@ -542,7 +825,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             else:
                 char_draw.text((100,41),f'{str(char_fetter)}',(21,21,21),ys_font(16))
             
-            char_crop = (68+129*(num%6),750+130*(num//6))
+            char_crop = (68+129*(num%6),800+130*(num//6))
             bg_img.paste(charpic,char_crop,charpic)
             num = num+1
 

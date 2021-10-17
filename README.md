@@ -1,12 +1,14 @@
 # GenshinUID / 原神UID查询
 
-​	一个HoshinoBot插件，用于查询原神UID信息。
+一个HoshinoBot插件，用于查询原神UID信息，用于查询树脂/探索派遣状态，推送树脂快满了。
 
-​	注意：本插件不包含本体，您应该配合[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 使用，本插件的作用是利用米游社API查询指定原神UID信息（Cookies获取可前往[YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info)查看教程）
+**一定要读更新记录和指令！！**
 
-​	已完成：角色排序（星级>等级>好感），mysid/uid查询，mysid/uid绑定qq号，cookies池，每日自动记录uid查询使用的cookies，下次再查询时仍然调用该cookies（防止浪费），mysid/uid查询深渊单独层数，以上所有输出图片均可支持背景图片自定义。
+注意：本插件不包含本体，您应该配合[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 使用，本插件的作用是利用米游社API查询指定原神UID信息（Cookies获取可前往[YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info)查看教程）
 
-​	示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
+再次提醒：**Cookies是重要信息，请不要随意泄露！！！**
+
+示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
 
 - [安装](#安装)
 - [更新记录](#更新记录)
@@ -38,11 +40,31 @@ $ pip3 install -r requirements.txt
 添加 cookies
 ```
 
-注意事项：可以添加多条，但一次只能添加一条，添加两个字的之后必须带有空格，cookies填入你自己的，并且不要泄露给任何人，如果添加了错误的cookies，会导致一系列问题，如果想删除错误的cookies，请操作sqlite数据库完成。
+注意事项：可以添加多条，但一次只能添加一条，添加两个字的之后必须带有空格，cookies填入你自己的，**并且不要泄露给任何人**，~~如果添加了错误的cookies，会导致一系列问题，如果想删除错误的cookies，请操作sqlite数据库完成~~，目前已实现Cookies校验，如果校验失败，请检查Cookies是否按照格式输入。
 
 5、进入机器人在的群聊，即可正常使用本插件。
 
 ## 更新记录
+
+####2021-10-17
+
+**重要：目前Cookies池采用了新的方式，如果你是之前版本的使用者，请在更新后使用群聊命令：迁移Cookies，无损迁移旧版本全部Cookies**
+
+新增：奇馈宝箱的支持，以及新UI的调整。
+
+新增：绑定Cookies可以实现基于当前绑定uid信息的树脂查询，以及推送，具体使用可以前往[指令](#指令)处查阅。
+
+新增：可以查询深渊总览信息（beta），具体使用可以前往[指令](#指令)处查阅。
+
+新增：可以群内@某人查询（角色信息、深渊总览、深渊固定层数），具体使用可以前往[指令](#指令)处查阅。
+
+优化：更换了背景图，更新了readme的指令表格。
+
+优化：支持群内命令：校验全部Cookies，以此判断是否Cookies池有失效CK。
+
+修复：在查询深渊时背景图片无法正确缩放的问题。
+
+修复：极少数情况下，查询功能失效的实例（先uid查询后mys查询）。
 
 #### 2021-9-27
 
@@ -80,15 +102,9 @@ $ pip3 install -r requirements.txt
 
 ​	uid命令现在可以根据角色数量自动设定长宽，并且自定义背景仍然适用！并且添加了角色当前携带的武器ui界面。
 
-​	![8](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/8.PNG)
-
 ​	UID命令在uid命令的基础上删除了武器的ui界面。
 
-​	![7](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/7.PNG)
-
 ​	添加了深渊查询，指令：uidxxxxxx深渊xx，例如uid123456789深渊12，只能查指定楼层（beta）
-
-​	![9](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/9.PNG)
 
 ​	删除角色命令。
 
@@ -130,37 +146,39 @@ $ pip3 install -r requirements.txt
 
 ## 指令
 
-1、仅私聊状态下生效，触发词添加 后跟cookies即可添加Cookies（添加两字后需要带空格）
+（**括号内为可选词缀**，以下所有可以输出图片的，**命令后跟图可自定义背景图片**）：
 
-![10](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/10.png)
+| 触发前缀               | 触发后缀/备注          | 效果                               | 举例               | 备注                                     |
+| :--------------------- | ---------------------- | ---------------------------------- | ------------------ | ---------------------------------------- |
+| uid                    |                        | 获取角色信息一览（带武器信息）     | uid123456789       |                                          |
+| uid                    | （上期）深渊           | 获取角色深渊总览（层数为最后一层） | uid123456789深渊   |                                          |
+| uid                    | （上期）深渊9/10/11/12 | 获取角色深渊某一层数据             | uid123456789深渊12 |                                          |
+| mys                    |                        | 角色信息（带武器信息，冒险等级）   | mys123456          | 米游社通行证                             |
+| mys                    | （上期）深渊           | 获取角色深渊总览（层数为最后一层） | mys123456深渊      | 米游社通行证                             |
+| mys                    | （上期）深渊9/10/11/12 | 获取角色深渊某一层数据             | mys123456深渊12    | 米游社通行证                             |
+| UID                    |                        | 获取角色信息一览（不带武器信息）   | UID123456789       | 旧版本，比例更和谐                       |
+| 绑定uid                |                        | 当前qq号关联绑定uid                | 绑定uid123456789   | 查询前缀前置条件                         |
+| 绑定mys                |                        | 当前qq号关联绑定米游社通行证       | 绑定mys12345678    | 查询前缀前置条件                         |
+| 查询                   |                        | 查询当前绑定角色信息一览           | 查询               | **必须**绑定过mys/uid                    |
+| 查询（上期）深渊       |                        | 查询当前绑定角色深渊总览           | 查询深渊           | **必须**绑定过mys/uid                    |
+| 查询（上期）深渊\d     |                        | 查询当前绑定角色深渊某一层数据     | 查询深渊10         | **必须**绑定过mys/uid                    |
+| 添加                   |                        | 向cookies池添加cookies             | 添加 _ga=balabala  | **私聊**bot，注意空格                    |
+| 查询 @人               |                        | 获取@的群友的角色信息一览          | 查询 @Wuyi         |                                          |
+| 查询（上期）深渊 @人   |                        | 获取@的群友的深渊信息一览          | 查询深渊 @Wuyi     |                                          |
+| 查询（上期）深渊\d @人 |                        | 获取@的群友的深渊某一层数据        | 查询深渊10 @Wuyi   |                                          |
+| 当前状态               |                        | 获取树脂、每日委托、派遣等信息     | 当前状态           | **必须**绑定过CK和uid                    |
+| 开启推送               |                        | 开启推送，超过140树脂提醒旅行者    | 开启推送           | 群聊/私聊都可<br />**必须**绑定过CK和uid |
+| 关闭推送               |                        | 关闭树脂快满的提醒                 | 关闭推送           | 都可以                                   |
+| 校验全部Cookies        |                        | 校验当前池内全部Cookies状态        | 校验全部Cookies    | **群聊**                                 |
+| 迁移Cookies            |                        | 迁移旧版本全部Cookies              | 迁移Cookies        | **群聊**                                 |
 
-2、群聊状态下生效，绑定uid/绑定mys后跟uid/mysid即可完成绑定
+###深渊查询：
 
-![11](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/11.png)
+![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.PNG)
 
-3、群聊状态下生效，而且必须绑定过uid/mysid才可生效，输出查询可以获取角色图
+###当前状态：
 
-![12](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/12.png)
-
-4、群聊状态下生效，而且必须绑定过uid/mysid才可生效，输出查询深渊xx可以获取当期深渊层数图
-
-![13](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/13.png)
-
-5、群聊状态下生效，触发词uid后面跟九位uid即可/触发词mys后面跟米游社通行证即可。
-
-![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.png)
-
-6、群聊状态下生效，mysid/uid后跟相应数字后跟深渊后跟相应层数即可。
-
-![14](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/14.png)
-
-7、以上所有可输出图片的触发词后跟一张任意大小的图片（不能是GIF），可以自定义背景
-
-![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.png)
-
-![4](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/4.png)
-
-
+![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.PNG)
 
 ## 相关仓库
 

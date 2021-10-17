@@ -46,7 +46,7 @@ $ pip3 install -r requirements.txt
 
 ## 更新记录
 
-####2021-10-17
+#### 2021-10-17
 
 **重要：目前Cookies池采用了新的方式，如果你是之前版本的使用者，请在更新后使用群聊命令：迁移Cookies，无损迁移旧版本全部Cookies**
 
@@ -172,11 +172,11 @@ $ pip3 install -r requirements.txt
 | 校验全部Cookies        |                        | 校验当前池内全部Cookies状态        | 校验全部Cookies    | **群聊**                                 |
 | 迁移Cookies            |                        | 迁移旧版本全部Cookies              | 迁移Cookies        | **群聊**                                 |
 
-###深渊查询：
+### 深渊查询：
 
 ![2](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/2.png)
 
-###当前状态：
+### 当前状态：
 
 ![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/3.png)
 

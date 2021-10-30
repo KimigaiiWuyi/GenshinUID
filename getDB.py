@@ -51,7 +51,11 @@ async def CheckDB():
         except:
             str = str + f"uid{row[0]}的Cookies是异常的！已删除该条Cookies！\n"
             c.execute("DELETE from NewCookiesTable where UID=?",(row[0],))
-            c.execute("DELETE from CookiesCache where Cookies=?",(row[1],))
+            test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'CookiesCache'")
+            if test == 0:
+                pass
+            else:
+                c.execute("DELETE from CookiesCache where Cookies=?",(row[1],))
     conn.commit()
     conn.close()
     return str

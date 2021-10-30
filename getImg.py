@@ -62,6 +62,9 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
         mys_data = await GetMysInfo(uid)
         mysid_data = mys_data[1]
         mys_data = mys_data[0]
+        for i in mys_data['data']['list']:
+            if i['data'][0]['name'] != '活跃天数':
+                mys_data['data']['list'].remove(i)
         uid = mys_data['data']['list'][0]['game_role_id']
         nickname = mys_data['data']['list'][0]['nickname']
         #role_region = mys_data['data']['list'][0]['region']
@@ -343,6 +346,9 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"
         mys_data = await GetMysInfo(uid)
         mysid_data = mys_data[1]
         mys_data = mys_data[0]
+        for i in mys_data['data']['list']:
+            if i['data'][0]['name'] != '活跃天数':
+                mys_data['data']['list'].remove(i)
         uid = mys_data['data']['list'][0]['game_role_id']
         nickname = mys_data['data']['list'][0]['nickname']
         #role_region = mys_data['data']['list'][0]['region']
@@ -531,6 +537,9 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
         mys_data = await GetMysInfo(uid)
         mysid_data = mys_data[1]
         mys_data = mys_data[0]
+        for i in mys_data['data']['list']:
+            if i['data'][0]['name'] != '活跃天数':
+                mys_data['data']['list'].remove(i)
         uid = mys_data['data']['list'][0]['game_role_id']
         nickname = mys_data['data']['list'][0]['nickname']
         role_level = mys_data['data']['list'][0]['level']

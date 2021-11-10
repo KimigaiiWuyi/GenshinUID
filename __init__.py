@@ -1,5 +1,5 @@
 from .getImg import draw_pic,draw_abyss_pic,draw_abyss0_pic
-from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache,CheckDB,TransDB,OpenPush,GetMysInfo,GetDaily,GetSignList,MysSign,GetSignInfo,OpCookies
+from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache,CheckDB,TransDB,OpenPush,GetMysInfo,GetDaily,GetSignList,MysSign,GetSignInfo,OpCookies,GetAward
 
 from nonebot import *
 from hoshino import Service,R,priv,util
@@ -31,10 +31,29 @@ daily_im = '''
 ========
 {}'''
 
+month_im = '''
+==============
+本日获取原石：{}
+本日获取摩拉：{}
+==============
+昨日获取原石：{}
+昨日获取摩拉：{}
+==============
+本月获取原石：{}
+本月获取摩拉：{}
+==============
+上月获取原石：{}
+上月获取摩拉：{}
+==============
+{}========
+'''
+
+#每日零点清空cookies使用缓存
 @sv.scheduled_job('cron', hour='0')
 async def delete():
     deletecache()
-
+    
+#每日零点半进行米游社签到
 @sv.scheduled_job('cron', hour='0',minute="30")
 async def dailysign():
     conn = sqlite3.connect('ID_DATA.db')
@@ -42,14 +61,13 @@ async def dailysign():
     cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE StatusB != ?",("off",))
     c_data = cursor.fetchall()
     for row in c_data:
-        
         im = await sign(str(row[0]))
-
         if row[4] == "on":
             await bot.send_private_msg(user_id = row[2],message = im)
         else:
             await bot.send_group_msg(group_id = row[4],message = f"[CQ:at,qq={row[2]}]" + "\n" + im)
-
+            
+#每隔半小时检测树脂是否超过设定值
 @sv.scheduled_job('interval', minutes=30)
 async def push():
     daily_data = await daily()
@@ -62,8 +80,7 @@ async def push():
     else:
         pass
 
-
-
+#私聊事件
 @bot.on_message('private')
 async def setting(ctx):
     message = ctx['raw_message']
@@ -83,7 +100,6 @@ async def setting(ctx):
                 if i['data'][0]['name'] != '活跃天数':
                     mys_data['data']['list'].remove(i)
             uid = mys_data['data']['list'][0]['game_role_id']
-            
             await cookiesDB(uid,cookie,userid)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=f'添加Cookies成功！Cookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！')
         except:
@@ -116,7 +132,8 @@ async def setting(ctx):
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=im)
         except:
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
-        
+
+#群聊开启 自动签到 和 推送树脂提醒 功能
 @sv.on_prefix('开启')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
@@ -139,7 +156,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev,im,at_sender=True)
         except:
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
-
+            
+#群聊关闭 自动签到 和 推送树脂提醒 功能
 @sv.on_prefix('关闭')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
@@ -162,7 +180,34 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev,im,at_sender=True)
         except:
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
+            
+#群聊内 每月统计 功能
+@sv.on_fullmatch('每月统计')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    try:
+        qid = ev.sender["user_id"]
+        uid = await selectDB(ev.sender['user_id'],mode = "uid")
+        uid = uid[0]
+        data = await GetAward(uid)
+        nickname = data['data']['nickname']
+        day_stone = data['data']['day_data']['current_primogems']
+        day_mora = data['data']['day_data']['current_mora']
+        lastday_stone = data['data']['day_data']['last_primogems']
+        lastday_mora = data['data']['day_data']['last_mora']
+        month_stone = data['data']['month_data']['current_primogems']
+        month_mora = data['data']['month_data']['current_mora']
+        lastmonth_stone = data['data']['month_data']['last_primogems']
+        lastmonth_mora = data['data']['month_data']['last_mora']
+        group_str = ''
+        for i in data['data']['month_data']['group_by']:
+            group_str = group_str + i['action'] + ":" + str(i['num']) + "| " + "百分比：" + str(i['percent']) + "%" + '\n'
 
+        im = month_im.format(day_stone,day_mora,lastday_stone,lastday_mora,month_stone,month_mora,lastmonth_stone,lastmonth_mora,group_str)
+        await bot.send(ev,im,at_sender=True)
+    except:
+        pass
+        
+#群聊内 签到 功能
 @sv.on_fullmatch('签到')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     try:
@@ -174,6 +219,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
     except:
         pass
 
+#群聊内 数据库v2 迁移至 数据库v3 的命令，一般只需要更新时执行一次
 @sv.on_fullmatch('优化Cookies')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     try:
@@ -181,17 +227,20 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
         await bot.send(ev,im,at_sender=True)
     except:
         pass
-    
+
+#群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @sv.on_fullmatch('校验全部Cookies')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     im = await CheckDB()
     await bot.send(ev,im)   
 
+#群聊内 数据库v1 迁移至 数据库v2 的命令，一般只需要更新时执行一次
 @sv.on_fullmatch('迁移Cookies')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     im = await TransDB()
     await bot.send(ev,im)   
-        
+
+#群聊内 查询当前树脂状态以及派遣状态 的命令
 @sv.on_fullmatch('当前状态')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     try:
@@ -204,7 +253,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 
     await bot.send(ev,im, at_sender=True)   
     
-
+#群聊内 查询uid 的命令
 @sv.on_prefix('uid')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     image = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", str(ev.message))
@@ -239,14 +288,16 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev, im, at_sender=True)
         except:
             await bot.send(ev,'输入错误！')
-
+            
+#群聊内 绑定uid 的命令，会绑定至当前qq号上
 @sv.on_prefix('绑定uid')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
     uid = re.findall(r"\d+", message)[0]  # str
     await connectDB(ev.sender['user_id'],uid)
     await bot.send(ev,'绑定uid成功！', at_sender=True)
-
+    
+#群聊内 绑定米游社通行证 的命令，会绑定至当前qq号上，和绑定uid不冲突，两者可以同时绑定
 @sv.on_prefix('绑定mys')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
@@ -254,6 +305,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
     await connectDB(ev.sender['user_id'],None,mys)
     await bot.send(ev,'绑定米游社id成功！', at_sender=True)
 
+#群聊内 绑定过uid/mysid的情况下，可以查询，默认优先调用米游社通行证，多出世界等级一个参数
 @sv.on_prefix('查询')
 async def _(bot,  ev):
     image = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", str(ev.message))
@@ -303,7 +355,7 @@ async def _(bot,  ev):
     else:
         await bot.send(ev,'未找到绑定记录！')
 
-
+#群聊内 查询米游社通行证 的命令
 @sv.on_prefix('mys')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     image = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", str(ev.message))
@@ -339,6 +391,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
         except:
             await bot.send(ev,'输入错误！')
 
+#群聊内 查询uid 的命令（旧版），不输出武器信息
 @sv.on_prefix('UID')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     image = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", str(ev.message))
@@ -352,24 +405,28 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 
 
 
-
+#签到函数
 async def sign(uid):
-    sign_data = await MysSign(uid)
-    sign_info = await GetSignInfo(uid)
-    sign_info = sign_info['data']
-    sign_list = await GetSignList()
-    status = sign_data['message']
-    getitem = sign_list['data']['awards'][int(sign_info['total_sign_day'])-1]['name']
-    getnum = sign_list['data']['awards'][int(sign_info['total_sign_day'])-1]['cnt']
-    get_im = f"本次签到获得{getitem}x{getnum}"
-    if status == "OK" and sign_info['is_sign'] == True:
-        mes_im = "签到成功"
-    else:
-        mes_im = status
-    sign_missed = sign_info['sign_cnt_missed']
-    im = "\n" + mes_im +"!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
+    try:
+        sign_data = await MysSign(uid)
+        sign_info = await GetSignInfo(uid)
+        sign_info = sign_info['data']
+        sign_list = await GetSignList()
+        status = sign_data['message']
+        getitem = sign_list['data']['awards'][int(sign_info['total_sign_day'])-1]['name']
+        getnum = sign_list['data']['awards'][int(sign_info['total_sign_day'])-1]['cnt']
+        get_im = f"本次签到获得{getitem}x{getnum}"
+        if status == "OK" and sign_info['is_sign'] == True:
+            mes_im = "签到成功"
+        else:
+            mes_im = status
+        sign_missed = sign_info['sign_cnt_missed']
+        im = "\n" + mes_im +"!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
+    except:
+        im = "\n签到失败，请检查Cookies是否失效。"
     return im
 
+#统计状态函数
 async def daily(mode = "push",uid = None):
     temp_list = []
     conn = sqlite3.connect('ID_DATA.db')

@@ -378,6 +378,29 @@ async def MysSign(Uid,ServerID="cn_gf01"):
         return data2
     except:
         print("访问失败，请重试！")
+
+async def GetAward(Uid,ServerID="cn_gf01"):
+    if Uid[0] == '5':
+        ServerID = "cn_qd01"
+    try:
+        async with AsyncClient() as client:
+            req = await client.get(
+                url="https://hk4e-api.mihoyo.com/event/ys_ledger/monthInfo?month={}&bind_uid={}&bind_region={}&bbs_presentation_style=fullscreen&bbs_auth_required=true&utm_source=bbs&utm_medium=mys&utm_campaign=icon".format("0",Uid,ServerID),
+                headers={
+                    'x-rpc-app_version': mhyVersion,
+                    "Cookie": await OwnerCookies(Uid),
+                    'DS': oldDSGet(),
+                    "x-rpc-device_id":random_hex(32),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/'})
+            data = json.loads(req.text)
+        #f=open("/root/hoshino/HoshinoBot/hoshino/modules/GenshinUID/mys/chars/info.txt",'w') 
+        #f.write(str(data))
+        return data
+    except:
+        print("访问失败，请重试！")
+        #sys.exit(1)
         
 async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
     if Uid[0] == '5':

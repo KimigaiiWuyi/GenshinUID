@@ -395,8 +395,6 @@ async def GetAward(Uid,ServerID="cn_gf01"):
                     'x-rpc-client_type': '5',
                     'Referer': 'https://webstatic.mihoyo.com/'})
             data = json.loads(req.text)
-        #f=open("/root/hoshino/HoshinoBot/hoshino/modules/GenshinUID/mys/chars/info.txt",'w') 
-        #f.write(str(data))
         return data
     except:
         print("访问失败，请重试！")

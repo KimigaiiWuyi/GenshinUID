@@ -9,6 +9,9 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo
 
+from nonebot import *
+from nonebot.adapters.cqhttp import *
+
 import os
 import json
 import random
@@ -338,7 +341,7 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     #bg_img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = f"[CQ:image,file={imgmes}]"
+    resultmes = Message(f"[CQ:image,file={imgmes}]")
     return resultmes
 
 async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"):
@@ -529,7 +532,7 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     #bg_img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = f"[CQ:image,file={imgmes}]"
+    resultmes = Message(f"[CQ:image,file={imgmes}]")
     return resultmes
 
 async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
@@ -842,7 +845,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = f"[CQ:image,file={imgmes}]"
+    resultmes = Message(f"[CQ:image,file={imgmes}]")
     return resultmes
 
 def create_rounded_rectangle_mask(rectangle, radius):

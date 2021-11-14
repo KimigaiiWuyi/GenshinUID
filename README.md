@@ -10,13 +10,13 @@
 
 示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
 
-- [安装](#安装)
+- [安装（HoshinoBot）](#安装（HoshinoBot）)
 - [更新记录](#更新记录)
 - [指令](#指令)
 - [相关仓库](#相关仓库)
 - [其他](#其他)
 
-## 安装
+## 安装（HoshinoBot）
 
 ​	基于[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 的插件，请确保你知晓HoshinoBot的插件安装方法和go-cqhttp的使用方法。
 
@@ -45,6 +45,12 @@ $ pip3 install -r requirements.txt
 5、进入机器人在的群聊，即可正常使用本插件。
 
 ## 更新记录
+
+#### 2021-11-14
+
+新增：NoneBot2分支（前往NoneBot分支查看）
+
+新增：原神wiki功能（beta），特别感谢[minigg](https://www.minigg.cn/)提供的Api调用，使用方式查看[指令](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2#指令)。
 
 #### 2021-10-24
 
@@ -192,6 +198,9 @@ $ pip3 install -r requirements.txt
 | 开启自动签到           |                        | 开启每日米游社签到                     | 开启自动签到       | 群聊/私聊都可<br />**必须**绑定过CK和uid |
 | 关闭自动签到           |                        | 关闭每日米游社签到                     | 关闭自动签到       | 群聊/私聊都可<br />**必须**绑定过CK和uid |
 | 每月统计               |                        | 查询当前绑定账号的每月/每日的原石/莫拉 |                    | 仅限群聊，**必须**绑定Cookies和uid       |
+| 武器                   |                        | 查询武器信息                           | 武器天空之卷       |                                          |
+| 命座\d                 |                        | 查询角色命座信息                       | 命座6可莉          |                                          |
+| 角色                   |                        | 查询角色简略信息                       | 角色可莉           |                                          |
 
 ### 深渊查询：
 

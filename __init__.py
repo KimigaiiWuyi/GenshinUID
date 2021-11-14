@@ -1,5 +1,5 @@
 from .getImg import draw_pic,draw_abyss_pic,draw_abyss0_pic
-from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache,CheckDB,TransDB,OpenPush,GetMysInfo,GetDaily,GetSignList,MysSign,GetSignInfo,OpCookies,GetAward
+from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache,CheckDB,TransDB,OpenPush,GetMysInfo,GetDaily,GetSignList,MysSign,GetSignInfo,OpCookies,GetAward,GetWeaponInfo,GetCharInfo
 
 from nonebot import *
 from hoshino import Service,R,priv,util
@@ -48,6 +48,48 @@ month_im = '''
 {}========
 '''
 
+weapon_im = '''
+名称：{}
+类型：{}
+稀有度：{}
+介绍：{}
+攻击力：{}
+{}：{}
+{}
+'''
+
+char_info_im ='''
+{}
+稀有度：{}
+武器：{}
+元素：{}
+突破加成：{}
+生日：{}
+命之座：{}
+cv：{}
+介绍：{}
+'''
+
+@sv.on_prefix('武器')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    message = ev.message.extract_plain_text()
+    im = await weapon_wiki(message)
+    await bot.send(ev,im,at_sender=True)
+
+@sv.on_prefix('角色')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    message = ev.message.extract_plain_text()
+    im = await char_wiki(message)
+    await bot.send(ev,im,at_sender=True)
+
+@sv.on_prefix('命座')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    message = ev.message.extract_plain_text()
+    num = int(re.findall(r"\d+", message)[0])  # str
+    m = ''.join(re.findall('[\u4e00-\u9fa5]',message))
+    im = await char_wiki(m,2,num)
+    await bot.send(ev,im,at_sender=True)
+    
 #每日零点清空cookies使用缓存
 @sv.scheduled_job('cron', hour='0')
 async def delete():
@@ -472,3 +514,44 @@ async def daily(mode = "push",uid = None):
                 send_mes = "你的树脂快满了！" + send_mes
             temp_list.append({"qid":row[2],"gid":row[3],"message":send_mes})
             return temp_list
+
+async def weapon_wiki(name):
+    data = await GetWeaponInfo(name)
+    name = data['name']
+    type = data['weapontype']
+    star = data['rarity'] + "星"
+    info = data['description']
+    atk = str(data['baseatk'])
+    sub_name = data['substat']
+    sub_val = (data['subvalue'] + '%') if sub_name != '元素精通' else data['subvalue']
+    raw_effect = data['effect']
+    rw_ef = []
+    for i in range(len(data['r1'])):
+        now =  ''
+        for j in range(1,6):
+            now = now + data['r{}'.format(j)][i] + "/"
+        now = now[:-1]
+        rw_ef.append(now)
+    raw_effect = raw_effect.format(*rw_ef)
+    effect = data['effectname'] + "：" + raw_effect
+    im = weapon_im.format(name,type,star,info,atk,sub_name,sub_val,effect)
+    return im
+
+async def char_wiki(name,mode = 0,num = 0):
+    data = await GetCharInfo(name,mode)
+    if mode == 0:
+        name = data['title'] + ' — ' + data['name']
+        star = data['rarity']
+        type = data["weapontype"]
+        element = data['element']
+        up_val = data['substat']
+        bdday = data['birthday']
+        polar = data['constellation']
+        cv = data['cv']['chinese']
+        info = data['description']
+        im = char_info_im.format(name,star,type,element,up_val,bdday,polar,cv,info)
+    elif mode == 1:
+        im = '暂不支持'
+    elif mode == 2:
+        im = data["c{}".format(num)]['name'] + "：" + data["c{}".format(num)]['effect']
+    return im

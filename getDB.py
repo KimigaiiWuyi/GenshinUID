@@ -15,7 +15,9 @@ import base64
 mhyVersion = "2.11.1"
 
 FILE_PATH = os.path.abspath(os.path.join(os.getcwd(), "hoshino"))
-DATA_PATH = os.path.join(FILE_PATH,'config')
+BASE_PATH = os.path.dirname(__file__)
+BASE2_PATH = os.path.join(BASE_PATH,'mys')
+INDEX_PATH = os.path.join(BASE2_PATH,'index')
 
 async def OpenPush(uid,qid,status,mode):
     conn = sqlite3.connect('ID_DATA.db')
@@ -378,7 +380,27 @@ async def MysSign(Uid,ServerID="cn_gf01"):
         return data2
     except:
         print("访问失败，请重试！")
-        
+    
+async def GetAward(Uid,ServerID="cn_gf01"):
+    if Uid[0] == '5':
+        ServerID = "cn_qd01"
+    try:
+        async with AsyncClient() as client:
+            req = await client.get(
+                url="https://hk4e-api.mihoyo.com/event/ys_ledger/monthInfo?month={}&bind_uid={}&bind_region={}&bbs_presentation_style=fullscreen&bbs_auth_required=true&utm_source=bbs&utm_medium=mys&utm_campaign=icon".format("0",Uid,ServerID),
+                headers={
+                    'x-rpc-app_version': mhyVersion,
+                    "Cookie": await OwnerCookies(Uid),
+                    'DS': oldDSGet(),
+                    "x-rpc-device_id":random_hex(32),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/'})
+            data = json.loads(req.text)
+        return data
+    except:
+        print("访问失败，请重试！")
+
 async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
@@ -418,7 +440,7 @@ async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = N
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        print("1访问失败，请重试！")
 
 
 async def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
@@ -464,3 +486,48 @@ async def GetMysInfo(mysid,cookies = None):
     except:
         im = "err"
         return im
+        
+async def GetWeaponInfo(name):
+    with open(os.path.join(INDEX_PATH,'weapons.json'), 'r') as f:
+        weapon_index = json.loads(f.read())
+    weapon_data = weapon_index['names']
+    
+    try:
+        eg_name = weapon_data[name]
+    except:
+        return "读取失败。"
+        
+    async with AsyncClient() as client:
+        req = await client.get(
+            url="https://genshin.minigg.cn/?weapon=" + eg_name,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html'})
+        data = json.loads(req.text)
+    return data
+
+async def GetCharInfo(name,mode = 0):
+    str = ""
+    
+    with open(os.path.join(INDEX_PATH,'characters.json'), 'r') as f:
+        char_index = json.loads(f.read())
+    char_data = char_index['names']
+    
+    try:
+        eg_name = char_data[name]
+    except:
+        return "读取失败。"
+        
+    if mode == 1:
+        str = "&talents=1"
+    elif mode == 2:
+        str = "&constellations=1"
+        
+    async with AsyncClient() as client:
+        req = await client.get(
+            url="https://genshin.minigg.cn/?char=" + eg_name + str,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html'})
+        data = json.loads(req.text)
+    return data

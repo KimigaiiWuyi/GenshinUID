@@ -130,7 +130,7 @@ async def delete():
 #每日零点半进行米游社签到
 @daily_sign.scheduled_job('cron', hour='0',minute="30")
 async def dailysign():
-    bot = nonebot.get_bots()
+    (bot,) = nonebot.get_bots().values()
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE StatusB != ?",("off",))
@@ -145,7 +145,7 @@ async def dailysign():
 #每隔半小时检测树脂是否超过设定值
 @resin_notic.scheduled_job('interval', minutes=30)
 async def push():
-    bot = nonebot.get_bots()
+    (bot,) = nonebot.get_bots().values()
     daily_data = await daily()
     if daily_data != None:
         for i in daily_data:

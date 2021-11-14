@@ -338,6 +338,7 @@ async def GetSignList():
         return data
     except:
         print("访问失败，请重试！")
+        #sys.exit(1)
 
 async def GetSignInfo(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -356,6 +357,7 @@ async def GetSignInfo(Uid,ServerID="cn_gf01"):
         return data
     except:
         print("访问失败，请重试！")
+        #sys.exit(1)
         
 async def MysSign(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -380,6 +382,7 @@ async def MysSign(Uid,ServerID="cn_gf01"):
         return data2
     except:
         print("访问失败，请重试！")
+        #sys.exit(1)
     
 async def GetAward(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -400,6 +403,7 @@ async def GetAward(Uid,ServerID="cn_gf01"):
         return data
     except:
         print("访问失败，请重试！")
+        #sys.exit(1)
 
 async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
     if Uid[0] == '5':
@@ -419,6 +423,7 @@ async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
         return data
     except:
         print("访问失败，请重试！")
+        #sys.exit(1)
 
 async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = None):
     if Uid[0] == '5':
@@ -464,6 +469,7 @@ async def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
         return data2
     except:
         print("访问失败，请重试！")
+        #sys.exit(1)
 
 async def GetMysInfo(mysid,cookies = None):
     if cookies:

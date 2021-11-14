@@ -50,7 +50,7 @@ $ pip3 install -r requirements.txt
 
 新增：NoneBot2分支（前往NoneBot分支查看）
 
-新增：原神wiki功能（beta），特别感谢[minigg](https://www.minigg.cn/)提供的Api调用，使用方式查看[指令](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2#指令)。
+新增：原神wiki功能（beta），特别感谢[minigg](https://www.minigg.cn/)提供的Api调用，使用方式查看[指令](#指令)。
 
 #### 2021-10-24
 

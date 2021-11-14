@@ -4,26 +4,26 @@
 
 **一定要读更新记录和指令！！**
 
-注意：本插件不包含本体，您应该配合[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 使用，本插件的作用是利用米游社API查询指定原神UID信息（Cookies获取可前往[YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info)查看教程）
+注意：本插件不包含本体，您应该配合[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [NoneBot2](https://github.com/nonebot/nonebot2) 使用，本插件的作用是利用米游社API查询指定原神UID信息（Cookies获取可前往[YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info)查看教程）
 
 再次提醒：**Cookies是重要信息，请不要随意泄露！！！**
 
 示例：	![1](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/1.PNG)
 
-- [安装](#安装)
+- [安装（NoneBot2）](#安装（NoneBot2）)
 - [更新记录](#更新记录)
 - [指令](#指令)
 - [相关仓库](#相关仓库)
 - [其他](#其他)
 
-## 安装
+## 安装（NoneBot2）
 
-​	基于[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot) 的插件，请确保你知晓HoshinoBot的插件安装方法和go-cqhttp的使用方法。
+​	基于[Mrs4s](https://github.com/Mrs4s) / [go-cqhttp](https://github.com/Mrs4s/go-cqhttp) 和 [NoneBot2](https://github.com/nonebot/nonebot2) 的插件，请确保你知晓NoneBot2的插件安装方法和go-cqhttp的使用方法。
 
-1、在hoshino/modules目录下执行
+1、在插件目录文件夹下执行
 
 ```sh
-$ git clone https://github.com/KimigaiiWuyi/GenshinUID.git
+$ git clone -b nonebot2 https://github.com/KimigaiiWuyi/GenshinUID.git
 ```
 
 2、进入GenshinUID文件夹内，安装依赖库
@@ -32,9 +32,9 @@ $ git clone https://github.com/KimigaiiWuyi/GenshinUID.git
 $ pip3 install -r requirements.txt
 ```
 
-3、在hoshino/config的`__bot__.py`文件中，添加GenshinUID
+3、在Nonebot2的`Bot.py`文件中，添加GenshinUID的插件目录加载代码。
 
-4、启动HoshinoBot后，私聊机器人，发送
+4、启动NoneBot2后，私聊机器人，发送
 
 ```sh
 添加 cookies
@@ -45,6 +45,12 @@ $ pip3 install -r requirements.txt
 5、进入机器人在的群聊，即可正常使用本插件。
 
 ## 更新记录
+
+#### 2021-11-14
+
+新增：NoneBot2分支
+
+新增：原神wiki功能（beta），特别感谢[minigg](https://www.minigg.cn/)提供的Api调用，使用方式查看[指令](#指令)。
 
 #### 2021-10-24
 
@@ -191,7 +197,10 @@ $ pip3 install -r requirements.txt
 | 签到                   |                        | 米游社签到                             | 签到               | **必须**绑定过CK和uid                    |
 | 开启自动签到           |                        | 开启每日米游社签到                     | 开启自动签到       | 群聊/私聊都可<br />**必须**绑定过CK和uid |
 | 关闭自动签到           |                        | 关闭每日米游社签到                     | 关闭自动签到       | 群聊/私聊都可<br />**必须**绑定过CK和uid |
-| 每月统计               |                        | 查询当前绑定账号的每月/每日的原石/莫拉 |                    | 仅限群聊，**必须**绑定Cookies和uid       |
+| 每月统计               |                        | 查询当前绑定账号的每月/每日的原石/莫拉 | 每月统计           | 仅限群聊，**必须**绑定Cookies和uid       |
+| 武器                   |                        | 查询武器信息                           | 武器天空之卷       |                                          |
+| 命座\d                 |                        | 查询角色命座信息                       | 命座6可莉          |                                          |
+| 角色                   |                        | 查询角色简略信息                       | 角色可莉           |                                          |
 
 ### 深渊查询：
 

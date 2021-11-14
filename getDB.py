@@ -494,7 +494,7 @@ async def GetMysInfo(mysid,cookies = None):
         return im
         
 async def GetWeaponInfo(name):
-    with open(os.path.join(INDEX_PATH,'weapons.json'), 'r') as f:
+    with open(os.path.join(INDEX_PATH,'weapons.json'), 'r', encoding='utf-8') as f:
         weapon_index = json.loads(f.read())
     weapon_data = weapon_index['names']
     
@@ -515,7 +515,7 @@ async def GetWeaponInfo(name):
 async def GetCharInfo(name,mode = 0):
     str = ""
     
-    with open(os.path.join(INDEX_PATH,'characters.json'), 'r') as f:
+    with open(os.path.join(INDEX_PATH,'characters.json'), 'r', encoding='utf-8') as f:
         char_index = json.loads(f.read())
     char_data = char_index['names']
     

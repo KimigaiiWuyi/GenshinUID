@@ -49,17 +49,63 @@ FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')
 Texture_PATH = os.path.join(FILE2_PATH,'texture2d')
 
+avatar_json = {
+    "Albedo": "阿贝多",
+    "Ambor": "安柏",
+    "Barbara": "芭芭拉",
+    "Beidou": "北斗",
+    "Bennett": "班尼特",
+    "Chongyun": "重云",
+    "Diluc": "迪卢克",
+    "Diona": "迪奥娜",
+    "Eula": "优菈",
+    "Fischl": "菲谢尔",
+    "Ganyu": "甘雨",
+    "Hutao": "胡桃",
+    "Jean": "琴",
+    "Kazuha": "枫原万叶",
+    "Kaeya": "凯亚",
+    "Ayaka": "神里绫华",
+    "Keqing": "刻晴",
+    "Klee": "可莉",
+    "Lisa": "丽莎",
+    "Mona": "莫娜",
+    "Ningguang": "凝光",
+    "Noelle": "诺艾尔",
+    "Qiqi": "七七",
+    "Razor": "雷泽",
+    "Rosaria": "罗莎莉亚",
+    "Sucrose": "砂糖",
+    "Tartaglia": "达达利亚",
+    "Venti": "温迪",
+    "Xiangling": "香菱",
+    "Xiao": "魈",
+    "Xingqiu": "行秋",
+    "Xinyan": "辛焱",
+    "Yanfei": "烟绯",
+    "Zhongli": "钟离",
+    "Yoimiya": "宵宫",
+    "Sayu": "早柚",
+    "Shogun": "雷电将军",
+    "Aloy": "埃洛伊",
+    "Sara": "九条裟罗",
+    "Kokomi": "珊瑚宫心海"
+}
+
 daily_im = '''
+*数据刷新可能存在一定延迟，请以当前游戏实际数据为准{}
 ==============
-（还剩{}补充满）
-==============
-原粹树脂：{}/160
-每日委托：{}/4
-探索派遣：{}/{}
-========
+原粹树脂：{}/{}{}
+每日委托：{}/{} 奖励{}领取
+周本减半：{}/{}
+探索派遣：
+总数/完成/上限：{}/{}/{}
 {}'''
 
 month_im = '''
+==============
+{}
+UID：{}
 ==============
 本日获取原石：{}
 本日获取摩拉：{}
@@ -73,8 +119,8 @@ month_im = '''
 上月获取原石：{}
 上月获取摩拉：{}
 ==============
-{}========
-'''
+原石收入组成：
+{}=============='''
 
 weapon_im = '''【名称】：{}
 【类型】：{}
@@ -240,12 +286,12 @@ async def _(bot: Bot, event: Event):
         lastmonth_mora = data['data']['month_data']['last_mora']
         group_str = ''
         for i in data['data']['month_data']['group_by']:
-            group_str = group_str + i['action'] + ":" + str(i['num']) + "| " + "百分比：" + str(i['percent']) + "%" + '\n'
+            group_str = group_str + i['action'] + "：" + str(i['num']) + "（" + str(i['percent']) + "%）" + '\n'
 
-        im = month_im.format(day_stone,day_mora,lastday_stone,lastday_mora,month_stone,month_mora,lastmonth_stone,lastmonth_mora,group_str)
+        im = month_im.format(nickname,uid,day_stone,day_mora,lastday_stone,lastday_mora,month_stone,month_mora,lastmonth_stone,lastmonth_mora,group_str)
         await month_data.send(im,at_sender=True)
     except:
-        pass
+        await month_data.send('未找到绑定信息',at_sender=True)
         
 #群聊内 签到 功能
 @get_sign.handle()
@@ -335,7 +381,7 @@ async def _(bot: Bot, event: Event):
     at = re.search(r"\[CQ:at,qq=(\d*)\]", message)
     if at:
         qid = at.group(1)
-        mi =await bot.get_group_member_info(group_id=event.sender.group_id, user_id=qid)
+        mi =await bot.call_api('get_group_member_info',**{'group_id':event.group_id, 'user_id':qid})
         nickname = mi["nickname"]
         uid = await selectDB(qid)
     else:
@@ -354,7 +400,7 @@ async def _(bot: Bot, event: Event):
                     im = await draw_abyss0_pic(uid[0],nickname,image,uid[1])
                     await search.send(im, at_sender=True)
             except:
-                await search.send(ev,'输入错误！')
+                await search.send('输入错误！')
         elif m == "上期深渊":
             try:
                 if len(re.findall(r"\d+", message)) == 1:
@@ -443,57 +489,84 @@ async def sign(uid):
         else:
             mes_im = status
         sign_missed = sign_info['sign_cnt_missed']
-        im = "\n" + mes_im +"!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
+        im = mes_im +"!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
     except:
-        im = "\n签到失败，请检查Cookies是否失效。"
+        im = "签到失败，请检查Cookies是否失效。"
     return im
 
 #统计状态函数
 async def daily(mode = "push",uid = None):
+
+    def seconds2hours(seconds: int) -> str:
+        m, s = divmod(int(seconds), 60)
+        h, m = divmod(m, 60)
+        return "%02d:%02d:%02d" % (h, m, s)
+
     temp_list = []
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     if mode == "push":
-        cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE StatusA != ?",("off",))
+        cursor = c.execute(
+            "SELECT *  FROM NewCookiesTable WHERE StatusA != ?", ("off",))
         c_data = cursor.fetchall()
     elif mode == "ask":
-        c_data = ([uid,0,0,0,0,0,0],)
+        c_data = ([uid, 0, 0, 0, 0, 0, 0],)
 
     for row in c_data:
         raw_data = await GetDaily(str(row[0]))
         dailydata = raw_data["data"]
+        current_resin = dailydata['current_resin']
 
-        resin_num = dailydata["current_resin"]
-        task_num = dailydata["finished_task_num"]
-        travel_num = dailydata["current_expedition_num"]
-        max_travel_num = dailydata["max_expedition_num"]
-        travel_data = dailydata["expeditions"]
+        if current_resin >= row[6]:
+            tip = ''
 
-        if resin_num >= row[6] :
-
-            re_time = dailydata["resin_recovery_time"]
-            m, s = divmod(int(re_time), 60)
-            h, m = divmod(m, 60)
-            time = "%02d小时%02d分钟%02d秒" % (h, m, s)
-
-            travel_str = ''
-
-            for i in travel_data:
-                name = i["avatar_side_icon"].split('/')[-1].split('.')[0].split('_')[-1]
-                statu = i['status']
-                if statu == "Finished":
-                    travel_str = travel_str + f"{name} : 完成\n"
-                else:
-                    remain_time = i['remained_time']
-                    m1, s1 = divmod(int(remain_time), 60)
-                    h1, m1 = divmod(m1, 60)
-                    remain_time_str = "还剩%02d小时%02d分钟%02d秒" % (h1, m1, s1)
-                    travel_str = travel_str + f"{name} : {remain_time_str}\n"
-            send_mes = daily_im.format(time,resin_num,task_num,travel_num,max_travel_num,travel_str)
             if row[1] != 0:
-                send_mes = "你的树脂快满了！" + send_mes
-            temp_list.append({"qid":row[2],"gid":row[3],"message":send_mes})
-            return temp_list
+                tip = "\n==============\n你的树脂快满了！"
+            max_resin = dailydata['max_resin']
+            rec_time = ''
+            # print(dailydata)
+            if current_resin < 160:
+                resin_recovery_time = seconds2hours(
+                    dailydata['resin_recovery_time'])
+                next_resin_rec_time = seconds2hours(
+                    8 * 60 - ((dailydata['max_resin'] - dailydata['current_resin']) * 8 * 60 - int(dailydata['resin_recovery_time'])))
+                rec_time = f' ({next_resin_rec_time}/{resin_recovery_time})'
+
+            finished_task_num = dailydata['finished_task_num']
+            total_task_num = dailydata['total_task_num']
+            is_extra_got = '已' if dailydata['is_extra_task_reward_received'] else '未'
+
+            resin_discount_num_limit = dailydata['resin_discount_num_limit']
+            used_resin_discount_num = resin_discount_num_limit - \
+                dailydata['remain_resin_discount_num']
+
+            current_expedition_num = dailydata['current_expedition_num']
+            max_expedition_num = dailydata['max_expedition_num']
+            finished_expedition_num = 0
+            expedition_info: list[str] = []
+            for expedition in dailydata['expeditions']:
+                avatar: str = expedition['avatar_side_icon'][89:-4]
+                try:
+                    avatar_name: str = avatar_json[avatar]
+                except KeyError:
+                    avatar_name: str = avatar
+
+                if expedition['status'] == 'Finished':
+                    expedition_info.append(f"{avatar_name} 探索完成")
+                    finished_expedition_num += 1
+                else:
+                    remained_timed: str = seconds2hours(
+                        expedition['remained_time'])
+                    expedition_info.append(
+                        f"{avatar_name} 剩余时间{remained_timed}")
+            expedition_data = "\n".join(expedition_info)
+
+            send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num, is_extra_got, used_resin_discount_num,
+                                       resin_discount_num_limit, current_expedition_num, finished_expedition_num, max_expedition_num, expedition_data)
+
+            temp_list.append(
+                {"qid": row[2], "gid": row[3], "message": send_mes})
+    return temp_list
 
 async def weapon_wiki(name):
     data = await GetWeaponInfo(name)

@@ -491,18 +491,9 @@ async def GetMysInfo(mysid,cookies = None):
         return im
         
 async def GetWeaponInfo(name):
-    with open(os.path.join(INDEX_PATH,'weapons.json'), 'r') as f:
-        weapon_index = json.loads(f.read())
-    weapon_data = weapon_index['names']
-    
-    try:
-        eg_name = weapon_data[name]
-    except:
-        return "读取失败。"
-        
     async with AsyncClient() as client:
         req = await client.get(
-            url="https://genshin.minigg.cn/?weapon=" + eg_name,
+            url="https://genshin.minigg.cn/?weapon=" + name,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
@@ -511,16 +502,6 @@ async def GetWeaponInfo(name):
 
 async def GetCharInfo(name,mode = 0):
     str = ""
-    
-    with open(os.path.join(INDEX_PATH,'characters.json'), 'r') as f:
-        char_index = json.loads(f.read())
-    char_data = char_index['names']
-    
-    try:
-        eg_name = char_data[name]
-    except:
-        return "读取失败。"
-        
     if mode == 1:
         str = "&talents=1"
     elif mode == 2:
@@ -528,7 +509,7 @@ async def GetCharInfo(name,mode = 0):
         
     async with AsyncClient() as client:
         req = await client.get(
-            url="https://genshin.minigg.cn/?char=" + eg_name + str,
+            url="https://genshin.minigg.cn/?char=" + name + str,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})

@@ -46,6 +46,16 @@ $ pip3 install -r requirements.txt
 
 ## 更新记录
 
+#### 2021-11-18
+
+修复：最新的深渊查询返回数据
+
+修复：wiki百科接口
+
+调整：默认背景图
+
+（作者已经转用NoneBot2，Hoshino的更新可能未经测试，有bug及时提Issues！）
+
 #### 2021-11-14
 
 新增：NoneBot2分支（前往NoneBot分支查看）

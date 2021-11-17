@@ -114,7 +114,7 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
     levels_num = len(floors_data['levels'])
 
     based_w = 900
-    based_h = 880+levels_num*315
+    based_h = 660+levels_num*315
     based_scale = '%.3f' % (based_w/based_h)
 
     if is_edit == True:
@@ -134,16 +134,16 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
 
     bg_img = bg_img2.crop((0, 0, based_w, based_h))
 
-    x1, y1 = 45, 271
-    radius = 10
-    cropped_img1 = bg_img.crop((x1, y1, 857, 831))
+    x1, y1 = 65, 276
+    radius = 15
+    cropped_img1 = bg_img.crop((x1, y1, 836, 607))
     blurred_img1 = cropped_img1.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
     bg_img.paste(blurred_img1, (x1, y1), create_rounded_rectangle_mask(cropped_img1,radius))
 
     for i in range(0,len(floors_data['levels'])):
-        x2, y2 = 45, 850 + 315*i 
-        radius = 10
-        cropped_img2 = bg_img.crop((x2, y2, 855, 1145+315*i))
+        x2, y2 = 65, 630 + 315*i 
+        radius = 15
+        cropped_img2 = bg_img.crop((x2, y2, 836, 925+315*i))
         blurred_img2 = cropped_img2.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
         bg_img.paste(blurred_img2, (x2, y2), create_rounded_rectangle_mask(cropped_img2,radius))
 
@@ -166,7 +166,7 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                     char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                 else:
                     char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-        char_crop = (70 + 123*i,331)
+        char_crop = (82 + 130*i,300)
         abyss0.paste(char_img,char_crop,char_img)
     
     for i in range(0,1):
@@ -183,10 +183,10 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                     char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                 else:
                     char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-        char_crop = (592,331)
+        char_crop = (685,470)
         abyss0.paste(char_img,char_crop,char_img)
 
-    for i in range(0,3):
+    for i in range(0,1):
         if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")):
             get_chardone_pic(raw_data["defeat_rank"][i]["avatar_id"],raw_data["defeat_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
         char = os.path.join(CHAR_DONE_PATH,str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")
@@ -200,10 +200,10 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                     char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                 else:
                     char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-        char_crop = (70 + 123*i,503)
+        char_crop = (82 + 123*i,470)
         abyss0.paste(char_img,char_crop,char_img)
 
-    for i in range(0,3):
+    for i in range(0,1):
         if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")):
             get_chardone_pic(raw_data["take_damage_rank"][i]["avatar_id"],raw_data["take_damage_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
         char = os.path.join(CHAR_DONE_PATH,str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")
@@ -217,10 +217,10 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                     char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                 else:
                     char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-        char_crop = (466 + 123*i,503)
+        char_crop = (232 + 123*i,470)
         abyss0.paste(char_img,char_crop,char_img)
 
-    for i in range(0,3):
+    for i in range(0,1):
         if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")):
             get_chardone_pic(raw_data["normal_skill_rank"][i]["avatar_id"],raw_data["normal_skill_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
         char = os.path.join(CHAR_DONE_PATH,str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")
@@ -234,10 +234,10 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                     char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                 else:
                     char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-        char_crop = (70 + 123*i,676)
+        char_crop = (382 + 123*i,470)
         abyss0.paste(char_img,char_crop,char_img)
 
-    for i in range(0,3):
+    for i in range(0,1):
         if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")):
             get_chardone_pic(raw_data["energy_skill_rank"][i]["avatar_id"],raw_data["energy_skill_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
         char = os.path.join(CHAR_DONE_PATH,str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")
@@ -251,7 +251,7 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                     char_draw.text((93,41.5),"♥",(21,21,21),ys_font(15))
                 else:
                     char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),ys_font(18))
-        char_crop = (466 + 123*i,676)
+        char_crop = (532 + 123*i,470)
         abyss0.paste(char_img,char_crop,char_img)
 
     bg_img.paste(abyss0,(0,0),abyss0)
@@ -320,18 +320,18 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
         otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
         otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
         abyss2_text_draw.text((167,33), f"{otherStyleTime1}/{otherStyleTime2}", (40,40,40), ys_font(19))
-        bg_img.paste(abyss2,(0,830+j*315),abyss2)
+        bg_img.paste(abyss2,(0,605+j*315),abyss2)
     
-    bg_img.paste(abyss3,(0,len(floors_data["levels"])*315+840),abyss3)
+    bg_img.paste(abyss3,(0,len(floors_data["levels"])*315+610),abyss3)
  
     text_draw = ImageDraw.Draw(bg_img)
 
-    text_draw.text((250, 85), f"{nickname}", (217,217,217), ys_font(32))
-    text_draw.text((260, 125), 'UID ' + f"{uid}", (217,217,217), ys_font(14))
+    text_draw.text((250, 115), f"{nickname}", (217,217,217), ys_font(32))
+    text_draw.text((260, 155), 'UID ' + f"{uid}", (217,217,217), ys_font(14))
 
-    text_draw.text((690, 52),raw_data['max_floor'], (65, 65, 65), ys_font(26))
-    text_draw.text((690, 97),str(raw_data['total_battle_times']), (65, 65, 65), ys_font(26))
-    text_draw.text((690, 142),str(raw_data['total_star']), (65, 65, 65), ys_font(26))
+    text_draw.text((690, 82),raw_data['max_floor'], (65, 65, 65), ys_font(26))
+    text_draw.text((690, 127),str(raw_data['total_battle_times']), (65, 65, 65), ys_font(26))
+    text_draw.text((690, 172),str(raw_data['total_star']), (65, 65, 65), ys_font(26))
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()
@@ -433,9 +433,9 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"
     bg_img = bg_img2.crop((0, 0, based_w, based_h))
 
     for i in range(0,len(based_data['levels'])):
-        x, y = 45, 220 + 340*i 
+        x, y = 65, 220 + 340*i 
         radius = 10
-        cropped_img = bg_img.crop((x, y, 855, 517+340*i))
+        cropped_img = bg_img.crop((x, y, 836, 517+340*i))
         blurred_img = cropped_img.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
         bg_img.paste(blurred_img, (x, y), create_rounded_rectangle_mask(cropped_img,radius))
 

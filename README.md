@@ -32,9 +32,17 @@ $ git clone -b nonebot2 https://github.com/KimigaiiWuyi/GenshinUID.git
 $ pip3 install -r requirements.txt
 ```
 
-3、在Nonebot2的`Bot.py`文件中，添加GenshinUID的插件目录加载代码。
+3、如果没有安装Nonebot2的内置插件，请手动安装定时任务插件
 
-4、启动NoneBot2后，私聊机器人，发送
+```sh
+nb plugin install nonebot_plugin_apscheduler
+# 或者
+pip install nonebot-plugin-apscheduler
+```
+
+4、在Nonebot2的`Bot.py`文件中，添加GenshinUID的插件目录加载代码。
+
+5、启动NoneBot2后，私聊机器人，发送
 
 ```sh
 添加 cookies

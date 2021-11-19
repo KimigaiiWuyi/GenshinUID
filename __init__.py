@@ -1,16 +1,19 @@
+import asyncio
 import os
 import re
 import sqlite3
 import threading
 import time
+
 import nonebot
 from nonebot import *
 from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import *
 from nonebot.adapters.cqhttp import Message, MessageSegment, permission, utils
 
-from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo, GetSignInfo,
-                    GetSignList, GetWeaponInfo, MysSign, OpenPush, connectDB, cookiesDB, deletecache, selectDB)
+from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
+                    GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
+                    connectDB, cookiesDB, deletecache, selectDB)
 from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_pic
 
 config = nonebot.get_driver().config
@@ -198,11 +201,11 @@ def dailysign():
 
             im = sign(str(row[0]))
             if row[4] == "on":
-                bot.call_api(api='send_private_msg', **
-                             {'user_id': row[2], 'message': im})
+                asyncio.run(bot.call_api(api='send_private_msg',
+                            **{'user_id': row[2], 'message': im}))
             else:
-                bot.call_api(
-                    api='send_group_msg', **{'group_id': row[4], 'message': f"[CQ:at,qq={row[2]}]" + "\n" + im})
+                asyncio.run(bot.call_api(api='send_group_msg',
+                                         **{'group_id': row[4], 'message': f"[CQ:at,qq={row[2]}]" + "\n" + im}))
 
             if count == 10:
                 count = 0

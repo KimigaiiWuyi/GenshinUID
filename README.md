@@ -46,6 +46,18 @@ $ pip3 install -r requirements.txt
 
 ## 更新记录
 
+#### 2021-11-21
+
+修复：`查询深渊 @xxx`失效的问题。
+
+修复：自动签到指令间隔[#26](https://github.com/KimigaiiWuyi/GenshinUID/pull/26) - 特别感谢[@lgc233](https://github.com/lgc2333)
+
+新增：`查询词云`功能
+
+优化：`命座\dxx`
+
+修改：默认背景图
+
 #### 2021-11-18
 
 修复：最新的深渊查询返回数据
@@ -209,6 +221,7 @@ $ pip3 install -r requirements.txt
 | 武器                   |                        | 查询武器信息                           | 武器天空之卷       |                                          |
 | 命座\d                 |                        | 查询角色命座信息                       | 命座6可莉          |                                          |
 | 角色                   |                        | 查询角色简略信息                       | 角色可莉           |                                          |
+| 查询词云               |                        | 查询绑定角色的词云                     | 查询词云           | 必须绑定过UID/MYSID                      |
 
 ### 深渊查询：
 

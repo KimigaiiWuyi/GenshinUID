@@ -15,7 +15,7 @@ from nonebot.rule import Rule
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
                     GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
                     connectDB, cookiesDB, deletecache, selectDB)
-from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_pic
+from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_pic, draw_wordcloud
 
 config = nonebot.get_driver().config
 priority = config.genshinuid_priority if config.genshinuid_priority else 2
@@ -170,6 +170,8 @@ async def _(bot: Bot, event: Event):
     message = message.replace(' ', "")
     num = int(re.findall(r"\d+", message)[0])  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    if num <= 0 or num > 6:
+        await get_weapon.finish("你家{}有{}命？".format(m, num))
     im = await char_wiki(m, 2, num)
     await get_weapon.send(im)
 
@@ -448,6 +450,7 @@ async def _(bot: Bot, event: Event):
         mi = await bot.call_api('get_group_member_info', **{'group_id': event.group_id, 'user_id': qid})
         nickname = mi["nickname"]
         uid = await selectDB(qid)
+        message = message.replace(at.group(0), '')
     else:
         nickname = event.sender.nickname
         uid = await selectDB(event.sender.user_id)
@@ -476,6 +479,12 @@ async def _(bot: Bot, event: Event):
                     await search.send(im, at_sender=True)
             except:
                 await search.send('深渊输入错误！')
+        elif m == "词云":
+            try:
+                im = await draw_wordcloud(uid[0], image, uid[1])
+                await search.send(im, at_sender=True)
+            except:
+                await search.send('遇到错误！')
         elif m == "":
             try:
                 bg = await draw_pic(uid[0], nickname, image, uid[1])

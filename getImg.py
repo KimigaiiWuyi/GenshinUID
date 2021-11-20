@@ -297,6 +297,7 @@ async def draw_wordcloud(uid,image = None,mode = 2):
 
     bg_img.paste(panle,(0,0),panle)
     bg_img.paste(image_produce,(0,0),image_produce)
+    bg_img = bg_img.convert('RGB')
 
     text_draw = ImageDraw.Draw(bg_img)
     text_draw.text((450, 105), 'UID ' + f"{uid}", (40,136,168), ys_font(26), anchor="mm")

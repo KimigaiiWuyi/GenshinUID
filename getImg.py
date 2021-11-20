@@ -5,6 +5,7 @@ from io import BytesIO
 import urllib
 import math
 from wordcloud import WordCloud
+import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 

@@ -46,6 +46,16 @@ $ pip3 install -r requirements.txt
 
 ## 更新记录
 
+**（作者已经转用NoneBot2，Hoshino的更新可能未经测试，有bug及时提Issues！）**
+
+#### 2021-11-21
+
+新增：`查询词云`功能
+
+优化：`命座\dxx`
+
+修改：默认背景图
+
 #### 2021-11-18
 
 修复：最新的深渊查询返回数据
@@ -53,8 +63,6 @@ $ pip3 install -r requirements.txt
 修复：wiki百科接口
 
 调整：默认背景图
-
-（作者已经转用NoneBot2，Hoshino的更新可能未经测试，有bug及时提Issues！）
 
 #### 2021-11-14
 
@@ -211,6 +219,7 @@ $ pip3 install -r requirements.txt
 | 武器                   |                        | 查询武器信息                           | 武器天空之卷       |                                          |
 | 命座\d                 |                        | 查询角色命座信息                       | 命座6可莉          |                                          |
 | 角色                   |                        | 查询角色简略信息                       | 角色可莉           |                                          |
+| 查询词云               |                        | 查询绑定角色的词云                     | 查询词云           | 必须绑定过UID/MYSID                      |
 
 ### 深渊查询：
 
@@ -223,6 +232,10 @@ $ pip3 install -r requirements.txt
 ### 签到：
 
 ![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/4.png)
+
+### 查询词云：
+
+![3](https://raw.githubusercontent.com/KimigaiiWuyi/GenshinUID/main/readme/5.png)
 
 ## 相关仓库
 

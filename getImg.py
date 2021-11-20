@@ -4,6 +4,7 @@ from io import BytesIO
 
 import urllib
 import math
+from wordcloud import WordCloud
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
@@ -56,6 +57,269 @@ def get_chardone_pic(id,url,star):
     
 def get_weapon_pic(url):
     urllib.request.urlretrieve(url, os.path.join(WEAPON_PATH, url.split('/')[-1]))
+
+async def draw_wordcloud(uid,image = None,mode = 2):
+    if mode == 3:
+        mys_data = await GetMysInfo(uid)
+        mysid_data = mys_data[1]
+        mys_data = mys_data[0]
+        for i in mys_data['data']['list']:
+            if i['data'][0]['name'] != '活跃天数':
+                mys_data['data']['list'].remove(i)
+        uid = mys_data['data']['list'][0]['game_role_id']
+        nickname = mys_data['data']['list'][0]['nickname']
+        role_level = mys_data['data']['list'][0]['level']
+        raw_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
+        raw_Abyss_data = await GetSpiralAbyssInfo(uid,"cn_gf01","1",mysid_data)
+    else:
+        raw_Abyss_data = await GetSpiralAbyssInfo(uid,"cn_gf01","1")
+        raw_data = await GetInfo(uid)
+    
+    if (raw_data["retcode"] != 0):
+        if (raw_data["retcode"] == 10001):
+            return ("Cookie错误/过期，请重置Cookie")
+        elif (raw_data["retcode"] == 10101):
+            return ("当前cookies已达到30人上限！")
+        elif (raw_data["retcode"] == 10102):
+            return ("当前查询id已经设置了隐私，无法查询！")
+        return (
+            "Api报错，返回内容为：\r\n"
+            + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+        )
+    else:
+        pass
+
+    raw_Abyss_data = raw_Abyss_data['data']
+    raw_data = raw_data['data']
+
+    char_data = raw_data["avatars"]
+    char_num = len(raw_data["avatars"])
+    if mode == 2:
+        char_ids = []
+        char_rawdata = []
+        
+        for i in char_data:
+            char_ids.append(i["id"])
+
+        char_rawdata = await GetCharacter(uid,char_ids)
+        char_datas = char_rawdata["data"]["avatars"]
+        
+        weapons_datas = []
+        for i in char_datas:
+            weapons_datas.append(i['weapon'])
+    elif mode == 3:
+        char_ids = []
+        char_rawdata = []
+        
+        for i in char_data:
+            char_ids.append(i["id"])
+
+        char_rawdata = await GetCharacter(uid,char_ids,"cn_gf01",mysid_data)
+        char_datas = char_rawdata["data"]["avatars"]
+
+        weapons_datas = []
+        for i in char_datas:
+            weapons_datas.append(i['weapon'])
+    
+    l1_size = 2
+    l2_size = 4
+    l3_size = 6
+    l4_size = 7
+    l5_size = 10
+
+    word_str = {}
+
+    star4weapon = 0
+    star5weapon = 0
+    star5weaponcon = 0
+    star3weapon = 0
+    for i in weapons_datas:
+        if i['rarity'] == 5:
+            star5weapon += 1
+            star5weaponcon += i['affix_level']
+        elif i['rarity'] == 4:
+            star4weapon += 1
+        elif i['rarity'] == 3:
+            star4weapon += 1
+
+    g3d1 = 0
+    ly3c = 0
+    star5num = 0
+    star5numcon = 0
+
+    for i in raw_data['avatars']:
+        if i["name"] in ['雷电将军','温迪','钟离','枫原万叶']:
+            g3d1 += 1
+        if i["name"] in ['甘雨','魈','胡桃']:
+            ly3c += 1
+        if i['rarity'] == 5:
+            star5num += 1
+            if i['name'] != '旅行者':
+                star5numcon += 1 + i['actived_constellation_num']
+
+        if i["level"] >= 80:
+            if i['name'] == "迪卢克":
+                word_str["落魄了家人们"] = l3_size
+            if i['name'] == "刻晴":
+                word_str["斩尽牛杂"] = l3_size
+            if i['name'] == "旅行者":
+                word_str["旅行者真爱党"] = l3_size
+        
+        if i['actived_constellation_num'] == 6:
+            if i['rarity'] == 5:
+                if i['name'] == "旅行者":
+                    word_str["满命{}".format(i['name'])] = l1_size
+                if i['name'] == "魈":
+                    word_str['魈深氪的救赎'] = l5_size
+                if i['name'] == "甘雨":
+                    word_str['璃月自走归终机'] = l5_size
+                if i['name'] == "胡桃":
+                    word_str['一波送走全送走'] = l5_size
+                else:
+                    word_str["满命{}".format(i['name'])] = l5_size
+            else:
+                word_str["满命{}".format(i['name'])] = l2_size
+
+    game_time = time.mktime(time.strptime('20200915','%Y%m%d'))
+    now_time = time.time()
+    total_s = now_time - game_time
+    total_d = (((total_s)/60)/60)/24
+
+    if math.floor(total_d) - 5 <= raw_data['stats']['active_day_number']:
+        word_str["开服玩家"] = l4_size
+
+    if g3d1 >= 4:
+        word_str["三神一帝"] = l3_size
+    if ly3c >= 3:
+        word_str["璃月3C"] = l3_size
+    if star5num >= 16:
+        word_str["五星众多"] = l3_size
+    
+    if len(weapons_datas) - star4weapon <= 3:
+        word_str["武器基本四星"] = l3_size
+
+    if raw_data['stats']['achievement_number'] // (star5weaponcon + star5numcon) >= 23:
+        word_str["平民玩家"] = l2_size
+    elif raw_data['stats']['achievement_number'] // (star5weaponcon + star5numcon) <= 15:
+        word_str["氪金玩家"] = l3_size
+
+    if raw_data['stats']['anemoculus_number'] + raw_data['stats']['geoculus_number'] + raw_data['stats']['electroculus_number'] == 378:
+        word_str["全神瞳"] = l2_size
+    if raw_data['world_explorations'][3]['exploration_percentage']+raw_data['world_explorations'][2]['exploration_percentage']+raw_data['world_explorations'][1]['exploration_percentage']+raw_data['world_explorations'][0]['exploration_percentage'] >= 3950:
+        word_str["全探索"] = l4_size
+    if raw_data['stats']['achievement_number'] >= 510:
+        word_str["全成就"] = l5_size
+    elif raw_data['stats']['achievement_number'] >= 490:
+        word_str["成就达人"] = l3_size
+    if raw_data['stats']['spiral_abyss'] == '12-3':
+        word_str["深境的探究者"] = l2_size
+    if len(raw_data['avatars']) >= 42:
+        word_str["全角色"] = l3_size
+
+    if raw_data['stats']['active_day_number'] <= 40:
+        word_str["刚入坑"] = l1_size
+    elif raw_data['stats']['active_day_number'] <= 100:
+        word_str["初心者"] = l2_size
+    elif raw_data['stats']['active_day_number'] <= 300:
+        word_str["老玩家"] = l2_size
+
+    if raw_data['stats']['active_day_number'] >=365 and raw_data['stats']['magic_chest_number'] + raw_data['stats']['common_chest_number']+raw_data['stats']['exquisite_chest_number']+raw_data['stats']['precious_chest_number']+raw_data['stats']['luxurious_chest_number'] <=2500:
+        word_str["老咸鱼"] = l3_size
+    if raw_data['stats']['magic_chest_number'] >= 46:
+        word_str["迷失在黑夜里"] = l2_size
+    if raw_data['homes'][0]['comfort_num'] >= 25000:
+        word_str["团雀附体"] = l2_size
+
+    if raw_Abyss_data['total_battle_times'] <= 12 and raw_Abyss_data['max_floor'] == '12-3':
+        word_str["PVP资格证"] = l4_size
+    if raw_Abyss_data["damage_rank"][0]["value"] >= 150000:
+        word_str["这一击，贯穿星辰"] = l4_size
+
+    bg_list = random.choice([x for x in os.listdir(BG_PATH)
+               if os.path.isfile(os.path.join(BG_PATH, x))])
+
+    bg2_path = os.path.join(BG_PATH,bg_list)
+
+    based_w = 900
+    based_h = 1000
+    based_scale = '%.3f' % (based_w/based_h)
+
+    is_edit = False
+    if image:
+        image_file= image.group(1)
+        image_data = image.group(2)
+        urllib.request.urlretrieve(f'{image_data}', os.path.join(TEXT_PATH,nickname + '.png'))
+        is_edit = True
+
+    if is_edit == True:
+        bg_path_edit = os.path.join(TEXT_PATH,f"{nickname}.png")
+    else:
+        bg_path_edit = bg2_path
+        
+    edit_bg = Image.open(bg_path_edit)
+    w, h = edit_bg.size
+    scale_f = '%.3f' % (w / h)
+    new_w = math.ceil(based_h*float(scale_f))
+    new_h = math.ceil(based_w/float(scale_f))
+    if scale_f > based_scale:
+        bg_img2 = edit_bg.resize((new_w, based_h),Image.ANTIALIAS)
+    else:
+        bg_img2 = edit_bg.resize((based_w, new_h),Image.ANTIALIAS)
+
+    bg_img = bg_img2.crop((0, 0, based_w, based_h))
+
+    x, y = 50, 153 
+    radius = 50
+    cropped_img = bg_img.crop((x, y, x+800, y+800))
+    blurred_img = cropped_img.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
+    bg_img.paste(blurred_img, (x, y), create_rounded_rectangle_mask(cropped_img,radius))
+
+    panle = Image.open(os.path.join(TEXT_PATH,'wordcloud_0.png'))
+
+    mask = np.array(Image.open(os.path.join(TEXT_PATH,'wordcloudmask.png')))
+    
+    wc = WordCloud(
+        font_path = os.path.join(FILE2_PATH,"yuanshen.ttf"),
+        mask = mask,
+        background_color="rgba(255, 255, 255, 0)",
+        mode="RGBA",
+        max_words=200,
+        max_font_size=80
+        #color_func=multi_color_func
+        #color_func=similar_color_func
+    ).generate_from_frequencies(word_str, max_font_size=100)
+
+    image_produce = wc.to_image()
+
+    bg_img.paste(panle,(0,0),panle)
+    bg_img.paste(image_produce,(0,0),image_produce)
+
+    text_draw = ImageDraw.Draw(bg_img)
+    text_draw.text((450, 105), 'UID ' + f"{uid}", (40,136,168), ys_font(26), anchor="mm")
+
+    result_buffer = BytesIO()
+    bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+    imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
+    resultmes = f"[CQ:image,file={imgmes}]"
+    return resultmes
+
+def similar_color_func(word=None, font_size=None,
+                       position=None, orientation=None,
+                       font_path=None, random_state=None):
+    h = 40 # 0 - 360
+    s = 100 # 0 - 100
+    l = random_state.randint(30, 70) # 0 - 100
+    return "hsl({}, {}%, {}%)".format(h, s, l)
+
+def multi_color_func(word=None, font_size=None,
+                     position=None, orientation=None,
+                     font_path=None, random_state=None):
+    colors = [[4, 77, 82],
+              [25, 74, 85],
+              [82, 43, 84],
+              [158, 48, 79]]
+    rand = random_state.randint(0, len(colors) - 1)
+    return "hsl({}, {}%, {}%)".format(colors[rand][0], colors[rand][1], colors[rand][2])
 
 async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
     if mode == 3:

@@ -1,4 +1,4 @@
-from .getImg import draw_pic,draw_abyss_pic,draw_abyss0_pic
+from .getImg import draw_pic,draw_abyss_pic,draw_abyss0_pic,draw_wordcloud
 from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache,CheckDB,TransDB,OpenPush,GetMysInfo,GetDaily,GetSignList,MysSign,GetSignInfo,OpCookies,GetAward,GetWeaponInfo,GetCharInfo
 
 from nonebot import *
@@ -129,10 +129,13 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 @sv.on_prefix('命座')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
-    num = int(re.findall(r"\d+", message)[0])  # str
+    num = int(re.findall(r"\d+", message)[0])
     m = ''.join(re.findall('[\u4e00-\u9fa5]',message))
-    im = await char_wiki(m,2,num)
-    await bot.send(ev,im,at_sender=True)
+    if num<= 0 or num >6:
+        await bot.send(ev,"你家{}有{}命？".format(m,num),at_sender = True)
+    else:
+        im = await char_wiki(m,2,num)
+        await bot.send(ev,im,at_sender=True)
     
 #每日零点清空cookies使用缓存
 @sv.scheduled_job('cron', hour='0')
@@ -430,6 +433,12 @@ async def _(bot,  ev):
                     await bot.send(ev, im, at_sender=True)
             except:
                 await bot.send(ev,'深渊输入错误！') 
+        elif m == "词云":
+            try:
+                im = await draw_wordcloud(uid[0],image,uid[1])
+                await bot.send(ev,im, at_sender=True)
+            except:
+                await bot.send(ev,'遇到错误！') 
         elif m == "":
             try:
                 bg = await draw_pic(uid[0],nickname,image,uid[1])

@@ -16,6 +16,7 @@ from nonebot.adapters.cqhttp import *
 import os
 import json
 import random
+import numpy as np
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')

@@ -1,12 +1,14 @@
 from .getImg import draw_pic,draw_abyss_pic,draw_abyss0_pic,draw_wordcloud
-from .getDB import connectDB,selectDB,cookiesDB,cacheDB,deletecache,CheckDB,TransDB,OpenPush,GetMysInfo,GetDaily,GetSignList,MysSign,GetSignInfo,OpCookies,GetAward,GetWeaponInfo,GetCharInfo
-
+from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
+                    GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
+                    connectDB, cookiesDB, deletecache, selectDB)
 from nonebot import *
 from hoshino import Service,R,priv,util
 from hoshino.typing import MessageSegment,CQEvent, HoshinoBot
 
 import requests,random,os,json,re,time,datetime,string,base64
 
+import threading
 import hoshino
 import asyncio
 import hashlib
@@ -141,21 +143,45 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 @sv.scheduled_job('cron', hour='0')
 async def delete():
     deletecache()
-    
+
+@sv.on_fullmatch('全部重签')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    if ev.user_id not in bot.config.SUPERUSERS:
+        return
+    await bot.send(ev,"已开始执行")
+    dailysign()
+
 #每日零点半进行米游社签到
 @sv.scheduled_job('cron', hour='0',minute="30")
 async def dailysign():
-    conn = sqlite3.connect('ID_DATA.db')
-    c = conn.cursor()
-    cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE StatusB != ?",("off",))
-    c_data = cursor.fetchall()
-    for row in c_data:
-        im = await sign(str(row[0]))
-        if row[4] == "on":
-            await bot.send_private_msg(user_id = row[2],message = im)
-        else:
-            await bot.send_group_msg(group_id = row[4],message = f"[CQ:at,qq={row[2]}]" + "\n" + im)
-            
+    dailysign()
+
+def dailysign():
+    async def sign_thread():
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+        cursor = c.execute(
+            "SELECT *  FROM NewCookiesTable WHERE StatusB != ?", ("off",))
+        c_data = cursor.fetchall()
+
+        count = 0
+        for row in c_data:
+            count += 1
+
+            im = await sign(str(row[0]))
+            if row[4] == "on":
+                await bot.send_private_msg(user_id = row[2],message = im)
+            else:
+                await bot.send_group_msg(group_id = row[4],message = f"[CQ:at,qq={row[2]}]" + "\n" + im)
+
+            if count == 10:
+                count = 0
+                time.sleep(30)
+
+    t = threading.Thread(target=lambda: asyncio.run(sign_thread()))
+    t.setDaemon(True)
+    t.start()
+
 #每隔半小时检测树脂是否超过设定值
 @sv.scheduled_job('interval', minutes=30)
 async def push():

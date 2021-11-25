@@ -75,7 +75,7 @@ avatar_json = {
     "Lisa": "丽莎",
     "Mona": "莫娜",
     "Ningguang": "凝光",
-    "Noelle": "诺艾尔",
+    "Noel": "诺艾尔",
     "Qiqi": "七七",
     "Razor": "雷泽",
     "Rosaria": "罗莎莉亚",

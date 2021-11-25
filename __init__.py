@@ -208,7 +208,7 @@ async def dailysign():
                                 user_id=row[2], message=im)
         else:
             await bot.call_api(
-                api='send_group_msg', group_id=row[4], message=f"CQ:at,qq={row[2]}]\n{im}")
+                api='send_group_msg', group_id=row[4], message=f"[CQ:at,qq={row[2]}]\n{im}")
 
         if count == 10:
             count = 0

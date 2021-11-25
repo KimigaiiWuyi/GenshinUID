@@ -4,7 +4,9 @@ from io import BytesIO
 
 import urllib
 import math
+import threading
 from wordcloud import WordCloud
+import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
@@ -16,7 +18,6 @@ from nonebot.adapters.cqhttp import *
 import os
 import json
 import random
-import numpy as np
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')
@@ -843,26 +844,43 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     
     raw_data = raw_data['data']
     char_data = raw_data["avatars"]
-    char_num = len(raw_data["avatars"])
-    if mode == 2:
-        char_ids = []
-        char_rawdata = []
-        
-        for i in char_data:
-            char_ids.append(i["id"])
+    #char_num = len(raw_data["avatars"])
+    
+    char_datas = []
 
-        char_rawdata = await GetCharacter(uid,char_ids)
-        char_datas = char_rawdata["data"]["avatars"]
+    def get_charid(start,end):
+        if mode == 2:
+            for i in range(start,end):
+                char_rawdata = GetCharacter(uid,[i])
+            
+                if char_rawdata["retcode"] == -1:
+                    pass
+                else:
+                    char_datas.append(char_rawdata["data"]['avatars'][0])
 
-    elif mode == 3:
-        char_ids = []
-        char_rawdata = []
-        
-        for i in char_data:
-            char_ids.append(i["id"])
+        else:
+            for i in range(start,end):
+                char_rawdata = GetCharacter(uid,[i],"cn_gf01",mysid_data)
 
-        char_rawdata = await GetCharacter(uid,char_ids,"cn_gf01",mysid_data)
-        char_datas = char_rawdata["data"]["avatars"]
+                if char_rawdata["retcode"] == -1:
+                    pass
+                else:
+                    char_datas.append(char_rawdata["data"]['avatars'][0])
+
+    thread_list = []
+    st = 8
+    for i in range(0,8):
+        thread = threading.Thread(target = get_charid,args = (10000002+i*st,10000002+(i+1)*st))
+        thread_list.append(thread)
+
+    for t in thread_list:
+        t.setDaemon(True)
+        t.start()
+    
+    for t in thread_list:
+        t.join()
+
+    char_num = len(char_datas)
         
     char_hang = 1 + (char_num-1)//6
     char_lie = char_num%6

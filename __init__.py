@@ -212,7 +212,7 @@ async def dailysign():
 
         if count == 10:
             count = 0
-            await asyncio.sleep(60)  # 感觉这样效率好低，减了点延时
+            await asyncio.sleep(60)
 
 # 每隔半小时检测树脂是否超过设定值
 

@@ -147,7 +147,7 @@ def deletecache():
     conn.commit()
     conn.close()
 
-async def cacheDB(uid,mode = 1,mys = None):
+def cacheDB(uid,mode = 1,mys = None):
     use = ''
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
@@ -418,7 +418,7 @@ async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
                     'Referer': 'https://webstatic.mihoyo.com/',
-                    "Cookie": await cacheDB(Uid,1,mysid)})
+                    "Cookie": cacheDB(Uid,1,mysid)})
             data = json.loads(req.text)
         return data
     except:
@@ -435,7 +435,7 @@ async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = N
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&schedule_type=" + Schedule_type + "&server="+ ServerID),
                     'Origin': 'https://webstatic.mihoyo.com',
-                    'Cookie': await cacheDB(Uid,1,mysid),                
+                    'Cookie': cacheDB(Uid,1,mysid),                
                     'x-rpc-app_version': mhyVersion,
                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
@@ -448,7 +448,7 @@ async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = N
         print("1访问失败，请重试！")
 
 
-async def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
+def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
     try:
@@ -457,7 +457,7 @@ async def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
             headers={
                 'DS': DSGet('',{"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID}),
                 'Origin': 'https://webstatic.mihoyo.com',
-                'Cookie': await cacheDB(Uid,1,mysid),
+                'Cookie': cacheDB(Uid,1,mysid),
                 'x-rpc-app_version': mhyVersion,
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                 'x-rpc-client_type': '5',
@@ -475,7 +475,7 @@ async def GetMysInfo(mysid,cookies = None):
     if cookies:
         ck = cookies
     else:
-        ck = await cacheDB(mysid,2)
+        ck = cacheDB(mysid,2)
     try:
         async with AsyncClient() as client:
             req = await client.get(

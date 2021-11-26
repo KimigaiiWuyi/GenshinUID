@@ -187,37 +187,32 @@ async def delete():
 
 @daily_sign.scheduled_job('cron', hour='0', minute="30")
 async def _():
-    dailysign()
+    await dailysign()
 
 
-def dailysign():
-    async def sign_thread():
-        (bot,) = nonebot.get_bots().values()
-        conn = sqlite3.connect('ID_DATA.db')
-        c = conn.cursor()
-        cursor = c.execute(
-            "SELECT *  FROM NewCookiesTable WHERE StatusB != ?", ("off",))
-        c_data = cursor.fetchall()
+async def dailysign():
+    (bot,) = nonebot.get_bots().values()
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    cursor = c.execute(
+        "SELECT *  FROM NewCookiesTable WHERE StatusB != ?", ("off",))
+    c_data = cursor.fetchall()
 
-        count = 0
-        for row in c_data:
-            count += 1
+    count = 0
+    for row in c_data:
+        count += 1
 
-            im = await sign(str(row[0]))
-            if row[4] == "on":
-                await bot.call_api(api='send_private_msg',
-                                   user_id=row[2], message=im)
-            else:
-                await bot.call_api(
-                    api='send_group_msg', group_id=row[4], message=f"[CQ:at,qq={row[2]}]\n{im}")
+        im = await sign(str(row[0]))
+        if row[4] == "on":
+            await bot.call_api(api='send_private_msg',
+                                user_id=row[2], message=im)
+        else:
+            await bot.call_api(
+                api='send_group_msg', group_id=row[4], message=f"[CQ:at,qq={row[2]}]\n{im}")
 
-            if count == 10:
-                count = 0
-                time.sleep(30)  # 感觉这样效率好低，减了点延时
-
-    t = threading.Thread(target=lambda: asyncio.run(sign_thread()))
-    t.setDaemon(True)
-    t.start()
+        if count == 10:
+            count = 0
+            await asyncio.sleep(60)
 
 # 每隔半小时检测树脂是否超过设定值
 
@@ -708,5 +703,5 @@ all_recheck = on_command("全部重签", rule=Rule(
 
 @all_recheck.handle()
 async def _(bot: Bot, event: Event):
-    all_recheck.send("已开始执行")
-    dailysign()
+    await all_recheck.send("已开始执行")
+    await dailysign()

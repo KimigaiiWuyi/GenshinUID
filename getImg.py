@@ -5,6 +5,7 @@ from io import BytesIO
 import urllib
 import math
 import threading
+from pydantic.utils import import_string
 from wordcloud import WordCloud
 import numpy as np
 
@@ -27,6 +28,9 @@ CHAR_WEAPON_PATH = os.path.join(FILE2_PATH,'char_weapon')
 TEXT_PATH = os.path.join(FILE2_PATH,'texture2d')
 WEAPON_PATH = os.path.join(FILE2_PATH,'weapon')
 BG_PATH = os.path.join(FILE2_PATH,'bg')
+
+config = get_driver().config
+use_new_get_chars_method=config.genshinuid_use_new_get_chars_method
 
 def ys_font(size):
     return ImageFont.truetype(os.path.join(FILE2_PATH,"yuanshen.ttf"), size=size)
@@ -849,37 +853,59 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     
     char_datas = []
 
-    def get_charid(start,end):
-        if mode == 2:
-            for i in range(start,end):
-                char_rawdata = GetCharacter(uid,[i])
-            
-                if char_rawdata["retcode"] == -1:
-                    pass
-                else:
-                    char_datas.append(char_rawdata["data"]['avatars'][0])
+    if use_new_get_chars_method:
+        def get_charid(start,end):
+            if mode == 2:
+                for i in range(start,end):
+                    char_rawdata = GetCharacter(uid,[i])
+                
+                    if char_rawdata["retcode"] == -1:
+                        pass
+                    else:
+                        char_datas.append(char_rawdata["data"]['avatars'][0])
 
-        else:
-            for i in range(start,end):
-                char_rawdata = GetCharacter(uid,[i],"cn_gf01",mysid_data)
+            else:
+                for i in range(start,end):
+                    char_rawdata = GetCharacter(uid,[i],"cn_gf01",mysid_data)
 
-                if char_rawdata["retcode"] == -1:
-                    pass
-                else:
-                    char_datas.append(char_rawdata["data"]['avatars'][0])
+                    if char_rawdata["retcode"] == -1:
+                        pass
+                    else:
+                        char_datas.append(char_rawdata["data"]['avatars'][0])
 
-    thread_list = []
-    st = 8
-    for i in range(0,8):
-        thread = threading.Thread(target = get_charid,args = (10000002+i*st,10000002+(i+1)*st))
-        thread_list.append(thread)
+        thread_list = []
+        st = 8
+        for i in range(0,8):
+            thread = threading.Thread(target = get_charid,args = (10000002+i*st,10000002+(i+1)*st))
+            thread_list.append(thread)
 
-    for t in thread_list:
-        t.setDaemon(True)
-        t.start()
+        for t in thread_list:
+            t.setDaemon(True)
+            t.start()
+        
+        for t in thread_list:
+            t.join()
     
-    for t in thread_list:
-        t.join()
+    else:
+        if mode == 2:
+            char_ids = []
+            char_rawdata = []
+
+            for i in char_data:
+                char_ids.append(i["id"])
+
+            char_rawdata = GetCharacter(uid,char_ids)
+            char_datas = char_rawdata["data"]["avatars"]
+
+        elif mode == 3:
+            char_ids = []
+            char_rawdata = []
+
+            for i in char_data:
+                char_ids.append(i["id"])
+
+            char_rawdata = GetCharacter(uid,char_ids,"cn_gf01",mysid_data)
+            char_datas = char_rawdata["data"]["avatars"]
 
     char_num = len(char_datas)
         
@@ -1129,7 +1155,10 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = Message(f"[CQ:image,file={imgmes}]")
+    img_msg=f"[CQ:image,file={imgmes}]"
+    if not use_new_get_chars_method:
+        img_msg='*由于米游社接口限制，现仅能查询部分角色信息\n'+img_msg
+    resultmes = Message(img_msg)
     return resultmes
 
 def create_rounded_rectangle_mask(rectangle, radius):

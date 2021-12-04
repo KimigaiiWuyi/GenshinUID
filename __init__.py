@@ -243,7 +243,7 @@ async def _(bot: Bot, event: Event):
         mys_data = await GetMysInfo(mysid, cookie)
         mys_data = mys_data[0]
         for i in mys_data['data']['list']:
-            if i['data'][0]['name'] != '活跃天数':
+            if i['game_id'] != 2:
                 mys_data['data']['list'].remove(i)
         uid = mys_data['data']['list'][0]['game_role_id']
         await cookiesDB(uid, cookie, event.sender.user_id)

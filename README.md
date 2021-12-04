@@ -48,6 +48,18 @@ $ pip3 install -r requirements.txt
 
 **（作者已经转用NoneBot2，Hoshino的更新可能未经测试，有bug及时提Issues！）**
 
+#### 2021-12-04
+
+修复：`查询词云`功能失效的问题。
+
+修复：`查询`功能只能查到8个角色的问题（经测试应该BanIP概率极低，需要在配置文件中加入`genshinuid_use_new_get_chars_method=1`才可生效）。
+
+修复：`校验全部Cookies`命令错误的问题（**由于API返回字段变化的缘故，旧版本使用该命令会清空所有Ck，旧版本请不要使用该命令**），该问题同时导致`添加`命令不可用，均已修复。
+
+优化：查询时优先从数据库中调用主人的Cookies。
+
+优化：错误Cookies将在`NewCookiesTable`中的`Extra`标记为`error`(失效)或者`limit30`(今天达到30人限制)，其中`limit30`将在每日零点清空。
+
 #### 2021-11-21
 
 新增：`查询词云`功能

@@ -47,7 +47,9 @@ async def CheckDB():
             mysid_data = aid.group(0).split('=')
             mysid = mysid_data[1]
             mys_data = await GetMysInfo(mysid,row[1])
-            mys_data = mys_data[0]
+            for i in mys_data['data']['list']:
+                if i['game_id'] != 2:
+                    mys_data['data']['list'].remove(i)
             uid = mys_data['data']['list'][0]['game_role_id']
             str = str + f"uid{row[0]}/mysid{mysid}的Cookies是正常的！\n"
         except:
@@ -141,11 +143,24 @@ async def selectDB(userid,mode = "auto"):
             return [row[2],3]
             
 def deletecache():
+    try:
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+        c.execute("DROP TABLE CookiesCache")
+        c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Extra=?",(None,"limit30"))
+        copyfile("ID_DATA.db", "ID_DATA_bak.db")
+        conn.commit()
+        conn.close()
+    except:
+        print("\nerror\n")
+
+def errorDB(ck,err):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    c.execute("DROP TABLE CookiesCache")
-    conn.commit()
-    conn.close()
+    if err == "error":
+        c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?",("error",ck))
+    elif err == "limit30":
+        c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?",("limit30",ck))
 
 def cacheDB(uid,mode = 1,mys = None):
     use = ''
@@ -168,15 +183,36 @@ def cacheDB(uid,mode = 1,mys = None):
         c_data = cursor.fetchall()
         
     if len(c_data)==0:
-        cookiesrow = c.execute("SELECT * FROM NewCookiesTable ORDER BY RANDOM() limit 1")
-        for row2 in cookiesrow:
+        if mode == 2:
+            conn.create_function("REGEXP", 2, functionRegex)
+            cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE REGEXP(Cookies, ?) AND Extra != ?",(uid,"error"))
+            d_data = cursor.fetchall()
+ 
+        elif mode == 1:
+            cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE UID = ? AND Extra != ?",(uid,"error"))
+            d_data = cursor.fetchall()
+        
+        if len(d_data)!=0:
+            use = d_data[0][1]
             if mode == 1:
                 c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
-                        VALUES (?, ?)",(row2[1],uid))
-            if mode == 2:
+                        VALUES (?, ?)",(use,uid))
+            elif mode == 2:
                 c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
-                        VALUES (?, ?)",(row2[1],uid))
-            use = row2[1]
+                        VALUES (?, ?)",(use,uid))
+        else:
+            cookiesrow = c.execute("SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1")
+            e_data = cookiesrow.fetchall()
+            if len(e_data) != 0:
+                if mode == 1:
+                    c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
+                            VALUES (?, ?)",(e_data[0][1],uid))
+                elif mode == 2:
+                    c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
+                            VALUES (?, ?)",(e_data[0][1],uid))
+                use = e_data[0][1]
+            else:
+                return "没有可以使用的Cookies！"
     else:
         use = c_data[0][2]
         if mys:
@@ -188,6 +224,10 @@ def cacheDB(uid,mode = 1,mys = None):
     conn.commit()
     conn.close()
     return use
+
+def functionRegex(value,patter):
+    c_pattern = re.compile(r"account_id={}".format(patter))
+    return c_pattern.search(value) is not None
 
 async def cookiesDB(uid,Cookies,qid):
     conn = sqlite3.connect('ID_DATA.db')
@@ -338,7 +378,6 @@ async def GetSignList():
         return data
     except:
         print("访问失败，请重试！")
-        #sys.exit(1)
 
 async def GetSignInfo(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -357,7 +396,6 @@ async def GetSignInfo(Uid,ServerID="cn_gf01"):
         return data
     except:
         print("访问失败，请重试！")
-        #sys.exit(1)
         
 async def MysSign(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -382,7 +420,6 @@ async def MysSign(Uid,ServerID="cn_gf01"):
         return data2
     except:
         print("访问失败，请重试！")
-        #sys.exit(1)
     
 async def GetAward(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -405,7 +442,7 @@ async def GetAward(Uid,ServerID="cn_gf01"):
         print("访问失败，请重试！")
         #sys.exit(1)
 
-async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
+async def GetInfo(Uid,ck,ServerID="cn_gf01"):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
     try:
@@ -418,14 +455,14 @@ async def GetInfo(Uid,ServerID="cn_gf01",Schedule_type="1",mysid = None):
                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
                     'Referer': 'https://webstatic.mihoyo.com/',
-                    "Cookie": cacheDB(Uid,1,mysid)})
+                    "Cookie": ck})
             data = json.loads(req.text)
         return data
     except:
         print("访问失败，请重试！")
         #sys.exit(1)
 
-async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = None):
+async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
     try:
@@ -435,7 +472,7 @@ async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = N
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&schedule_type=" + Schedule_type + "&server="+ ServerID),
                     'Origin': 'https://webstatic.mihoyo.com',
-                    'Cookie': cacheDB(Uid,1,mysid),                
+                    'Cookie': ck,                
                     'x-rpc-app_version': mhyVersion,
                     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
@@ -446,9 +483,10 @@ async def GetSpiralAbyssInfo(Uid, ServerID="cn_gf01",Schedule_type="1",mysid = N
         return data
     except:
         print("1访问失败，请重试！")
+        #sys.exit(1)
 
 
-def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
+def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
     try:
@@ -457,7 +495,7 @@ def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
             headers={
                 'DS': DSGet('',{"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID}),
                 'Origin': 'https://webstatic.mihoyo.com',
-                'Cookie': cacheDB(Uid,1,mysid),
+                'Cookie': ck,
                 'x-rpc-app_version': mhyVersion,
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                 'x-rpc-client_type': '5',
@@ -471,11 +509,7 @@ def GetCharacter(Uid,Character_ids, ServerID="cn_gf01",mysid = None):
         print("访问失败，请重试！")
         #sys.exit(1)
 
-async def GetMysInfo(mysid,cookies = None):
-    if cookies:
-        ck = cookies
-    else:
-        ck = cacheDB(mysid,2)
+async def GetMysInfo(mysid,ck):
     try:
         async with AsyncClient() as client:
             req = await client.get(
@@ -488,7 +522,7 @@ async def GetMysInfo(mysid,cookies = None):
                     'Referer': 'https://webstatic.mihoyo.com/',
                     "Cookie": ck})
             data = json.loads(req.text)
-        return [data,mysid]
+        return data
     except:
         im = "err"
         return im
@@ -505,7 +539,6 @@ async def GetWeaponInfo(name):
 
 async def GetCharInfo(name,mode = 0):
     str = ""
-        
     if mode == 1:
         str = "&talents=1"
     elif mode == 2:

@@ -10,7 +10,7 @@ import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo
+from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,errorDB
 
 import os
 import json
@@ -61,67 +61,76 @@ def get_weapon_pic(url):
     urllib.request.urlretrieve(url, os.path.join(WEAPON_PATH, url.split('/')[-1]))
 
 async def draw_wordcloud(uid,image = None,mode = 2):
-    if mode == 3:
-        mys_data = await GetMysInfo(uid)
-        mysid_data = mys_data[1]
-        mys_data = mys_data[0]
-        for i in mys_data['data']['list']:
-            if i['data'][0]['name'] != '活跃天数':
-                mys_data['data']['list'].remove(i)
-        uid = mys_data['data']['list'][0]['game_role_id']
-        nickname = mys_data['data']['list'][0]['nickname']
-        role_level = mys_data['data']['list'][0]['level']
-        raw_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
-        raw_Abyss_data = await GetSpiralAbyssInfo(uid,"cn_gf01","1",mysid_data)
-    else:
-        raw_Abyss_data = await GetSpiralAbyssInfo(uid,"cn_gf01","1")
-        raw_data = await GetInfo(uid)
-    
-    if (raw_data["retcode"] != 0):
-        if (raw_data["retcode"] == 10001):
-            return ("Cookie错误/过期，请重置Cookie")
-        elif (raw_data["retcode"] == 10101):
-            return ("当前cookies已达到30人上限！")
-        elif (raw_data["retcode"] == 10102):
-            return ("当前查询id已经设置了隐私，无法查询！")
-        return (
-            "Api报错，返回内容为：\r\n"
-            + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-        )
-    else:
-        pass
+    while 1:
+        use_cookies = cacheDB(uid,mode-1)
+        if use_cookies == '':
+            return "绑定记录不存在。"
+        elif use_cookies == "没有可以使用的Cookies！":
+            return "没有可以使用的Cookies！"
+
+        if mode == 3:
+            mys_data = await GetMysInfo(uid,use_cookies)
+            mysid_data = uid
+            for i in mys_data['data']['list']:
+                if i['game_id'] != 2:
+                    mys_data['data']['list'].remove(i)
+            uid = mys_data['data']['list'][0]['game_role_id']
+            nickname = mys_data['data']['list'][0]['nickname']
+            role_level = mys_data['data']['list'][0]['level']
+            raw_data = await GetInfo(uid,use_cookies)
+            raw_Abyss_data = await GetSpiralAbyssInfo(uid,use_cookies)
+        else:
+            raw_Abyss_data = await GetSpiralAbyssInfo(uid,use_cookies)
+            raw_data = await GetInfo(uid,use_cookies)
+        
+        if (raw_data["retcode"] != 0):
+            if (raw_data["retcode"] == 10001):
+                #return ("Cookie错误/过期，请重置Cookie")
+                errorDB(use_cookies,"error")
+            elif (raw_data["retcode"] == 10101):
+                #return ("当前cookies已达到30人上限！")
+                errorDB(use_cookies,"limit30")
+            elif (raw_data["retcode"] == 10102):
+                return ("当前查询id已经设置了隐私，无法查询！")
+            return (
+                "Api报错，返回内容为：\r\n"
+                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+            )
+        else:
+            break
 
     raw_Abyss_data = raw_Abyss_data['data']
     raw_data = raw_data['data']
 
     char_data = raw_data["avatars"]
     char_num = len(raw_data["avatars"])
-    if mode == 2:
-        char_ids = []
-        char_rawdata = []
-        
-        for i in char_data:
-            char_ids.append(i["id"])
 
-        char_rawdata = await GetCharacter(uid,char_ids)
-        char_datas = char_rawdata["data"]["avatars"]
+    char_datas = []
+    def get_charid(start,end):
+        for i in range(start,end):
+            char_rawdata = GetCharacter(uid,[i],use_cookies)
         
-        weapons_datas = []
-        for i in char_datas:
-            weapons_datas.append(i['weapon'])
-    elif mode == 3:
-        char_ids = []
-        char_rawdata = []
-        
-        for i in char_data:
-            char_ids.append(i["id"])
+            if char_rawdata["retcode"] == -1:
+                pass
+            else:
+                char_datas.append(char_rawdata["data"]['avatars'][0])
 
-        char_rawdata = await GetCharacter(uid,char_ids,"cn_gf01",mysid_data)
-        char_datas = char_rawdata["data"]["avatars"]
+    thread_list = []
+    st = 8
+    for i in range(0,8):
+        thread = threading.Thread(target = get_charid,args = (10000002+i*st,10000002+(i+1)*st))
+        thread_list.append(thread)
 
-        weapons_datas = []
-        for i in char_datas:
-            weapons_datas.append(i['weapon'])
+    for t in thread_list:
+        t.setDaemon(True)
+        t.start()
+    
+    for t in thread_list:
+        t.join()
+
+    weapons_datas = []
+    for i in char_datas:
+        weapons_datas.append(i['weapon'])
     
     l1_size = 2
     l2_size = 4
@@ -149,7 +158,7 @@ async def draw_wordcloud(uid,image = None,mode = 2):
     star5num = 0
     star5numcon = 0
 
-    for i in raw_data['avatars']:
+    for i in char_datas:
         if i["name"] in ['雷电将军','温迪','钟离','枫原万叶']:
             g3d1 += 1
         if i["name"] in ['甘雨','魈','胡桃']:
@@ -232,10 +241,13 @@ async def draw_wordcloud(uid,image = None,mode = 2):
     if raw_data['homes'][0]['comfort_num'] >= 25000:
         word_str["团雀附体"] = l2_size
 
-    if raw_Abyss_data['total_battle_times'] <= 12 and raw_Abyss_data['max_floor'] == '12-3':
-        word_str["PVP资格证"] = l4_size
-    if raw_Abyss_data["damage_rank"][0]["value"] >= 150000:
-        word_str["这一击，贯穿星辰"] = l4_size
+    if raw_Abyss_data["reveal_rank"] != []:
+        if raw_Abyss_data['total_battle_times'] <= 12 and raw_Abyss_data['max_floor'] == '12-3':
+            word_str["PVP资格证"] = l4_size
+        if raw_Abyss_data["damage_rank"][0]["value"] >= 150000:
+            word_str["这一击，贯穿星辰"] = l4_size
+    else:
+        pass
 
     bg_list = random.choice([x for x in os.listdir(BG_PATH)
                if os.path.isfile(os.path.join(BG_PATH, x))])
@@ -325,36 +337,42 @@ def multi_color_func(word=None, font_size=None,
     return "hsl({}, {}%, {}%)".format(colors[rand][0], colors[rand][1], colors[rand][2])
 
 async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
-    if mode == 3:
-        mys_data = await GetMysInfo(uid)
-        mysid_data = mys_data[1]
-        mys_data = mys_data[0]
-        for i in mys_data['data']['list']:
-            if i['data'][0]['name'] != '活跃天数':
-                mys_data['data']['list'].remove(i)
-        uid = mys_data['data']['list'][0]['game_role_id']
-        nickname = mys_data['data']['list'][0]['nickname']
-        #role_region = mys_data['data']['list'][0]['region']
-        role_level = mys_data['data']['list'][0]['level']
-        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date,mysid_data)
-        raw_char_data = await GetInfo(uid,"cn_gf01",date,mysid_data)
-    else:
-        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date)
-        raw_char_data = await GetInfo(uid,"cn_gf01",date)
+    while 1:
+        use_cookies = cacheDB(uid,mode-1)
+        if use_cookies == '':
+            return "绑定记录不存在。"
+        elif use_cookies == "没有可以使用的Cookies！":
+            return "没有可以使用的Cookies！"
 
-    if (raw_data["retcode"] != 0):
-        if (raw_data["retcode"] == 10001):
-            return ("Cookie错误/过期，请重置Cookie")
-        elif (raw_data["retcode"] == 10101):
-            return ("当前cookies已达到30人上限！")
-        elif (raw_data["retcode"] == 10102):
-            return ("当前查询id已经设置了隐私，无法查询！")
-        return (
-            "Api报错，返回内容为：\r\n"
-            + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-        )
-    else:
-        pass
+        if mode == 3:
+            mys_data = await GetMysInfo(uid,use_cookies)
+            mysid_data = uid
+            for i in mys_data['data']['list']:
+                if i['game_id'] != 2:
+                    mys_data['data']['list'].remove(i)
+            uid = mys_data['data']['list'][0]['game_role_id']
+            nickname = mys_data['data']['list'][0]['nickname']
+            #role_region = mys_data['data']['list'][0]['region']
+            role_level = mys_data['data']['list'][0]['level']
+
+        raw_data = await GetSpiralAbyssInfo(uid,use_cookies,date)
+        raw_char_data = await GetInfo(uid,use_cookies)
+
+        if (raw_data["retcode"] != 0):
+            if (raw_data["retcode"] == 10001):
+                #return ("Cookie错误/过期，请重置Cookie")
+                errorDB(use_cookies,"error")
+            elif (raw_data["retcode"] == 10101):
+                #return ("当前cookies已达到30人上限！")
+                errorDB(use_cookies,"limit30")
+            elif (raw_data["retcode"] == 10102):
+                return ("当前查询id已经设置了隐私，无法查询！")
+            return (
+                "Api报错，返回内容为：\r\n"
+                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+            )
+        else:
+            break
 
     raw_data = raw_data["data"]
     raw_char_data = raw_char_data['data']["avatars"]
@@ -609,36 +627,42 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
     return resultmes
 
 async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"):
-    if mode == 3:
-        mys_data = await GetMysInfo(uid)
-        mysid_data = mys_data[1]
-        mys_data = mys_data[0]
-        for i in mys_data['data']['list']:
-            if i['data'][0]['name'] != '活跃天数':
-                mys_data['data']['list'].remove(i)
-        uid = mys_data['data']['list'][0]['game_role_id']
-        nickname = mys_data['data']['list'][0]['nickname']
-        #role_region = mys_data['data']['list'][0]['region']
-        role_level = mys_data['data']['list'][0]['level']
-        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date,mysid_data)
-        raw_char_data = await GetInfo(uid,"cn_gf01",date,mysid_data)
-    else:
-        raw_data = await GetSpiralAbyssInfo(uid,"cn_gf01",date)
-        raw_char_data = await GetInfo(uid,"cn_gf01",date)
+    while 1:
+        use_cookies = cacheDB(uid,mode-1)
+        if use_cookies == '':
+            return "绑定记录不存在。"
+        elif use_cookies == "没有可以使用的Cookies！":
+            return "没有可以使用的Cookies！"
 
-    if (raw_data["retcode"] != 0):
-        if (raw_data["retcode"] == 10001):
-            return ("Cookie错误/过期，请重置Cookie")
-        elif (raw_data["retcode"] == 10101):
-            return ("当前cookies已达到30人上限！")
-        elif (raw_data["retcode"] == 10102):
-            return ("当前查询id已经设置了隐私，无法查询！")
-        return (
-            "Api报错，返回内容为：\r\n"
-            + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-        )
-    else:
-        pass
+        if mode == 3:
+            mys_data = await GetMysInfo(uid,use_cookies)
+            mysid_data = uid
+            for i in mys_data['data']['list']:
+                if i['game_id'] != 2:
+                    mys_data['data']['list'].remove(i)
+            uid = mys_data['data']['list'][0]['game_role_id']
+            nickname = mys_data['data']['list'][0]['nickname']
+            #role_region = mys_data['data']['list'][0]['region']
+            role_level = mys_data['data']['list'][0]['level']
+
+        raw_data = await GetSpiralAbyssInfo(uid,use_cookies,date)
+        raw_char_data = await GetInfo(uid,use_cookies)
+
+        if (raw_data["retcode"] != 0):
+            if (raw_data["retcode"] == 10001):
+                #return ("Cookie错误/过期，请重置Cookie")
+                errorDB(use_cookies,"error")
+            elif (raw_data["retcode"] == 10101):
+                #return ("当前cookies已达到30人上限！")
+                errorDB(use_cookies,"limit30")
+            elif (raw_data["retcode"] == 10102):
+                return ("当前查询id已经设置了隐私，无法查询！")
+            return (
+                "Api报错，返回内容为：\r\n"
+                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+            )
+        else:
+            break
 
     
     is_edit = False
@@ -800,33 +824,40 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"
     return resultmes
 
 async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
-    if mode == 3:
-        mys_data = await GetMysInfo(uid)
-        mysid_data = mys_data[1]
-        mys_data = mys_data[0]
-        for i in mys_data['data']['list']:
-            if i['data'][0]['name'] != '活跃天数':
-                mys_data['data']['list'].remove(i)
-        uid = mys_data['data']['list'][0]['game_role_id']
-        nickname = mys_data['data']['list'][0]['nickname']
-        role_level = mys_data['data']['list'][0]['level']
-        raw_data = await GetInfo(uid,"cn_gf01","1",mysid_data)
-    else:
-        raw_data = await GetInfo(uid)
-        
-    if (raw_data["retcode"] != 0):
-        if (raw_data["retcode"] == 10001):
-            return ("Cookie错误/过期，请重置Cookie")
-        elif (raw_data["retcode"] == 10101):
-            return ("当前cookies已达到30人上限！")
-        elif (raw_data["retcode"] == 10102):
-            return ("当前查询id已经设置了隐私，无法查询！")
-        return (
-            "Api报错，返回内容为：\r\n"
-            + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-        )
-    else:
-        pass
+    while 1:
+        use_cookies = cacheDB(uid,mode-1)
+        if use_cookies == '':
+            return "绑定记录不存在。"
+        elif use_cookies == "没有可以使用的Cookies！":
+            return "没有可以使用的Cookies！"
+
+        if mode == 3:
+            mys_data = await GetMysInfo(uid,use_cookies)
+            mysid_data = uid
+            for i in mys_data['data']['list']:
+                if i['game_id'] != 2:
+                    mys_data['data']['list'].remove(i)
+            uid = mys_data['data']['list'][0]['game_role_id']
+            nickname = mys_data['data']['list'][0]['nickname']
+            role_level = mys_data['data']['list'][0]['level']
+            
+        raw_data = await GetInfo(uid,use_cookies)
+            
+        if (raw_data["retcode"] != 0):
+            if (raw_data["retcode"] == 10001):
+                #return ("Cookie错误/过期，请重置Cookie")
+                errorDB(use_cookies,"error")
+            elif (raw_data["retcode"] == 10101):
+                #return ("当前cookies已达到30人上限！")
+                errorDB(use_cookies,"limit30")
+            elif (raw_data["retcode"] == 10102):
+                return ("当前查询id已经设置了隐私，无法查询！")
+            return (
+                "Api报错，返回内容为：\r\n"
+                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+            )
+        else:
+            break
 
     bg_list = random.choice([x for x in os.listdir(BG_PATH)
                if os.path.isfile(os.path.join(BG_PATH, x))])
@@ -847,23 +878,13 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     char_datas = []
 
     def get_charid(start,end):
-        if mode == 2:
-            for i in range(start,end):
-                char_rawdata = GetCharacter(uid,[i])
-            
-                if char_rawdata["retcode"] == -1:
-                    pass
-                else:
-                    char_datas.append(char_rawdata["data"]['avatars'][0])
-
-        else:
-            for i in range(start,end):
-                char_rawdata = GetCharacter(uid,[i],"cn_gf01",mysid_data)
-
-                if char_rawdata["retcode"] == -1:
-                    pass
-                else:
-                    char_datas.append(char_rawdata["data"]['avatars'][0])
+        for i in range(start,end):
+            char_rawdata = GetCharacter(uid,[i],use_cookies)
+        
+            if char_rawdata["retcode"] == -1:
+                pass
+            else:
+                char_datas.append(char_rawdata["data"]['avatars'][0])
 
     thread_list = []
     st = 8

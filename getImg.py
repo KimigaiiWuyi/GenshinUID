@@ -10,7 +10,7 @@ import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,errorDB
+from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,errorDB,cacheDB
 
 import os
 import json

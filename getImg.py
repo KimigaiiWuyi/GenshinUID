@@ -11,7 +11,7 @@ import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,cacheDB
+from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,cacheDB,errorDB
 
 from nonebot import *
 from nonebot.adapters.cqhttp import *

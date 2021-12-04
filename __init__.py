@@ -210,7 +210,6 @@ async def setting(ctx):
             mysid = mysid_data[1]
             cookie = ';'.join(filter(lambda x: x.split('=')[0] in ["cookie_token", "account_id"], [i.strip() for i in mes.split(';')]))
             mys_data = await GetMysInfo(mysid,cookie)
-            mys_data = mys_data[0]
             for i in mys_data['data']['list']:
                 if i['game_id'] != 2:
                     mys_data['data']['list'].remove(i)

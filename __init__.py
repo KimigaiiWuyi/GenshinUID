@@ -149,7 +149,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
     if ev.user_id not in bot.config.SUPERUSERS:
         return
     await bot.send(ev,"已开始执行")
-    dailysign()
+    await dailysign()
 
 #每日零点半进行米游社签到
 @sv.scheduled_job('cron', hour='0',minute="30")

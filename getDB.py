@@ -149,6 +149,10 @@ def deletecache():
         c.execute("DROP TABLE CookiesCache")
         c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Extra=?",(None,"limit30"))
         copyfile("ID_DATA.db", "ID_DATA_bak.db")
+        c.execute('''CREATE TABLE IF NOT EXISTS CookiesCache
+        (UID TEXT PRIMARY KEY,
+        MYSID         TEXT,
+        Cookies       TEXT);''')
         conn.commit()
         conn.close()
     except:
@@ -185,21 +189,35 @@ def cacheDB(uid,mode = 1,mys = None):
     if len(c_data)==0:
         if mode == 2:
             conn.create_function("REGEXP", 2, functionRegex)
-            cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE REGEXP(Cookies, ?) AND Extra != ?",(uid,"error"))
+            cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE REGEXP(Cookies, ?)",(uid,))
             d_data = cursor.fetchall()
  
         elif mode == 1:
-            cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE UID = ? AND Extra != ?",(uid,"error"))
+            cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE UID = ?",(uid,))
             d_data = cursor.fetchall()
-        
-        if len(d_data)!=0:
-            use = d_data[0][1]
-            if mode == 1:
-                c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
-                        VALUES (?, ?)",(use,uid))
-            elif mode == 2:
-                c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
-                        VALUES (?, ?)",(use,uid))
+
+        if len(d_data) !=0 :
+            if d_data[0][7] != "error":
+                use = d_data[0][1]
+                if mode == 1:
+                    c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
+                            VALUES (?, ?)",(use,uid))
+                elif mode == 2:
+                    c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
+                            VALUES (?, ?)",(use,uid))
+            else:
+                cookiesrow = c.execute("SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1")
+                e_data = cookiesrow.fetchall()
+                if len(e_data) != 0:
+                    if mode == 1:
+                        c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
+                                VALUES (?, ?)",(e_data[0][1],uid))
+                    elif mode == 2:
+                        c.execute("INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
+                                VALUES (?, ?)",(e_data[0][1],uid))
+                    use = e_data[0][1]
+                else:
+                    return "没有可以使用的Cookies！"
         else:
             cookiesrow = c.execute("SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1")
             e_data = cookiesrow.fetchall()

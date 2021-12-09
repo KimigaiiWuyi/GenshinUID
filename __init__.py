@@ -197,11 +197,7 @@ async def dailysign():
     cursor = c.execute(
         "SELECT *  FROM NewCookiesTable WHERE StatusB != ?", ("off",))
     c_data = cursor.fetchall()
-
-    count = 0
     for row in c_data:
-        count += 1
-
         im = await sign(str(row[0]))
         if row[4] == "on":
             await bot.call_api(api='send_private_msg',
@@ -209,10 +205,7 @@ async def dailysign():
         else:
             await bot.call_api(
                 api='send_group_msg', group_id=row[4], message=f"[CQ:at,qq={row[2]}]\n{im}")
-
-        if count == 10:
-            count = 0
-            await asyncio.sleep(60)
+        await asyncio.sleep(7)
 
 # 每隔半小时检测树脂是否超过设定值
 

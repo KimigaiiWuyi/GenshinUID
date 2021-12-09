@@ -153,26 +153,24 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 
 #每日零点半进行米游社签到
 @sv.scheduled_job('cron', hour='0',minute="30")
-@daily_sign.scheduled_job('cron', hour='0', minute="30")
-async def _():
+async def dailysign():
     await dailysign()
 
-
 async def dailysign():
-    (bot,) = nonebot.get_bots().values()
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     cursor = c.execute(
         "SELECT *  FROM NewCookiesTable WHERE StatusB != ?", ("off",))
     c_data = cursor.fetchall()
+
     for row in c_data:
+
         im = await sign(str(row[0]))
         if row[4] == "on":
-            await bot.call_api(api='send_private_msg',
-                                user_id=row[2], message=im)
+            await bot.send_private_msg(user_id = row[2],message = im)
         else:
-            await bot.call_api(
-                api='send_group_msg', group_id=row[4], message=f"[CQ:at,qq={row[2]}]\n{im}")
+            await bot.send_group_msg(group_id = row[4],message = f"[CQ:at,qq={row[2]}]" + "\n" + im)
+
         await asyncio.sleep(7)
 
 #每隔半小时检测树脂是否超过设定值

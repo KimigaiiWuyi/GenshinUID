@@ -618,18 +618,28 @@ async def weapon_wiki(name):
     info = data['description']
     atk = str(data['baseatk'])
     sub_name = data['substat']
-    sub_val = (data['subvalue'] + '%') if sub_name != '元素精通' else data['subvalue']
-    raw_effect = data['effect']
-    rw_ef = []
-    for i in range(len(data['r1'])):
-        now =  ''
-        for j in range(1,6):
-            now = now + data['r{}'.format(j)][i] + "/"
-        now = now[:-1]
-        rw_ef.append(now)
-    raw_effect = raw_effect.format(*rw_ef)
-    effect = data['effectname'] + "：" + raw_effect
-    im = weapon_im.format(name,type,star,info,atk,sub_name,sub_val,effect)
+    if data['subvalue'] != "":
+        sub_val = (data['subvalue'] +
+                '%') if sub_name != '元素精通' else data['subvalue']
+        sub = "\n" + "【" + sub_name + "】" + sub_val
+    else:
+        sub = ""
+
+    if data['effectname'] != "":
+        raw_effect = data['effect']
+        rw_ef = []
+        for i in range(len(data['r1'])):
+            now = ''
+            for j in range(1, 6):
+                now = now + data['r{}'.format(j)][i] + "/"
+            now = now[:-1]
+            rw_ef.append(now)
+        raw_effect = raw_effect.format(*rw_ef)
+        effect = "\n" + "【" + data['effectname'] + "】" + "：" + raw_effect
+    else:
+        effect = ""
+    im = weapon_im.format(name, type, star, info, atk,
+                          sub, effect)
     return im
 
 async def char_wiki(name,mode = 0,num = 0):

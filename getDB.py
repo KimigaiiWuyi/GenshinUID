@@ -4,6 +4,7 @@ import sys
 from httpx import AsyncClient
 
 from nonebot import *
+from bs4 import BeautifulSoup
 import requests,random,os,json,re
 import hoshino
 import asyncio
@@ -548,11 +549,13 @@ async def GetMysInfo(mysid,ck):
 async def GetWeaponInfo(name):
     async with AsyncClient() as client:
         req = await client.get(
-            url="https://genshin.minigg.cn/?weapon=" + name,
+            url="https://genshin.minigg.cn/?weapons=" + name,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
-        data = json.loads(req.text)
+    soup = BeautifulSoup(req.text, "lxml")
+    item = soup.select_one("pre").text
+    data = json.loads(item)
     return data
 
 async def GetCharInfo(name,mode = 0):
@@ -563,10 +566,14 @@ async def GetCharInfo(name,mode = 0):
         str = "&constellations=1"
         
     async with AsyncClient() as client:
+        
         req = await client.get(
-            url="https://genshin.minigg.cn/?char=" + name + str,
+            url="https://genshin.minigg.cn/?characters=" + name + str,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
-        data = json.loads(req.text)
+
+        soup = BeautifulSoup(req.text, "lxml")
+        item = soup.select_one("pre").text
+        data = json.loads(item)
     return data

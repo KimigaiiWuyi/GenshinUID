@@ -10,7 +10,7 @@ import numpy as np
 
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,errorDB,cacheDB
+from .getDB import GetInfo,GetCharacter,GetSpiralAbyssInfo,GetMysInfo,errorDB,cacheDB,OwnerCookies
 
 import os
 import json
@@ -877,27 +877,39 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     
     char_datas = []
 
-    def get_charid(start,end):
-        for i in range(start,end):
-            char_rawdata = GetCharacter(uid,[i],use_cookies)
+    is_owner = await OwnerCookies(uid)
+    if is_owner == None:
+        def get_charid(start,end):
+            for i in range(start,end):
+                char_rawdata = GetCharacter(uid,[i],use_cookies)
+            
+                if char_rawdata["retcode"] == -1:
+                    pass
+                else:
+                    char_datas.append(char_rawdata["data"]['avatars'][0])
+
+        thread_list = []
+        st = 8
+        for i in range(0,8):
+            thread = threading.Thread(target = get_charid,args = (10000002+i*st,10000002+(i+1)*st))
+            thread_list.append(thread)
+
+        for t in thread_list:
+            t.setDaemon(True)
+            t.start()
         
-            if char_rawdata["retcode"] == -1:
-                pass
-            else:
-                char_datas.append(char_rawdata["data"]['avatars'][0])
-
-    thread_list = []
-    st = 8
-    for i in range(0,8):
-        thread = threading.Thread(target = get_charid,args = (10000002+i*st,10000002+(i+1)*st))
-        thread_list.append(thread)
-
-    for t in thread_list:
-        t.setDaemon(True)
-        t.start()
+        for t in thread_list:
+            t.join()
     
-    for t in thread_list:
-        t.join()
+    else:
+        char_ids = []
+        char_rawdata = []
+
+        for i in char_data:
+            char_ids.append(i["id"])
+
+        char_rawdata = GetCharacter(uid,char_ids,use_cookies)
+        char_datas = char_rawdata["data"]["avatars"]
 
     char_num = len(char_datas)
         

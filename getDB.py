@@ -326,14 +326,6 @@ async def OwnerCookies(uid):
     return cookies
 
 
-
-
-
-
-
-
-
-
 def random_hex(length):
     result = hex(random.randint(0,16**length)).replace('0x','').upper()
     if len(result)<length:
@@ -380,7 +372,7 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        print("访问每日信息失败，请重试！")
         sys.exit(1)
 
 async def GetSignList():
@@ -396,7 +388,8 @@ async def GetSignList():
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        im = "获取签到奖励列表失败，请重试"
+        print(im)
 
 async def GetSignInfo(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -414,7 +407,8 @@ async def GetSignInfo(Uid,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        im = "获取签到信息失败，请重试"
+        print(im)
         
 async def MysSign(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -438,7 +432,8 @@ async def MysSign(Uid,ServerID="cn_gf01"):
         data2 = json.loads(req.text)
         return data2
     except:
-        print("访问失败，请重试！")
+        im = { 'message' : '签到失败，请重试'}
+        return im
     
 async def GetAward(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -458,7 +453,9 @@ async def GetAward(Uid,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        im = "访问每月统计失败，请重试！"
+        print(im)
+        return im
         #sys.exit(1)
 
 async def GetInfo(Uid,ck,ServerID="cn_gf01"):
@@ -478,7 +475,7 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        print("获取信息失败，请重试！")
         #sys.exit(1)
 
 async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
@@ -501,7 +498,7 @@ async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("1访问失败，请重试！")
+        print("1获取深渊信息失败，请重试！")
         #sys.exit(1)
 
 
@@ -525,7 +522,7 @@ def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
         data2 = json.loads(req.text)
         return data2
     except:
-        print("访问失败，请重试！")
+        print("获取人物信息失败，请重试！")
         #sys.exit(1)
 
 async def GetMysInfo(mysid,ck):
@@ -543,7 +540,8 @@ async def GetMysInfo(mysid,ck):
             data = json.loads(req.text)
         return data
     except:
-        im = "err"
+        im = "err，获取米游社信息失败，请重试！"
+        print(im)
         return im
         
 async def GetWeaponInfo(name):

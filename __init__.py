@@ -519,22 +519,27 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 #签到函数
 async def sign(uid):
     try:
-        sign_data = await MysSign(uid)
+        sign_data = await MysSign(uid)        
+        status = sign_data['message']                
+        im = "\n"
         sign_info = await GetSignInfo(uid)
-        sign_info = sign_info['data']
-        sign_list = await GetSignList()
-        status = sign_data['message']
-        getitem = sign_list['data']['awards'][int(sign_info['total_sign_day'])-1]['name']
-        getnum = sign_list['data']['awards'][int(sign_info['total_sign_day'])-1]['cnt']
-        get_im = f"本次签到获得{getitem}x{getnum}"
-        if status == "OK" and sign_info['is_sign'] == True:
+        sign_info_data = sign_info['data']
+        if status == "OK" and sign_info_data['is_sign'] == True:
             mes_im = "签到成功"
         else:
             mes_im = status
-        sign_missed = sign_info['sign_cnt_missed']
+        im = im + mes_im +"!" + "\n"
+
+        sign_missed = sign_info_data['sign_cnt_missed']
+        sign_list = await GetSignList()      
+        getitem = sign_list['data']['awards'][int(sign_info_data['total_sign_day'])-1]['name']
+        getnum = sign_list['data']['awards'][int(sign_info_data['total_sign_day'])-1]['cnt']
+        get_im = f"本次签到获得{getitem}x{getnum}"        
         im = "\n" + mes_im +"!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
+            #im = im + "\n" + "本次签到获取物品请求失败"
+
     except:
-        im = "\n签到失败，请检查Cookies是否失效。"
+        im = im + "签到失败，请检查Cookies是否失效。"
     return im
 
 #统计状态函数

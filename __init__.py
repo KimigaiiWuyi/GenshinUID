@@ -2,7 +2,7 @@ import asyncio
 import os
 import re
 import sqlite3
-from sqlite3.dbapi2 import Error
+
 import threading
 import time
 

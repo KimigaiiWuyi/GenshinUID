@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 import sqlite3
+
 import threading
 import time
 
@@ -323,7 +324,8 @@ async def _(bot: Bot, event: Event):
         im = month_im.format(nickname, uid, day_stone, day_mora, lastday_stone, lastday_mora,
                              month_stone, month_mora, lastmonth_stone, lastmonth_mora, group_str)
         await month_data.send(im, at_sender=True)
-    except:
+    except Exception as e:
+        nonebot.logger.warning(e.with_traceback)
         await month_data.send('未找到绑定信息', at_sender=True)
 
 # 群聊内 签到 功能
@@ -331,11 +333,18 @@ async def _(bot: Bot, event: Event):
 
 @get_sign.handle()
 async def _(bot: Bot, event: Event):
-    qid = event.sender.user_id
-    uid = await selectDB(qid, mode="uid")
-    uid = uid[0]
-    im = await sign(uid)
-    await get_sign.send(im, at_sender=True)
+    try:
+        qid = event.sender.user_id
+        uid = await selectDB(qid, mode="uid")
+        uid = uid[0]
+        im = await sign(uid)
+    except TypeError:
+        im = "没有找到绑定信息。"
+    except Exception as e:
+        nonebot.logger.warning(e.with_traceback)
+        im = "发生错误。"
+    finally:
+        await get_sign.send(im, at_sender=True)
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 
@@ -355,7 +364,8 @@ async def _(bot: Bot, event: Event):
         uid = uid[0]
         mes = await daily("ask", uid)
         im = mes[0]['message']
-    except:
+    except Exception as e:
+        nonebot.logger.warning(e.with_traceback)
         im = "没有找到绑定信息。"
 
     await daily_data.send(im, at_sender=True)
@@ -396,7 +406,9 @@ async def _(bot: Bot, event: Event):
         try:
             im = await draw_pic(uid, event.sender.nickname, image, 2)
             await get_uid_info.send(im, at_sender=True)
-        except:
+        except Exception as e:
+            nonebot.logger.error("发生错误 {}，请检查日志。".format(e))
+            nonebot.logger.warning(e.with_traceback)
             await get_uid_info.send('输入错误！')
 
 # 群聊内 绑定uid 的命令，会绑定至当前qq号上
@@ -452,7 +464,7 @@ async def _(bot: Bot, event: Event):
                     im = await draw_abyss0_pic(uid[0], nickname, image, uid[1])
                     await search.send(im, at_sender=True)
             except:
-                await search.send('输入错误！')
+                await search.send('获取失败，请检查 cookie 及网络状态。')
         elif m == "上期深渊":
             try:
                 if len(re.findall(r"\d+", message)) == 1:
@@ -463,7 +475,7 @@ async def _(bot: Bot, event: Event):
                     im = await draw_abyss0_pic(uid[0], nickname, image, uid[1], "2")
                     await search.send(im, at_sender=True)
             except:
-                await search.send('深渊输入错误！')
+                await search.send('获取失败，请检查数据状态。')
         elif m == "词云":
             try:
                 im = await draw_wordcloud(uid[0], image, uid[1])

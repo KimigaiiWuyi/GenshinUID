@@ -379,8 +379,9 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
                     "Cookie": await OwnerCookies(Uid)})
             data = json.loads(req.text)
         return data
-    except:
+    except Exception as e:
         print("访问失败，请重试！")
+        print(e.with_traceback)
         sys.exit(1)
 
 async def GetSignList():

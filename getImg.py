@@ -100,10 +100,11 @@ async def draw_wordcloud(uid,image = None,mode = 2):
                 errorDB(use_cookies,"limit30")
             elif (raw_data["retcode"] == 10102):
                 return ("当前查询id已经设置了隐私，无法查询！")
-            return (
-                "Api报错，返回内容为：\r\n"
-                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-            )
+            else:
+                return (
+                    "Api报错，返回内容为：\r\n"
+                    + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                )
         else:
             break
 
@@ -374,10 +375,11 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
                 errorDB(use_cookies,"limit30")
             elif (raw_data["retcode"] == 10102):
                 return ("当前查询id已经设置了隐私，无法查询！")
-            return (
-                "Api报错，返回内容为：\r\n"
-                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-            )
+            else:
+                return (
+                    "Api报错，返回内容为：\r\n"
+                    + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                )
         else:
             break
 
@@ -664,10 +666,11 @@ async def draw_abyss_pic(uid,nickname,floor_num,image = None,mode = 2,date = "1"
                 errorDB(use_cookies,"limit30")
             elif (raw_data["retcode"] == 10102):
                 return ("当前查询id已经设置了隐私，无法查询！")
-            return (
-                "Api报错，返回内容为：\r\n"
-                + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-            )
+            else:
+                return (
+                    "Api报错，返回内容为：\r\n"
+                    + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                )
         else:
             break
 

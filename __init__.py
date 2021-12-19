@@ -2,9 +2,9 @@ import asyncio
 import os
 import re
 import sqlite3
-
 import threading
-import time
+import time,math
+import base64
 
 import nonebot
 from nonebot import *
@@ -15,24 +15,28 @@ from nonebot.rule import Rule
 
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
                     GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
-                    connectDB, cookiesDB, deletecache, selectDB)
-from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_pic, draw_wordcloud
+                    connectDB, cookiesDB, deletecache, selectDB, get_alots)
+from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_event_pic, draw_pic, draw_wordcloud
 
 config = nonebot.get_driver().config
 priority = config.genshinuid_priority if config.genshinuid_priority else 2
 superusers = {int(x) for x in config.superusers}
 
+draw_event = require("nonebot_plugin_apscheduler").scheduler
 delet_cache = require("nonebot_plugin_apscheduler").scheduler
 daily_sign = require("nonebot_plugin_apscheduler").scheduler
 resin_notic = require("nonebot_plugin_apscheduler").scheduler
 
 get_weapon = on_startswith("武器", priority=priority)
 get_char = on_startswith("角色", priority=priority)
+get_cost = on_startswith("材料", priority=priority)
 get_polar = on_startswith("命座", priority=priority)
 
-get_UID_info = on_startswith("UID", permission=GROUP, priority=priority)
 get_uid_info = on_startswith("uid", permission=GROUP, priority=priority)
 get_mys_info = on_startswith("mys", permission=GROUP, priority=priority)
+
+get_event = on_command("活动列表", priority=priority)
+get_lots = on_command("御神签", priority=priority)
 
 open_switch = on_startswith("开启", priority=priority)
 close_switch = on_startswith("关闭", priority=priority)
@@ -143,6 +147,12 @@ char_info_im = '''{}
 【cv】：{}
 【介绍】：{}'''
 
+@get_lots.handle()
+async def _(bot: Bot, event: Event):
+    qid = event.sender.user_id
+    raw_data = await get_alots(qid)
+    im = base64.b64decode(raw_data).decode("utf-8")
+    await get_lots.send(im)
 
 @get_weapon.handle()
 async def _(bot: Bot, event: Event):
@@ -158,9 +168,21 @@ async def _(bot: Bot, event: Event):
     message = str(event.get_message()).strip()
     message = message.replace('角色', "")
     message = message.replace(' ', "")
-    im = await char_wiki(message)
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    level = re.findall(r"[0-9]+", message)
+    if len(level) == 1:
+        im = await char_wiki(name,extra="stats",num=level[0])
+    else:
+        im = await char_wiki(name)
     await get_weapon.send(im)
 
+@get_cost.handle()
+async def _(bot: Bot, event: Event):
+    message = str(event.get_message()).strip()
+    message = message.replace('材料', "")
+    message = message.replace(' ', "")
+    im = await char_wiki(message,extra="cost")
+    await get_weapon.send(im)
 
 @get_polar.handle()
 async def _(bot: Bot, event: Event):
@@ -173,6 +195,22 @@ async def _(bot: Bot, event: Event):
         await get_weapon.finish("你家{}有{}命？".format(m, num))
     im = await char_wiki(m, 2, num)
     await get_weapon.send(im)
+
+@draw_event.scheduled_job('cron', hour='2')
+async def draw_event():
+    await draw_event_pic()
+
+@get_event.handle()
+async def _(bot: Bot, event: Event):
+    #await draw_event_pic()
+    img_path = os.path.join(FILE2_PATH,"event.jpg")
+    while(1):
+        if os.path.exists(img_path):
+            im = Message(f'[CQ:image,file=file://{img_path}]')
+            break
+        else:
+            await draw_event_pic()
+    await get_event.send(im)
 
 # 每日零点清空cookies使用缓存
 
@@ -532,22 +570,6 @@ async def _(bot: Bot, event: Event):
         except:
             await get_mys_info.send('输入错误！')
 
-# 群聊内 查询uid 的命令（旧版），不输出武器信息
-
-
-@get_UID_info.handle()
-async def _(bot: Bot, event: Event):
-    message = str(event.get_message()).strip().replace(
-        ' ', "").replace('UID', "")
-    image = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", message)
-    uid = re.findall(r"\d+", message)[0]  # str
-    try:
-        im = await draw_pic(uid, event.sender.nickname, image, 1)
-        await get_UID_info.send(im, at_sender=True)
-    except:
-        await get_UID_info.send('输入错误！')
-
-
 # 签到函数
 async def sign(uid):
     try:
@@ -681,20 +703,65 @@ async def weapon_wiki(name):
     return im
 
 
-async def char_wiki(name, mode=0, num=0):
+async def char_wiki(name, mode=0, num="", extra=""):
     data = await GetCharInfo(name, mode)
     if mode == 0:
-        name = data['title'] + ' — ' + data['name']
-        star = data['rarity']
-        type = data["weapontype"]
-        element = data['element']
-        up_val = data['substat']
-        bdday = data['birthday']
-        polar = data['constellation']
-        cv = data['cv']['chinese']
-        info = data['description']
-        im = char_info_im.format(
-            name, star, type, element, up_val, bdday, polar, cv, info)
+        if isinstance(data,str):
+            raw_data = data.replace("[","").replace("\n","").replace("]","").replace(" ","").replace("'","").split(',')
+            if data.replace("\n","").replace(" ","") == "undefined":
+                im = "不存在该角色或类型。"
+            else:
+                im = ','.join(raw_data)
+        else:
+            if extra == "cost":
+                talent_data = await GetCharInfo(name, 1)
+
+                im = "【天赋材料(一份)】\n{}\n【突破材料】\n{}"
+                im1 = ""
+                im2 = ""
+                
+                talent_temp = {}
+                talent_cost = talent_data["costs"]
+                for i in talent_cost.values():
+                    for j in i:
+                        if j["name"] not in talent_temp:
+                            talent_temp[j["name"]] = j["count"]
+                        else:
+                            talent_temp[j["name"]] = talent_temp[j["name"]] + j["count"]
+                for k in talent_temp:
+                    im1 = im1 + k + ":" + str(talent_temp[k]) + "\n"
+
+                temp = {}
+                cost = data["costs"]
+                for i in range(1,7):
+                    for j in cost["ascend{}".format(i)]:
+                        if j["name"] not in temp:
+                            temp[j["name"]] = j["count"]
+                        else:
+                            temp[j["name"]] = temp[j["name"]] + j["count"]
+                            
+                for k in temp:
+                    im2 = im2 + k + ":" + str(temp[k]) + "\n"
+                
+                im = im.format(im1,im2)
+
+            elif extra == "stats":
+                data2 = await GetCharInfo(name, mode, num)
+                im = (name + "\n等级：" + str(data2["level"]) + "\n血量：" + str(math.floor(data2["hp"])) +
+                    "\n攻击力：" + str(math.floor(data2["attack"])) + "\n防御力：" + str(math.floor(data2["defense"])) +
+                    "\n" + data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100))
+            else:
+                name = data['title'] + ' — ' + data['name']
+                star = data['rarity']
+                type = data["weapontype"]
+                element = data['element']
+                up_val = data['substat']
+                bdday = data['birthday']
+                polar = data['constellation']
+                cv = data['cv']['chinese']
+                info = data['description']
+                im = char_info_im.format(
+                    name, star, type, element, up_val, bdday, polar, cv, info)
     elif mode == 1:
         im = '暂不支持'
     elif mode == 2:

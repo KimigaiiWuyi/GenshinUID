@@ -1,12 +1,12 @@
 import sqlite3
-import sys
+import sys,datetime
 
 from httpx import AsyncClient
 from shutil import copyfile
 
 from nonebot import *
-from bs4 import BeautifulSoup
 import requests,random,os,json,re
+from bs4 import BeautifulSoup
 import asyncio
 import time
 import string
@@ -19,6 +19,40 @@ FILE_PATH = os.path.abspath(os.path.join(os.getcwd(), "hoshino"))
 BASE_PATH = os.path.dirname(__file__)
 BASE2_PATH = os.path.join(BASE_PATH,'mys')
 INDEX_PATH = os.path.join(BASE2_PATH,'index')
+
+async def get_alots(qid):
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS UseridDict
+            (QID INT PRIMARY KEY     NOT NULL,
+            lots        TEXT,
+            cache       TEXT,
+            permission  TEXT,
+            Status      TEXT,
+            Subscribe   TEXT,
+            Extra       TEXT);''')
+    cursor = c.execute("SELECT * from UseridDict WHERE QID = ?",(qid,))
+    c_data = cursor.fetchall()
+    with open(os.path.join(INDEX_PATH,'lots.txt'),"r") as f:
+        raw_data = f.read()
+        raw_data = raw_data.replace(' ', "").split('-')
+
+    if len(c_data) == 0:
+        num = random.randint(1,len(raw_data)-1)
+        data = raw_data[num]
+        c.execute("INSERT OR IGNORE INTO UseridDict (QID,lots) \
+                            VALUES (?, ?)",(qid,str(num)))
+    else:
+        if c_data[0][1] == None:
+            num = random.randint(0,len(raw_data)-1)
+            data = raw_data[num]
+            c.execute("UPDATE UseridDict SET lots = ? WHERE QID=?",(str(num),qid))
+        else:
+            num = int(c_data[0][1])
+            data = raw_data[num]       
+    conn.commit()
+    conn.close()
+    return data
 
 async def OpenPush(uid,qid,status,mode):
     conn = sqlite3.connect('ID_DATA.db')
@@ -154,6 +188,15 @@ def deletecache():
         (UID TEXT PRIMARY KEY,
         MYSID         TEXT,
         Cookies       TEXT);''')
+        conn.commit()
+        conn.close()
+    except:
+        print("\nerror\n")
+    
+    try:
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+        c.execute("UPDATE UseridDict SET lots=NULL")
         conn.commit()
         conn.close()
     except:
@@ -559,22 +602,64 @@ async def GetWeaponInfo(name):
     data = json.loads(item)
     return data
 
-async def GetCharInfo(name,mode = 0):
+async def GetCharInfo(name,mode = 0,level = None):
     str = ""
     if mode == 1:
         str = "&talents=1"
     elif mode == 2:
         str = "&constellations=1"
-        
-    async with AsyncClient() as client:
-        
-        req = await client.get(
-            url="https://genshin.minigg.cn/?characters=" + name + str,
-            headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                'Referer': 'https://genshin.minigg.cn/index.html'})
+    
+    baseurl = "https://genshin.minigg.cn/?characters="
 
-        soup = BeautifulSoup(req.text, "lxml")
-        item = soup.select_one("pre").text
-        data = json.loads(item)
+    detailurl = "https://api.minigg.cn/characters?query="
+
+    if level:
+        async with AsyncClient() as client:
+            req = await client.get(
+                url = detailurl + name + "&stats=" + level,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                    'Referer': 'https://genshin.minigg.cn/index.html'})
+            data = jsonfy(req.text)
+    else:
+        async with AsyncClient() as client:
+            req = await client.get(
+                url = baseurl + name + str,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                    'Referer': 'https://genshin.minigg.cn/index.html'})
+
+            soup = BeautifulSoup(req.text, "lxml")
+            item = soup.select_one("pre").text
+            if item:
+                data = json.loads(item)
+            else:
+                async with AsyncClient() as client:
+                    req = await client.get(
+                        url = detailurl + name + "&matchCategories=true",
+                        headers={
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                            'Referer': 'https://genshin.minigg.cn/index.html'})
+                    data = req.text
+
     return data
+
+async def GetGenshinEvent(mode = "List"):
+    if mode == "Calendar":
+        now_time = datetime.datetime.now().strftime('%Y-%m-%d')
+        base_url = "https://api-takumi.mihoyo.com/event/bbs_activity_calendar/getActList?time={}&game_biz=ys_cn&page=1&tag_id=0".format(now_time)
+    else:
+        base_url = "https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnn" + mode + "?game=hk4e&game_biz=hk4e_cn&lang=zh-cn&bundle_id=hk4e_cn&platform=pc&region=cn_gf01&level=55&uid=100000000"
+    
+    async with AsyncClient() as client:
+        req = await client.get(
+            url = base_url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'})
+    data = json.loads(req.text)
+    return data
+
+def jsonfy(s:str)->object:
+    #此函数将不带双引号的json的key标准化
+    obj = eval(s, type('js', (dict,), dict(__getitem__=lambda s, n: n))())
+    return obj

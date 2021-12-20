@@ -175,6 +175,10 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 async def delete():
     deletecache()
 
+@sv.scheduled_job('cron', hour='2')
+async def delete():
+    await draw_event_pic()
+
 @sv.on_fullmatch('全部重签')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     if ev.user_id not in bot.config.SUPERUSERS:

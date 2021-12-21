@@ -43,7 +43,7 @@ link_uid = on_startswith("绑定uid", priority=priority)
 month_data = on_command("每月统计", priority=priority)
 daily_data = on_command("当前状态", priority=priority)
 
-add_ck = on_startswith("添加", permission=PRIVATE_FRIEND, priority=priority)
+add_ck = on_startswith("添加", permission=PRIVATE, priority=priority)
 
 search = on_command("查询", permission=GROUP, priority=priority)
 get_sign = on_command("签到", priority=priority)

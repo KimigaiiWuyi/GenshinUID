@@ -369,14 +369,6 @@ async def OwnerCookies(uid):
     return cookies
 
 
-
-
-
-
-
-
-
-
 def random_hex(length):
     result = hex(random.randint(0,16**length)).replace('0x','').upper()
     if len(result)<length:
@@ -412,7 +404,7 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/dailyNote?server=" + ServerID + "&role_id=" + Uid,
+                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/dailyNote?server=" + ServerID + "&role_id=" + Uid,
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
                     'x-rpc-app_version': mhyVersion,
@@ -422,9 +414,8 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
                     "Cookie": await OwnerCookies(Uid)})
             data = json.loads(req.text)
         return data
-    except Exception as e:
-        print("访问失败，请重试！")
-        print(e.with_traceback)
+    except:
+        print("访问每日信息失败，请重试！")
         sys.exit(1)
 
 async def GetSignList():
@@ -440,7 +431,8 @@ async def GetSignList():
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        im = "获取签到奖励列表失败，请重试"
+        print(im)
 
 async def GetSignInfo(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -458,7 +450,7 @@ async def GetSignInfo(Uid,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        im = "获取签到信息失败，请重试"
         
 async def MysSign(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -482,7 +474,8 @@ async def MysSign(Uid,ServerID="cn_gf01"):
         data2 = json.loads(req.text)
         return data2
     except:
-        print("访问失败，请重试！")
+        im = { 'message' : '签到失败，请重试'}
+        return im
     
 async def GetAward(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -502,7 +495,9 @@ async def GetAward(Uid,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        im = "访问每月统计失败，请重试！"
+        print(im)
+        return im
         #sys.exit(1)
 
 async def GetInfo(Uid,ck,ServerID="cn_gf01"):
@@ -511,7 +506,7 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
+                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
                     'x-rpc-app_version': mhyVersion,
@@ -522,7 +517,7 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        print("获取信息失败，请重试！")
         #sys.exit(1)
 
 async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
@@ -531,7 +526,7 @@ async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/spiralAbyss?schedule_type=" + Schedule_type + "&server="+ ServerID +"&role_id=" + Uid,
+                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/spiralAbyss?schedule_type=" + Schedule_type + "&server="+ ServerID +"&role_id=" + Uid,
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&schedule_type=" + Schedule_type + "&server="+ ServerID),
                     'Origin': 'https://webstatic.mihoyo.com',
@@ -545,7 +540,7 @@ async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("1访问失败，请重试！")
+        print("1获取深渊信息失败，请重试！")
         #sys.exit(1)
 
 
@@ -554,7 +549,7 @@ def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
         ServerID = "cn_qd01"
     try:
         req = requests.post(
-            url = "https://api-takumi.mihoyo.com/game_record/app/genshin/api/character",
+            url = "https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/character",
             headers={
                 'DS': DSGet('',{"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID}),
                 'Origin': 'https://webstatic.mihoyo.com',
@@ -569,14 +564,14 @@ def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
         data2 = json.loads(req.text)
         return data2
     except:
-        print("访问失败，请重试！")
+        print("获取人物信息失败，请重试！")
         #sys.exit(1)
 
 async def GetMysInfo(mysid,ck):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
+                url="https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
                 headers={
                     'DS': DSGet("uid="+mysid),
                     'x-rpc-app_version': mhyVersion,
@@ -587,7 +582,8 @@ async def GetMysInfo(mysid,ck):
             data = json.loads(req.text)
         return data
     except:
-        im = "err"
+        im = "err，获取米游社信息失败，请重试！"
+        print(im)
         return im
         
 async def GetWeaponInfo(name):

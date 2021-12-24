@@ -518,6 +518,7 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
         return data
     except:
         print("获取信息失败，请重试！")
+        print(e.with_traceback)
         #sys.exit(1)
 
 async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):

@@ -425,7 +425,7 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
     except Exception as e:
         print("访问每日信息失败，请重试！")
         print(e.with_traceback)
-        sys.exit(1)
+        #sys.exit(1)
 
 async def GetSignList():
     try:
@@ -545,7 +545,7 @@ async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("1获取深渊信息失败，请重试！")
+        print("获取深渊信息失败，请重试！")
         #sys.exit(1)
 
 

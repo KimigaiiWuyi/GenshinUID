@@ -1,5 +1,8 @@
-nonebot==1.8.2
-requests==2.25.1
+numpy==1.20.3
+APScheduler==3.7.0
 httpx==0.18.1
-Pillow==8.3.1
-wordcloud>=1.8.1
+requests==2.25.1
+qq_bot>=0.2.6
+beautifulsoup4==4.10.0
+Pillow==8.4.0
+qqbot>=2.3.11

@@ -1293,7 +1293,13 @@ async def draw_event_pic():
             elif k["subtitle"] in i["name"]:
                 k["act_begin_time"] = i["act_begin_time"]
                 k["act_end_time"] = i["act_end_time"]
-
+            else:
+                k["act_begin_time"] = "{}-{}-{} {}".format(k["start_time"].split()[0].split("-")[0], 
+                                                           k["start_time"].split()[0].split("-")[1],
+                                                           str(int(k["start_time"].split()[0].split("-")[2])+2),
+                                                           "10:00:00(?)")
+                k["act_end_time"] = k["end_time"]
+                
         if "冒险助力礼包" in k["title"] or "纪行" in k["title"]:
             continue
         #if "角色试用" in k["title"] or "传说任务" in k["title"]:

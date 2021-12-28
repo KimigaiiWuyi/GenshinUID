@@ -1,4 +1,4 @@
-import sqlite3,os,random,time
+import sqlite3,os,random,time,re
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')
@@ -220,6 +220,9 @@ def cacheDB(uid,mode = 1,mys = None):
                 c.execute("UPDATE CookiesCache SET UID = ? WHERE MYSID=?",(uid,mys))
             except:
                 c.execute("UPDATE CookiesCache SET MYSID = ? WHERE UID=?",(mys,uid))
+    conn.commit()
+    conn.close()
+    return use
 
 def functionRegex(value,patter):
     c_pattern = re.compile(r"account_id={}".format(patter))

@@ -1,4 +1,4 @@
-import re,os,random,sqlite3,sys,datetime,math
+import re,os,random,sqlite3,sys,datetime,math,json,time
 import base64
 from apscheduler.schedulers.background import BackgroundScheduler
 from shutil import copyfile
@@ -15,6 +15,7 @@ import qqbot
 from qqbot.model.guild import Guild
 from qqbot.model.message import (
     MessageSendRequest,
+    MessageArk,
     Message,
     CreateDirectMessageRequest,
     DirectMessageGuild,
@@ -28,12 +29,138 @@ token = qqbot.Token("","")
 api = qqbot.UserAPI(token, False)
 guild_api = qqbot.GuildAPI(token,False)
 msg_api = qqbot.MessageAPI(token, False)
+guild_member_api = qqbot.GuildMemberAPI(token,False)
 user = api.me()
 print(user.username)
+
+help_ark = MessageArk(data = {
+    "template_id": 23,
+    "kv": [
+      {
+        "key": "#DESC#",
+        "value": "原神Bot"
+      },
+      {
+        "key": "#PROMPT#",
+        "value": "这是一份原神帮助"
+      },
+      {
+        "key": "#LIST#",
+        "obj": [
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "===原神Bot==="
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "原神娱乐功能Bot"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "=================="
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "uid+<uid> · 输入9位的原神UID"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "攻略+<角色名> · 查看角色攻略"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "信息+<角色|武器> · 查看该角色或武器的介绍"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "角色+<角色名> · 查看该角色的介绍-文字版"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "武器+<武器名> · 查看该武器的介绍-文字版"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "御神签 · 与游戏内御神签结果无关"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "命座+<数字>+<角色名> · 查看命座描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "-------------------"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "需要@机器人使用，+号无需输入"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "<> 表示填入的内容，· 后面为说明"
+              }
+            ]
+          },
+        
+        ]
+      }
+    ]
+})
 
 switch_list = {
     "uid":"SearchRole",
     "mys":"SearchRole",
+    "查询":"SearchRole",
     "绑定uid":"LinkUID",
     "绑定mys":"LinkUID",
     "角色":"CharInfo",
@@ -68,27 +195,94 @@ def check_startwish(raw_mes,key_word,gid):
     else:
         return False
 
+def check_cookies():
+    with open("cookies_simp.json",'r') as load_f:
+        load_dict = json.load(load_f)
+    num = 0
+    for i in load_dict["data"]:
+        aid = re.search(r"account_id=(\d*)", i)
+        mysid_data = aid.group(0).split('=')
+        mysid = mysid_data[1]
+        cookie = ';'.join(filter(lambda x: x.split('=')[0] in [
+                          "cookie_token", "account_id"], [j.strip() for j in i.split(';')]))
+        uid = int(time.time()) + num
+        num += 1
+        cookiesDB(uid, i, 10086)
+
 def up_guild_list():
     guild_list = api.me_guilds()
     for guild in guild_list:
-        #guild_data = guild_api.guild(guild.id)
+        #guild_data = guild_api.get_guild(guild.id)
         add_guild(guild.id,guild.name)
 
 up_guild_list()
 
+def GetUidUrl(uid,qid,nickname,mode = 2):
+    while 1:
+        use_cookies = cacheDB(uid,mode-1)
+        if use_cookies == '':
+            return "绑定记录不存在。"
+        elif use_cookies == "没有可以使用的Cookies！":
+            return "没有可以使用的Cookies！"
+
+        if mode == 3:
+            mys_data = GetMysInfo(uid,use_cookies)
+            mysid_data = uid
+            for i in mys_data['data']['list']:
+                if i['game_id'] != 2:
+                    mys_data['data']['list'].remove(i)
+            uid = mys_data['data']['list'][0]['game_role_id']
+            nickname = mys_data['data']['list'][0]['nickname']
+            #role_level = mys_data['data']['list'][0]['level']
+            
+        raw_data = GetInfo(uid,use_cookies)
+            
+        if raw_data["retcode"] != 0:
+            if raw_data["retcode"] == 10001:
+                #return ("Cookie错误/过期，请重置Cookie")
+                errorDB(use_cookies,"error")
+            elif raw_data["retcode"] == 10101:
+                #return ("当前cookies已达到30人上限！")
+                errorDB(use_cookies,"limit30")
+            elif raw_data["retcode"] == 10102:
+                return ("当前查询id已经设置了隐私，无法查询！")
+            else:
+                return (
+                    "Api报错，返回内容为：\r\n"
+                    + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                )
+        else:
+            break
+        
+    url = GetUidPic(raw_data,uid,qid,nickname)
+    return url
+    
 def _message_handler(event, message: Message):
     qqbot.logger.info("event %s" % event + ",receive message %s" % message.content)
 
-    guild_data = guild_api.guild(message.guild_id)
+    guild_data = guild_api.get_guild(message.guild_id)
     at_mes = re.search(r'\<\@\![0-9]+\>',message.content)
     raw_mes = message.content.replace(at_mes.group(),"").replace(" ","")
     record_mes = raw_mes
     
     mes = None
     image = None
-
+    ark = None
+    
     if raw_mes == "频道信息":
         mes = getGuildStatus()
+    elif raw_mes == "help":
+        ark = help_ark
+    elif raw_mes == "整理123":
+        check_cookies()
+        mes = "成功!"
+    elif raw_mes == "查询" and check_switch(message.guild_id,switch_list["查询"]):
+        uid = selectDB(message.author.id)
+        author = guild_member_api.get_guild_member(message.guild_id,message.author.id)
+        nickname = author.user.username
+        image = GetUidUrl(uid[0],message.author.id,nickname,uid[1])
+        url = json.loads(image)
+        image = "https://yuanshen.minigg.cn" + url["url"] 
     elif raw_mes.startswith("开启"):
         raw_mes = raw_mes.replace("开启","")
         try:
@@ -113,6 +307,8 @@ def _message_handler(event, message: Message):
                 mes = "你输入了错误的uid，请检查输入是否正确。"
             else:
                 image = GetUidUrl(uid,message.author.id,message.author.username)
+                url = json.loads(image)
+                image = "https://yuanshen.minigg.cn" + url["url"] 
         except:
             mes = "未知错误。"
     elif check_startwish(raw_mes,"mys",message.guild_id):
@@ -120,6 +316,8 @@ def _message_handler(event, message: Message):
         try:
             uid = re.findall(r"[0-9]+", raw_mes)[0]
             image = GetUidUrl(uid,message.author.id,message.author.username,mode=3)
+            url = json.loads(image)
+            image = "https://yuanshen.minigg.cn" + url["url"] 
         except:
             mes = "未知错误。"
     #elif raw_mes.startswith("活动列表"):
@@ -182,7 +380,17 @@ def _message_handler(event, message: Message):
         raw_data = get_alots(message.author.id)
         mes = base64.b64decode(raw_data).decode("utf-8")
 
-    if image:
+    if ark:
+        try:
+            send = qqbot.MessageSendRequest(content = "",ark = ark, msg_id = message.id)
+            msg_api.post_message(message.channel_id, send)
+            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,"help")
+        except Exception as e:
+            logger.info(e.args)
+            send = qqbot.MessageSendRequest(str(e), message.id)
+            msg_api.post_message(message.channel_id, send)
+            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+    elif image:
         try:
             send = qqbot.MessageSendRequest(content = "",image = image, msg_id = message.id)
             msg_api.post_message(message.channel_id, send)
@@ -210,17 +418,12 @@ def _message_handler(event, message: Message):
 def _guild_handler(event, guild:Guild):
     up_guild_list()
 
-qqbot_handler2 = qqbot.Handler(qqbot.HandlerType.GUILD_EVENT_HANDLER, _guild_handler)
-qqbot_handler = qqbot.Handler(qqbot.HandlerType.AT_MESSAGE_EVENT_HANDLER, _message_handler)
-qqbot.listen_events(token, False, qqbot_handler)
-qqbot.listen_events(token, False, qqbot_handler2)
-
 def getGuildStatus():
     guild_list = api.me_guilds()
     guild_member_all_count = 0
     guild_status_mes  = ""
     for guild in guild_list:
-        guild_data = guild_api.guild(guild.id)
+        guild_data = guild_api.get_guild(guild.id)
         guild_status_mes += "【{}】{}人\n".format(guild.name,str(guild_data.member_count))
         guild_member_all_count += guild_data.member_count
     guild_status_mes += "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
@@ -371,42 +574,7 @@ def talents_wiki(name,num):
 
     return im
 
-def GetUidUrl(uid,qid,nickname,mode = 2):
-    while 1:
-        use_cookies = cacheDB(uid,mode-1)
-        if use_cookies == '':
-            return "绑定记录不存在。"
-        elif use_cookies == "没有可以使用的Cookies！":
-            return "没有可以使用的Cookies！"
-
-        if mode == 3:
-            mys_data = GetMysInfo(uid,use_cookies)
-            mysid_data = uid
-            for i in mys_data['data']['list']:
-                if i['game_id'] != 2:
-                    mys_data['data']['list'].remove(i)
-            uid = mys_data['data']['list'][0]['game_role_id']
-            nickname = mys_data['data']['list'][0]['nickname']
-            #role_level = mys_data['data']['list'][0]['level']
-            
-        raw_data = GetInfo(uid,use_cookies)
-            
-        if raw_data["retcode"] != 0:
-            if raw_data["retcode"] == 10001:
-                #return ("Cookie错误/过期，请重置Cookie")
-                errorDB(use_cookies,"error")
-            elif raw_data["retcode"] == 10101:
-                #return ("当前cookies已达到30人上限！")
-                errorDB(use_cookies,"limit30")
-            elif raw_data["retcode"] == 10102:
-                return ("当前查询id已经设置了隐私，无法查询！")
-            else:
-                return (
-                    "Api报错，返回内容为：\r\n"
-                    + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-                )
-        else:
-            break
-        
-    url = GetUidPic(raw_data,uid,qid,nickname)
-    return url
+qqbot_handler2 = qqbot.Handler(qqbot.HandlerType.GUILD_EVENT_HANDLER, _guild_handler)
+qqbot_handler = qqbot.Handler(qqbot.HandlerType.AT_MESSAGE_EVENT_HANDLER, _message_handler)
+qqbot.listen_events(token, False, qqbot_handler)
+qqbot.listen_events(token, False, qqbot_handler2)

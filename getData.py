@@ -3,6 +3,7 @@ from shutil import copyfile
 import time,json,hashlib,base64
 import httpx
 from bs4 import BeautifulSoup
+import urllib.parse
 
 def md5(text):
     md5 = hashlib.md5()
@@ -22,7 +23,7 @@ def DSGet(q = "",b = None):
 
 def GetUidPic(raw_data,uid,qid,nickname):
     style = "egenshin"
-    url = "https://yuanshen.minigg.cn/generator/user_info?style=" + style + "&uid=" + uid + "&qid=" + qid + "&nickname=" + nickname +"&quality=75"
+    url = "https://yuanshen.minigg.cn/generator/user_info?style=" + style + "&uid=" + uid + "&qid=" + qid + "&nickname=" + urllib.parse.quote(nickname) +"&quality=75"
     req = httpx.post(
         url = url,
         json = raw_data
@@ -34,7 +35,7 @@ def GetInfo(Uid,ck,ServerID="cn_gf01"):
         ServerID = "cn_qd01"
     try:
         req = httpx.get(
-            url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
+            url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
             headers={
                 'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
                 'x-rpc-app_version': "2.11.1",
@@ -50,7 +51,7 @@ def GetInfo(Uid,ck,ServerID="cn_gf01"):
 def GetMysInfo(mysid,ck):
     try:
         req = httpx.get(
-            url="https://api-takumi.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
+            url="https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
             headers={
                 'DS': DSGet("uid="+mysid),
                 'x-rpc-app_version': "2.11.1",

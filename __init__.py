@@ -1,7 +1,8 @@
 from .getImg import draw_pic,draw_abyss_pic,draw_abyss0_pic,draw_wordcloud,draw_event_pic
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
                     GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
-                    connectDB, cookiesDB, deletecache, selectDB, get_alots)
+                    connectDB, cookiesDB, deletecache, selectDB, get_alots,
+                    GetCharTalentsInfo,GetEnemiesInfo)
 from nonebot import *
 from hoshino import Service,R,priv,util
 from hoshino.typing import MessageSegment,CQEvent, HoshinoBot
@@ -140,6 +141,23 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
     message = message.replace(' ', "")
     im = await char_wiki(message,extra="cost")
     await bot.send(ev,im)
+    
+@sv.on_prefix('原魔')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    message = ev.message.extract_plain_text()
+    im = await enemies_wiki(message)
+    await bot.send(ev,im)
+
+@sv.on_prefix('天赋')
+async def _(bot:HoshinoBot,  ev: CQEvent):
+    message = ev.message.extract_plain_text()
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    num = re.findall(r"[0-9]+", message)
+    if len(num) == 1:
+        im = await talents_wiki(name,num[0])
+    else:
+        im = "参数不正确。"
+    await bot.send(ev,im)
 
 @sv.on_prefix('武器')
 async def _(bot:HoshinoBot,  ev: CQEvent):
@@ -158,6 +176,61 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
     else:
         im = await char_wiki(name)
     await bot.send(ev,im)
+
+async def enemies_wiki(name):
+    raw_data = await GetEnemiesInfo(name)
+    reward = ""
+    for i in raw_data["rewardpreview"]:
+        reward += i["name"] + "：" + str(i["count"]) if "count" in i.keys() else i["name"] + "：" + "可能"
+        reward += "\n"
+    im = "【{}】\n——{}——\n类型：{}\n信息：{}\n掉落物：\n{}".format(raw_data["name"],raw_data["specialname"],
+                                                    raw_data["category"],raw_data["description"],reward)
+    return im
+
+async def talents_wiki(name,num):
+    raw_data = await GetCharTalentsInfo(name)
+
+    if int(num) <= 3 :
+        if num == "1":
+            data = raw_data["combat1"]
+        elif num == "2":
+            data = raw_data["combat2"]
+        elif num == "3":
+            data = raw_data["combat3"]
+        skill_name = data["name"]
+        skill_info = data["info"]
+        skill_detail = ""
+
+        for i in data["attributes"]["parameters"]:
+            temp = ""
+            for k in data["attributes"]["parameters"][i]:
+                temp += "%.2f%%" % (k * 100) + "/"
+            data["attributes"]["parameters"][i] = temp[:-1]
+
+        for i in data["attributes"]["labels"]:
+            #i = i.replace("{","{{")
+            i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
+            #i.replace(r':[a-zA-Z0-9]+}','}')
+            skill_detail += i + "\n"
+
+        skill_detail = skill_detail.format(**data["attributes"]["parameters"])
+
+        im = "【{}】\n{}\n————\n{}".format(skill_name,skill_info,skill_detail)
+
+    else:
+        if num == "4":
+            data = raw_data["passive1"]
+        elif num == "5":
+            data = raw_data["passive2"]
+        elif num == "6":
+            data = raw_data["passive3"]
+        elif num == "7":
+            data = raw_data["passive4"]
+        skill_name = data["name"]
+        skill_info = data["info"]
+        im = "【{}】\n{}".format(skill_name,skill_info)
+
+    return im
 
 @sv.on_prefix('命座')
 async def _(bot:HoshinoBot,  ev: CQEvent):
@@ -565,6 +638,7 @@ async def sign(uid):
 
 #统计状态函数
 async def daily(mode="push", uid=None):
+
     def seconds2hours(seconds: int) -> str:
         m, s = divmod(int(seconds), 60)
         h, m = divmod(m, 60)
@@ -582,58 +656,62 @@ async def daily(mode="push", uid=None):
 
     for row in c_data:
         raw_data = await GetDaily(str(row[0]))
-        dailydata = raw_data["data"]
-        current_resin = dailydata['current_resin']
-
-        if current_resin >= row[6]:
-            tip = ''
-            if row[1] != 0:
-                tip = "\n==============\n你的树脂快满了！"
-
-            max_resin = dailydata['max_resin']
-            rec_time = ''
-            # print(dailydata)
-            if current_resin < 160:
-                resin_recovery_time = seconds2hours(
-                    dailydata['resin_recovery_time'])
-                next_resin_rec_time = seconds2hours(
-                    8 * 60 - ((dailydata['max_resin'] - dailydata['current_resin']) * 8 * 60 - int(dailydata['resin_recovery_time'])))
-                rec_time = f' ({next_resin_rec_time}/{resin_recovery_time})'
-
-            finished_task_num = dailydata['finished_task_num']
-            total_task_num = dailydata['total_task_num']
-            is_extra_got = '已' if dailydata['is_extra_task_reward_received'] else '未'
-
-            resin_discount_num_limit = dailydata['resin_discount_num_limit']
-            used_resin_discount_num = resin_discount_num_limit - \
-                dailydata['remain_resin_discount_num']
-
-            current_expedition_num = dailydata['current_expedition_num']
-            max_expedition_num = dailydata['max_expedition_num']
-            finished_expedition_num = 0
-            expedition_info: list[str] = []
-            for expedition in dailydata['expeditions']:
-                avatar: str = expedition['avatar_side_icon'][89:-4]
-                try:
-                    avatar_name: str = avatar_json[avatar]
-                except KeyError:
-                    avatar_name: str = avatar
-
-                if expedition['status'] == 'Finished':
-                    expedition_info.append(f"{avatar_name} 探索完成")
-                    finished_expedition_num += 1
-                else:
-                    remained_timed: str = seconds2hours(
-                        expedition['remained_time'])
-                    expedition_info.append(
-                        f"{avatar_name} 剩余时间{remained_timed}")
-            expedition_data = "\n".join(expedition_info)
-
-            send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num, is_extra_got, used_resin_discount_num,
-                                       resin_discount_num_limit, current_expedition_num, finished_expedition_num, max_expedition_num, expedition_data)
-
+        if raw_data["retcode"] != 0:
             temp_list.append(
-                {"qid": row[2], "gid": row[3], "message": send_mes})
+                {"qid": row[2], "gid": row[3], "message": "你的推送状态有误；可能是uid绑定错误或没有在米游社打开“实时便筏”功能。"})
+        else:
+            dailydata = raw_data["data"]
+            current_resin = dailydata['current_resin']
+
+            if current_resin >= row[6]:
+                tip = ''
+
+                if row[1] != 0:
+                    tip = "\n==============\n你的树脂快满了！"
+                max_resin = dailydata['max_resin']
+                rec_time = ''
+                # print(dailydata)
+                if current_resin < 160:
+                    resin_recovery_time = seconds2hours(
+                        dailydata['resin_recovery_time'])
+                    next_resin_rec_time = seconds2hours(
+                        8 * 60 - ((dailydata['max_resin'] - dailydata['current_resin']) * 8 * 60 - int(dailydata['resin_recovery_time'])))
+                    rec_time = f' ({next_resin_rec_time}/{resin_recovery_time})'
+
+                finished_task_num = dailydata['finished_task_num']
+                total_task_num = dailydata['total_task_num']
+                is_extra_got = '已' if dailydata['is_extra_task_reward_received'] else '未'
+
+                resin_discount_num_limit = dailydata['resin_discount_num_limit']
+                used_resin_discount_num = resin_discount_num_limit - \
+                    dailydata['remain_resin_discount_num']
+
+                current_expedition_num = dailydata['current_expedition_num']
+                max_expedition_num = dailydata['max_expedition_num']
+                finished_expedition_num = 0
+                expedition_info: list[str] = []
+                for expedition in dailydata['expeditions']:
+                    avatar: str = expedition['avatar_side_icon'][89:-4]
+                    try:
+                        avatar_name: str = avatar_json[avatar]
+                    except KeyError:
+                        avatar_name: str = avatar
+
+                    if expedition['status'] == 'Finished':
+                        expedition_info.append(f"{avatar_name} 探索完成")
+                        finished_expedition_num += 1
+                    else:
+                        remained_timed: str = seconds2hours(
+                            expedition['remained_time'])
+                        expedition_info.append(
+                            f"{avatar_name} 剩余时间{remained_timed}")
+                expedition_data = "\n".join(expedition_info)
+
+                send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num, is_extra_got, used_resin_discount_num,
+                                        resin_discount_num_limit, current_expedition_num, finished_expedition_num, max_expedition_num, expedition_data)
+
+                temp_list.append(
+                    {"qid": row[2], "gid": row[3], "message": send_mes})
     return temp_list
 
 async def weapon_wiki(name):

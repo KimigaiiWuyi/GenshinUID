@@ -668,16 +668,14 @@ async def GetMysInfo(mysid,ck):
         print("米游社信息读取老Api失败！")
         print(e.with_traceback)  
         
-async def GetWeaponInfo(name):
+async def GetWeaponInfo(name,level = None):
     async with AsyncClient() as client:
         req = await client.get(
-            url="https://genshin.minigg.cn/?weapons=" + name,
+            url="https://api.minigg.cn/weapons?query=" + name + "&stats=" + level if level else "https://api.minigg.cn/weapons?query=" + name,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
-    soup = BeautifulSoup(req.text, "lxml")
-    item = soup.select_one("pre").text
-    data = json.loads(item)
+    data = jsonfy(req.text)
     return data
 
 async def GetCharTalentsInfo(name):

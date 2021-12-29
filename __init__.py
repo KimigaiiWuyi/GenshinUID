@@ -162,7 +162,12 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 @sv.on_prefix('武器')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
-    im = await weapon_wiki(message)
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    level = re.findall(r"[0-9]+", message)
+    if len(level) == 1:
+        im = await weapon_wiki(name,level=level[0])
+    else:
+        im = await weapon_wiki(name)
     await bot.send(ev,im,at_sender=True)
 
 @sv.on_prefix('角色')
@@ -714,36 +719,45 @@ async def daily(mode="push", uid=None):
                     {"qid": row[2], "gid": row[3], "message": send_mes})
     return temp_list
 
-async def weapon_wiki(name):
+async def weapon_wiki(name,level = None):
     data = await GetWeaponInfo(name)
-    name = data['name']
-    type = data['weapontype']
-    star = data['rarity'] + "星"
-    info = data['description']
-    atk = str(data['baseatk'])
-    sub_name = data['substat']
-    if data['subvalue'] != "":
-        sub_val = (data['subvalue'] +
-                '%') if sub_name != '元素精通' else data['subvalue']
-        sub = "\n" + "【" + sub_name + "】" + sub_val
+    if level:
+        data2 = await GetWeaponInfo(name,level+"plus" if level else level)
+        if data["substat"] != "":
+            sp = data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100) if data["substat"] != "元素精通" else data["substat"] + "：" + str(math.floor(data2["specialized"]))
+        else:
+            sp = ""
+        im = (data["name"] + "\n等级：" + str(data2["level"]) + "（突破" + str(data2["ascension"]) + "）" + 
+                    "\n攻击力：" + str(math.floor(data2["attack"])) + "\n" + sp)
     else:
-        sub = ""
+        name = data['name']
+        type = data['weapontype']
+        star = data['rarity'] + "星"
+        info = data['description']
+        atk = str(data['baseatk'])
+        sub_name = data['substat']
+        if data['subvalue'] != "":
+            sub_val = (data['subvalue'] +
+                    '%') if sub_name != '元素精通' else data['subvalue']
+            sub = "\n" + "【" + sub_name + "】" + sub_val
+        else:
+            sub = ""
 
-    if data['effectname'] != "":
-        raw_effect = data['effect']
-        rw_ef = []
-        for i in range(len(data['r1'])):
-            now = ''
-            for j in range(1, 6):
-                now = now + data['r{}'.format(j)][i] + "/"
-            now = now[:-1]
-            rw_ef.append(now)
-        raw_effect = raw_effect.format(*rw_ef)
-        effect = "\n" + "【" + data['effectname'] + "】" + "：" + raw_effect
-    else:
-        effect = ""
-    im = weapon_im.format(name, type, star, info, atk,
-                          sub, effect)
+        if data['effectname'] != "":
+            raw_effect = data['effect']
+            rw_ef = []
+            for i in range(len(data['r1'])):
+                now = ''
+                for j in range(1, 6):
+                    now = now + data['r{}'.format(j)][i] + "/"
+                now = now[:-1]
+                rw_ef.append(now)
+            raw_effect = raw_effect.format(*rw_ef)
+            effect = "\n" + "【" + data['effectname'] + "】" + "：" + raw_effect
+        else:
+            effect = ""
+        im = weapon_im.format(name, type, star, info, atk,
+                            sub, effect)
     return im
 
 async def char_wiki(name, mode=0, num="", extra=""):
@@ -790,9 +804,10 @@ async def char_wiki(name, mode=0, num="", extra=""):
 
             elif extra == "stats":
                 data2 = await GetCharInfo(name, mode, num)
-                im = (name + "\n等级：" + str(data2["level"]) + "\n血量：" + str(math.floor(data2["hp"])) +
+                sp = data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100) if data["substat"] != "元素精通" else data["substat"] + "：" + str(math.floor(data2["specialized"]))
+                im = (data["name"] + "\n等级：" + str(data2["level"]) + "\n血量：" + str(math.floor(data2["hp"])) +
                     "\n攻击力：" + str(math.floor(data2["attack"])) + "\n防御力：" + str(math.floor(data2["defense"])) +
-                    "\n" + data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100))
+                    "\n" + sp)
             else:
                 name = data['title'] + ' — ' + data['name']
                 star = data['rarity']

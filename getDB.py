@@ -412,7 +412,7 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/dailyNote?server=" + ServerID + "&role_id=" + Uid,
+                url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/dailyNote?server=" + ServerID + "&role_id=" + Uid,
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
                     'x-rpc-app_version': mhyVersion,
@@ -422,10 +422,25 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
                     "Cookie": await OwnerCookies(Uid)})
             data = json.loads(req.text)
         return data
+    except requests.exceptions.SSLError:
+        try:
+            async with AsyncClient() as client:
+                req = await client.get(
+                    url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/dailyNote?server=" + ServerID + "&role_id=" + Uid,
+                    headers={
+                        'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
+                        'x-rpc-app_version': mhyVersion,
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'x-rpc-client_type': '5',
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        "Cookie": await OwnerCookies(Uid)})
+            data = json.loads(req.text)
+            return data
+        except json.decoder.JSONDecodeError:
+            print("当前状态读取Api失败！")
     except Exception as e:
         print("访问每日信息失败，请重试！")
         print(e.with_traceback)
-        #sys.exit(1)
 
 async def GetSignList():
     try:
@@ -511,7 +526,7 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
+                url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
                     'x-rpc-app_version': mhyVersion,
@@ -521,9 +536,25 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
                     "Cookie": ck})
             data = json.loads(req.text)
         return data
-    except:
-        print("获取信息失败，请重试！")
-        #sys.exit(1)
+    except requests.exceptions.SSLError:
+        try:
+            async with AsyncClient() as client:
+                req = await client.get(
+                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/index?role_id=" + Uid + "&server=" + ServerID,
+                headers={
+                    'DS': DSGet("role_id=" + Uid + "&server=" + ServerID),
+                    'x-rpc-app_version': mhyVersion,
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    "Cookie": ck})
+            data = json.loads(req.text)
+            return data
+        except json.decoder.JSONDecodeError:
+            print("米游社基础信息读取新Api失败！")
+    except Exception as e:
+        print("米游社基础信息读取老Api失败！")
+        print(e.with_traceback)    
 
 async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -531,7 +562,7 @@ async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/spiralAbyss?schedule_type=" + Schedule_type + "&server="+ ServerID +"&role_id=" + Uid,
+                url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/spiralAbyss?schedule_type=" + Schedule_type + "&server="+ ServerID +"&role_id=" + Uid,
                 headers={
                     'DS': DSGet("role_id=" + Uid + "&schedule_type=" + Schedule_type + "&server="+ ServerID),
                     'Origin': 'https://webstatic.mihoyo.com',
@@ -544,9 +575,28 @@ async def GetSpiralAbyssInfo(Uid, ck,Schedule_type="1",ServerID="cn_gf01"):
                 )
             data = json.loads(req.text)
         return data
-    except:
-        print("获取深渊信息失败，请重试！")
-        #sys.exit(1)
+    except requests.exceptions.SSLError:
+        try:
+            async with AsyncClient() as client:
+                req = await client.get(
+                url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/spiralAbyss?schedule_type=" + Schedule_type + "&server="+ ServerID +"&role_id=" + Uid,
+                headers={
+                    'DS': DSGet("role_id=" + Uid + "&schedule_type=" + Schedule_type + "&server="+ ServerID),
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'Cookie': ck,                
+                    'x-rpc-app_version': mhyVersion,
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/'
+                    }
+                )
+            data = json.loads(req.text)
+            return data
+        except json.decoder.JSONDecodeError:
+            print("深渊信息读取新Api失败！")
+    except Exception as e:
+        print("深渊信息读取老Api失败！")
+        print(e.with_traceback)    
 
 
 def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
@@ -554,7 +604,7 @@ def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
         ServerID = "cn_qd01"
     try:
         req = requests.post(
-            url = "https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/character",
+            url = "https://api-takumi.mihoyo.com/game_record/app/genshin/api/character",
             headers={
                 'DS': DSGet('',{"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID}),
                 'Origin': 'https://webstatic.mihoyo.com',
@@ -568,15 +618,34 @@ def GetCharacter(Uid,Character_ids, ck,ServerID="cn_gf01"):
         )
         data2 = json.loads(req.text)
         return data2
-    except:
-        print("访问失败，请重试！")
-        #sys.exit(1)
+    except requests.exceptions.SSLError:
+        try:
+            req = requests.post(
+                url = "https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/character",
+                headers={
+                    'DS': DSGet('',{"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID}),
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'Cookie': ck,
+                    'x-rpc-app_version': mhyVersion,
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/'
+                },
+                json = {"character_ids": Character_ids ,"role_id": Uid ,"server": ServerID}
+            )
+            data = json.loads(req.text)
+            return data
+        except json.decoder.JSONDecodeError:
+            print("深渊信息读取新Api失败！")
+    except Exception as e:
+        print("深渊信息读取老Api失败！")
+        print(e.with_traceback)  
 
 async def GetMysInfo(mysid,ck):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url="https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
+                url="https://api-takumi.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
                 headers={
                     'DS': DSGet("uid="+mysid),
                     'x-rpc-app_version': mhyVersion,
@@ -586,9 +655,25 @@ async def GetMysInfo(mysid,ck):
                     "Cookie": ck})
             data = json.loads(req.text)
         return data
-    except:
-        im = "err，获取米游社信息失败，请重试！"
-        return im
+    except requests.exceptions.SSLError:
+        try:
+            async with AsyncClient() as client:
+                req = await client.get(
+                    url="https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
+                    headers={
+                        'DS': DSGet("uid="+mysid),
+                        'x-rpc-app_version': mhyVersion,
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'x-rpc-client_type': '5',
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        "Cookie": ck})
+                data = json.loads(req.text)
+            return data
+        except json.decoder.JSONDecodeError:
+            print("米游社信息读取新Api失败！")
+    except Exception as e:
+        print("米游社信息读取老Api失败！")
+        print(e.with_traceback)  
         
 async def GetWeaponInfo(name):
     async with AsyncClient() as client:
@@ -600,6 +685,28 @@ async def GetWeaponInfo(name):
     soup = BeautifulSoup(req.text, "lxml")
     item = soup.select_one("pre").text
     data = json.loads(item)
+    return data
+
+async def GetCharTalentsInfo(name):
+    baseurl = "https://api.minigg.cn/talents?query="
+    async with AsyncClient() as client:
+        req = await client.get(
+            url = baseurl + name,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html'})
+        data = jsonfy(req.text)
+    return data
+
+async def GetEnemiesInfo(name):
+    baseurl = "https://api.minigg.cn/enemies?query="
+    async with AsyncClient() as client:
+        req = await client.get(
+            url = baseurl + name,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html'})
+        data = jsonfy(req.text)
     return data
 
 async def GetCharInfo(name,mode = 0,level = None):
@@ -660,6 +767,7 @@ async def GetGenshinEvent(mode = "List"):
     return data
 
 def jsonfy(s:str)->object:
+    s = s.replace("stats: [Function (anonymous)]","")
     #此函数将不带双引号的json的key标准化
     obj = eval(s, type('js', (dict,), dict(__getitem__=lambda s, n: n))())
     return obj

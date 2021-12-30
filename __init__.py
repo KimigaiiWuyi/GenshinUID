@@ -16,7 +16,7 @@ from nonebot.rule import Rule
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
                     GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
                     connectDB, cookiesDB, deletecache, selectDB, get_alots,
-                    GetCharTalentsInfo,GetEnemiesInfo)
+                    GetEnemiesInfo)
 from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_event_pic, draw_pic, draw_wordcloud
 
 config = nonebot.get_driver().config
@@ -177,19 +177,6 @@ async def _(bot: Bot, event: Event):
     im = await enemies_wiki(message)
     await get_enemies.send(im)
 
-@get_char.handle()
-async def _(bot: Bot, event: Event):
-    message = str(event.get_message()).strip()
-    message = message.replace('角色', "")
-    message = message.replace(' ', "")
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-    level = re.findall(r"[0-9]+", message)
-    if len(level) == 1:
-        im = await char_wiki(name,extra="stats",num=level[0])
-    else:
-        im = await char_wiki(name)
-    await get_char.send(im)
-
 @get_talents.handle()
 async def _(bot: Bot, event: Event):
     message = str(event.get_message()).strip()
@@ -198,7 +185,7 @@ async def _(bot: Bot, event: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     num = re.findall(r"[0-9]+", message)
     if len(num) == 1:
-        im = await talents_wiki(name,num[0])
+        im = await char_wiki(name,"talents",num[0])
     else:
         im = "参数不正确。"
     await get_talents.send(im)
@@ -213,57 +200,35 @@ async def enemies_wiki(name):
                                                     raw_data["category"],raw_data["description"],reward)
     return im
 
-async def talents_wiki(name,num):
-    raw_data = await GetCharTalentsInfo(name)
-
-    if int(num) <= 3 :
-        if num == "1":
-            data = raw_data["combat1"]
-        elif num == "2":
-            data = raw_data["combat2"]
-        elif num == "3":
-            data = raw_data["combat3"]
-        skill_name = data["name"]
-        skill_info = data["info"]
-        skill_detail = ""
-
-        for i in data["attributes"]["parameters"]:
-            temp = ""
-            for k in data["attributes"]["parameters"][i]:
-                temp += "%.2f%%" % (k * 100) + "/"
-            data["attributes"]["parameters"][i] = temp[:-1]
-
-        for i in data["attributes"]["labels"]:
-            #i = i.replace("{","{{")
-            i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
-            #i.replace(r':[a-zA-Z0-9]+}','}')
-            skill_detail += i + "\n"
-
-        skill_detail = skill_detail.format(**data["attributes"]["parameters"])
-
-        im = "【{}】\n{}\n————\n{}".format(skill_name,skill_info,skill_detail)
-
-    else:
-        if num == "4":
-            data = raw_data["passive1"]
-        elif num == "5":
-            data = raw_data["passive2"]
-        elif num == "6":
-            data = raw_data["passive3"]
-        elif num == "7":
-            data = raw_data["passive4"]
-        skill_name = data["name"]
-        skill_info = data["info"]
-        im = "【{}】\n{}".format(skill_name,skill_info)
-
+async def enemies_wiki(name):
+    raw_data = await GetEnemiesInfo(name)
+    reward = ""
+    for i in raw_data["rewardpreview"]:
+        reward += i["name"] + "：" + str(i["count"]) if "count" in i.keys() else i["name"] + "：" + "可能"
+        reward += "\n"
+    im = "【{}】\n——{}——\n类型：{}\n信息：{}\n掉落物：\n{}".format(raw_data["name"],raw_data["specialname"],
+                                                    raw_data["category"],raw_data["description"],reward)
     return im
+
+@get_char.handle()
+async def _(bot: Bot, event: Event):
+    message = str(event.get_message()).strip()
+    message = message.replace('角色', "")
+    message = message.replace(' ', "")
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    level = re.findall(r"[0-9]+", message)
+    if len(level) == 1:
+        im = await char_wiki(name,"char",level=level[0])
+    else:
+        im = await char_wiki(name)
+    await get_char.send(im)
 
 @get_cost.handle()
 async def _(bot: Bot, event: Event):
     message = str(event.get_message()).strip()
     message = message.replace('材料', "")
     message = message.replace(' ', "")
-    im = await char_wiki(message,extra="cost")
+    im = await char_wiki(message,"costs")
     await get_weapon.send(im)
 
 @get_polar.handle()
@@ -275,7 +240,7 @@ async def _(bot: Bot, event: Event):
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     if num <= 0 or num > 6:
         await get_weapon.finish("你家{}有{}命？".format(m, num))
-    im = await char_wiki(m, 2, num)
+    im = await char_wiki(m, "constellations", num)
     await get_weapon.send(im)
 
 @draw_event.scheduled_job('cron', hour='2')
@@ -798,73 +763,106 @@ async def weapon_wiki(name,level = None):
     return im
 
 
-async def char_wiki(name, mode=0, num="", extra=""):
-    data = await GetCharInfo(name, mode)
-    if mode == 0:
+async def char_wiki(name, mode="char", level=None):
+    data = await GetCharInfo(name, mode, level if mode == "char" else None)
+    if mode == "char":
         if isinstance(data,str):
             raw_data = data.replace("[","").replace("\n","").replace("]","").replace(" ","").replace("'","").split(',')
             if data.replace("\n","").replace(" ","") == "undefined":
                 im = "不存在该角色或类型。"
             else:
                 im = ','.join(raw_data)
+        elif level:
+            data2 = await GetCharInfo(name, mode)
+            sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data2["specialized"]))
+            im = (data2["name"] + "\n等级：" + str(data["level"]) + "\n血量：" + str(math.floor(data["hp"])) +
+                "\n攻击力：" + str(math.floor(data["attack"])) + "\n防御力：" + str(math.floor(data["defense"])) +
+                "\n" + sp)
         else:
-            if extra == "cost":
-                talent_data = await GetCharInfo(name, 1)
+            name = data['title'] + ' — ' + data['name']
+            star = data['rarity']
+            type = data["weapontype"]
+            element = data['element']
+            up_val = data['substat']
+            bdday = data['birthday']
+            polar = data['constellation']
+            cv = data['cv']['chinese']
+            info = data['description']
+            im = char_info_im.format(
+                name, star, type, element, up_val, bdday, polar, cv, info)
+    elif mode == "costs":
+        im = "【天赋材料(一份)】\n{}\n【突破材料】\n{}"
+        im1 = ""
+        im2 = ""
+        
+        talent_temp = {}
+        talent_cost = data[1]["costs"]
+        for i in talent_cost.values():
+            for j in i:
+                if j["name"] not in talent_temp:
+                    talent_temp[j["name"]] = j["count"]
+                else:
+                    talent_temp[j["name"]] = talent_temp[j["name"]] + j["count"]
+        for k in talent_temp:
+            im1 = im1 + k + ":" + str(talent_temp[k]) + "\n"
 
-                im = "【天赋材料(一份)】\n{}\n【突破材料】\n{}"
-                im1 = ""
-                im2 = ""
-                
-                talent_temp = {}
-                talent_cost = talent_data["costs"]
-                for i in talent_cost.values():
-                    for j in i:
-                        if j["name"] not in talent_temp:
-                            talent_temp[j["name"]] = j["count"]
-                        else:
-                            talent_temp[j["name"]] = talent_temp[j["name"]] + j["count"]
-                for k in talent_temp:
-                    im1 = im1 + k + ":" + str(talent_temp[k]) + "\n"
+        temp = {}
+        cost = data[0]
+        for i in range(1,7):
+            for j in cost["ascend{}".format(i)]:
+                if j["name"] not in temp:
+                    temp[j["name"]] = j["count"]
+                else:
+                    temp[j["name"]] = temp[j["name"]] + j["count"]
+                    
+        for k in temp:
+            im2 = im2 + k + ":" + str(temp[k]) + "\n"
+        
+        im = im.format(im1,im2)
+    elif mode == "constellations":
+        im = "【" + data["c{}".format(level)]['name'] + "】" + "：" + \
+            "\n" + data["c{}".format(level)]['effect'].replace("*", "")
+    elif mode == "talents":
+        if int(level) <= 3 :
+            if level == "1":
+                data = data["combat1"]
+            elif level == "2":
+                data = data["combat2"]
+            elif level == "3":
+                data = data["combat3"]
+            skill_name = data["name"]
+            skill_info = data["info"]
+            skill_detail = ""
 
-                temp = {}
-                cost = data["costs"]
-                for i in range(1,7):
-                    for j in cost["ascend{}".format(i)]:
-                        if j["name"] not in temp:
-                            temp[j["name"]] = j["count"]
-                        else:
-                            temp[j["name"]] = temp[j["name"]] + j["count"]
-                            
-                for k in temp:
-                    im2 = im2 + k + ":" + str(temp[k]) + "\n"
-                
-                im = im.format(im1,im2)
+            for i in data["attributes"]["parameters"]:
+                temp = ""
+                for k in data["attributes"]["parameters"][i]:
+                    temp += "%.2f%%" % (k * 100) + "/"
+                data["attributes"]["parameters"][i] = temp[:-1]
 
-            elif extra == "stats":
-                data2 = await GetCharInfo(name, mode, num)
-                sp = data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100) if data["substat"] != "元素精通" else data["substat"] + "：" + str(math.floor(data2["specialized"]))
-                im = (data["name"] + "\n等级：" + str(data2["level"]) + "\n血量：" + str(math.floor(data2["hp"])) +
-                    "\n攻击力：" + str(math.floor(data2["attack"])) + "\n防御力：" + str(math.floor(data2["defense"])) +
-                    "\n" + sp)
-            else:
-                name = data['title'] + ' — ' + data['name']
-                star = data['rarity']
-                type = data["weapontype"]
-                element = data['element']
-                up_val = data['substat']
-                bdday = data['birthday']
-                polar = data['constellation']
-                cv = data['cv']['chinese']
-                info = data['description']
-                im = char_info_im.format(
-                    name, star, type, element, up_val, bdday, polar, cv, info)
-    elif mode == 1:
-        im = '暂不支持'
-    elif mode == 2:
-        im = "【" + data["c{}".format(num)]['name'] + "】" + "：" + \
-            "\n" + data["c{}".format(num)]['effect'].replace("*", "")
+            for i in data["attributes"]["labels"]:
+                #i = i.replace("{","{{")
+                i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
+                #i.replace(r':[a-zA-Z0-9]+}','}')
+                skill_detail += i + "\n"
+
+            skill_detail = skill_detail.format(**data["attributes"]["parameters"])
+
+            im = "【{}】\n{}\n————\n{}".format(skill_name,skill_info,skill_detail)
+
+        else:
+            if level == "4":
+                data = data["passive1"]
+            elif level == "5":
+                data = data["passive2"]
+            elif level == "6":
+                data = data["passive3"]
+            elif level == "7":
+                data = data["passive4"]
+            skill_name = data["name"]
+            skill_info = data["info"]
+            im = "【{}】\n{}".format(skill_name,skill_info)
     return im
-
 
 async def rule_all_recheck(Bot, Event, T_State):
     return Event.sender.user_id in superusers

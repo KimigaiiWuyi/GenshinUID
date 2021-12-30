@@ -335,11 +335,21 @@ async def _(bot: Bot, event: Event):
     message = str(event.get_message()).strip().replace(
         ' ', "").replace('开启', "")
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+
+    qid = event.sender.user_id
+    at = re.search(r"\[CQ:at,qq=(\d*)\]", message)
+
     if m == "自动签到":
         try:
+            if at and qid in superusers:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await close_switch.send("你没有权限。", at_sender=True)
+                return
+            else:
+                pass
             gid = event.get_session_id().split("_")[1] if len(
                 event.get_session_id().split("_")) == 3 else "on"
-            qid = event.sender.user_id
             uid = await selectDB(qid, mode="uid")
             im = await OpenPush(int(uid[0]), qid, str(gid), "StatusB")
             await open_switch.send(im, at_sender=True)
@@ -347,9 +357,15 @@ async def _(bot: Bot, event: Event):
             await open_switch.send("未绑定uid信息！", at_sender=True)
     elif m == "推送":
         try:
+            if at and qid in superusers:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await close_switch.send("你没有权限。", at_sender=True)
+                return
+            else:
+                pass
             gid = event.get_session_id().split("_")[1] if len(
                 event.get_session_id().split("_")) == 3 else "on"
-            qid = event.sender.user_id
             uid = await selectDB(qid, mode="uid")
             im = await OpenPush(int(uid[0]), qid, str(gid), "StatusA")
             await open_switch.send(im, at_sender=True)
@@ -364,9 +380,19 @@ async def _(bot: Bot, event: Event):
     message = str(event.get_message()).strip().replace(
         ' ', "").replace('关闭', "")
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+
+    qid = event.sender.user_id
+    at = re.search(r"\[CQ:at,qq=(\d*)\]", message)
+
     if m == "自动签到":
         try:
-            qid = event.sender.user_id
+            if at and qid in superusers:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await close_switch.send("你没有权限。", at_sender=True)
+                return
+            else:
+                pass
             uid = await selectDB(qid, mode="uid")
             im = await OpenPush(int(uid[0]), qid, "off", "StatusB")
             await close_switch.send(im, at_sender=True)
@@ -374,7 +400,13 @@ async def _(bot: Bot, event: Event):
             await close_switch.send("未绑定uid信息！", at_sender=True)
     elif m == "推送":
         try:
-            qid = event.sender.user_id
+            if at and qid in superusers:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await close_switch.send("你没有权限。", at_sender=True)
+                return
+            else:
+                pass
             uid = await selectDB(qid, mode="uid")
             im = await OpenPush(int(uid[0]), qid, "off", "StatusA")
             await close_switch.send(im, at_sender=True)

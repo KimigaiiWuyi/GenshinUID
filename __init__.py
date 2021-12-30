@@ -311,10 +311,20 @@ async def setting(ctx):
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
     m = ''.join(re.findall('[\u4e00-\u9fa5]',message))
+    
+    qid = ev.sender["user_id"]
+    at = re.search(r"\[CQ:at,qq=(\d*)\]", message)
+
     if m == "自动签到":
         try:
+            if at and ev.user_id in bot.config.SUPERUSERS:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await bot.send(ev,"你没有权限。",at_sender=True)
+                return
+            else:
+                pass
             gid = ev.group_id
-            qid = ev.sender["user_id"]
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],str(gid),"StatusB")
             await bot.send(ev,im,at_sender=True)
@@ -322,8 +332,14 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
     elif m == "推送":
         try:
+            if at and ev.user_id in bot.config.SUPERUSERS:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await bot.send(ev,"你没有权限。",at_sender=True)
+                return
+            else:
+                pass
             gid = ev.group_id
-            qid = ev.sender["user_id"]
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],str(gid),"StatusA")
             await bot.send(ev,im,at_sender=True)
@@ -335,10 +351,20 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 async def _(bot:HoshinoBot,  ev: CQEvent):
     message = ev.message.extract_plain_text()
     m = ''.join(re.findall('[\u4e00-\u9fa5]',message))
+
+    qid = ev.sender["user_id"]
+    at = re.search(r"\[CQ:at,qq=(\d*)\]", message)
+
     if m == "自动签到":
         try:
+            if at and ev.user_id in bot.config.SUPERUSERS:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await bot.send(ev,"你没有权限。",at_sender=True)
+                return
+            else:
+                pass
             gid = ev.group_id
-            qid = ev.sender["user_id"]
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],"off","StatusB")
             await bot.send(ev,im,at_sender=True)
@@ -346,8 +372,14 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
     elif m == "推送":
         try:
+            if at and ev.user_id in bot.config.SUPERUSERS:
+                qid = at.group(1)
+            elif at and at.group(1) != qid:
+                await bot.send(ev,"你没有权限。",at_sender=True)
+                return
+            else:
+                pass
             gid = ev.group_id
-            qid = ev.sender["user_id"]
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],"off","StatusA")
             await bot.send(ev,im,at_sender=True)

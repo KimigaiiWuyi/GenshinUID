@@ -66,64 +66,57 @@ def GetMysInfo(mysid,ck):
         print(im)
         return im
 
-def GetWeaponInfo(name):
+def GetWeaponInfo(name,level = None):
     req = httpx.get(
-        url="https://genshin.minigg.cn/?weapons=" + name,
-        headers={
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-            'Referer': 'https://genshin.minigg.cn/index.html'})
-    soup = BeautifulSoup(req.text, "lxml")
-    item = soup.select_one("pre").text
-    data = json.loads(item)
-    return data
-
-def GetCharTalentsInfo(name):
-    baseurl = "https://api.minigg.cn/talents?query="
-    req = httpx.get(
-        url = baseurl + name,
+        url="https://api.minigg.cn/weapons?query=" + name + "&stats=" + level if level else "https://api.minigg.cn/weapons?query=" + name,
         headers={
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
             'Referer': 'https://genshin.minigg.cn/index.html'})
     data = jsonfy(req.text)
     return data
 
-def GetCharInfo(name,mode = 0,level = None):
-    str = ""
-    if mode == 1:
-        str = "&talents=1"
-    elif mode == 2:
-        str = "&constellations=1"
-    
-    baseurl = "https://genshin.minigg.cn/?characters="
+def GetCharInfo(name,mode = "char",level = None):
+    url2 = None
+    data2 = None
+    baseurl = "https://api.minigg.cn/characters?query="
+    if mode == "talents":
+        url = "https://api.minigg.cn/talents?query=" + name
+    elif mode == "constellations":
+        url = "https://api.minigg.cn/constellations?query=" + name
+    elif mode == "costs":
+        url = baseurl + name + "&costs=1"
+        url2 = "https://api.minigg.cn/talents?query=" + name + "&costs=1"
+    elif level:
+        url = baseurl + name + "&stats=" + level
+    else:
+        url = baseurl + name
 
-    detailurl = "https://api.minigg.cn/characters?query="
-
-    if level:
-        req = httpx.get(url = detailurl + name + "&stats=" + level,
+    if url2:
+        req = httpx.get(
+            url = url2,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
-        data = jsonfy(req.text)
+        data2 = jsonfy(req.text)
+
+    req = httpx.get(
+        url = url,
+        headers={
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+            'Referer': 'https://genshin.minigg.cn/index.html'})
+    data = jsonfy(req.text)
+    
+    if data != "undefined":
+        pass
     else:
         req = httpx.get(
-            url = baseurl + name + str,
+            url = baseurl + name + "&matchCategories=true",
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
+        data = req.text
 
-        soup = BeautifulSoup(req.text, "lxml")
-        item = soup.select_one("pre").text
-        if item:
-            data = json.loads(item)
-        else:
-            req = httpx.get(
-                    url = detailurl + name + "&matchCategories=true",
-                    headers={
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                        'Referer': 'https://genshin.minigg.cn/index.html'})
-            data = req.text
-
-    return data
+    return data if data2 == None else [data,data2]
 
 def GetGenshinEvent(mode = "List"):
     if mode == "Calendar":

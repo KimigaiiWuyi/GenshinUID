@@ -806,7 +806,7 @@ async def char_wiki(name, mode="char", level=None):
                 im = ','.join(raw_data)
         elif level:
             data2 = await GetCharInfo(name, mode)
-            sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data2["specialized"]))
+            sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data["specialized"]))
             im = (data2["name"] + "\n等级：" + str(data["level"]) + "\n血量：" + str(math.floor(data["hp"])) +
                 "\n攻击力：" + str(math.floor(data["attack"])) + "\n防御力：" + str(math.floor(data["defense"])) +
                 "\n" + sp)

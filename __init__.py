@@ -317,7 +317,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 
     if m == "自动签到":
         try:
-            if at and ev.user_id in bot.config.SUPERUSERS:
+            if at and qid in bot.config.SUPERUSERS:
                 qid = at.group(1)
             elif at and at.group(1) != qid:
                 await bot.send(ev,"你没有权限。",at_sender=True)
@@ -332,7 +332,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
     elif m == "推送":
         try:
-            if at and ev.user_id in bot.config.SUPERUSERS:
+            if at and qid in bot.config.SUPERUSERS:
                 qid = at.group(1)
             elif at and at.group(1) != qid:
                 await bot.send(ev,"你没有权限。",at_sender=True)
@@ -357,7 +357,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 
     if m == "自动签到":
         try:
-            if at and ev.user_id in bot.config.SUPERUSERS:
+            if at and qid in bot.config.SUPERUSERS:
                 qid = at.group(1)
             elif at and at.group(1) != qid:
                 await bot.send(ev,"你没有权限。",at_sender=True)
@@ -372,7 +372,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
     elif m == "推送":
         try:
-            if at and ev.user_id in bot.config.SUPERUSERS:
+            if at and qid in bot.config.SUPERUSERS:
                 qid = at.group(1)
             elif at and at.group(1) != qid:
                 await bot.send(ev,"你没有权限。",at_sender=True)
@@ -758,7 +758,7 @@ async def char_wiki(name, mode="char", level=None):
                 im = ','.join(raw_data)
         elif level:
             data2 = await GetCharInfo(name, mode)
-            sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data2["specialized"]))
+            sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data["specialized"]))
             im = (data2["name"] + "\n等级：" + str(data["level"]) + "\n血量：" + str(math.floor(data["hp"])) +
                 "\n攻击力：" + str(math.floor(data["attack"])) + "\n防御力：" + str(math.floor(data["defense"])) +
                 "\n" + sp)

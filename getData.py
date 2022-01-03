@@ -118,6 +118,15 @@ def GetCharInfo(name,mode = "char",level = None):
 
     return data if data2 == None else [data,data2]
 
+def GetAudioInfo(name,audioid,language = "cn"):
+    url = "https://genshin.minigg.cn/?characters=" + name + "&audioid=" + audioid + "&language=" + language
+    req = httpx.get(
+            url=url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html'})
+    return req.text
+
 def GetGenshinEvent(mode = "List"):
     if mode == "Calendar":
         now_time = datetime.datetime.now().strftime('%Y-%m-%d')

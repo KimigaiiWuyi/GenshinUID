@@ -36,15 +36,24 @@ def record(gname,gid,uname,uid,mes,reply):
     conn.close()
 
 def check_switch(gid,func):
-    conn = sqlite3.connect('ID_DATA.db')
-    c = conn.cursor()
-    cursor = c.execute("SELECT {}  FROM GuildList WHERE GuildID = ?".format(func),(gid,))
-    c_data = cursor.fetchall()
-    conn.commit()
-    conn.close()
-    if c_data[0][0] != "off":
-        return True
-    else:
+    try:
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+        columns = [i[1] for i in c.execute('PRAGMA table_info(GuildList)')]
+
+        if func not in columns:
+            c.execute('ALTER TABLE GuildList ADD COLUMN {} TEXT'.format(func))
+
+        cursor = c.execute("SELECT {}  FROM GuildList WHERE GuildID = ?".format(func),(gid,))
+        c_data = cursor.fetchall()
+        conn.commit()
+        conn.close()
+        if c_data[0][0] != "off":
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(e.with_traceback)
         return False
 
 def change_switch(gid,func,status):

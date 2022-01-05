@@ -986,50 +986,53 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     text_draw.text((640, 183.9),raw_data['stats']['spiral_abyss'], new_color, ys_font(26))
 
     #宝箱
-    text_draw.text((258, 382.4),str(raw_data['stats']['magic_chest_number']), new_color, ys_font(24))
-    text_draw.text((258, 442),str(raw_data['stats']['common_chest_number']),new_color, ys_font(24))
-    text_draw.text((258, 501.6),str(raw_data['stats']['exquisite_chest_number']),new_color, ys_font(24))
-    text_draw.text((258, 561.2),str(raw_data['stats']['precious_chest_number']), new_color, ys_font(24))
-    text_draw.text((258, 620.8),str(raw_data['stats']['luxurious_chest_number']), new_color, ys_font(24))
+    text_draw.text((258, 375.4),str(raw_data['stats']['magic_chest_number']), new_color, ys_font(24))
+    text_draw.text((258, 425.4),str(raw_data['stats']['common_chest_number']),new_color, ys_font(24))
+    text_draw.text((258, 475.4),str(raw_data['stats']['exquisite_chest_number']),new_color, ys_font(24))
+    text_draw.text((258, 525.4),str(raw_data['stats']['precious_chest_number']), new_color, ys_font(24))
+    text_draw.text((258, 575.4),str(raw_data['stats']['luxurious_chest_number']), new_color, ys_font(24))
 
     #已获角色
-    text_draw.text((258, 680.4),str(raw_data['stats']['avatar_number']),new_color, ys_font(24))
+    text_draw.text((740, 547),str(raw_data['stats']['avatar_number']),new_color, ys_font(24))
 
     #开启锚点和秘境数量
-    text_draw.text((745, 474.5),str(raw_data['stats']['way_point_number']),new_color, ys_font(24))
-    text_draw.text((745, 514),str(raw_data['stats']['domain_number']),new_color, ys_font(24))
+    text_draw.text((258, 625.4),str(raw_data['stats']['way_point_number']),new_color, ys_font(24))
+    text_draw.text((258, 675.4),str(raw_data['stats']['domain_number']),new_color, ys_font(24))
 
     #蒙德
-    text_draw.text((490, 370),str(raw_data['world_explorations'][3]['exploration_percentage']/10) + '%',new_color, ys_font(22))
-    text_draw.text((490, 400),'lv.' + str(raw_data['world_explorations'][3]['level']),new_color, ys_font(22))
+    text_draw.text((490, 370),str(raw_data['world_explorations'][4]['exploration_percentage']/10) + '%',new_color, ys_font(22))
+    text_draw.text((490, 400),'lv.' + str(raw_data['world_explorations'][4]['level']),new_color, ys_font(22))
     text_draw.text((513, 430), str(raw_data['stats']['anemoculus_number']), new_color, ys_font(22))
 
     #璃月
-    text_draw.text((490, 490),str(raw_data['world_explorations'][2]['exploration_percentage']/10) + '%',new_color, ys_font(22))
-    text_draw.text((490, 520),'lv.' + str(raw_data['world_explorations'][2]['level']),new_color, ys_font(22))
+    text_draw.text((490, 490),str(raw_data['world_explorations'][3]['exploration_percentage']/10) + '%',new_color, ys_font(22))
+    text_draw.text((490, 520),'lv.' + str(raw_data['world_explorations'][3]['level']),new_color, ys_font(22))
     text_draw.text((513, 550), str(raw_data['stats']['geoculus_number']), new_color, ys_font(22))
 
     #雪山
-    text_draw.text((745, 379.5),str(raw_data['world_explorations'][1]['exploration_percentage']/10) + '%',new_color, ys_font(22))
-    text_draw.text((745, 413.1),'lv.' + str(raw_data['world_explorations'][1]['level']),new_color, ys_font(22))
+    text_draw.text((745, 373.5),str(raw_data['world_explorations'][2]['exploration_percentage']/10) + '%',new_color, ys_font(22))
+    text_draw.text((745, 407.1),'lv.' + str(raw_data['world_explorations'][2]['level']),new_color, ys_font(22))
 
     #稻妻
-    text_draw.text((490, 608),str(raw_data['world_explorations'][0]['exploration_percentage']/10) + '%',new_color, ys_font(22))
-    text_draw.text((490, 635),'lv.' + str(raw_data['world_explorations'][0]['level']),new_color, ys_font(22))
-    text_draw.text((490, 662),'lv.' + str(raw_data['world_explorations'][0]['offerings'][0]['level']),new_color, ys_font(22))
+    text_draw.text((490, 608),str(raw_data['world_explorations'][1]['exploration_percentage']/10) + '%',new_color, ys_font(22))
+    text_draw.text((490, 635),'lv.' + str(raw_data['world_explorations'][1]['level']),new_color, ys_font(22))
+    text_draw.text((490, 662),'lv.' + str(raw_data['world_explorations'][1]['offerings'][0]['level']),new_color, ys_font(22))
     text_draw.text((513, 689), str(raw_data['stats']['electroculus_number']), new_color, ys_font(22))
+
+    #渊下宫
+    text_draw.text((745, 480),str(raw_data['world_explorations'][0]['exploration_percentage']/10) + '%',new_color, ys_font(22))
 
     #家园
     if len(raw_data['homes']):
-        text_draw.text((693, 572.4),'lv.' + str(raw_data['homes'][0]['level']),new_color, ys_font(22))
-        text_draw.text((693, 610.4),str(raw_data['homes'][0]['visit_num']),new_color, ys_font(22))
-        text_draw.text((693, 648.4),str(raw_data['homes'][0]['item_num']),new_color, ys_font(22))
-        text_draw.text((693, 686.4),str(raw_data['homes'][0]['comfort_num']),new_color, ys_font(22))
+        text_draw.text((693, 582.4),'lv.' + str(raw_data['homes'][0]['level']),new_color, ys_font(22))
+        text_draw.text((693, 620.4),str(raw_data['homes'][0]['visit_num']),new_color, ys_font(22))
+        text_draw.text((693, 658.4),str(raw_data['homes'][0]['item_num']),new_color, ys_font(22))
+        text_draw.text((693, 696.4),str(raw_data['homes'][0]['comfort_num']),new_color, ys_font(22))
     else:
-        text_draw.text((693, 572.4),"未开",new_color, ys_font(22))
-        text_draw.text((693, 610.4),"未开",new_color, ys_font(22))
-        text_draw.text((693, 648.4),"未开",new_color, ys_font(22))
-        text_draw.text((693, 686.4),"未开",new_color, ys_font(22))
+        text_draw.text((693, 582.4),"未开",new_color, ys_font(22))
+        text_draw.text((693, 620.4),"未开",new_color, ys_font(22))
+        text_draw.text((693, 658.4),"未开",new_color, ys_font(22))
+        text_draw.text((693, 696.4),"未开",new_color, ys_font(22))
     
     #确定texture2D路径
     charpic_mask_path = os.path.join(TEXT_PATH,"charpic_mask.png")

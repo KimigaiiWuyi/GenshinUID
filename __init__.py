@@ -5,6 +5,10 @@ import sqlite3
 import threading
 import time,math
 import base64
+import requests
+from io import BytesIO
+from base64 import b64encode
+import random
 
 import nonebot
 from nonebot import *
@@ -17,7 +21,7 @@ from loguru import logger
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
                     GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
                     connectDB, cookiesDB, deletecache, selectDB, get_alots,
-                    GetEnemiesInfo)
+                    GetEnemiesInfo,GetAudioInfo)
 from .getImg import draw_abyss0_pic, draw_abyss_pic, draw_event_pic, draw_pic, draw_wordcloud
 
 config = nonebot.get_driver().config
@@ -35,6 +39,7 @@ get_cost = on_startswith("材料", priority=priority)
 get_polar = on_startswith("命座", priority=priority)
 get_talents = on_startswith("天赋", priority=priority)
 get_enemies = on_startswith("原魔", priority=priority)
+get_audio = on_startswith("语音", priority=priority)
 
 get_uid_info = on_startswith("uid", permission=GROUP, priority=priority)
 get_mys_info = on_startswith("mys", permission=GROUP, priority=priority)
@@ -60,6 +65,7 @@ check = on_command("校验全部Cookies", priority=priority)
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mys')
+INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 
 avatar_json = {
@@ -102,7 +108,8 @@ avatar_json = {
     "Shogun": "雷电将军",
     "Aloy": "埃洛伊",
     "Sara": "九条裟罗",
-    "Kokomi": "珊瑚宫心海"
+    "Kokomi": "珊瑚宫心海",
+    "Shenhe":"申鹤"
 }
 
 daily_im = '''
@@ -111,6 +118,7 @@ daily_im = '''
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
 周本减半：{}/{}
+洞天宝钱：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
 {}'''
@@ -150,6 +158,52 @@ char_info_im = '''{}
 【命之座】：{}
 【cv】：{}
 【介绍】：{}'''
+
+audio_json = {
+    "357":["357_01","357_02","357_03"],
+    "1000000":["1000000_01","1000000_02","1000000_03","1000000_04","1000000_05","1000000_06","1000000_07"],
+    "1000001":["1000001_01","1000001_02","1000001_03"],
+    "1000002":["1000002_01","1000002_02","1000002_03"],
+    "1000100":["1000100_01","1000100_02","1000100_03","1000100_04","1000100_05"],
+    "1000101":["1000101_01","1000101_02","1000101_03","1000101_04","1000101_05","1000101_06"],
+    "1000200":["1000200_01","1000200_02","1000200_03"],
+    "1010201":["1010201_01"],
+    "1000300":["1000300_01","1000300_02"],
+    "1000400":["1000400_01","1000400_02","1000400_03"],
+    "1000500":["1000500_01","1000500_02","1000500_03"],
+    "1010000":["1010000_01","1010000_02","1010000_03","1010000_04","1010000_05"],
+    "1010001":["1010001_01","1010001_02"],
+    "1010100":["1010100_01","1010100_02","1010100_03","1010100_04","1010100_05"],
+    "1010200":["1010200_01","1010200_02","1010200_03","1010200_04","1010200_05"],
+    "1010300":["1010300_01","1010300_02","1010300_03","1010300_04","1010300_05"],
+    "1010301":["1010301_01","1010301_02","1010301_03","1010301_04","1010301_05"],
+    "1010400":["1010400_01","1010400_02","1010400_03"],
+    "1020000":["1020000_01"]
+}
+
+@get_audio.handle()
+async def _(bot: Bot, event: Event):
+    message = str(event.get_message()).strip()
+    message = message.replace('语音', "").replace(' ', "")
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+
+    if name == "列表":
+        im = Message(f'[CQ:image,file=file://{os.path.join(INDEX_PATH,"语音.png")}]')
+        await get_audio.send(im)
+    elif name == "":
+        return
+    else:
+        audioid = re.findall(r"[0-9]+", message)[0]
+        if audioid in audio_json:
+            audioid = random.choice(audio_json[audioid])
+        url = await GetAudioInfo(name,audioid)
+        audio = BytesIO(requests.get(url).content)
+        audios = 'base64://' + b64encode(audio.getvalue()).decode()
+        resultmes = Message(f"[CQ:record,file={audios}]")
+        try:
+            await get_audio.send(resultmes)
+        except nonebot.adapters.cqhttp.exception.ActionFailed:
+            await get_audio.send("不存在该语音ID或者不存在该角色。")
 
 @get_lots.handle()
 async def _(bot: Bot, event: Event):
@@ -746,8 +800,9 @@ async def daily(mode="push", uid=None):
                             f"{avatar_name} 剩余时间{remained_timed}")
                 expedition_data = "\n".join(expedition_info)
 
+                coin = str(dailydata["current_home_coin"]) + "/" + str(dailydata["max_home_coin"])
                 send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num, is_extra_got, used_resin_discount_num,
-                                        resin_discount_num_limit, current_expedition_num, finished_expedition_num, max_expedition_num, expedition_data)
+                                        resin_discount_num_limit, coin,current_expedition_num, finished_expedition_num, max_expedition_num, expedition_data)
 
                 temp_list.append(
                     {"qid": row[2], "gid": row[3], "message": send_mes})

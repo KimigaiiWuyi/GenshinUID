@@ -188,7 +188,7 @@ async def _(bot: Bot, event: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
     if name == "列表":
-        im = Message(f'[CQ:image,file=file://{os.path.join(INDEX_PATH,"语音.png")}]')
+        im = Message(f'[CQ:image,file=file:///{os.path.join(INDEX_PATH,"语音.png")}]')
         await get_audio.send(im)
     elif name == "":
         return

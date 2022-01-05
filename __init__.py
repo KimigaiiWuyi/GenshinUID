@@ -12,6 +12,7 @@ from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import *
 from nonebot.adapters.cqhttp import Message, MessageSegment, permission, utils
 from nonebot.rule import Rule
+from loguru import logger
 
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo,
                     GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
@@ -908,3 +909,14 @@ all_recheck = on_command("全部重签", rule=Rule(
 async def _(bot: Bot, event: Event):
     await all_recheck.send("已开始执行")
     await dailysign()
+
+async def init():
+    logger.info("正在更新活动列表")
+    try:
+        await draw_event_pic()
+    except:
+        logger.error("活动列表更新失败\n"+traceback.format_exc())
+    else:
+        logger.info("活动列表更新完毕")
+
+asyncio.get_event_loop().run_until_complete(init())

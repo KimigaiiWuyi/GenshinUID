@@ -378,7 +378,6 @@ def _message_handler(event, message: Message):
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = e.with_traceback
-
     elif raw_mes == "查询" and check_switch(message.guild_id,switch_list["查询"]):
         try:
             uid = selectDB(message.author.id)

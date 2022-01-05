@@ -246,10 +246,14 @@ async def _(bot: Bot, event: Event):
     await get_talents.send(im)
 
 async def enemies_wiki(name):
+    def parse_percent(num):
+        if num<=1:
+            return str(round(num*100,4)) + "%"
+        return str(num)
     raw_data = await GetEnemiesInfo(name)
     reward = ""
     for i in raw_data["rewardpreview"]:
-        reward += i["name"] + "：" + str(round(i["count"]*100,4)) + "%" if "count" in i.keys() else i["name"] + "：" + "可能"
+        reward += i["name"] + "：" + parse_percent(i["count"]) if "count" in i.keys() else i["name"] + "：" + "可能"
         reward += "\n"
     im = "【{}】\n——{}——\n类型：{}\n信息：{}\n掉落物：\n{}".format(raw_data["name"],raw_data["specialname"],
                                                     raw_data["category"],raw_data["description"],reward)

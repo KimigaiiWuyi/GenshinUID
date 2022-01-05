@@ -253,7 +253,7 @@ async def _(bot: Bot, event: Event):
     img_path = os.path.join(FILE2_PATH,"event.jpg")
     while(1):
         if os.path.exists(img_path):
-            im = Message(f'[CQ:image,file=file://{img_path}]')
+            im = Message(f'[CQ:image,file=file:///{os.path.abspath(img_path)}]')
             break
         else:
             await draw_event_pic()

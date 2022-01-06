@@ -9,6 +9,7 @@ import requests
 from io import BytesIO
 from base64 import b64encode
 import random
+import json
 
 import nonebot
 from nonebot import *
@@ -159,7 +160,7 @@ char_info_im = '''{}
 【cv】：{}
 【介绍】：{}'''
 
-audio_json = {
+audio_json = '''{
     "357":["357_01","357_02","357_03"],
     "1000000":["1000000_01","1000000_02","1000000_03","1000000_04","1000000_05","1000000_06","1000000_07"],
     "1000001":["1000001_01","1000001_02","1000001_03"],
@@ -179,10 +180,28 @@ audio_json = {
     "1010301":["1010301_01","1010301_02","1010301_03","1010301_04","1010301_05"],
     "1010400":["1010400_01","1010400_02","1010400_03"],
     "1020000":["1020000_01"]
-}
+}'''
 
 @get_audio.handle()
 async def _(bot: Bot, event: Event):
+    async def get(audioid):
+        tmp_json=json.loads(audio_json)
+        for _ in range(3):#重试3次
+            if audioid in tmp_json:
+                logger.info(tmp_json[audioid])
+                if not tmp_json[audioid]:
+                    return
+                audioid1 = random.choice(tmp_json[audioid])
+            else:
+                audioid1=audioid
+            url = await GetAudioInfo(name,audioid1)
+            req=requests.get(url)
+            if req.headers["Content-Type"].startswith("audio"):
+                return BytesIO(req.content)
+            else:
+                if audioid in tmp_json:
+                    tmp_json[audioid].remove(audioid1)
+        
     message = str(event.get_message()).strip()
     message = message.replace('语音', "").replace(' ', "")
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -194,15 +213,19 @@ async def _(bot: Bot, event: Event):
         return
     else:
         audioid = re.findall(r"[0-9]+", message)[0]
-        if audioid in audio_json:
-            audioid = random.choice(audio_json[audioid])
-        url = await GetAudioInfo(name,audioid)
-        audio = BytesIO(requests.get(url).content)
-        audios = 'base64://' + b64encode(audio.getvalue()).decode()
-        resultmes = Message(f"[CQ:record,file={audios}]")
         try:
-            await get_audio.send(resultmes)
-        except nonebot.adapters.cqhttp.exception.ActionFailed:
+            audio=await get(audioid)
+        except:
+            await get_audio.send("语音获取失败")
+            return
+        if audio:
+            audios = 'base64://' + b64encode(audio.getvalue()).decode()
+            resultmes = Message(f"[CQ:record,file={audios}]")
+            try:
+                await get_audio.send(resultmes)
+            except nonebot.adapters.cqhttp.exception.ActionFailed:
+                await get_audio.send("语音发送失败")
+        else:
             await get_audio.send("不存在该语音ID或者不存在该角色。")
 
 @get_lots.handle()

@@ -270,8 +270,8 @@ async def _(bot: Bot, event: Event):
 
 async def enemies_wiki(name):
     def parse_percent(num):
-        if num<=1:
-            return str(round(num*100,4)) + "%"
+        if isinstance(num,float):
+            return str(round(num*100,2)) + "%"
         return str(num)
     raw_data = await GetEnemiesInfo(name)
     reward = ""

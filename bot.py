@@ -3,6 +3,7 @@ import base64
 from apscheduler.schedulers.background import BackgroundScheduler
 from shutil import copyfile
 import urllib.parse
+import httpx
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -399,7 +400,7 @@ def _message_handler(event, message: Message):
             qqbot.logger.info(e.with_traceback)
             mes = "没有找到绑定信息。"
     elif raw_mes.startswith("开启"):
-        raw_mes = raw_mes.replace("开启","")
+        raw_mes = raw_mes.replace("开启","").replace("功能","")
         try:
             change_switch(message.guild_id,switch_list[raw_mes],"on")
             mes = "成功。"
@@ -407,7 +408,7 @@ def _message_handler(event, message: Message):
             print(e.with_traceback)
             mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("关闭"):
-        raw_mes = raw_mes.replace("关闭","")
+        raw_mes = raw_mes.replace("关闭","").replace("功能","")
         try:
             change_switch(message.guild_id,switch_list[raw_mes],"off")
             mes = "成功。"
@@ -453,8 +454,8 @@ def _message_handler(event, message: Message):
             else:
                 mes = image
         except Exception as e:
-            print(e.with_traceback)
-            mes = "未知错误。"
+            qqbot.logger.info(e.with_traceback)
+            mes = "参数不正确。"
     #elif raw_mes.startswith("活动列表"):
         #draw_event_pic()
     #    pass
@@ -534,12 +535,12 @@ def _message_handler(event, message: Message):
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             image = "https://img.genshin.minigg.cn/guide/{}.jpg".format(urllib.parse.quote(name, safe=''))
-            status = urllib.request.urlopen(image).code
-            if status == 200:
-                pass
-            else:
+            status = httpx.get(url = image).text
+            if "404 Not Found" in status:
                 image = None
                 mes = "信息库中不存在该角色。"
+            else:
+                pass
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "发生错误。"
@@ -548,12 +549,12 @@ def _message_handler(event, message: Message):
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             image = "https://img.genshin.minigg.cn/info/{}.jpg".format(urllib.parse.quote(name, safe=''))
-            status = urllib.request.urlopen(image).code
-            if status == 200:
-                pass
-            else:
+            status = httpx.get(url = image).text
+            if "404 Not Found" in status:
                 image = None
                 mes = "信息库中不存在该角色。"
+            else:
+                pass
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "发生错误。"

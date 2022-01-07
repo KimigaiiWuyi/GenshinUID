@@ -1249,7 +1249,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
     img_msg=f"[CQ:image,file={imgmes}]"
-    if not use_new_get_chars_method:
+    if (not use_new_get_chars_method) and char_num<=8:
         img_msg='*由于米游社接口限制，现仅能查询部分角色信息\n'+img_msg
     resultmes = Message(img_msg)
     return resultmes

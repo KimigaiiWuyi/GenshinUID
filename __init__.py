@@ -118,7 +118,7 @@ daily_im = '''
 ==============
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
-周本减半：{}/{}
+减半已用：{}/{}
 洞天宝钱：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
@@ -270,13 +270,14 @@ async def _(bot: Bot, event: Event):
 
 async def enemies_wiki(name):
     def parse_percent(num):
-        if num<=1:
-            return str(round(num*100,4)) + "%"
+        if isinstance(num,float):
+            return str(round(num*100,2)) + "%"
         return str(num)
     raw_data = await GetEnemiesInfo(name)
     reward = ""
     for i in raw_data["rewardpreview"]:
-        reward += i["name"] + "：" + parse_percent(i["count"]) if "count" in i.keys() else i["name"] + "：" + "可能"
+        reward += i["name"] +("("+"★"*int(i["rarity"])+")" if "rarity" in i.keys() else "") + "：" 
+        reward += parse_percent(i["count"]) if "count" in i.keys() else "可能"
         reward += "\n"
     im = "【{}】\n——{}——\n类型：{}\n信息：{}\n掉落物：\n{}".format(raw_data["name"],raw_data["specialname"],
                                                     raw_data["category"],raw_data["description"],reward)

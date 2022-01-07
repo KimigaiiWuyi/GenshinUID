@@ -33,8 +33,8 @@ TEXT_PATH = os.path.join(FILE2_PATH,'texture2d')
 WEAPON_PATH = os.path.join(FILE2_PATH,'weapon')
 BG_PATH = os.path.join(FILE2_PATH,'bg')
 
-config = get_driver().config
-use_new_get_chars_method=config.genshinuid_use_new_get_chars_method
+#config = get_driver().config
+#use_new_get_chars_method=config.genshinuid_use_new_get_chars_method
 
 def ys_font(size):
     return ImageFont.truetype(os.path.join(FILE2_PATH,"yuanshen.ttf"), size=size)
@@ -1249,7 +1249,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
     img_msg=f"[CQ:image,file={imgmes}]"
-    if not use_new_get_chars_method:
+    if char_num<=8:
         img_msg='*由于米游社接口限制，现仅能查询部分角色信息\n'+img_msg
     resultmes = Message(img_msg)
     return resultmes

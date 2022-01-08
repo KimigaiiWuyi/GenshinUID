@@ -797,6 +797,12 @@ async def daily(mode="push", uid=None):
                 used_resin_discount_num = resin_discount_num_limit - \
                     dailydata['remain_resin_discount_num']
 
+                coin = f'{dailydata["current_home_coin"]}/{dailydata["max_home_coin"]}'
+                if dailydata["current_home_coin"]<dailydata["max_home_coin"]:
+                    coin_rec_time=seconds2hours(int(dailydata["home_coin_recovery_time"]))
+                    coin_add_speed=math.ceil((dailydata["max_home_coin"]-dailydata["current_home_coin"])/(int(dailydata["home_coin_recovery_time"])/60/60))
+                    coin+=f'（{coin_rec_time} 约{coin_add_speed}/h）'
+
                 current_expedition_num = dailydata['current_expedition_num']
                 max_expedition_num = dailydata['max_expedition_num']
                 finished_expedition_num = 0
@@ -818,7 +824,6 @@ async def daily(mode="push", uid=None):
                             f"{avatar_name} 剩余时间{remained_timed}")
                 expedition_data = "\n".join(expedition_info)
 
-                coin = str(dailydata["current_home_coin"]) + "/" + str(dailydata["max_home_coin"])
                 send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num, is_extra_got, used_resin_discount_num,
                                         resin_discount_num_limit, coin,current_expedition_num, finished_expedition_num, max_expedition_num, expedition_data)
 

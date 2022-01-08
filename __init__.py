@@ -800,7 +800,7 @@ async def daily(mode="push", uid=None):
                 coin = f'{dailydata["current_home_coin"]}/{dailydata["max_home_coin"]}'
                 if dailydata["current_home_coin"]<dailydata["max_home_coin"]:
                     coin_rec_time=seconds2hours(int(dailydata["home_coin_recovery_time"]))
-                    coin_add_speed=math.ceil((dailydata["max_home_coin"]-dailydata["current_home_coin"])/(int(dailydata["home_coin_recovery_time"])/60/60))
+                    coin_add_speed=round((dailydata["max_home_coin"]-dailydata["current_home_coin"])/(int(dailydata["home_coin_recovery_time"])/60/60))
                     coin+=f'（{coin_rec_time} 约{coin_add_speed}/h）'
 
                 current_expedition_num = dailydata['current_expedition_num']

@@ -165,7 +165,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
         im = f"[CQ:record,file={audios}]"
         try:
             await bot.send(ev,im)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,"不存在该语音ID或者不存在该角色。")
 
 @sv.on_fullmatch('活动列表')
@@ -330,35 +331,40 @@ async def setting(ctx):
             uid = mys_data['data']['list'][0]['game_role_id']
             await cookiesDB(uid,cookie,userid)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=f'添加Cookies成功！Cookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！')
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=f'校验失败！请输入正确的Cookies！')
     elif '开启推送' in message:
         try:
             uid = await selectDB(userid,mode = "uid")
             im = await OpenPush(int(uid[0]),userid,"on","StatusA")
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=im)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
     elif '关闭推送' in message:
         try:
             uid = await selectDB(userid,mode = "uid")
             im = await OpenPush(int(uid[0]),userid,"off","StatusA")
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=im)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
     elif '开启自动签到' in message:
         try:
             uid = await selectDB(userid,mode = "uid")
             im = await OpenPush(int(uid[0]),userid,"on","StatusB")
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=im)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
     elif '关闭自动签到' in message:
         try:
             uid = await selectDB(userid,mode = "uid")
             im = await OpenPush(int(uid[0]),userid,"off","StatusA")
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=im)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
 
 #群聊开启 自动签到 和 推送树脂提醒 功能
@@ -383,7 +389,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],str(gid),"StatusB")
             await bot.send(ev,im,at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
     elif m == "推送":
         try:
@@ -398,7 +405,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],str(gid),"StatusA")
             await bot.send(ev,im,at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
             
 #群聊关闭 自动签到 和 推送树脂提醒 功能
@@ -423,7 +431,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],"off","StatusB")
             await bot.send(ev,im,at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
     elif m == "推送":
         try:
@@ -438,7 +447,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             uid = await selectDB(ev.sender['user_id'],mode = "uid")
             im = await OpenPush(int(uid[0]),ev.sender['user_id'],"off","StatusA")
             await bot.send(ev,im,at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,"未绑定uid信息！",at_sender=True)
             
 #群聊内 每月统计 功能
@@ -464,7 +474,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 
         im = month_im.format(nickname,uid,day_stone,day_mora,lastday_stone,lastday_mora,month_stone,month_mora,lastmonth_stone,lastmonth_mora,group_str)
         await bot.send(ev,im,at_sender=True)
-    except:
+    except Exception as e:
+        print(e.with_traceback)
         await bot.send(ev,'未找到绑定信息',at_sender=True)
         
 #群聊内 签到 功能
@@ -476,7 +487,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
         uid = uid[0]
         im = await sign(uid)
         await bot.send(ev,im,at_sender=True)
-    except:
+    except Exception as e:
+        print(e.with_traceback)
         await bot.send(ev,'未找到绑定信息',at_sender=True)
 
 #群聊内 数据库v2 迁移至 数据库v3 的命令，一般只需要更新时执行一次
@@ -485,7 +497,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
     try:
         im = await OpCookies()
         await bot.send(ev,im,at_sender=True)
-    except:
+    except Exception as e:
+        print(e.with_traceback)
         pass
 
 #群聊内 校验Cookies 是否正常的功能，不正常自动删掉
@@ -508,7 +521,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
         uid = uid[0]
         mes = await daily("ask",uid)
         im = mes[0]['message']
-    except:
+    except Exception as e:
+        print(e.with_traceback)
         im = "没有找到绑定信息。"
 
     await bot.send(ev,im, at_sender=True)   
@@ -529,7 +543,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             else:
                 im = await draw_abyss0_pic(uid,ev.sender['nickname'],image)
                 await bot.send(ev, im, at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,'深渊输入错误！')
     elif m == "上期深渊":
         try:
@@ -540,13 +555,15 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             else:
                 im = await draw_abyss0_pic(uid,ev.sender['nickname'],image,2,"2")
                 await bot.send(ev, im, at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,'深渊输入错误！')        
     else:
         try:
             im = await draw_pic(uid,ev.sender['nickname'],image,2)
             await bot.send(ev, im, at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,'输入错误！')
             
 #群聊内 绑定uid 的命令，会绑定至当前qq号上
@@ -591,7 +608,8 @@ async def _(bot,  ev):
                 else:
                     im = await draw_abyss0_pic(uid[0],nickname,image,uid[1])
                     await bot.send(ev, im, at_sender=True)
-            except:
+            except Exception as e:
+                print(e.with_traceback)
                 await bot.send(ev,'输入错误！')
         elif m == "上期深渊":
             try:
@@ -602,19 +620,22 @@ async def _(bot,  ev):
                 else:
                     im = await draw_abyss0_pic(uid[0],nickname,image,uid[1],"2")
                     await bot.send(ev, im, at_sender=True)
-            except:
+            except Exception as e:
+                print(e.with_traceback)
                 await bot.send(ev,'深渊输入错误！') 
         elif m == "词云":
             try:
                 im = await draw_wordcloud(uid[0],image,uid[1])
                 await bot.send(ev,im, at_sender=True)
-            except:
+            except Exception as e:
+                print(e.with_traceback)
                 await bot.send(ev,'遇到错误！') 
         elif m == "":
             try:
                 bg = await draw_pic(uid[0],nickname,image,uid[1])
                 await bot.send(ev, bg, at_sender=True)
-            except:
+            except Exception as e:
+                print(e.with_traceback)
                 await bot.send(ev,'输入错误！')
         else:
             pass
@@ -637,7 +658,8 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             else:
                 im = await draw_abyss0_pic(uid,ev.sender['nickname'],image,3)
                 await bot.send(ev, im, at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,'深渊输入错误！')
     elif m == "上期深渊":
         try:
@@ -648,13 +670,15 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             else:
                 im = await draw_abyss0_pic(uid,ev.sender['nickname'],image,3,"2")
                 await bot.send(ev, im, at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,'深渊输入错误！') 
     else:
         try:
             im = await draw_pic(uid,ev.sender['nickname'],image,3)
             await bot.send(ev, im, at_sender=True)
-        except:
+        except Exception as e:
+            print(e.with_traceback)
             await bot.send(ev,'输入错误！')
 
 #签到函数
@@ -679,7 +703,8 @@ async def sign(uid):
         im = "\n" + mes_im +"!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
             #im = im + "\n" + "本次签到获取物品请求失败"
 
-    except:
+    except Exception as e:
+        print(e.with_traceback)
         im = im + "签到失败，请检查Cookies是否失效。"
     return im
 

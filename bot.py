@@ -300,13 +300,13 @@ def GetUidUrl(uid,qid,nickname,mode = 2):
                 
             if raw_data["retcode"] != 0:
                 if raw_data["retcode"] == 10001:
-                    #return ("Cookie错误/过期，请重置Cookie")
+                    #return ("Cookie已过期，可联系小灰灰处理！")
                     errorDB(use_cookies,"error")
                 elif raw_data["retcode"] == 10101:
-                    #return ("当前cookies已达到30人上限！")
+                    #return ("当前查询接口已达到上限，可联系小灰灰处理！")
                     errorDB(use_cookies,"limit30")
                 elif raw_data["retcode"] == 10102:
-                    return ("当前查询id已经设置了隐私，无法查询！")
+                    return ("当前查询id已经设置了隐私，无法进行查询！")
                 else:
                     return (
                         "Api报错，返回内容为：\r\n"
@@ -346,7 +346,7 @@ def _message_handler(event, message: Message):
             mes = "发生错误，频道信息Api可能变动。"
     elif raw_mes == "help":
         ark = help_ark
-    elif raw_mes == "整理123":
+    elif raw_mes == "整理cookies":
         try:
             check_cookies()
             mes = "成功!"
@@ -393,7 +393,7 @@ def _message_handler(event, message: Message):
                     pass
                 else:
                     image = None
-                    mes = "链接不存在。"
+                    mes = "输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
             else:
                 mes = image
         except Exception as e:
@@ -420,7 +420,7 @@ def _message_handler(event, message: Message):
         try:
             uid = re.findall(r"[0-9]+", raw_mes)[0]
             if len(uid) != 9:
-                mes = "你输入了错误的uid，请检查输入是否正确。"
+                mes = "UID输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
             else:
                 get_url = GetUidUrl(uid,message.author.id,message.author.username)
                 url = json.loads(get_url)
@@ -431,12 +431,12 @@ def _message_handler(event, message: Message):
                         pass
                     else:
                         image = None
-                        mes = "链接不存在。"
+                        mes = "链接不存在，可能由于上游接口查询限制，请稍后重试"
                 else:
                     mes = image
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "参数不正确。"
+            mes = "UID输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
     elif check_startwish(raw_mes,"mys",message.guild_id):
         raw_mes = raw_mes.replace("mys","")
         try:
@@ -450,12 +450,12 @@ def _message_handler(event, message: Message):
                     pass
                 else:
                     image = None
-                    mes = "链接不存在。"
+                    mes = "链接不存在，可能由于上游接口查询限制，请稍后重试"
             else:
                 mes = image
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "参数不正确。"
+            mes = "输入格式有误，请检查输入是否为米游社ID。\n\n例如：/mys137727130\n\n输入/help查看完整帮助"
     #elif raw_mes.startswith("活动列表"):
         #draw_event_pic()
     #    pass
@@ -486,7 +486,7 @@ def _message_handler(event, message: Message):
                 mes = char_wiki(name)
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该角色或类型。"
+            mes = "暂无该角色，请检查角色名字是否正确，需输入完整名字。\n\n例如：/角色云堇\n\n输入/help可查看完整帮助"
     elif check_startwish(raw_mes,"武器",message.guild_id):
         raw_mes = raw_mes.replace("武器","")
         try:
@@ -498,7 +498,7 @@ def _message_handler(event, message: Message):
                 mes = weapon_wiki(name)
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该武器。"
+            mes = "暂无该武器，请检查角色名字是否正确，需输入完整名字。\n\n例如：/武器雾切之回光\n\n输入/help可查看完整帮助"
     elif check_startwish(raw_mes,"材料",message.guild_id):
         raw_mes = raw_mes.replace("材料","")
         try:
@@ -524,12 +524,12 @@ def _message_handler(event, message: Message):
             num = int(re.findall(r"\d+", raw_mes)[0])  # str
             m = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             if num<= 0 or num >6:
-                mes = "不存在命座数。"
+                mes = "暂无该命座数量，命座可查询数量为1-6命。\n\n输入/help可查看完整帮助"
             else:
                 mes = char_wiki(m, "constellations", num)
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该角色。"
+            mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n输入/help可查看完整帮助"
     elif check_startwish(raw_mes,"攻略",message.guild_id):
         raw_mes = raw_mes.replace("攻略","")
         try:
@@ -538,7 +538,7 @@ def _message_handler(event, message: Message):
             status = httpx.get(url = image).text
             if "404 Not Found" in status:
                 image = None
-                mes = "信息库中不存在该角色。"
+                mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n例如：/攻略申鹤\n\n输入/help可查看完整帮助"
             else:
                 pass
         except Exception as e:
@@ -552,7 +552,7 @@ def _message_handler(event, message: Message):
             status = httpx.get(url = image).text
             if "404 Not Found" in status:
                 image = None
-                mes = "信息库中不存在该角色。"
+                mes = "暂无该角色或武器的信息，请检查名字是否正确，需输入完整名字。\n\n例如：/信息息灾\n\n输入/help可查看完整帮助"
             else:
                 pass
         except Exception as e:
@@ -565,7 +565,7 @@ def _message_handler(event, message: Message):
             mes = base64.b64decode(raw_data).decode("utf-8")
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "抽取御神签失败。"
+            mes = "御神签见底了，稍后再来试试吧！"
 
     if ark:
         try:
@@ -619,7 +619,7 @@ def _message_handler(event, message: Message):
             qqbot.logger.info(e.args)
             record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     else:
-        mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请查看帮助。"
+        mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请输入/help查看帮助。（如果是新添加Bot，功能24小时内生效）"
         try:
             send = qqbot.MessageSendRequest(mes, message.id)
             msg_api.post_message(message.channel_id, send)

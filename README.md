@@ -14,11 +14,7 @@ $ git clone -b QQGuildBot https://github.com/KimigaiiWuyi/GenshinUID.git
 $ pip3 install -r requirements.txt
 ```
 
-3、在`bot.py`文件下，在引号内分别修改参数，为你自己申请bot的`BotID`和`BotToken`
-
-```
-token = qqbot.Token("","")
-```
+3、在`Config.yaml`文件下，分别修改两个`test123`的值为你自己申请bot的`BotID`和`BotToken`
 
 4、在文件目录下，启动bot
 

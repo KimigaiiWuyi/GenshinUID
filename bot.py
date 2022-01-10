@@ -5,13 +5,12 @@ from shutil import copyfile
 import urllib.parse
 import httpx
 
-import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
-
 from getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, add_guild, check_switch,record,change_switch)
 from getData import (GetInfo,GetWeaponInfo,GetCharInfo,GetUidPic,GetMysInfo,GetAudioInfo)
 from getImg import (draw_event_pic)
 
+import yaml
+import asyncio
 import qqbot
 from qqbot.model.guild import Guild
 from qqbot.model.audio import AudioControl
@@ -26,15 +25,31 @@ from qqbot.core.util import logging
 
 logger = logging.getLogger(__name__)
 
-token = qqbot.Token("","")
+with open('Config.yaml', encoding='UTF-8') as yaml_file:
+    token = yaml.safe_load(yaml_file)
 
-api = qqbot.UserAPI(token, False)
-guild_api = qqbot.GuildAPI(token,False)
-audio_api = qqbot.AudioAPI(token,False)
-msg_api = qqbot.MessageAPI(token, False)
-guild_member_api = qqbot.GuildMemberAPI(token,False)
-user = api.me()
-print(user.username)
+token = qqbot.Token(token["BotID"],token["BotToken"])
+
+api = qqbot.AsyncUserAPI(token, False)
+guild_api = qqbot.AsyncGuildAPI(token,False)
+audio_api = qqbot.AsyncAudioAPI(token,False)
+msg_api = qqbot.AsyncMessageAPI(token, False)
+guild_member_api = qqbot.AsyncGuildMemberAPI(token,False)
+
+async def up_guild_list():
+    guild_list = await api.me_guilds()
+    for guild in guild_list:
+        #guild_data = guild_api.get_guild(guild.id)
+        await add_guild(guild.id,guild.name)
+
+async def ready():
+    user = await api.me()
+    await up_guild_list()
+    print(user.username)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(ready())
+#asyncio.run(ready())
 
 audio_raw_ark = {
     "template_id": 24,
@@ -249,13 +264,13 @@ audio_json = {
     "1020000":["1020000_01"]
 }
 
-def check_startwish(raw_mes,key_word,gid):
-    if raw_mes.startswith(key_word) and check_switch(gid,switch_list[key_word]):
+async def check_startwish(raw_mes,key_word,gid):
+    if raw_mes.startswith(key_word) and await check_switch(gid,switch_list[key_word]):
         return True
     else:
         return False
 
-def check_cookies():
+async def check_cookies():
     with open("cookies_simp.json",'r') as load_f:
         load_dict = json.load(load_f)
     num = 0
@@ -269,25 +284,17 @@ def check_cookies():
         num += 1
         cookiesDB(uid, i, 10086)
 
-def up_guild_list():
-    guild_list = api.me_guilds()
-    for guild in guild_list:
-        #guild_data = guild_api.get_guild(guild.id)
-        add_guild(guild.id,guild.name)
-
-up_guild_list()
-
-def GetUidUrl(uid,qid,nickname,mode = 2):
+async def GetUidUrl(uid,qid,nickname,mode = 2):
     try:
         while 1:
-            use_cookies = cacheDB(uid,mode-1)
+            use_cookies = await cacheDB(uid,mode-1)
             if use_cookies == '':
                 return "绑定记录不存在。"
             elif use_cookies == "没有可以使用的Cookies！":
                 return "没有可以使用的Cookies！"
 
             if mode == 3:
-                mys_data = GetMysInfo(uid,use_cookies)
+                mys_data = await GetMysInfo(uid,use_cookies)
                 mysid_data = uid
                 for i in mys_data['data']['list']:
                     if i['game_id'] != 2:
@@ -296,17 +303,16 @@ def GetUidUrl(uid,qid,nickname,mode = 2):
                 nickname = mys_data['data']['list'][0]['nickname']
                 #role_level = mys_data['data']['list'][0]['level']
                 
-            raw_data = GetInfo(uid,use_cookies)
-                
+            raw_data = await GetInfo(uid,use_cookies)
             if raw_data["retcode"] != 0:
                 if raw_data["retcode"] == 10001:
-                    #return ("Cookie错误/过期，请重置Cookie")
-                    errorDB(use_cookies,"error")
+                    #return ("Cookie已过期，可联系小灰灰处理！")
+                    await errorDB(use_cookies,"error")
                 elif raw_data["retcode"] == 10101:
-                    #return ("当前cookies已达到30人上限！")
-                    errorDB(use_cookies,"limit30")
+                    #return ("当前查询接口已达到上限，可联系小灰灰处理！")
+                    await errorDB(use_cookies,"limit30")
                 elif raw_data["retcode"] == 10102:
-                    return ("当前查询id已经设置了隐私，无法查询！")
+                    return ("当前查询id已经设置了隐私，无法进行查询！")
                 else:
                     return (
                         "Api报错，返回内容为：\r\n"
@@ -314,18 +320,20 @@ def GetUidUrl(uid,qid,nickname,mode = 2):
                     )
             else:
                 break
-            
-        url = GetUidPic(raw_data,uid,qid,nickname)
+        url = await GetUidPic(raw_data,uid,qid,nickname)
         return url
+    except TypeError as e:
+        qqbot.logger.info(e.with_traceback)
+        return "请求数据为空，可能是绘制图片时出错。"
     except Exception as e:
         qqbot.logger.info(e.with_traceback)
         return "发生错误，频道信息Api可能变动。"
     
-def _message_handler(event, message: Message):
+async def _message_handler(event, message: Message):
     qqbot.logger.info("event %s" % event + ",receive message %s" % message.content)
 
     try:
-        guild_data = guild_api.get_guild(message.guild_id)
+        guild_data = await guild_api.get_guild(message.guild_id)
         at_mes = re.search(r'\<\@\![0-9]+\>',message.content)
         raw_mes = message.content.replace(at_mes.group(),"").replace(" ","").replace("/","")
         record_mes = raw_mes
@@ -340,20 +348,20 @@ def _message_handler(event, message: Message):
     
     if raw_mes == "频道信息":
         try:
-            mes = getGuildStatus()
+            mes = await getGuildStatus()
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "发生错误，频道信息Api可能变动。"
     elif raw_mes == "help":
         ark = help_ark
-    elif raw_mes == "整理123":
+    elif raw_mes == "整理cookies":
         try:
-            check_cookies()
+            await check_cookies()
             mes = "成功!"
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "ck添加错误。"
-    elif check_startwish(raw_mes,"语音",message.guild_id):
+    elif await check_startwish(raw_mes,"语音",message.guild_id):
         raw_mes = raw_mes.replace("语音","")
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
@@ -365,7 +373,7 @@ def _message_handler(event, message: Message):
                 audioid = re.findall(r"[0-9]+", raw_mes)[0]
                 if audioid in audio_json:
                     audioid = random.choice(audio_json[audioid])
-                audio_url = GetAudioInfo(name,audioid)
+                audio_url = await GetAudioInfo(name,audioid)
                 audio_img = "https://img.genshin.minigg.cn/avatar/{}.png".format(name)
                 audio_str = "{}语音{}".format(name,audioid)
                 audio_raw_ark["kv"][0]["value"] = "角色语音"
@@ -379,12 +387,13 @@ def _message_handler(event, message: Message):
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = e.with_traceback
-    elif raw_mes == "查询" and check_switch(message.guild_id,switch_list["查询"]):
+
+    elif raw_mes == "查询" and await check_switch(message.guild_id,switch_list["查询"]):
         try:
-            uid = selectDB(message.author.id)
-            author = guild_member_api.get_guild_member(message.guild_id,message.author.id)
+            uid = await selectDB(message.author.id)
+            author = await guild_member_api.get_guild_member(message.guild_id,message.author.id)
             nickname = author.user.username
-            get_url = GetUidUrl(uid[0],message.author.id,nickname,uid[1])
+            get_url = await GetUidUrl(uid[0],message.author.id,nickname,uid[1])
             url = json.loads(get_url)
             if url["url"].startswith("/"):
                 image = "https://yuanshen.minigg.cn" + url["url"]
@@ -393,36 +402,38 @@ def _message_handler(event, message: Message):
                     pass
                 else:
                     image = None
-                    mes = "链接不存在。"
+                    mes = "输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
             else:
                 mes = image
+        except json.JSONDecodeError:
+            mes = get_url
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "没有找到绑定信息。"
     elif raw_mes.startswith("开启"):
-        raw_mes = raw_mes.replace("开启","").replace("功能","")
+        raw_mes = raw_mes.replace("开启","")
         try:
-            change_switch(message.guild_id,switch_list[raw_mes],"on")
+            await change_switch(message.guild_id,switch_list[raw_mes],"on")
             mes = "成功。"
         except Exception as e:
             print(e.with_traceback)
             mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("关闭"):
-        raw_mes = raw_mes.replace("关闭","").replace("功能","")
+        raw_mes = raw_mes.replace("关闭","")
         try:
-            change_switch(message.guild_id,switch_list[raw_mes],"off")
+            await change_switch(message.guild_id,switch_list[raw_mes],"off")
             mes = "成功。"
         except Exception as e:
             print(e.with_traceback)
             mes = "发生错误，可能是输入的功能名不正确。"
-    elif check_startwish(raw_mes,"uid",message.guild_id):
+    elif await check_startwish(raw_mes,"uid",message.guild_id):
         raw_mes = raw_mes.replace("uid","")
         try:
             uid = re.findall(r"[0-9]+", raw_mes)[0]
             if len(uid) != 9:
                 mes = "你输入了错误的uid，请检查输入是否正确。"
             else:
-                get_url = GetUidUrl(uid,message.author.id,message.author.username)
+                get_url = await GetUidUrl(uid,message.author.id,message.author.username)
                 url = json.loads(get_url)
                 if url["url"].startswith("/"):
                     image = "https://yuanshen.minigg.cn" + url["url"]
@@ -431,17 +442,17 @@ def _message_handler(event, message: Message):
                         pass
                     else:
                         image = None
-                        mes = "链接不存在。"
+                        mes = "链接不存在，可能由于上游接口查询限制，请稍后重试"
                 else:
                     mes = image
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "参数不正确。"
-    elif check_startwish(raw_mes,"mys",message.guild_id):
+            mes = "UID输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
+    elif await check_startwish(raw_mes,"mys",message.guild_id):
         raw_mes = raw_mes.replace("mys","")
         try:
             uid = re.findall(r"[0-9]+", raw_mes)[0]
-            get_url = GetUidUrl(uid,message.author.id,message.author.username,mode=3)
+            get_url = await GetUidUrl(uid,message.author.id,message.author.username,mode=3)
             url = json.loads(get_url)
             if url["url"].startswith("/"):
                 image = "https://yuanshen.minigg.cn" + url["url"]
@@ -450,87 +461,90 @@ def _message_handler(event, message: Message):
                     pass
                 else:
                     image = None
-                    mes = "链接不存在。"
+                    mes = "链接不存在，可能由于上游接口查询限制，请稍后重试。"
             else:
                 mes = image
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "参数不正确。"
+            mes = "输入格式有误，请检查输入是否为米游社ID。\n\n例如：/mys137727130\n\n输入/help查看完整帮助"
     #elif raw_mes.startswith("活动列表"):
         #draw_event_pic()
     #    pass
-    elif check_startwish(raw_mes,"绑定uid",message.guild_id):
+    elif await check_startwish(raw_mes,"绑定uid",message.guild_id):
         uid = raw_mes.replace("绑定uid","")
         try:
-            connectDB(userid = message.author.id,uid = uid)
+            await connectDB(userid = message.author.id,uid = uid)
             mes = "绑定uid成功。"
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "绑定失败。"
-    elif check_startwish(raw_mes,"绑定mys",message.guild_id):
+    elif await check_startwish(raw_mes,"绑定mys",message.guild_id):
         uid = raw_mes.replace("绑定mys","")
         try:
-            connectDB(userid = message.author.id,mys = uid)
+            await connectDB(userid = message.author.id,mys = uid)
             mes = "绑定mysid成功。"
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "绑定失败。"
-    elif check_startwish(raw_mes,"角色",message.guild_id):
+    elif await check_startwish(raw_mes,"角色",message.guild_id):
         raw_mes = raw_mes.replace("角色","")
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             level = re.findall(r"[0-9]+", raw_mes)
             if len(level) == 1:
-                mes = char_wiki(name,"char",level=level[0])
+                mes = await char_wiki(name,"char",level=level[0])
             else:
-                mes = char_wiki(name)
+                mes = await char_wiki(name)
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该角色或类型。"
-    elif check_startwish(raw_mes,"武器",message.guild_id):
+            mes = "暂无该角色，请检查角色名字是否正确，需输入完整名字。\n\n例如：/角色云堇\n\n输入/help可查看完整帮助"
+    elif await check_startwish(raw_mes,"武器",message.guild_id):
         raw_mes = raw_mes.replace("武器","")
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             level = re.findall(r"[0-9]+", raw_mes)
             if len(level) == 1:
-                mes = weapon_wiki(name,level=level[0])
+                mes = await weapon_wiki(name,level=level[0])
             else:
-                mes = weapon_wiki(name)
+                mes = await weapon_wiki(name)
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该武器。"
-    elif check_startwish(raw_mes,"材料",message.guild_id):
+            mes = "暂无该武器，请检查角色名字是否正确，需输入完整名字。\n\n例如：/武器雾切之回光\n\n输入/help可查看完整帮助"
+    elif await check_startwish(raw_mes,"材料",message.guild_id):
         raw_mes = raw_mes.replace("材料","")
         try:
-            mes = char_wiki(raw_mes,"costs")
+            mes = await char_wiki(raw_mes,"costs")
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "不存在该角色或类型。"
-    elif check_startwish(raw_mes,"天赋",message.guild_id):
+    elif await check_startwish(raw_mes,"天赋",message.guild_id):
         raw_mes = raw_mes.replace("天赋","")
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             num = re.findall(r"[0-9]+", raw_mes)
             if len(num) == 1:
-                mes = char_wiki(name,"talents",num[0])
+                mes = await char_wiki(name,"talents",num[0])
             else:
-                mes = "参数不正确。"
+                mes = "暂无该天赋数，天赋可查询数量为1~7。\n\n输入/help可查看完整帮助"
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该角色。"
-    elif check_startwish(raw_mes,"命座",message.guild_id):
+            mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n输入/help可查看完整帮助"
+    elif await check_startwish(raw_mes,"命座",message.guild_id):
         raw_mes = raw_mes.replace("命座","")
         try:
-            num = int(re.findall(r"\d+", raw_mes)[0])  # str
+            try:
+                num = int(re.findall(r"\d+", raw_mes)[0])  # str
+            except:
+                mes = "参数输入有误。"
             m = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
             if num<= 0 or num >6:
-                mes = "不存在命座数。"
+                mes = "暂无该命座数量，命座可查询数量为1-6命。\n\n输入/help可查看完整帮助"
             else:
-                mes = char_wiki(m, "constellations", num)
+                mes = await char_wiki(m, "constellations", num)
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "不存在该角色。"
-    elif check_startwish(raw_mes,"攻略",message.guild_id):
+            mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n输入/help可查看完整帮助"
+    elif await check_startwish(raw_mes,"攻略",message.guild_id):
         raw_mes = raw_mes.replace("攻略","")
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
@@ -538,13 +552,13 @@ def _message_handler(event, message: Message):
             status = httpx.get(url = image).text
             if "404 Not Found" in status:
                 image = None
-                mes = "信息库中不存在该角色。"
+                mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n例如：/攻略申鹤\n\n输入/help可查看完整帮助"
             else:
                 pass
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "发生错误。"
-    elif check_startwish(raw_mes,"信息",message.guild_id):
+    elif await check_startwish(raw_mes,"信息",message.guild_id):
         raw_mes = raw_mes.replace("信息","")
         try:
             name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
@@ -552,7 +566,7 @@ def _message_handler(event, message: Message):
             status = httpx.get(url = image).text
             if "404 Not Found" in status:
                 image = None
-                mes = "信息库中不存在该角色。"
+                mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n例如：/攻略申鹤\n\n输入/help可查看完整帮助"
             else:
                 pass
         except Exception as e:
@@ -561,92 +575,97 @@ def _message_handler(event, message: Message):
 
     elif raw_mes == "御神签" and check_switch(message.guild_id,switch_list["御神签"]):
         try:
-            raw_data = get_alots(message.author.id)
+            raw_data = await get_alots(message.author.id)
             mes = base64.b64decode(raw_data).decode("utf-8")
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
-            mes = "抽取御神签失败。"
+            mes = "御神签见底了，稍后再来试试吧！"
 
     if ark:
         try:
             send = qqbot.MessageSendRequest(content = "",ark = ark, msg_id = message.id)
-            msg_api.post_message(message.channel_id, send)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,"help")
+            await msg_api.post_message(message.channel_id, send)
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,"help")
         except Exception as e:
             try:
                 send = qqbot.MessageSendRequest(str(e), message.id)
-                msg_api.post_message(message.channel_id, send)
+                await msg_api.post_message(message.channel_id, send)
             except:
                 pass
             qqbot.logger.info(e.args)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     elif audio:
         try:
-            audio_api.post_audio(channel_id = message.channel_id,audio_control = audio_control)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,audio)
+            await audio_api.post_audio(channel_id = message.channel_id,audio_control = audio_control)
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,audio)
         except Exception as e:
             try:
                 send = qqbot.MessageSendRequest(str(e), message.id)
-                msg_api.post_message(message.channel_id, send)
+                await msg_api.post_message(message.channel_id, send)
             except:
                 pass
             qqbot.logger.info(e.args)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     elif image:
         try:
             send = qqbot.MessageSendRequest(content = "",image = image, msg_id = message.id)
-            msg_api.post_message(message.channel_id, send)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,image)
+            await msg_api.post_message(message.channel_id, send)
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,image)
         except Exception as e:
             try:
                 send = qqbot.MessageSendRequest(str(e), message.id)
-                msg_api.post_message(message.channel_id, send)
+                await msg_api.post_message(message.channel_id, send)
             except:
                 pass
             qqbot.logger.info(e.args)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     elif mes:
         try:
             send = qqbot.MessageSendRequest(mes, message.id)
-            msg_api.post_message(message.channel_id, send)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,mes)
+            await msg_api.post_message(message.channel_id, send)
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,mes)
         except Exception as e:
             try:
                 send = qqbot.MessageSendRequest(str(e), message.id)
-                msg_api.post_message(message.channel_id, send)
+                await msg_api.post_message(message.channel_id, send)
             except:
                 pass
             qqbot.logger.info(e.args)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     else:
-        mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请查看帮助。"
+        mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请输入/help查看帮助。（如果是新添加Bot，功能24小时内生效）"
         try:
             send = qqbot.MessageSendRequest(mes, message.id)
-            msg_api.post_message(message.channel_id, send)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,mes)
+            await msg_api.post_message(message.channel_id, send)
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,mes)
         except Exception as e:
             qqbot.logger.info(e.args)
-            record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+            await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     return
 
-def _guild_handler(event, guild:Guild):
-    up_guild_list()
+async def _guild_handler(event, guild:Guild):
+    print("\n频道已刷新。\n")
+    await up_guild_list()
 
-def getGuildStatus():
-    guild_list = api.me_guilds()
+async def getGuildStatus():
+    guild_list = await api.me_guilds()
     guild_member_all_count = 0
     guild_status_mes  = ""
     for guild in guild_list:
-        guild_data = guild_api.get_guild(guild.id)
-        guild_status_mes += "【{}】{}人\n".format(guild.name,str(guild_data.member_count))
-        guild_member_all_count += guild_data.member_count
+        try:
+            guild_data = await guild_api.get_guild(guild.id)
+            guild_status_mes += "【{}】{}人\n".format(guild.name,str(guild_data.member_count))
+            guild_member_all_count += guild_data.member_count
+        except Exception as e:
+            qqbot.logger.info(e.args)
+    user = await api.me()
     guild_status_mes += "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
     return guild_status_mes
 
-def weapon_wiki(name,level = None):
-    data = GetWeaponInfo(name)
+async def weapon_wiki(name,level = None):
+    data = await GetWeaponInfo(name)
     if level:
-        data2 = GetWeaponInfo(name,level+"plus" if level else level)
+        data2 = await GetWeaponInfo(name,level+"plus" if level else level)
         if data["substat"] != "":
             sp = data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100) if data["substat"] != "元素精通" else data["substat"] + "：" + str(math.floor(data2["specialized"]))
         else:
@@ -685,8 +704,8 @@ def weapon_wiki(name,level = None):
     return im
 
 
-def char_wiki(name, mode="char", level=None):
-    data = GetCharInfo(name, mode, level if mode == "char" else None)
+async def char_wiki(name, mode="char", level=None):
+    data = await GetCharInfo(name, mode, level if mode == "char" else None)
     if mode == "char":
         if isinstance(data,str):
             raw_data = data.replace("[","").replace("\n","").replace("]","").replace(" ","").replace("'","").split(',')
@@ -695,7 +714,7 @@ def char_wiki(name, mode="char", level=None):
             else:
                 im = ','.join(raw_data)
         elif level:
-            data2 = GetCharInfo(name, mode)
+            data2 = await GetCharInfo(name, mode)
             sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data2["specialized"]))
             im = (data2["name"] + "\n等级：" + str(data["level"]) + "\n血量：" + str(math.floor(data["hp"])) +
                 "\n攻击力：" + str(math.floor(data["attack"])) + "\n防御力：" + str(math.floor(data["defense"])) +
@@ -786,7 +805,7 @@ def char_wiki(name, mode="char", level=None):
             im = "【{}】\n{}".format(skill_name,skill_info)
     return im
 
+
 qqbot_handler2 = qqbot.Handler(qqbot.HandlerType.GUILD_EVENT_HANDLER, _guild_handler)
 qqbot_handler = qqbot.Handler(qqbot.HandlerType.AT_MESSAGE_EVENT_HANDLER, _message_handler)
-qqbot.listen_events(token, False, qqbot_handler)
-qqbot.listen_events(token, False, qqbot_handler2)
+qqbot.async_listen_events(token, False, qqbot_handler,qqbot_handler2)

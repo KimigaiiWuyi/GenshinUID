@@ -1,4 +1,5 @@
 import sqlite3,os,random,time,re
+from shutil import copyfile
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')
@@ -12,7 +13,7 @@ TEXT_PATH = os.path.join(FILE2_PATH,'texture2d')
 WEAPON_PATH = os.path.join(FILE2_PATH,'weapon')
 BG_PATH = os.path.join(FILE2_PATH,'bg')
 
-def record(gname,gid,uname,uid,mes,reply):
+async def record(gname,gid,uname,uid,mes,reply):
     #print(now)
     now = int(time.time())
     timeArray = time.localtime(now)
@@ -35,7 +36,7 @@ def record(gname,gid,uname,uid,mes,reply):
     conn.commit()
     conn.close()
 
-def check_switch(gid,func):
+async def check_switch(gid,func):
     try:
         conn = sqlite3.connect('ID_DATA.db')
         c = conn.cursor()
@@ -56,14 +57,14 @@ def check_switch(gid,func):
         print(e.with_traceback)
         return False
 
-def change_switch(gid,func,status):
+async def change_switch(gid,func,status):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     c.execute("UPDATE GuildList SET {s} = ? WHERE GuildID=?".format(s = func),(status,gid))
     conn.commit()
     conn.close()
 
-def add_guild(gid,gname):
+async def add_guild(gid,gname):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS GuildList
@@ -84,7 +85,7 @@ def add_guild(gid,gname):
     conn.commit()
     conn.close()
     
-def get_alots(qid):
+async def get_alots(qid):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS UseridDict
@@ -118,7 +119,7 @@ def get_alots(qid):
     conn.close()
     return data
 
-def connectDB(userid,uid = None,mys = None):
+async def connectDB(userid,uid = None,mys = None):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS UIDDATA
@@ -137,7 +138,7 @@ def connectDB(userid,uid = None,mys = None):
     conn.commit()
     conn.close()
 
-def selectDB(userid,mode = "auto"):
+async def selectDB(userid,mode = "auto"):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     cursor = c.execute("SELECT *  FROM UIDDATA WHERE USERID = ?",(userid,))
@@ -157,7 +158,7 @@ def selectDB(userid,mode = "auto"):
         elif mode == "mys":
             return [row[2],3]
 
-def cacheDB(uid,mode = 1,mys = None):
+async def cacheDB(uid,mode = 1,mys = None):
     use = ''
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
@@ -237,7 +238,7 @@ def functionRegex(value,patter):
     c_pattern = re.compile(r"account_id={}".format(patter))
     return c_pattern.search(value) is not None
 
-def cookiesDB(uid,Cookies,qid):
+async def cookiesDB(uid,Cookies,qid):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
 
@@ -262,7 +263,7 @@ def cookiesDB(uid,Cookies,qid):
     conn.commit()
     conn.close()
 
-def deletecache():
+async def deletecache():
     try:
         copyfile("ID_DATA.db", "ID_DATA_bak.db")
     except:
@@ -291,7 +292,7 @@ def deletecache():
     except:
         print("\nerror\n")
 
-def errorDB(ck,err):
+async def errorDB(ck,err):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     if err == "error":

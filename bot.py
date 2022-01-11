@@ -282,7 +282,7 @@ async def check_cookies():
                           "cookie_token", "account_id"], [j.strip() for j in i.split(';')]))
         uid = int(time.time()) + num
         num += 1
-        cookiesDB(uid, i, 10086)
+        await cookiesDB(uid, i, 10086)
 
 async def GetUidUrl(uid,qid,nickname,mode = 2):
     try:

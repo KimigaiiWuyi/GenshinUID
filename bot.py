@@ -445,6 +445,8 @@ async def _message_handler(event, message: Message):
                         mes = "链接不存在，可能由于上游接口查询限制，请稍后重试"
                 else:
                     mes = image
+        except json.JSONDecodeError:
+            mes = get_url
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "UID输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
@@ -464,6 +466,8 @@ async def _message_handler(event, message: Message):
                     mes = "链接不存在，可能由于上游接口查询限制，请稍后重试。"
             else:
                 mes = image
+        except json.JSONDecodeError:
+            mes = get_url
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "输入格式有误，请检查输入是否为米游社ID。\n\n例如：/mys137727130\n\n输入/help查看完整帮助"

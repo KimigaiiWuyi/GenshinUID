@@ -5,7 +5,7 @@ from shutil import copyfile
 import urllib.parse
 import httpx
 
-from getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, add_guild, check_switch,record,change_switch)
+from getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, change_guild, check_switch,record,change_switch,check_subGuild_switch,change_subGuild_switch,subGuild_status)
 from getData import (GetInfo,GetWeaponInfo,GetCharInfo,GetUidPic,GetMysInfo,GetAudioInfo)
 from getImg import (draw_event_pic)
 
@@ -22,6 +22,7 @@ from qqbot.model.message import (
     DirectMessageGuild,
 )
 from qqbot.core.util import logging
+from qqbot.model.user import ReqOption
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +36,30 @@ guild_api = qqbot.AsyncGuildAPI(token,False)
 audio_api = qqbot.AsyncAudioAPI(token,False)
 msg_api = qqbot.AsyncMessageAPI(token, False)
 guild_member_api = qqbot.AsyncGuildMemberAPI(token,False)
+channel_api = qqbot.AsyncChannelAPI(token,False)
 
 async def up_guild_list():
-    guild_list = await api.me_guilds()
+    guild_list = []
+    guild_list_temp = []
+
+    while(1):
+        if guild_list != [] and len(guild_list_temp) >= 100:
+            guild_list_temp = await api.me_guilds(option = ReqOption(after = str(guild_list_temp[-1].id)))
+            guild_list += guild_list_temp
+        elif guild_list == []:
+            guild_list = await api.me_guilds()
+            guild_list_temp = guild_list
+        else:
+            break
+
     for guild in guild_list:
-        #guild_data = guild_api.get_guild(guild.id)
-        await add_guild(guild.id,guild.name)
+        await change_guild("new",guild.id,guild.name)
+
+async def new_guild(guild:Guild):
+    await change_guild("new",guild.id,guild.name)
+
+async def delete_guild(guild):
+    await change_guild("delete",guild.id,guild.name)
 
 async def ready():
     user = await api.me()
@@ -49,7 +68,6 @@ async def ready():
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(ready())
-#asyncio.run(ready())
 
 audio_raw_ark = {
     "template_id": 24,
@@ -264,12 +282,6 @@ audio_json = {
     "1020000":["1020000_01"]
 }
 
-async def check_startwish(raw_mes,key_word,gid):
-    if raw_mes.startswith(key_word) and await check_switch(gid,switch_list[key_word]):
-        return True
-    else:
-        return False
-
 async def check_cookies():
     with open("cookies_simp.json",'r') as load_f:
         load_dict = json.load(load_f)
@@ -328,8 +340,22 @@ async def GetUidUrl(uid,qid,nickname,mode = 2):
     except Exception as e:
         qqbot.logger.info(e.with_traceback)
         return "发生错误，频道信息Api可能变动。"
-    
+
+async def getChannelStatus(gid):
+    channel_openlist = await subGuild_status(gid)
+    mes = "\n当前开启频道："
+    if channel_openlist:
+        channel_list = await channel_api.get_channels(gid)
+        for i in channel_list:
+            for j in channel_openlist:
+                if i.id == j:
+                    mes += "\n<<#{}>>".format(i.id)
+    if mes == "\n当前开启频道：":
+        mes = "\n当前开启频道：\n可在所有频道使用。"
+    return mes
+
 async def _message_handler(event, message: Message):
+
     qqbot.logger.info("event %s" % event + ",receive message %s" % message.content)
 
     try:
@@ -346,6 +372,81 @@ async def _message_handler(event, message: Message):
     ark = None
     audio = None
     
+    async def check_startwish(raw_mes,key_word,gid):
+        if raw_mes.startswith(key_word) and await check_switch(gid,switch_list[key_word]):
+            return True
+        else:
+            return False
+
+    if raw_mes.startswith("开启"):
+        raw_mes = raw_mes.replace("开启","")
+        member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
+        if 2 or 3 or 4 in member_info.roles:
+            pass
+        else:
+            return
+        try:
+            await change_switch(message.guild_id,switch_list[raw_mes],"on")
+            mes = "成功。"
+        except Exception as e:
+            print(e.with_traceback)
+            mes = "发生错误，可能是输入的功能名不正确。"
+    elif raw_mes.startswith("关闭"):
+        raw_mes = raw_mes.replace("关闭","")
+        member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
+        if 2 or 3 or 4 in member_info.roles:
+            pass
+        else:
+            return
+        try:
+            await change_switch(message.guild_id,switch_list[raw_mes],"off")
+            mes = "成功。"
+        except Exception as e:
+            print(e.with_traceback)
+            mes = "发生错误，可能是输入的功能名不正确。"
+    elif raw_mes.startswith("设置频道开启"):
+        try:
+            member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
+            if 2 or 3 or 4 in member_info.roles:
+                pass
+            else:
+                return
+            channel_name = raw_mes.replace("设置频道开启","").replace("#","")
+            channel_list = await channel_api.get_channels(message.guild_id)
+            for i in channel_list:
+                if i.name == channel_name:
+                    channel_id = i.id
+            await change_subGuild_switch(message.guild_id,channel_id,"open")
+            channel_status = await getChannelStatus(message.guild_id)
+            mes = "已设置子频道使用该BOT。\n子频道名称：<<#{}>>\n子频道ID：{}".format(channel_id,channel_id)
+            mes += channel_status
+        except Exception as e:
+            print(e.with_traceback)
+            mes = "发生错误，可能是输入的功能名不正确。"
+    elif raw_mes.startswith("设置频道关闭"):
+        try:
+            member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
+            if 2 or 3 or 4 in member_info.roles:
+                pass
+            else:
+                return
+            channel_name = raw_mes.replace("设置频道关闭","").replace("#","")
+            channel_list = await channel_api.get_channels(message.guild_id)
+            for i in channel_list:
+                if i.name == channel_name:
+                    channel_id = i.id
+            await change_subGuild_switch(message.guild_id,channel_id,"closed")
+            channel_status = await getChannelStatus(message.guild_id)
+            mes = "已禁止子频道使用该BOT。\n子频道名称：<<#{}>>\n子频道ID：{}".format(channel_id,channel_id)
+            mes += channel_status
+        except Exception as e:
+            print(e.with_traceback)
+            mes = "发生错误，可能是输入的功能名不正确。"
+
+
+    if not await check_subGuild_switch(message.guild_id,message.channel_id):
+        return
+
     if raw_mes == "频道信息":
         try:
             mes = await getGuildStatus()
@@ -410,22 +511,6 @@ async def _message_handler(event, message: Message):
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "没有找到绑定信息。"
-    elif raw_mes.startswith("开启"):
-        raw_mes = raw_mes.replace("开启","")
-        try:
-            await change_switch(message.guild_id,switch_list[raw_mes],"on")
-            mes = "成功。"
-        except Exception as e:
-            print(e.with_traceback)
-            mes = "发生错误，可能是输入的功能名不正确。"
-    elif raw_mes.startswith("关闭"):
-        raw_mes = raw_mes.replace("关闭","")
-        try:
-            await change_switch(message.guild_id,switch_list[raw_mes],"off")
-            mes = "成功。"
-        except Exception as e:
-            print(e.with_traceback)
-            mes = "发生错误，可能是输入的功能名不正确。"
     elif await check_startwish(raw_mes,"uid",message.guild_id):
         raw_mes = raw_mes.replace("uid","")
         try:
@@ -577,13 +662,16 @@ async def _message_handler(event, message: Message):
             qqbot.logger.info(e.with_traceback)
             mes = "发生错误。"
 
-    elif raw_mes == "御神签" and check_switch(message.guild_id,switch_list["御神签"]):
+    elif raw_mes == "御神签" and await check_switch(message.guild_id,switch_list["御神签"]):
         try:
             raw_data = await get_alots(message.author.id)
             mes = base64.b64decode(raw_data).decode("utf-8")
         except Exception as e:
             qqbot.logger.info(e.with_traceback)
             mes = "御神签见底了，稍后再来试试吧！"
+
+    if mes == "exit()":
+        return
 
     if ark:
         try:
@@ -649,21 +737,38 @@ async def _message_handler(event, message: Message):
 
 async def _guild_handler(event, guild:Guild):
     print("\n频道已刷新。\n")
-    await up_guild_list()
+    if event == "GUILD_CREATE":
+        await new_guild(guild)
+    elif event == "GUILD_DELETE":
+        await delete_guild(guild)
 
 async def getGuildStatus():
-    guild_list = await api.me_guilds()
+
+    guild_list = []
+    guild_list_temp = []
+
+    while(1):
+        if guild_list != [] and len(guild_list_temp) >= 100:
+            guild_list_temp = await api.me_guilds(option = ReqOption(after = str(guild_list_temp[-1].id)))
+            guild_list += guild_list_temp
+        elif guild_list == []:
+            guild_list = await api.me_guilds()
+            guild_list_temp = guild_list
+        else:
+            break
+
     guild_member_all_count = 0
     guild_status_mes  = ""
+
     for guild in guild_list:
         try:
             guild_data = await guild_api.get_guild(guild.id)
-            guild_status_mes += "【{}】{}人\n".format(guild.name,str(guild_data.member_count))
+            #guild_status_mes += "【{}】{}人\n".format(guild.name,str(guild_data.member_count))
             guild_member_all_count += guild_data.member_count
         except Exception as e:
             qqbot.logger.info(e.args)
     user = await api.me()
-    guild_status_mes += "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
+    guild_status_mes = "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
     return guild_status_mes
 
 async def weapon_wiki(name,level = None):

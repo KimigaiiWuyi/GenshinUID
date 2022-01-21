@@ -57,6 +57,82 @@ async def check_switch(gid,func):
         print(e.with_traceback)
         return False
 
+async def subGuild_status(gid):
+    try:
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+        cursor = c.execute("SELECT Permission FROM GuildList WHERE GuildID = ?",(gid,))
+        c_data = cursor.fetchall()
+        conn.commit()
+        conn.close()
+        temp_dict = c_data[0][0].split(',')
+        return temp_dict
+    except Exception as e:
+        print(e.with_traceback)
+        return False
+
+async def check_subGuild_switch(gid,subgid):
+    try:
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+
+        columns = [i[1] for i in c.execute('PRAGMA table_info(GuildList)')]
+
+        if "Permission" not in columns:
+            c.execute('ALTER TABLE GuildList ADD COLUMN Permission TEXT')
+
+        cursor = c.execute("SELECT Permission FROM GuildList WHERE GuildID = ?",(gid,))
+        c_data = cursor.fetchall()
+        conn.commit()
+        conn.close()
+        if c_data[0][0] == None:
+            return True
+        else:
+            temp_dict = c_data[0][0].split(',')
+            if subgid in temp_dict:
+                return True
+            else:
+                return False
+    except Exception as e:
+        print(e.with_traceback)
+        return False
+
+async def change_subGuild_switch(gid,subgid,status):
+    try:
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
+        columns = [i[1] for i in c.execute('PRAGMA table_info(GuildList)')]
+
+        if "Permission" not in columns:
+            c.execute('ALTER TABLE GuildList ADD COLUMN Permission TEXT')
+            
+        cursor = c.execute("SELECT Permission FROM GuildList WHERE GuildID = ?",(gid,))
+        c_data = cursor.fetchall()
+        if c_data[0][0] == None:
+            temp_dict = [subgid]
+        else:
+            temp_dict = c_data[0][0].split(',')
+            if status == "open" and subgid in temp_dict:
+                return
+            elif status == "open":
+                temp_dict.append(subgid)
+            else:
+                temp_dict = list(filter(lambda x : x!=subgid,temp_dict))
+                if temp_dict == [""]:
+                    c.execute("UPDATE GuildList SET Permission = ? WHERE GuildID=?",(None,gid))
+                    conn.commit()
+                    conn.close()
+                    return
+
+        status = ','.join(temp_dict)
+        c.execute("UPDATE GuildList SET Permission = ? WHERE GuildID=?",(status,gid))
+        conn.commit()
+        conn.close()
+        return
+    except Exception as e:
+        print(e.with_traceback)
+        return False
+
 async def change_switch(gid,func,status):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
@@ -64,24 +140,28 @@ async def change_switch(gid,func,status):
     conn.commit()
     conn.close()
 
-async def add_guild(gid,gname):
+async def change_guild(mode,gid,gname):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS GuildList
-            (GuildID TEXT PRIMARY KEY     NOT NULL,
-            GuildName   TEXT,
-            SearchRole  TEXT,
-            LinkUID     TEXT,
-            CharInfo    TEXT,
-            WeaponInfo  TEXT,
-            CostInfo    TEXT,
-            TalentsInfo TEXT,
-            PolarInfo   TEXT,
-            guideInfo   TEXT,
-            CardInfo    TEXT,
-            GetLots     TEXT);''')
-    c.execute("INSERT OR IGNORE INTO GuildList (GuildID,GuildName) \
-                        VALUES (?, ?)",(gid,gname))
+                (GuildID TEXT PRIMARY KEY     NOT NULL,
+                GuildName   TEXT,
+                SearchRole  TEXT,
+                LinkUID     TEXT,
+                CharInfo    TEXT,
+                WeaponInfo  TEXT,
+                CostInfo    TEXT,
+                TalentsInfo TEXT,
+                PolarInfo   TEXT,
+                guideInfo   TEXT,
+                CardInfo    TEXT,
+                GetLots     TEXT,
+                AudioInfo   TEXT);''')
+    if mode == "new":
+        c.execute("INSERT OR IGNORE INTO GuildList (GuildID,GuildName) \
+                            VALUES (?, ?)",(gid,gname))
+    elif mode == "delete":
+        c.execute("DELETE from GuildList where GuildID=?",(gid,))
     conn.commit()
     conn.close()
     

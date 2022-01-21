@@ -70,6 +70,19 @@ async def GetMysInfo(mysid,ck):
         im = "err，获取米游社信息失败，请重试！"
         return im
 
+async def GetMiscInfo(mode,name):
+    url = "https://api.minigg.cn/{}?query={}".format(mode,urllib.parse.quote(name, safe=''))
+    async with AsyncClient() as client:
+        req = await client.get(
+            url = url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+                'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'accept-encoding':'gzip, deflate, br'})
+        print(req.text)
+        data = jsonfy(req.text)
+    return data
+    
 async def GetWeaponInfo(name,level = None):
     async with AsyncClient() as client:
         req = await client.get(

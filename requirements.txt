@@ -2,7 +2,7 @@ numpy==1.20.3
 APScheduler==3.7.0
 httpx==0.18.1
 requests==2.25.1
-qq_bot>=0.5.3
+qq_bot>=0.6.1
 beautifulsoup4==4.10.0
 Pillow==8.4.0
 lxml==4.7.1

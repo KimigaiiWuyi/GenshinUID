@@ -373,14 +373,14 @@ async def _(bot: Bot, event: Event):
 
 @daily_data.handle()
 async def _(bot: Bot, event: Event):
-    #try:
-    uid = await selectDB(event.sender.user_id, mode="uid")
-    uid = uid[0]
-    mes = await daily("ask", uid)
-    im = mes[0]['message']
-    #except Exception as e:
-    #    nonebot.logger.warning(e.with_traceback)
-    #    im = "没有找到绑定信息。"
+    try:
+        uid = await selectDB(event.sender.user_id, mode="uid")
+        uid = uid[0]
+        mes = await daily("ask", uid)
+        im = mes[0]['message']
+    except Exception as e:
+        nonebot.logger.warning(e.with_traceback)
+        im = "没有找到绑定信息。"
 
     await daily_data.send(im, at_sender=True)
 
@@ -497,11 +497,11 @@ async def _(bot: Bot, event: Event):
             except:
                 await search.send('遇到错误！')
         elif m == "":
-            #try:
-            bg = await draw_pic(uid[0], nickname, image, uid[1])
-            await search.send(bg, at_sender=True)
-            #except:
-            #    await search.send('输入错误！')
+            try:
+                bg = await draw_pic(uid[0], nickname, image, uid[1])
+                await search.send(bg, at_sender=True)
+            except:
+                await search.send('输入错误！')
         else:
             pass
     else:

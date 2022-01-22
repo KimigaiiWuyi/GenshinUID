@@ -1,4 +1,4 @@
-import math,sqlite3,re,os,random,requests
+import math,sqlite3,re,os,random,requests,json
 from base64 import b64encode
 from io import BytesIO
 
@@ -122,7 +122,7 @@ food_im = '''【{}】
 【材料】：{}
 '''
 
-audio_json = {
+audio_json = '''{
     "357":["357_01","357_02","357_03"],
     "1000000":["1000000_01","1000000_02","1000000_03","1000000_04","1000000_05","1000000_06","1000000_07"],
     "1000001":["1000001_01","1000001_02","1000001_03"],
@@ -142,7 +142,7 @@ audio_json = {
     "1010301":["1010301_01","1010301_02","1010301_03","1010301_04","1010301_05"],
     "1010400":["1010400_01","1010400_02","1010400_03"],
     "1020000":["1020000_01"]
-}
+}'''
 
 async def deal_ck(mes,qid):
     aid = re.search(r"account_id=(\d*)", mes)
@@ -192,19 +192,36 @@ async def award(uid):
     return im
 
 async def audio_wiki(name,message):
+    async def get(audioid):
+        tmp_json=json.loads(audio_json)
+        for _ in range(3):#重试3次
+            if audioid in tmp_json:
+                if not tmp_json[audioid]:
+                    return
+                audioid1 = random.choice(tmp_json[audioid])
+            else:
+                audioid1=audioid
+            url = await GetAudioInfo(name,audioid1)
+            req=requests.get(url)
+            if req.headers["Content-Type"].startswith("audio"):
+                return BytesIO(req.content)
+            else:
+                if audioid in tmp_json:
+                    tmp_json[audioid].remove(audioid1)
     if name == "列表":
         im = f'[CQ:image,file=file://{os.path.join(INDEX_PATH,"语音.png")}]'
+        return im
     elif name == "":
         return "角色名不正确。"
     else:
         audioid = re.findall(r"[0-9]+", message)[0]
-        if audioid in audio_json:
-            audioid = random.choice(audio_json[audioid])
-        url = await GetAudioInfo(name,audioid)
-        audio = BytesIO(requests.get(url).content)
-        audios = 'base64://' + b64encode(audio.getvalue()).decode()
-        im = f"[CQ:record,file={audios}]"
-    return im
+        try:
+            audio=await get(audioid)
+        except:
+            return "语音获取失败"
+        if audio:
+            audios = 'base64://' + b64encode(audio.getvalue()).decode()
+            return (f"[CQ:record,file={audios}]")
 
 async def artifacts_wiki(name):
     data = await GetMiscInfo("artifacts",name)

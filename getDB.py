@@ -1,5 +1,5 @@
 import sqlite3
-import sys,datetime
+import sys,datetime,urllib
 
 from httpx import AsyncClient
 from shutil import copyfile
@@ -421,6 +421,7 @@ async def GetDaily(Uid,ServerID="cn_gf01"):
                     'Referer': 'https://webstatic.mihoyo.com/',
                     "Cookie": await OwnerCookies(Uid)})
             data = json.loads(req.text)
+            #print(data)
         return data
     except requests.exceptions.SSLError:
         try:
@@ -535,6 +536,7 @@ async def GetInfo(Uid,ck,ServerID="cn_gf01"):
                     'Referer': 'https://webstatic.mihoyo.com/',
                     "Cookie": ck})
             data = json.loads(req.text)
+        #print(data)   
         return data
     except requests.exceptions.SSLError:
         try:
@@ -674,7 +676,7 @@ async def GetMysInfo(mysid,ck):
     except Exception as e:
         print("米游社信息读取老Api失败！")
         print(e.with_traceback)  
-        
+
 async def GetAudioInfo(name,audioid,language = "cn"):
     url = "https://genshin.minigg.cn/?characters=" + name + "&audioid=" + audioid + "&language=" + language
     async with AsyncClient() as client:
@@ -684,7 +686,7 @@ async def GetAudioInfo(name,audioid,language = "cn"):
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
     return req.text
-    
+
 async def GetWeaponInfo(name,level = None):
     async with AsyncClient() as client:
         req = await client.get(
@@ -695,14 +697,16 @@ async def GetWeaponInfo(name,level = None):
     data = jsonfy(req.text)
     return data
 
-async def GetEnemiesInfo(name):
-    baseurl = "https://api.minigg.cn/enemies?query="
+async def GetMiscInfo(mode,name):
+    url = "https://api.minigg.cn/{}?query={}".format(mode,urllib.parse.quote(name, safe=''))
     async with AsyncClient() as client:
         req = await client.get(
-            url = baseurl + name,
+            url = url,
             headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                'Referer': 'https://genshin.minigg.cn/index.html'})
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36',
+                'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'accept-encoding':'gzip, deflate, br'})
+        print(req.text)
         data = jsonfy(req.text)
     return data
 
@@ -717,6 +721,7 @@ async def GetCharInfo(name,mode = "char",level = None):
     elif mode == "costs":
         url = baseurl + name + "&costs=1"
         url2 = "https://api.minigg.cn/talents?query=" + name + "&costs=1"
+        url3 = "https://api.minigg.cn/talents?query=" + name + "&matchCategories=true"
     elif level:
         url = baseurl + name + "&stats=" + level
     else:
@@ -730,6 +735,16 @@ async def GetCharInfo(name,mode = "char",level = None):
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                     'Referer': 'https://genshin.minigg.cn/index.html'})
             data2 = jsonfy(req.text)
+            if data2 != "undefined":
+                pass
+            else:
+                async with AsyncClient() as client:
+                    req = await client.get(
+                        url = url3,
+                        headers={
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                            'Referer': 'https://genshin.minigg.cn/index.html'})
+                    data2 = req.text
 
     async with AsyncClient() as client:
         req = await client.get(
@@ -737,18 +752,20 @@ async def GetCharInfo(name,mode = "char",level = None):
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
                 'Referer': 'https://genshin.minigg.cn/index.html'})
-        data = jsonfy(req.text)
-        if data != "undefined":
-            pass
-        else:
-            async with AsyncClient() as client:
-                req = await client.get(
-                    url = baseurl + name + "&matchCategories=true",
-                    headers={
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                        'Referer': 'https://genshin.minigg.cn/index.html'})
-                data = req.text
-
+        try:
+            data = jsonfy(req.text)
+            if data != "undefined":
+                pass
+            else:
+                async with AsyncClient() as client:
+                    req = await client.get(
+                        url = url + "&matchCategories=true",
+                        headers={
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                            'Referer': 'https://genshin.minigg.cn/index.html'})
+                    data = req.text
+        except:
+            data = None
     return data if data2 == None else [data,data2]
 
 async def GetGenshinEvent(mode = "List"):
@@ -767,7 +784,7 @@ async def GetGenshinEvent(mode = "List"):
     return data
 
 def jsonfy(s:str)->object:
-    s = s.replace("stats: [Function (anonymous)]","")
+    s = s.replace("stats: [Function (anonymous)]","").replace("(","（").replace(")","）")
     #此函数将不带双引号的json的key标准化
     obj = eval(s, type('js', (dict,), dict(__getitem__=lambda s, n: n))())
     return obj

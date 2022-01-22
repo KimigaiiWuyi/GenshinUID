@@ -131,7 +131,7 @@ async def change_subGuild_switch(gid,subgid,status):
         return
     except Exception as e:
         print(e.with_traceback)
-        return False
+        return
 
 async def change_switch(gid,func,status):
     conn = sqlite3.connect('ID_DATA.db')

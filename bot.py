@@ -411,7 +411,8 @@ async def _message_handler(event, message: Message):
                 channel_name = raw_mes.replace("设置频道开启","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
-                    if i.name == channel_name:
+                    temp_name = i.name.replace(" ","")
+                    if temp_name == channel_name:
                         channel_id = i.id
                 await change_subGuild_switch(message.guild_id,channel_id,"open")
                 channel_status = await getChannelStatus(message.guild_id)
@@ -429,7 +430,8 @@ async def _message_handler(event, message: Message):
                 channel_name = raw_mes.replace("设置频道关闭","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
-                    if i.name == channel_name:
+                    temp_name = i.name.replace(" ","")
+                    if temp_name == channel_name:
                         channel_id = i.id
                 await change_subGuild_switch(message.guild_id,channel_id,"closed")
                 channel_status = await getChannelStatus(message.guild_id)

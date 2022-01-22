@@ -204,16 +204,7 @@ async def setting(ctx):
     if '添加 ' in message:
         try:
             mes = message.replace('添加 ','')
-            aid = re.search(r"account_id=(\d*)", mes)
-            mysid_data = aid.group(0).split('=')
-            mysid = mysid_data[1]
-            cookie = ';'.join(filter(lambda x: x.split('=')[0] in ["cookie_token", "account_id"], [i.strip() for i in mes.split(';')]))
-            mys_data = await GetMysInfo(mysid,cookie)
-            for i in mys_data['data']['list']:
-                if i['game_id'] != 2:
-                    mys_data['data']['list'].remove(i)
-            uid = mys_data['data']['list'][0]['game_role_id']
-            await cookiesDB(uid,cookie,userid)
+            await deal_ck(mes,userid)
             await bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message=f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n如果需要【开启自动签到】和【开启推送】还需要使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。')
         except Exception as e:
             print(e.with_traceback)

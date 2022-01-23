@@ -1,7 +1,7 @@
 import asyncio
 import os
 import re
-import sqlite3,random
+import sqlite3,random,traceback
 import base64
 
 import nonebot
@@ -10,6 +10,7 @@ from nonebot.adapters import Bot, Event
 from nonebot.adapters.cqhttp import *
 from nonebot.adapters.cqhttp import Message, MessageSegment, permission, utils
 from nonebot.rule import Rule
+
 
 
 from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo, GetAudioInfo,
@@ -199,9 +200,12 @@ async def dailysign():
     temp_list = []
     for row in c_data:
         if row[4] == "on":
-            im = await sign(str(row[0]))
-            await bot.call_api(api='send_private_msg',
-                                user_id=row[2], message=im)
+            try:
+                im = await sign(str(row[0]))
+                await bot.call_api(api='send_private_msg',
+                                    user_id=row[2], message=im)
+            except Exception as e:
+                traceback.print_exc()
         else:
             im = await sign(str(row[0]))
             message = f"[CQ:at,qq={row[2]}]\n{im}"
@@ -213,8 +217,11 @@ async def dailysign():
                 temp_list.append({"push_group":row[4],"push_message":message})
         await asyncio.sleep(6+random.randint(0,2))
     for i in temp_list:
-        await bot.call_api(
-            api='send_group_msg', group_id=i["push_group"], message=i["push_message"])
+        try:
+            await bot.call_api(
+                api='send_group_msg', group_id=i["push_group"], message=i["push_message"])
+        except Exception as e:
+            traceback.print_exc()
         await asyncio.sleep(3+random.randint(0,2))
 
 # 每隔半小时检测树脂是否超过设定值

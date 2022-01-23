@@ -17,7 +17,7 @@ import hashlib
 import sqlite3
 from io import BytesIO
 import urllib
-import requests
+import requests,traceback
 from base64 import b64encode
 
 sv = Service('genshinuid')
@@ -164,8 +164,11 @@ async def dailysign():
 
     for row in c_data:
         if row[4] == "on":
-            im = await sign(str(row[0]))
-            await bot.send_private_msg(user_id = row[2],message = im)
+            try:
+                im = await sign(str(row[0]))
+                await bot.send_private_msg(user_id = row[2],message = im)
+            except Exception as e:
+                traceback.print_exc()
         else:
             im = await sign(str(row[0]))
             message = f"[CQ:at,qq={row[2]}]\n{im}"
@@ -178,11 +181,14 @@ async def dailysign():
         await asyncio.sleep(6+random.randint(0,2))
 
     for i in temp_list:
-        await bot.send_group_msg(group_id = i["push_group"],message = i["push_message"])
+        try:
+            await bot.send_group_msg(group_id = i["push_group"],message = i["push_message"])
+        except Exception as e:
+            traceback.print_exc()
         await asyncio.sleep(3+random.randint(0,2))
 
 #每隔半小时检测树脂是否超过设定值
-@sv.scheduled_job('interval', minutes=30)
+@sv.scheduled_job('interval', hours = 1)
 async def push():
     daily_data = await daily()
     if daily_data != None:

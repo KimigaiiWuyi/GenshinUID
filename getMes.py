@@ -160,10 +160,13 @@ async def deal_ck(mes,qid):
     c = conn.cursor()
 
     test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'CookiesCache'")
-    if test == 0:
+    if test <= 0:
         pass
     else:
-        c.execute("DELETE from CookiesCache where uid=? or mysid = ?",(uid,mysid))
+        try:
+            c.execute("DELETE from CookiesCache where uid=? or mysid = ?",(uid,mysid))
+        except:
+            pass
 
     conn.commit()
     conn.close()

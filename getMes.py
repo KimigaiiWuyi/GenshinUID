@@ -1,4 +1,4 @@
-import math,sqlite3,re,os,random,requests
+import math,sqlite3,re,os,random,requests,traceback
 from base64 import b64encode
 from io import BytesIO
 
@@ -221,7 +221,8 @@ async def audio_wiki(name,message):
         audioid = re.findall(r"[0-9]+", message)[0]
         try:
             audio=await get(audioid)
-        except:
+        except Exception as e:
+            traceback.print_exc()
             return "语音获取失败"
         if audio:
             audios = 'base64://' + b64encode(audio.getvalue()).decode()

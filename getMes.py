@@ -160,7 +160,8 @@ async def deal_ck(mes,qid):
     c = conn.cursor()
 
     test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'CookiesCache'")
-    if test <= 0:
+    print(test)
+    if test == 0:
         pass
     else:
         try:

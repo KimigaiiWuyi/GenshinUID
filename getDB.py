@@ -93,45 +93,6 @@ async def CheckDB():
     conn.close()
     return str
 
-async def TransDB():
-    str = ''
-    conn = sqlite3.connect('ID_DATA.db')
-    c = conn.cursor()
-    test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'CookiesTable'")
-    if test == 0:
-        conn.commit()
-        conn.close()
-        return "你没有需要迁移的数据库。"
-    else:
-        c.execute('''CREATE TABLE IF NOT EXISTS NewCookiesTable
-            (UID INT PRIMARY KEY     NOT NULL,
-            Cookies     TEXT,
-            QID         INT,
-            StatusA     TEXT,
-            StatusB     TEXT,
-            StatusC     TEXT,
-            NUM         INT,
-            Extra       TEXT);''')
-        cursor = c.execute("SELECT * from CookiesTable")
-        c_data = cursor.fetchall()
-        for row in c_data:
-            try:
-                newcookies = ';'.join(filter(lambda x: x.split('=')[0] in ["cookie_token", "account_id"], [i.strip() for i in row[0].split(';')]))
-                aid = re.search(r"account_id=(\d*)", row[0])
-                mysid_data = aid.group(0).split('=')
-                mysid = mysid_data[1]
-                mys_data = await GetMysInfo(mysid,row[0])
-                mys_data = mys_data[0]
-                uid = mys_data['data']['list'][0]['game_role_id']
-                c.execute("INSERT OR IGNORE INTO NewCookiesTable (Cookies,UID,StatusA,StatusB,StatusC,NUM) \
-                            VALUES (?, ?,?,?,?,?)",(newcookies,uid,"off","off","off",140))
-                str = str + f"uid{uid}/mysid{mysid}的Cookies已转移成功！\n"
-            except:
-                str = str + f"uid{uid}/mysid{mysid}的Cookies是异常的！已删除该条Cookies！\n"
-        conn.commit()
-        conn.close()
-        return str
-
 async def connectDB(userid,uid = None,mys = None):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
@@ -309,46 +270,6 @@ async def cookiesDB(uid,Cookies,qid):
 
     conn.commit()
     conn.close()
-
-async def OpCookies():
-    str = ""
-    conn = sqlite3.connect('ID_DATA.db')
-    c = conn.cursor()
-    test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'NewCookies'")
-    if test == 0:
-        conn.commit()
-        conn.close()
-        return "你没有需要优化的数据库。"
-    else:
-        c.execute('''CREATE TABLE IF NOT EXISTS NewCookiesTable
-            (UID INT PRIMARY KEY     NOT NULL,
-            Cookies     TEXT,
-            QID         INT,
-            StatusA     TEXT,
-            StatusB     TEXT,
-            StatusC     TEXT,
-            NUM         INT,
-            Extra       TEXT);''')
-        cursor = c.execute("SELECT * from NewCookies")
-        c_data = cursor.fetchall()
-        for row in c_data:
-            try:
-                newcookies = ';'.join(filter(lambda x: x.split('=')[0] in ["cookie_token", "account_id"], [i.strip() for i in row[0].split(';')]))
-                aid = re.search(r"account_id=(\d*)", row[0])
-                mysid_data = aid.group(0).split('=')
-                mysid = mysid_data[1]
-                mys_data = await GetMysInfo(mysid,row[0])
-                mys_data = mys_data[0]
-                uid = mys_data['data']['list'][0]['game_role_id']
-                c.execute("INSERT OR IGNORE INTO NewCookiesTable (Cookies,UID,StatusA,StatusB,StatusC,QID,NUM) \
-                            VALUES (?, ?,?,?,?,?,?)",(newcookies,row[1],row[2],row[3],"off",row[4],row[5]))
-                str = str + f"uid{row[1]}的Cookies已转移成功！\n"
-            except:
-                str = str + f"uid{row[1]}的Cookies是异常的！已删除该条Cookies！\n"
-        conn.commit()
-        conn.close()
-        return str
-            
     
 async def OwnerCookies(uid):
     conn = sqlite3.connect('ID_DATA.db')

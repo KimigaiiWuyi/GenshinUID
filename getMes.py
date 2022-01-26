@@ -1,10 +1,10 @@
-import math,sqlite3,re,os,random,requests,traceback,json
+import math,sqlite3,re,os,random,requests,json
 from base64 import b64encode
 from io import BytesIO
 
-from .getDB import (CheckDB, GetAward, GetCharInfo, GetDaily, GetMysInfo, GetAudioInfo,
-                    GetSignInfo, GetSignList, GetWeaponInfo, MysSign, OpenPush,
-                    connectDB, cookiesDB, deletecache, selectDB, get_alots, GetMiscInfo)
+from .getDB import ( GetAward, GetCharInfo, GetDaily, GetMysInfo, GetAudioInfo,
+                    GetSignInfo, GetSignList, GetWeaponInfo, MysSign, 
+                     cookiesDB, GetMiscInfo)
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mys')
@@ -110,8 +110,7 @@ artifacts_im = '''【{}】
 【{}】：{}
 【{}】：{}
 【{}】：{}
-【{}】：{}
-'''
+【{}】：{}'''
 
 food_im = '''【{}】
 【稀有度】：{}
@@ -119,8 +118,8 @@ food_im = '''【{}】
 【食物类别】：{}
 【效果】：{}
 【介绍】：{}
-【材料】：{}
-'''
+【材料】：
+{}'''
 
 audio_json = '''{
     "357":["357_01","357_02","357_03"],
@@ -159,15 +158,10 @@ async def deal_ck(mes,qid):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
 
-    test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'CookiesCache'")
-    print(test)
-    if test == 0:
+    try:
+        c.execute("DELETE from CookiesCache where uid=? or mysid = ?",(uid,mysid))
+    except:
         pass
-    else:
-        try:
-            c.execute("DELETE from CookiesCache where uid=? or mysid = ?",(uid,mysid))
-        except:
-            pass
 
     conn.commit()
     conn.close()
@@ -221,8 +215,7 @@ async def audio_wiki(name,message):
         audioid = re.findall(r"[0-9]+", message)[0]
         try:
             audio=await get(audioid)
-        except Exception as e:
-            traceback.print_exc()
+        except:
             return "语音获取失败"
         if audio:
             audios = 'base64://' + b64encode(audio.getvalue()).decode()
@@ -230,39 +223,47 @@ async def audio_wiki(name,message):
 
 async def artifacts_wiki(name):
     data = await GetMiscInfo("artifacts",name)
-    star = ""
-    for i in data["rarity"]:
-        star = star + i + "星、"
-    star = star[:-1]
-    im = artifacts_im.format(data["name"],star,data["2pc"],data["4pc"],data["flower"]["name"],data["flower"]["description"],
-                            data["plume"]["name"],data["plume"]["description"],data["sands"]["name"],data["sands"]["description"],
-                            data["goblet"]["name"],data["goblet"]["description"],data["circlet"]["name"],data["circlet"]["description"])
+    if "errcode" in data:
+        im = "该圣遗物不存在。"
+    else:
+        star = ""
+        for i in data["rarity"]:
+            star = star + i + "星、"
+        star = star[:-1]
+        im = artifacts_im.format(data["name"],star,data["2pc"],data["4pc"],data["flower"]["name"],data["flower"]["description"],
+                                data["plume"]["name"],data["plume"]["description"],data["sands"]["name"],data["sands"]["description"],
+                                data["goblet"]["name"],data["goblet"]["description"],data["circlet"]["name"],data["circlet"]["description"])
     return im
 
 async def foods_wiki(name):
     data = await GetMiscInfo("foods",name)
-    ingredients = ""
-    food_temp = {}
-    for i in data["ingredients"]:
-        if i["name"] not in food_temp:
-            food_temp[i["name"]] = i["count"]
-        else:
-            food_temp[i["name"]] = food_temp[i["name"]] + i["count"]
-    print(food_temp)
-    for i in food_temp:
-        ingredients += i + ":" + str(food_temp[i]) + "\n"
-    ingredients = ingredients[:-1]
-    im = food_im.format(data["name"],data["rarity"],data["foodtype"],data["foodfilter"],data["effect"],data["description"],ingredients)
+    if "errcode" in data:
+        im = "该食物不存在。"
+    else:
+        ingredients = ""
+        food_temp = {}
+        for i in data["ingredients"]:
+            if i["name"] not in food_temp:
+                food_temp[i["name"]] = i["count"]
+            else:
+                food_temp[i["name"]] = food_temp[i["name"]] + i["count"]
+        for i in food_temp:
+            ingredients += i + ":" + str(food_temp[i]) + "\n"
+        ingredients = ingredients[:-1]
+        im = food_im.format(data["name"],data["rarity"],data["foodtype"],data["foodfilter"],data["effect"],data["description"],ingredients)
     return im
 
 async def enemies_wiki(name):
     raw_data = await GetMiscInfo("enemies",name)
-    reward = ""
-    for i in raw_data["rewardpreview"]:
-        reward += i["name"] + "：" + str(i["count"]) if "count" in i.keys() else i["name"] + "：" + "可能"
-        reward += "\n"
-    im = "【{}】\n——{}——\n类型：{}\n信息：{}\n掉落物：\n{}".format(raw_data["name"],raw_data["specialname"],
-                                                    raw_data["category"],raw_data["description"],reward)
+    if "errcode" in raw_data:
+        im = "该原魔不存在。"
+    else:
+        reward = ""
+        for i in raw_data["rewardpreview"]:
+            reward += i["name"] + "：" + str(i["count"]) if "count" in i.keys() else i["name"] + "：" + "可能"
+            reward += "\n"
+        im = "【{}】\n——{}——\n类型：{}\n信息：{}\n掉落物：\n{}".format(raw_data["name"],raw_data["specialname"],
+                                                        raw_data["category"],raw_data["description"],reward)
     return im
 
 # 签到函数
@@ -335,15 +336,15 @@ async def daily(mode="push", uid=None):
                     expedition_info.append(
                         f"{avatar_name} 剩余时间{remained_timed}")
 
-            if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100 or finished_expedition_num >0:
+            if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                 tip = ''
 
                 if current_resin >= row[6] and row[6] != 0:
                     tip += "\n==============\n你的树脂快满了！"
                 if dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                     tip += "\n==============\n你的洞天宝钱快满了！"
-                if finished_expedition_num >0:
-                    tip += "\n==============\n你有探索派遣完成了！"
+                #if finished_expedition_num >0:
+                #    tip += "\n==============\n你有探索派遣完成了！"
                 max_resin = dailydata['max_resin']
                 rec_time = ''
                 # print(dailydata)
@@ -379,8 +380,10 @@ async def daily(mode="push", uid=None):
 
 async def weapon_wiki(name,level = None):
     data = await GetWeaponInfo(name)
-    if level:
-        data2 = await GetWeaponInfo(name,level+"plus" if level else level)
+    if "errcode" in data:
+        im = "武器不存在。"
+    elif level:
+        data2 = await GetWeaponInfo(name,level)
         if data["substat"] != "":
             sp = data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100) if data["substat"] != "元素精通" else data["substat"] + "：" + str(math.floor(data2["specialized"]))
         else:
@@ -421,12 +424,10 @@ async def weapon_wiki(name,level = None):
 async def char_wiki(name, mode="char", level=None):
     data = await GetCharInfo(name, mode, level if mode == "char" else None)
     if mode == "char":
-        if isinstance(data,str):
-            raw_data = data.replace("[","").replace("\n","").replace("]","").replace(" ","").replace("'","").split(',')
-            if data.replace("\n","").replace(" ","") == "undefined":
-                im = "不存在该角色或类型。"
-            else:
-                im = ','.join(raw_data)
+        if isinstance(data,list):
+            im = ','.join(data)
+        elif "errcode" in data:
+            im = "不存在该角色或类型。"
         elif level:
             data2 = await GetCharInfo(name, mode)
             sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data["specialized"]))
@@ -446,19 +447,17 @@ async def char_wiki(name, mode="char", level=None):
             im = char_info_im.format(
                 name, star, type, element, up_val, bdday, polar, cv, info)
     elif mode == "costs":
-        if isinstance(data[1],str):
-            raw_data = data[1].replace("[","").replace("\n","").replace("]","").replace(" ","").replace("'","").split(',')
-            if data[1].replace("\n","").replace(" ","") == "undefined":
-                im = "不存在该角色或类型。"
-            else:
-                im = ','.join(raw_data)
+        if isinstance(data[1],list):
+            im = ','.join(data[1])
+        elif "errcode" in data[1]:
+            im = "不存在该角色或类型。"
         else:
             im = "【天赋材料(一份)】\n{}\n【突破材料】\n{}"
             im1 = ""
             im2 = ""
             
             talent_temp = {}
-            talent_cost = data[1]["costs"]
+            talent_cost = data[1]
             for i in talent_cost.values():
                 for j in i:
                     if j["name"] not in talent_temp:
@@ -482,46 +481,55 @@ async def char_wiki(name, mode="char", level=None):
             
             im = im.format(im1,im2)
     elif mode == "constellations":
-        im = "【" + data["c{}".format(level)]['name'] + "】" + "：" + \
-            "\n" + data["c{}".format(level)]['effect'].replace("*", "")
-    elif mode == "talents":
-        if int(level) <= 3 :
-            if level == "1":
-                data = data["combat1"]
-            elif level == "2":
-                data = data["combat2"]
-            elif level == "3":
-                data = data["combat3"]
-            skill_name = data["name"]
-            skill_info = data["info"]
-            skill_detail = ""
-
-            for i in data["attributes"]["parameters"]:
-                temp = ""
-                for k in data["attributes"]["parameters"][i]:
-                    temp += "%.2f%%" % (k * 100) + "/"
-                data["attributes"]["parameters"][i] = temp[:-1]
-
-            for i in data["attributes"]["labels"]:
-                #i = i.replace("{","{{")
-                i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
-                #i.replace(r':[a-zA-Z0-9]+}','}')
-                skill_detail += i + "\n"
-
-            skill_detail = skill_detail.format(**data["attributes"]["parameters"])
-
-            im = "【{}】\n{}\n————\n{}".format(skill_name,skill_info,skill_detail)
-
+        if "errcode" in data:
+            im = "不存在该角色或命座数量。"
         else:
-            if level == "4":
-                data = data["passive1"]
-            elif level == "5":
-                data = data["passive2"]
-            elif level == "6":
-                data = data["passive3"]
-            elif level == "7":
-                data = data["passive4"]
-            skill_name = data["name"]
-            skill_info = data["info"]
-            im = "【{}】\n{}".format(skill_name,skill_info)
+            im = "【" + data["c{}".format(level)]['name'] + "】" + "：" + \
+                "\n" + data["c{}".format(level)]['effect'].replace("*", "")
+    elif mode == "talents":
+        if "errcode" in data:
+            im = "不存在该角色。"
+        else:
+            if int(level) <=6 and int(level) > 0:
+                if int(level) <= 3 :
+                    if level == "1":
+                        data = data["combat1"]
+                    elif level == "2":
+                        data = data["combat2"]
+                    elif level == "3":
+                        data = data["combat3"]
+                    skill_name = data["name"]
+                    skill_info = data["info"]
+                    skill_detail = ""
+
+                    for i in data["attributes"]["parameters"]:
+                        temp = ""
+                        for k in data["attributes"]["parameters"][i]:
+                            temp += "%.2f%%" % (k * 100) + "/"
+                        data["attributes"]["parameters"][i] = temp[:-1]
+
+                    for i in data["attributes"]["labels"]:
+                        #i = i.replace("{","{{")
+                        i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
+                        #i.replace(r':[a-zA-Z0-9]+}','}')
+                        skill_detail += i + "\n"
+
+                    skill_detail = skill_detail.format(**data["attributes"]["parameters"])
+
+                    im = "【{}】\n{}\n————\n{}".format(skill_name,skill_info,skill_detail)
+
+                else:
+                    if level == "4":
+                        data = data["passive1"]
+                    elif level == "5":
+                        data = data["passive2"]
+                    elif level == "6":
+                        data = data["passive3"]
+                    elif level == "7":
+                        data = data["passive4"]
+                    skill_name = data["name"]
+                    skill_info = data["info"]
+                    im = "【{}】\n{}".format(skill_name,skill_info)
+            else:
+                im = "不存在该天赋。"
     return im

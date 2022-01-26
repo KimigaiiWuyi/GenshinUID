@@ -3,7 +3,7 @@ from io import BytesIO
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from getData import (GetGenshinEvent)
+from .getData import (GetGenshinEvent)
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH,'mys')

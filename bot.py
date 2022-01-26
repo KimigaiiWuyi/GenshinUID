@@ -1,5 +1,5 @@
 import re,os,random,sqlite3,sys,datetime,math,json,time
-import base64
+import base64,traceback
 from apscheduler.schedulers.background import BackgroundScheduler
 from shutil import copyfile
 import urllib.parse
@@ -7,6 +7,7 @@ import httpx
 
 from getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, change_guild, check_switch,record,change_switch,check_subGuild_switch,change_subGuild_switch,subGuild_status)
 from getData import (GetInfo,GetWeaponInfo,GetCharInfo,GetUidPic,GetMysInfo,GetAudioInfo)
+from getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck)
 from getImg import (draw_event_pic)
 
 import yaml
@@ -365,6 +366,7 @@ async def _message_handler(event, message: Message):
         record_mes = raw_mes
     except Exception as e:
         qqbot.logger.info(e.with_traceback)
+        traceback.print_exc()
         return
 
     mes = None
@@ -389,7 +391,7 @@ async def _message_handler(event, message: Message):
             await change_switch(message.guild_id,switch_list[raw_mes],"on")
             mes = "成功。"
         except Exception as e:
-            print(e.with_traceback)
+            traceback.print_exc()
             mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("关闭"):
         raw_mes = raw_mes.replace("关闭","")
@@ -402,7 +404,7 @@ async def _message_handler(event, message: Message):
             await change_switch(message.guild_id,switch_list[raw_mes],"off")
             mes = "成功。"
         except Exception as e:
-            print(e.with_traceback)
+            traceback.print_exc()
             mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("设置频道开启"):
         try:
@@ -421,7 +423,7 @@ async def _message_handler(event, message: Message):
             else:
                 return
         except Exception as e:
-            print(e.with_traceback)
+            traceback.print_exc()
             mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("设置频道关闭"):
         try:
@@ -440,7 +442,7 @@ async def _message_handler(event, message: Message):
             else:
                 return
         except Exception as e:
-            print(e.with_traceback)
+            traceback.print_exc()
             mes = "发生错误，可能是输入的功能名不正确。"
 
 
@@ -451,6 +453,7 @@ async def _message_handler(event, message: Message):
             try:
                 mes = await getGuildStatus()
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "发生错误，频道信息Api可能变动。"
         elif raw_mes == "help":
@@ -460,6 +463,7 @@ async def _message_handler(event, message: Message):
                 await check_cookies()
                 mes = "成功!"
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "ck添加错误。"
         elif await check_startwish(raw_mes,"语音",message.guild_id):
@@ -486,6 +490,7 @@ async def _message_handler(event, message: Message):
                     audio_raw_ark["kv"][6]["value"] = "原神语音"
                     ark = MessageArk(data = audio_raw_ark)
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = e.with_traceback
 
@@ -509,6 +514,7 @@ async def _message_handler(event, message: Message):
             except json.JSONDecodeError:
                 mes = get_url
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "没有找到绑定信息。"
         elif await check_startwish(raw_mes,"uid",message.guild_id):
@@ -533,6 +539,7 @@ async def _message_handler(event, message: Message):
             except json.JSONDecodeError:
                 mes = get_url
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "UID输入格式有误，请检查输入是否为9位国服或者大陆渠道服的UID。\n\n例如：/uid137727130\n\n输入/help查看完整帮助"
         elif await check_startwish(raw_mes,"mys",message.guild_id):
@@ -554,6 +561,7 @@ async def _message_handler(event, message: Message):
             except json.JSONDecodeError:
                 mes = get_url
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "输入格式有误，请检查输入是否为米游社ID。\n\n例如：/mys137727130\n\n输入/help查看完整帮助"
         #elif raw_mes.startswith("活动列表"):
@@ -565,6 +573,7 @@ async def _message_handler(event, message: Message):
                 await connectDB(userid = message.author.id,uid = uid)
                 mes = "绑定uid成功。"
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "绑定失败。"
         elif await check_startwish(raw_mes,"绑定mys",message.guild_id):
@@ -573,6 +582,7 @@ async def _message_handler(event, message: Message):
                 await connectDB(userid = message.author.id,mys = uid)
                 mes = "绑定mysid成功。"
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "绑定失败。"
         elif await check_startwish(raw_mes,"角色",message.guild_id):
@@ -585,6 +595,7 @@ async def _message_handler(event, message: Message):
                 else:
                     mes = await char_wiki(name)
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "暂无该角色，请检查角色名字是否正确，需输入完整名字。\n\n例如：/角色云堇\n\n输入/help可查看完整帮助"
         elif await check_startwish(raw_mes,"武器",message.guild_id):
@@ -597,6 +608,7 @@ async def _message_handler(event, message: Message):
                 else:
                     mes = await weapon_wiki(name)
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "暂无该武器，请检查角色名字是否正确，需输入完整名字。\n\n例如：/武器雾切之回光\n\n输入/help可查看完整帮助"
         elif await check_startwish(raw_mes,"材料",message.guild_id):
@@ -604,6 +616,7 @@ async def _message_handler(event, message: Message):
             try:
                 mes = await char_wiki(raw_mes,"costs")
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "不存在该角色或类型。"
         elif await check_startwish(raw_mes,"天赋",message.guild_id):
@@ -616,6 +629,7 @@ async def _message_handler(event, message: Message):
                 else:
                     mes = "暂无该天赋数，天赋可查询数量为1~7。\n\n输入/help可查看完整帮助"
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n输入/help可查看完整帮助"
         elif await check_startwish(raw_mes,"命座",message.guild_id):
@@ -631,6 +645,7 @@ async def _message_handler(event, message: Message):
                 else:
                     mes = await char_wiki(m, "constellations", num)
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "暂无该角色攻略，请检查角色名字是否正确，需输入完整名字。\n\n输入/help可查看完整帮助"
         elif await check_startwish(raw_mes,"攻略",message.guild_id):
@@ -645,6 +660,7 @@ async def _message_handler(event, message: Message):
                 else:
                     pass
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "发生错误。"
         elif await check_startwish(raw_mes,"信息",message.guild_id):
@@ -659,6 +675,7 @@ async def _message_handler(event, message: Message):
                 else:
                     pass
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "发生错误。"
 
@@ -667,6 +684,7 @@ async def _message_handler(event, message: Message):
                 raw_data = await get_alots(message.author.id)
                 mes = base64.b64decode(raw_data).decode("utf-8")
             except Exception as e:
+                traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "御神签见底了，稍后再来试试吧！"
 
@@ -681,7 +699,7 @@ async def _message_handler(event, message: Message):
                 await msg_api.post_message(message.channel_id, send)
             except:
                 pass
-            qqbot.logger.info(e.args)
+            traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     elif audio:
         try:
@@ -693,7 +711,7 @@ async def _message_handler(event, message: Message):
                 await msg_api.post_message(message.channel_id, send)
             except:
                 pass
-            qqbot.logger.info(e.args)
+            traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     elif image:
         try:
@@ -706,7 +724,7 @@ async def _message_handler(event, message: Message):
                 await msg_api.post_message(message.channel_id, send)
             except:
                 pass
-            qqbot.logger.info(e.args)
+            traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     elif mes:
         try:
@@ -719,7 +737,7 @@ async def _message_handler(event, message: Message):
                 await msg_api.post_message(message.channel_id, send)
             except:
                 pass
-            qqbot.logger.info(e.args)
+            traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     else:
         mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请输入/help查看帮助。（如果是新添加Bot，功能24小时内生效）"
@@ -728,7 +746,7 @@ async def _message_handler(event, message: Message):
             await msg_api.post_message(message.channel_id, send)
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,mes)
         except Exception as e:
-            qqbot.logger.info(e.args)
+            traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     return
 
@@ -764,153 +782,10 @@ async def getGuildStatus():
             guild_member_all_count += guild_data.member_count
         except Exception as e:
             qqbot.logger.info(e.args)
+            traceback.print_exc()
     user = await api.me()
     guild_status_mes = "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
     return guild_status_mes
-
-async def weapon_wiki(name,level = None):
-    data = await GetWeaponInfo(name)
-    if level:
-        data2 = await GetWeaponInfo(name,level+"plus" if level else level)
-        if data["substat"] != "":
-            sp = data["substat"] + "：" + '%.1f%%' % (data2["specialized"] * 100) if data["substat"] != "元素精通" else data["substat"] + "：" + str(math.floor(data2["specialized"]))
-        else:
-            sp = ""
-        im = (data["name"] + "\n等级：" + str(data2["level"]) + "（突破" + str(data2["ascension"]) + "）" + 
-                    "\n攻击力：" + str(math.floor(data2["attack"])) + "\n" + sp)
-    else:
-        name = data['name']
-        type = data['weapontype']
-        star = data['rarity'] + "星"
-        info = data['description']
-        atk = str(data['baseatk'])
-        sub_name = data['substat']
-        if data['subvalue'] != "":
-            sub_val = (data['subvalue'] +
-                    '%') if sub_name != '元素精通' else data['subvalue']
-            sub = "\n" + "【" + sub_name + "】" + sub_val
-        else:
-            sub = ""
-
-        if data['effectname'] != "":
-            raw_effect = data['effect']
-            rw_ef = []
-            for i in range(len(data['r1'])):
-                now = ''
-                for j in range(1, 6):
-                    now = now + data['r{}'.format(j)][i] + "/"
-                now = now[:-1]
-                rw_ef.append(now)
-            raw_effect = raw_effect.format(*rw_ef)
-            effect = "\n" + "【" + data['effectname'] + "】" + "：" + raw_effect
-        else:
-            effect = ""
-        im = weapon_im.format(name, type, star, info, atk,
-                            sub, effect)
-    return im
-
-
-async def char_wiki(name, mode="char", level=None):
-    data = await GetCharInfo(name, mode, level if mode == "char" else None)
-    if mode == "char":
-        if isinstance(data,str):
-            raw_data = data.replace("[","").replace("\n","").replace("]","").replace(" ","").replace("'","").split(',')
-            if data.replace("\n","").replace(" ","") == "undefined":
-                im = "不存在该角色或类型。"
-            else:
-                im = ','.join(raw_data)
-        elif level:
-            data2 = await GetCharInfo(name, mode)
-            sp = data2["substat"] + "：" + '%.1f%%' % (data["specialized"] * 100) if data2["substat"] != "元素精通" else data2["substat"] + "：" + str(math.floor(data2["specialized"]))
-            im = (data2["name"] + "\n等级：" + str(data["level"]) + "\n血量：" + str(math.floor(data["hp"])) +
-                "\n攻击力：" + str(math.floor(data["attack"])) + "\n防御力：" + str(math.floor(data["defense"])) +
-                "\n" + sp)
-        else:
-            name = data['title'] + ' — ' + data['name']
-            star = data['rarity']
-            type = data["weapontype"]
-            element = data['element']
-            up_val = data['substat']
-            bdday = data['birthday']
-            polar = data['constellation']
-            cv = data['cv']['chinese']
-            info = data['description']
-            im = char_info_im.format(
-                name, star, type, element, up_val, bdday, polar, cv, info)
-    elif mode == "costs":
-        im = "【天赋材料(一份)】\n{}\n【突破材料】\n{}"
-        im1 = ""
-        im2 = ""
-        
-        talent_temp = {}
-        talent_cost = data[1]["costs"]
-        for i in talent_cost.values():
-            for j in i:
-                if j["name"] not in talent_temp:
-                    talent_temp[j["name"]] = j["count"]
-                else:
-                    talent_temp[j["name"]] = talent_temp[j["name"]] + j["count"]
-        for k in talent_temp:
-            im1 = im1 + k + ":" + str(talent_temp[k]) + "\n"
-
-        temp = {}
-        cost = data[0]
-        for i in range(1,7):
-            for j in cost["ascend{}".format(i)]:
-                if j["name"] not in temp:
-                    temp[j["name"]] = j["count"]
-                else:
-                    temp[j["name"]] = temp[j["name"]] + j["count"]
-                    
-        for k in temp:
-            im2 = im2 + k + ":" + str(temp[k]) + "\n"
-        
-        im = im.format(im1,im2)
-    elif mode == "constellations":
-        im = "【" + data["c{}".format(level)]['name'] + "】" + "：" + \
-            "\n" + data["c{}".format(level)]['effect'].replace("*", "")
-    elif mode == "talents":
-        if int(level) <= 3 :
-            if level == "1":
-                data = data["combat1"]
-            elif level == "2":
-                data = data["combat2"]
-            elif level == "3":
-                data = data["combat3"]
-            skill_name = data["name"]
-            skill_info = data["info"]
-            skill_detail = ""
-
-            for i in data["attributes"]["parameters"]:
-                temp = ""
-                for k in data["attributes"]["parameters"][i]:
-                    temp += "%.2f%%" % (k * 100) + "/"
-                data["attributes"]["parameters"][i] = temp[:-1]
-
-            for i in data["attributes"]["labels"]:
-                #i = i.replace("{","{{")
-                i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
-                #i.replace(r':[a-zA-Z0-9]+}','}')
-                skill_detail += i + "\n"
-
-            skill_detail = skill_detail.format(**data["attributes"]["parameters"])
-
-            im = "【{}】\n{}\n————\n{}".format(skill_name,skill_info,skill_detail)
-
-        else:
-            if level == "4":
-                data = data["passive1"]
-            elif level == "5":
-                data = data["passive2"]
-            elif level == "6":
-                data = data["passive3"]
-            elif level == "7":
-                data = data["passive4"]
-            skill_name = data["name"]
-            skill_info = data["info"]
-            im = "【{}】\n{}".format(skill_name,skill_info)
-    return im
-
 
 qqbot_handler2 = qqbot.Handler(qqbot.HandlerType.GUILD_EVENT_HANDLER, _guild_handler)
 qqbot_handler = qqbot.Handler(qqbot.HandlerType.AT_MESSAGE_EVENT_HANDLER, _message_handler)

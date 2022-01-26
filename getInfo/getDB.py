@@ -1,4 +1,4 @@
-import sqlite3,os,random,time,re
+import sqlite3,os,random,time,re,traceback
 from shutil import copyfile
 
 FILE_PATH = os.path.dirname(__file__)
@@ -14,7 +14,6 @@ WEAPON_PATH = os.path.join(FILE2_PATH,'weapon')
 BG_PATH = os.path.join(FILE2_PATH,'bg')
 
 async def record(gname,gid,uname,uid,mes,reply):
-    #print(now)
     now = int(time.time())
     timeArray = time.localtime(now)
     otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
@@ -54,7 +53,7 @@ async def check_switch(gid,func):
         else:
             return False
     except Exception as e:
-        print(e.with_traceback)
+        traceback.print_exc()
         return False
 
 async def subGuild_status(gid):
@@ -68,7 +67,7 @@ async def subGuild_status(gid):
         temp_dict = c_data[0][0].split(',')
         return temp_dict
     except Exception as e:
-        print(e.with_traceback)
+        traceback.print_exc()
         return False
 
 async def check_subGuild_switch(gid,subgid):
@@ -94,7 +93,7 @@ async def check_subGuild_switch(gid,subgid):
             else:
                 return False
     except Exception as e:
-        print(e.with_traceback)
+        traceback.print_exc()
         return False
 
 async def change_subGuild_switch(gid,subgid,status):
@@ -130,7 +129,7 @@ async def change_subGuild_switch(gid,subgid,status):
         conn.close()
         return
     except Exception as e:
-        print(e.with_traceback)
+        traceback.print_exc()
         return
 
 async def change_switch(gid,func,status):

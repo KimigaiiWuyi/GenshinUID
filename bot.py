@@ -242,24 +242,11 @@ switch_list = {
     "攻略":"guideInfo",
     "信息":"CardInfo",
     "御神签":"GetLots",
-    "语音":"AudioInfo"
+    "语音":"AudioInfo",
+    "食物":"Foods",
+    "原魔":"Enemies",
+    "圣遗物":"Artifacts",
 }
-
-weapon_im = '''【名称】：{}
-【类型】：{}
-【稀有度】：{}
-【介绍】：{}
-【攻击力】：{}{}{}'''
-
-char_info_im = '''{}
-【稀有度】：{}
-【武器】：{}
-【元素】：{}
-【突破加成】：{}
-【生日】：{}
-【命之座】：{}
-【cv】：{}
-【介绍】：{}'''
 
 audio_json = {
     "357":["357_01","357_02","357_03"],
@@ -383,33 +370,31 @@ async def _message_handler(event, message: Message):
     if raw_mes.startswith("开启"):
         raw_mes = raw_mes.replace("开启","")
         member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-        if 2 or 3 or 4 in member_info.roles:
-            pass
+        if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+            try:
+                await change_switch(message.guild_id,switch_list[raw_mes],"on")
+                mes = "成功。"
+            except Exception as e:
+                traceback.print_exc()
+                mes = "发生错误，可能是输入的功能名不正确。"
         else:
             return
-        try:
-            await change_switch(message.guild_id,switch_list[raw_mes],"on")
-            mes = "成功。"
-        except Exception as e:
-            traceback.print_exc()
-            mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("关闭"):
         raw_mes = raw_mes.replace("关闭","")
         member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-        if 2 or 3 or 4 in member_info.roles:
-            pass
+        if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+            try:
+                await change_switch(message.guild_id,switch_list[raw_mes],"off")
+                mes = "成功。"
+            except Exception as e:
+                traceback.print_exc()
+                mes = "发生错误，可能是输入的功能名不正确。"
         else:
             return
-        try:
-            await change_switch(message.guild_id,switch_list[raw_mes],"off")
-            mes = "成功。"
-        except Exception as e:
-            traceback.print_exc()
-            mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("设置频道开启"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-            if 2 or 3 or 4 in member_info.roles:
+            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
                 channel_name = raw_mes.replace("设置频道开启","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
@@ -428,7 +413,7 @@ async def _message_handler(event, message: Message):
     elif raw_mes.startswith("设置频道关闭"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-            if 2 or 3 or 4 in member_info.roles:
+            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
                 channel_name = raw_mes.replace("设置频道关闭","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
@@ -450,12 +435,16 @@ async def _message_handler(event, message: Message):
         mes = await getChannelStatus(message.guild_id)
     else:
         if raw_mes == "频道信息":
-            try:
-                mes = await getGuildStatus()
-            except Exception as e:
-                traceback.print_exc()
-                qqbot.logger.info(e.with_traceback)
-                mes = "发生错误，频道信息Api可能变动。"
+            member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
+            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+                try:
+                    mes = await getGuildStatus()
+                except Exception as e:
+                    traceback.print_exc()
+                    qqbot.logger.info(e.with_traceback)
+                    mes = "发生错误，频道信息Api可能变动。"
+            else:
+                return
         elif raw_mes == "help":
             ark = help_ark
         elif raw_mes == "整理cookies":
@@ -597,7 +586,7 @@ async def _message_handler(event, message: Message):
             except Exception as e:
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
-                mes = "暂无该角色，请检查角色名字是否正确，需输入完整名字。\n\n例如：/角色云堇\n\n输入/help可查看完整帮助"
+                mes = "发生错误，请联系管理员检查后台。"
         elif await check_startwish(raw_mes,"武器",message.guild_id):
             raw_mes = raw_mes.replace("武器","")
             try:
@@ -610,7 +599,34 @@ async def _message_handler(event, message: Message):
             except Exception as e:
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
-                mes = "暂无该武器，请检查角色名字是否正确，需输入完整名字。\n\n例如：/武器雾切之回光\n\n输入/help可查看完整帮助"
+                mes = "发生错误，请联系管理员检查后台。"
+        elif await check_startwish(raw_mes,"食物",message.guild_id):
+            raw_mes = raw_mes.replace("食物","")
+            try:
+                name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+                mes = await foods_wiki(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "发生错误，请联系管理员检查后台。"
+        elif await check_startwish(raw_mes,"原魔",message.guild_id):
+            raw_mes = raw_mes.replace("原魔","")
+            try:
+                name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+                mes = await enemies_wiki(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "发生错误，请联系管理员检查后台。"
+        elif await check_startwish(raw_mes,"圣遗物",message.guild_id):
+            raw_mes = raw_mes.replace("圣遗物","")
+            try:
+                name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+                mes = await artifacts_wiki(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "发生错误，请联系管理员检查后台。"
         elif await check_startwish(raw_mes,"材料",message.guild_id):
             raw_mes = raw_mes.replace("材料","")
             try:

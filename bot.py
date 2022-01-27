@@ -5,10 +5,10 @@ from shutil import copyfile
 import urllib.parse
 import httpx
 
-from getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, change_guild, check_switch,record,change_switch,check_subGuild_switch,change_subGuild_switch,subGuild_status)
-from getData import (GetInfo,GetWeaponInfo,GetCharInfo,GetUidPic,GetMysInfo,GetAudioInfo)
-from getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck)
-from getImg import (draw_event_pic)
+from getInfo.getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, change_guild, check_switch,record,change_switch,check_subGuild_switch,change_subGuild_switch,subGuild_status)
+from getInfo.getData import (GetInfo,GetWeaponInfo,GetCharInfo,GetUidPic,GetMysInfo,GetAudioInfo)
+from getInfo.getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck)
+from getInfo.getImg import (draw_event_pic)
 
 import yaml
 import asyncio

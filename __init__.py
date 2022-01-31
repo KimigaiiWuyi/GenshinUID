@@ -358,6 +358,16 @@ async def _(bot: Bot, event: Event):
                 await open_switch.send(im, at_sender=True)
             except:
                 await open_switch.send("未绑定uid信息！", at_sender=True)
+        elif m == "简洁签到报告":
+            try:
+                if qid in superusers:
+                    _ = await config_check("SignReportSimple","OPEN")
+                    await open_switch.send("成功!", at_sender=True)
+                else:
+                    return
+            except Exception as e:
+                await open_switch.send("发生错误 {},请检查后台输出。".format(e))
+                traceback.print_exc()
     except Exception as e:
         await open_switch.send("发生错误 {},请检查后台输出。".format(e))
         traceback.print_exc()
@@ -403,6 +413,16 @@ async def _(bot: Bot, event: Event):
                 await close_switch.send(im, at_sender=True)
             except:
                 await close_switch.send("未绑定uid信息！", at_sender=True)
+        elif m == "简洁签到报告":
+            try:
+                if qid in superusers:
+                    _ = await config_check("SignReportSimple","CLOSED")
+                    await close_switch.send("成功!", at_sender=True)
+                else:
+                    return
+            except Exception as e:
+                await open_switch.send("发生错误 {},请检查后台输出。".format(e))
+                traceback.print_exc()
     except Exception as e:
         await close_switch.send("发生错误 {},请检查后台输出。".format(e))
         traceback.print_exc()

@@ -1,4 +1,4 @@
-from .getDB import (CheckDB, OpenPush, connectDB, deletecache, selectDB, get_alots)
+from .getDB import (CheckDB, OpenPush, connectDB, deletecache, selectDB, get_alots, config_check)
 from .getImg import (draw_abyss0_pic, draw_abyss_pic, draw_event_pic, draw_pic, draw_wordcloud)
 from .getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck)
 
@@ -195,31 +195,58 @@ async def dailysign():
         "SELECT *  FROM NewCookiesTable WHERE StatusB != ?", ("off",))
     c_data = cursor.fetchall()
     temp_list = []
-
     for row in c_data:
+        im = await sign(str(row[0]))
         if row[4] == "on":
             try:
-                im = await sign(str(row[0]))
                 await bot.send_private_msg(user_id = row[2],message = im)
-            except Exception as e:
+            except:
                 traceback.print_exc()
+                print(im + "\nerror")
         else:
-            im = await sign(str(row[0]))
             message = f"[CQ:at,qq={row[2]}]\n{im}"
-            for i in temp_list:
-                if row[4] == i["push_group"]:
-                    i["push_message"] = i["push_message"] + "\n" + message
-                    break
+            if await config_check("SignReportSimple"):
+                for i in temp_list:
+                    if row[4] == i["push_group"]:
+                        if im == "签到失败，请检查Cookies是否失效。" or im.startswith("网络有点忙，请稍后再试~!"):
+                            i["failed"] += 1
+                            i["push_message"] += "\n" + message
+                        else:
+                            i["success"] += 1
+                        break
+                else:
+                    if im == "签到失败，请检查Cookies是否失效。":
+                        temp_list.append({"push_group":row[4],"push_message":message,"success":0,"failed":1})
+                    else:
+                        temp_list.append({"push_group":row[4],"push_message":"","success":1,"failed":0})
             else:
-                temp_list.append({"push_group":row[4],"push_message":message})
-        await asyncio.sleep(6+random.randint(0,2))
-
-    for i in temp_list:
-        try:
-            await bot.send_group_msg(group_id = i["push_group"],message = i["push_message"])
-        except Exception as e:
-            traceback.print_exc()
-        await asyncio.sleep(3+random.randint(0,2))
+                for i in temp_list:
+                    if row[4] == i["push_group"] and i["num"] < 4:
+                        i["push_message"] += "\n" + message
+                        i["num"] += 1
+                        break
+                else:
+                    temp_list.append({"push_group":row[4],"push_message":message,"num":1})
+        await asyncio.sleep(6+random.randint(1,3))
+    if await config_check("SignReportSimple"):
+        for i in temp_list:
+            try:
+                report = "以下为签到失败报告：{}".format(i["push_message"]) if i["push_message"] != "" else ""
+                await bot.send_group_msg(group_id = i["push_group"],message = "今日自动签到已完成！\n本群共签到成功{}人，共签到失败{}人。{}".format(i["success"],i["failed"],report))
+            except:
+                traceback.print_exc()
+                print(i["push_message"])
+            await asyncio.sleep(4+random.randint(1,3))
+    else:
+        for i in temp_list:
+            try:
+                await bot.send_group_msg(group_id = i["push_group"],message = i["push_message"])
+            except:
+                traceback.print_exc()
+                print(i["push_message"])
+            await asyncio.sleep(4+random.randint(1,3))
+    conn.close()
+    return
 
 #每隔半小时检测树脂是否超过设定值
 @sv.scheduled_job('interval', hours = 1)
@@ -324,6 +351,16 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             except Exception as e:
                 traceback.print_exc()
                 await bot.send(ev,"未绑定uid信息！",at_sender=True)
+        elif m == "简洁签到报告":
+            try:
+                if qid in bot.config.SUPERUSERS:
+                    _ = await config_check("SignReportSimple","OPEN")
+                    await bot.send(ev,"成功!", at_sender=True)
+                else:
+                    return
+            except Exception as e:
+                await bot.send(ev,"发生错误 {},请检查后台输出。".format(e))
+                traceback.print_exc()
     except Exception as e:
         traceback.print_exc()
         await bot.send(ev,"发生错误 {},请检查后台输出。".format(e))
@@ -370,6 +407,16 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             except Exception as e:
                 traceback.print_exc()
                 await bot.send(ev,"未绑定uid信息！",at_sender=True)
+        elif m == "简洁签到报告":
+            try:
+                if qid in bot.config.SUPERUSERS:
+                    _ = await config_check("SignReportSimple","CLOSED")
+                    await bot.send(ev,"成功!", at_sender=True)
+                else:
+                    return
+            except Exception as e:
+                await bot.send(ev,"发生错误 {},请检查后台输出。".format(e))
+                traceback.print_exc()
     except Exception as e:
         traceback.print_exc()
         await bot.send(ev,"发生错误 {},请检查后台输出。".format(e))

@@ -14,6 +14,35 @@ BASE_PATH = os.path.dirname(__file__)
 BASE2_PATH = os.path.join(BASE_PATH,'mys')
 INDEX_PATH = os.path.join(BASE2_PATH,'index')
 
+async def config_check(func,mode = "CHECK"):
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS Config
+            (Name TEXT PRIMARY KEY     NOT NULL,
+            Status      TEXT,
+            GroupList   TEXT,
+            Extra       TEXT);''')
+    c.execute("INSERT OR IGNORE INTO Config (Name,Status) \
+                            VALUES (?, ?)",(func,"on"))
+    if mode == "CHECK":
+        cursor = c.execute("SELECT * from Config WHERE Name = ?",(func,))
+        c_data = cursor.fetchall()
+        conn.close()
+        if c_data[0][1] != "off":
+            return True
+        else:
+            return False
+    elif mode == "OPEN":
+        c.execute("UPDATE Config SET Status = ? WHERE Name=?",("on",func))
+        conn.commit()
+        conn.close()
+        return True
+    elif mode == "CLOSED":
+        c.execute("UPDATE Config SET Status = ? WHERE Name=?",("off",func))
+        conn.commit()
+        conn.close()
+        return True
+
 async def get_alots(qid):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()

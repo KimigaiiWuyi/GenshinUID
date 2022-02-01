@@ -9,6 +9,9 @@
         <a href="https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98qa">常见问题</a>
 </div>
 
+<p align="center">
+  <a><img src="https://s2.loli.net/2022/02/01/QlS4piWXw5rZO3D.png"></a>
+</p>
 
 ## 丨我该如何安装该插件？
 

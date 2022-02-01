@@ -8,7 +8,7 @@
         <a href="https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E6%9F%A5%E8%AF%A2%E6%A8%A1%E5%9D%97%E6%8C%87%E4%BB%A4%E5%88%97%E8%A1%A8" target="_blank">指令列表</a> &nbsp; · &nbsp;
         <a href="https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98qa">常见问题</a>
 </div>
-
+![使用范例](https://s2.loli.net/2022/02/01/QlS4piWXw5rZO3D.png)
 
 ## 丨我该如何安装该插件？
 

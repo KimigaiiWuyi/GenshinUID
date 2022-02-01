@@ -1171,6 +1171,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             char_img_icon = i["image"]
 
             char_weapon_star = i['weapon']['rarity']
+            char_weapon_level = i['weapon']['level']
             char_weapon_jinglian = i['weapon']['affix_level']
             char_weapon_icon = i['weapon']['icon']
 
@@ -1200,7 +1201,7 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
             weapon_bg = Image.open(getText(char_weapon_star,3))
             charpic.paste(weapon_bg,(72,10),weapon_bg)
             charpic_temp.paste(char_img,(81,13),charpic_mask)
-            charpic_temp.paste(char_stand,(335,-99),char_stand_mask)
+            charpic_temp.paste(char_stand,(395,-99),char_stand_mask)
             charpic_temp.paste(char_fg,(0,0),char_fg)
             charpic_temp.paste(weapon_img,(141,72),weaponpic_mask)
             #temp = Image.composite(weapon_img, basedb, weaponpic_mask)
@@ -1232,13 +1233,14 @@ async def draw_pic(uid,nickname,image = None,mode = 2,role_level = None):
 
             char_draw = ImageDraw.Draw(charpic)
 
-            char_draw.text((182,39),i["name"],new_color,ys_font(22))
-            char_draw.text((272,45),f'Lv.{str(char_level)}',new_color,ys_font(18))
+            char_draw.text((188,30),i["name"] + " " + f'Lv.{str(char_level)}',new_color,ys_font(22))
+            #char_draw.text((272,45),f'Lv.{str(char_level)}',new_color,ys_font(18))
 
             #char_draw.text((104.5,91.5),f'{str(char_weapon_jinglian)}',new_color,ys_font(10))
-            char_draw.text((267,77),f'{str(char_mingzuo)}',new_color,ys_font(18))
 
-            char_draw.text((209,77),f'{str(i["fetter"])}' if str(char_name) != "旅行者" else "10",new_color,ys_font(18))
+            char_draw.text((222,87),f'{str(i["fetter"])}' if str(char_name) != "旅行者" else "10",new_color,ys_font(15),anchor = "mm")
+            char_draw.text((255,87),f'{str(char_mingzuo)}',new_color,ys_font(15),anchor = "mm")
+            char_draw.text((218,67),f'{str(char_weapon_level)}级{str(char_weapon_jinglian)}精',new_color,ys_font(15),anchor = "lm")
             char_crop = (0,800+110*num)
             num += 1
             bg_img.paste(charpic,char_crop,charpic)

@@ -162,19 +162,25 @@ async def selectDB(userid,mode = "auto"):
         elif mode == "mys":
             return [row[2],3]
             
-def deletecache():
+async def deletecache():
+    try:
+        copyfile("ID_DATA.db", "ID_DATA_bak.db")
+        print("————数据库成功备份————")
+    except:
+        print("————数据库备份失败————")
+    
     try:
         conn = sqlite3.connect('ID_DATA.db')
         c = conn.cursor()
         c.execute("DROP TABLE CookiesCache")
         c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Extra=?",(None,"limit30"))
-        copyfile("ID_DATA.db", "ID_DATA_bak.db")
         c.execute('''CREATE TABLE IF NOT EXISTS CookiesCache
         (UID TEXT PRIMARY KEY,
         MYSID         TEXT,
         Cookies       TEXT);''')
         conn.commit()
         conn.close()
+        print("————UID查询缓存已清空————")
     except:
         print("\nerror\n")
     
@@ -184,6 +190,7 @@ def deletecache():
         c.execute("UPDATE UseridDict SET lots=NULL")
         conn.commit()
         conn.close()
+        print("————御神签缓存已清空————")
     except:
         print("\nerror\n")
 

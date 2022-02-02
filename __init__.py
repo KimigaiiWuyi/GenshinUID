@@ -451,8 +451,13 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 @sv.on_fullmatch('校验全部Cookies')
 async def _(bot:HoshinoBot,  ev: CQEvent):
     try:
-        im = await CheckDB()
-        await bot.send(ev,im)   
+        raw_mes = await CheckDB()
+        im = raw_mes[0]
+        await bot.send(ev,im)
+        for i in raw_mes[1]:
+            await bot.send_private_msg(user_id = i[0],
+                                        message = "您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n请及时重新绑定Cookies并重新开关相应功能。".format(i[1]))
+            await asyncio.sleep(3+random.randint(1,3)) 
     except Exception as e:
         traceback.print_exc()
         await bot.send(ev,"发生错误 {},请检查后台输出。".format(e))

@@ -95,9 +95,10 @@ async def OpenPush(uid,qid,status,mode):
 
 async def CheckDB():
     str = ''
+    invalidlist = []
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    cursor = c.execute("SELECT UID,Cookies  from NewCookiesTable")
+    cursor = c.execute("SELECT UID,Cookies,QID  from NewCookiesTable")
     c_data = cursor.fetchall()
     for row in c_data:
         try:
@@ -112,15 +113,15 @@ async def CheckDB():
             str = str + f"uid{row[0]}/mysid{mysid}的Cookies是正常的！\n"
         except:
             str = str + f"uid{row[0]}的Cookies是异常的！已删除该条Cookies！\n"
+            invalidlist.append([row[2],row[0]])
             c.execute("DELETE from NewCookiesTable where UID=?",(row[0],))
-            test = c.execute("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'CookiesCache'")
-            if test == 0:
-                pass
-            else:
+            try:
                 c.execute("DELETE from CookiesCache where Cookies=?",(row[1],))
+            except:
+                pass
     conn.commit()
     conn.close()
-    return str
+    return [str,invalidlist]
 
 async def connectDB(userid,uid = None,mys = None):
     conn = sqlite3.connect('ID_DATA.db')

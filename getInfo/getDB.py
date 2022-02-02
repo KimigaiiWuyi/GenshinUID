@@ -345,8 +345,9 @@ async def cookiesDB(uid,Cookies,qid):
 async def deletecache():
     try:
         copyfile("ID_DATA.db", "ID_DATA_bak.db")
+        print("————数据库成功备份————")
     except:
-        pass
+        print("————数据库备份失败————")
     
     try:
         conn = sqlite3.connect('ID_DATA.db')
@@ -359,6 +360,7 @@ async def deletecache():
         Cookies       TEXT);''')
         conn.commit()
         conn.close()
+        print("————UID查询缓存已清空————")
     except:
         print("\nerror\n")
     
@@ -368,6 +370,7 @@ async def deletecache():
         c.execute("UPDATE UseridDict SET lots=NULL")
         conn.commit()
         conn.close()
+        print("————御神签缓存已清空————")
     except:
         print("\nerror\n")
 

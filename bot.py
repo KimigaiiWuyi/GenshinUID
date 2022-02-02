@@ -1,6 +1,6 @@
 import re,os,random,sqlite3,sys,datetime,math,json,time
 import base64,traceback
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from shutil import copyfile
 import urllib.parse
 import httpx
@@ -69,6 +69,10 @@ async def ready():
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(ready())
+
+scheduler = AsyncIOScheduler()
+scheduler.add_job(deletecache, 'cron', hour='0')
+scheduler.start()
 
 audio_raw_ark = {
     "template_id": 24,

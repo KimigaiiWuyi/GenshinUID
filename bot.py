@@ -113,11 +113,11 @@ help_ark = MessageArk(data = {
     "kv": [
       {
         "key": "#DESC#",
-        "value": "原神Bot"
+        "value": "原神Bot-奶香的一刀"
       },
       {
         "key": "#PROMPT#",
-        "value": "这是一份原神帮助"
+        "value": "这是一份原神Bot帮助"
       },
       {
         "key": "#LIST#",
@@ -126,23 +126,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "===原神Bot==="
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "原神娱乐功能Bot"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "=================="
+                "value": "======原神Bot======"
               }
             ]
           },
@@ -158,7 +142,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "攻略+<角色名> · 查看角色攻略"
+                "value": "攻略+<角色名字> · 查看角色攻略"
               }
             ]
           },
@@ -166,7 +150,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "信息+<角色|武器> · 查看该角色或武器的介绍"
+                "value": "信息+<角色名字> · 查看角色简介"
               }
             ]
           },
@@ -174,7 +158,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "角色+<角色名> · 查看该角色的介绍-文字版"
+                "value": "信息+<武器名>字 · 查看武器简介"
               }
             ]
           },
@@ -182,7 +166,55 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "武器+<武器名> · 查看该武器的介绍-文字版"
+                "value": "角色+<角色名字> · 查看角色详情"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "武器+<武器名字> · 查看武器详情"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "命座+<1-6>+<角色名字> · 查看命座描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "食物+<食物名字> · 查看食物描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "天赋+<角色名字>+<1-7> · 查询天赋信息"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "圣遗物+<圣遗物名字> · 套装属性描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "原魔+<怪物名字> · 查看怪物信息"
               }
             ]
           },
@@ -191,14 +223,6 @@ help_ark = MessageArk(data = {
               {
                 "key": "desc",
                 "value": "御神签 · 与游戏内御神签结果无关"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "命座+<数字>+<角色名> · 查看命座描述"
               }
             ]
           },
@@ -227,6 +251,105 @@ help_ark = MessageArk(data = {
             ]
           },
         
+        ]
+      }
+    ]
+})
+
+master_ark = MessageArk(data = {
+    "template_id": 23,
+    "kv": [
+      {
+        "key": "#DESC#",
+        "value": "原神Bot-奶香的一刀"
+      },
+      {
+        "key": "#PROMPT#",
+        "value": "这是一份原神Bot管理员帮助"
+      },
+      {
+        "key": "#LIST#",
+        "obj": [
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "======原神Bot======"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "@机器人+设置频道<开启|关闭>+<#选择子频道>"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "指定Bot使用的子频道"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "可设置多个开启频道，管理Bot使用的频道推荐作为第一个开启的频道，否则设置Bot时会没有响应，设置后仅已开启的频道可用Bot。"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "当设置全部子频道关闭时，默认全局可用"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "======================"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "<开启|关闭>+<功能名字>"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "默认全部功能开启，可关闭指定功能，例如\"关闭uid\"即可关闭uid查询"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "======================"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "如有其他问题可私信小灰灰，或点击机器人头像提交反馈"
+              }
+            ]
+          },
         ]
       }
     ]
@@ -451,6 +574,8 @@ async def _message_handler(event, message: Message):
                 return
         elif raw_mes == "help":
             ark = help_ark
+        elif raw_mes == "master":
+            ark = master_ark
         elif raw_mes == "整理cookies":
             try:
                 await check_cookies()
@@ -760,7 +885,7 @@ async def _message_handler(event, message: Message):
             traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     else:
-        mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请输入/help查看帮助。（如果是新添加Bot，功能24小时内生效）"
+        mes = "你可能发送了错误的指令或者管理员关闭了该功能，请输入/help查看帮助。"
         try:
             send = qqbot.MessageSendRequest(mes, message.id)
             await msg_api.post_message(message.channel_id, send)

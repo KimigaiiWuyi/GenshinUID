@@ -1,6 +1,6 @@
 import re,os,random,sqlite3,sys,datetime,math,json,time
 import base64,traceback
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from shutil import copyfile
 import urllib.parse
 import httpx
@@ -70,6 +70,10 @@ async def ready():
 loop = asyncio.get_event_loop()
 loop.run_until_complete(ready())
 
+scheduler = AsyncIOScheduler()
+scheduler.add_job(deletecache, 'cron', hour='0')
+scheduler.start()
+
 audio_raw_ark = {
     "template_id": 24,
     "kv": [
@@ -109,11 +113,11 @@ help_ark = MessageArk(data = {
     "kv": [
       {
         "key": "#DESC#",
-        "value": "原神Bot"
+        "value": "原神Bot-奶香的一刀"
       },
       {
         "key": "#PROMPT#",
-        "value": "这是一份原神帮助"
+        "value": "这是一份原神Bot帮助"
       },
       {
         "key": "#LIST#",
@@ -122,23 +126,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "===原神Bot==="
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "原神娱乐功能Bot"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "=================="
+                "value": "======原神Bot======"
               }
             ]
           },
@@ -154,7 +142,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "攻略+<角色名> · 查看角色攻略"
+                "value": "攻略+<角色名字> · 查看角色攻略"
               }
             ]
           },
@@ -162,7 +150,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "信息+<角色|武器> · 查看该角色或武器的介绍"
+                "value": "信息+<角色名字> · 查看角色简介"
               }
             ]
           },
@@ -170,7 +158,7 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "角色+<角色名> · 查看该角色的介绍-文字版"
+                "value": "信息+<武器名>字 · 查看武器简介"
               }
             ]
           },
@@ -178,7 +166,55 @@ help_ark = MessageArk(data = {
             "obj_kv": [
               {
                 "key": "desc",
-                "value": "武器+<武器名> · 查看该武器的介绍-文字版"
+                "value": "角色+<角色名字> · 查看角色详情"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "武器+<武器名字> · 查看武器详情"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "命座+<1-6>+<角色名字> · 查看命座描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "食物+<食物名字> · 查看食物描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "天赋+<角色名字>+<1-7> · 查询天赋信息"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "圣遗物+<圣遗物名字> · 套装属性描述"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "原魔+<怪物名字> · 查看怪物信息"
               }
             ]
           },
@@ -187,14 +223,6 @@ help_ark = MessageArk(data = {
               {
                 "key": "desc",
                 "value": "御神签 · 与游戏内御神签结果无关"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "命座+<数字>+<角色名> · 查看命座描述"
               }
             ]
           },
@@ -228,6 +256,105 @@ help_ark = MessageArk(data = {
     ]
 })
 
+master_ark = MessageArk(data = {
+    "template_id": 23,
+    "kv": [
+      {
+        "key": "#DESC#",
+        "value": "原神Bot-奶香的一刀"
+      },
+      {
+        "key": "#PROMPT#",
+        "value": "这是一份原神Bot管理员帮助"
+      },
+      {
+        "key": "#LIST#",
+        "obj": [
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "======原神Bot======"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "@机器人+设置频道<开启|关闭>+<#选择子频道>"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "指定Bot使用的子频道"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "可设置多个开启频道，管理Bot使用的频道推荐作为第一个开启的频道，否则设置Bot时会没有响应，设置后仅已开启的频道可用Bot。"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "当设置全部子频道关闭时，默认全局可用"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "======================"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "<开启|关闭>+<功能名字>"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "默认全部功能开启，可关闭指定功能，例如\"关闭uid\"即可关闭uid查询"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "======================"
+              }
+            ]
+          },
+          {
+            "obj_kv": [
+              {
+                "key": "desc",
+                "value": "如有其他问题可私信小灰灰，或点击机器人头像提交反馈"
+              }
+            ]
+          },
+        ]
+      }
+    ]
+})
+
 switch_list = {
     "uid":"SearchRole",
     "mys":"SearchRole",
@@ -242,24 +369,11 @@ switch_list = {
     "攻略":"guideInfo",
     "信息":"CardInfo",
     "御神签":"GetLots",
-    "语音":"AudioInfo"
+    "语音":"AudioInfo",
+    "食物":"Foods",
+    "原魔":"Enemies",
+    "圣遗物":"Artifacts",
 }
-
-weapon_im = '''【名称】：{}
-【类型】：{}
-【稀有度】：{}
-【介绍】：{}
-【攻击力】：{}{}{}'''
-
-char_info_im = '''{}
-【稀有度】：{}
-【武器】：{}
-【元素】：{}
-【突破加成】：{}
-【生日】：{}
-【命之座】：{}
-【cv】：{}
-【介绍】：{}'''
 
 audio_json = {
     "357":["357_01","357_02","357_03"],
@@ -383,33 +497,31 @@ async def _message_handler(event, message: Message):
     if raw_mes.startswith("开启"):
         raw_mes = raw_mes.replace("开启","")
         member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-        if 2 or 3 or 4 in member_info.roles:
-            pass
+        if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+            try:
+                await change_switch(message.guild_id,switch_list[raw_mes],"on")
+                mes = "成功。"
+            except Exception as e:
+                traceback.print_exc()
+                mes = "发生错误，可能是输入的功能名不正确。"
         else:
             return
-        try:
-            await change_switch(message.guild_id,switch_list[raw_mes],"on")
-            mes = "成功。"
-        except Exception as e:
-            traceback.print_exc()
-            mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("关闭"):
         raw_mes = raw_mes.replace("关闭","")
         member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-        if 2 or 3 or 4 in member_info.roles:
-            pass
+        if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+            try:
+                await change_switch(message.guild_id,switch_list[raw_mes],"off")
+                mes = "成功。"
+            except Exception as e:
+                traceback.print_exc()
+                mes = "发生错误，可能是输入的功能名不正确。"
         else:
             return
-        try:
-            await change_switch(message.guild_id,switch_list[raw_mes],"off")
-            mes = "成功。"
-        except Exception as e:
-            traceback.print_exc()
-            mes = "发生错误，可能是输入的功能名不正确。"
     elif raw_mes.startswith("设置频道开启"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-            if 2 or 3 or 4 in member_info.roles:
+            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
                 channel_name = raw_mes.replace("设置频道开启","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
@@ -428,7 +540,7 @@ async def _message_handler(event, message: Message):
     elif raw_mes.startswith("设置频道关闭"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-            if 2 or 3 or 4 in member_info.roles:
+            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
                 channel_name = raw_mes.replace("设置频道关闭","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
@@ -450,14 +562,20 @@ async def _message_handler(event, message: Message):
         mes = await getChannelStatus(message.guild_id)
     else:
         if raw_mes == "频道信息":
-            try:
-                mes = await getGuildStatus()
-            except Exception as e:
-                traceback.print_exc()
-                qqbot.logger.info(e.with_traceback)
-                mes = "发生错误，频道信息Api可能变动。"
+            member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
+            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+                try:
+                    mes = await getGuildStatus()
+                except Exception as e:
+                    traceback.print_exc()
+                    qqbot.logger.info(e.with_traceback)
+                    mes = "发生错误，频道信息Api可能变动。"
+            else:
+                return
         elif raw_mes == "help":
             ark = help_ark
+        elif raw_mes == "master":
+            ark = master_ark
         elif raw_mes == "整理cookies":
             try:
                 await check_cookies()
@@ -597,7 +715,7 @@ async def _message_handler(event, message: Message):
             except Exception as e:
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
-                mes = "暂无该角色，请检查角色名字是否正确，需输入完整名字。\n\n例如：/角色云堇\n\n输入/help可查看完整帮助"
+                mes = "发生错误，请联系管理员检查后台。"
         elif await check_startwish(raw_mes,"武器",message.guild_id):
             raw_mes = raw_mes.replace("武器","")
             try:
@@ -610,7 +728,34 @@ async def _message_handler(event, message: Message):
             except Exception as e:
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
-                mes = "暂无该武器，请检查角色名字是否正确，需输入完整名字。\n\n例如：/武器雾切之回光\n\n输入/help可查看完整帮助"
+                mes = "发生错误，请联系管理员检查后台。"
+        elif await check_startwish(raw_mes,"食物",message.guild_id):
+            raw_mes = raw_mes.replace("食物","")
+            try:
+                name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+                mes = await foods_wiki(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "发生错误，请联系管理员检查后台。"
+        elif await check_startwish(raw_mes,"原魔",message.guild_id):
+            raw_mes = raw_mes.replace("原魔","")
+            try:
+                name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+                mes = await enemies_wiki(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "发生错误，请联系管理员检查后台。"
+        elif await check_startwish(raw_mes,"圣遗物",message.guild_id):
+            raw_mes = raw_mes.replace("圣遗物","")
+            try:
+                name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+                mes = await artifacts_wiki(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "发生错误，请联系管理员检查后台。"
         elif await check_startwish(raw_mes,"材料",message.guild_id):
             raw_mes = raw_mes.replace("材料","")
             try:
@@ -740,7 +885,7 @@ async def _message_handler(event, message: Message):
             traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     else:
-        mes = "你可能发送了错误的指令或参数不正确,或者使用了未开启的功能，请输入/help查看帮助。（如果是新添加Bot，功能24小时内生效）"
+        mes = "你可能发送了错误的指令或者管理员关闭了该功能，请输入/help查看帮助。"
         try:
             send = qqbot.MessageSendRequest(mes, message.id)
             await msg_api.post_message(message.channel_id, send)

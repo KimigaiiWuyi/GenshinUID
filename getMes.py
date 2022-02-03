@@ -389,7 +389,7 @@ async def weapon_wiki(name,level = None):
         else:
             sp = ""
         im = (data["name"] + "\n等级：" + str(data2["level"]) + "（突破" + str(data2["ascension"]) + "）" + 
-                    "\n攻击力：" + str(math.floor(data2["attack"])) + "\n" + sp)
+                    "\n攻击力：" + str(round(data2["attack"])) + "\n" + sp)
     else:
         name = data['name']
         type = data['weapontype']

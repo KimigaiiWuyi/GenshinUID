@@ -1,9 +1,10 @@
-import math,sqlite3,re,os,random,requests,json
+import math,sqlite3,re,os,random,requests,json,traceback
 from base64 import b64encode
 from io import BytesIO
 
-from .getData import ( GetCharInfo, GetDaily, GetMysInfo, GetAudioInfo,
-                    GetSignInfo, GetSignList, GetWeaponInfo, MysSign, GetMiscInfo)
+from .getData import ( GetCharInfo, GetDaily, GetMysInfo, GetAudioInfo,GetInfo,GetUidPic,
+                    GetSignInfo, GetSignList, GetWeaponInfo, MysSign, GetMiscInfo,GetAward)
+from .getDB import cacheDB,errorDB,cookiesDB
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mys')
@@ -142,6 +143,51 @@ audio_json = '''{
     "1020000":["1020000_01"]
 }'''
 
+async def GetUidUrl(uid,qid,nickname,mode = 2):
+    try:
+        while 1:
+            use_cookies = await cacheDB(uid,mode-1)
+            if use_cookies == '':
+                return "绑定记录不存在。"
+            elif use_cookies == "没有可以使用的Cookies！":
+                return "没有可以使用的Cookies！"
+
+            if mode == 3:
+                mys_data = await GetMysInfo(uid,use_cookies)
+                mysid_data = uid
+                for i in mys_data['data']['list']:
+                    if i['game_id'] != 2:
+                        mys_data['data']['list'].remove(i)
+                uid = mys_data['data']['list'][0]['game_role_id']
+                nickname = mys_data['data']['list'][0]['nickname']
+                #role_level = mys_data['data']['list'][0]['level']
+                
+            raw_data = await GetInfo(uid,use_cookies)
+            if raw_data["retcode"] != 0:
+                if raw_data["retcode"] == 10001:
+                    #return ("Cookie已过期，可联系小灰灰处理！")
+                    await errorDB(use_cookies,"error")
+                elif raw_data["retcode"] == 10101:
+                    #return ("当前查询接口已达到上限，可联系小灰灰处理！")
+                    await errorDB(use_cookies,"limit30")
+                elif raw_data["retcode"] == 10102:
+                    return ("当前查询id已经设置了隐私，无法进行查询！")
+                else:
+                    return (
+                        "Api报错，返回内容为：\r\n"
+                        + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                    )
+            else:
+                break
+        url = await GetUidPic(raw_data,uid,qid,nickname)
+        return url
+    except TypeError as e:
+        traceback.print_exc()
+        return "请求数据为空，可能是绘制图片时出错。"
+    except Exception as e:
+        traceback.print_exc()
+        return "发生错误，频道信息Api可能变动。"
+
 async def deal_ck(mes,qid):
     aid = re.search(r"account_id=(\d*)", mes)
     mysid_data = aid.group(0).split('=')
@@ -188,37 +234,23 @@ async def award(uid):
                             month_stone, month_mora, lastmonth_stone, lastmonth_mora, group_str)
     return im
 
-async def audio_wiki(name,message):
-    async def get(audioid):
-        tmp_json=json.loads(audio_json)
-        for _ in range(3):#重试3次
+async def audio_wiki(name,audioid):
+    tmp_json=json.loads(audio_json)
+    for _ in range(3):#重试3次
+        if audioid in tmp_json:
+            if not tmp_json[audioid]:
+                return
+            audioid1 = random.choice(tmp_json[audioid])
+        else:
+            audioid1=audioid
+        url = await GetAudioInfo(name,audioid1)
+        req=requests.get(url)
+        if req.headers["Content-Type"].startswith("audio"):
+            return url
+        else:
             if audioid in tmp_json:
-                if not tmp_json[audioid]:
-                    return
-                audioid1 = random.choice(tmp_json[audioid])
-            else:
-                audioid1=audioid
-            url = await GetAudioInfo(name,audioid1)
-            req=requests.get(url)
-            if req.headers["Content-Type"].startswith("audio"):
-                return BytesIO(req.content)
-            else:
-                if audioid in tmp_json:
-                    tmp_json[audioid].remove(audioid1)
-    if name == "列表":
-        im = f'[CQ:image,file=file://{os.path.join(INDEX_PATH,"语音.png")}]'
-        return im
-    elif name == "":
-        return "角色名不正确。"
-    else:
-        audioid = re.findall(r"[0-9]+", message)[0]
-        try:
-            audio=await get(audioid)
-        except:
-            return "语音获取失败"
-        if audio:
-            audios = 'base64://' + b64encode(audio.getvalue()).decode()
-            return (f"[CQ:record,file={audios}]")
+                tmp_json[audioid].remove(audioid1)
+    return
 
 async def artifacts_wiki(name):
     data = await GetMiscInfo("artifacts",name)

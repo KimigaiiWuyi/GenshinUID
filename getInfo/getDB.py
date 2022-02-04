@@ -381,3 +381,15 @@ async def errorDB(ck,err):
         c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?",("error",ck))
     elif err == "limit30":
         c.execute("UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?",("limit30",ck))
+
+async def OwnerCookies(uid):
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    try:
+        cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE UID = ?",(uid,))
+        c_data = cursor.fetchall()
+        cookies = c_data[0][1]
+    except:
+        return
+    
+    return cookies

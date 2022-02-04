@@ -4,6 +4,16 @@ from bs4 import BeautifulSoup
 from httpx import AsyncClient
 import urllib.parse
 
+from .getDB import OwnerCookies
+
+mhyVersion = "2.11.1"
+
+def random_hex(length):
+    result = hex(random.randint(0,16**length)).replace('0x','').upper()
+    if len(result)<length:
+        result = "0"*(length-len(result))+result
+    return result
+
 def md5(text):
     md5 = hashlib.md5()
     md5.update(text.encode())
@@ -19,6 +29,13 @@ def DSGet(q = "",b = None):
     r = str(random.randint(100000, 200000))
     c = md5("salt=" + s + "&t=" + t + "&r=" + r + "&b=" + br + "&q=" + q)
     return t + "," + r + "," + c
+
+def oldDSGet():
+    n = "h8w582wxwgqvahcdkpvdhbh2w9casgfl"
+    i = str(int(time.time()))
+    r = ''.join(random.sample(string.ascii_lowercase + string.digits, 6))
+    c = md5("salt=" + n + "&t=" + i + "&r=" + r)
+    return (i + "," + r + "," + c)
 
 async def GetUidPic(raw_data,uid,qid,nickname):
     style = "egenshin"
@@ -68,6 +85,26 @@ async def GetMysInfo(mysid,ck):
         traceback.print_exc()
         im = "err，获取米游社信息失败，请重试！"
         return im
+
+async def GetAward(Uid,ServerID="cn_gf01"):
+    if Uid[0] == '5':
+        ServerID = "cn_qd01"
+    try:
+        async with AsyncClient() as client:
+            req = await client.get(
+                url="https://hk4e-api.mihoyo.com/event/ys_ledger/monthInfo?month={}&bind_uid={}&bind_region={}&bbs_presentation_style=fullscreen&bbs_auth_required=true&utm_source=bbs&utm_medium=mys&utm_campaign=icon".format("0",Uid,ServerID),
+                headers={
+                    'x-rpc-app_version': mhyVersion,
+                    "Cookie": await OwnerCookies(Uid),
+                    'DS': oldDSGet(),
+                    "x-rpc-device_id":random_hex(32),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/'})
+            data = json.loads(req.text)
+        return data
+    except:
+        print("访问失败，请重试！")
 
 async def GetDaily(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':

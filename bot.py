@@ -7,8 +7,10 @@ import httpx
 
 from getInfo.getDB import (connectDB, cookiesDB, deletecache, selectDB, get_alots, cacheDB, errorDB, change_guild, check_switch,record,change_switch,check_subGuild_switch,change_subGuild_switch,subGuild_status)
 from getInfo.getData import (GetInfo,GetWeaponInfo,GetCharInfo,GetUidPic,GetMysInfo,GetAudioInfo)
-from getInfo.getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck)
+from getInfo.getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck, GetUidUrl)
 from getInfo.getImg import (draw_event_pic)
+
+from Config import Config
 
 import yaml
 import asyncio
@@ -74,328 +76,7 @@ scheduler = AsyncIOScheduler()
 scheduler.add_job(deletecache, 'cron', hour='0')
 scheduler.start()
 
-audio_raw_ark = {
-    "template_id": 24,
-    "kv": [
-      {
-        "key": "#DESC#",
-        "value": ""
-      },
-      {
-        "key": "#PROMPT#",
-        "value": ""
-      },
-      {
-        "key": "#TITLE#",
-        "value": ""
-      },
-      {
-        "key": "#METADESC#",
-        "value": ""
-      },
-      {
-        "key": "#IMG#",
-        "value": ""
-      },
-      {
-        "key": "#LINK#",
-        "value": ""
-      },
-      {
-        "key": "#SUBTITLE#",
-        "value": ""
-      }
-    ]
-}
-
-help_ark = MessageArk(data = {
-    "template_id": 23,
-    "kv": [
-      {
-        "key": "#DESC#",
-        "value": "原神Bot-奶香的一刀"
-      },
-      {
-        "key": "#PROMPT#",
-        "value": "这是一份原神Bot帮助"
-      },
-      {
-        "key": "#LIST#",
-        "obj": [
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "======原神Bot======"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "uid+<uid> · 输入9位的原神UID"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "攻略+<角色名字> · 查看角色攻略"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "信息+<角色名字> · 查看角色简介"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "信息+<武器名>字 · 查看武器简介"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "角色+<角色名字> · 查看角色详情"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "武器+<武器名字> · 查看武器详情"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "命座+<1-6>+<角色名字> · 查看命座描述"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "食物+<食物名字> · 查看食物描述"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "天赋+<角色名字>+<1-7> · 查询天赋信息"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "圣遗物+<圣遗物名字> · 套装属性描述"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "原魔+<怪物名字> · 查看怪物信息"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "御神签 · 与游戏内御神签结果无关"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "-------------------"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "需要@机器人使用，+号无需输入"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "<> 表示填入的内容，· 后面为说明"
-              }
-            ]
-          },
-        
-        ]
-      }
-    ]
-})
-
-master_ark = MessageArk(data = {
-    "template_id": 23,
-    "kv": [
-      {
-        "key": "#DESC#",
-        "value": "原神Bot-奶香的一刀"
-      },
-      {
-        "key": "#PROMPT#",
-        "value": "这是一份原神Bot管理员帮助"
-      },
-      {
-        "key": "#LIST#",
-        "obj": [
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "======原神Bot======"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "@机器人+设置频道<开启|关闭>+<#选择子频道>"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "指定Bot使用的子频道"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "可设置多个开启频道，管理Bot使用的频道推荐作为第一个开启的频道，否则设置Bot时会没有响应，设置后仅已开启的频道可用Bot。"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "当设置全部子频道关闭时，默认全局可用"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "======================"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "<开启|关闭>+<功能名字>"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "默认全部功能开启，可关闭指定功能，例如\"关闭uid\"即可关闭uid查询"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "======================"
-              }
-            ]
-          },
-          {
-            "obj_kv": [
-              {
-                "key": "desc",
-                "value": "如有其他问题可私信小灰灰，或点击机器人头像提交反馈"
-              }
-            ]
-          },
-        ]
-      }
-    ]
-})
-
-switch_list = {
-    "uid":"SearchRole",
-    "mys":"SearchRole",
-    "查询":"SearchRole",
-    "绑定uid":"LinkUID",
-    "绑定mys":"LinkUID",
-    "角色":"CharInfo",
-    "武器":"WeaponInfo",
-    "材料":"CostInfo",
-    "天赋":"TalentsInfo",
-    "命座":"PolarInfo",
-    "攻略":"guideInfo",
-    "信息":"CardInfo",
-    "御神签":"GetLots",
-    "语音":"AudioInfo",
-    "食物":"Foods",
-    "原魔":"Enemies",
-    "圣遗物":"Artifacts",
-}
-
-audio_json = {
-    "357":["357_01","357_02","357_03"],
-    "1000000":["1000000_01","1000000_02","1000000_03","1000000_04","1000000_05","1000000_06","1000000_07"],
-    "1000001":["1000001_01","1000001_02","1000001_03"],
-    "1000002":["1000002_01","1000002_02","1000002_03"],
-    "1000100":["1000100_01","1000100_02","1000100_03","1000100_04","1000100_05"],
-    "1000101":["1000101_01","1000101_02","1000101_03","1000101_04","1000101_05","1000101_06"],
-    "1000200":["1000200_01","1000200_02","1000200_03"],
-    "1010201":["1010201_01"],
-    "1000300":["1000300_01","1000300_02"],
-    "1000400":["1000400_01","1000400_02","1000400_03"],
-    "1000500":["1000500_01","1000500_02","1000500_03"],
-    "1010000":["1010000_01","1010000_02","1010000_03","1010000_04","1010000_05"],
-    "1010001":["1010001_01","1010001_02"],
-    "1010100":["1010100_01","1010100_02","1010100_03","1010100_04","1010100_05"],
-    "1010200":["1010200_01","1010200_02","1010200_03","1010200_04","1010200_05"],
-    "1010300":["1010300_01","1010300_02","1010300_03","1010300_04","1010300_05"],
-    "1010301":["1010301_01","1010301_02","1010301_03","1010301_04","1010301_05"],
-    "1010400":["1010400_01","1010400_02","1010400_03"],
-    "1020000":["1020000_01"]
-}
+Config = Config()
 
 async def check_cookies():
     with open("cookies_simp.json",'r') as load_f:
@@ -410,51 +91,6 @@ async def check_cookies():
         uid = int(time.time()) + num
         num += 1
         await cookiesDB(uid, i, 10086)
-
-async def GetUidUrl(uid,qid,nickname,mode = 2):
-    try:
-        while 1:
-            use_cookies = await cacheDB(uid,mode-1)
-            if use_cookies == '':
-                return "绑定记录不存在。"
-            elif use_cookies == "没有可以使用的Cookies！":
-                return "没有可以使用的Cookies！"
-
-            if mode == 3:
-                mys_data = await GetMysInfo(uid,use_cookies)
-                mysid_data = uid
-                for i in mys_data['data']['list']:
-                    if i['game_id'] != 2:
-                        mys_data['data']['list'].remove(i)
-                uid = mys_data['data']['list'][0]['game_role_id']
-                nickname = mys_data['data']['list'][0]['nickname']
-                #role_level = mys_data['data']['list'][0]['level']
-                
-            raw_data = await GetInfo(uid,use_cookies)
-            if raw_data["retcode"] != 0:
-                if raw_data["retcode"] == 10001:
-                    #return ("Cookie已过期，可联系小灰灰处理！")
-                    await errorDB(use_cookies,"error")
-                elif raw_data["retcode"] == 10101:
-                    #return ("当前查询接口已达到上限，可联系小灰灰处理！")
-                    await errorDB(use_cookies,"limit30")
-                elif raw_data["retcode"] == 10102:
-                    return ("当前查询id已经设置了隐私，无法进行查询！")
-                else:
-                    return (
-                        "Api报错，返回内容为：\r\n"
-                        + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-                    )
-            else:
-                break
-        url = await GetUidPic(raw_data,uid,qid,nickname)
-        return url
-    except TypeError as e:
-        qqbot.logger.info(e.with_traceback)
-        return "请求数据为空，可能是绘制图片时出错。"
-    except Exception as e:
-        qqbot.logger.info(e.with_traceback)
-        return "发生错误，频道信息Api可能变动。"
 
 async def getChannelStatus(gid):
     channel_openlist = await subGuild_status(gid)
@@ -489,7 +125,7 @@ async def _message_handler(event, message: Message):
     audio = None
     
     async def check_startwish(raw_mes,key_word,gid):
-        if raw_mes.startswith(key_word) and await check_switch(gid,switch_list[key_word]):
+        if raw_mes.startswith(key_word) and await check_switch(gid,Config.switch_list[key_word]):
             return True
         else:
             return False
@@ -497,9 +133,9 @@ async def _message_handler(event, message: Message):
     if raw_mes.startswith("开启"):
         raw_mes = raw_mes.replace("开启","")
         member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-        if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+        if "2" in member_info.roles or "4" in member_info.roles:
             try:
-                await change_switch(message.guild_id,switch_list[raw_mes],"on")
+                await change_switch(message.guild_id,Config.switch_list[raw_mes],"on")
                 mes = "成功。"
             except Exception as e:
                 traceback.print_exc()
@@ -509,9 +145,9 @@ async def _message_handler(event, message: Message):
     elif raw_mes.startswith("关闭"):
         raw_mes = raw_mes.replace("关闭","")
         member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-        if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+        if "2" in member_info.roles or "4" in member_info.roles:
             try:
-                await change_switch(message.guild_id,switch_list[raw_mes],"off")
+                await change_switch(message.guild_id,Config.switch_list[raw_mes],"off")
                 mes = "成功。"
             except Exception as e:
                 traceback.print_exc()
@@ -521,7 +157,7 @@ async def _message_handler(event, message: Message):
     elif raw_mes.startswith("设置频道开启"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+            if "2" in member_info.roles or "4" in member_info.roles:
                 channel_name = raw_mes.replace("设置频道开启","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
@@ -540,7 +176,7 @@ async def _message_handler(event, message: Message):
     elif raw_mes.startswith("设置频道关闭"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)
-            if "2" in member_info.roles or "4" in member_info.roles or "5" in member_info.roles:
+            if "2" in member_info.roles or "4" in member_info.roles:
                 channel_name = raw_mes.replace("设置频道关闭","").replace("#","")
                 channel_list = await channel_api.get_channels(message.guild_id)
                 for i in channel_list:
@@ -573,9 +209,9 @@ async def _message_handler(event, message: Message):
             else:
                 return
         elif raw_mes == "help":
-            ark = help_ark
+            ark = MessageArk(data = await Config.load_ark("helpARK"))
         elif raw_mes == "master":
-            ark = master_ark
+            ark = MessageArk(data = await Config.load_ark("masterARK"))
         elif raw_mes == "整理cookies":
             try:
                 await check_cookies()
@@ -594,11 +230,10 @@ async def _message_handler(event, message: Message):
                     return
                 else:
                     audioid = re.findall(r"[0-9]+", raw_mes)[0]
-                    if audioid in audio_json:
-                        audioid = random.choice(audio_json[audioid])
-                    audio_url = await GetAudioInfo(name,audioid)
+                    audio_url = await audio_wiki(name,audioid)
                     audio_img = "https://img.genshin.minigg.cn/avatar/{}.png".format(name)
                     audio_str = "{}语音{}".format(name,audioid)
+                    audio_raw_ark = await Config.load_ark(ark = "audioARK")
                     audio_raw_ark["kv"][0]["value"] = "角色语音"
                     audio_raw_ark["kv"][1]["value"] = "角色语音"
                     audio_raw_ark["kv"][2]["value"] = audio_str
@@ -612,7 +247,7 @@ async def _message_handler(event, message: Message):
                 qqbot.logger.info(e.with_traceback)
                 mes = e.with_traceback
 
-        elif raw_mes == "查询" and await check_switch(message.guild_id,switch_list["查询"]):
+        elif raw_mes == "查询" and await check_switch(message.guild_id,Config.switch_list["查询"]):
             try:
                 uid = await selectDB(message.author.id)
                 author = await guild_member_api.get_guild_member(message.guild_id,message.author.id)
@@ -824,7 +459,7 @@ async def _message_handler(event, message: Message):
                 qqbot.logger.info(e.with_traceback)
                 mes = "发生错误。"
 
-        elif raw_mes == "御神签" and await check_switch(message.guild_id,switch_list["御神签"]):
+        elif raw_mes == "御神签" and await check_switch(message.guild_id,Config.switch_list["御神签"]):
             try:
                 raw_data = await get_alots(message.author.id)
                 mes = base64.b64decode(raw_data).decode("utf-8")

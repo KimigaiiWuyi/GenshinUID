@@ -516,6 +516,9 @@ async def _(bot: Bot, event: Event):
                 else:
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image)
                     await get_uid_info.send(im, at_sender=True)
+            except TypeError:
+                await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await get_uid_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -528,6 +531,9 @@ async def _(bot: Bot, event: Event):
                 else:
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 2, "2")
                     await get_uid_info.send(im, at_sender=True)
+            except TypeError:
+                await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await get_uid_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -535,6 +541,9 @@ async def _(bot: Bot, event: Event):
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 2)
                 await get_uid_info.send(im, at_sender=True)
+            except TypeError:
+                await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await get_uid_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -603,6 +612,9 @@ async def _(bot: Bot, event: Event):
                     else:
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1])
                         await search.send(im, at_sender=True)
+                except TypeError:
+                    await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except:
                     await search.send('获取失败，请检查 cookie 及网络状态。')
                     traceback.print_exc()
@@ -615,6 +627,9 @@ async def _(bot: Bot, event: Event):
                     else:
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1], "2")
                         await search.send(im, at_sender=True)
+                except TypeError:
+                    await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except Exception as e:
                     await search.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     traceback.print_exc()
@@ -622,6 +637,9 @@ async def _(bot: Bot, event: Event):
                 try:
                     im = await draw_wordcloud(uid[0], image, uid[1])
                     await search.send(im, at_sender=True)
+                except TypeError:
+                    await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except Exception as e:
                     await search.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     traceback.print_exc()
@@ -660,6 +678,9 @@ async def _(bot: Bot, event: Event):
                 else:
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 3)
                     await get_mys_info.send(im, at_sender=True)
+            except TypeError:
+                await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await get_mys_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -672,6 +693,9 @@ async def _(bot: Bot, event: Event):
                 else:
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 3, "2")
                     await get_mys_info.send(im, at_sender=True)
+            except TypeError:
+                await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await get_mys_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -679,6 +703,9 @@ async def _(bot: Bot, event: Event):
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 3)
                 await get_mys_info.send(im, at_sender=True)
+            except TypeError:
+                await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await get_mys_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()

@@ -493,6 +493,9 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
                 else:
                     im = await draw_abyss0_pic(uid,ev.sender['nickname'],image)
                     await bot.send(ev, im, at_sender=True)
+            except TypeError:
+                await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -505,6 +508,9 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
                 else:
                     im = await draw_abyss0_pic(uid,ev.sender['nickname'],image,2,"2")
                     await bot.send(ev, im, at_sender=True)
+            except TypeError:
+                await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()    
@@ -512,6 +518,9 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             try:
                 im = await draw_pic(uid,ev.sender['nickname'],image,2)
                 await bot.send(ev, im, at_sender=True)
+            except TypeError:
+                await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -570,6 +579,9 @@ async def _(bot,  ev):
                     else:
                         im = await draw_abyss0_pic(uid[0],nickname,image,uid[1])
                         await bot.send(ev, im, at_sender=True)
+                except TypeError:
+                    await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except Exception as e:
                     await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     traceback.print_exc()
@@ -582,6 +594,9 @@ async def _(bot,  ev):
                     else:
                         im = await draw_abyss0_pic(uid[0],nickname,image,uid[1],"2")
                         await bot.send(ev, im, at_sender=True)
+                except TypeError:
+                    await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except Exception as e:
                     await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     traceback.print_exc()
@@ -589,6 +604,9 @@ async def _(bot,  ev):
                 try:
                     im = await draw_wordcloud(uid[0],image,uid[1])
                     await bot.send(ev,im, at_sender=True)
+                except TypeError:
+                    await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except Exception as e:
                     await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     traceback.print_exc()
@@ -596,6 +614,9 @@ async def _(bot,  ev):
                 try:
                     bg = await draw_pic(uid[0],nickname,image,uid[1])
                     await bot.send(ev, bg, at_sender=True)
+                except TypeError:
+                    await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    traceback.print_exc()
                 except Exception as e:
                     await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     traceback.print_exc()
@@ -624,6 +645,9 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
                 else:
                     im = await draw_abyss0_pic(uid,ev.sender['nickname'],image,3)
                     await bot.send(ev, im, at_sender=True)
+            except TypeError:
+                await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -636,6 +660,9 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
                 else:
                     im = await draw_abyss0_pic(uid,ev.sender['nickname'],image,3,"2")
                     await bot.send(ev, im, at_sender=True)
+            except TypeError:
+                await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()
@@ -643,6 +670,9 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
             try:
                 im = await draw_pic(uid,ev.sender['nickname'],image,3)
                 await bot.send(ev, im, at_sender=True)
+            except TypeError:
+                await bot.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                traceback.print_exc()
             except Exception as e:
                 await bot.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                 traceback.print_exc()

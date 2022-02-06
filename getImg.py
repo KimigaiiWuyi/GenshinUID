@@ -6,7 +6,6 @@ import urllib
 import math
 import threading
 import requests
-from bs4 import BeautifulSoup
 from wordcloud import WordCloud
 import numpy as np
 

@@ -6,7 +6,6 @@ import urllib
 import math
 import threading
 import requests
-from bs4 import BeautifulSoup
 from pydantic.utils import import_string
 from wordcloud import WordCloud
 import numpy as np

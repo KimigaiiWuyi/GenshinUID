@@ -1,20 +1,21 @@
 import asyncio
-import os
-import re
-import sqlite3,random,traceback
 import base64
+import os
+import random
+import re
+import sqlite3
+import traceback
 
 import nonebot
 from nonebot import *
-from nonebot.adapters import Bot, Event
-from nonebot.adapters.cqhttp import *
-from nonebot.adapters.cqhttp import Message, MessageSegment, permission, utils
-from nonebot.rule import Rule
-
+from nonebot.adapters.onebot.v11 import *
+from nonebot.adapters.onebot.v11 import Message
+from nonebot.permission import SUPERUSER
 
 from .getDB import (CheckDB, OpenPush, connectDB, deletecache, selectDB, get_alots, config_check)
 from .getImg import (draw_abyss0_pic, draw_abyss_pic, draw_event_pic, draw_pic, draw_wordcloud)
-from .getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award, deal_ck)
+from .getMes import (foods_wiki, artifacts_wiki, enemies_wiki, sign, daily, weapon_wiki, char_wiki, audio_wiki, award,
+                     deal_ck)
 
 config = nonebot.get_driver().config
 priority = config.genshinuid_priority if config.genshinuid_priority else 2
@@ -70,7 +71,7 @@ async def _(bot: Bot, event: Event):
     im = await audio_wiki(name,message)
     try:
         await get_audio.send(Message(im))
-    except nonebot.adapters.cqhttp.exception.ActionFailed:
+    except nonebot.adapters.onebot.v11.exception.ActionFailed:
         await get_audio.send("不存在该语音ID或者不存在该角色。")
     except:
         await get_audio.send("可能是FFmpeg环境未配置。")
@@ -714,12 +715,7 @@ async def _(bot: Bot, event: Event):
         traceback.print_exc()
 
 
-async def rule_all_recheck(Bot, Event, T_State):
-    return Event.sender.user_id in superusers
-
-
-all_recheck = on_command("全部重签", rule=Rule(
-    rule_all_recheck), priority=priority)
+all_recheck = on_command("全部重签", permission=SUPERUSER, priority=priority)
 
 @all_recheck.handle()
 async def _(bot: Bot, event: Event):

@@ -1,40 +1,25 @@
+# from nonebot import on_command
+# from nonebot.adapters.onebot.v11 import Event, Bot, Message
+
+import os
 import re
 
-#from nonebot import on_command
-#from nonebot.adapters.cqhttp import Event, Bot, Message
-
-from .getImg import draw_pic,draw_char_pic,new_draw_pic,draw_abyss_pic
-
+from hoshino import Service
+from hoshino.typing import CQEvent, HoshinoBot
 from nonebot import *
-import json
-from random import randint
-import requests,random,os,json,re
-from hoshino import Service,R,priv,util
-from hoshino.typing import MessageSegment,CQEvent, HoshinoBot
-from hoshino.util import FreqLimiter,pic2b64
-import hoshino
-import asyncio
-import time
-import string
-import random
-import hashlib
-import requests
-import os
-from  PIL  import   Image,ImageFont,ImageDraw
-from io import BytesIO
-import base64
 
-import urllib
+from .getImg import draw_pic, draw_char_pic, new_draw_pic, draw_abyss_pic
 
 sv = Service('genshinuid')
 bot = get_bot()
 
 FILE_PATH = os.path.dirname(__file__)
-FILE2_PATH = os.path.join(FILE_PATH,'mys')
-Texture_PATH = os.path.join(FILE2_PATH,'texture2d')
+FILE2_PATH = os.path.join(FILE_PATH, 'mys')
+Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
+
 
 @sv.on_prefix('uid')
-async def _(bot:HoshinoBot,  ev: CQEvent):
+async def _(bot: HoshinoBot, ev: CQEvent):
     image = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", str(ev.message))
     message = ev.message.extract_plain_text()
     uid = re.findall(r"\d+", message)[0]  # str

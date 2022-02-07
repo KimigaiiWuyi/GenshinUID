@@ -72,7 +72,7 @@ async def ready():
 loop = asyncio.get_event_loop()
 loop.run_until_complete(ready())
 
-scheduler = AsyncIOScheduler()
+scheduler = AsyncIOScheduler(timezone='Asia/Shanghai')
 scheduler.add_job(deletecache, 'cron', hour='0')
 scheduler.start()
 

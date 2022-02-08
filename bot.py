@@ -24,6 +24,7 @@ from qqbot.model.message import (
     CreateDirectMessageRequest,
     DirectMessageGuild,
 )
+from qqbot.core.exception import error
 from qqbot.core.util import logging
 from qqbot.model.user import ReqOption
 
@@ -209,9 +210,9 @@ async def _message_handler(event, message: Message):
             else:
                 return
         elif raw_mes == "help":
-            ark = MessageArk(data = await Config.load_ark("helpARK"))
+            ark = await Config.load_ark("helpARK")
         elif raw_mes == "master":
-            ark = MessageArk(data = await Config.load_ark("masterARK"))
+            ark = await Config.load_ark("masterARK")
         elif raw_mes == "整理cookies":
             try:
                 await check_cookies()
@@ -241,7 +242,7 @@ async def _message_handler(event, message: Message):
                     audio_raw_ark["kv"][4]["value"] = audio_img
                     audio_raw_ark["kv"][5]["value"] = audio_url
                     audio_raw_ark["kv"][6]["value"] = "原神语音"
-                    ark = MessageArk(data = audio_raw_ark)
+                    ark = audio_raw_ark
             except Exception as e:
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
@@ -470,9 +471,15 @@ async def _message_handler(event, message: Message):
 
     if ark:
         try:
-            send = qqbot.MessageSendRequest(content = "",ark = ark, msg_id = message.id)
+            send = qqbot.MessageSendRequest(content = "",ark = MessageArk(data = ark), msg_id = message.id)
             await msg_api.post_message(message.channel_id, send)
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,"help")
+        except error.ServerError:
+            if ark["template_id"] == 23:
+                for i in ark["kv"][2]["obj"]:
+                    mes += i["obj_kv"][0]["value"] + "\n"
+            else:
+                mes = "当前机器人无权限发送Ark消息~"
         except Exception as e:
             try:
                 send = qqbot.MessageSendRequest(str(e), message.id)
@@ -481,7 +488,8 @@ async def _message_handler(event, message: Message):
                 pass
             traceback.print_exc()
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
-    elif audio:
+
+    if audio:
         try:
             await audio_api.post_audio(channel_id = message.channel_id,audio_control = audio_control)
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,audio)

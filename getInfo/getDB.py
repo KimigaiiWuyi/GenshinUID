@@ -107,7 +107,7 @@ async def change_subGuild_switch(gid,subgid,status):
             
         cursor = c.execute("SELECT Permission FROM GuildList WHERE GuildID = ?",(gid,))
         c_data = cursor.fetchall()
-        if c_data[0][0] == None:
+        if c_data[0][0] == None and status == "open":
             temp_dict = [subgid]
         else:
             temp_dict = c_data[0][0].split(',')

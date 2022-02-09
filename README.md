@@ -49,7 +49,8 @@ else
 
 - [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它
 - [YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info) - 米游社API来自于它
-- *[MiniGG](https://www.minigg.cn/)* - Wiki API来自于它
+- [MiniGG](https://www.minigg.cn/)* - Wiki API来自于它
+- [@MingxuanGame](https://github.com/MingxuanGame) - 移植Nonebot2至[nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档

@@ -23,6 +23,10 @@ class Config:
                                 "食物":"Foods",
                                 "原魔":"Enemies",
                                 "圣遗物":"Artifacts",
+                                "添加":"AddCk",
+                                "当前状态":"DailyData",
+                                "每月统计":"MonthData",
+                                "签到":"Sign"
                             }
 
     async def load_ark(self,ark = ""):

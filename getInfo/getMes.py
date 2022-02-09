@@ -55,8 +55,7 @@ avatar_json = {
     "Shenhe":"申鹤"
 }
 
-daily_im = '''
-*数据刷新可能存在一定延迟，请以当前游戏实际数据为准{}
+daily_im = '''*数据刷新可能存在一定延迟，请以当前游戏实际数据为准{}
 ==============
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
@@ -66,8 +65,7 @@ daily_im = '''
 总数/完成/上限：{}/{}/{}
 {}'''
 
-month_im = '''
-==============
+month_im = '''==============
 {}
 UID：{}
 ==============
@@ -317,6 +315,7 @@ async def sign(uid):
         sign_missed = sign_info['sign_cnt_missed']
         im = mes_im + "!" + "\n" + get_im + "\n" + f"本月漏签次数：{sign_missed}"
     except:
+        traceback.print_exc()
         im = "签到失败，请检查Cookies是否失效。"
     return im
 

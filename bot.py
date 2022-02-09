@@ -41,6 +41,7 @@ audio_api = qqbot.AsyncAudioAPI(token,False)
 msg_api = qqbot.AsyncMessageAPI(token, False)
 guild_member_api = qqbot.AsyncGuildMemberAPI(token,False)
 channel_api = qqbot.AsyncChannelAPI(token,False)
+dms_api = qqbot.AsyncDmsAPI(token, False)
 
 async def up_guild_list():
     guild_list = []
@@ -221,6 +222,40 @@ async def _message_handler(event, message: Message):
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "ck添加错误。"
+        elif raw_mes == "当前状态" and await check_switch(message.guild_id,Config.switch_list["当前状态"]):
+            try:
+                uid = await selectDB(message.author.id, mode="uid")
+                uid = uid[0]
+                data = await daily("ask", uid)
+                mes = data[0]['message']
+            except TypeError:
+                mes = "没有找到绑定信息。"
+                traceback.print_exc()
+            except Exception as e:
+                mes = "发生错误 {},请检查后台输出。".format(e)
+                traceback.print_exc()
+        elif raw_mes == "每月统计" and await check_switch(message.guild_id,Config.switch_list["每月统计"]):
+            try:
+                uid = await selectDB(message.author.id, mode="uid")
+                uid = uid[0]
+                mes = await award(uid)
+            except TypeError:
+                mes = "没有找到绑定信息。"
+                traceback.print_exc()
+            except Exception as e:
+                mes = "发生错误 {},请检查后台输出。".format(e)
+                traceback.print_exc()
+        elif raw_mes == "签到" and await check_switch(message.guild_id,Config.switch_list["签到"]):
+            try:
+                uid = await selectDB(message.author.id, mode="uid")
+                uid = uid[0]
+                mes = await sign(uid)
+            except TypeError:
+                mes = "没有找到绑定信息。"
+                traceback.print_exc()
+            except Exception as e:
+                mes = "发生错误 {},请检查后台输出。".format(e)
+                traceback.print_exc()
         elif await check_startwish(raw_mes,"语音",message.guild_id):
             raw_mes = raw_mes.replace("语音","")
             try:
@@ -540,6 +575,35 @@ async def _message_handler(event, message: Message):
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,str(e))
     return
 
+async def _dms_handler(event, message: Message):
+    qqbot.logger.info("event %s" % event + ",receive message %s" % message.content)
+
+    try:
+        raw_mes = message.content.replace(" ","").replace("/","")
+        record_mes = raw_mes
+    except Exception as e:
+        qqbot.logger.info(e.with_traceback)
+        traceback.print_exc()
+        return
+
+    mes = None
+    if raw_mes.startswith("添加"):
+        try:
+            await deal_ck(raw_mes.replace("添加",""),message.author.id)
+            mes = "添加Cookies成功。"
+        except:
+            traceback.print_exc()
+            mes = "添加Cookies失败，请检查格式。"
+    
+    if mes:
+        try:
+            msg_request = qqbot.MessageSendRequest(content=mes, msg_id=message.id)
+            msg = await dms_api.post_direct_message(message.guild_id, msg_request)
+            await record("私信",message.guild_id,message.author.username,message.author.id,record_mes,mes)
+        except Exception as e:
+            traceback.print_exc()
+            await record("私信",message.guild_id,message.author.username,message.author.id,record_mes,str(e))
+
 async def _guild_handler(event, guild:Guild):
     print("\n频道已刷新。\n")
     if event == "GUILD_CREATE":
@@ -577,6 +641,7 @@ async def getGuildStatus():
     guild_status_mes = "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
     return guild_status_mes
 
-qqbot_handler2 = qqbot.Handler(qqbot.HandlerType.GUILD_EVENT_HANDLER, _guild_handler)
-qqbot_handler = qqbot.Handler(qqbot.HandlerType.AT_MESSAGE_EVENT_HANDLER, _message_handler)
-qqbot.async_listen_events(token, False, qqbot_handler,qqbot_handler2)
+qqbot_guildevent_handler = qqbot.Handler(qqbot.HandlerType.GUILD_EVENT_HANDLER, _guild_handler)
+qqbot_atmessage_handler = qqbot.Handler(qqbot.HandlerType.AT_MESSAGE_EVENT_HANDLER, _message_handler)
+qqbot_dms_handler = qqbot.Handler(qqbot.HandlerType.DIRECT_MESSAGE_EVENT_HANDLER, _dms_handler)
+qqbot.async_listen_events(token, False, qqbot_guildevent_handler,qqbot_atmessage_handler,qqbot_dms_handler)

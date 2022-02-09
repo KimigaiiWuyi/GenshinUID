@@ -1,4 +1,4 @@
-import re,os,random,datetime,math,traceback
+import re,os,random,datetime,math,traceback,string
 import time,json,hashlib,base64
 from bs4 import BeautifulSoup
 from httpx import AsyncClient
@@ -104,7 +104,7 @@ async def GetAward(Uid,ServerID="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        traceback.print_exc()
 
 async def GetDaily(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
@@ -180,24 +180,26 @@ async def MysSign(Uid,ServerID="cn_gf01"):
     if Uid[0] == '5':
         ServerID = "cn_qd01"
     try:
-        req = requests.post(
-            url = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign",
-            headers={
-                'User_Agent': 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 miHoYoBBS/2.3.0',
-                "Cookie": await OwnerCookies(Uid),
-                "x-rpc-device_id":random_hex(32),
-                'Origin': 'https://webstatic.mihoyo.com',
-                'X_Requested_With': 'com.mihoyo.hyperion',
-                'DS': oldDSGet(),
-                'x-rpc-client_type': '5',
-                'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
-                'x-rpc-app_version': '2.3.0'
-            },
-            json = {"act_id": "e202009291139501" ,"uid": Uid ,"region": ServerID}
-        )
+        async with AsyncClient() as client:
+            req = await client.post(
+                url = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign",
+                headers={
+                    'User_Agent': 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 miHoYoBBS/2.3.0',
+                    "Cookie": await OwnerCookies(Uid),
+                    "x-rpc-device_id":random_hex(32),
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'X_Requested_With': 'com.mihoyo.hyperion',
+                    'DS': oldDSGet(),
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
+                    'x-rpc-app_version': '2.3.0'
+                },
+                json = {"act_id": "e202009291139501" ,"uid": Uid ,"region": ServerID}
+            )
         data2 = json.loads(req.text)
         return data2
     except:
+        traceback.print_exc()
         print("签到失败，请重试")
         
 async def GetAudioInfo(name,audioid,language = "cn"):

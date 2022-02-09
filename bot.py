@@ -477,7 +477,8 @@ async def _message_handler(event, message: Message):
         except error.ServerError:
             if ark["template_id"] == 23:
                 for i in ark["kv"][2]["obj"]:
-                    mes += i["obj_kv"][0]["value"] + "\n"
+                    if ark["kv"][2]["obj"] != None:
+                        mes += i["obj_kv"][0]["value"] + "\n"
             else:
                 mes = "当前机器人无权限发送Ark消息~"
         except Exception as e:

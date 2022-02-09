@@ -166,7 +166,7 @@ async def _(bot:HoshinoBot,  ev: CQEvent):
 #每日零点清空cookies使用缓存
 @sv.scheduled_job('cron', hour='0')
 async def delete():
-    deletecache()
+    await deletecache()
 
 @sv.scheduled_job('cron', hour='2')
 async def delete():

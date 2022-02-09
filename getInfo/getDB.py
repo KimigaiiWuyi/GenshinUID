@@ -117,8 +117,8 @@ async def change_subGuild_switch(gid,subgid,status):
                 temp_dict.append(subgid)
             else:
                 temp_dict = list(filter(lambda x : x!=subgid,temp_dict))
-                if temp_dict == [""]:
-                    c.execute("UPDATE GuildList SET Permission = ? WHERE GuildID=?",(None,gid))
+                if temp_dict == []:
+                    c.execute("UPDATE GuildList SET Permission = NULL WHERE GuildID=?",(gid,))
                     conn.commit()
                     conn.close()
                     return

@@ -475,6 +475,7 @@ async def _message_handler(event, message: Message):
             await msg_api.post_message(message.channel_id, send)
             await record(guild_data.name,message.guild_id,message.author.username,message.author.id,record_mes,"help")
         except error.ServerError:
+            mes = ""
             if ark["template_id"] == 23:
                 for i in ark["kv"][2]["obj"]:
                     if ark["kv"][2]["obj"] != None:

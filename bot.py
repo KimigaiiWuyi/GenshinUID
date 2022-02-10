@@ -96,7 +96,7 @@ async def check_cookies():
 
 async def getChannelStatus(gid):
     channel_openlist = await subGuild_status(gid)
-    mes = "\n当前开启频道："
+    mes = "当前开启频道："
     if channel_openlist:
         channel_list = await channel_api.get_channels(gid)
         for i in channel_list:
@@ -168,8 +168,7 @@ async def _message_handler(event, message: Message):
                         channel_id = i.id
                 await change_subGuild_switch(message.guild_id,channel_id,"open")
                 channel_status = await getChannelStatus(message.guild_id)
-                mes = "已设置子频道使用该BOT。\n子频道名称：<<#{}>>\n子频道ID：{}".format(channel_id,channel_id)
-                mes += channel_status
+                mes = "已设置子频道使用该BOT。\n子频道名称：<<#{}>>\n子频道ID：{}\n{}".format(channel_id,channel_id,channel_status)
             else:
                 return
         except Exception as e:
@@ -187,7 +186,7 @@ async def _message_handler(event, message: Message):
                         channel_id = i.id
                 await change_subGuild_switch(message.guild_id,channel_id,"closed")
                 channel_status = await getChannelStatus(message.guild_id)
-                mes = "已禁止子频道使用该BOT。\n子频道名称：<<#{}>>\n子频道ID：{}".format(channel_id,channel_id)
+                mes = "已禁止子频道使用该BOT。\n子频道名称：<<#{}>>\n子频道ID：{}\n{}".format(channel_id,channel_id,channel_status)
                 mes += channel_status
             else:
                 return

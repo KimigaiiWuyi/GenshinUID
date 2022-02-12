@@ -1278,7 +1278,7 @@ async def draw_event_pic():
             if k["title"] in i["title"]:
                 time_data = re.findall(r"[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}", i["content"])
                 time_limit_end = re.findall(r"起至[0-9]{1}.[0-9]{1}版本结束", i["content"])
-                time_limit_start = re.findall(r"[0-9]{1}.[0-9]{1}版本更新后", i["content"])
+                time_limit_start = re.findall(r"[0-9]{1}.[0-9]{1}版本更新后 ~", i["content"])
                 if len(time_data) == 2:
                     k["act_begin_time"] = time_data[0]
                     k["act_end_time"] = time_data[1]
@@ -1286,7 +1286,7 @@ async def draw_event_pic():
                     k["act_begin_time"] = time_data[0]
                     k["act_end_time"] = time_limit_end[0]
                 elif len(time_data) == 1 and len(time_limit_start) == 1:
-                    k["act_begin_time"] = time_limit_start[0]
+                    k["act_begin_time"] = time_limit_start[0][:-2]
                     k["act_end_time"] = time_data[0]
                 elif len(time_data) == 1:
                     k["act_begin_time"] = time_data[0]

@@ -10,7 +10,6 @@ from re import findall
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from httpx import get
-from nonebot.adapters.onebot.v11 import Message
 from wordcloud import WordCloud
 
 from .get_data import get_info, get_character, get_spiral_abyss_info, get_mihoyo_bbs_info, \
@@ -652,7 +651,7 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     # bg_img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = Message(f"[CQ:image,file={imgmes}]")
+    resultmes = f"[CQ:image,file={imgmes}]"
     return resultmes
 
 
@@ -848,7 +847,7 @@ async def draw_abyss_pic(uid, nickname, floor_num, image=None, mode=2, date="1")
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     # bg_img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = Message(f"[CQ:image,file={imgmes}]")
+    resultmes = f"[CQ:image,file={imgmes}]"
     return resultmes
 
 

@@ -1,5 +1,6 @@
-nonebot==1.8.2
+nonebot~=1.6.0
 requests==2.25.1
 httpx==0.18.1
 Pillow>=8.3.1
 wordcloud>=1.8.1
+numpy~=1.22.2

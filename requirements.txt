@@ -3,5 +3,7 @@ httpx==0.18.1
 Pillow>=8.3.1
 nonebot-plugin-apscheduler>=0.1.2
 wordcloud>=1.8.1
-nonebot2>=2.0.0-beta1
 nonebot-adapter-onebot>=2.0.0-beta1
+numpy~=1.22.2
+beautifulsoup4>=4.10.0
+lxml>=4.7.1

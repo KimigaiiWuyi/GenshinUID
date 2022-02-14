@@ -1,6 +1,8 @@
-import time,re
+import time
+from bs4 import BeautifulSoup
 from base64 import b64encode
 from io import BytesIO
+from re import findall
 
 import urllib
 import math
@@ -1287,28 +1289,28 @@ async def draw_event_pic():
     for k in data:
         for i in raw_time_data["data"]["list"]:
             if k["title"] in i["title"]:
-                time_data = re.findall(r"[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}", i["content"])
-                time_limit_end = re.findall(r"起至[0-9]{1}.[0-9]{1}版本结束", i["content"])
-                time_limit_start = re.findall(r"[0-9]{1}.[0-9]{1}版本更新后 ~", i["content"])
-                if len(time_data) == 2:
-                    k["act_begin_time"] = time_data[0]
-                    k["act_end_time"] = time_data[1]
-                elif len(time_data) == 1 and len(time_limit_end) == 1:
-                    k["act_begin_time"] = time_data[0]
-                    k["act_end_time"] = time_limit_end[0]
-                elif len(time_data) == 1 and len(time_limit_start) == 1:
-                    k["act_begin_time"] = time_limit_start[0][:-2]
-                    k["act_end_time"] = time_data[0]
-                elif len(time_data) == 1:
-                    k["act_begin_time"] = time_data[0]
-                    k["act_end_time"] = "永久开放"
-                elif len(time_data) > 2:
-                    k["act_begin_time"] = time_data[0]
-                    k["act_end_time"] = k["end_time"]
-                elif len(time_data) == 0:
-                    k["act_begin_time"] = k["start_time"] + "(?)"
-                    k["act_end_time"] = k["end_time"] + "(?)"
-                
+                content_bs = BeautifulSoup(i['content'], 'lxml')
+                for index,value in enumerate(content_bs.find_all("p")):
+                    if value.text == "〓任务开放时间〓":
+                        time_data = content_bs.find_all("p")[index+1].text
+                        if "<t class=" in time_data:
+                            time_data = re.findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>", time_data)[0]
+                        k["time_data"] = time_data
+                    elif value.text == "〓活动时间〓":
+                        time_data = content_bs.find_all("p")[index+1].text
+                        time_data = time_data.replace("</t>","")[16:]
+                        k["time_data"] = time_data
+                    elif value.text == "〓祈愿介绍〓":
+                        start_time = content_bs.find_all("tr")[1].td.find_all("p")[0].text
+                        if "<t class=" in start_time:
+                            start_time = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>", start_time)[0]
+                        end_time = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>",
+                                    content_bs.find_all("tr")[1].td.find_all("p")[2].text)[0]
+                        if "<t class=" in end_time:
+                            end_time = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>", end_time)[0]
+                        time_data = start_time + "~" + end_time
+                        k["time_data"] = time_data
+                        
         if "冒险助力礼包" in k["title"] or "纪行" in k["title"]:
             continue
         #if "角色试用" in k["title"] or "传说任务" in k["title"]:
@@ -1341,13 +1343,13 @@ async def draw_event_pic():
     base_draw = ImageDraw.Draw(base_img)
     for index,value in enumerate(event_data['normal_event']):
         img = Image.open(BytesIO(requests.get(value["banner"]).content))
-        base_draw.text((540, 300 + 45 + 390 + (390+90)*index+1), value["act_begin_time"] + " —— " + value["act_end_time"], (255,255,255), ys_font(42), anchor="mm")
+        base_draw.text((540, 300 + 45 + 390 + (390+90)*index+1), value["time_data"], (255,255,255), ys_font(42), anchor="mm")
         #base_img.paste(img,((index%2)*1080,300 + 390*(index//2)))
         base_img.paste(img,(0,300 + (390+90)*index))
 
     for index,value in enumerate(event_data['gacha_event']):
         img = Image.open(BytesIO(requests.get(value["banner"]).content))
-        base_draw.text((540,600 + 45 + (390+90)*len(event_data['normal_event']) + 533 + index * (533 + 90)), value["act_begin_time"] + " —— " + value["act_end_time"], (255,255,255), ys_font(42), anchor="mm")
+        base_draw.text((540,600 + 45 + (390+90)*len(event_data['normal_event']) + 533 + index * (533 + 90)), value["time_data"], (255,255,255), ys_font(42), anchor="mm")
         #base_img.paste(img,((index%2)*1080,600 + ((1 + len(event_data['normal_event']))//2)*390 + 533*(index//2)))
         base_img.paste(img,(0,600 + (390+90) * len(event_data['normal_event']) + index * (533 + 90)))
     #for index,value in enumerate(event_data['other_event']):

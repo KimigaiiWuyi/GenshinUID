@@ -4,3 +4,5 @@ httpx==0.18.1
 Pillow>=8.3.1
 wordcloud>=1.8.1
 numpy~=1.22.2
+beautifulsoup4>=4.10.0
+lxml>=4.7.1

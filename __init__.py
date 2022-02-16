@@ -1,7 +1,7 @@
 import asyncio
 import base64
 
-from nonebot import (get_bots, get_driver, logger, on_command, on_startswith,
+from nonebot import (get_bot, get_driver, logger, on_command, on_startswith,
                      require)
 from nonebot.adapters.onebot.v11 import (GROUP, PRIVATE_FRIEND, Bot,
                                          GroupMessageEvent, MessageEvent,
@@ -72,7 +72,7 @@ async def clean_cache():
 # 每隔半小时检测树脂是否超过设定值
 @resin_notic_schedule.scheduled_job('cron', minute="*/30")
 async def push():
-    bot = get_bots().values()
+    bot = get_bot()
     now_data = await daily()
     if now_data is not None:
         for i in now_data:
@@ -92,7 +92,7 @@ async def sign_at_night():
 
 
 async def daily_sign():
-    bot = get_bots().values()
+    bot = get_bot()
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     cursor = c.execute(

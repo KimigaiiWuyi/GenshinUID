@@ -1,8 +1,11 @@
 import asyncio
 import base64
 
-from nonebot import on_command, require, on_startswith, get_driver, logger, get_bots
-from nonebot.adapters.onebot.v11 import GROUP, PRIVATE_FRIEND, Bot, MessageEvent, GroupMessageEvent
+from nonebot import (get_bots, get_driver, logger, on_command, on_startswith,
+                     require)
+from nonebot.adapters.onebot.v11 import (GROUP, PRIVATE_FRIEND, Bot,
+                                         GroupMessageEvent, MessageEvent,
+                                         MessageSegment)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
@@ -77,7 +80,7 @@ async def push():
                 await bot.call_api(api='send_private_msg', **{'user_id': i['qid'], 'message': i['message']})
             else:
                 await bot.call_api(api='send_group_msg',
-                                   **{'group_id': i['gid'], 'message': f"[CQ:at,qq={i['qid']}]" + "\n" + i['message']})
+                                   **{'group_id': i['gid'], 'message': MessageSegment.at(i['qid']) + f"\n{i['message']}"})
     else:
         pass
 
@@ -105,7 +108,7 @@ async def daily_sign():
             except Exception:
                 logger.exception(f"{im} Error")
         else:
-            message = f"[CQ:at,qq={row[2]}]\n{im}"
+            message = MessageSegment.at(row[2]) + f"\n{im}"
             if await config_check("SignReportSimple"):
                 for i in temp_list:
                     if row[4] == i["push_group"]:
@@ -117,9 +120,11 @@ async def daily_sign():
                         break
                 else:
                     if im == "签到失败，请检查Cookies是否失效。":
-                        temp_list.append({"push_group": row[4], "push_message": message, "success": 0, "failed": 1})
+                        temp_list.append(
+                            {"push_group": row[4], "push_message": message, "success": 0, "failed": 1})
                     else:
-                        temp_list.append({"push_group": row[4], "push_message": "", "success": 1, "failed": 0})
+                        temp_list.append(
+                            {"push_group": row[4], "push_message": "", "success": 1, "failed": 0})
             else:
                 for i in temp_list:
                     if row[4] == i["push_group"] and i["num"] < 4:
@@ -127,12 +132,14 @@ async def daily_sign():
                         i["num"] += 1
                         break
                 else:
-                    temp_list.append({"push_group": row[4], "push_message": message, "num": 1})
+                    temp_list.append(
+                        {"push_group": row[4], "push_message": message, "num": 1})
         await asyncio.sleep(6 + random.randint(1, 3))
     if await config_check("SignReportSimple"):
         for i in temp_list:
             try:
-                report = "以下为签到失败报告：{}".format(i["push_message"]) if i["push_message"] != "" else ""
+                report = "以下为签到失败报告：{}".format(
+                    i["push_message"]) if i["push_message"] != "" else ""
                 await bot.call_api(
                     api='send_group_msg', group_id=i["push_group"],
                     message="今日自动签到已完成！\n本群共签到成功{}人，共签到失败{}人。{}".format(i["success"], i["failed"], report))
@@ -156,7 +163,7 @@ async def send_audio(event: MessageEvent):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     im = await audio_wiki(name, message)
     try:
-        await get_audio.send(Message(im))
+        await get_audio.send(im)
     except ActionFailed:
         await get_audio.send("不存在该语音ID或者不存在该角色。")
     except Exception:
@@ -333,7 +340,7 @@ async def send_events():
                 ls_f = base64.b64encode(f.read()).decode()
                 img_mes = 'base64://' + ls_f
                 f.close()
-                im = Message(f'[CQ:image,file={img_mes}]')
+                im = MessageSegment.image(img_mes)
                 break
             else:
                 await draw_event_pic()
@@ -536,7 +543,7 @@ async def check_cookies(bot: Bot):
                                **{'user_id': i[0],
                                   'message': "您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n"
                                              "请及时重新绑定Cookies并重新开关相应功能。".format(
-                                      i[1])})
+                                   i[1])})
             await asyncio.sleep(3 + random.randint(1, 3))
     except ActionFailed as e:
         await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))

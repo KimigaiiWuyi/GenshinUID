@@ -8,10 +8,12 @@ from base64 import b64encode
 from io import BytesIO
 
 import requests
+from nonebot.adapters.onebot.v11 import MessageSegment
 
-from .get_data import (get_award, get_char_info, get_daily_data, get_mihoyo_bbs_info, get_audio_info,
-                       get_sign_info, get_sign_list, get_weapon_info, mihoyo_bbs_sign,
-                       cookies_db, get_misc_info)
+from .get_data import (cookies_db, get_audio_info, get_award, get_char_info,
+                       get_daily_data, get_mihoyo_bbs_info, get_misc_info,
+                       get_sign_info, get_sign_list, get_weapon_info,
+                       mihoyo_bbs_sign)
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
@@ -218,7 +220,7 @@ async def audio_wiki(name, message):
                     tmp_json[_audioid].remove(audioid1)
 
     if name == "列表":
-        im = f'[CQ:image,file=file://{os.path.join(INDEX_PATH, "语音.png")}]'
+        im = MessageSegment.image(f'file:///{os.path.join(INDEX_PATH, "语音.png")}')
         return im
     elif name == "":
         return "角色名不正确。"
@@ -230,7 +232,7 @@ async def audio_wiki(name, message):
             return "语音获取失败"
         if audio:
             audios = 'base64://' + b64encode(audio.getvalue()).decode()
-            return f"[CQ:record,file={audios}]"
+            return MessageSegment.record(audios)
 
 
 async def artifacts_wiki(name):

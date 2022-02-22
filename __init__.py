@@ -137,6 +137,9 @@ async def send_talents(bot: HoshinoBot, ev: CQEvent):
         num = re.findall(r"[0-9]+", message)
         if len(num) == 1:
             im = await char_wiki(name, "talents", num[0])
+            if isinstance(im,list):
+                await hoshino_bot.send_group_forward_msg(group_id=ev.group_id, messages=im)
+                return
         else:
             im = "参数不正确。"
         await bot.send(ev, im)

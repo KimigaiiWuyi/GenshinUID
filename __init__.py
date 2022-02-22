@@ -253,7 +253,7 @@ async def send_weapon(event: MessageEvent):
 
 
 @get_talents.handle()
-async def send_talents(event: MessageEvent):
+async def send_talents(bot: Bot,event: MessageEvent):
     try:
         message = str(event.get_message()).strip()
         message = message.replace('天赋', "")
@@ -262,6 +262,9 @@ async def send_talents(event: MessageEvent):
         num = re.findall(r"[0-9]+", message)
         if len(num) == 1:
             im = await char_wiki(name, "talents", num[0])
+            if isinstance(im,list):
+                await bot.call_api("send_group_forward_msg",group_id=event.group_id, messages=im)
+                return
         else:
             im = "参数不正确。"
         await get_talents.send(im)

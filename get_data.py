@@ -592,7 +592,7 @@ async def get_spiral_abyss_info(uid, ck, schedule_type="1", server_id="cn_gf01")
                     'x-rpc-client_type': '5',
                     'Referer': 'https://webstatic.mihoyo.com/'
                 },
-                parmas={
+                params={
                     "schedule_type": schedule_type,
                     "role_id": uid,
                     "server": server_id

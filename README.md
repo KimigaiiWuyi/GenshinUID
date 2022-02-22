@@ -8,10 +8,10 @@
         <a href="https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E6%9F%A5%E8%AF%A2%E6%A8%A1%E5%9D%97%E6%8C%87%E4%BB%A4%E5%88%97%E8%A1%A8" target="_blank">指令列表</a> &nbsp; · &nbsp;
         <a href="https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98qa">常见问题</a>
 </div>
-
 <p align="center">
   <a><img src="https://s2.loli.net/2022/02/01/QlS4piWXw5rZO3D.png"></a>
 </p>
+
 
 ## 丨我该如何安装该插件？
 
@@ -50,6 +50,8 @@ else
 - [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它
 - [YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info) - 米游社API来自于它
 - *[MiniGG](https://www.minigg.cn/)* - Wiki API来自于它
+- [@MingxuanGame](https://github.com/MingxuanGame) - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
+- [@shirokurakana](https://github.com/shirokurakana) - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档

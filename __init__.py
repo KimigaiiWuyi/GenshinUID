@@ -146,6 +146,9 @@ async def _(bot: Bot, event: Event):
         num = re.findall(r"[0-9]+", message)
         if len(num) == 1:
             im = await char_wiki(name,"talents",num[0])
+            if isinstance(im,list):
+                await bot.call_api("send_group_forward_msg",group_id=event.group_id, messages=im)
+                return
         else:
             im = "参数不正确。"
         await get_talents.send(im)

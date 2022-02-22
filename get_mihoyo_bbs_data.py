@@ -528,21 +528,73 @@ async def char_wiki(name, mode="char", level=None):
                     skill_info = data["info"]
                     skill_detail = ""
 
+                    """
                     for i in data["attributes"]["parameters"]:
                         temp = ""
                         for k in data["attributes"]["parameters"][i]:
-                            temp += "%.2f%%" % (k * 100) + "/"
+                            if str(k).count('.') == 1:
+                                temp += "%.2f%%" % (k * 100) + "/"
+                            else:
+                                temp = k
+                                break
                         data["attributes"]["parameters"][i] = temp[:-1]
 
                     for i in data["attributes"]["labels"]:
-                        # i = i.replace("{","{{")
+                        #i = i.replace("{","{{")
                         i = re.sub(r':[a-zA-Z0-9]+}', "}", i)
-                        # i.replace(r':[a-zA-Z0-9]+}','}')
+                        #i.replace(r':[a-zA-Z0-9]+}','}')
                         skill_detail += i + "\n"
 
                     skill_detail = skill_detail.format(**data["attributes"]["parameters"])
+                    """
+                    mes_list = []
+                    parameters = []
+                    add_switch = True
+                    for i in data["attributes"]["parameters"]:
+                        for index,j in enumerate(data["attributes"]["parameters"][i]):
+                            if add_switch:
+                                parameters.append({})
+                            if str(j).count('.') == 1 and j <= 20:
+                                parameters[index].update({i:"%.2f%%" % (j * 100)})
+                            elif str(j).count('.') == 1:
+                                parameters[index].update({i:"%.2f" % (j * 100)})
+                            else:
+                                parameters[index].update({i:j})
+                        add_switch = False
 
-                    im = "【{}】\n{}\n————\n{}".format(skill_name, skill_info, skill_detail)
+                    for k in data["attributes"]["labels"]:
+                        k = re.sub(r':[a-zA-Z0-9]+}', "}", k)
+                        skill_detail += k + "\n"
+
+                    skill_detail = skill_detail[:-1]
+
+                    for i in range(1,10):
+                        if i%2!=0:
+                            skill_info = skill_info.replace("**","「",1)
+                        else:
+                            skill_info = skill_info.replace("**","」",1)
+
+                    mes_list.append({
+                                "type": "node",
+                                "data": {
+                                    "name": "小仙",
+                                    "uin": "3399214199",
+                                    "content":"【" + skill_name + "】" + "\n" + skill_info
+                                        }
+                                    })
+
+                    for index,i in enumerate(parameters):
+                        mes = skill_detail.format(**i)
+                        node_data = {
+                                "type": "node",
+                                "data": {
+                                    "name": "小仙",
+                                    "uin": "3399214199",
+                                    "content":"lv." + str(index+1) + "\n" + mes
+                                        }
+                                    }
+                        mes_list.append(node_data)
+                    im = mes_list
 
                 else:
                     if level == "4":

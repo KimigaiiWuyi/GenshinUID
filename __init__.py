@@ -594,10 +594,10 @@ async def send_uid_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 2:
                     floor_num = re.findall(r"\d+", message)[1]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image)
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image)
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送uid深渊信息失败")
@@ -612,10 +612,10 @@ async def send_uid_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 2:
                     floor_num = re.findall(r"\d+", message)[1]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image, 2, "2")
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image, 2, "2")
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送uid上期深渊信息失败")
@@ -628,7 +628,7 @@ async def send_uid_info(bot: HoshinoBot, ev: CQEvent):
         else:
             try:
                 im = await draw_pic(uid, ev.sender['nickname'], image, 2)
-                await bot.send(ev, im, at_sender=True)
+                await bot.send(ev, f"[CQ:image,file={im}]")
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送uid信息失败")
@@ -698,10 +698,10 @@ async def get_info(bot, ev):
                     if len(re.findall(r"\d+", message)) == 1:
                         floor_num = re.findall(r"\d+", message)[0]
                         im = await draw_abyss_pic(uid[0], nickname, floor_num, image, uid[1])
-                        await bot.send(ev, im, at_sender=True)
+                        await bot.send(ev, f"[CQ:image,file={im}]")
                     else:
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1])
-                        await bot.send(ev, im, at_sender=True)
+                        await bot.send(ev, f"[CQ:image,file={im}]")
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid深渊信息失败")
@@ -716,10 +716,10 @@ async def get_info(bot, ev):
                     if len(re.findall(r"\d+", message)) == 1:
                         floor_num = re.findall(r"\d+", message)[0]
                         im = await draw_abyss_pic(uid[0], nickname, floor_num, image, uid[1], "2")
-                        await bot.send(ev, im, at_sender=True)
+                        await bot.send(ev, f"[CQ:image,file={im}]")
                     else:
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1], "2")
-                        await bot.send(ev, im, at_sender=True)
+                        await bot.send(ev, f"[CQ:image,file={im}]")
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid上期深渊信息失败")
@@ -732,7 +732,7 @@ async def get_info(bot, ev):
             elif m == "词云":
                 try:
                     im = await draw_word_cloud(uid[0], image, uid[1])
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid词云信息失败")
@@ -745,7 +745,7 @@ async def get_info(bot, ev):
             elif m == "":
                 try:
                     bg = await draw_pic(uid[0], nickname, image, uid[1])
-                    await bot.send(ev, bg, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={bg}]")
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid信息失败")
@@ -777,10 +777,10 @@ async def send_mihoyo_bbs_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 2:
                     floor_num = re.findall(r"\d+", message)[1]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image, 3)
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image, 3)
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送米游社深渊信息失败")
@@ -795,10 +795,10 @@ async def send_mihoyo_bbs_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 1:
                     floor_num = re.findall(r"\d+", message)[0]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image, 3, "2")
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image, 3, "2")
-                    await bot.send(ev, im, at_sender=True)
+                    await bot.send(ev, f"[CQ:image,file={im}]")
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送米游社上期深渊信息失败")
@@ -811,7 +811,7 @@ async def send_mihoyo_bbs_info(bot: HoshinoBot, ev: CQEvent):
         else:
             try:
                 im = await draw_pic(uid, ev.sender['nickname'], image, 3)
-                await bot.send(ev, im, at_sender=True)
+                await bot.send(ev, f"[CQ:image,file={im}]")
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送米游社信息失败")

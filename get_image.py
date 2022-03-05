@@ -3,18 +3,18 @@ import os
 import random
 import threading
 import time
-from bs4 import BeautifulSoup
 from base64 import b64encode
 from io import BytesIO
 from re import findall
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from bs4 import BeautifulSoup
 from httpx import get
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from wordcloud import WordCloud
 
-from .get_data import get_info, get_character, get_spiral_abyss_info, get_mihoyo_bbs_info, \
-    error_db, cache_db, get_genshin_events
+from .get_data import (cache_db, error_db, get_character, get_genshin_events,
+                       get_info, get_mihoyo_bbs_info, get_spiral_abyss_info)
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
@@ -326,7 +326,6 @@ async def draw_word_cloud(uid, image=None, mode=2):
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    #resultmes = f"[CQ:image,file={imgmes}]"
     resultmes = imgmes
     return resultmes
 
@@ -349,7 +348,7 @@ def multi_color_func(random_state=None):
     return "hsl({}, {}%, {}%)".format(colors[rand][0], colors[rand][1], colors[rand][2])
 
 
-async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
+async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
     #获取Cookies
     while True:
         use_cookies = cache_db(uid,mode-1)
@@ -468,7 +467,6 @@ async def draw_abyss0_pic(uid,nickname,image = None,mode = 2,date = "1"):
     cropped_img1 = bg_img.crop((x1, y1, 836, 607))
     blurred_img1 = cropped_img1.filter(ImageFilter.GaussianBlur(5),).convert("RGBA")
     bg_img.paste(blurred_img1, (x1, y1), create_rounded_rectangle_mask(cropped_img1,radius))
-
     for i in range(0,len(floors_data['levels'])):
         x2, y2 = 65, 630 + 315*i 
         radius = 15
@@ -1285,10 +1283,6 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
             char_draw = ImageDraw.Draw(charpic)
 
             char_draw.text((188, 30), i["name"] + " " + f'Lv.{str(char_level)}', new_color, genshin_font(22))
-            # char_draw.text((272,45),f'Lv.{str(char_level)}',new_color,genshin_font(18))
-
-            # char_draw.text((104.5,91.5),f'{str(char_weapon_jinglian)}',new_color,genshin_font(10))
-
             char_draw.text((222, 87), f'{str(i["fetter"])}' if str(char_name) != "旅行者" else "10", new_color,
                            genshin_font(15), anchor="mm")
             char_draw.text((255, 87), f'{str(char_mingzuo)}', new_color, genshin_font(15), anchor="mm")
@@ -1304,7 +1298,6 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    #resultmes = f"[CQ:image,file={imgmes}]"
     resultmes = imgmes
     return resultmes
 
@@ -1333,7 +1326,6 @@ def create_rounded_rectangle_mask(rectangle, radius):
 
 async def draw_event_pic():
     raw_data = await get_genshin_events("List")
-    # raw_time_data = await get_genshin_events("Calendar")
     raw_time_data = await get_genshin_events("Content")
 
     data = raw_data["data"]["list"][1]["list"]

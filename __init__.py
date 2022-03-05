@@ -2,7 +2,7 @@ import asyncio
 import base64
 
 from nonebot import (get_bot, get_driver, logger, on_command, on_startswith,
-                     require)
+                     on_regex,require)
 from nonebot.adapters.onebot.v11 import (GROUP, PRIVATE_FRIEND, Bot,
                                          GroupMessageEvent, MessageEvent,
                                          MessageSegment)
@@ -52,6 +52,9 @@ add_cookie = on_startswith("添加", permission=PRIVATE_FRIEND, priority=priorit
 search = on_command("查询", permission=GROUP, priority=priority)
 get_sign = on_command("签到", priority=priority)
 check = on_command("校验全部Cookies", priority=priority)
+
+get_char_adv = on_regex("[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)", priority=priority)
+get_weapon_adv = on_regex("[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)", priority=priority)
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), 'mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
@@ -155,7 +158,24 @@ async def daily_sign():
                 logger.exception("签到报告发送失败：{}".format(i["push_message"]))
             await asyncio.sleep(4 + random.randint(1, 3))
 
+@get_char_adv.handle()
+async def send_char_adv(bot:Bot, event: MessageEvent):
+    try:
+        name = str(event.get_message()).strip().replace(" ","")[:-3]
+        im = await char_adv(name)
+        await get_char_adv.send(im)
+    except Exception as e:
+        logger.exception("获取建议失败。")
 
+@get_weapon_adv.handle()
+async def send_weapon_adv(bot:Bot, event: MessageEvent):
+    try:
+        name = str(event.get_message()).strip().replace(" ","")[:-3]
+        im = await weapon_adv(name)
+        await get_weapon_adv.send(im)
+    except Exception as e:
+        logger.exception("获取建议失败。")
+        
 @get_audio.handle()
 async def send_audio(event: MessageEvent):
     message = str(event.get_message()).strip()
@@ -163,9 +183,13 @@ async def send_audio(event: MessageEvent):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     im = await audio_wiki(name, message)
     try:
-        await get_audio.send(im)
+        if name == "列表":
+            await get_audio.send(MessageSegment.image(im))
+        else:
+            await get_audio.send(MessageSegment.record(im))
     except ActionFailed:
         await get_audio.send("不存在该语音ID或者不存在该角色。")
+        logger.exception("获取语音失败")
     except Exception:
         await get_audio.send("可能是FFmpeg环境未配置。")
         logger.exception("获取语音失败")

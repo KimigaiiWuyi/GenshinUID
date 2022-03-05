@@ -18,6 +18,23 @@ FILE_PATH = os.path.join(os.path.dirname(__file__), 'mys')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 
+@sv.on_regex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)')
+async def send_char_adv(bot: HoshinoBot, ev: CQEvent):
+    try:
+        name = str(ev.message).strip().replace(" ","")[:-3]
+        im = await char_adv(name)
+        await bot.send(im)
+    except Exception as e:
+        logger.exception("获取建议失败。")
+
+@sv.on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)')
+async def send_weapon_adv(bot: HoshinoBot, ev: CQEvent):
+    try:
+        name = str(ev.message).strip().replace(" ","")[:-3]
+        im = await weapon_adv(name)
+        await bot.send(im)
+    except Exception as e:
+        logger.exception("获取建议失败。")
 
 @sv.on_prefix('语音')
 async def send_audio(bot: HoshinoBot, ev: CQEvent):
@@ -26,8 +43,12 @@ async def send_audio(bot: HoshinoBot, ev: CQEvent):
         message = message.replace(' ', "")
         name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         im = await audio_wiki(name, message)
-        await bot.send(ev, im)
+        if name == "列表":
+            await bot.send(ev, f"[CQ:image,file={im}]")
+        else:
+            await bot.send(ev, f"[CQ:recode,file={im}]")
     except ActionFailed as e:
+        logger.exception("获取语音失败")
         await bot.send(ev, "机器人发送消息失败：{}".format(e))
     except Exception as e:
         logger.exception("获取语音失败")

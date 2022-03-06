@@ -43,57 +43,6 @@ guild_member_api = qqbot.AsyncGuildMemberAPI(token,False)
 channel_api = qqbot.AsyncChannelAPI(token,False)
 dms_api = qqbot.AsyncDmsAPI(token, False)
 
-async def GetUidUrl(uid,qid,nickname,mode = 2):
-    try:
-        while 1:
-            use_cookies = await cache_db(uid,mode-1)
-            if use_cookies == '':
-                return "绑定记录不存在。"
-            elif use_cookies == "没有可以使用的Cookies！":
-                return "没有可以使用的Cookies！"
-
-            if mode == 3:
-                mys_data = await get_mihoyo_bbs_info(uid,use_cookies)
-                mysid_data = uid
-                for i in mys_data['data']['list']:
-                    if i['game_id'] != 2:
-                        mys_data['data']['list'].remove(i)
-                uid = mys_data['data']['list'][0]['game_role_id']
-                nickname = mys_data['data']['list'][0]['nickname']
-                #role_level = mys_data['data']['list'][0]['level']
-                
-            raw_data = await get_info(uid,use_cookies)
-            if raw_data["retcode"] != 0:
-                if raw_data["retcode"] == 10001:
-                    #return ("Cookie已过期，可联系小灰灰处理！")
-                    await error_db(use_cookies,"error")
-                elif raw_data["retcode"] == 10101:
-                    #return ("当前查询接口已达到上限，可联系小灰灰处理！")
-                    await error_db(use_cookies,"limit30")
-                elif raw_data["retcode"] == 10102:
-                    return ("当前查询id已经设置了隐私，无法进行查询！")
-                else:
-                    return (
-                        "Api报错，返回内容为：\r\n"
-                        + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-                    )
-            else:
-                break
-        style = "egenshin"
-        url = "https://yuanshen.minigg.cn/generator/user_info?style=" + style + "&uid=" + uid + "&qid=" + qid + "&nickname=" + urllib.parse.quote(nickname) +"&quality=75"
-        async with AsyncClient() as client:
-            req = await client.post(
-                url = url,
-                json = raw_data
-            )
-        return req.text
-    except TypeError as e:
-        traceback.print_exc()
-        return "请求数据为空，可能是绘制图片时出错。"
-    except Exception as e:
-        traceback.print_exc()
-        return "发生错误，频道信息Api可能变动。"
-
 async def up_guild_list():
     guild_list = []
     guild_list_temp = []
@@ -163,6 +112,57 @@ async def check_startwish(raw_mes,key_word,gid):
         return True
     else:
         return False
+
+async def GetUidUrl(uid,qid,nickname,mode = 2):
+    try:
+        while 1:
+            use_cookies = cache_db(uid,mode-1)
+            if use_cookies == '':
+                return "绑定记录不存在。"
+            elif use_cookies == "没有可以使用的Cookies！":
+                return "没有可以使用的Cookies！"
+
+            if mode == 3:
+                mys_data = await get_mihoyo_bbs_info(uid,use_cookies)
+                mysid_data = uid
+                for i in mys_data['data']['list']:
+                    if i['game_id'] != 2:
+                        mys_data['data']['list'].remove(i)
+                uid = mys_data['data']['list'][0]['game_role_id']
+                nickname = mys_data['data']['list'][0]['nickname']
+                #role_level = mys_data['data']['list'][0]['level']
+                
+            raw_data = await get_info(uid,use_cookies)
+            if raw_data["retcode"] != 0:
+                if raw_data["retcode"] == 10001:
+                    #return ("Cookie已过期，可联系小灰灰处理！")
+                    error_db(use_cookies,"error")
+                elif raw_data["retcode"] == 10101:
+                    #return ("当前查询接口已达到上限，可联系小灰灰处理！")
+                    error_db(use_cookies,"limit30")
+                elif raw_data["retcode"] == 10102:
+                    return ("当前查询id已经设置了隐私，无法进行查询！")
+                else:
+                    return (
+                        "Api报错，返回内容为：\r\n"
+                        + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                    )
+            else:
+                break
+        style = "egenshin"
+        url = "https://yuanshen.minigg.cn/generator/user_info?style=" + style + "&uid=" + uid + "&qid=" + qid + "&nickname=" + urllib.parse.quote(nickname) +"&quality=75"
+        async with AsyncClient() as client:
+            req = await client.post(
+                url = url,
+                json = raw_data
+            )
+        return req.text
+    except TypeError as e:
+        traceback.print_exc()
+        return "请求数据为空，可能是绘制图片时出错。"
+    except Exception as e:
+        traceback.print_exc()
+        return "发生错误，频道信息Api可能变动。"
 
 async def _message_handler(event, message: Message):
 
@@ -317,7 +317,23 @@ async def _message_handler(event, message: Message):
                     return
                 else:
                     audioid = re.findall(r"[0-9]+", raw_mes)[0]
-                    audio_url = await audio_wiki(name,audioid)
+
+                    tmp_json=json.loads(audio_json)
+                    for _ in range(3):#重试3次
+                        if audioid in tmp_json:
+                            if not tmp_json[audioid]:
+                                return
+                            audioid1 = random.choice(tmp_json[audioid])
+                        else:
+                            audioid1=audioid
+                        url = "https://bot.q.minigg.cn/audio/?characters=" + name + "&audioid=" + audioid1 + "&language=cn"
+                        req=requests.get(url)
+                        if req.headers["Content-Type"].startswith("audio"):
+                            audio_url = url
+                        else:
+                            if audioid in tmp_json:
+                                tmp_json[audioid].remove(audioid1)
+
                     audio_img = "https://img.genshin.minigg.cn/avatar/{}.png".format(name)
                     audio_str = "{}语音{}".format(name,audioid)
                     audio_raw_ark = await Config.load_ark(ark = "audioARK")
@@ -328,7 +344,6 @@ async def _message_handler(event, message: Message):
                     audio_raw_ark["kv"][4]["value"] = audio_img
                     audio_raw_ark["kv"][5]["value"] = audio_url
                     audio_raw_ark["kv"][6]["value"] = "原神语音"
-                    print(audio_raw_ark)
                     ark = MessageArk(data = audio_raw_ark)
             except Exception as e:
                 traceback.print_exc()

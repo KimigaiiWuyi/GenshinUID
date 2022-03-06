@@ -1,4 +1,4 @@
-import asyncio
+import asyncio,os,sys
 import base64
 
 from nonebot import (get_bot, get_driver, logger, on_command, on_startswith,
@@ -9,9 +9,10 @@ from nonebot.adapters.cqhttp import (GROUP, PRIVATE_FRIEND, Bot,
 from nonebot.adapters.cqhttp.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
-from .get_data import *
-from .get_image import *
-from .get_mihoyo_bbs_data import *
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+from mihoyo_libs.get_data import *
+from mihoyo_libs.get_image import *
+from mihoyo_libs.get_mihoyo_bbs_data import *
 
 config = get_driver().config
 priority = config.genshinuid_priority if config.genshinuid_priority else 2

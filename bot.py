@@ -31,9 +31,10 @@ from qqbot.model.user import ReqOption
 logger = logging.getLogger(__name__)
 
 with open('Config.yaml', encoding='UTF-8') as yaml_file:
-    token = yaml.safe_load(yaml_file)
+    yaml_config = yaml.safe_load(yaml_file)
 
-token = qqbot.Token(token["BotID"],token["BotToken"])
+token = qqbot.Token(yaml_config["BotID"],yaml_config["BotToken"])
+test_guild_id = yaml_config["TestGuildID"]
 
 api = qqbot.AsyncUserAPI(token, False)
 guild_api = qqbot.AsyncGuildAPI(token,False)
@@ -213,6 +214,16 @@ async def _message_handler(event, message: Message):
                 mes = "发生错误，可能是输入的功能名不正确。"
         else:
             return
+    elif raw_mes == "校验全部Cookies":
+        try:
+            if int(message.guild_id) == int(test_guild_id):
+                raw_data = await check_db()
+                mes = raw_data[0]
+            else:
+                return
+        except Exception as e:
+            traceback.print_exc()
+            mes = "发生错误。"
     elif raw_mes.startswith("设置频道开启"):
         try:
             member_info = await guild_member_api.get_guild_member(message.guild_id, message.author.id)

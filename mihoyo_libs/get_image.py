@@ -13,8 +13,7 @@ from httpx import get
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from wordcloud import WordCloud
 
-from .get_data import (cache_db, error_db, get_character, get_genshin_events,
-                       get_info, get_mihoyo_bbs_info, get_spiral_abyss_info)
+from .get_data import *
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')

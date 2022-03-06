@@ -18,7 +18,7 @@ FILE_PATH = os.path.join(os.path.dirname(__file__), 'mys')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 
-@sv.on_regex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)')
+@sv.on_rex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)')
 async def send_char_adv(bot: HoshinoBot, ev: CQEvent):
     try:
         name = str(ev.message).strip().replace(" ","")[:-3]
@@ -27,7 +27,7 @@ async def send_char_adv(bot: HoshinoBot, ev: CQEvent):
     except Exception as e:
         logger.exception("获取建议失败。")
 
-@sv.on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)')
+@sv.on_rex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)')
 async def send_weapon_adv(bot: HoshinoBot, ev: CQEvent):
     try:
         name = str(ev.message).strip().replace(" ","")[:-3]

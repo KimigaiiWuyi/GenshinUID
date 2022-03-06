@@ -26,7 +26,9 @@ class Config:
                                 "添加":"AddCk",
                                 "当前状态":"DailyData",
                                 "每月统计":"MonthData",
-                                "签到":"Sign"
+                                "签到":"Sign",
+                                "用什么":"CharAdv",
+                                "给谁用":"WeaponAdv"
                             }
 
     async def load_ark(self,ark = ""):

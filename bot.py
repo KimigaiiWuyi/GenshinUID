@@ -113,6 +113,12 @@ async def check_startwish(raw_mes,key_word,gid):
     else:
         return False
 
+async def check_endwish(raw_mes,key_word,gid):
+    if raw_mes.endswith(key_word) and await check_switch(gid,Config.switch_list[key_word]):
+        return True
+    else:
+        return False
+
 async def GetUidUrl(uid,qid,nickname,mode = 2):
     try:
         while 1:
@@ -441,6 +447,24 @@ async def _message_handler(event, message: Message):
                 traceback.print_exc()
                 qqbot.logger.info(e.with_traceback)
                 mes = "绑定失败。"
+        elif await check_endwish(raw_mes,"用什么",message.guild_id):
+            raw_mes = raw_mes.replace("用什么","")
+            name = raw_mes
+            try:
+                mes = await char_adv(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "没有找到该角色的培养建议。"
+        elif await check_endwish(raw_mes,"给谁用",message.guild_id):
+            raw_mes = raw_mes.replace("给谁用","")
+            name = raw_mes
+            try:
+                mes = await weapon_adv(name)
+            except Exception as e:
+                traceback.print_exc()
+                qqbot.logger.info(e.with_traceback)
+                mes = "没有找到该武器的使用建议。"
         elif await check_startwish(raw_mes,"角色",message.guild_id):
             raw_mes = raw_mes.replace("角色","")
             try:

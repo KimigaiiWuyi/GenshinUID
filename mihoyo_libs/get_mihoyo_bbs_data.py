@@ -10,9 +10,7 @@ from io import BytesIO
 
 import requests
 
-from .get_data import (get_award, get_char_info, get_daily_data, get_mihoyo_bbs_info, get_audio_info,
-                       get_sign_info, get_sign_list, get_weapon_info, mihoyo_bbs_sign,
-                       cookies_db, get_misc_info)
+from .get_data import *
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')

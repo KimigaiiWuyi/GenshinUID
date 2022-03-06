@@ -1,4 +1,4 @@
-import asyncio
+import asyncio,os,sys
 import base64
 import traceback
 
@@ -7,9 +7,10 @@ from hoshino import Service
 from hoshino.typing import CQEvent, HoshinoBot
 from nonebot import get_bot, logger
 
-from .get_data import *
-from .get_image import *
-from .get_mihoyo_bbs_data import *
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+from mihoyo_libs.get_data import *
+from mihoyo_libs.get_image import *
+from mihoyo_libs.get_mihoyo_bbs_data import *
 
 sv = Service('genshinuid')
 hoshino_bot = get_bot()

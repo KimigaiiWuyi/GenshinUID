@@ -1,3 +1,4 @@
+from sre_constants import SUCCESS
 import time
 import random
 import string
@@ -170,13 +171,11 @@ class mihoyobbs_coin:
         if self.Task_do["bbs_Sign"]:
             return "讨论区任务已经完成过了~"
         else:
-            num_ok = 0
             for i in self.mihoyobbs_List_Use:
                 async with AsyncClient() as client:
                     req = await client.post(url=bbs_Signurl.format(i["id"]), data={}, headers=self.headers)
                 data = req.json()
                 if "err" not in data["message"]:
-                    num_ok += 1
                     time.sleep(random.randint(2, 8))
                 else:
                     return "你的Cookies已失效。"
@@ -196,7 +195,7 @@ class mihoyobbs_coin:
                 if data["message"] == "OK":
                     num_ok += 1
                 time.sleep(random.randint(2, 8))
-            return "已完成看帖任务~共计成功{}次~".foramt(num_ok)
+            return "已完成看帖任务~共计成功{}次~".format(str(num_ok))
     # 点赞
     async def Likeposts(self):
         if self.Task_do["bbs_Like_posts"]:
@@ -221,7 +220,7 @@ class mihoyobbs_coin:
                     if data["message"] == "OK":
                         num_cancel += 1
                 time.sleep(random.randint(2, 8))
-            return "已完成点赞任务~共计点赞{}次，取消点赞{}次~".foramt(num_ok,num_cancel)
+            return "已完成点赞任务~共计点赞{}次，取消点赞{}次~".format(str(num_ok),str(num_cancel))
                 # 分享操作
 
     async def share_post(self):

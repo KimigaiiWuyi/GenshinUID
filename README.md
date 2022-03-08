@@ -45,6 +45,19 @@ else
 
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
 
+## 丨获取米游社Stoken([AutoMihoyoBBS](https://github.com/Womsxd/AutoMihoyoBBS#%E8%8E%B7%E5%8F%96%E7%B1%B3%E6%B8%B8%E7%A4%BECookie))
+**前提**：已经添加过米游社Cookies，并且已经绑定过uid
+
+Stoken仅用于米游社币的获取，如果你只想使用其他功能，没有必要添加Stoken
+
+```sh
+var cookie=document.cookie;
+var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');
+if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
+```
+
+**警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
+
 ## 丨感谢
 
 - [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它

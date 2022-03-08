@@ -1300,6 +1300,200 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
     resultmes = imgmes
     return resultmes
 
+async def draw_info_pic(uid,image = None):
+
+    def seconds2hours(seconds: int) -> str:
+        m, s = divmod(int(seconds), 60)
+        h, m = divmod(m, 60)
+        return "%02d:%02d:%02d" % (h, m, s)
+
+    #获取数据
+    award_data = await get_award(uid)
+    daily_data = await get_daily_data(uid)
+    daily_data = daily_data["data"]
+
+    nickname = award_data['data']['nickname']
+
+    # 获取背景图片
+    bg2_path = os.path.join(BG_PATH, random.choice([x for x in os.listdir(BG_PATH)
+                                                    if os.path.isfile(os.path.join(BG_PATH, x))]))
+
+    if image:
+        image_data = image.group(2)
+        edit_bg = Image.open(BytesIO(get(image_data).content))
+    else:
+        edit_bg = Image.open(bg2_path)
+
+    # 获取背景主色
+    q = edit_bg.quantize(colors=3, method=2)
+    bg_num_temp = 0
+    for i in range(0, 3):
+        bg = tuple(q.getpalette()[i * 3:(i * 3) + 3])
+        bg_num = bg[0] + bg[1] + bg[2]
+        if bg_num >= bg_num_temp:
+            bg_num_temp = bg_num
+            bg_color = (bg[0], bg[1], bg[2])
+
+    # 通过背景主色（bg_color）确定文字主色
+    r = 140
+    if max(bg_color) > 255 - r:
+        r *= -1
+    new_color = (math.floor(bg_color[0] + r if bg_color[0] + r <= 255 else 255),
+                 math.floor(bg_color[1] + r if bg_color[1] + r <= 255 else 255),
+                 math.floor(bg_color[2] + r if bg_color[2] + r <= 255 else 255))
+
+    # 确定texture2D路径
+    info1_path = os.path.join(TEXT_PATH, "info_1.png")
+    info2_path = os.path.join(TEXT_PATH, "info_2.png")
+    info3_path = os.path.join(TEXT_PATH, "info_3.png")
+
+    avatar_bg_path = os.path.join(TEXT_PATH, "avatar_bg.png")
+    avatar_fg_path = os.path.join(TEXT_PATH, "avatar_fg.png")
+
+    all_mask_path = os.path.join(TEXT_PATH, "All_Mask.png")
+
+    # 确定整体图片的长宽
+    based_w = 900
+    based_h = 1470
+    based_scale = '%.3f' % (based_w / based_h)
+
+    # 通过确定的长宽比，缩放背景图片
+    w, h = edit_bg.size
+    scale_f = '%.3f' % (w / h)
+    new_w = math.ceil(based_h * float(scale_f))
+    new_h = math.ceil(based_w / float(scale_f))
+    if scale_f > based_scale:
+        bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
+    else:
+        bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
+    bg_img = bg_img2.crop((0, 0, 900, based_h))
+
+    # 转换遮罩的颜色、大小匹配，并paste上去
+    all_mask = Image.open(all_mask_path).resize(bg_img.size, Image.ANTIALIAS)
+    all_mask_img = Image.new("RGBA", (based_w, based_h), bg_color)
+    bg_img.paste(all_mask_img, (0, 0), all_mask)
+
+    # 操作图片
+    info1 = Image.open(info1_path)
+    info2 = Image.open(info2_path)
+    info3 = Image.open(info3_path)
+    avatar_bg = Image.open(avatar_bg_path)
+    avatar_fg = Image.open(avatar_fg_path)
+    
+    avatar_bg_color = Image.new("RGBA", (316, 100), bg_color)
+    bg_img.paste(avatar_bg_color, (113, 98), avatar_bg)
+    bg_img.paste(avatar_fg, (114, 95), avatar_fg)
+
+    info1_color = Image.new("RGBA", (900, 1300), bg_color)
+    bg_img.paste(info1_color, (0, 0), info1)
+
+    info2_color = Image.new("RGBA", (900, 1300), new_color)
+    bg_img.paste(info2_color, (0, 0), info2)
+
+    bg_img.paste(info3, (0, 0), info3)
+    
+
+    text_draw = ImageDraw.Draw(bg_img)
+
+    #用户信息
+    text_draw.text((220, 137), f"{nickname}", new_color, genshin_font(32),anchor="lm")
+    text_draw.text((235, 170), 'UID ' + f"{uid}", new_color, genshin_font(14),anchor="lm")
+
+    #本日原石/摩拉
+    text_draw.text((715, 148), f"{award_data['data']['day_data']['current_primogems']}/{award_data['data']['day_data']['last_primogems']}", new_color, genshin_font(28),anchor="lm")
+    text_draw.text((715, 185), f"{award_data['data']['day_data']['current_mora']}/{award_data['data']['day_data']['last_mora']}", new_color, genshin_font(28),anchor="lm")
+
+    #本月原石/摩拉
+    text_draw.text((762, 287), f"{award_data['data']['month_data']['current_primogems']}", new_color, genshin_font(21),anchor="lm")
+    text_draw.text((762, 323), f"{award_data['data']['month_data']['current_mora']}", new_color, genshin_font(21),anchor="lm")
+
+    #上月原石/摩拉
+    text_draw.text((762, 359), f"{award_data['data']['month_data']['last_primogems']}", new_color, genshin_font(21),anchor="lm")
+    text_draw.text((762, 395), f"{award_data['data']['month_data']['last_mora']}", new_color, genshin_font(21),anchor="lm")
+
+    #收入比例
+    for index,i in enumerate(award_data['data']['month_data']['group_by']):
+        text_draw.text((721, 445 + index * 32), f"{str(i['num'])}({str(i['percent'])}%)", new_color, genshin_font(21),anchor="lm")
+
+    #基本四项
+    text_draw.text((415, 314), f"{daily_data['current_resin']}/{daily_data['max_resin']}", new_color, genshin_font(28),anchor="lm")
+    text_draw.text((415, 408), f'{daily_data["current_home_coin"]}/{daily_data["max_home_coin"]}', new_color, genshin_font(28),anchor="lm")
+    text_draw.text((415, 503), f"{daily_data['finished_task_num']}/{daily_data['total_task_num']}", new_color, genshin_font(28),anchor="lm")
+    text_draw.text((415, 597), f"{str(daily_data['resin_discount_num_limit'] - daily_data['remain_resin_discount_num'])}/{daily_data['resin_discount_num_limit']}", new_color, genshin_font(28),anchor="lm")
+
+    #树脂恢复时间计算
+    resin_recovery_time = seconds2hours(
+                        daily_data['resin_recovery_time'])
+    next_resin_rec_time = seconds2hours(
+        8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
+            daily_data['resin_recovery_time'])))
+    rec_time = f' ({next_resin_rec_time}/{resin_recovery_time})'
+
+    #洞天宝钱时间计算
+    coin_rec_time = seconds2hours(int(daily_data["home_coin_recovery_time"]))
+    coin_add_speed = math.ceil((daily_data["max_home_coin"] - daily_data["current_home_coin"]) / (
+            int(daily_data["home_coin_recovery_time"]) / 60 / 60))
+    coin = f'（{coin_rec_time} 约{coin_add_speed}/h）'
+
+    if daily_data['is_extra_task_reward_received']:
+        daily_task_status = "「每日委托」奖励已领取"
+    else:
+        daily_task_status = "「每日委托」奖励未领取"
+
+    #详细信息
+    text_draw.text((190, 331), f"将于{rec_time}后全部恢复", new_color, genshin_font(18),anchor="lm")
+    text_draw.text((190, 425), f"预计{coin}后达到储存上限", new_color, genshin_font(18),anchor="lm")
+    text_draw.text((190, 518), f"{daily_task_status}", new_color, genshin_font(18),anchor="lm")
+    text_draw.text((190, 614), f"本周剩余消耗减半次数", new_color, genshin_font(18),anchor="lm")
+
+    #派遣图片准备
+    char_bg_path = os.path.join(TEXT_PATH, "char_bg.png")
+
+    char_bg = Image.open(char_bg_path)
+
+    char_color = (math.floor(bg_color[0] + 10 if bg_color[0] + r <= 255 else 255),
+                  math.floor(bg_color[1] + 10 if bg_color[1] + r <= 255 else 255),
+                  math.floor(bg_color[2] + 10 if bg_color[2] + r <= 255 else 255))
+
+    charset_mask = Image.new("RGBA", (900, 130), char_color)
+
+    #派遣
+    for index,i in enumerate(daily_data["expeditions"]):
+        if not os.path.exists(os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")):
+            get_char_img_pic(f"https://upload-bbs.mihoyo.com/game_record/genshin/character_image/UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
+        char_stand_img = os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
+        char_stand = Image.open(char_stand_img)
+        char_stand_mask = Image.open(os.path.join(TEXT_PATH, "stand_mask.png"))
+        charpic = Image.new("RGBA", (900, 130))
+
+        charpic_temp = Image.new("RGBA", (900, 130))
+        charpic_temp.paste(char_stand, (395, -99), char_stand_mask)
+        char_icon = Image.open(BytesIO(get(i['avatar_side_icon']).content))
+
+        char_icon_scale = char_icon.resize((140,140),Image.ANTIALIAS)
+        charpic.paste(charset_mask, (0, 0), char_bg)
+        charpic.paste(char_icon_scale, (63, -26), char_icon_scale)
+        charpic.paste(charpic_temp, (0, 0), charpic_temp)
+
+        charpic_draw = ImageDraw.Draw(charpic)
+
+        if i['status'] == 'Finished':
+            charpic_draw.text((200, 65), f"探索完成", new_color, genshin_font(24),anchor="lm")
+        else:
+            remained_timed: str = seconds2hours(i['remained_time'])
+            charpic_draw.text((200, 65), f"剩余时间 {remained_timed}", new_color, genshin_font(24),anchor="lm")
+
+        bg_img.paste(charpic, (0,748 + 133*index), charpic)
+
+    end_pic = Image.open(os.path.join(TEXT_PATH,"abyss_3.png"))
+    bg_img.paste(end_pic,(0,1430),end_pic)
+
+    bg_img = bg_img.convert('RGB')
+    result_buffer = BytesIO()
+    bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+    imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
+    resultmes = imgmes
+    return resultmes
 
 def create_rounded_rectangle_mask(rectangle, radius):
     solid_fill = (50, 50, 50, 255)

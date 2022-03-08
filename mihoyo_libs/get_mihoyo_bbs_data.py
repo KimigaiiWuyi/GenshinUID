@@ -1,6 +1,7 @@
 import json
 import math
 import os
+import sys
 import random
 import re
 import sqlite3
@@ -10,7 +11,10 @@ from io import BytesIO
 
 import requests
 
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from .get_data import *
+from .get_image import draw_event_pic
+import get_mihoyo_bbs_coin as coin
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
@@ -235,30 +239,43 @@ async def char_adv(name):
         return im
 
 async def deal_ck(mes, qid):
-    aid = re.search(r"account_id=(\d*)", mes)
-    mysid_data = aid.group(0).split('=')
-    mysid = mysid_data[1]
-    cookie = ';'.join(filter(lambda x: x.split('=')[0] in [
-        "cookie_token", "account_id"], [i.strip() for i in mes.split(';')]))
-    mys_data = await get_mihoyo_bbs_info(mysid, cookie)
-    for i in mys_data['data']['list']:
-        if i['game_id'] != 2:
-            mys_data['data']['list'].remove(i)
-    uid = mys_data['data']['list'][0]['game_role_id']
+    if "stoken" in mes:
+        login_ticket = re.search(r"login_ticket=([0-9a-zA-Z]+)", mes).group(0).split('=')[1]
+        uid = await select_db(qid,"uid")
+        #mys_id = re.search(r"login_uid=([0-9]+)", mes).group(0).split('=')[1]
+        ck = await owner_cookies(uid[0])
+        mys_id = re.search(r"account_id=(\d*)", ck).group(0).split('=')[1]
+        raw_data = await get_stoken_by_login_ticket(login_ticket,mys_id)
+        stoken = raw_data["data"]["list"][0]["token"]
+        s_cookies = "stuid={};stoken={}".format(mys_id,stoken)
+        await stoken_db(s_cookies,uid[0])
+        return "添加Stoken成功！"
+    else:
+        aid = re.search(r"account_id=(\d*)", mes)
+        mysid_data = aid.group(0).split('=')
+        mysid = mysid_data[1]
+        cookie = ';'.join(filter(lambda x: x.split('=')[0] in [
+            "cookie_token", "account_id"], [i.strip() for i in mes.split(';')]))
+        mys_data = await get_mihoyo_bbs_info(mysid, cookie)
+        for i in mys_data['data']['list']:
+            if i['game_id'] != 2:
+                mys_data['data']['list'].remove(i)
+        uid = mys_data['data']['list'][0]['game_role_id']
 
-    conn = sqlite3.connect('ID_DATA.db')
-    c = conn.cursor()
+        conn = sqlite3.connect('ID_DATA.db')
+        c = conn.cursor()
 
-    try:
-        c.execute("DELETE from CookiesCache where uid=? or mysid = ?", (uid, mysid))
-    except:
-        pass
+        try:
+            c.execute("DELETE from CookiesCache where uid=? or mysid = ?", (uid, mysid))
+        except:
+            pass
 
-    conn.commit()
-    conn.close()
+        conn.commit()
+        conn.close()
 
-    await cookies_db(uid, cookie, qid)
-
+        await cookies_db(uid, cookie, qid)
+        return f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n' \
+                f'如果需要【开启自动签到】和【开启推送】还需要使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
 
 async def award(uid):
     data = await get_award(uid)
@@ -483,6 +500,29 @@ async def daily(mode="push", uid=None):
                     {"qid": row[2], "gid": row[3], "message": send_mes})
     return temp_list
 
+async def mihoyo_coin(qid):
+    uid = await select_db(qid, mode="uid")
+    uid = uid[0]
+    s_cookies = await get_stoken(uid)
+    if s_cookies:
+        get_coin = coin.mihoyobbs_coin(s_cookies)
+        im = await get_coin.task_run()
+    else:
+        im = "你还没有绑定Stoken~"
+    return im
+
+async def get_event_pic():
+    img_path = os.path.join(FILE2_PATH, "event.jpg")
+    while True:
+        if os.path.exists(img_path):
+            f = open(img_path, 'rb')
+            ls_f = b64encode(f.read()).decode()
+            img_mes = 'base64://' + ls_f
+            f.close()
+            break
+        else:
+            await draw_event_pic()
+    return img_mes
 
 async def weapon_wiki(name, level=None):
     data = await get_weapon_info(name)

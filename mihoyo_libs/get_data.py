@@ -319,6 +319,30 @@ async def cookies_db(uid, cookies, qid):
     conn.commit()
     conn.close()
 
+async def stoken_db(s_cookies,uid):
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    columns = [i[1] for i in c.execute('PRAGMA table_info(NewCookiesTable)')]
+
+    if "Stoken" not in columns:
+        c.execute('ALTER TABLE NewCookiesTable ADD COLUMN Stoken TEXT')
+
+    c.execute("UPDATE NewCookiesTable SET Stoken = ? WHERE UID=?", (s_cookies, int(uid)))
+
+    conn.commit()
+    conn.close()
+
+async def get_stoken(uid):
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    try:
+        cursor = c.execute("SELECT *  FROM NewCookiesTable WHERE UID = ?", (uid,))
+        c_data = cursor.fetchall()
+        stoken = c_data[0][8]
+    except:
+        return
+
+    return stoken
 
 async def owner_cookies(uid):
     conn = sqlite3.connect('ID_DATA.db')
@@ -346,8 +370,11 @@ def md5(text):
     return md5_func.hexdigest()
 
 
-def old_version_get_ds_token():
-    n = "h8w582wxwgqvahcdkpvdhbh2w9casgfl"
+def old_version_get_ds_token(mysbbs = False):
+    if mysbbs:
+        n = "fd3ykrh7o1j54g581upo1tvpam0dsgtf"
+    else:
+        n = "h8w582wxwgqvahcdkpvdhbh2w9casgfl"
     i = str(int(time.time()))
     r = ''.join(random.sample(string.ascii_lowercase + string.digits, 6))
     c = md5("salt=" + n + "&t=" + i + "&r=" + r)
@@ -365,6 +392,17 @@ def get_ds_token(q="", b=None):
     c = md5("salt=" + s + "&t=" + t + "&r=" + r + "&b=" + br + "&q=" + q)
     return t + "," + r + "," + c
 
+async def get_stoken_by_login_ticket(loginticket,mys_id):
+    async with AsyncClient() as client:
+        req = await client.get(
+            url="https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket",
+            params={
+                "login_ticket": loginticket,
+                "token_types": "3",
+                "uid": mys_id
+            }
+        )
+    return req.json()
 
 async def get_daily_data(uid, server_id="cn_gf01"):
     if uid[0] == '5':
@@ -387,7 +425,6 @@ async def get_daily_data(uid, server_id="cn_gf01"):
                 }
             )
             data = json.loads(req.text)
-            # print(data)
         return data
     except requests.exceptions.SSLError:
         try:

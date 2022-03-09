@@ -5,7 +5,7 @@ import string
 
 from httpx import AsyncClient
 
-from .get_data import old_version_get_ds_token,random_hex
+from get_data import old_version_get_ds_token,random_hex
 
 Today_getcoins = 0
 Today_have_getcoins = 0  # 这个变量以后可能会用上，先留着了

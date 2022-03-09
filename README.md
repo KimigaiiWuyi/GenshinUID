@@ -46,15 +46,17 @@ else
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
 
 ## 丨获取米游社Stoken([AutoMihoyoBBS](https://github.com/Womsxd/AutoMihoyoBBS#%E8%8E%B7%E5%8F%96%E7%B1%B3%E6%B8%B8%E7%A4%BECookie))
-**前提**：已经添加过米游社Cookies，并且已经绑定过uid
-
-Stoken仅用于米游社币的获取，如果你只想使用其他功能，没有必要添加Stoken
-
+**前提**：已经添加过米游社Cookies，并且已经绑定过uid(仅用于米游社币的获取)
 ```sh
 var cookie=document.cookie;
 var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');
 if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
 ```
+
+1. 复制上面全部代码，然后打开http://user.mihoyo.com/
+2. 在页面上右键检查或者Ctrl+Shift+i
+3. 选择控制台（Console），粘贴，回车，在弹出的窗口点确认（点完自动复制）
+4. 然后在和机器人的私聊窗口，粘贴发送即可
 
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
 

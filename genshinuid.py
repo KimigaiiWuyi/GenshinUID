@@ -15,7 +15,7 @@ from mihoyo_libs.get_mihoyo_bbs_data import *
 sv = Service('genshinuid')
 hoshino_bot = get_bot()
 
-FILE_PATH = os.path.josin(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),'mihoyo_bbs')
+FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),'mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 

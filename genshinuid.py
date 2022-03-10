@@ -15,7 +15,7 @@ from mihoyo_libs.get_mihoyo_bbs_data import *
 sv = Service('genshinuid')
 hoshino_bot = get_bot()
 
-FILE_PATH = os.path.join(os.path.dirname(__file__), 'mys')
+FILE_PATH = os.path.josin(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),'mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 
@@ -241,6 +241,25 @@ async def clean_cache():
 async def draw_event():
     await draw_event_pic()
 
+@sv.on_fullmatch('开始获取米游币')
+async def send_mihoyo_coin(bot: HoshinoBot, ev: CQEvent):
+    await bot.send(ev, "开始操作……", at_sender=True)
+    try:
+        qid = ev.sender["user_id"]
+        im_mes = await mihoyo_coin(int(qid))
+        im = im_mes
+    except TypeError or AttributeError:
+        im = "没有找到绑定信息。"
+        logger.exception("获取米游币失败")
+    except Exception as e:
+        im = "发生错误 {},请检查后台输出。".format(e)
+        logger.exception("获取米游币失败")
+    finally:
+        try:
+            await bot.send(ev, im, at_sender=True)
+        except ActionFailed as e:
+            await bot.send(ev, "机器人发送消息失败：{}".format(e.info['wording']))
+            logger.exception("发送签到信息失败")
 
 @sv.on_fullmatch('全部重签')
 async def _(bot: HoshinoBot, ev: CQEvent):
@@ -347,12 +366,9 @@ async def setting(ctx):
     if '添加 ' in message:
         try:
             mes = message.replace('添加 ', '')
-            await deal_ck(mes, userid)
+            im = await deal_ck(mes, userid)
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
-                                       message=f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，'
-                                               f'请马上修改米游社账户密码，保护个人隐私！\n————\n'
-                                               f'如果需要【开启自动签到】和【开启推送】还需要使用命令“绑定uid”绑定你的uid。\n'
-                                               f'例如：绑定uid123456789。')
+                                       message=im)
         except ActionFailed as e:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
                                        message="机器人发送消息失败：{}".format(e))

@@ -70,6 +70,7 @@ if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档
+- [@珊瑚宫千花](https://space.bilibili.com/398528056) - 角色别名Json提供
 - [@wudifeixue](https://github.com/wudifeixue) - PR贡献 & Bug报告
 - [@ZhouYingSASA](https://github.com/ZhouYingSASA) - PR贡献 & Bug报告
 

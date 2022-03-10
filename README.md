@@ -50,7 +50,7 @@ else
 ```sh
 var cookie=document.cookie;
 var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');
-if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
+if(ask==true){copy("添加 stoken" + cookie);msg=cookie}else{msg='Cancel'}
 ```
 
 1. 复制上面全部代码，然后打开http://user.mihoyo.com/

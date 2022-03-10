@@ -1,16 +1,10 @@
-from sre_constants import SUCCESS
 import time
 import random
 import string
 
 from httpx import AsyncClient
 
-from .get_data import old_version_get_ds_token,random_hex
-
-Today_getcoins = 0
-Today_have_getcoins = 0  # 这个变量以后可能会用上，先留着了
-Have_coins = 0
-
+from get_data import old_version_get_ds_token,random_hex
 
 # 米游社的API列表
 bbs_Cookieurl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
@@ -82,6 +76,9 @@ class mihoyobbs_coin:
             "bbs_Share": False
         }
         self.mihoyobbs_List_Use = []
+        self.Today_getcoins = 0
+        self.Today_have_getcoins = 0  # 这个变量以后可能会用上，先留着了
+        self.Have_coins = 0
 
     async def task_run(self):
         await self.Load_Mihoyobbs_List_Use()
@@ -102,9 +99,6 @@ class mihoyobbs_coin:
 
     # 获取任务列表，用来判断做了哪些任务
     async def Get_taskslist(self):
-        global Today_getcoins
-        global Today_have_getcoins
-        global Have_coins
         #log.info("正在获取任务列表")
         async with AsyncClient() as client:
             req = await client.get(url = bbs_Taskslist, headers = self.headers)
@@ -113,11 +107,11 @@ class mihoyobbs_coin:
             return "你的Cookies已失效。"
             #log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
         else:
-            Today_getcoins = data["data"]["can_get_points"]
-            Today_have_getcoins = data["data"]["already_received_points"]
-            Have_coins = data["data"]["total_points"]
+            self.Today_getcoins = data["data"]["can_get_points"]
+            self.Today_have_getcoins = data["data"]["already_received_points"]
+            self.Have_coins = data["data"]["total_points"]
             # 如果当日可获取米游币数量为0直接判断全部任务都完成了
-            if Today_getcoins == 0:
+            if self.Today_getcoins == 0:
                 self.Task_do["bbs_Sign"] = True
                 self.Task_do["bbs_Read_posts"] = True
                 self.Task_do["bbs_Like_posts"] = True
@@ -125,10 +119,10 @@ class mihoyobbs_coin:
             else:
                 # 如果第0个大于或等于62则直接判定任务没做
                 if data["data"]["states"][0]["mission_id"] >= 62:
-                    #log.info(f"新的一天，今天可以获得{Today_getcoins}个米游币")
+                    #log.info(f"新的一天，今天可以获得{self.Today_getcoins}个米游币")
                     pass
                 else:
-                    #log.info(f"似乎还有任务没完成，今天还能获得{Today_getcoins}")
+                    #log.info(f"似乎还有任务没完成，今天还能获得{self.Today_getcoins}")
                     for i in data["data"]["states"]:
                         # 58是讨论区签到
                         if i["mission_id"] == 58:

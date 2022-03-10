@@ -1,4 +1,4 @@
-import asyncio,os,sys
+import asyncio,os,sys,re
 import base64
 
 from nonebot import (get_bot, get_driver, logger, on_command, on_startswith,
@@ -52,12 +52,13 @@ add_cookie = on_startswith("添加", permission=PRIVATE_FRIEND, priority=priorit
 
 search = on_command("查询", permission=GROUP, priority=priority)
 get_sign = on_command("签到", priority=priority)
+get_mihoyo_coin = on_command("开始获取米游币", priority=priority)
 check = on_command("校验全部Cookies", priority=priority)
 
 get_char_adv = on_regex("[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)", priority=priority)
 get_weapon_adv = on_regex("[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)", priority=priority)
 
-FILE_PATH = os.path.join(os.path.dirname(__file__), 'mihoyo_bbs')
+FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),'mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 TEXTURE_PATH = os.path.join(FILE_PATH, 'texture2d')
 
@@ -385,10 +386,8 @@ async def send_events(bot:Bot, event: MessageEvent):
 async def add_cookie_func(bot:Bot, event: MessageEvent):
     try:
         mes = str(event.get_message()).strip().replace('添加', "")
-        await deal_ck(mes, int(event.sender.user_id))
-        await add_cookie.send(
-            f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n'
-            f'如果需要【开启自动签到】和【开启推送】还需要使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。')
+        im = await deal_ck(mes, int(event.sender.user_id))
+        await add_cookie.send(im)
     except ActionFailed as e:
         await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送Cookie校验信息失败")
@@ -558,6 +557,25 @@ async def get_sing_func(bot:Bot, event: MessageEvent):
             await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
             logger.exception("发送签到信息失败")
 
+@get_mihoyo_coin.handle()
+async def send_mihoyo_coin(bot:Bot, event: MessageEvent):
+    await get_mihoyo_coin.send("开始操作……", at_sender=True)
+    try:
+        qid = int(event.sender.user_id)
+        im_mes = await mihoyo_coin(qid)
+        im = im_mes
+    except TypeError or AttributeError:
+        im = "没有找到绑定信息。"
+        logger.exception("获取米游币失败")
+    except Exception as e:
+        im = "发生错误 {},请检查后台输出。".format(e)
+        logger.exception("获取米游币失败")
+    finally:
+        try:
+            await get_mihoyo_coin.send(im, at_sender=True)
+        except ActionFailed as e:
+            await get_mihoyo_coin.send("机器人发送消息失败：{}".format(e.info['wording']))
+            logger.exception("发送签到信息失败")
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @check.handle()

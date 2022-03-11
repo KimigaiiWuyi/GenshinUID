@@ -16,7 +16,7 @@ from nonebot import logger
 mhyVersion = "2.11.1"
 
 BASE_PATH = os.path.dirname(__file__)
-BASE2_PATH = os.path.join(BASE_PATH, 'mihoyo_bbs')
+BASE2_PATH = os.path.join(BASE_PATH, 'mihoyo_libs/mihoyo_bbs')
 INDEX_PATH = os.path.join(BASE2_PATH, 'index')
 
 

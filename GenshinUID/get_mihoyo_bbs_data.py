@@ -13,7 +13,7 @@ from .get_image import draw_event_pic
 import get_mihoyo_bbs_coin as coin
 
 FILE_PATH = os.path.dirname(__file__)
-FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
+FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_libs/mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 
@@ -158,7 +158,7 @@ char_adv_im = '''【{}】
 
 
 async def weapon_adv(name):
-    char_adv_path = os.path.join(FILE_PATH, "Genshin All Char.xlsx")
+    char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
     wb = load_workbook(char_adv_path)
     ws = wb.active
 
@@ -182,7 +182,7 @@ async def weapon_adv(name):
 
 async def char_adv(name):
     char_name = None
-    char_adv_path = os.path.join(FILE_PATH, "Genshin All Char.xlsx")
+    char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
     wb = load_workbook(char_adv_path)
     ws = wb.active
     char_list = ws["A"]

@@ -768,7 +768,7 @@ async def get_mihoyo_bbs_info(mysid, ck):
 
 
 async def get_audio_info(name, audioid, language="cn"):
-    url = "https://genshin.minigg.cn/?characters=" + name + "&audioid=" + audioid + "&language=" + language
+    url = "https://genshin.minigg.cn/"
     async with AsyncClient() as client:
         req = await client.get(
             url=url,

@@ -312,7 +312,7 @@ async def audio_wiki(name, message):
                 audioid1 = _audioid
             url = await get_audio_info(name, audioid1)
             req = requests.get(url)
-            if req.headers["Content-Type"].startswith("audio"):
+            if req.status_code == 200:
                 return BytesIO(req.content)
             else:
                 if _audioid in tmp_json:
@@ -323,7 +323,7 @@ async def audio_wiki(name, message):
             im = f.read()
         return MessageSegment.image(im)
     elif name == "":
-        return "角色名不正确。"
+        return "请输入角色名。"
     else:
         audioid = re.findall(r"[0-9]+", message)[0]
         try:
@@ -332,6 +332,8 @@ async def audio_wiki(name, message):
             return "语音获取失败"
         if audio:
             return MessageSegment.record(audio.getvalue())
+        else:
+            return "不存在该语音ID或者不存在该角色。"
 
 
 async def artifacts_wiki(name):

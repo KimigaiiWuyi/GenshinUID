@@ -3,8 +3,8 @@ import base64
 import os
 import sys
 
-from nonebot import (get_bot, get_driver, logger, on_command, on_regex, on_startswith, require)
-from nonebot.adapters.cqhttp import (Bot, GROUP, GroupMessageEvent, MessageEvent, MessageSegment, PRIVATE_FRIEND)
+from nonebot import (get_bot, get_driver, on_command, on_regex, on_startswith, require)
+from nonebot.adapters.cqhttp import (Bot, GROUP, GroupMessageEvent, MessageEvent, PRIVATE_FRIEND)
 from nonebot.adapters.cqhttp.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 

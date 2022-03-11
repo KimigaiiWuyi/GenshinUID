@@ -66,7 +66,7 @@ daily_im = '''
 ==============
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
-周本减半：{}/{}
+减半已用：{}/{}
 洞天宝钱：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
@@ -459,6 +459,8 @@ async def daily(mode="push", uid=None):
                     expedition_info.append(
                         f"{avatar_name} 剩余时间{remained_timed}")
 
+            # 推送条件检查，在指令查询时 row[6] 为 0 ，而自动推送时 row[6] 为 140，这样保证用指令查询时必回复
+            # 说实话我仔细看了一会才理解…
             if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                 tip = ''
                 tips = []
@@ -467,7 +469,7 @@ async def daily(mode="push", uid=None):
                 if dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                     tips.append("你的洞天宝钱快满了！")
                 if finished_expedition_num == current_expedition_num:
-                    tips.append("你的所有探索派遣完成了！")
+                    tips.append("你的所有探索派遣完成了！")  # emmmm
                 if tips:
                     tips.insert(0, '\n==============')
                     tip = '\n'.join(tips)

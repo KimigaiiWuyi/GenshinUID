@@ -186,7 +186,7 @@ async def send_audio(bot: Bot, event: MessageEvent):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     im = await audio_wiki(name, message)
     try:
-        await get_audio.send(MessageSegment.record(im))
+        await get_audio.send(im)
     except ActionFailed:
         await get_audio.send("不存在该语音ID或者不存在该角色。")
         logger.exception("获取语音失败")

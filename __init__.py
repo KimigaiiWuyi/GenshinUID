@@ -2,8 +2,8 @@ import os.path
 
 import nonebot
 
-nonebot.load_plugin(
+nonebot.load_plugins(
     os.path.join(
-        os.path.split(__file__)[0], 'GenshinUID'
+        os.path.split(__file__)[0]
     )
 )

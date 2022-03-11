@@ -871,4 +871,4 @@ all_recheck = on_command("全部重签", permission=SUPERUSER, priority=priority
 @all_recheck.handle()
 async def resign():
     await all_recheck.send("已开始执行")
-    await daily_sign_schedule()
+    await sign_at_night()

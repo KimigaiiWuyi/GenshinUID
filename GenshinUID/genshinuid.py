@@ -52,6 +52,7 @@ search = on_command("查询", permission=GROUP, priority=priority)
 get_sign = on_command("签到", priority=priority)
 get_mihoyo_coin = on_command("开始获取米游币", priority=priority)
 check = on_command("校验全部Cookies", priority=priority)
+all_recheck = on_command("全部重签", permission=SUPERUSER, priority=priority)
 
 get_char_adv = on_regex("[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)", priority=priority)
 get_weapon_adv = on_regex("[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)", priority=priority)
@@ -85,8 +86,6 @@ async def push():
                 await bot.call_api(api='send_group_msg',
                                    **{'group_id': i['gid'],
                                       'message' : MessageSegment.at(i['qid']) + f"\n{i['message']}"})
-    else:
-        pass
 
 
 # 每日零点半进行米游社签到
@@ -187,10 +186,7 @@ async def send_audio(bot: Bot, event: MessageEvent):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     im = await audio_wiki(name, message)
     try:
-        if name == "列表":
-            await get_audio.send(MessageSegment.image(im))
-        else:
-            await get_audio.send(MessageSegment.record(im))
+        await get_audio.send(MessageSegment.record(im))
     except ActionFailed:
         await get_audio.send("不存在该语音ID或者不存在该角色。")
         logger.exception("获取语音失败")
@@ -362,16 +358,13 @@ async def send_polar(bot: Bot, event: MessageEvent):
 
 
 @get_event.handle()
-async def send_events(bot: Bot, event: MessageEvent):
+async def send_events(bot: Bot):
     try:
         img_path = os.path.join(FILE_PATH, "event.jpg")
         while True:
             if os.path.exists(img_path):
-                f = open(img_path, 'rb')
-                ls_f = base64.b64encode(f.read()).decode()
-                img_mes = 'base64://' + ls_f
-                f.close()
-                im = MessageSegment.image(img_mes)
+                with open(img_path, 'rb') as f:
+                    im = MessageSegment.image(f.read())
                 break
             else:
                 await draw_event_pic()
@@ -591,11 +584,12 @@ async def check_cookies(bot: Bot):
         im = raw_mes[0]
         await check.send(im)
         for i in raw_mes[1]:
-            await bot.call_api(api='send_private_msg',
-                               **{'user_id': i[0],
-                                  'message': "您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n"
-                                             "请及时重新绑定Cookies并重新开关相应功能。".format(
-                                      i[1])})
+            await bot.call_api(api='send_private_msg', **{
+                'user_id': i[0],
+                'message': ("您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n"
+                            "查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n"
+                            "请及时重新绑定Cookies并重新开关相应功能。").format(i[1])
+            })
             await asyncio.sleep(3 + random.randint(1, 3))
     except ActionFailed as e:
         await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
@@ -870,10 +864,7 @@ async def send_mihoyo_bbs_info(bot: Bot, event: MessageEvent):
         logger.exception("米游社查询异常")
 
 
-all_recheck = on_command("全部重签", permission=SUPERUSER, priority=priority)
-
-
 @all_recheck.handle()
-async def resign(bot: Bot, event: MessageEvent):
+async def resign(bot: Bot):
     await all_recheck.send("已开始执行")
     await sign_at_night()

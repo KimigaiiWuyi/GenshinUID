@@ -11,6 +11,7 @@ from shutil import copyfile
 
 import requests
 from httpx import AsyncClient
+from nonebot import logger
 
 mhyVersion = "2.11.1"
 
@@ -175,9 +176,9 @@ async def select_db(userid, mode="auto"):
 async def delete_cache():
     try:
         copyfile("ID_DATA.db", "ID_DATA_bak.db")
-        print("————数据库成功备份————")
+        logger.info("————数据库成功备份————")
     except:
-        print("————数据库备份失败————")
+        logger.info("————数据库备份失败————")
 
     try:
         conn = sqlite3.connect('ID_DATA.db')
@@ -190,9 +191,9 @@ async def delete_cache():
         Cookies       TEXT);''')
         conn.commit()
         conn.close()
-        print("————UID查询缓存已清空————")
+        logger.info("————UID查询缓存已清空————")
     except:
-        print("\nerror\n")
+        logger.info("\nerror\n")
 
     try:
         conn = sqlite3.connect('ID_DATA.db')
@@ -200,9 +201,9 @@ async def delete_cache():
         c.execute("UPDATE UseridDict SET lots=NULL")
         conn.commit()
         conn.close()
-        print("————御神签缓存已清空————")
+        logger.info("————御神签缓存已清空————")
     except:
-        print("\nerror\n")
+        logger.info("\nerror\n")
 
 
 def error_db(ck, err):
@@ -452,10 +453,10 @@ async def get_daily_data(uid, server_id="cn_gf01"):
             data = json.loads(req.text)
             return data
         except json.decoder.JSONDecodeError:
-            print("当前状态读取Api失败！")
+            logger.info("当前状态读取Api失败！")
     except Exception as e:
-        print("访问每日信息失败，请重试！")
-        print(e.with_traceback)
+        logger.info("访问每日信息失败，请重试！")
+        logger.info(e.with_traceback)
 
 
 async def get_sign_list():
@@ -476,7 +477,7 @@ async def get_sign_list():
             data = json.loads(req.text)
         return data
     except:
-        print("获取签到奖励列表失败，请重试")
+        logger.info("获取签到奖励列表失败，请重试")
 
 
 async def get_sign_info(uid, server_id="cn_gf01"):
@@ -502,7 +503,7 @@ async def get_sign_info(uid, server_id="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("获取签到信息失败，请重试")
+        logger.info("获取签到信息失败，请重试")
 
 
 async def mihoyo_bbs_sign(uid, server_id="cn_gf01"):
@@ -530,7 +531,7 @@ async def mihoyo_bbs_sign(uid, server_id="cn_gf01"):
         data2 = json.loads(req.text)
         return data2
     except:
-        print("签到失败，请重试")
+        logger.info("签到失败，请重试")
 
 
 async def get_award(uid, server_id="cn_gf01"):
@@ -564,7 +565,7 @@ async def get_award(uid, server_id="cn_gf01"):
             data = json.loads(req.text)
         return data
     except:
-        print("访问失败，请重试！")
+        logger.info("访问失败，请重试！")
         # sys.exit(1)
 
 
@@ -611,10 +612,10 @@ async def get_info(uid, ck, server_id="cn_gf01"):
             data = json.loads(req.text)
             return data
         except json.decoder.JSONDecodeError:
-            print("米游社基础信息读取新Api失败！")
+            logger.info("米游社基础信息读取新Api失败！")
     except Exception as e:
-        print("米游社基础信息读取旧Api失败！")
-        print(e.with_traceback)
+        logger.info("米游社基础信息读取旧Api失败！")
+        logger.info(e.with_traceback)
 
 
 async def get_spiral_abyss_info(uid, ck, schedule_type="1", server_id="cn_gf01"):
@@ -672,10 +673,10 @@ async def get_spiral_abyss_info(uid, ck, schedule_type="1", server_id="cn_gf01")
             data = json.loads(req.text)
             return data
         except json.decoder.JSONDecodeError:
-            print("深渊信息读取新Api失败！")
+            logger.info("深渊信息读取新Api失败！")
     except Exception as e:
-        print("深渊信息读取老Api失败！")
-        print(e.with_traceback)
+        logger.info("深渊信息读取老Api失败！")
+        logger.info(e.with_traceback)
 
 
 def get_character(uid, character_ids, ck, server_id="cn_gf01"):
@@ -719,10 +720,10 @@ def get_character(uid, character_ids, ck, server_id="cn_gf01"):
             data = json.loads(req.text)
             return data
         except json.decoder.JSONDecodeError:
-            print("深渊信息读取新Api失败！")
+            logger.info("深渊信息读取新Api失败！")
     except Exception as e:
-        print("深渊信息读取老Api失败！")
-        print(e.with_traceback)
+        logger.info("深渊信息读取老Api失败！")
+        logger.info(e.with_traceback)
 
 
 async def get_mihoyo_bbs_info(mysid, ck):
@@ -760,10 +761,10 @@ async def get_mihoyo_bbs_info(mysid, ck):
                 data = json.loads(req.text)
             return data
         except json.decoder.JSONDecodeError:
-            print("米游社信息读取新Api失败！")
+            logger.info("米游社信息读取新Api失败！")
     except Exception as e:
-        print("米游社信息读取老Api失败！")
-        print(e.with_traceback)
+        logger.info("米游社信息读取老Api失败！")
+        logger.info(e.with_traceback)
 
 
 async def get_audio_info(name, audioid, language="cn"):

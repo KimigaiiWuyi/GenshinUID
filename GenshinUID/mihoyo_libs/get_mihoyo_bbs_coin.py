@@ -3,6 +3,7 @@ import string
 import time
 
 from httpx import AsyncClient
+from nonebot import logger
 
 from get_data import old_version_get_ds_token, random_hex
 
@@ -154,7 +155,7 @@ class mihoyobbs_coin:
     # 获取要帖子列表
     async def get_list(self) -> list:
         temp_list = []
-        print("正在获取帖子列表......")
+        logger.info("正在获取帖子列表......")
         async with AsyncClient() as client:
             req = await client.get(url=bbs_Listurl.format(self.mihoyobbs_List_Use[0]["forumId"]), headers=self.headers)
         data = req.json()

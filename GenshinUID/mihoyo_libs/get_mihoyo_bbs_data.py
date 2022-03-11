@@ -4,6 +4,7 @@ import sys
 from base64 import b64encode
 from io import BytesIO
 
+from nonebot.adapters.cqhttp import MessageSegment
 from openpyxl import load_workbook
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -318,8 +319,9 @@ async def audio_wiki(name, message):
                     tmp_json[_audioid].remove(audioid1)
 
     if name == "列表":
-        imgmes = 'base64://' + b64encode(open(os.path.join(INDEX_PATH, "语音.png"), "rb").read()).decode()
-        return imgmes
+        with open(os.path.join(INDEX_PATH, "语音.png"), "rb") as f:
+            im = f.read()
+        return MessageSegment.image(im)
     elif name == "":
         return "角色名不正确。"
     else:
@@ -329,8 +331,7 @@ async def audio_wiki(name, message):
         except:
             return "语音获取失败"
         if audio:
-            audios = 'base64://' + b64encode(audio.getvalue()).decode()
-            return audios
+            return MessageSegment.record(audio.getvalue())
 
 
 async def artifacts_wiki(name):
@@ -467,7 +468,7 @@ async def daily(mode="push", uid=None):
                 #    tip += "\n==============\n你有探索派遣完成了！"
                 max_resin = dailydata['max_resin']
                 rec_time = ''
-                # print(dailydata)
+                # logger.info(dailydata)
                 if current_resin < 160:
                     resin_recovery_time = seconds2hours(
                         dailydata['resin_recovery_time'])

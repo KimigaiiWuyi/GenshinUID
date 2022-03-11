@@ -13,7 +13,7 @@ from wordcloud import WordCloud
 from .get_data import *
 
 FILE_PATH = os.path.dirname(__file__)
-FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
+FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_libs/mihoyo_bbs')
 CHAR_PATH = os.path.join(FILE2_PATH, 'chars')
 CHAR_DONE_PATH = os.path.join(FILE2_PATH, 'char_done')
 CHAR_IMG_PATH = os.path.join(FILE2_PATH, 'char_img')

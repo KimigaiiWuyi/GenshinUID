@@ -9,8 +9,8 @@ from nonebot.adapters.cqhttp.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-from mihoyo_libs.get_image import *
-from mihoyo_libs.get_mihoyo_bbs_data import *
+from .get_image import *
+from .get_mihoyo_bbs_data import *
 
 config = get_driver().config
 priority = config.genshinuid_priority if config.genshinuid_priority else 2

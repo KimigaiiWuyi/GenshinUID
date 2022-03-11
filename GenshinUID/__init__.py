@@ -1,1 +1,1 @@
-import genshinuid
+from .main import *

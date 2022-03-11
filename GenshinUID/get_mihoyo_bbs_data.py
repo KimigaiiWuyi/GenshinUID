@@ -333,7 +333,7 @@ async def audio_wiki(name, message):
         if audio:
             return MessageSegment.record(audio.getvalue())
         else:
-            return "不存在该语音ID或者不存在该角色。"
+            return "没有找到语音，请检查语音ID与角色名是否正确，如无误则可能未收录该语音"
 
 
 async def artifacts_wiki(name):
@@ -461,13 +461,17 @@ async def daily(mode="push", uid=None):
 
             if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                 tip = ''
-
+                tips = []
                 if current_resin >= row[6] != 0:
-                    tip += "\n==============\n你的树脂快满了！"
+                    tips.append("你的树脂快满了！")
                 if dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
-                    tip += "\n==============\n你的洞天宝钱快满了！"
-                # if finished_expedition_num >0:
-                #    tip += "\n==============\n你有探索派遣完成了！"
+                    tips.append("你的洞天宝钱快满了！")
+                if finished_expedition_num == current_expedition_num:
+                    tips.append("你的所有探索派遣完成了！")
+                if tips:
+                    tips.insert(0, '\n==============')
+                    tip = '\n'.join(tips)
+
                 max_resin = dailydata['max_resin']
                 rec_time = ''
                 # logger.info(dailydata)

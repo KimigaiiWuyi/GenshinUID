@@ -66,7 +66,7 @@ daily_im = '''
 ==============
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
-周本减半：{}/{}
+减半已用：{}/{}
 洞天宝钱：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
@@ -312,7 +312,7 @@ async def audio_wiki(name, message):
                 audioid1 = _audioid
             url = await get_audio_info(name, audioid1)
             req = requests.get(url)
-            if req.headers["Content-Type"].startswith("audio"):
+            if req.status_code == 200:
                 return BytesIO(req.content)
             else:
                 if _audioid in tmp_json:
@@ -323,7 +323,7 @@ async def audio_wiki(name, message):
             im = f.read()
         return MessageSegment.image(im)
     elif name == "":
-        return "角色名不正确。"
+        return "请输入角色名。"
     else:
         audioid = re.findall(r"[0-9]+", message)[0]
         try:
@@ -332,6 +332,8 @@ async def audio_wiki(name, message):
             return "语音获取失败"
         if audio:
             return MessageSegment.record(audio.getvalue())
+        else:
+            return "没有找到语音，请检查语音ID与角色名是否正确，如无误则可能未收录该语音"
 
 
 async def artifacts_wiki(name):
@@ -457,15 +459,21 @@ async def daily(mode="push", uid=None):
                     expedition_info.append(
                         f"{avatar_name} 剩余时间{remained_timed}")
 
+            # 推送条件检查，在指令查询时 row[6] 为 0 ，而自动推送时 row[6] 为 140，这样保证用指令查询时必回复
+            # 说实话我仔细看了一会才理解…
             if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                 tip = ''
-
+                tips = []
                 if current_resin >= row[6] != 0:
-                    tip += "\n==============\n你的树脂快满了！"
+                    tips.append("你的树脂快满了！")
                 if dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
-                    tip += "\n==============\n你的洞天宝钱快满了！"
-                # if finished_expedition_num >0:
-                #    tip += "\n==============\n你有探索派遣完成了！"
+                    tips.append("你的洞天宝钱快满了！")
+                if finished_expedition_num == current_expedition_num:
+                    tips.append("你的所有探索派遣完成了！")  # emmmm
+                if tips:
+                    tips.insert(0, '\n==============')
+                    tip = '\n'.join(tips)
+
                 max_resin = dailydata['max_resin']
                 rec_time = ''
                 # logger.info(dailydata)

@@ -15,7 +15,10 @@ from mihoyo_libs.get_image import *
 from mihoyo_libs.get_mihoyo_bbs_data import *
 
 config = get_driver().config
-priority = config.genshinuid_priority if config.genshinuid_priority else 2
+try:
+    priority = config.genshinuid_priority
+except AttributeError:
+    priority = 2
 superusers = {int(x) for x in config.superusers}
 
 draw_event_schedule = require("nonebot_plugin_apscheduler").scheduler

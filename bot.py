@@ -709,7 +709,12 @@ async def _guild_handler(event, guild:Guild):
         await delete_guild(guild)
 
 async def getGuildStatus():
-
+    global guild_member_all_count
+    async def get_guild_number(id):
+        global guild_member_all_count
+        guild_data = await guild_api.get_guild(id)
+        guild_member_all_count += guild_data.member_count
+        await asyncio.sleep(0.05)
     guild_list = []
     guild_list_temp = []
 
@@ -726,14 +731,18 @@ async def getGuildStatus():
     guild_member_all_count = 0
     guild_status_mes  = ""
 
+    tasks = []
     for guild in guild_list:
         try:
-            guild_data = await guild_api.get_guild(guild.id)
-            #guild_status_mes += "【{}】{}人\n".format(guild.name,str(guild_data.member_count))
-            guild_member_all_count += guild_data.member_count
+            tasks.append(get_guild_number(guild.id))
         except Exception as e:
             qqbot.logger.info(e.args)
             traceback.print_exc()
+    try:
+        await asyncio.wait(tasks)
+    except Exception as e:
+        qqbot.logger.info(e.args)
+        traceback.print_exc()
     user = await api.me()
     guild_status_mes = "【{}】总加入频道 {} 个,总人数为 {}".format(user.username,str(len(guild_list)),str(guild_member_all_count))
     return guild_status_mes

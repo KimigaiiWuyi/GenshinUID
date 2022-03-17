@@ -68,7 +68,7 @@ if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
 - [@MingxuanGame](https://github.com/MingxuanGame) - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
 - [@shirokurakana](https://github.com/shirokurakana) - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
-- [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
+- [@lgc2333](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档
 - [@珊瑚宫千花](https://space.bilibili.com/398528056) - 角色别名Json提供
 - [@wudifeixue](https://github.com/wudifeixue) - PR贡献 & Bug报告

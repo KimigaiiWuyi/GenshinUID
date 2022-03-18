@@ -1,8 +1,8 @@
 import asyncio
 import base64
 
-from nonebot import (get_bot, get_driver, logger, on_command, on_regex, on_startswith, require)
-from nonebot.adapters.onebot.v11 import (Bot, GROUP, GroupMessageEvent, MessageEvent, MessageSegment, PRIVATE_FRIEND)
+from nonebot import (get_bot, get_driver, on_command, on_regex, on_startswith, require)
+from nonebot.adapters.onebot.v11 import (Bot, GROUP, GroupMessageEvent, MessageEvent, PRIVATE_FRIEND)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
@@ -659,12 +659,15 @@ async def send_uid_info(event: MessageEvent):
                 else:
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 2, "2")
                     await get_uid_info.send(MessageSegment.image(im), at_sender=True)
+            except ActionFailed as e:
+                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                logger.exception("发送米游社深渊信息失败")
             except TypeError:
-                await get_uid_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
-                logger.exception("上期深渊数据获取失败（Cookie失效/不公开信息）")
+                await get_mys_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                logger.exception("深渊数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:
-                await get_uid_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
-                logger.exception("上期深渊数据获取失败（数据状态问题）")
+                await get_mys_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
+                logger.exception("深渊数据获取失败（数据状态问题）")
         else:
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 2)

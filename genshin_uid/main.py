@@ -17,6 +17,9 @@ except AttributeError:
     priority = 2
 superusers = {int(x) for x in config.superusers}
 
+# todo: 将重复代码提取为函数，增加代码复用性
+# 不得不说重复代码太多了很影响项目维护，同一个功能出问题所有同样的代码都要改，还容易漏
+
 draw_event_schedule = require("nonebot_plugin_apscheduler").scheduler
 clean_cache_schedule = require("nonebot_plugin_apscheduler").scheduler
 daily_sign_schedule = require("nonebot_plugin_apscheduler").scheduler
@@ -163,7 +166,7 @@ async def daily_sign():
 
 
 @get_char_adv.handle()
-async def send_char_adv(bot: Bot, event: MessageEvent):
+async def send_char_adv(event: MessageEvent):
     try:
         name = str(event.get_message()).strip().replace(" ", "")[:-3]
         im = await char_adv(name)
@@ -173,7 +176,7 @@ async def send_char_adv(bot: Bot, event: MessageEvent):
 
 
 @get_weapon_adv.handle()
-async def send_weapon_adv(bot: Bot, event: MessageEvent):
+async def send_weapon_adv(event: MessageEvent):
     try:
         name = str(event.get_message()).strip().replace(" ", "")[:-3]
         im = await weapon_adv(name)
@@ -221,7 +224,7 @@ async def send_enemies(event: MessageEvent):
         im = await enemies_wiki(message)
         await get_enemies.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_enemies.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送怪物信息失败")
     except Exception as e:
         await get_enemies.send("发生错误 {},请检查后台输出。".format(e))
@@ -236,7 +239,7 @@ async def send_food(event: MessageEvent):
         im = await foods_wiki(message)
         await get_food.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_food.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送食物信息失败")
     except Exception as e:
         await get_food.send("发生错误 {},请检查后台输出。".format(e))
@@ -251,7 +254,7 @@ async def send_artifacts(event: MessageEvent):
         im = await artifacts_wiki(message)
         await get_artifacts.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_artifacts.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送圣遗物信息失败")
     except Exception as e:
         await get_artifacts.send("发生错误 {},请检查后台输出。".format(e))
@@ -272,7 +275,7 @@ async def send_weapon(event: MessageEvent):
             im = await weapon_wiki(name)
         await get_weapon.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_weapon.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送武器信息失败")
     except Exception as e:
         await get_weapon.send("发生错误 {},请检查后台输出。".format(e))
@@ -296,7 +299,7 @@ async def send_talents(bot: Bot, event: MessageEvent):
             im = "参数不正确。"
         await get_talents.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_talents.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送天赋信息失败")
     except Exception as e:
         await get_talents.send("发生错误 {},请检查后台输出。".format(e))
@@ -317,7 +320,7 @@ async def send_char(event: MessageEvent):
             im = await char_wiki(name)
         await get_char.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_char.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送角色信息失败")
     except Exception as e:
         await get_char.send("发生错误 {},请检查后台输出。".format(e))
@@ -333,7 +336,7 @@ async def send_cost(event: MessageEvent):
         im = await char_wiki(message, "costs")
         await get_cost.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_cost.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送材料信息失败")
     except Exception as e:
         await get_cost.send("发生错误 {},请检查后台输出。".format(e))
@@ -353,7 +356,7 @@ async def send_polar(event: MessageEvent):
         im = await char_wiki(m, "constellations", num)
         await get_polar.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_polar.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送命座信息失败")
     except Exception as e:
         await get_polar.send("发生错误 {},请检查后台输出。".format(e))
@@ -373,7 +376,7 @@ async def send_events():
                 await draw_event_pic()
         await get_event.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await get_event.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送活动列表失败")
     except Exception as e:
         await get_event.send("发生错误 {},请检查后台输出。".format(e))
@@ -387,7 +390,7 @@ async def add_cookie_func(event: MessageEvent):
         im = await deal_ck(mes, int(event.sender.user_id))
         await add_cookie.send(im)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await add_cookie.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送Cookie校验信息失败")
     except Exception as e:
         await add_cookie.send('校验失败！请输入正确的Cookies！\n错误信息为{}'.format(e))
@@ -445,13 +448,13 @@ async def open_switch_func(event: MessageEvent):
                 else:
                     return
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await open_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送设置成功信息失败")
             except Exception as e:
                 await open_switch.send("发生错误 {},请检查后台输出。".format(e))
                 logger.exception("设置简洁签到报告失败")
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await open_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送开启自动签到信息失败")
     except Exception as e:
         await open_switch.send("发生错误 {},请检查后台输出。".format(e))
@@ -505,13 +508,13 @@ async def close_switch_func(event: MessageEvent):
                 else:
                     return
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await open_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送设置成功信息失败")
             except Exception as e:
                 await open_switch.send("发生错误 {},请检查后台输出。".format(e))
                 logger.exception("设置简洁签到报告失败")
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await open_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送开启自动签到信息失败")
     except Exception as e:
         await close_switch.send("发生错误 {},请检查后台输出。".format(e))
@@ -528,7 +531,7 @@ async def send_monthly_data(event: MessageEvent):
         im = await award(uid)
         await monthly_data.send(im, at_sender=True)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await monthly_data.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送每月统计信息失败")
     except Exception:
         await monthly_data.send('未找到绑定信息', at_sender=True)
@@ -553,7 +556,7 @@ async def get_sing_func(event: MessageEvent):
         try:
             await get_sign.send(im, at_sender=True)
         except ActionFailed as e:
-            await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+            await get_sign.send("机器人发送消息失败：{}".format(e.info['wording']))
             logger.exception("发送签到信息失败")
 
 
@@ -596,7 +599,7 @@ async def check_cookies(bot: Bot):
             })
             await asyncio.sleep(3 + random.randint(1, 3))
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await check.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送Cookie校验信息失败")
     except Exception as e:
         await check.send("发生错误 {},请检查后台输出。".format(e))
@@ -616,7 +619,7 @@ async def send_daily_data(event: MessageEvent):
         im = "没有找到绑定信息。"
         await daily_data.send(im, at_sender=True)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await daily_data.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送当前状态信息失败")
     except Exception as e:
         await daily_data.send("发生错误 {},请检查后台输出。".format(e))
@@ -642,9 +645,9 @@ async def send_uid_info(event: MessageEvent):
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image)
                     await get_uid_info.send(MessageSegment.image(im), at_sender=True)
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await get_uid_info.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送uid深渊信息失败")
-            except TypeError:
+            except (TypeError, IndexError):
                 await get_uid_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                 logger.exception("深渊数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:
@@ -660,22 +663,22 @@ async def send_uid_info(event: MessageEvent):
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 2, "2")
                     await get_uid_info.send(MessageSegment.image(im), at_sender=True)
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await get_uid_info.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送米游社深渊信息失败")
-            except TypeError:
-                await get_mys_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
-                logger.exception("深渊数据获取失败（Cookie失效/不公开信息）")
+            except (TypeError, IndexError):
+                await get_uid_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                logger.exception("上期深渊数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:
-                await get_mys_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
-                logger.exception("深渊数据获取失败（数据状态问题）")
+                await get_uid_info.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
+                logger.exception("上期深渊数据获取失败（数据状态问题）")
         else:
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 2)
                 await get_uid_info.send(MessageSegment.image(im), at_sender=True)
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await get_uid_info.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送uid信息失败")
-            except TypeError:
+            except (TypeError, IndexError):
                 await get_uid_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                 logger.exception("数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:
@@ -696,7 +699,7 @@ async def link_uid_to_qq(event: MessageEvent):
         await connect_db(int(event.sender.user_id), uid)
         await link_uid.send('绑定uid成功！', at_sender=True)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await link_uid.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送绑定信息失败")
     except Exception as e:
         await link_uid.send("发生错误 {},请检查后台输出。".format(e))
@@ -713,7 +716,7 @@ async def link_mihoyo_bbs_to_qq(event: MessageEvent):
         await connect_db(int(event.sender.user_id), None, mys)
         await link_mys.send('绑定米游社id成功！', at_sender=True)
     except ActionFailed as e:
-        await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await link_mys.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送绑定信息失败")
     except Exception as e:
         await link_mys.send("发生错误 {},请检查后台输出。".format(e))
@@ -750,9 +753,9 @@ async def get_info(bot: Bot, event: GroupMessageEvent):
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1])
                         await search.send(MessageSegment.image(im), at_sender=True)
                 except ActionFailed as e:
-                    await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                    await search.send("机器人发送消息失败：{}".format(e.info['wording']))
                     logger.exception("发送uid深渊信息失败")
-                except TypeError:
+                except (TypeError, IndexError):
                     await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                     logger.exception("深渊数据获取失败（Cookie失效/不公开信息）")
                 except Exception:
@@ -768,9 +771,9 @@ async def get_info(bot: Bot, event: GroupMessageEvent):
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1], "2")
                         await search.send(MessageSegment.image(im), at_sender=True)
                 except ActionFailed as e:
-                    await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                    await search.send("机器人发送消息失败：{}".format(e.info['wording']))
                     logger.exception("发送uid上期深渊信息失败")
-                except TypeError:
+                except (TypeError, IndexError):
                     await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                     logger.exception("上期深渊数据获取失败（Cookie失效/不公开信息）")
                 except Exception as e:
@@ -781,9 +784,9 @@ async def get_info(bot: Bot, event: GroupMessageEvent):
                     im = await draw_word_cloud(uid[0], image, uid[1])
                     await search.send(MessageSegment.image(im), at_sender=True)
                 except ActionFailed as e:
-                    await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                    await search.send("机器人发送消息失败：{}".format(e.info['wording']))
                     logger.exception("发送uid词云信息失败")
-                except TypeError:
+                except (TypeError, IndexError):
                     await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                     logger.exception("词云数据获取失败（Cookie失效/不公开信息）")
                 except Exception as e:
@@ -794,8 +797,11 @@ async def get_info(bot: Bot, event: GroupMessageEvent):
                     bg = await draw_pic(uid[0], nickname, image, uid[1])
                     await search.send(MessageSegment.image(bg), at_sender=True)
                 except ActionFailed as e:
-                    await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                    await search.send("机器人发送消息失败：{}".format(e.info['wording']))
                     logger.exception("发送uid信息失败")
+                except (TypeError, IndexError):
+                    await search.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
+                    logger.exception("uid数据获取失败（Cookie失效/不公开信息）")
                 except Exception as e:
                     await search.send("获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     logger.exception("数据获取失败（数据状态问题）")
@@ -827,9 +833,9 @@ async def send_mihoyo_bbs_info(event: MessageEvent):
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 3)
                     await get_mys_info.send(MessageSegment.image(im), at_sender=True)
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await get_mys_info.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送米游社深渊信息失败")
-            except TypeError:
+            except (TypeError, IndexError):
                 await get_mys_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                 logger.exception("深渊数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:
@@ -845,9 +851,9 @@ async def send_mihoyo_bbs_info(event: MessageEvent):
                     im = await draw_abyss0_pic(uid, event.sender.nickname, image, 3, "2")
                     await get_mys_info.send(MessageSegment.image(im), at_sender=True)
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await get_mys_info.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送uid上期深渊信息失败")
-            except TypeError:
+            except (TypeError, IndexError):
                 await get_mys_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                 logger.exception("上期深渊数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:
@@ -858,9 +864,9 @@ async def send_mihoyo_bbs_info(event: MessageEvent):
                 im = await draw_pic(uid, event.sender.nickname, image, 3)
                 await get_mys_info.send(MessageSegment.image(im), at_sender=True)
             except ActionFailed as e:
-                await get_lots.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await get_mys_info.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送米游社信息失败")
-            except TypeError:
+            except (TypeError, IndexError):
                 await get_mys_info.send("获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                 logger.exception("米游社数据获取失败（Cookie失效/不公开信息）")
             except Exception as e:

@@ -413,7 +413,7 @@ async def open_switch_func(event: MessageEvent):
                 if at and qid in superusers:
                     qid = at.group(1)
                 elif at and at.group(1) != qid:
-                    await close_switch.send("你没有权限。", at_sender=True)
+                    await open_switch.send("你没有权限。", at_sender=True)
                     return
                 else:
                     pass
@@ -429,7 +429,7 @@ async def open_switch_func(event: MessageEvent):
                 if at and qid in superusers:
                     qid = at.group(1)
                 elif at and at.group(1) != qid:
-                    await close_switch.send("你没有权限。", at_sender=True)
+                    await open_switch.send("你没有权限。", at_sender=True)
                     return
                 else:
                     pass
@@ -508,13 +508,13 @@ async def close_switch_func(event: MessageEvent):
                 else:
                     return
             except ActionFailed as e:
-                await open_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
+                await close_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
                 logger.exception("发送设置成功信息失败")
             except Exception as e:
-                await open_switch.send("发生错误 {},请检查后台输出。".format(e))
+                await close_switch.send("发生错误 {},请检查后台输出。".format(e))
                 logger.exception("设置简洁签到报告失败")
     except ActionFailed as e:
-        await open_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
+        await close_switch.send("机器人发送消息失败：{}".format(e.info['wording']))
         logger.exception("发送开启自动签到信息失败")
     except Exception as e:
         await close_switch.send("发生错误 {},请检查后台输出。".format(e))

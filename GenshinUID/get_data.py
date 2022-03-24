@@ -725,7 +725,30 @@ def get_character(uid, character_ids, ck, server_id="cn_gf01"):
         logger.info("深渊信息读取老Api失败！")
         logger.info(e.with_traceback)
 
-
+async def get_calculate_info(uid, char_id, ck, server_id="cn_gf01"):
+    if uid[0] == '5':
+        server_id = "cn_qd01"
+    url = "https://api-takumi.mihoyo.com/event/e20200928calculate/v1/sync/avatar/detail"
+    async with AsyncClient() as client:
+        req = await client.get(
+            url=url,
+            headers = {
+                    'DS': get_ds_token("uid={}&avatar_id={}&region={}".format(uid, char_id, server_id)),
+                    'x-rpc-app_version': mhyVersion,
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'x-rpc-client_type': '5',
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    "Cookie": ck},
+            params = {
+                "avatar_id": char_id,
+                "uid": uid,
+                "region": server_id
+            }
+        )
+    data = json.loads(req.text)
+    return data
+    
 async def get_mihoyo_bbs_info(mysid, ck):
     try:
         async with AsyncClient() as client:

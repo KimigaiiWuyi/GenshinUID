@@ -1,16 +1,17 @@
+import json
+import asyncio
+from typing import Optional, Union, Any
+import os,time
 import math
-import os
-import random
 import threading
-import time
 from base64 import b64encode
 from io import BytesIO
 from re import findall
 
 import numpy as np
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from bs4 import BeautifulSoup
 from httpx import get
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from wordcloud import WordCloud
 
 from .get_data import *
@@ -20,23 +21,140 @@ FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
 CHAR_PATH = os.path.join(FILE2_PATH, 'chars')
 CHAR_DONE_PATH = os.path.join(FILE2_PATH, 'char_done')
 CHAR_IMG_PATH = os.path.join(FILE2_PATH, 'char_img')
+CHAR_NAMECARD_PATH = os.path.join(FILE2_PATH, 'char_namecard')
 REL_PATH = os.path.join(FILE2_PATH, 'reliquaries')
 CHAR_WEAPON_PATH = os.path.join(FILE2_PATH, 'char_weapon')
 TEXT_PATH = os.path.join(FILE2_PATH, 'texture2d')
 WEAPON_PATH = os.path.join(FILE2_PATH, 'weapon')
 BG_PATH = os.path.join(FILE2_PATH, 'bg')
 
+class customize_image:
+    def __init__(self,image: str,based_w: int,based_h: int) -> None:
+        
+        self.bg_img = self.get_image(image,based_w,based_h)
+        self.bg_color = self.get_bg_color(self.bg_img)
+        self.text_color = self.get_text_color(self.bg_color)
+        self.highlight_color = self.get_highlight_color(self.bg_color)
+        self.char_color = self.get_char_color(self.bg_color)
+        self.bg_detail_color = self.get_bg_detail_color(self.bg_color)
+        self.char_high_color = self.get_char_high_color(self.bg_color)
 
-def genshin_font(size):
+    def get_image(self,image: str,based_w: int,based_h: int) -> Image:
+        # 获取背景图片
+        bg2_path = os.path.join(BG_PATH, random.choice([x for x in os.listdir(BG_PATH)
+                                                        if os.path.isfile(os.path.join(BG_PATH, x))]))
+
+        if image:
+            image_data = image.group(2)
+            edit_bg = Image.open(BytesIO(get(image_data).content))
+        else:
+            edit_bg = Image.open(bg2_path)
+
+        # 确定图片的长宽
+        based_scale = '%.3f' % (based_w / based_h)
+
+        w, h = edit_bg.size
+        scale_f = '%.3f' % (w / h)
+        new_w = math.ceil(based_h * float(scale_f))
+        new_h = math.ceil(based_w / float(scale_f))
+        if scale_f > based_scale:
+            bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
+        else:
+            bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
+        bg_img = bg_img2.crop((0, 0, based_w, based_h))
+
+        return bg_img
+
+    def get_bg_color(self,edit_bg:Image) -> tuple[int, int, int]:
+        # 获取背景主色
+        color = 8
+        q = edit_bg.quantize(colors=color, method=2)
+        bg_color = None
+        based_light = 195
+        temp = 9999
+        for i in range(0, color):
+            bg = tuple(q.getpalette()[i * 3:(i * 3) + 3])
+            light_value = bg[0] * 0.3 + bg[1] * 0.6 + bg[2] * 0.1
+            if abs(light_value - based_light) < temp:
+                bg_color = bg
+                temp = abs(light_value - based_light)
+            #if max(*bg) < 240 and min(*bg) > 20:
+            #    bg_color = bg
+        return bg_color
+
+    def get_text_color(self,bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+        # 通过背景主色（bg_color）确定文字主色
+        r = 125
+        if max(*bg_color) > 255 - r:
+            r *= -1
+        text_color = (math.floor(bg_color[0] + r if bg_color[0] + r <= 255 else 255),
+                    math.floor(bg_color[1] + r if bg_color[1] + r <= 255 else 255),
+                    math.floor(bg_color[2] + r if bg_color[2] + r <= 255 else 255))
+        return text_color
+
+    def get_char_color(self,bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+        r = 140
+        if max(*bg_color) > 255 - r:
+            r *= -1
+        char_color = (math.floor(bg_color[0] + 5 if bg_color[0] + r <= 255 else 255),
+                    math.floor(bg_color[1] + 5 if bg_color[1] + r <= 255 else 255),
+                    math.floor(bg_color[2] + 5 if bg_color[2] + r <= 255 else 255))
+        return char_color
+    
+    def get_char_high_color(self,bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+        r = 140
+        d = 20
+        if max(*bg_color) > 255 - r:
+            r *= -1
+        char_color = (math.floor(bg_color[0] + d if bg_color[0] + r <= 255 else 255),
+                    math.floor(bg_color[1] + d if bg_color[1] + r <= 255 else 255),
+                    math.floor(bg_color[2] + d if bg_color[2] + r <= 255 else 255))
+        return char_color
+    
+    def get_bg_detail_color(self,bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+        r = 140
+        if max(*bg_color) > 255 - r:
+            r *= -1
+        bg_detail_color = (math.floor(bg_color[0] - 20 if bg_color[0] + r <= 255 else 255),
+                    math.floor(bg_color[1] - 20 if bg_color[1] + r <= 255 else 255),
+                    math.floor(bg_color[2] - 20 if bg_color[2] + r <= 255 else 255))
+        return bg_detail_color
+
+    def get_highlight_color(self,color: tuple[int, int, int]) -> tuple[int, int, int]:
+        red_color = color[0]
+        green_color = color[1]
+        blue_color = color[2]
+
+        highlight_color = {}
+        highlight_color["red"] = red_color - 127 if red_color > 127 else 127
+        highlight_color["green"] = green_color - 127 if green_color > 127 else 127
+        highlight_color["blue"] = blue_color - 127 if blue_color > 127 else 127
+
+        max_color = max(highlight_color.values())
+
+        for _highlight_color in highlight_color:
+            if highlight_color[_highlight_color] == max_color:
+                name = str(_highlight_color)
+        
+        if name == "red":
+            return red_color, highlight_color["green"], highlight_color["blue"]
+        elif name == "green":
+            return highlight_color["red"], green_color, highlight_color["blue"]
+        elif name == "blue":
+            return highlight_color["red"], highlight_color["green"], blue_color
+        else:
+            return 0, 0, 0  # Error
+
+def genshin_font(size: int):
     return ImageFont.truetype(os.path.join(FILE2_PATH, "yuanshen.ttf"), size=size)
 
 
-def get_char_pic(_id, url):
+def get_char_pic(_id: str, url: str):
     with open(os.path.join(CHAR_PATH, f'{_id}.png'), 'wb') as f:
         f.write(get(url).content)
 
 
-def get_char_done_pic(_id, url, star):
+def get_char_done_pic(_id: str, url: str, star: int):
     char_data = get(url).content
     if star == 4:
         star1_path = os.path.join(TEXT_PATH, '4star_1.png')
@@ -52,22 +170,109 @@ def get_char_done_pic(_id, url, star):
     star_1.save(os.path.join(CHAR_DONE_PATH, str(_id) + '.png'))
 
 
-def get_weapon_pic(url):
+def get_weapon_pic(url: str):
     with open(os.path.join(WEAPON_PATH, url.split('/')[-1]), 'wb') as f:
         f.write(get(url).content)
 
 
-def get_char_img_pic(url):
+def get_char_img_pic(url: str):
     with open(os.path.join(CHAR_IMG_PATH, url.split('/')[-1]), 'wb') as f:
         f.write(get(url).content)
 
 
-def get_rel_pic(url):
+def get_rel_pic(url: str):
     with open(os.path.join(REL_PATH, url.split('/')[-1]), 'wb') as f:
         f.write(get(url).content)
 
+class get_cookies:
+    def __init__(self) -> None:
+        self.useable_cookies: Optional[str] = None
+        self.uid: Optional[str] = None
+        self.mode: Optional[int] = None
+        self.raw_abyss_data: Optional[json] = None
+        self.raw_data: Optional[json] = None
+        self.nickname: Optional[int] = None
+        self.schedule_type: Optional[str] = None
 
-async def draw_word_cloud(uid, image=None, mode=2):
+    async def get_useable_cookies(self, uid: str, mode: int = 2,schedule_type: str = "1"):
+        self.uid = uid
+        self.schedule_type = schedule_type
+        while True:
+            self.useable_cookies = cache_db(uid, mode - 1)
+            if self.useable_cookies == '':
+                return "绑定记录不存在。"
+            elif self.useable_cookies == "没有可以使用的Cookies！":
+                return "没有可以使用的Cookies！"
+            if mode == 3:
+                await self.get_mihoyo_bbs_data()
+            else:
+                await self.get_uid_data()
+
+            msg = await self.check_cookies_useable()
+            if isinstance(msg, str):
+                return msg
+            elif isinstance(msg, bool):
+                if msg:
+                    return True
+
+    async def get_mihoyo_bbs_data(self):
+        mys_data = await get_mihoyo_bbs_info(self.uid, self.useable_cookies)
+        for i in mys_data['data']['list']:
+            if i['game_id'] != 2:
+                mys_data['data']['list'].remove(i)
+        self.uid = mys_data['data']['list'][0]['game_role_id']
+        self.nickname = mys_data['data']['list'][0]['nickname']
+        self.raw_data = await get_info(self.uid, self.useable_cookies)
+        self.raw_abyss_data = await get_spiral_abyss_info(self.uid, self.useable_cookies, self.schedule_type)
+    
+    async def get_uid_data(self):
+        self.raw_abyss_data = await get_spiral_abyss_info(self.uid, self.useable_cookies, self.schedule_type)
+        self.raw_data = await get_info(self.uid, self.useable_cookies)
+    
+    async def check_cookies_useable(self):
+        if self.raw_data:
+            if self.raw_data["retcode"] != 0:
+                if self.raw_data["retcode"] == 10001:
+                    error_db(self.useable_cookies, "error")
+                    return False
+                elif self.raw_data["retcode"] == 10101:
+                    error_db(self.useable_cookies, "limit30")
+                    return False
+                elif self.raw_data["retcode"] == 10102:
+                    return "当前查询id已经设置了隐私，无法查询！"
+                else:
+                    return (
+                            "Api报错，返回内容为：\r\n"
+                            + str(self.raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
+                    )
+            else:
+                return True
+        else:
+            return "没有可以使用的Cookies！"
+
+async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
+    def create_rounded_rectangle_mask(rectangle, radius):
+        solid_fill = (50, 50, 50, 255)
+        i = Image.new("RGBA", rectangle.size, (0, 0, 0, 0))
+
+        corner = Image.new('RGBA', (radius, radius), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(corner)
+        draw.pieslice(((0, 0), (radius * 2, radius * 2)), 180, 270, fill=solid_fill)
+
+        mx, my = rectangle.size
+
+        i.paste(corner, (0, 0), corner)
+        i.paste(corner.rotate(90), (0, my - radius), corner.rotate(90))
+        i.paste(corner.rotate(180), (mx - radius, my - radius), corner.rotate(180))
+        i.paste(corner.rotate(270), (mx - radius, 0), corner.rotate(270))
+
+        draw = ImageDraw.Draw(i)
+        draw.rectangle(((radius, 0), (mx - radius, my)), fill=solid_fill)
+        draw.rectangle(((0, radius), (mx, my - radius)), fill=solid_fill)
+
+        return i
+
+    nickname = ''
     while True:
         use_cookies = cache_db(uid, mode - 1)
         if use_cookies == '':
@@ -300,7 +505,7 @@ async def draw_word_cloud(uid, image=None, mode=2):
 
     panle = Image.open(os.path.join(TEXT_PATH, 'wordcloud_0.png'))
 
-    mask = np.array(Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png')))
+    mask = np.array([Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png'))])
 
     wc = WordCloud(
         font_path=os.path.join(FILE2_PATH, "yuanshen.ttf"),
@@ -328,137 +533,57 @@ async def draw_word_cloud(uid, image=None, mode=2):
     resultmes = imgmes
     return resultmes
 
-
-def similar_color_func(random_state=None):
-    # word=None, font_size=None, position=None, orientation=None, font_path=None
-    h = 40  # 0 - 360
-    s = 100  # 0 - 100
-    random_list_index = random_state.randint(30, 70)  # 0 - 100
-    return "hsl({}, {}%, {}%)".format(h, s, random_list_index)
-
-
-def multi_color_func(random_state=None):
-    # word=None, font_size=None, position=None, orientation=None, font_path=None
-    colors = [[4, 77, 82],
-              [25, 74, 85],
-              [82, 43, 84],
-              [158, 48, 79]]
-    rand = random_state.randint(0, len(colors) - 1)
-    return "hsl({}, {}%, {}%)".format(colors[rand][0], colors[rand][1], colors[rand][2])
-
-
 async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
-    #获取Cookies
-    while True:
-        use_cookies = cache_db(uid,mode-1)
-        if use_cookies == '':
-            return "绑定记录不存在。"
-        elif use_cookies == "没有可以使用的Cookies！":
-            return "没有可以使用的Cookies！"
+    # 获取Cookies
+    data_def = get_cookies()
+    retcode = await data_def.get_useable_cookies(uid, mode, date)
+    if retcode != True:
+        return retcode
+    raw_char_data = data_def.raw_data
+    raw_data = data_def.raw_abyss_data
+    uid = data_def.uid
+    nickname = data_def.nickname if data_def.nickname else nickname
 
-        if mode == 3:
-            mys_data = await get_mihoyo_bbs_info(uid,use_cookies)
-            for i in mys_data['data']['list']:
-                if i['game_id'] != 2:
-                    mys_data['data']['list'].remove(i)
-            uid = mys_data['data']['list'][0]['game_role_id']
-            nickname = mys_data['data']['list'][0]['nickname']
-
-        raw_data = await get_spiral_abyss_info(uid,use_cookies,date)
-        raw_char_data = await get_info(uid,use_cookies)
-
-        if raw_data["retcode"] != 0:
-            if raw_data["retcode"] == 10001:
-                #return ("Cookie错误/过期，请重置Cookie")
-                error_db(use_cookies,"error")
-            elif raw_data["retcode"] == 10101:
-                #return ("当前cookies已达到30人上限！")
-                error_db(use_cookies,"limit30")
-            elif raw_data["retcode"] == 10102:
-                return ("当前查询id已经设置了隐私，无法查询！")
-            else:
-                return (
-                    "Api报错，返回内容为：\r\n"
-                    + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-                )
-        else:
-            break
-    
-    #获取数据
+    # 获取数据
     raw_data = raw_data["data"]
     raw_char_data = raw_char_data['data']["avatars"]
 
-    #获取查询者数据
+    # 获取查询者数据
     floors_data = raw_data['floors'][-1]
     levels_num = len(floors_data['levels'])
-
-    #获取背景图片
-    bg2_path = os.path.join(BG_PATH,random.choice([x for x in os.listdir(BG_PATH)
-               if os.path.isfile(os.path.join(BG_PATH, x))]))
     
-    if image:
-        image_data = image.group(2)
-        edit_bg = Image.open(BytesIO(get(image_data).content))
-    else:
-        edit_bg = Image.open(bg2_path)
-    
-    #确定图片的长宽
+    # 获取背景图片各项参数
     based_w = 900
-    based_h = 660+levels_num*315
-    based_scale = '%.3f' % (based_w/based_h)
+    based_h = 660 + levels_num * 315
+    image_def = customize_image(image,based_w,based_h)
+    bg_img = image_def.bg_img
+    bg_color = image_def.bg_color
+    text_color = image_def.text_color
+    highlight_color = image_def.highlight_color
 
-    w, h = edit_bg.size
-    scale_f = '%.3f' % (w / h)
-    new_w = math.ceil(based_h*float(scale_f))
-    new_h = math.ceil(based_w/float(scale_f))
-    if scale_f > based_scale:
-        bg_img2 = edit_bg.resize((new_w, based_h),Image.ANTIALIAS)
-    else:
-        bg_img2 = edit_bg.resize((based_w, new_h),Image.ANTIALIAS)
+    # 确定贴图路径
+    abyss0_path = os.path.join(TEXT_PATH, "abyss_0.png")
+    abyss3_path = os.path.join(TEXT_PATH, "abyss_3.png")
+    abyss_star0_path = os.path.join(TEXT_PATH, "abyss_star0.png")
+    abyss_star1_path = os.path.join(TEXT_PATH, "abyss_star1.png")
+    avatar_bg_path = os.path.join(TEXT_PATH, "avatar_bg.png")
+    avatar_fg_path = os.path.join(TEXT_PATH, "avatar_fg.png")
 
-    bg_img = bg_img2.crop((0, 0, based_w, based_h))
+    all_mask_path = os.path.join(TEXT_PATH, "All_Mask.png")
 
-    #获取背景主色
-    q = edit_bg.quantize(colors=3,method=2)
-    bg_num_temp = 0
-    for i in range(0,3):
-        bg = tuple(q.getpalette()[i*3:(i*3)+3])
-        bg_num = bg[0] + bg[1] + bg[2]
-        if bg_num >= bg_num_temp:
-            bg_num_temp = bg_num
-            bg_color = (bg[0],bg[1],bg[2])
-    
-    #通过背景主色（bg_color）确定文字主色
-    r =  140
-    if max(*bg_color) > 255 - r:
-        r *= -1
-    new_color = (math.floor(bg_color[0] + r if bg_color[0] + r <= 255 else 255),
-                 math.floor(bg_color[1] + r if bg_color[1] + r <= 255 else 255), 
-                 math.floor(bg_color[2] + r if bg_color[2] + r <= 255 else 255))
+    # 转换遮罩的颜色、大小匹配，并paste上去
+    all_mask = Image.open(all_mask_path).resize(bg_img.size, Image.ANTIALIAS)
+    all_mask_img = Image.new("RGBA", (based_w, based_h), bg_color)
+    bg_img.paste(all_mask_img, (0, 0), all_mask)
 
-    #确定贴图路径
-    abyss0_path = os.path.join(TEXT_PATH,"abyss_0.png")
-    abyss3_path = os.path.join(TEXT_PATH,"abyss_3.png")
-    abyss_star0_path = os.path.join(TEXT_PATH,"abyss_star0.png")
-    abyss_star1_path = os.path.join(TEXT_PATH,"abyss_star1.png")
-    avatar_bg_path = os.path.join(TEXT_PATH,"avatar_bg.png")
-    avatar_fg_path = os.path.join(TEXT_PATH,"avatar_fg.png")
-
-    all_mask_path = os.path.join(TEXT_PATH,"All_Mask.png")
-
-    #转换遮罩的颜色、大小匹配，并paste上去
-    all_mask = Image.open(all_mask_path).resize(bg_img.size,Image.ANTIALIAS)
-    all_mask_img = Image.new("RGBA",(based_w,based_h),bg_color)
-    bg_img.paste(all_mask_img,(0,0),all_mask)
-
-    #开启图片
+    # 开启图片
     avatar_bg = Image.open(avatar_bg_path)
     avatar_fg = Image.open(avatar_fg_path)
 
-    #确定主体框架
-    avatar_bg_color = Image.new("RGBA",(316,100),bg_color)
-    bg_img.paste(avatar_bg_color,(113,98),avatar_bg)
-    bg_img.paste(avatar_fg,(114,95),avatar_fg)
+    # 确定主体框架
+    avatar_bg_color = Image.new("RGBA", (316, 100), bg_color)
+    bg_img.paste(avatar_bg_color, (113, 98), avatar_bg)
+    bg_img.paste(avatar_fg, (114, 95), avatar_fg)
 
     """
     x1, y1 = 65, 276
@@ -474,323 +599,277 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
         bg_img.paste(blurred_img2, (x2, y2), create_rounded_rectangle_mask(cropped_img2,radius))
     """
 
-    abyss0_bg_color = Image.new("RGBA",(900,620),new_color)
-    abyss0 = Image.new("RGBA",(900,620),(0, 0, 0, 0))
+    abyss0_bg_color = Image.new("RGBA", (900, 620), text_color)
+    abyss0 = Image.new("RGBA", (900, 620), (0, 0, 0, 0))
 
     abyss0_pic = Image.open(abyss0_path)
-    abyss0.paste(abyss0_bg_color,(0,0),abyss0_pic)
+    abyss0.paste(abyss0_bg_color, (0, 0), abyss0_pic)
     abyss3 = Image.open(abyss3_path)
     abyss_star0 = Image.open(abyss_star0_path)
     abyss_star1 = Image.open(abyss_star1_path)
 
-    for i in range(0,4):
-        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["reveal_rank"][i]["avatar_id"]) + ".png")):
-            get_char_done_pic(raw_data["reveal_rank"][i]["avatar_id"],raw_data["reveal_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
-        char = os.path.join(CHAR_DONE_PATH,str(raw_data["reveal_rank"][i]["avatar_id"]) + ".png")
+    for i in range(0, 4):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(raw_data["reveal_rank"][i]["avatar_id"]) + ".png")):
+            get_char_done_pic(raw_data["reveal_rank"][i]["avatar_id"], raw_data["reveal_rank"][i]["avatar_icon"],
+                              raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH, str(raw_data["reveal_rank"][i]["avatar_id"]) + ".png")
         char_img = Image.open(char)
         char_draw = ImageDraw.Draw(char_img)
         for k in raw_char_data:
             if k['id'] == raw_data["reveal_rank"][i]["avatar_id"]:
-                char_draw.text((63.5,117),f'{str(raw_data["reveal_rank"][i]["value"])}次',(21,21,21),genshin_font(18), anchor="mm")
-                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                char_draw.text((63.5, 117), f'{str(raw_data["reveal_rank"][i]["value"])}次', (21, 21, 21),
+                               genshin_font(18), anchor="mm")
+                char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                 if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                    char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                    char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                 else:
-                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-        char_crop = (82 + 130*i,300)
-        abyss0.paste(char_img,char_crop,char_img)
-    
-    for i in range(0,1):
-        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["damage_rank"][i]["avatar_id"]) + ".png")):
-            get_char_done_pic(raw_data["damage_rank"][i]["avatar_id"],raw_data["damage_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
-        char = os.path.join(CHAR_DONE_PATH,str(raw_data["damage_rank"][i]["avatar_id"]) + ".png")
+                    char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+        char_crop = (82 + 130 * i, 300)
+        abyss0.paste(char_img, char_crop, char_img)
+
+    for i in range(0, 1):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(raw_data["damage_rank"][i]["avatar_id"]) + ".png")):
+            get_char_done_pic(raw_data["damage_rank"][i]["avatar_id"], raw_data["damage_rank"][i]["avatar_icon"],
+                              raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH, str(raw_data["damage_rank"][i]["avatar_id"]) + ".png")
         char_img = Image.open(char)
         char_draw = ImageDraw.Draw(char_img)
         for k in raw_char_data:
             if k['id'] == raw_data["damage_rank"][i]["avatar_id"]:
-                char_draw.text((63.5,117),f'{str(raw_data["damage_rank"][i]["value"])}',(21,21,21),genshin_font(18), anchor="mm")
-                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                char_draw.text((63.5, 117), f'{str(raw_data["damage_rank"][i]["value"])}', (21, 21, 21),
+                               genshin_font(18), anchor="mm")
+                char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                 if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                    char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                    char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                 else:
-                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-        char_crop = (685,470)
-        abyss0.paste(char_img,char_crop,char_img)
+                    char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+        char_crop = (685, 470)
+        abyss0.paste(char_img, char_crop, char_img)
 
-    for i in range(0,1):
-        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")):
-            get_char_done_pic(raw_data["defeat_rank"][i]["avatar_id"],raw_data["defeat_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
-        char = os.path.join(CHAR_DONE_PATH,str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")
+    for i in range(0, 1):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")):
+            get_char_done_pic(raw_data["defeat_rank"][i]["avatar_id"], raw_data["defeat_rank"][i]["avatar_icon"],
+                              raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH, str(raw_data["defeat_rank"][i]["avatar_id"]) + ".png")
         char_img = Image.open(char)
         char_draw = ImageDraw.Draw(char_img)
         for k in raw_char_data:
             if k['id'] == raw_data["defeat_rank"][i]["avatar_id"]:
-                char_draw.text((63.5,117),f'{str(raw_data["defeat_rank"][i]["value"])}',(21,21,21),genshin_font(18), anchor="mm")
-                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                char_draw.text((63.5, 117), f'{str(raw_data["defeat_rank"][i]["value"])}', (21, 21, 21),
+                               genshin_font(18), anchor="mm")
+                char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                 if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                    char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                    char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                 else:
-                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-        char_crop = (82 + 123*i,470)
-        abyss0.paste(char_img,char_crop,char_img)
+                    char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+        char_crop = (82 + 123 * i, 470)
+        abyss0.paste(char_img, char_crop, char_img)
 
-    for i in range(0,1):
-        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")):
-            get_char_done_pic(raw_data["take_damage_rank"][i]["avatar_id"],raw_data["take_damage_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
-        char = os.path.join(CHAR_DONE_PATH,str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")
+    for i in range(0, 1):
+        if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")):
+            get_char_done_pic(raw_data["take_damage_rank"][i]["avatar_id"],
+                              raw_data["take_damage_rank"][i]["avatar_icon"], raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH, str(raw_data["take_damage_rank"][i]["avatar_id"]) + ".png")
         char_img = Image.open(char)
         char_draw = ImageDraw.Draw(char_img)
         for k in raw_char_data:
             if k['id'] == raw_data["take_damage_rank"][i]["avatar_id"]:
-                char_draw.text((63.5,117),f'{str(raw_data["take_damage_rank"][i]["value"])}',(21,21,21),genshin_font(18), anchor="mm")
-                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                char_draw.text((63.5, 117), f'{str(raw_data["take_damage_rank"][i]["value"])}', (21, 21, 21),
+                               genshin_font(18), anchor="mm")
+                char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                 if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                    char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                    char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                 else:
-                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-        char_crop = (232 + 123*i,470)
-        abyss0.paste(char_img,char_crop,char_img)
+                    char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+        char_crop = (232 + 123 * i, 470)
+        abyss0.paste(char_img, char_crop, char_img)
 
-    for i in range(0,1):
-        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")):
-            get_char_done_pic(raw_data["normal_skill_rank"][i]["avatar_id"],raw_data["normal_skill_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
-        char = os.path.join(CHAR_DONE_PATH,str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")
+    for i in range(0, 1):
+        if not os.path.exists(
+                os.path.join(CHAR_DONE_PATH, str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")):
+            get_char_done_pic(raw_data["normal_skill_rank"][i]["avatar_id"],
+                              raw_data["normal_skill_rank"][i]["avatar_icon"], raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH, str(raw_data["normal_skill_rank"][i]["avatar_id"]) + ".png")
         char_img = Image.open(char)
         char_draw = ImageDraw.Draw(char_img)
         for k in raw_char_data:
             if k['id'] == raw_data["normal_skill_rank"][i]["avatar_id"]:
-                char_draw.text((63.5,117),f'{str(raw_data["normal_skill_rank"][i]["value"])}',(21,21,21),genshin_font(18), anchor="mm")
-                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                char_draw.text((63.5, 117), f'{str(raw_data["normal_skill_rank"][i]["value"])}', (21, 21, 21),
+                               genshin_font(18), anchor="mm")
+                char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                 if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                    char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                    char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                 else:
-                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-        char_crop = (382 + 123*i,470)
-        abyss0.paste(char_img,char_crop,char_img)
+                    char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+        char_crop = (382 + 123 * i, 470)
+        abyss0.paste(char_img, char_crop, char_img)
 
-    for i in range(0,1):
-        if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")):
-            get_char_done_pic(raw_data["energy_skill_rank"][i]["avatar_id"],raw_data["energy_skill_rank"][i]["avatar_icon"],raw_data["reveal_rank"][i]["rarity"])
-        char = os.path.join(CHAR_DONE_PATH,str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")
+    for i in range(0, 1):
+        if not os.path.exists(
+                os.path.join(CHAR_DONE_PATH, str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")):
+            get_char_done_pic(raw_data["energy_skill_rank"][i]["avatar_id"],
+                              raw_data["energy_skill_rank"][i]["avatar_icon"], raw_data["reveal_rank"][i]["rarity"])
+        char = os.path.join(CHAR_DONE_PATH, str(raw_data["energy_skill_rank"][i]["avatar_id"]) + ".png")
         char_img = Image.open(char)
         char_draw = ImageDraw.Draw(char_img)
         for k in raw_char_data:
             if k['id'] == raw_data["energy_skill_rank"][i]["avatar_id"]:
-                char_draw.text((63.5,118),f'{str(raw_data["energy_skill_rank"][i]["value"])}',(21,21,21),genshin_font(18), anchor="mm")
-                char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                char_draw.text((63.5, 118), f'{str(raw_data["energy_skill_rank"][i]["value"])}', (21, 21, 21),
+                               genshin_font(18), anchor="mm")
+                char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                 if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                    char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                    char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                 else:
-                    char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-        char_crop = (532 + 123*i,470)
-        abyss0.paste(char_img,char_crop,char_img)
+                    char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+        char_crop = (532 + 123 * i, 470)
+        abyss0.paste(char_img, char_crop, char_img)
 
-    bg_img.paste(abyss0,(0,0),abyss0)
+    bg_img.paste(abyss0, (0, 0), abyss0)
 
-    for j in range(0,len(floors_data["levels"])):
+    for j in range(0, len(floors_data["levels"])):
         abyss2 = Image.new("RGBA", (900, 340), (0, 0, 0, 0))
-        #abyss2 = Image.open(abyss2_path)
+        # abyss2 = Image.open(abyss2_path)
         num_1 = 0
         for i in floors_data['levels'][j]['battles'][0]['avatars']:
-            if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
-                get_char_done_pic(i['id'],i['icon'],i['rarity'])
-            char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
+            if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")):
+                get_char_done_pic(i['id'], i['icon'], i['rarity'])
+            char = os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")
             char_img = Image.open(char)
             char_draw = ImageDraw.Draw(char_img)
             for k in raw_char_data:
                 if k['id'] == i['id']:
-                    char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),genshin_font(18))
-                    char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                    char_draw.text((40, 108), f'Lv.{str(k["level"])}', (21, 21, 21), genshin_font(18))
+                    char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                     if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                        char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                        char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                     else:
-                        char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-            char_crop = (70 + 125*(num_1%4),46)
-            abyss2.paste(char_img,char_crop,char_img)
+                        char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+            char_crop = (70 + 125 * (num_1 % 4), 46)
+            abyss2.paste(char_img, char_crop, char_img)
             num_1 = num_1 + 1
         num_2 = 0
         for i in floors_data['levels'][j]['battles'][1]['avatars']:
-            if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
-                get_char_done_pic(i['id'],i['icon'],i['rarity'])
-            char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
+            if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")):
+                get_char_done_pic(i['id'], i['icon'], i['rarity'])
+            char = os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")
             char_img = Image.open(char)
             char_draw = ImageDraw.Draw(char_img)
             for k in raw_char_data:
                 if k['id'] == i['id']:
-                    char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),genshin_font(18))
-                    char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                    char_draw.text((40, 108), f'Lv.{str(k["level"])}', (21, 21, 21), genshin_font(18))
+                    char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                     if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                        char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                        char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                     else:
-                        char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-            char_crop = (70 + 125*(num_2%4),180)
-            abyss2.paste(char_img,char_crop,char_img)
+                        char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+            char_crop = (70 + 125 * (num_2 % 4), 180)
+            abyss2.paste(char_img, char_crop, char_img)
             num_2 = num_2 + 1
         star_num = floors_data['levels'][j]['star']
         if star_num == 1:
-            abyss2.paste(abyss_star1,(640,155),abyss_star1)
-            abyss2.paste(abyss_star0,(685,155),abyss_star0)
-            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+            abyss2.paste(abyss_star1, (640, 155), abyss_star1)
+            abyss2.paste(abyss_star0, (685, 155), abyss_star0)
+            abyss2.paste(abyss_star0, (730, 155), abyss_star0)
         elif star_num == 0:
-            abyss2.paste(abyss_star0,(640,155),abyss_star0)
-            abyss2.paste(abyss_star0,(685,155),abyss_star0)
-            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+            abyss2.paste(abyss_star0, (640, 155), abyss_star0)
+            abyss2.paste(abyss_star0, (685, 155), abyss_star0)
+            abyss2.paste(abyss_star0, (730, 155), abyss_star0)
         elif star_num == 2:
-            abyss2.paste(abyss_star1,(640,155),abyss_star1)
-            abyss2.paste(abyss_star1,(685,155),abyss_star1)
-            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+            abyss2.paste(abyss_star1, (640, 155), abyss_star1)
+            abyss2.paste(abyss_star1, (685, 155), abyss_star1)
+            abyss2.paste(abyss_star0, (730, 155), abyss_star0)
         else:
-            abyss2.paste(abyss_star1,(640,155),abyss_star1)
-            abyss2.paste(abyss_star1,(685,155),abyss_star1)
-            abyss2.paste(abyss_star1,(730,155),abyss_star1)
+            abyss2.paste(abyss_star1, (640, 155), abyss_star1)
+            abyss2.paste(abyss_star1, (685, 155), abyss_star1)
+            abyss2.paste(abyss_star1, (730, 155), abyss_star1)
         abyss2_text_draw = ImageDraw.Draw(abyss2)
-        abyss2_text_draw.text((87,30),f"第{j+1}间", new_color, genshin_font(21))
+        abyss2_text_draw.text((87, 30), f"第{j + 1}间", text_color, genshin_font(21))
         timeStamp1 = int(floors_data['levels'][j]['battles'][0]['timestamp'])
         timeStamp2 = int(floors_data['levels'][j]['battles'][1]['timestamp'])
         timeArray1 = time.localtime(timeStamp1)
         timeArray2 = time.localtime(timeStamp2)
         otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
         otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
-        abyss2_text_draw.text((167,33), f"{otherStyleTime1}/{otherStyleTime2}", new_color, genshin_font(19))
-        bg_img.paste(abyss2,(0,605+j*315),abyss2)
-    
-    bg_img.paste(abyss3,(0,len(floors_data["levels"])*315+610),abyss3)
- 
-    text_draw = ImageDraw.Draw(bg_img)
-    text_draw.text((220,123), f"{nickname}", new_color, genshin_font(32))
-    text_draw.text((235, 163), 'UID ' + f"{uid}", new_color, genshin_font(14))
+        abyss2_text_draw.text((167, 33), f"{otherStyleTime1}/{otherStyleTime2}", text_color, genshin_font(19))
+        bg_img.paste(abyss2, (0, 605 + j * 315), abyss2)
 
-    text_draw.text((690, 82),raw_data['max_floor'], new_color, genshin_font(26))
-    text_draw.text((690, 127),str(raw_data['total_battle_times']), new_color, genshin_font(26))
-    text_draw.text((690, 172),str(raw_data['total_star']), new_color, genshin_font(26))
+    bg_img.paste(abyss3, (0, len(floors_data["levels"]) * 315 + 610), abyss3)
+
+    text_draw = ImageDraw.Draw(bg_img)
+    text_draw.text((220, 123), f"{nickname}", text_color, genshin_font(32))
+    text_draw.text((235, 163), 'UID ' + f"{uid}", text_color, genshin_font(14))
+
+    text_draw.text((690, 82), raw_data['max_floor'], text_color, genshin_font(26))
+    text_draw.text((690, 127), str(raw_data['total_battle_times']), text_color, genshin_font(26))
+    text_draw.text((690, 172), str(raw_data['total_star']), text_color, genshin_font(26))
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    #bg_img.save(result_buffer, format='PNG')
+    # bg_img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    #resultmes = f"[CQ:image,file={imgmes}]"
+    # resultmes = f"[CQ:image,file={imgmes}]"
     resultmes = imgmes
     return resultmes
 
 
-async def draw_abyss_pic(uid, nickname, floor_num, image=None, mode=2, date="1"):
-    while True:
-        use_cookies = cache_db(uid, mode - 1)
-        if use_cookies == '':
-            return "绑定记录不存在。"
-        elif use_cookies == "没有可以使用的Cookies！":
-            return "没有可以使用的Cookies！"
+async def draw_abyss_pic(uid: str, nickname: str, floor_num : int, image: Optional[str] = None, mode: int = 2, date : str = "1"):
+    # 获取Cookies
+    data_def = get_cookies()
+    retcode = await data_def.get_useable_cookies(uid, mode, date)
+    if retcode != True:
+        return retcode
+    raw_char_data = data_def.raw_data
+    raw_data = data_def.raw_abyss_data
+    uid = data_def.uid
+    nickname = data_def.nickname if data_def.nickname else nickname
 
-        if mode == 3:
-            mys_data = await get_mihoyo_bbs_info(uid, use_cookies)
-            for i in mys_data['data']['list']:
-                if i['game_id'] != 2:
-                    mys_data['data']['list'].remove(i)
-            uid = mys_data['data']['list'][0]['game_role_id']
-            nickname = mys_data['data']['list'][0]['nickname']
-
-        raw_data = await get_spiral_abyss_info(uid, use_cookies, date)
-        raw_char_data = await get_info(uid, use_cookies)
-
-        if raw_data["retcode"] != 0:
-            if raw_data["retcode"] == 10001:
-                # return ("Cookie错误/过期，请重置Cookie")
-                error_db(use_cookies, "error")
-            elif raw_data["retcode"] == 10101:
-                # return ("当前cookies已达到30人上限！")
-                error_db(use_cookies, "limit30")
-            elif raw_data["retcode"] == 10102:
-                return "当前查询id已经设置了隐私，无法查询！"
-            else:
-                return (
-                        "Api报错，返回内容为：\r\n"
-                        + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-                )
-        else:
-            break
-
-    #获取数据
+    # 获取数据
     raw_data = raw_data["data"]
     raw_char_data = raw_char_data['data']["avatars"]
     floors_data = raw_data['floors']
-    based_data = []
+    based_data = {}
     for i in floors_data:
         if str(i['index']) == floor_num:
             based_data = i
     levels_num = len(based_data['levels'])
 
-    #获取背景图片
-    bg2_path = os.path.join(BG_PATH,random.choice([x for x in os.listdir(BG_PATH)
-               if os.path.isfile(os.path.join(BG_PATH, x))]))
-    
-    if image:
-        image_data = image.group(2)
-        edit_bg = Image.open(BytesIO(get(image_data).content))
-    else:
-        edit_bg = Image.open(bg2_path)
-    
-    #确定图片的长宽
+    # 获取背景图片各项参数
     based_w = 900
-    based_h = 440+levels_num*340
-    based_scale = '%.3f' % (based_w/based_h)
+    based_h = 440 + levels_num * 340
+    image_def = customize_image(image,based_w,based_h)
+    bg_img = image_def.bg_img
+    bg_color = image_def.bg_color
+    text_color = image_def.text_color
+    highlight_color = image_def.highlight_color
 
-    w, h = edit_bg.size
-    scale_f = '%.3f' % (w / h)
-    new_w = math.ceil(based_h*float(scale_f))
-    new_h = math.ceil(based_w/float(scale_f))
-    if scale_f > based_scale:
-        bg_img2 = edit_bg.resize((new_w, based_h),Image.ANTIALIAS)
-    else:
-        bg_img2 = edit_bg.resize((based_w, new_h),Image.ANTIALIAS)
-
-    bg_img = bg_img2.crop((0, 0, based_w, based_h))
-
-    #获取背景主色
-    q = edit_bg.quantize(colors=3,method=2)
-    bg_num_temp = 0
-    for i in range(0,3):
-        bg = tuple(q.getpalette()[i*3:(i*3)+3])
-        bg_num = bg[0] + bg[1] + bg[2]
-        if bg_num >= bg_num_temp:
-            bg_num_temp = bg_num
-            bg_color = (bg[0],bg[1],bg[2])
-    
-    #通过背景主色（bg_color）确定文字主色
-    r =  140
-    if max(*bg_color) > 255 - r:
-        r *= -1
-    new_color = (math.floor(bg_color[0] + r if bg_color[0] + r <= 255 else 255),
-                 math.floor(bg_color[1] + r if bg_color[1] + r <= 255 else 255), 
-                 math.floor(bg_color[2] + r if bg_color[2] + r <= 255 else 255))
-
-    #打开图片
-    abyss1_path = os.path.join(TEXT_PATH,"abyss_1.png")
-    abyss3_path = os.path.join(TEXT_PATH,"abyss_3.png")
-    abyss_star0_path = os.path.join(TEXT_PATH,"abyss_star0.png")
-    abyss_star1_path = os.path.join(TEXT_PATH,"abyss_star1.png")
+    # 打开图片
+    abyss1_path = os.path.join(TEXT_PATH, "abyss_1.png")
+    abyss3_path = os.path.join(TEXT_PATH, "abyss_3.png")
+    abyss_star0_path = os.path.join(TEXT_PATH, "abyss_star0.png")
+    abyss_star1_path = os.path.join(TEXT_PATH, "abyss_star1.png")
     abyss1 = Image.open(abyss1_path)
     abyss3 = Image.open(abyss3_path)
     abyss_star0 = Image.open(abyss_star0_path)
     abyss_star1 = Image.open(abyss_star1_path)
-    avatar_bg_path = os.path.join(TEXT_PATH,"avatar_bg.png")
-    avatar_fg_path = os.path.join(TEXT_PATH,"avatar_fg.png")
+    avatar_bg_path = os.path.join(TEXT_PATH, "avatar_bg.png")
+    avatar_fg_path = os.path.join(TEXT_PATH, "avatar_fg.png")
 
-    all_mask_path = os.path.join(TEXT_PATH,"All_Mask.png")
+    all_mask_path = os.path.join(TEXT_PATH, "All_Mask.png")
 
-    #转换遮罩的颜色、大小匹配，并paste上去
-    all_mask = Image.open(all_mask_path).resize(bg_img.size,Image.ANTIALIAS)
-    all_mask_img = Image.new("RGBA",(based_w,based_h),bg_color)
-    bg_img.paste(all_mask_img,(0,0),all_mask)
+    # 转换遮罩的颜色、大小匹配，并paste上去
+    all_mask = Image.open(all_mask_path).resize(bg_img.size, Image.ANTIALIAS)
+    all_mask_img = Image.new("RGBA", (based_w, based_h), bg_color)
+    bg_img.paste(all_mask_img, (0, 0), all_mask)
 
-    #开启图片
+    # 开启图片
     avatar_bg = Image.open(avatar_bg_path)
     avatar_fg = Image.open(avatar_fg_path)
 
-    #确定主体框架
-    avatar_bg_color = Image.new("RGBA",(316,100),bg_color)
-    bg_img.paste(avatar_bg_color,(113,145),avatar_bg)
-    bg_img.paste(avatar_fg,(114,142),avatar_fg)
+    # 确定主体框架
+    avatar_bg_color = Image.new("RGBA", (316, 100), bg_color)
+    bg_img.paste(avatar_bg_color, (113, 145), avatar_bg)
+    bg_img.paste(avatar_fg, (114, 142), avatar_fg)
 
     """
     for i in range(0,len(based_data['levels'])):
@@ -801,167 +880,104 @@ async def draw_abyss_pic(uid, nickname, floor_num, image=None, mode=2, date="1")
         bg_img.paste(blurred_img, (x, y), create_rounded_rectangle_mask(cropped_img,radius))
     """
 
-    abyss1_bg_color = Image.new("RGBA",(900,400),bg_color)
-    bg_img.paste(abyss1_bg_color,(0,0),abyss1)
+    abyss1_bg_color = Image.new("RGBA", (900, 400), bg_color)
+    bg_img.paste(abyss1_bg_color, (0, 0), abyss1)
 
-    for j in range(0,len(based_data['levels'])):
+    for j in range(0, len(based_data['levels'])):
         abyss2 = Image.new("RGBA", (900, 340), (0, 0, 0, 0))
         num_1 = 0
-        avatars = based_data['levels'][j]['battles'][0]['avatars'] + based_data['levels'][j]['battles'][1]['avatars']
+        # avatars = based_data['levels'][j]['battles'][0]['avatars'] + based_data['levels'][j]['battles'][1]['avatars']
         for i in based_data['levels'][j]['battles'][0]['avatars']:
-            if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
-                get_char_done_pic(i['id'],i['icon'],i['rarity'])
-            char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
+            if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")):
+                get_char_done_pic(i['id'], i['icon'], i['rarity'])
+            char = os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")
             char_img = Image.open(char)
             char_draw = ImageDraw.Draw(char_img)
             for k in raw_char_data:
                 if k['id'] == i['id']:
-                    char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),genshin_font(18))
-                    char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                    char_draw.text((40, 108), f'Lv.{str(k["level"])}', (21, 21, 21), genshin_font(18))
+                    char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                     if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                        char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                        char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                     else:
-                        char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-            char_crop = (70 + 125*(num_1%4),46)
-            abyss2.paste(char_img,char_crop,char_img)
+                        char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+            char_crop = (70 + 125 * (num_1 % 4), 46)
+            abyss2.paste(char_img, char_crop, char_img)
             num_1 = num_1 + 1
         num_2 = 0
         for i in based_data['levels'][j]['battles'][1]['avatars']:
-            if not os.path.exists(os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")):
-                get_char_done_pic(i['id'],i['icon'],i['rarity'])
-            char = os.path.join(CHAR_DONE_PATH,str(i['id']) + ".png")
+            if not os.path.exists(os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")):
+                get_char_done_pic(i['id'], i['icon'], i['rarity'])
+            char = os.path.join(CHAR_DONE_PATH, str(i['id']) + ".png")
             char_img = Image.open(char)
             char_draw = ImageDraw.Draw(char_img)
             for k in raw_char_data:
                 if k['id'] == i['id']:
-                    char_draw.text((40,108),f'Lv.{str(k["level"])}',(21,21,21),genshin_font(18))
-                    char_draw.text((95.3,19),f'{str(k["actived_constellation_num"])}','white',genshin_font(18))
+                    char_draw.text((40, 108), f'Lv.{str(k["level"])}', (21, 21, 21), genshin_font(18))
+                    char_draw.text((95.3, 19), f'{str(k["actived_constellation_num"])}', 'white', genshin_font(18))
                     if str(k["fetter"]) == "10" or str(k["name"]) == "旅行者":
-                        char_draw.text((93,41.5),"♥",(21,21,21),genshin_font(15))
+                        char_draw.text((93, 41.5), "♥", (21, 21, 21), genshin_font(15))
                     else:
-                        char_draw.text((95.3,40.5),f'{str(k["fetter"])}',(21,21,21),genshin_font(18))
-            char_crop = (70 + 125*(num_2%4),180)
-            abyss2.paste(char_img,char_crop,char_img)
+                        char_draw.text((95.3, 40.5), f'{str(k["fetter"])}', (21, 21, 21), genshin_font(18))
+            char_crop = (70 + 125 * (num_2 % 4), 180)
+            abyss2.paste(char_img, char_crop, char_img)
             num_2 = num_2 + 1
         star_num = based_data['levels'][j]['star']
         if star_num == 1:
-            abyss2.paste(abyss_star1,(640,155),abyss_star1)
-            abyss2.paste(abyss_star0,(685,155),abyss_star0)
-            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+            abyss2.paste(abyss_star1, (640, 155), abyss_star1)
+            abyss2.paste(abyss_star0, (685, 155), abyss_star0)
+            abyss2.paste(abyss_star0, (730, 155), abyss_star0)
         elif star_num == 0:
-            abyss2.paste(abyss_star0,(640,155),abyss_star0)
-            abyss2.paste(abyss_star0,(685,155),abyss_star0)
-            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+            abyss2.paste(abyss_star0, (640, 155), abyss_star0)
+            abyss2.paste(abyss_star0, (685, 155), abyss_star0)
+            abyss2.paste(abyss_star0, (730, 155), abyss_star0)
         elif star_num == 2:
-            abyss2.paste(abyss_star1,(640,155),abyss_star1)
-            abyss2.paste(abyss_star1,(685,155),abyss_star1)
-            abyss2.paste(abyss_star0,(730,155),abyss_star0)
+            abyss2.paste(abyss_star1, (640, 155), abyss_star1)
+            abyss2.paste(abyss_star1, (685, 155), abyss_star1)
+            abyss2.paste(abyss_star0, (730, 155), abyss_star0)
         else:
-            abyss2.paste(abyss_star1,(640,155),abyss_star1)
-            abyss2.paste(abyss_star1,(685,155),abyss_star1)
-            abyss2.paste(abyss_star1,(730,155),abyss_star1)
+            abyss2.paste(abyss_star1, (640, 155), abyss_star1)
+            abyss2.paste(abyss_star1, (685, 155), abyss_star1)
+            abyss2.paste(abyss_star1, (730, 155), abyss_star1)
         abyss2_text_draw = ImageDraw.Draw(abyss2)
-        abyss2_text_draw.text((87,30),f"第{j+1}间", new_color, genshin_font(21))
+        abyss2_text_draw.text((87, 30), f"第{j + 1}间", text_color, genshin_font(21))
         timeStamp1 = int(based_data['levels'][j]['battles'][0]['timestamp'])
         timeStamp2 = int(based_data['levels'][j]['battles'][1]['timestamp'])
         timeArray1 = time.localtime(timeStamp1)
         timeArray2 = time.localtime(timeStamp2)
         otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
         otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
-        abyss2_text_draw.text((167,33), f"{otherStyleTime1}/{otherStyleTime2}", new_color, genshin_font(19))
-        bg_img.paste(abyss2,(0,350+j*340),abyss2)
-    
-    bg_img.paste(abyss3,(0,len(based_data['levels'])*340+400),abyss3)
- 
+        abyss2_text_draw.text((167, 33), f"{otherStyleTime1}/{otherStyleTime2}", text_color, genshin_font(19))
+        bg_img.paste(abyss2, (0, 350 + j * 340), abyss2)
+
+    bg_img.paste(abyss3, (0, len(based_data['levels']) * 340 + 400), abyss3)
+
     text_draw = ImageDraw.Draw(bg_img)
 
-    text_draw.text((220,163), f"{nickname}", new_color, genshin_font(32))
-    text_draw.text((235, 203), 'UID ' + f"{uid}", new_color, genshin_font(14))
-    text_draw.text((710, 190), f"{floor_num}", new_color, genshin_font(50),anchor="mm")
+    text_draw.text((220, 163), f"{nickname}", text_color, genshin_font(32))
+    text_draw.text((235, 203), 'UID ' + f"{uid}", text_color, genshin_font(14))
+    text_draw.text((710, 190), f"{floor_num}", text_color, genshin_font(50), anchor="mm")
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    #bg_img.save(result_buffer, format='PNG')
+    # bg_img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    #resultmes = f"[CQ:image,file={imgmes}]"
+    # resultmes = f"[CQ:image,file={imgmes}]"
     resultmes = imgmes
     return resultmes
 
 
-async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
-    # 获取Cookies，如果没有能使用的则return
-    while True:
-        use_cookies = cache_db(uid, mode - 1)
-        if use_cookies == '':
-            return "绑定记录不存在。"
-        elif use_cookies == "没有可以使用的Cookies！":
-            return "没有可以使用的Cookies！"
-
-        if mode == 3:
-            mys_data = await get_mihoyo_bbs_info(uid, use_cookies)
-            for i in mys_data['data']['list']:
-                if i['game_id'] != 2:
-                    mys_data['data']['list'].remove(i)
-            uid = mys_data['data']['list'][0]['game_role_id']
-            nickname = mys_data['data']['list'][0]['nickname']
-            role_level = mys_data['data']['list'][0]['level']
-
-        raw_data = await get_info(uid, use_cookies)
-
-        if raw_data["retcode"] != 0:
-            if raw_data["retcode"] == 10001:
-                # return ("Cookie错误/过期，请重置Cookie")
-                error_db(use_cookies, "error")
-            elif raw_data["retcode"] == 10101:
-                # return ("当前cookies已达到30人上限！")
-                error_db(use_cookies, "limit30")
-            elif raw_data["retcode"] == 10102:
-                return "当前查询id已经设置了隐私，无法查询！"
-            else:
-                return (
-                        "Api报错，返回内容为：\r\n"
-                        + str(raw_data) + "\r\n出现这种情况可能的UID输入错误 or 不存在"
-                )
-        else:
-            break
-
-    # 获取背景图片
-    bg2_path = os.path.join(BG_PATH, random.choice([x for x in os.listdir(BG_PATH)
-                                                    if os.path.isfile(os.path.join(BG_PATH, x))]))
-
-    if image:
-        image_data = image.group(2)
-        edit_bg = Image.open(BytesIO(get(image_data).content))
-    else:
-        edit_bg = Image.open(bg2_path)
-
-    # 获取背景主色
-    q = edit_bg.quantize(colors=3, method=2)
-    bg_num_temp = 0
-    for i in range(0, 3):
-        bg = tuple(q.getpalette()[i * 3:(i * 3) + 3])
-        bg_num = bg[0] + bg[1] + bg[2]
-        if bg_num >= bg_num_temp:
-            bg_num_temp = bg_num
-            bg_color = (bg[0], bg[1], bg[2])
-
-    # 通过背景主色（bg_color）确定文字主色
-    r = 140
-    if max(bg_color) > 255 - r:
-        r *= -1
-    new_color = (math.floor(bg_color[0] + r if bg_color[0] + r <= 255 else 255),
-                 math.floor(bg_color[1] + r if bg_color[1] + r <= 255 else 255),
-                 math.floor(bg_color[2] + r if bg_color[2] + r <= 255 else 255))
-
-    # 确定texture2D路径
-    panle1_path = os.path.join(TEXT_PATH, "panle_1.png")
-    panle3_path = os.path.join(TEXT_PATH, "panle_3.png")
-
-    avatar_bg_path = os.path.join(TEXT_PATH, "avatar_bg.png")
-    avatar_fg_path = os.path.join(TEXT_PATH, "avatar_fg.png")
-
-    all_mask_path = os.path.join(TEXT_PATH, "All_Mask.png")
+async def draw_pic(uid: str, nickname: str, image: Optional[str] = None, mode: int = 2, role_level: Optional[int] = None):
+    # 获取Cookies
+    data_def = get_cookies()
+    retcode = await data_def.get_useable_cookies(uid, mode)
+    if retcode != True:
+        return retcode
+    use_cookies = data_def.useable_cookies
+    raw_data = data_def.raw_data
+    uid = data_def.uid
+    nickname = data_def.nickname if data_def.nickname else nickname
 
     # 记录数据
     raw_data = raw_data['data']
@@ -977,23 +993,28 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
 
     # 确定角色占用行数
     char_num = len(char_datas)
-    char_hang = 1 + (char_num - 1) // 6 if char_num > 8 else char_num
+    char_hang = 1 + (char_num - 1) // 4 if char_num > 8 else char_num
 
-    # 确定整体图片的长宽
+    # 获取背景图片各项参数
     based_w = 900
-    based_h = 890 + char_hang * 130 if char_num > 8 else 890 + char_hang * 110
-    based_scale = '%.3f' % (based_w / based_h)
+    based_h = 870 + char_hang * 100 if char_num > 8 else 890 + char_hang * 110
+    image_def = customize_image(image,based_w,based_h)
+    bg_img = image_def.bg_img
+    bg_color = image_def.bg_color
+    text_color = image_def.text_color
+    highlight_color = image_def.highlight_color
+    char_color = image_def.char_color
+    bg_detail_color = image_def.bg_detail_color
+    char_high_color = image_def.char_high_color
 
-    # 通过确定的长宽比，缩放背景图片
-    w, h = edit_bg.size
-    scale_f = '%.3f' % (w / h)
-    new_w = math.ceil(based_h * float(scale_f))
-    new_h = math.ceil(based_w / float(scale_f))
-    if scale_f > based_scale:
-        bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
-    else:
-        bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
-    bg_img = bg_img2.crop((0, 0, 900, based_h))
+    # 确定texture2D路径
+    panle1_path = os.path.join(TEXT_PATH, "panle_1.png")
+    panle3_path = os.path.join(TEXT_PATH, "panle_3.png")
+
+    avatar_bg_path = os.path.join(TEXT_PATH, "avatar_bg.png")
+    avatar_fg_path = os.path.join(TEXT_PATH, "avatar_fg.png")
+
+    all_mask_path = os.path.join(TEXT_PATH, "All_Mask.png")
 
     # 转换遮罩的颜色、大小匹配，并paste上去
     all_mask = Image.open(all_mask_path).resize(bg_img.size, Image.ANTIALIAS)
@@ -1008,9 +1029,9 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
 
     # 确定主体框架
     avatar_bg_color = Image.new("RGBA", (316, 100), bg_color)
-    panle1_color = Image.new("RGBA", (900, 800), new_color)
+    panle1_color = Image.new("RGBA", (900, 800), text_color)
     bg_img.paste(panle1_color, (0, 0), panle1)
-    bg_img.paste(panle3, (0, char_hang * 130 + 800) if char_num > 8 else (0, char_hang * 110 + 800), panle3)
+    bg_img.paste(panle3, (0, char_hang * 100 + 780) if char_num > 8 else (0, char_hang * 110 + 800), panle3)
     bg_img.paste(avatar_bg_color, (113, 98), avatar_bg)
     bg_img.paste(avatar_fg, (114, 95), avatar_fg)
 
@@ -1018,70 +1039,70 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
     text_draw = ImageDraw.Draw(bg_img)
 
     if role_level:
-        text_draw.text((140, 200), "冒险等级：" + f"{role_level}", new_color, genshin_font(20))
+        text_draw.text((140, 200), "冒险等级：" + f"{role_level}", text_color, genshin_font(20))
 
-    text_draw.text((220, 123), f"{nickname}", new_color, genshin_font(32))
-    text_draw.text((235, 163), 'UID ' + f"{uid}", new_color, genshin_font(14))
+    text_draw.text((220, 123), f"{nickname}", text_color, genshin_font(32))
+    text_draw.text((235, 163), 'UID ' + f"{uid}", text_color, genshin_font(14))
 
     # 活跃天数/成就数量/深渊信息
-    text_draw.text((640, 94.8), str(raw_data['stats']['active_day_number']), new_color, genshin_font(26))
-    text_draw.text((640, 139.3), str(raw_data['stats']['achievement_number']), new_color, genshin_font(26))
-    text_draw.text((640, 183.9), raw_data['stats']['spiral_abyss'], new_color, genshin_font(26))
+    text_draw.text((640, 94.8), str(raw_data['stats']['active_day_number']), text_color, genshin_font(26))
+    text_draw.text((640, 139.3), str(raw_data['stats']['achievement_number']), text_color, genshin_font(26))
+    text_draw.text((640, 183.9), raw_data['stats']['spiral_abyss'], text_color, genshin_font(26))
 
     # 宝箱
-    text_draw.text((258, 375.4), str(raw_data['stats']['magic_chest_number']), new_color, genshin_font(24))
-    text_draw.text((258, 425.4), str(raw_data['stats']['common_chest_number']), new_color, genshin_font(24))
-    text_draw.text((258, 475.4), str(raw_data['stats']['exquisite_chest_number']), new_color, genshin_font(24))
-    text_draw.text((258, 525.4), str(raw_data['stats']['precious_chest_number']), new_color, genshin_font(24))
-    text_draw.text((258, 575.4), str(raw_data['stats']['luxurious_chest_number']), new_color, genshin_font(24))
+    text_draw.text((258, 375.4), str(raw_data['stats']['magic_chest_number']), text_color, genshin_font(24))
+    text_draw.text((258, 425.4), str(raw_data['stats']['common_chest_number']), text_color, genshin_font(24))
+    text_draw.text((258, 475.4), str(raw_data['stats']['exquisite_chest_number']), text_color, genshin_font(24))
+    text_draw.text((258, 525.4), str(raw_data['stats']['precious_chest_number']), text_color, genshin_font(24))
+    text_draw.text((258, 575.4), str(raw_data['stats']['luxurious_chest_number']), text_color, genshin_font(24))
 
     # 已获角色
-    text_draw.text((740, 547), str(raw_data['stats']['avatar_number']), new_color, genshin_font(24))
+    text_draw.text((740, 547), str(raw_data['stats']['avatar_number']), text_color, genshin_font(24))
 
     # 开启锚点和秘境数量
-    text_draw.text((258, 625.4), str(raw_data['stats']['way_point_number']), new_color, genshin_font(24))
-    text_draw.text((258, 675.4), str(raw_data['stats']['domain_number']), new_color, genshin_font(24))
+    text_draw.text((258, 625.4), str(raw_data['stats']['way_point_number']), text_color, genshin_font(24))
+    text_draw.text((258, 675.4), str(raw_data['stats']['domain_number']), text_color, genshin_font(24))
 
     # 蒙德
-    text_draw.text((490, 370), str(raw_data['world_explorations'][4]['exploration_percentage'] / 10) + '%', new_color,
+    text_draw.text((490, 370), str(raw_data['world_explorations'][4]['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 400), 'lv.' + str(raw_data['world_explorations'][4]['level']), new_color, genshin_font(22))
-    text_draw.text((513, 430), str(raw_data['stats']['anemoculus_number']), new_color, genshin_font(22))
+    text_draw.text((490, 400), 'lv.' + str(raw_data['world_explorations'][4]['level']), text_color, genshin_font(22))
+    text_draw.text((513, 430), str(raw_data['stats']['anemoculus_number']), text_color, genshin_font(22))
 
     # 璃月
-    text_draw.text((490, 490), str(raw_data['world_explorations'][3]['exploration_percentage'] / 10) + '%', new_color,
+    text_draw.text((490, 490), str(raw_data['world_explorations'][3]['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 520), 'lv.' + str(raw_data['world_explorations'][3]['level']), new_color, genshin_font(22))
-    text_draw.text((513, 550), str(raw_data['stats']['geoculus_number']), new_color, genshin_font(22))
+    text_draw.text((490, 520), 'lv.' + str(raw_data['world_explorations'][3]['level']), text_color, genshin_font(22))
+    text_draw.text((513, 550), str(raw_data['stats']['geoculus_number']), text_color, genshin_font(22))
 
     # 雪山
-    text_draw.text((745, 373.5), str(raw_data['world_explorations'][2]['exploration_percentage'] / 10) + '%', new_color,
+    text_draw.text((745, 373.5), str(raw_data['world_explorations'][2]['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((745, 407.1), 'lv.' + str(raw_data['world_explorations'][2]['level']), new_color, genshin_font(22))
+    text_draw.text((745, 407.1), 'lv.' + str(raw_data['world_explorations'][2]['level']), text_color, genshin_font(22))
 
     # 稻妻
-    text_draw.text((490, 608), str(raw_data['world_explorations'][1]['exploration_percentage'] / 10) + '%', new_color,
+    text_draw.text((490, 608), str(raw_data['world_explorations'][1]['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 635), 'lv.' + str(raw_data['world_explorations'][1]['level']), new_color, genshin_font(22))
-    text_draw.text((490, 662), 'lv.' + str(raw_data['world_explorations'][1]['offerings'][0]['level']), new_color,
+    text_draw.text((490, 635), 'lv.' + str(raw_data['world_explorations'][1]['level']), text_color, genshin_font(22))
+    text_draw.text((490, 662), 'lv.' + str(raw_data['world_explorations'][1]['offerings'][0]['level']), text_color,
                    genshin_font(22))
-    text_draw.text((513, 689), str(raw_data['stats']['electroculus_number']), new_color, genshin_font(22))
+    text_draw.text((513, 689), str(raw_data['stats']['electroculus_number']), text_color, genshin_font(22))
 
     # 渊下宫
-    text_draw.text((745, 480), str(raw_data['world_explorations'][0]['exploration_percentage'] / 10) + '%', new_color,
+    text_draw.text((745, 480), str(raw_data['world_explorations'][0]['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
 
     # 家园
     if len(raw_data['homes']):
-        text_draw.text((693, 582.4), 'lv.' + str(raw_data['homes'][0]['level']), new_color, genshin_font(22))
-        text_draw.text((693, 620.4), str(raw_data['homes'][0]['visit_num']), new_color, genshin_font(22))
-        text_draw.text((693, 658.4), str(raw_data['homes'][0]['item_num']), new_color, genshin_font(22))
-        text_draw.text((693, 696.4), str(raw_data['homes'][0]['comfort_num']), new_color, genshin_font(22))
+        text_draw.text((693, 582.4), 'lv.' + str(raw_data['homes'][0]['level']), text_color, genshin_font(22))
+        text_draw.text((693, 620.4), str(raw_data['homes'][0]['visit_num']), text_color, genshin_font(22))
+        text_draw.text((693, 658.4), str(raw_data['homes'][0]['item_num']), text_color, genshin_font(22))
+        text_draw.text((693, 696.4), str(raw_data['homes'][0]['comfort_num']), text_color, genshin_font(22))
     else:
-        text_draw.text((693, 582.4), "未开", new_color, genshin_font(22))
-        text_draw.text((693, 620.4), "未开", new_color, genshin_font(22))
-        text_draw.text((693, 658.4), "未开", new_color, genshin_font(22))
-        text_draw.text((693, 696.4), "未开", new_color, genshin_font(22))
+        text_draw.text((693, 582.4), "未开", text_color, genshin_font(22))
+        text_draw.text((693, 620.4), "未开", text_color, genshin_font(22))
+        text_draw.text((693, 658.4), "未开", text_color, genshin_font(22))
+        text_draw.text((693, 696.4), "未开", text_color, genshin_font(22))
 
     # 确定texture2D路径
     charpic_mask_path = os.path.join(TEXT_PATH, "charpic_mask.png")
@@ -1092,6 +1113,7 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
 
     charpic_mask = Image.open(charpic_mask_path)
     weaponpic_mask = Image.open(weaponpic_mask_path)
+    """
     s5s1 = Image.open(get_text(5, 1))
     s5s2 = Image.open(get_text(5, 2))
     s5s3 = Image.open(get_text(5, 3))
@@ -1103,24 +1125,89 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
     s3s3 = Image.open(get_text(3, 3))
     s2s3 = Image.open(get_text(2, 3))
     s1s3 = Image.open(get_text(1, 3))
-
+    """
     char_bg_path = os.path.join(TEXT_PATH, "char_bg.png")
     char_fg_path = os.path.join(TEXT_PATH, "char_fg.png")
 
     char_bg = Image.open(char_bg_path)
     char_fg = Image.open(char_fg_path)
 
-    char_color = (math.floor(bg_color[0] + 10 if bg_color[0] + r <= 255 else 255),
-                  math.floor(bg_color[1] + 10 if bg_color[1] + r <= 255 else 255),
-                  math.floor(bg_color[2] + 10 if bg_color[2] + r <= 255 else 255))
-
-    charset_mask = Image.new("RGBA", (900, 130), char_color)
-
     num = 0
+    for index,i in enumerate(char_datas):
+        if i['rarity'] > 5:
+            char_datas[index]['rarity'] = 3
     char_datas.sort(key=lambda x: (-x['rarity'], -x['level'], -x['fetter']))
 
     if char_num > 8:
-        for i in char_datas:
+        tasks = []
+        for index,i in enumerate(char_datas):
+            async def draw_char_pic(img: Image, char_data: json, index: int, bg_color :tuple[int, int, int],
+                                    text_color: tuple[int, int, int], bg_detail_color: tuple[int, int, int],
+                                    char_high_color: tuple[int, int, int]):
+                char_mingzuo = 0
+                for k in char_data['constellations']:
+                    if k['is_actived']:
+                        char_mingzuo += 1
+                if char_data['rarity'] == 5:
+                    char_0 = Image.new("RGBA", (180, 90), char_high_color)
+                else:
+                    char_0 = Image.new("RGBA", (180, 90), bg_color)
+                char_0_raw = Image.open(os.path.join(TEXT_PATH, "char_0.png"))
+                alpha = char_0_raw.getchannel('A')
+                char_0.putalpha(alpha) 
+
+                char_2 = Image.new("RGBA", (180, 90), bg_detail_color)
+                char_2_raw = Image.open(os.path.join(TEXT_PATH, "char_2.png"))
+                alpha = char_2_raw.getchannel('A')
+                char_2.putalpha(alpha) 
+
+                """
+                char_3 = Image.new("RGBA", (180, 90), bg_detail_color)
+                char_3_raw = Image.open(os.path.join(TEXT_PATH, "char_3.png"))
+                alpha = char_3_raw.getchannel('A')
+                char_3.putalpha(alpha) 
+                """
+                char_1_mask = Image.open(os.path.join(TEXT_PATH, "char_1_mask.png"))
+
+                char_talent_data = await get_calculate_info(uid, str(char_data["id"]), use_cookies)
+                if not os.path.exists(os.path.join(WEAPON_PATH, str(char_data['weapon']['icon'].split('/')[-1]))):
+                    get_weapon_pic(char_data['weapon']['icon'])
+                if not os.path.exists(os.path.join(CHAR_PATH, str(char_data['id']) + ".png")):
+                    get_char_pic(char_data['id'], char_data['icon'])
+
+                char_img = Image.open(os.path.join(CHAR_PATH, str(char_data["id"]) + ".png")).resize((81, 81), Image.ANTIALIAS)
+                weapon_img = Image.open(os.path.join(WEAPON_PATH, str(char_data['weapon']['icon'].split('/')[-1]))).resize((40, 40), Image.ANTIALIAS)
+                weapon_1_mask = char_1_mask.resize((40, 40), Image.ANTIALIAS)
+                char_0_temp = Image.new("RGBA", (180, 90))
+                char_0_temp.paste(char_img,(8, 5),char_1_mask)
+                char_0_temp.paste(weapon_img,(70, 45),weapon_1_mask)
+                char_0.paste(char_0_temp, (0, 0), char_0_temp)
+                char_0.paste(char_2, (0, 0), char_2)
+                #char_0.paste(char_3, (0, 0), char_3)
+                draw_text = ImageDraw.Draw(char_0)
+                for i in range(0,2):
+                    draw_text.text((106 + 23*i, 17), f'{str(char_talent_data["data"]["skill_list"][i]["level_current"])}', text_color, genshin_font(15),anchor="mm")
+                
+                if len(char_talent_data["data"]["skill_list"]) == 7 and char_data["name"] != "珊瑚宫心海":
+                    draw_text.text((106 + 23*2, 17), f'{str(char_talent_data["data"]["skill_list"][3]["level_current"])}', text_color, genshin_font(15),anchor="mm")
+                else:
+                    draw_text.text((106 + 23*2, 17), f'{str(char_talent_data["data"]["skill_list"][2]["level_current"])}', text_color, genshin_font(15),anchor="mm")
+                
+                draw_text.text((42,77), "Lv.{}".format(str(char_data["level"])), text_color, genshin_font(16),anchor="mm")
+                draw_text.text((162,38), "{}命".format( char_mingzuo), text_color, genshin_font(18),anchor="rm")
+                draw_text.text((115,57), 'Lv.{}'.format(str(char_data['weapon']['level'])), text_color, genshin_font(18),anchor="lm")
+                draw_text.text((115,75), '{}精'.format(str(char_data['weapon']['affix_level'])), text_color, genshin_font(16),anchor="lm")
+                
+                if str(char_data["fetter"]) == "10" or str(char_data["name"]) == "旅行者":
+                    draw_text.text((74, 19), "♥", text_color, genshin_font(14),anchor="mm")
+                else:
+                    draw_text.text((73, 18), '{}'.format(str(char_data['fetter'])), text_color, genshin_font(16),anchor="mm")
+
+                char_crop = (75 + 190 * (index % 4), 800 + 100 * (index // 4))
+                img.paste(char_0, char_crop, char_0)
+            tasks.append(draw_char_pic(bg_img, i, index, char_color, text_color, bg_detail_color, char_high_color))
+        await asyncio.wait(tasks)
+        """
             char_mingzuo = 0
             for k in i['constellations']:
                 if k['is_actived']:
@@ -1205,7 +1292,9 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
             char_crop = (68 + 129 * (num % 6), 800 + 130 * (num // 6))
             bg_img.paste(charpic, char_crop, charpic)
             num = num + 1
+        """
     else:
+        charset_mask = Image.new("RGBA", (900, 130), char_color)
         for i in char_datas:
             char_mingzuo = 0
             for k in i['constellations']:
@@ -1215,8 +1304,6 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
             char_name = i["name"]
             char_id = i["id"]
             char_level = i["level"]
-            # char_fetter = i['fetter']
-            # char_rarity = i['rarity']
             char_img_icon = i["image"]
 
             char_weapon_star = i['weapon']['rarity']
@@ -1236,6 +1323,9 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
             char_stand_img = os.path.join(CHAR_IMG_PATH, str(char_img_icon.split('/')[-1]))
             char_stand_mask = Image.open(os.path.join(TEXT_PATH, "stand_mask.png"))
 
+            #char_namecard_img = Image.open(os.path.join(CHAR_NAMECARD_PATH,str(i['icon'].split('_')[-1])))
+            #char_namecard_img = char_namecard_img.resize((591,81), Image.ANTIALIAS)
+            #char_namecard_img.putalpha(char_namecard_img.getchannel('A').point(lambda i: i*0.8 if i>0 else 0))
             char_stand = Image.open(char_stand_img)
             char_img = Image.open(char)
             char_img = char_img.resize((100, 100), Image.ANTIALIAS)
@@ -1248,9 +1338,10 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
             charpic.paste(charset_mask, (0, 0), char_bg)
 
             weapon_bg = Image.open(get_text(char_weapon_star, 3))
+            charpic_temp.paste(char_stand, (395, -99), char_stand_mask)
+            #charpic_temp.paste(char_namecard_img, (247, 24), char_namecard_img)
             charpic.paste(weapon_bg, (72, 10), weapon_bg)
             charpic_temp.paste(char_img, (81, 13), charpic_mask)
-            charpic_temp.paste(char_stand, (395, -99), char_stand_mask)
             charpic_temp.paste(char_fg, (0, 0), char_fg)
             charpic_temp.paste(weapon_img, (141, 72), weaponpic_mask)
             # temp = Image.composite(weapon_img, basedb, weaponpic_mask)
@@ -1281,11 +1372,11 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
 
             char_draw = ImageDraw.Draw(charpic)
 
-            char_draw.text((188, 30), i["name"] + " " + f'Lv.{str(char_level)}', new_color, genshin_font(22))
-            char_draw.text((222, 87), f'{str(i["fetter"])}' if str(char_name) != "旅行者" else "10", new_color,
+            char_draw.text((188, 30), i["name"] + " " + f'Lv.{str(char_level)}', text_color, genshin_font(22))
+            char_draw.text((222, 87), f'{str(i["fetter"])}' if str(char_name) != "旅行者" else "10", text_color,
                            genshin_font(15), anchor="mm")
-            char_draw.text((255, 87), f'{str(char_mingzuo)}', new_color, genshin_font(15), anchor="mm")
-            char_draw.text((218, 67), f'{str(char_weapon_level)}级{str(char_weapon_jinglian)}精', new_color,
+            char_draw.text((255, 87), f'{str(char_mingzuo)}', text_color, genshin_font(15), anchor="mm")
+            char_draw.text((218, 67), f'{str(char_weapon_level)}级{str(char_weapon_jinglian)}精', text_color,
                            genshin_font(15),
                            anchor="lm")
             char_crop = (0, 800 + 110 * num)
@@ -1300,47 +1391,36 @@ async def draw_pic(uid, nickname, image=None, mode=2, role_level=None):
     resultmes = imgmes
     return resultmes
 
-async def draw_info_pic(uid,image = None):
+
+async def draw_info_pic(uid: str,image :Optional[str] = None) -> str:
 
     def seconds2hours(seconds: int) -> str:
         m, s = divmod(int(seconds), 60)
         h, m = divmod(m, 60)
         return "%02d:%02d:%02d" % (h, m, s)
 
+    # 获取Cookies
+    data_def = get_cookies()
+    retcode = await data_def.get_useable_cookies(uid)
+    if retcode != True:
+        return retcode
+    raw_data = data_def.raw_data
+    char_data = raw_data["data"]["avatars"]
     #获取数据
     award_data = await get_award(uid)
     daily_data = await get_daily_data(uid)
     daily_data = daily_data["data"]
-
     nickname = award_data['data']['nickname']
 
-    # 获取背景图片
-    bg2_path = os.path.join(BG_PATH, random.choice([x for x in os.listdir(BG_PATH)
-                                                    if os.path.isfile(os.path.join(BG_PATH, x))]))
-
-    if image:
-        image_data = image.group(2)
-        edit_bg = Image.open(BytesIO(get(image_data).content))
-    else:
-        edit_bg = Image.open(bg2_path)
-
-    # 获取背景主色
-    q = edit_bg.quantize(colors=3, method=2)
-    bg_num_temp = 0
-    for i in range(0, 3):
-        bg = tuple(q.getpalette()[i * 3:(i * 3) + 3])
-        bg_num = bg[0] + bg[1] + bg[2]
-        if bg_num >= bg_num_temp:
-            bg_num_temp = bg_num
-            bg_color = (bg[0], bg[1], bg[2])
-
-    # 通过背景主色（bg_color）确定文字主色
-    r = 140
-    if max(bg_color) > 255 - r:
-        r *= -1
-    new_color = (math.floor(bg_color[0] + r if bg_color[0] + r <= 255 else 255),
-                 math.floor(bg_color[1] + r if bg_color[1] + r <= 255 else 255),
-                 math.floor(bg_color[2] + r if bg_color[2] + r <= 255 else 255))
+    # 获取背景图片各项参数
+    based_w = 900
+    based_h = 1380
+    image_def = customize_image(image,based_w,based_h)
+    bg_img = image_def.bg_img
+    bg_color = image_def.bg_color
+    text_color = image_def.text_color
+    highlight_color = image_def.highlight_color
+    char_color = image_def.char_color
 
     # 确定texture2D路径
     info1_path = os.path.join(TEXT_PATH, "info_1.png")
@@ -1351,22 +1431,6 @@ async def draw_info_pic(uid,image = None):
     avatar_fg_path = os.path.join(TEXT_PATH, "avatar_fg.png")
 
     all_mask_path = os.path.join(TEXT_PATH, "All_Mask.png")
-
-    # 确定整体图片的长宽
-    based_w = 900
-    based_h = 1470
-    based_scale = '%.3f' % (based_w / based_h)
-
-    # 通过确定的长宽比，缩放背景图片
-    w, h = edit_bg.size
-    scale_f = '%.3f' % (w / h)
-    new_w = math.ceil(based_h * float(scale_f))
-    new_h = math.ceil(based_w / float(scale_f))
-    if scale_f > based_scale:
-        bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
-    else:
-        bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
-    bg_img = bg_img2.crop((0, 0, 900, based_h))
 
     # 转换遮罩的颜色、大小匹配，并paste上去
     all_mask = Image.open(all_mask_path).resize(bg_img.size, Image.ANTIALIAS)
@@ -1387,7 +1451,7 @@ async def draw_info_pic(uid,image = None):
     info1_color = Image.new("RGBA", (900, 1300), bg_color)
     bg_img.paste(info1_color, (0, 0), info1)
 
-    info2_color = Image.new("RGBA", (900, 1300), new_color)
+    info2_color = Image.new("RGBA", (900, 1300), text_color)
     bg_img.paste(info2_color, (0, 0), info2)
 
     bg_img.paste(info3, (0, 0), info3)
@@ -1396,30 +1460,30 @@ async def draw_info_pic(uid,image = None):
     text_draw = ImageDraw.Draw(bg_img)
 
     #用户信息
-    text_draw.text((220, 137), f"{nickname}", new_color, genshin_font(32),anchor="lm")
-    text_draw.text((235, 170), 'UID ' + f"{uid}", new_color, genshin_font(14),anchor="lm")
+    text_draw.text((220, 137), f"{nickname}", text_color, genshin_font(32),anchor="lm")
+    text_draw.text((235, 170), 'UID ' + f"{uid}", text_color, genshin_font(14),anchor="lm")
 
     #本日原石/摩拉
-    text_draw.text((715, 148), f"{award_data['data']['day_data']['current_primogems']}/{award_data['data']['day_data']['last_primogems']}", new_color, genshin_font(28),anchor="lm")
-    text_draw.text((715, 185), f"{award_data['data']['day_data']['current_mora']}/{award_data['data']['day_data']['last_mora']}", new_color, genshin_font(28),anchor="lm")
+    text_draw.text((675, 148), f"{award_data['data']['day_data']['current_primogems']}/{award_data['data']['day_data']['last_primogems']}", text_color, genshin_font(28),anchor="lm")
+    text_draw.text((675, 212), f"{award_data['data']['day_data']['current_mora']}\n{award_data['data']['day_data']['last_mora']}", text_color, genshin_font(28),anchor="lm")
 
-    #本月原石/摩拉
-    text_draw.text((762, 287), f"{award_data['data']['month_data']['current_primogems']}", new_color, genshin_font(21),anchor="lm")
-    text_draw.text((762, 323), f"{award_data['data']['month_data']['current_mora']}", new_color, genshin_font(21),anchor="lm")
+    #本月/上月原石
+    text_draw.text((722, 287), f"{award_data['data']['month_data']['current_primogems']}", text_color, genshin_font(21),anchor="lm")
+    text_draw.text((722, 323), f"{award_data['data']['month_data']['last_primogems']}", text_color, genshin_font(21),anchor="lm")
 
-    #上月原石/摩拉
-    text_draw.text((762, 359), f"{award_data['data']['month_data']['last_primogems']}", new_color, genshin_font(21),anchor="lm")
-    text_draw.text((762, 395), f"{award_data['data']['month_data']['last_mora']}", new_color, genshin_font(21),anchor="lm")
+    #本月/上月摩拉
+    text_draw.text((722, 359), f"{award_data['data']['month_data']['current_mora']}", text_color, genshin_font(21),anchor="lm")
+    text_draw.text((722, 395), f"{award_data['data']['month_data']['last_mora']}", text_color, genshin_font(21),anchor="lm")
 
     #收入比例
     for index,i in enumerate(award_data['data']['month_data']['group_by']):
-        text_draw.text((721, 445 + index * 32), f"{str(i['num'])}({str(i['percent'])}%)", new_color, genshin_font(21),anchor="lm")
+        text_draw.text((681, 445 + index * 32), f"{str(i['num'])}({str(i['percent'])}%)", text_color, genshin_font(21),anchor="lm")
 
     #基本四项
-    text_draw.text((415, 314), f"{daily_data['current_resin']}/{daily_data['max_resin']}", new_color, genshin_font(28),anchor="lm")
-    text_draw.text((415, 408), f'{daily_data["current_home_coin"]}/{daily_data["max_home_coin"]}', new_color, genshin_font(28),anchor="lm")
-    text_draw.text((415, 503), f"{daily_data['finished_task_num']}/{daily_data['total_task_num']}", new_color, genshin_font(28),anchor="lm")
-    text_draw.text((415, 597), f"{str(daily_data['resin_discount_num_limit'] - daily_data['remain_resin_discount_num'])}/{daily_data['resin_discount_num_limit']}", new_color, genshin_font(28),anchor="lm")
+    text_draw.text((390, 314), f"{daily_data['current_resin']}/{daily_data['max_resin']}", text_color, genshin_font(26),anchor="lm")
+    text_draw.text((390, 408), f'{daily_data["current_home_coin"]}/{daily_data["max_home_coin"]}', text_color, genshin_font(26),anchor="lm")
+    text_draw.text((390, 503), f"{daily_data['finished_task_num']}/{daily_data['total_task_num']}", text_color, genshin_font(26),anchor="lm")
+    text_draw.text((390, 597), f"{str(daily_data['resin_discount_num_limit'] - daily_data['remain_resin_discount_num'])}/{daily_data['resin_discount_num_limit']}", text_color, genshin_font(26),anchor="lm")
 
     #树脂恢复时间计算
     resin_recovery_time = seconds2hours(
@@ -1427,13 +1491,22 @@ async def draw_info_pic(uid,image = None):
     next_resin_rec_time = seconds2hours(
         8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
             daily_data['resin_recovery_time'])))
-    rec_time = f' ({next_resin_rec_time}/{resin_recovery_time})'
+    text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18),anchor="lm")
+
+    text_draw.text((170, 331), f"预计                后全部恢复", text_color, genshin_font(18),anchor="lm")
+    text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18),anchor="lm")
 
     #洞天宝钱时间计算
     coin_rec_time = seconds2hours(int(daily_data["home_coin_recovery_time"]))
-    coin_add_speed = math.ceil((daily_data["max_home_coin"] - daily_data["current_home_coin"]) / (
-            int(daily_data["home_coin_recovery_time"]) / 60 / 60))
-    coin = f'（{coin_rec_time} 约{coin_add_speed}/h）'
+
+    if daily_data["home_coin_recovery_time"] == "0":
+        text_draw.text((170, 425), f"已满", text_color, genshin_font(18),anchor="lm")
+    else:
+        coin_add_speed = math.ceil((daily_data["max_home_coin"] - daily_data["current_home_coin"]) / (
+                int(daily_data["home_coin_recovery_time"]) / 60 / 60))
+        text_draw.text((270, 399), f"约{coin_add_speed}/h", text_color, genshin_font(18),anchor="lm")
+        text_draw.text((170, 425), f"预计                后达到上限", text_color, genshin_font(18),anchor="lm")
+        text_draw.text((208, 425), f"{coin_rec_time}", highlight_color, genshin_font(18),anchor="lm")
 
     if daily_data['is_extra_task_reward_received']:
         daily_task_status = "「每日委托」奖励已领取"
@@ -1441,52 +1514,52 @@ async def draw_info_pic(uid,image = None):
         daily_task_status = "「每日委托」奖励未领取"
 
     #详细信息
-    text_draw.text((190, 331), f"将于{rec_time}后全部恢复", new_color, genshin_font(18),anchor="lm")
-    text_draw.text((190, 425), f"预计{coin}后达到储存上限", new_color, genshin_font(18),anchor="lm")
-    text_draw.text((190, 518), f"{daily_task_status}", new_color, genshin_font(18),anchor="lm")
-    text_draw.text((190, 614), f"本周剩余消耗减半次数", new_color, genshin_font(18),anchor="lm")
+    text_draw.text((170, 518), f"{daily_task_status}", text_color, genshin_font(18),anchor="lm")
+    text_draw.text((170, 614), f"本周剩余消耗减半次数", text_color, genshin_font(18),anchor="lm")
 
     #派遣图片准备
     char_bg_path = os.path.join(TEXT_PATH, "char_bg.png")
 
     char_bg = Image.open(char_bg_path)
-
-    char_color = (math.floor(bg_color[0] + 10 if bg_color[0] + r <= 255 else 255),
-                  math.floor(bg_color[1] + 10 if bg_color[1] + r <= 255 else 255),
-                  math.floor(bg_color[2] + 10 if bg_color[2] + r <= 255 else 255))
-
     charset_mask = Image.new("RGBA", (900, 130), char_color)
 
     #派遣
     for index,i in enumerate(daily_data["expeditions"]):
+        for j in char_data:
+            if i["avatar_side_icon"].split("_")[-1] == j["image"].split("_")[-1]:
+                name = j["name"]
         if not os.path.exists(os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")):
             get_char_img_pic(f"https://upload-bbs.mihoyo.com/game_record/genshin/character_image/UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
-        char_stand_img = os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
-        char_stand = Image.open(char_stand_img)
-        char_stand_mask = Image.open(os.path.join(TEXT_PATH, "stand_mask.png"))
-        charpic = Image.new("RGBA", (900, 130))
+        #char_stand_img = os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
+        #char_stand = Image.open(char_stand_img)
+        #char_stand_mask = Image.open(os.path.join(TEXT_PATH, "stand_mask.png"))
 
-        charpic_temp = Image.new("RGBA", (900, 130))
-        charpic_temp.paste(char_stand, (395, -99), char_stand_mask)
+        #charpic_temp = Image.new("RGBA", (900, 130))
+        #charpic_temp.paste(char_stand, (395, -99), char_stand_mask)
+        charpic = Image.new("RGBA", (900, 130))
         char_icon = Image.open(BytesIO(get(i['avatar_side_icon']).content))
+
+        char_namecard_img = Image.open(os.path.join(CHAR_NAMECARD_PATH,str(name + ".png")))
+        char_namecard_img = char_namecard_img.resize((591,81), Image.ANTIALIAS)
+        char_namecard_img.putalpha(char_namecard_img.getchannel('A').point(lambda i: i*0.8 if i>0 else 0))
 
         char_icon_scale = char_icon.resize((140,140),Image.ANTIALIAS)
         charpic.paste(charset_mask, (0, 0), char_bg)
         charpic.paste(char_icon_scale, (63, -26), char_icon_scale)
-        charpic.paste(charpic_temp, (0, 0), charpic_temp)
+        charpic.paste(char_namecard_img, (247, 24), char_namecard_img)
 
         charpic_draw = ImageDraw.Draw(charpic)
-
+        
         if i['status'] == 'Finished':
-            charpic_draw.text((200, 65), f"探索完成", new_color, genshin_font(24),anchor="lm")
+            charpic_draw.text((200, 65), f"探索完成", text_color, genshin_font(24),anchor="lm")
         else:
             remained_timed: str = seconds2hours(i['remained_time'])
-            charpic_draw.text((200, 65), f"剩余时间 {remained_timed}", new_color, genshin_font(24),anchor="lm")
+            charpic_draw.text((200, 65), f"剩余时间 {remained_timed}", text_color, genshin_font(24),anchor="lm")
 
-        bg_img.paste(charpic, (0,748 + 133*index), charpic)
+        bg_img.paste(charpic, (-15,748 + 115*index), charpic)
 
     end_pic = Image.open(os.path.join(TEXT_PATH,"abyss_3.png"))
-    bg_img.paste(end_pic,(0,1430),end_pic)
+    bg_img.paste(end_pic,(0,1340),end_pic)
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()
@@ -1495,29 +1568,7 @@ async def draw_info_pic(uid,image = None):
     resultmes = imgmes
     return resultmes
 
-def create_rounded_rectangle_mask(rectangle, radius):
-    solid_fill = (50, 50, 50, 255)
-    i = Image.new("RGBA", rectangle.size, (0, 0, 0, 0))
-
-    corner = Image.new('RGBA', (radius, radius), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(corner)
-    draw.pieslice((0, 0, radius * 2, radius * 2), 180, 270, fill=solid_fill)
-
-    mx, my = rectangle.size
-
-    i.paste(corner, (0, 0), corner)
-    i.paste(corner.rotate(90), (0, my - radius), corner.rotate(90))
-    i.paste(corner.rotate(180), (mx - radius, my - radius), corner.rotate(180))
-    i.paste(corner.rotate(270), (mx - radius, 0), corner.rotate(270))
-
-    draw = ImageDraw.Draw(i)
-    draw.rectangle([(radius, 0), (mx - radius, my)], fill=solid_fill)
-    draw.rectangle([(0, radius), (mx, my - radius)], fill=solid_fill)
-
-    return i
-
-
-async def draw_event_pic():
+async def draw_event_pic() -> None:
     raw_data = await get_genshin_events("List")
     raw_time_data = await get_genshin_events("Content")
 
@@ -1528,30 +1579,30 @@ async def draw_event_pic():
         for i in raw_time_data["data"]["list"]:
             if k["title"] in i["title"]:
                 content_bs = BeautifulSoup(i['content'], 'lxml')
-                for index,value in enumerate(content_bs.find_all("p")):
+                for index, value in enumerate(content_bs.find_all("p")):
                     if value.text == "〓任务开放时间〓":
-                        time_data = content_bs.find_all("p")[index+1].text
+                        time_data = content_bs.find_all("p")[index + 1].text
                         if "<t class=" in time_data:
                             time_data = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>", time_data)[0]
                         k["time_data"] = time_data
                     elif value.text == "〓活动时间〓":
-                        time_data = content_bs.find_all("p")[index+1].text
-                        time_data = time_data.replace("</t>","")[16:]
+                        time_data = content_bs.find_all("p")[index + 1].text
+                        time_data = time_data.replace("</t>", "")[16:]
                         k["time_data"] = time_data
                     elif value.text == "〓祈愿介绍〓":
                         start_time = content_bs.find_all("tr")[1].td.find_all("p")[0].text
                         if "<t class=" in start_time:
                             start_time = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>", start_time)[0]
                         end_time = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>",
-                                    content_bs.find_all("tr")[1].td.find_all("p")[2].text)[0]
+                                           content_bs.find_all("tr")[1].td.find_all("p")[2].text)[0]
                         if "<t class=" in end_time:
                             end_time = findall("<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>", end_time)[0]
                         time_data = start_time + "~" + end_time
                         k["time_data"] = time_data
-                        
+
         if "冒险助力礼包" in k["title"] or "纪行" in k["title"]:
             continue
-        #if "角色试用" in k["title"] or "传说任务" in k["title"]:
+        # if "角色试用" in k["title"] or "传说任务" in k["title"]:
         #    event_data['other_event'].append(k)
         elif k["tag_label"] == "扭蛋":
             event_data['gacha_event'].append(k)

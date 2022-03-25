@@ -1,11 +1,11 @@
 import asyncio,os,sys
-import base64
+import base64,re
 import traceback
 
 from aiocqhttp.exceptions import ActionFailed
 from hoshino import Service
 from hoshino.typing import CQEvent, HoshinoBot
-from nonebot import get_bot, logger
+from nonebot import get_bot, logger, MessageSegment
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from mihoyo_libs.get_data import *
@@ -274,6 +274,18 @@ async def _(bot: HoshinoBot, ev: CQEvent):
         traceback.print_exc()
         await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
 
+@sv.on_fullmatch('全部重获取')
+async def bbscoin_resign(bot: HoshinoBot, ev: CQEvent):
+    try:
+        if ev.user_id not in bot.config.SUPERUSERS:
+            return
+        await bot.send(ev, "已开始执行")
+        await daily_mihoyo_bbs_sign()
+    except ActionFailed as e:
+        await bot.send(ev, "机器人发送消息失败：{}".format(e))
+    except Exception as e:
+        traceback.print_exc()
+        await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
 
 # 每隔半小时检测树脂是否超过设定值
 @sv.scheduled_job('cron', minute="*/30")
@@ -355,6 +367,30 @@ async def daily_sign():
     conn.close()
     return
 
+# 每日零点五十进行米游币获取
+@sv.scheduled_job('cron', hour='0', minute="50")
+async def sign_at_night():
+    await daily_mihoyo_bbs_sign()
+
+async def daily_mihoyo_bbs_sign():
+    conn = sqlite3.connect('ID_DATA.db')
+    c = conn.cursor()
+    cursor = c.execute(
+        "SELECT *  FROM NewCookiesTable WHERE StatusC != ?", ("off",))
+    c_data = cursor.fetchall()
+    logger.info(c_data)
+    for row in c_data:
+        logger.info("正在执行{}".format(row[0]))
+        if row[8]:
+            await asyncio.sleep(5 + random.randint(1, 3))
+            im = await mihoyo_coin(str(row[2]),str(row[8]))
+            logger.info(im)
+            try:
+                await hoshino_bot.call_api(api='send_private_msg',
+                                    user_id=row[2], message=im)
+            except Exception:
+                logger.exception(f"{im} Error")
+    logger.info("已结束。")
 
 # 私聊事件
 @hoshino_bot.on_message('private')
@@ -401,6 +437,24 @@ async def setting(ctx):
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
             logger.exception("关闭推送失败")
+    elif "开启自动米游币" in message:
+        try:
+            uid = await select_db(userid, mode="uid")
+            im = await open_push(int(uid[0]), userid, "off", "StatusC")
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
+                                    message=im, at_sender=True)
+        except Exception:
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
+                                    message="未绑定uid信息！", at_sender=True)
+    elif "关闭自动米游币" in message:
+        try:
+            uid = await select_db(userid, mode="uid")
+            im = await open_push(int(uid[0]), userid, "on", "StatusC")
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
+                                    message=im, at_sender=True)
+        except Exception:
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
+                                    message="未绑定uid信息！", at_sender=True)
     elif '开启自动签到' in message:
         try:
             uid = await select_db(userid, mode="uid")
@@ -427,7 +481,6 @@ async def setting(ctx):
             traceback.print_exc()
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
             logger.exception("关闭自动签到失败")
-
 
 # 群聊开启 自动签到 和 推送树脂提醒 功能
 @sv.on_prefix('开启')
@@ -618,6 +671,25 @@ async def send_daily_data(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, "机器人发送消息失败：{}".format(e))
         logger.exception("发送当前状态信息失败")
 
+#图片版信息
+@sv.on_fullmatch('当前信息')
+async def send_genshin_info(bot: HoshinoBot, ev: CQEvent):
+    try:
+        message = ev.message.extract_plain_text()
+        uid = await select_db(ev.sender['user_id'], mode="uid")
+        uid = uid[0]
+        image = re.search(r"\[CQ:image,file=(.*),url=(.*)]", message)
+        im = await draw_info_pic(uid,image)
+        try:
+            await bot.send(ev, MessageSegment.image(im), at_sender=True)
+        except ActionFailed as e:
+            await bot.send(ev, "机器人发送消息失败：{}".format(e))
+            logger.exception("发送当前信息信息失败")
+    except Exception:
+        im = "没有找到绑定信息。"
+        await bot.send(ev, im, at_sender=True)
+        logger.exception("获取当前信息失败")
+
 
 # 群聊内 查询uid 的命令
 @sv.on_prefix('uid')
@@ -632,10 +704,16 @@ async def send_uid_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 2:
                     floor_num = re.findall(r"\d+", message)[1]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image)
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image)
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送uid深渊信息失败")
@@ -650,10 +728,16 @@ async def send_uid_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 2:
                     floor_num = re.findall(r"\d+", message)[1]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image, 2, "2")
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image, 2, "2")
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送uid上期深渊信息失败")
@@ -666,7 +750,10 @@ async def send_uid_info(bot: HoshinoBot, ev: CQEvent):
         else:
             try:
                 im = await draw_pic(uid, ev.sender['nickname'], image, 2)
-                await bot.send(ev, f"[CQ:image,file={im}]")
+                if im.startswith("base64://"):
+                    await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                else:
+                    await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送uid信息失败")
@@ -736,10 +823,16 @@ async def get_info(bot, ev):
                     if len(re.findall(r"\d+", message)) == 1:
                         floor_num = re.findall(r"\d+", message)[0]
                         im = await draw_abyss_pic(uid[0], nickname, floor_num, image, uid[1])
-                        await bot.send(ev, f"[CQ:image,file={im}]")
+                        if im.startswith("base64://"):
+                            await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                        else:
+                            await bot.send(ev, im, at_sender=True)
                     else:
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1])
-                        await bot.send(ev, f"[CQ:image,file={im}]")
+                        if im.startswith("base64://"):
+                            await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                        else:
+                            await bot.send(ev, im, at_sender=True)
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid深渊信息失败")
@@ -754,10 +847,16 @@ async def get_info(bot, ev):
                     if len(re.findall(r"\d+", message)) == 1:
                         floor_num = re.findall(r"\d+", message)[0]
                         im = await draw_abyss_pic(uid[0], nickname, floor_num, image, uid[1], "2")
-                        await bot.send(ev, f"[CQ:image,file={im}]")
+                        if im.startswith("base64://"):
+                            await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                        else:
+                            await bot.send(ev, im, at_sender=True)
                     else:
                         im = await draw_abyss0_pic(uid[0], nickname, image, uid[1], "2")
-                        await bot.send(ev, f"[CQ:image,file={im}]")
+                        if im.startswith("base64://"):
+                            await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                        else:
+                            await bot.send(ev, im, at_sender=True)
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid上期深渊信息失败")
@@ -770,7 +869,10 @@ async def get_info(bot, ev):
             elif m == "词云":
                 try:
                     im = await draw_word_cloud(uid[0], image, uid[1])
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid词云信息失败")
@@ -782,8 +884,11 @@ async def get_info(bot, ev):
                     logger.exception("词云数据获取失败（数据状态问题）")
             elif m == "":
                 try:
-                    bg = await draw_pic(uid[0], nickname, image, uid[1])
-                    await bot.send(ev, f"[CQ:image,file={bg}]")
+                    im = await draw_pic(uid[0], nickname, image, uid[1])
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
                 except ActionFailed as e:
                     await bot.send(ev, "机器人发送消息失败：{}".format(e))
                     logger.exception("发送uid信息失败")
@@ -815,10 +920,16 @@ async def send_mihoyo_bbs_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 2:
                     floor_num = re.findall(r"\d+", message)[1]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image, 3)
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image, 3)
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送米游社深渊信息失败")
@@ -833,10 +944,16 @@ async def send_mihoyo_bbs_info(bot: HoshinoBot, ev: CQEvent):
                 if len(re.findall(r"\d+", message)) == 1:
                     floor_num = re.findall(r"\d+", message)[0]
                     im = await draw_abyss_pic(uid, ev.sender['nickname'], floor_num, image, 3, "2")
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
                 else:
                     im = await draw_abyss0_pic(uid, ev.sender['nickname'], image, 3, "2")
-                    await bot.send(ev, f"[CQ:image,file={im}]")
+                    if im.startswith("base64://"):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送米游社上期深渊信息失败")
@@ -849,7 +966,10 @@ async def send_mihoyo_bbs_info(bot: HoshinoBot, ev: CQEvent):
         else:
             try:
                 im = await draw_pic(uid, ev.sender['nickname'], image, 3)
-                await bot.send(ev, f"[CQ:image,file={im}]")
+                if im.startswith("base64://"):
+                    await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                else:
+                    await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
                 await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送米游社信息失败")

@@ -70,7 +70,7 @@ daily_im = '''
 ==============
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
-周本减半：{}/{}
+减半已用：{}/{}
 洞天宝钱：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
@@ -161,7 +161,7 @@ char_adv_im = '''【{}】
 {}'''
 
 async def weapon_adv(name):
-    char_adv_path = os.path.join(FILE_PATH,"Genshin All Char.xlsx")
+    char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
     wb = load_workbook(char_adv_path)
     ws = wb.active
 
@@ -175,7 +175,7 @@ async def weapon_adv(name):
                     weapon_name = ws.cell(r,c).value
                     char_list.append(ws.cell(2+((r-2)//5)*5,1).value)
 
-    if char_list != []:
+    if char_list:
         im = ','.join(char_list)
         im = im + "可能会用到【{}】".format(weapon_name)
     else:
@@ -183,7 +183,8 @@ async def weapon_adv(name):
     return im
 
 async def char_adv(name):
-    char_adv_path = os.path.join(FILE_PATH,"Genshin All Char.xlsx")
+    char_name = None
+    char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
     wb = load_workbook(char_adv_path)
     ws = wb.active
     char_list = ws["A"]
@@ -196,59 +197,59 @@ async def char_adv(name):
                 char_name = i.value
     if index:
         weapon_5star = ""
-        for i in range(index,index+5):
-            if ws.cell(i,2).value:
-                weapon_5star += ws.cell(i,2).value + ">"
+        for i in range(index, index + 5):
+            if ws.cell(i, 2).value:
+                weapon_5star += ws.cell(i, 2).value + ">"
         if weapon_5star != "":
             weapon_5star = weapon_5star[:-1]
         else:
             weapon_5star = "无推荐"
         
         weapon_4star = ""
-        for i in range(index,index+5):
-            if ws.cell(i,3).value:
-                weapon_4star += ws.cell(i,3).value + ">"
+        for i in range(index, index + 5):
+            if ws.cell(i, 3).value:
+                weapon_4star += ws.cell(i, 3).value + ">"
         if weapon_4star != "":
             weapon_4star = weapon_4star[:-1]
         else:
             weapon_4star = "无推荐"
         
         weapon_3star = ""
-        for i in range(index,index+5):
-            if ws.cell(i,4).value:
-                weapon_3star += ws.cell(i,4).value + ">"
+        for i in range(index, index + 5):
+            if ws.cell(i, 4).value:
+                weapon_3star += ws.cell(i, 4).value + ">"
         if weapon_3star != "":
             weapon_3star = weapon_3star[:-1]
         else:
             weapon_3star = "无推荐"
 
         artifacts = ""
-        for i in range(index,index+5):
-            if ws.cell(i,5).value:
-                if ws.cell(i,6).value:
-                    artifacts += ws.cell(i,5).value + "*2" + ws.cell(i,6).value + "*2" + "\n"
+        for i in range(index, index + 5):
+            if ws.cell(i, 5).value:
+                if ws.cell(i, 6).value:
+                    artifacts += ws.cell(i, 5).value + "*2" + ws.cell(i, 6).value + "*2" + "\n"
                 else:
-                    artifacts += ws.cell(i,5).value + "*4" + "\n"
+                    artifacts += ws.cell(i, 5).value + "*4" + "\n"
 
         if artifacts != "":
             artifacts = artifacts[:-1]
         else:
             artifacts = "无推荐"
 
-        im = char_adv_im.format(char_name,weapon_5star,weapon_4star,weapon_3star,artifacts)
+        im = char_adv_im.format(char_name, weapon_5star, weapon_4star, weapon_3star, artifacts)
         return im
 
 async def deal_ck(mes, qid):
     if "stoken" in mes:
         login_ticket = re.search(r"login_ticket=([0-9a-zA-Z]+)", mes).group(0).split('=')[1]
-        uid = await select_db(qid,"uid")
-        #mys_id = re.search(r"login_uid=([0-9]+)", mes).group(0).split('=')[1]
+        uid = await select_db(qid, "uid")
+        # mys_id = re.search(r"login_uid=([0-9]+)", mes).group(0).split('=')[1]
         ck = await owner_cookies(uid[0])
         mys_id = re.search(r"account_id=(\d*)", ck).group(0).split('=')[1]
-        raw_data = await get_stoken_by_login_ticket(login_ticket,mys_id)
+        raw_data = await get_stoken_by_login_ticket(login_ticket, mys_id)
         stoken = raw_data["data"]["list"][0]["token"]
-        s_cookies = "stuid={};stoken={}".format(mys_id,stoken)
-        await stoken_db(s_cookies,uid[0])
+        s_cookies = "stuid={};stoken={}".format(mys_id, stoken)
+        await stoken_db(s_cookies, uid[0])
         return "添加Stoken成功！"
     else:
         aid = re.search(r"account_id=(\d*)", mes)
@@ -275,7 +276,7 @@ async def deal_ck(mes, qid):
 
         await cookies_db(uid, cookie, qid)
         return f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n' \
-                f'如果需要【开启自动签到】和【开启推送】还需要使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
+                f'如果需要【开启自动签到】和【开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
 
 async def award(uid):
     data = await get_award(uid)
@@ -455,18 +456,24 @@ async def daily(mode="push", uid=None):
                     expedition_info.append(
                         f"{avatar_name} 剩余时间{remained_timed}")
 
+            # 推送条件检查，在指令查询时 row[6] 为 0 ，而自动推送时 row[6] 为 140，这样保证用指令查询时必回复
+            # 说实话我仔细看了一会才理解…
             if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
                 tip = ''
-
+                tips = []
                 if current_resin >= row[6] != 0:
-                    tip += "\n==============\n你的树脂快满了！"
+                    tips.append("你的树脂快满了！")
                 if dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
-                    tip += "\n==============\n你的洞天宝钱快满了！"
-                # if finished_expedition_num >0:
-                #    tip += "\n==============\n你有探索派遣完成了！"
+                    tips.append("你的洞天宝钱快满了！")
+                if finished_expedition_num == current_expedition_num:
+                    tips.append("你的所有探索派遣完成了！")  # emmmm
+                if tips:
+                    tips.insert(0, '\n==============')
+                    tip = '\n'.join(tips)
+
                 max_resin = dailydata['max_resin']
                 rec_time = ''
-                # print(dailydata)
+                # logger.info(dailydata)
                 if current_resin < 160:
                     resin_recovery_time = seconds2hours(
                         dailydata['resin_recovery_time'])
@@ -483,27 +490,29 @@ async def daily(mode="push", uid=None):
                 used_resin_discount_num = resin_discount_num_limit - \
                                           dailydata['remain_resin_discount_num']
 
-                coin = f'{dailydata["current_home_coin"]}/{dailydata["max_home_coin"]}'
+                home_coin = f'{dailydata["current_home_coin"]}/{dailydata["max_home_coin"]}'
                 if dailydata["current_home_coin"] < dailydata["max_home_coin"]:
                     coin_rec_time = seconds2hours(int(dailydata["home_coin_recovery_time"]))
                     coin_add_speed = math.ceil((dailydata["max_home_coin"] - dailydata["current_home_coin"]) / (
                             int(dailydata["home_coin_recovery_time"]) / 60 / 60))
-                    coin += f'（{coin_rec_time} 约{coin_add_speed}/h）'
+                    home_coin += f'（{coin_rec_time} 约{coin_add_speed}/h）'
 
                 expedition_data = "\n".join(expedition_info)
                 send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num,
                                            is_extra_got, used_resin_discount_num,
-                                           resin_discount_num_limit, coin, current_expedition_num,
+                                           resin_discount_num_limit, home_coin, current_expedition_num,
                                            finished_expedition_num, max_expedition_num, expedition_data)
 
                 temp_list.append(
                     {"qid": row[2], "gid": row[3], "message": send_mes})
     return temp_list
 
-async def mihoyo_coin(qid):
+async def mihoyo_coin(qid,s_cookies = None):
     uid = await select_db(qid, mode="uid")
     uid = uid[0]
-    s_cookies = await get_stoken(uid)
+    if s_cookies is None:
+        s_cookies = await get_stoken(uid)
+
     if s_cookies:
         get_coin = coin.mihoyobbs_coin(s_cookies)
         im = await get_coin.task_run()
@@ -639,7 +648,7 @@ async def char_wiki(name, mode="char", level=None):
         if "errcode" in data:
             im = "不存在该角色。"
         else:
-            if 6 >= int(level) > 0:
+            if 7 >= int(level) > 0:
                 if int(level) <= 3:
                     if level == "1":
                         data = data["combat1"]
@@ -674,15 +683,15 @@ async def char_wiki(name, mode="char", level=None):
                     parameters = []
                     add_switch = True
                     for i in data["attributes"]["parameters"]:
-                        for index,j in enumerate(data["attributes"]["parameters"][i]):
+                        for index, j in enumerate(data["attributes"]["parameters"][i]):
                             if add_switch:
                                 parameters.append({})
                             if str(j).count('.') == 1 and j <= 20:
-                                parameters[index].update({i:"%.2f%%" % (j * 100)})
+                                parameters[index].update({i: "%.2f%%" % (j * 100)})
                             elif str(j).count('.') == 1:
-                                parameters[index].update({i:"%.2f" % (j * 100)})
+                                parameters[index].update({i: "%.2f" % (j * 100)})
                             else:
-                                parameters[index].update({i:j})
+                                parameters[index].update({i: j})
                         add_switch = False
 
                     for k in data["attributes"]["labels"]:
@@ -691,31 +700,31 @@ async def char_wiki(name, mode="char", level=None):
 
                     skill_detail = skill_detail[:-1]
 
-                    for i in range(1,10):
-                        if i%2!=0:
-                            skill_info = skill_info.replace("**","「",1)
+                    for i in range(1, 10):
+                        if i % 2 != 0:
+                            skill_info = skill_info.replace("**", "「", 1)
                         else:
-                            skill_info = skill_info.replace("**","」",1)
+                            skill_info = skill_info.replace("**", "」", 1)
 
                     mes_list.append({
-                                "type": "node",
-                                "data": {
-                                    "name": "小仙",
-                                    "uin": "3399214199",
-                                    "content":"【" + skill_name + "】" + "\n" + skill_info
-                                        }
-                                    })
+                        "type": "node",
+                        "data": {
+                            "name"   : "小仙",
+                            "uin"    : "3399214199",
+                            "content": "【" + skill_name + "】" + "\n" + skill_info
+                        }
+                    })
 
-                    for index,i in enumerate(parameters):
+                    for index, i in enumerate(parameters):
                         mes = skill_detail.format(**i)
                         node_data = {
-                                "type": "node",
-                                "data": {
-                                    "name": "小仙",
-                                    "uin": "3399214199",
-                                    "content":"lv." + str(index+1) + "\n" + mes
-                                        }
-                                    }
+                            "type": "node",
+                            "data": {
+                                "name"   : "小仙",
+                                "uin"    : "3399214199",
+                                "content": "lv." + str(index + 1) + "\n" + mes
+                            }
+                        }
                         mes_list.append(node_data)
                     im = mes_list
 

@@ -22,11 +22,6 @@ superusers = {int(x) for x in config.superusers}
 draw_event_schedule = require("nonebot_plugin_apscheduler").scheduler
 clean_cache_schedule = require("nonebot_plugin_apscheduler").scheduler
 daily_sign_schedule = require("nonebot_plugin_apscheduler").scheduler
-resin_notic_schedule = require("nonebot_plugin_apscheduler").scheduler
-
-draw_event_schedule = require("nonebot_plugin_apscheduler").scheduler
-clean_cache_schedule = require("nonebot_plugin_apscheduler").scheduler
-daily_sign_schedule = require("nonebot_plugin_apscheduler").scheduler
 daily_mihoyo_bbs_sign_schedule = require("nonebot_plugin_apscheduler").scheduler
 resin_notic_schedule = require("nonebot_plugin_apscheduler").scheduler
 

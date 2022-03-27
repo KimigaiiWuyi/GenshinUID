@@ -45,14 +45,14 @@ async def send_audio(bot: HoshinoBot, ev: CQEvent):
         name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         im = await audio_wiki(name, message)
         if name == "列表":
-            await bot.send(ev, f"[CQ:image,file={im}]")
+            await bot.send(ev, MessageSegment.image(im))
         else:
-            await bot.send(ev, f"[CQ:recode,file={im}]")
+            await bot.send(ev, MessageSegment.record(im))
     except ActionFailed as e:
         logger.exception("获取语音失败")
         await bot.send(ev, "机器人发送消息失败：{}".format(e))
     except Exception as e:
-        logger.exception("获取语音失败")
+        logger.exception("获取语音失败或ffmpeg未配置")
         await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
 
 
@@ -66,11 +66,10 @@ async def send_polar(bot: HoshinoBot, ev: CQEvent):
                 ls_f = base64.b64encode(f.read()).decode()
                 img_mihoyo_bbs = 'base64://' + ls_f
                 f.close()
-                im = f"[CQ:image,file={img_mihoyo_bbs}]"
                 break
             else:
                 await draw_event_pic()
-        await bot.send(ev, im)
+        await bot.send(ev, MessageSegment.image(img_mihoyo_bbs))
     except ActionFailed as e:
         await bot.send(ev, "机器人发送消息失败：{}".format(e))
         logger.exception("发送活动列表失败")

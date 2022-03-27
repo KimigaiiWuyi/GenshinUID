@@ -223,11 +223,11 @@ async def send_audio(bot:Bot, event: MessageEvent):
         else:
             await get_audio.send(MessageSegment.record(im))
     except ActionFailed:
-        await get_audio.send("不存在该语音ID或者不存在该角色。")
-        logger.exception("获取语音失败")
+        await get_audio.send("语音发送失败。")
+        logger.exception("语音发送失败")
     except Exception:
         await get_audio.send("可能是FFmpeg环境未配置。")
-        logger.exception("获取语音失败")
+        logger.exception("ffmpeg未配置")
 
 
 @get_lots.handle()

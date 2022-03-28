@@ -47,8 +47,8 @@ get_mys_info = on_startswith("mys", permission=GROUP, priority=priority)
 get_event = on_command("活动列表", priority=priority)
 get_lots = on_command("御神签", priority=priority)
 
-open_switch = on_startswith("开启", priority=priority)
-close_switch = on_startswith("关闭", priority=priority)
+open_switch = on_startswith("gs开启", priority=priority)
+close_switch = on_startswith("gs关闭", priority=priority)
 
 link_mys = on_startswith("绑定mys", priority=priority)
 link_uid = on_startswith("绑定uid", priority=priority)
@@ -441,7 +441,7 @@ async def add_cookie_func(event: MessageEvent):
 async def open_switch_func(event: MessageEvent):
     try:
         message = str(event.get_message()).strip().replace(
-            ' ', "").replace('开启', "")
+            ' ', "").replace('gs开启', "")
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = int(event.sender.user_id)
@@ -521,7 +521,7 @@ async def open_switch_func(event: MessageEvent):
 async def close_switch_func(event: MessageEvent):
     try:
         message = str(event.get_message()).strip().replace(
-            ' ', "").replace('关闭', "")
+            ' ', "").replace('gs关闭', "")
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = int(event.sender.user_id)

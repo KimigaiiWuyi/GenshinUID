@@ -1585,7 +1585,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
 
         char_namecard_img = Image.open(os.path.join(CHAR_NAMECARD_PATH, str(name + ".png")))
         char_namecard_img = char_namecard_img.resize((591, 81), Image.ANTIALIAS)
-        char_namecard_img.putalpha(char_namecard_img.getchannel('A').point(lambda x: x * 0.8 if x > 0 else 0))
+        char_namecard_img.putalpha(char_namecard_img.getchannel('A').point(lambda x: round(x * 0.8) if x > 0 else 0))
 
         char_icon_scale = char_icon.resize((140, 140), Image.ANTIALIAS)
         charpic.paste(charset_mask, (0, 0), char_bg)

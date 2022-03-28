@@ -1527,26 +1527,29 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
                    text_color, genshin_font(26), anchor="lm")
 
     # 树脂恢复时间计算
-    resin_recovery_time = seconds2hours(
-        daily_data['resin_recovery_time'])
-    next_resin_rec_time = seconds2hours(
-        8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
-            daily_data['resin_recovery_time'])))
-    text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18), anchor="lm")
+    if daily_data['resin_recovery_time'] <= 0:
+        text_draw.text((170, 331), f"已全部恢复", text_color, genshin_font(18), anchor="lm")
+    else:
+        resin_recovery_time = seconds2hours(
+            daily_data['resin_recovery_time'])
+        next_resin_rec_time = seconds2hours(
+            8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
+                daily_data['resin_recovery_time'])))
+        text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18), anchor="lm")
 
-    text_draw.text((170, 331), f"预计                后全部恢复", text_color, genshin_font(18), anchor="lm")
-    text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18), anchor="lm")
+        text_draw.text((170, 331), f"预计                 后全部恢复", text_color, genshin_font(18), anchor="lm")
+        text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18), anchor="lm")
 
     # 洞天宝钱时间计算
     coin_rec_time = seconds2hours(int(daily_data["home_coin_recovery_time"]))
 
     if daily_data["home_coin_recovery_time"] == "0":
-        text_draw.text((170, 425), f"已满", text_color, genshin_font(18), anchor="lm")
+        text_draw.text((170, 425), f"已达到上限", text_color, genshin_font(18), anchor="lm")
     else:
         coin_add_speed = math.ceil((daily_data["max_home_coin"] - daily_data["current_home_coin"]) / (
                 int(daily_data["home_coin_recovery_time"]) / 60 / 60))
         text_draw.text((270, 399), f"约{coin_add_speed}/h", text_color, genshin_font(18), anchor="lm")
-        text_draw.text((170, 425), f"预计                后达到上限", text_color, genshin_font(18), anchor="lm")
+        text_draw.text((170, 425), f"预计                 后达到上限", text_color, genshin_font(18), anchor="lm")
         text_draw.text((208, 425), f"{coin_rec_time}", highlight_color, genshin_font(18), anchor="lm")
 
     if daily_data['is_extra_task_reward_received']:

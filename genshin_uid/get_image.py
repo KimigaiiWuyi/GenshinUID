@@ -1527,7 +1527,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
                    text_color, genshin_font(26), anchor="lm")
 
     # 树脂恢复时间计算
-    if daily_data['resin_recovery_time'] <= 0:
+    if int(daily_data['resin_recovery_time']) <= 0:
         text_draw.text((170, 331), f"已全部恢复", text_color, genshin_font(18), anchor="lm")
     else:
         resin_recovery_time = seconds2hours(
@@ -1543,7 +1543,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
     # 洞天宝钱时间计算
     coin_rec_time = seconds2hours(int(daily_data["home_coin_recovery_time"]))
 
-    if daily_data["home_coin_recovery_time"] == "0":
+    if int(daily_data["home_coin_recovery_time"]) <= 0:
         text_draw.text((170, 425), f"已达到上限", text_color, genshin_font(18), anchor="lm")
     else:
         coin_add_speed = math.ceil((daily_data["max_home_coin"] - daily_data["current_home_coin"]) / (

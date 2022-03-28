@@ -22,47 +22,47 @@ INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 
 avatar_json = {
-    "Albedo": "阿贝多",
-    "Ambor": "安柏",
-    "Barbara": "芭芭拉",
-    "Beidou": "北斗",
-    "Bennett": "班尼特",
-    "Chongyun": "重云",
-    "Diluc": "迪卢克",
-    "Diona": "迪奥娜",
-    "Eula": "优菈",
-    "Fischl": "菲谢尔",
-    "Ganyu": "甘雨",
-    "Hutao": "胡桃",
-    "Jean": "琴",
-    "Kazuha": "枫原万叶",
-    "Kaeya": "凯亚",
-    "Ayaka": "神里绫华",
-    "Keqing": "刻晴",
-    "Klee": "可莉",
-    "Lisa": "丽莎",
-    "Mona": "莫娜",
+    "Albedo"   : "阿贝多",
+    "Ambor"    : "安柏",
+    "Barbara"  : "芭芭拉",
+    "Beidou"   : "北斗",
+    "Bennett"  : "班尼特",
+    "Chongyun" : "重云",
+    "Diluc"    : "迪卢克",
+    "Diona"    : "迪奥娜",
+    "Eula"     : "优菈",
+    "Fischl"   : "菲谢尔",
+    "Ganyu"    : "甘雨",
+    "Hutao"    : "胡桃",
+    "Jean"     : "琴",
+    "Kazuha"   : "枫原万叶",
+    "Kaeya"    : "凯亚",
+    "Ayaka"    : "神里绫华",
+    "Keqing"   : "刻晴",
+    "Klee"     : "可莉",
+    "Lisa"     : "丽莎",
+    "Mona"     : "莫娜",
     "Ningguang": "凝光",
-    "Noel": "诺艾尔",
-    "Qiqi": "七七",
-    "Razor": "雷泽",
-    "Rosaria": "罗莎莉亚",
-    "Sucrose": "砂糖",
+    "Noel"     : "诺艾尔",
+    "Qiqi"     : "七七",
+    "Razor"    : "雷泽",
+    "Rosaria"  : "罗莎莉亚",
+    "Sucrose"  : "砂糖",
     "Tartaglia": "达达利亚",
-    "Venti": "温迪",
+    "Venti"    : "温迪",
     "Xiangling": "香菱",
-    "Xiao": "魈",
-    "Xingqiu": "行秋",
-    "Xinyan": "辛焱",
-    "Yanfei": "烟绯",
-    "Zhongli": "钟离",
-    "Yoimiya": "宵宫",
-    "Sayu": "早柚",
-    "Shogun": "雷电将军",
-    "Aloy": "埃洛伊",
-    "Sara": "九条裟罗",
-    "Kokomi": "珊瑚宫心海",
-    "Shenhe": "申鹤"
+    "Xiao"     : "魈",
+    "Xingqiu"  : "行秋",
+    "Xinyan"   : "辛焱",
+    "Yanfei"   : "烟绯",
+    "Zhongli"  : "钟离",
+    "Yoimiya"  : "宵宫",
+    "Sayu"     : "早柚",
+    "Shogun"   : "雷电将军",
+    "Aloy"     : "埃洛伊",
+    "Sara"     : "九条裟罗",
+    "Kokomi"   : "珊瑚宫心海",
+    "Shenhe"   : "申鹤"
 }
 
 daily_im = '''
@@ -167,13 +167,13 @@ async def weapon_adv(name):
 
     weapon_name = ""
     char_list = []
-    for c in range(2,5):
-        for r in range(2,300):
-            if ws.cell(r,c).value:
-                #if all(i in ws.cell(r,c).value for i in name):
-                if name in ws.cell(r,c).value:
-                    weapon_name = ws.cell(r,c).value
-                    char_list.append(ws.cell(2+((r-2)//5)*5,1).value)
+    for c in range(2, 5):
+        for r in range(2, 300):
+            if ws.cell(r, c).value:
+                # if all(i in ws.cell(r,c).value for i in name):
+                if name in ws.cell(r, c).value:
+                    weapon_name = ws.cell(r, c).value
+                    char_list.append(ws.cell(2 + ((r - 2) // 5) * 5, 1).value)
 
     if char_list:
         im = ','.join(char_list)

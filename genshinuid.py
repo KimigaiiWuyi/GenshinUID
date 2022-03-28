@@ -412,7 +412,7 @@ async def setting(ctx):
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
                                        message='校验失败！请输入正确的Cookies！\n错误信息为{}'.format(e))
             logger.exception("Cookie校验失败")
-    elif '开启推送' in message:
+    elif 'gs开启推送' in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "on", "StatusA")
@@ -424,7 +424,7 @@ async def setting(ctx):
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
             logger.exception("开启推送失败")
-    elif '关闭推送' in message:
+    elif 'gs关闭推送' in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "off", "StatusA")
@@ -436,7 +436,7 @@ async def setting(ctx):
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
             logger.exception("关闭推送失败")
-    elif "开启自动米游币" in message:
+    elif "gs开启自动米游币" in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "off", "StatusC")
@@ -445,7 +445,7 @@ async def setting(ctx):
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
                                     message="未绑定uid信息！", at_sender=True)
-    elif "关闭自动米游币" in message:
+    elif "gs关闭自动米游币" in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "on", "StatusC")
@@ -454,7 +454,7 @@ async def setting(ctx):
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
                                     message="未绑定uid信息！", at_sender=True)
-    elif '开启自动签到' in message:
+    elif 'gs开启自动签到' in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "on", "StatusB")
@@ -467,7 +467,7 @@ async def setting(ctx):
             traceback.print_exc()
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
             logger.exception("开启自动签到失败")
-    elif '关闭自动签到' in message:
+    elif 'gs关闭自动签到' in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "off", "StatusA")
@@ -482,7 +482,7 @@ async def setting(ctx):
             logger.exception("关闭自动签到失败")
 
 # 群聊开启 自动签到 和 推送树脂提醒 功能
-@sv.on_prefix('开启')
+@sv.on_prefix('gs开启')
 async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
     try:
         message = ev.message.extract_plain_text()
@@ -542,7 +542,7 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
 
 
 # 群聊关闭 自动签到 和 推送树脂提醒 功能
-@sv.on_prefix('关闭')
+@sv.on_prefix('gs关闭')
 async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
     try:
         message = ev.message.extract_plain_text()

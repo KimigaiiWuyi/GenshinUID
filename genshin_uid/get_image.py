@@ -514,8 +514,7 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     panle = Image.open(os.path.join(TEXT_PATH, 'wordcloud_0.png'))
 
-    with open(os.path.join(TEXT_PATH, 'wordcloudmask.png'), 'rb') as f:
-        mask = np.array(f)
+    mask = Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png')).__array__()
 
     wc = WordCloud(
         font_path=os.path.join(FILE2_PATH, "yuanshen.ttf"),

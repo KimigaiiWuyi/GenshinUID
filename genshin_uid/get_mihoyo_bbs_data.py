@@ -1,15 +1,10 @@
-import json
 import math
 import os
 import sys
-import random
-import re
-import sqlite3
 from base64 import b64encode
-from openpyxl import load_workbook
 from io import BytesIO
 
-import requests
+from openpyxl import load_workbook
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from .get_data import *
@@ -160,6 +155,7 @@ char_adv_im = '''【{}】
 【圣遗物】：
 {}'''
 
+
 async def weapon_adv(name):
     char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
     wb = load_workbook(char_adv_path)
@@ -182,6 +178,7 @@ async def weapon_adv(name):
         im = "没有角色能使用【{}】".format(weapon_name)
     return im
 
+
 async def char_adv(name):
     char_name = None
     char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
@@ -192,7 +189,7 @@ async def char_adv(name):
     for i in char_list:
         if i.value:
             if all(g in i.value for g in name):
-            #if name in i.value:
+                # if name in i.value:
                 index = i.row
                 char_name = i.value
     if index:
@@ -204,7 +201,7 @@ async def char_adv(name):
             weapon_5star = weapon_5star[:-1]
         else:
             weapon_5star = "无推荐"
-        
+
         weapon_4star = ""
         for i in range(index, index + 5):
             if ws.cell(i, 3).value:
@@ -213,7 +210,7 @@ async def char_adv(name):
             weapon_4star = weapon_4star[:-1]
         else:
             weapon_4star = "无推荐"
-        
+
         weapon_3star = ""
         for i in range(index, index + 5):
             if ws.cell(i, 4).value:
@@ -238,6 +235,7 @@ async def char_adv(name):
 
         im = char_adv_im.format(char_name, weapon_5star, weapon_4star, weapon_3star, artifacts)
         return im
+
 
 async def deal_ck(mes, qid):
     if "stoken" in mes:
@@ -276,7 +274,8 @@ async def deal_ck(mes, qid):
 
         await cookies_db(uid, cookie, qid)
         return f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n' \
-                f'如果需要【开启自动签到】和【开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
+               f'如果需要【开启自动签到】和【开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
+
 
 async def award(uid):
     data = await get_award(uid)
@@ -422,6 +421,7 @@ async def daily(mode="push", uid=None):
     temp_list = []
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
+    c_data = None
     if mode == "push":
         cursor = c.execute(
             "SELECT *  FROM NewCookiesTable WHERE StatusA != ?", ("off",))
@@ -509,7 +509,8 @@ async def daily(mode="push", uid=None):
                     {"qid": row[2], "gid": row[3], "message": send_mes})
     return temp_list
 
-async def mihoyo_coin(qid,s_cookies = None):
+
+async def mihoyo_coin(qid, s_cookies=None):
     uid = await select_db(qid, mode="uid")
     uid = uid[0]
     if s_cookies is None:
@@ -521,6 +522,7 @@ async def mihoyo_coin(qid,s_cookies = None):
     else:
         im = "你还没有绑定Stoken~"
     return im
+
 
 async def get_event_pic():
     img_path = os.path.join(FILE2_PATH, "event.jpg")
@@ -534,6 +536,7 @@ async def get_event_pic():
         else:
             await draw_event_pic()
     return img_mes
+
 
 async def weapon_wiki(name, level=None):
     data = await get_weapon_info(name)
@@ -581,6 +584,7 @@ async def weapon_wiki(name, level=None):
 
 
 async def char_wiki(name, mode="char", level=None):
+    im = ''
     data = await get_char_info(name, mode, level if mode == "char" else None)
     if mode == "char":
         if isinstance(data, list):

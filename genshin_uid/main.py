@@ -1,19 +1,14 @@
-import asyncio
 import base64
-import os
-import sys
-import re
 
 from nonebot import (get_bot, get_driver, on_command, on_regex, on_startswith, require)
-from nonebot.adapters.onebot.v11 import (Bot, GROUP, GroupMessageEvent, MessageEvent, PRIVATE_FRIEND, MessageSegment)
+from nonebot.adapters.onebot.v11 import (Bot, GROUP, GroupMessageEvent, MessageEvent, MessageSegment, PRIVATE_FRIEND)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.permission import SUPERUSER
-from nonebot import logger
 
+# from .get_data import *
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from .get_image import *
 from .get_mihoyo_bbs_data import *
-from .get_data import *
 
 config = get_driver().config
 try:
@@ -174,10 +169,12 @@ async def daily_sign():
                 logger.exception("签到报告发送失败：{}".format(i["push_message"]))
             await asyncio.sleep(4 + random.randint(1, 3))
 
+
 # 每日零点五十进行米游币获取
 @daily_mihoyo_bbs_sign_schedule.scheduled_job('cron', hour='0', minute="50")
 async def sign_at_night():
     await daily_mihoyo_bbs_sign()
+
 
 async def daily_mihoyo_bbs_sign():
     bot = get_bot()
@@ -191,11 +188,11 @@ async def daily_mihoyo_bbs_sign():
         logger.info("正在执行{}".format(row[0]))
         if row[8]:
             await asyncio.sleep(5 + random.randint(1, 3))
-            im = await mihoyo_coin(str(row[2]),str(row[8]))
+            im = await mihoyo_coin(str(row[2]), str(row[8]))
             logger.info(im)
             try:
                 await bot.call_api(api='send_private_msg',
-                                    user_id=row[2], message=im)
+                                   user_id=row[2], message=im)
             except Exception:
                 logger.exception(f"{im} Error")
     logger.info("已结束。")
@@ -589,7 +586,8 @@ async def close_switch_func(event: MessageEvent):
         await close_switch.send("发生错误 {},请检查后台输出。".format(e))
         logger.exception("关闭自动签到失败")
 
-#图片版信息
+
+# 图片版信息
 @get_genshin_info.handle()
 async def send_genshin_info(event: MessageEvent):
     try:
@@ -599,7 +597,7 @@ async def send_genshin_info(event: MessageEvent):
         uid = await select_db(qid, mode="uid")
         image = re.search(r"\[CQ:image,file=(.*),url=(.*)]", message)
         uid = uid[0]
-        im = await draw_info_pic(uid,image)
+        im = await draw_info_pic(uid, image)
         await get_genshin_info.send(MessageSegment.image(im), at_sender=True)
     except ActionFailed as e:
         await get_genshin_info.send("机器人发送消息失败：{}".format(e.info['wording']))
@@ -607,7 +605,8 @@ async def send_genshin_info(event: MessageEvent):
     except Exception:
         await get_genshin_info.send('未找到绑定信息', at_sender=True)
         logger.exception("获取/发送每月统计失败")
-        
+
+
 # 群聊内 每月统计 功能
 @monthly_data.handle()
 async def send_monthly_data(event: MessageEvent):

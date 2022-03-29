@@ -1,4 +1,3 @@
-import json
 import asyncio
 from typing import Optional, Union, Any
 import os,time
@@ -189,8 +188,8 @@ class get_cookies:
         self.useable_cookies: Optional[str] = None
         self.uid: Optional[str] = None
         self.mode: Optional[int] = None
-        self.raw_abyss_data: Optional[json] = None
-        self.raw_data: Optional[json] = None
+        self.raw_abyss_data: Optional[dict] = None
+        self.raw_data: Optional[dict] = None
         self.nickname: Optional[int] = None
         self.schedule_type: Optional[str] = None
 
@@ -1141,7 +1140,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[str] = None, mode: i
     if char_num > 8:
         tasks = []
         for index,i in enumerate(char_datas):
-            async def draw_char_pic(img: Image, char_data: json, index: int, bg_color :tuple[int, int, int],
+            async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color :tuple[int, int, int],
                                     text_color: tuple[int, int, int], bg_detail_color: tuple[int, int, int],
                                     char_high_color: tuple[int, int, int]):
                 char_mingzuo = 0

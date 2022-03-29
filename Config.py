@@ -33,7 +33,7 @@ class Config:
 
     async def load_ark(self,ark = ""):
         ark_path = os.path.join(FILE_PATH,"ARK")
-        with open(os.path.join(ark_path,"{}.json".format(ark)),'r') as load_f:
+        with open(os.path.join(ark_path,"{}.json".format(ark)),'r', encoding="utf-8") as load_f:
             im = json.load(load_f)
         return im
         

@@ -178,7 +178,7 @@ async def _message_handler(event, message: Message):
     try:
         guild_data = await guild_api.get_guild(message.guild_id)
         at_mes = re.search(r'\<\@\![0-9]+\>',message.content)
-        raw_mes = message.content.replace(at_mes.group(),"").replace(" ","").replace("/","")
+        raw_mes = message.content.replace(at_mes.group(),"").replace(" ","").replace("/","").strip()
         record_mes = raw_mes
     except Exception as e:
         qqbot.logger.info(e.with_traceback)

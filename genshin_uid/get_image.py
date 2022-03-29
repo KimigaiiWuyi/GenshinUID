@@ -514,7 +514,8 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     panle = Image.open(os.path.join(TEXT_PATH, 'wordcloud_0.png'))
 
-    mask = np.array([Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png'))])
+    with open(os.path.join(TEXT_PATH, 'wordcloudmask.png'), 'rb') as f:
+        mask = np.array(f)
 
     wc = WordCloud(
         font_path=os.path.join(FILE2_PATH, "yuanshen.ttf"),
@@ -538,6 +539,8 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+    with open('test_wdcloud.jpg','wb') as f:
+        f.write(result_buffer.getvalue())
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
     resultmes = imgmes
     return resultmes
@@ -1552,10 +1555,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
         text_draw.text((170, 425), f"预计                 后达到上限", text_color, genshin_font(18), anchor="lm")
         text_draw.text((208, 425), f"{coin_rec_time}", highlight_color, genshin_font(18), anchor="lm")
 
-    if daily_data['is_extra_task_reward_received']:
-        daily_task_status = "「每日委托」奖励已领取"
-    else:
-        daily_task_status = "「每日委托」奖励未领取"
+    daily_task_status = f"「每日委托」奖励{'已' if daily_data['is_extra_task_reward_received'] else '未'}领取"
 
     # 详细信息
     text_draw.text((170, 518), f"{daily_task_status}", text_color, genshin_font(18), anchor="lm")

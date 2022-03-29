@@ -537,8 +537,6 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     result_buffer = BytesIO()
     bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    with open('test_wdcloud.jpg','wb') as f:
-        f.write(result_buffer.getvalue())
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
     resultmes = imgmes
     return resultmes

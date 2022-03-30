@@ -7,10 +7,9 @@ from nonebot import get_bot, MessageSegment
 
 from hoshino import Service
 from hoshino.typing import CQEvent, HoshinoBot
-from mihoyo_libs.get_image import *
-from mihoyo_libs.get_mihoyo_bbs_data import *
+from .mihoyo_libs.get_image import *
+from .mihoyo_libs.get_mihoyo_bbs_data import *
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 sv = Service('genshinuid')
 hoshino_bot = get_bot()
 
@@ -25,7 +24,7 @@ async def send_char_adv(bot: HoshinoBot, ev: CQEvent):
         name = str(ev.message).strip().replace(" ", "")[:-3]
         im = await char_adv(name)
         await bot.send(ev, im)
-    except Exception as e:
+    except Exception:
         logger.exception("获取建议失败。")
 
 

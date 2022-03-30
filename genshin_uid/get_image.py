@@ -1065,7 +1065,7 @@ async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: tuple
         draw_text.text((73, 18), '{}'.format(str(char_data['fetter'])), text_color, genshin_font(16),
                        anchor="mm")
 
-    char_crop = (75 + 190 * (index % 4), 800 + 100 * (index // 4))
+    char_crop = (75 + 190 * (index % 4), 900 + 100 * (index // 4))
     STATUS.remove(char_data['name'])
     img.paste(char_0, char_crop, char_0)
 
@@ -1102,7 +1102,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     # 获取背景图片各项参数
     based_w = 900
-    based_h = 870 + char_hang * 100 if char_num > 8 else 890 + char_hang * 110
+    based_h = 970 + char_hang * 100 if char_num > 8 else 890 + char_hang * 110
     image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
@@ -1134,9 +1134,9 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     # 确定主体框架
     avatar_bg_color = Image.new("RGBA", (316, 100), bg_color)
-    panle1_color = Image.new("RGBA", (900, 800), text_color)
+    panle1_color = Image.new("RGBA", (900, 900), text_color)
     bg_img.paste(panle1_color, (0, 0), panle1)
-    bg_img.paste(panle3, (0, char_hang * 100 + 780) if char_num > 8 else (0, char_hang * 110 + 800), panle3)
+    bg_img.paste(panle3, (0, char_hang * 100 + 880) if char_num > 8 else (0, char_hang * 110 + 900), panle3)
     bg_img.paste(avatar_bg_color, (113, 98), avatar_bg)
     bg_img.paste(avatar_fg, (114, 95), avatar_fg)
 
@@ -1154,19 +1154,21 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     text_draw.text((640, 139.3), str(raw_data['stats']['achievement_number']), text_color, genshin_font(26))
     text_draw.text((640, 183.9), raw_data['stats']['spiral_abyss'], text_color, genshin_font(26))
 
-    # 宝箱
-    text_draw.text((258, 375.4), str(raw_data['stats']['magic_chest_number']), text_color, genshin_font(24))
-    text_draw.text((258, 425.4), str(raw_data['stats']['common_chest_number']), text_color, genshin_font(24))
-    text_draw.text((258, 475.4), str(raw_data['stats']['exquisite_chest_number']), text_color, genshin_font(24))
-    text_draw.text((258, 525.4), str(raw_data['stats']['precious_chest_number']), text_color, genshin_font(24))
-    text_draw.text((258, 575.4), str(raw_data['stats']['luxurious_chest_number']), text_color, genshin_font(24))
-
-    # 已获角色
-    text_draw.text((740, 547), str(raw_data['stats']['avatar_number']), text_color, genshin_font(24))
+    # 奇馈宝箱
+    text_draw.text((505, 375), str(raw_data['stats']['magic_chest_number']), text_color, genshin_font(24))
 
     # 开启锚点和秘境数量
-    text_draw.text((258, 625.4), str(raw_data['stats']['way_point_number']), text_color, genshin_font(24))
-    text_draw.text((258, 675.4), str(raw_data['stats']['domain_number']), text_color, genshin_font(24))
+    text_draw.text((505, 426), str(raw_data['stats']['way_point_number']), text_color, genshin_font(24))
+    text_draw.text((505, 477), str(raw_data['stats']['domain_number']), text_color, genshin_font(24))
+
+    # 已获角色
+    text_draw.text((505, 528), str(raw_data['stats']['avatar_number']), text_color, genshin_font(24))
+
+    # 宝箱
+    text_draw.text((245, 375), str(raw_data['stats']['common_chest_number']), text_color, genshin_font(24))
+    text_draw.text((245, 426), str(raw_data['stats']['exquisite_chest_number']), text_color, genshin_font(24))
+    text_draw.text((245, 477), str(raw_data['stats']['precious_chest_number']), text_color, genshin_font(24))
+    text_draw.text((245, 528), str(raw_data['stats']['luxurious_chest_number']), text_color, genshin_font(24))
 
     mondstadt = liyue = dragonspine = inazuma = offering = dict()
     for i in raw_data['world_explorations']:
@@ -1180,47 +1182,59 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
             inazuma = i
         elif i["name"] == "渊下宫":
             offering = i
+        elif i["name"] == "璃月层岩巨渊":
+            ChasmsMaw = i
+        elif i["name"] == "璃月层岩巨渊·地下矿区":
+            UnderChasmsMaw = i
 
-    text_draw.text((490, 370), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
+    # 层岩巨渊
+    text_draw.text((477, 727), str(ChasmsMaw['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 400), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
-    text_draw.text((513, 430), str(raw_data['stats']['anemoculus_number']), text_color, genshin_font(22))
+    text_draw.text((523, 753), str(UnderChasmsMaw['exploration_percentage'] / 10) + '%', text_color,
+                   genshin_font(22))
+    text_draw.text((500, 782), 'lv.' + str(UnderChasmsMaw['offerings'][0]['level']), text_color, genshin_font(22))
+
+    # 蒙德
+    text_draw.text((235, 600), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
+                   genshin_font(22))
+    text_draw.text((235, 630), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
+    text_draw.text((258, 660), str(raw_data['stats']['anemoculus_number']), text_color, genshin_font(22))
 
     # 璃月
-    text_draw.text((490, 490), str(liyue['exploration_percentage'] / 10) + '%', text_color,
+    text_draw.text((480, 597), str(liyue['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 520), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
-    text_draw.text((513, 550), str(raw_data['stats']['geoculus_number']), text_color, genshin_font(22))
+    text_draw.text((480, 627), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
+    text_draw.text((503, 657), str(raw_data['stats']['geoculus_number']), text_color, genshin_font(22))
 
     # 雪山
-    text_draw.text((745, 373.5), str(dragonspine['exploration_percentage'] / 10) + '%',
+    text_draw.text((238, 733), str(dragonspine['exploration_percentage'] / 10) + '%',
                    text_color,
                    genshin_font(22))
-    text_draw.text((745, 407.1), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
+    text_draw.text((238, 764), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
 
     # 稻妻
-    text_draw.text((490, 608), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
+    text_draw.text((750, 588), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 635), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
-    text_draw.text((490, 662), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
+    text_draw.text((750, 616), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
+    text_draw.text((750, 644), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
                    genshin_font(22))
-    text_draw.text((513, 689), str(raw_data['stats']['electroculus_number']), text_color, genshin_font(22))
+    text_draw.text((773, 672), str(raw_data['stats']['electroculus_number']), text_color, genshin_font(22))
 
     # 渊下宫
-    text_draw.text((745, 480), str(offering['exploration_percentage'] / 10) + '%', text_color,
+    text_draw.text((750, 750), str(offering['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
 
     # 家园
     if len(raw_data['homes']):
-        text_draw.text((693, 582.4), 'lv.' + str(raw_data['homes'][0]['level']), text_color, genshin_font(22))
-        text_draw.text((693, 620.4), str(raw_data['homes'][0]['visit_num']), text_color, genshin_font(22))
-        text_draw.text((693, 658.4), str(raw_data['homes'][0]['item_num']), text_color, genshin_font(22))
-        text_draw.text((693, 696.4), str(raw_data['homes'][0]['comfort_num']), text_color, genshin_font(22))
+        text_draw.text((720, 375), 'lv.' + str(raw_data['homes'][0]['level']), text_color, genshin_font(24))
+        text_draw.text((720, 426), str(raw_data['homes'][0]['visit_num']), text_color, genshin_font(24))
+        text_draw.text((720, 477), str(raw_data['homes'][0]['item_num']), text_color, genshin_font(24))
+        text_draw.text((720, 528), str(raw_data['homes'][0]['comfort_num']), text_color, genshin_font(24))
     else:
-        text_draw.text((693, 582.4), "未开", text_color, genshin_font(22))
-        text_draw.text((693, 620.4), "未开", text_color, genshin_font(22))
-        text_draw.text((693, 658.4), "未开", text_color, genshin_font(22))
-        text_draw.text((693, 696.4), "未开", text_color, genshin_font(22))
+        text_draw.text((720, 375), "未开", text_color, genshin_font(24))
+        text_draw.text((720, 426), "未开", text_color, genshin_font(24))
+        text_draw.text((720, 477), "未开", text_color, genshin_font(24))
+        text_draw.text((720, 528), "未开", text_color, genshin_font(24))
 
     # 确定texture2D路径
     charpic_mask_path = os.path.join(TEXT_PATH, "charpic_mask.png")

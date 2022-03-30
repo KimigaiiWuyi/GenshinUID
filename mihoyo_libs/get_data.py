@@ -749,7 +749,6 @@ async def get_calculate_info(client: ClientSession, uid, char_id, ck, name, serv
     )
     data = await req.json()
     data.update({"name": name})
-    logger.debug(name + "=" + str(char_id) + "===" + str(data))  # DEBUG
     return data
 
 

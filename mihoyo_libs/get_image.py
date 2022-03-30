@@ -1087,9 +1087,11 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     char_data = raw_data["avatars"]
 
     char_ids = []
+    char_names = []
 
     for i in char_data:
         char_ids.append(i["id"])
+        char_names.append(i["name"])
 
     char_rawdata = get_character(uid, char_ids, use_cookies)
     char_datas = char_rawdata["data"]["avatars"]
@@ -1255,10 +1257,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     char_datas.sort(key=lambda x: (-x['rarity'], -x['level'], -x['fetter']))
 
     if char_num > 8:
-        char_names = []
         client = ClientSession()
-        for i in char_datas:
-            char_names.append(i['name'])
         talent_data = await get_all_calculate_info(client, uid, char_ids,
                                                    use_cookies, char_names)
         await client.close()

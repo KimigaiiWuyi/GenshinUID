@@ -731,8 +731,7 @@ async def get_calculate_info(client: ClientSession, uid, char_id, ck, name, serv
     if uid[0] == '5':
         server_id = "cn_qd01"
     url = "https://api-takumi.mihoyo.com/event/e20200928calculate/v1/sync/avatar/detail"
-    async with AsyncClient() as client:
-        req = await client.get(
+    req = await client.get(
         url=url,
         headers={
             'DS': get_ds_token("uid={}&avatar_id={}&region={}".format(uid, char_id, server_id)),

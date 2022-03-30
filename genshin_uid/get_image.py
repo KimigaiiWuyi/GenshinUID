@@ -14,6 +14,7 @@ from wordcloud import WordCloud
 
 from .get_data import *
 
+STATUS = []
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_libs/mihoyo_bbs')
 CHAR_PATH = os.path.join(FILE2_PATH, 'chars')
@@ -27,7 +28,7 @@ WEAPON_PATH = os.path.join(FILE2_PATH, 'weapon')
 BG_PATH = os.path.join(FILE2_PATH, 'bg')
 
 
-class customize_image:
+class CustomizeImage:
     def __init__(self, image: Match, based_w: int, based_h: int) -> None:
 
         self.bg_img = self.get_image(image, based_w, based_h)
@@ -131,9 +132,9 @@ class customize_image:
         green_color = color[1]
         blue_color = color[2]
 
-        highlight_color = {"red"  : red_color - 127 if red_color > 127 else 127,
+        highlight_color = {"red": red_color - 127 if red_color > 127 else 127,
                            "green": green_color - 127 if green_color > 127 else 127,
-                           "blue" : blue_color - 127 if blue_color > 127 else 127}
+                           "blue": blue_color - 127 if blue_color > 127 else 127}
 
         max_color = max(highlight_color.values())
 
@@ -192,7 +193,7 @@ def get_rel_pic(url: str):
         f.write(get(url).content)
 
 
-class get_cookies:
+class GetCookies:
     def __init__(self) -> None:
         self.useable_cookies: Optional[str] = None
         self.uid: Optional[str] = None
@@ -545,7 +546,7 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
 async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
     # 获取Cookies
-    data_def = get_cookies()
+    data_def = GetCookies()
     retcode = await data_def.get_useable_cookies(uid, mode, date)
     if not retcode:
         return retcode
@@ -565,7 +566,7 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
     # 获取背景图片各项参数
     based_w = 900
     based_h = 660 + levels_num * 315
-    image_def = customize_image(image, based_w, based_h)
+    image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
     text_color = image_def.text_color
@@ -794,13 +795,13 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
             abyss2.paste(abyss_star1, (730, 155), abyss_star1)
         abyss2_text_draw = ImageDraw.Draw(abyss2)
         abyss2_text_draw.text((87, 30), f"第{j + 1}间", text_color, genshin_font(21))
-        timeStamp1 = int(floors_data['levels'][j]['battles'][0]['timestamp'])
-        timeStamp2 = int(floors_data['levels'][j]['battles'][1]['timestamp'])
-        timeArray1 = time.localtime(timeStamp1)
-        timeArray2 = time.localtime(timeStamp2)
-        otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
-        otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
-        abyss2_text_draw.text((167, 33), f"{otherStyleTime1}/{otherStyleTime2}", text_color, genshin_font(19))
+        timestamp1 = int(floors_data['levels'][j]['battles'][0]['timestamp'])
+        timestamp2 = int(floors_data['levels'][j]['battles'][1]['timestamp'])
+        time_array1 = time.localtime(timestamp1)
+        time_array2 = time.localtime(timestamp2)
+        other_style_time1 = time.strftime("%Y--%m--%d %H:%M:%S", time_array1)
+        other_style_time2 = time.strftime("%Y--%m--%d %H:%M:%S", time_array2)
+        abyss2_text_draw.text((167, 33), f"{other_style_time1}/{other_style_time2}", text_color, genshin_font(19))
         bg_img.paste(abyss2, (0, 605 + j * 315), abyss2)
 
     bg_img.paste(abyss3, (0, len(floors_data["levels"]) * 315 + 610), abyss3)
@@ -826,7 +827,7 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date="1"):
 async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optional[Match] = None, mode: int = 2,
                          date: str = "1"):
     # 获取Cookies
-    data_def = get_cookies()
+    data_def = GetCookies()
     retcode = await data_def.get_useable_cookies(uid, mode, date)
     if not retcode:
         return retcode
@@ -848,7 +849,7 @@ async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optiona
     # 获取背景图片各项参数
     based_w = 900
     based_h = 440 + levels_num * 340
-    image_def = customize_image(image, based_w, based_h)
+    image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
     text_color = image_def.text_color
@@ -952,13 +953,13 @@ async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optiona
             abyss2.paste(abyss_star1, (730, 155), abyss_star1)
         abyss2_text_draw = ImageDraw.Draw(abyss2)
         abyss2_text_draw.text((87, 30), f"第{j + 1}间", text_color, genshin_font(21))
-        timeStamp1 = int(based_data['levels'][j]['battles'][0]['timestamp'])
-        timeStamp2 = int(based_data['levels'][j]['battles'][1]['timestamp'])
-        timeArray1 = time.localtime(timeStamp1)
-        timeArray2 = time.localtime(timeStamp2)
-        otherStyleTime1 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray1)
-        otherStyleTime2 = time.strftime("%Y--%m--%d %H:%M:%S", timeArray2)
-        abyss2_text_draw.text((167, 33), f"{otherStyleTime1}/{otherStyleTime2}", text_color, genshin_font(19))
+        timestamp1 = int(based_data['levels'][j]['battles'][0]['timestamp'])
+        timestamp2 = int(based_data['levels'][j]['battles'][1]['timestamp'])
+        time_array1 = time.localtime(timestamp1)
+        time_array2 = time.localtime(timestamp2)
+        other_style_time1 = time.strftime("%Y--%m--%d %H:%M:%S", time_array1)
+        other_style_time2 = time.strftime("%Y--%m--%d %H:%M:%S", time_array2)
+        abyss2_text_draw.text((167, 33), f"{other_style_time1}/{other_style_time2}", text_color, genshin_font(19))
         bg_img.paste(abyss2, (0, 350 + j * 340), abyss2)
 
     bg_img.paste(abyss3, (0, len(based_data['levels']) * 340 + 400), abyss3)
@@ -979,9 +980,20 @@ async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optiona
     return resultmes
 
 
+async def get_all_calculate_info(client: ClientSession, uid: str, char_id: list[str], ck: str, name: list):
+    tasks = []
+    for id_, name_ in zip(char_id, name):
+        tasks.append(get_calculate_info(client, uid, id_, ck, name_))
+    data = []
+    repos = await asyncio.wait(tasks)
+    for i in repos[0]:
+        data.append(i.result())
+    return data
+
+
 async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: tuple[int, int, int],
                         text_color: tuple[int, int, int], bg_detail_color: tuple[int, int, int],
-                        char_high_color: tuple[int, int, int], uid, use_cookies):
+                        char_high_color: tuple[int, int, int], char_talent_data: dict):
     char_mingzuo = 0
     for k in char_data['constellations']:
         if k['is_actived']:
@@ -1006,8 +1018,7 @@ async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: tuple
     char_3.putalpha(alpha) 
     """
     char_1_mask = Image.open(os.path.join(TEXT_PATH, "char_1_mask.png"))
-
-    char_talent_data = await get_calculate_info(uid, str(char_data["id"]), use_cookies)
+    STATUS.append(char_data['name'])
     if not os.path.exists(os.path.join(WEAPON_PATH, str(char_data['weapon']['icon'].split('/')[-1]))):
         get_weapon_pic(char_data['weapon']['icon'])
     if not os.path.exists(os.path.join(CHAR_PATH, str(char_data['id']) + ".png")):
@@ -1055,13 +1066,14 @@ async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: tuple
                        anchor="mm")
 
     char_crop = (75 + 190 * (index % 4), 800 + 100 * (index // 4))
+    STATUS.remove(char_data['name'])
     img.paste(char_0, char_crop, char_0)
 
 
 async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode: int = 2,
                    role_level: Optional[int] = None):
     # 获取Cookies
-    data_def = get_cookies()
+    data_def = GetCookies()
     retcode = await data_def.get_useable_cookies(uid, mode)
     if not retcode:
         return retcode
@@ -1075,9 +1087,11 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     char_data = raw_data["avatars"]
 
     char_ids = []
+    char_names = []
 
     for i in char_data:
         char_ids.append(i["id"])
+        char_names.append(i["name"])
 
     char_rawdata = get_character(uid, char_ids, use_cookies)
     char_datas = char_rawdata["data"]["avatars"]
@@ -1089,7 +1103,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     # 获取背景图片各项参数
     based_w = 900
     based_h = 870 + char_hang * 100 if char_num > 8 else 890 + char_hang * 110
-    image_def = customize_image(image, based_w, based_h)
+    image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
     text_color = image_def.text_color
@@ -1154,34 +1168,46 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     text_draw.text((258, 625.4), str(raw_data['stats']['way_point_number']), text_color, genshin_font(24))
     text_draw.text((258, 675.4), str(raw_data['stats']['domain_number']), text_color, genshin_font(24))
 
-    # 蒙德
-    text_draw.text((490, 370), str(raw_data['world_explorations'][4]['exploration_percentage'] / 10) + '%', text_color,
+    mondstadt = liyue = dragonspine = inazuma = offering = dict()
+    for i in raw_data['world_explorations']:
+        if i["name"] == "蒙德":
+            mondstadt = i
+        elif i["name"] == "璃月":
+            liyue = i
+        elif i["name"] == "龙脊雪山":
+            dragonspine = i
+        elif i["name"] == "稻妻":
+            inazuma = i
+        elif i["name"] == "渊下宫":
+            offering = i
+
+    text_draw.text((490, 370), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 400), 'lv.' + str(raw_data['world_explorations'][4]['level']), text_color, genshin_font(22))
+    text_draw.text((490, 400), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
     text_draw.text((513, 430), str(raw_data['stats']['anemoculus_number']), text_color, genshin_font(22))
 
     # 璃月
-    text_draw.text((490, 490), str(raw_data['world_explorations'][3]['exploration_percentage'] / 10) + '%', text_color,
+    text_draw.text((490, 490), str(liyue['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 520), 'lv.' + str(raw_data['world_explorations'][3]['level']), text_color, genshin_font(22))
+    text_draw.text((490, 520), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
     text_draw.text((513, 550), str(raw_data['stats']['geoculus_number']), text_color, genshin_font(22))
 
     # 雪山
-    text_draw.text((745, 373.5), str(raw_data['world_explorations'][2]['exploration_percentage'] / 10) + '%',
+    text_draw.text((745, 373.5), str(dragonspine['exploration_percentage'] / 10) + '%',
                    text_color,
                    genshin_font(22))
-    text_draw.text((745, 407.1), 'lv.' + str(raw_data['world_explorations'][2]['level']), text_color, genshin_font(22))
+    text_draw.text((745, 407.1), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
 
     # 稻妻
-    text_draw.text((490, 608), str(raw_data['world_explorations'][1]['exploration_percentage'] / 10) + '%', text_color,
+    text_draw.text((490, 608), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
-    text_draw.text((490, 635), 'lv.' + str(raw_data['world_explorations'][1]['level']), text_color, genshin_font(22))
-    text_draw.text((490, 662), 'lv.' + str(raw_data['world_explorations'][1]['offerings'][0]['level']), text_color,
+    text_draw.text((490, 635), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
+    text_draw.text((490, 662), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
                    genshin_font(22))
     text_draw.text((513, 689), str(raw_data['stats']['electroculus_number']), text_color, genshin_font(22))
 
     # 渊下宫
-    text_draw.text((745, 480), str(raw_data['world_explorations'][0]['exploration_percentage'] / 10) + '%', text_color,
+    text_draw.text((745, 480), str(offering['exploration_percentage'] / 10) + '%', text_color,
                    genshin_font(22))
 
     # 家园
@@ -1231,10 +1257,27 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     char_datas.sort(key=lambda x: (-x['rarity'], -x['level'], -x['fetter']))
 
     if char_num > 8:
+        client = ClientSession()
+        talent_data = await get_all_calculate_info(client, uid, char_ids,
+                                                   use_cookies, char_names)
+        await client.close()
+
         tasks = []
         for index, i in enumerate(char_datas):
-            tasks.append(draw_char_pic(bg_img, i, index, char_color, text_color, bg_detail_color, char_high_color, uid,
-                                       use_cookies))
+            for j in talent_data:
+                if j["name"] == i['name']:
+                    tasks.append(
+                        draw_char_pic(
+                            bg_img,
+                            i,
+                            index,
+                            char_color,
+                            text_color,
+                            bg_detail_color,
+                            char_high_color,
+                            j
+                        )
+                    )
         await asyncio.wait(tasks)
         """
             char_mingzuo = 0
@@ -1428,7 +1471,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
         return "%02d:%02d:%02d" % (h, m, s)
 
     # 获取Cookies
-    data_def = get_cookies()
+    data_def = GetCookies()
     retcode = await data_def.get_useable_cookies(uid)
     if not retcode:
         return retcode
@@ -1443,7 +1486,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
     # 获取背景图片各项参数
     based_w = 900
     based_h = 1380
-    image_def = customize_image(image, based_w, based_h)
+    image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
     text_color = image_def.text_color
@@ -1492,7 +1535,8 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
 
     # 本日原石/摩拉
     text_draw.text((675, 148),
-                   f"{award_data['data']['day_data']['current_primogems']}/{award_data['data']['day_data']['last_primogems']}",
+                   f"{award_data['data']['day_data']['current_primogems']}/"
+                   f"{award_data['data']['day_data']['last_primogems']}",
                    text_color, genshin_font(28), anchor="lm")
     text_draw.text((675, 212),
                    f"{award_data['data']['day_data']['current_mora']}\n{award_data['data']['day_data']['last_mora']}",
@@ -1523,7 +1567,8 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
     text_draw.text((390, 503), f"{daily_data['finished_task_num']}/{daily_data['total_task_num']}", text_color,
                    genshin_font(26), anchor="lm")
     text_draw.text((390, 597),
-                   f"{str(daily_data['resin_discount_num_limit'] - daily_data['remain_resin_discount_num'])}/{daily_data['resin_discount_num_limit']}",
+                   f"{str(daily_data['resin_discount_num_limit'] - daily_data['remain_resin_discount_num'])}/"
+                   f"{daily_data['resin_discount_num_limit']}",
                    text_color, genshin_font(26), anchor="lm")
 
     # 树脂恢复时间计算
@@ -1532,13 +1577,13 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
     else:
         resin_recovery_time = seconds2hours(
             daily_data['resin_recovery_time'])
-        next_resin_rec_time = seconds2hours(
-            8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
-                daily_data['resin_recovery_time'])))
-        text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18), anchor="lm")
+    next_resin_rec_time = seconds2hours(
+        8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
+            daily_data['resin_recovery_time'])))
+    text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18), anchor="lm")
 
-        text_draw.text((170, 331), f"预计                 后全部恢复", text_color, genshin_font(18), anchor="lm")
-        text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18), anchor="lm")
+    text_draw.text((170, 331), f"预计                后全部恢复", text_color, genshin_font(18), anchor="lm")
+    text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18), anchor="lm")
 
     # 洞天宝钱时间计算
     coin_rec_time = seconds2hours(int(daily_data["home_coin_recovery_time"]))
@@ -1576,10 +1621,11 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
         if not os.path.exists(
                 os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")):
             get_char_img_pic(
-                f"https://upload-bbs.mihoyo.com/game_record/genshin/character_image/UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
-        # char_stand_img = os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
-        # char_stand = Image.open(char_stand_img)
-        # char_stand_mask = Image.open(os.path.join(TEXT_PATH, "stand_mask.png"))
+                f"https://upload-bbs.mihoyo.com/game_record/genshin/character_image"
+                f"/UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][:-4]}@2x.png")
+        # char_stand_img = os.path.join(CHAR_IMG_PATH, f"UI_AvatarIcon_{i['avatar_side_icon'].split('_')[-1][
+        # :-4]}@2x.png") char_stand = Image.open(char_stand_img) char_stand_mask = Image.open(os.path.join(TEXT_PATH,
+        # "stand_mask.png"))
 
         # charpic_temp = Image.new("RGBA", (900, 130))
         # charpic_temp.paste(char_stand, (395, -99), char_stand_mask)

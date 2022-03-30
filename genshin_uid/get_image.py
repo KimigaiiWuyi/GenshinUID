@@ -6,7 +6,6 @@ from io import BytesIO
 from re import Match, findall
 from typing import Optional
 
-import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from bs4 import BeautifulSoup
 from httpx import get
@@ -514,7 +513,7 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     panle = Image.open(os.path.join(TEXT_PATH, 'wordcloud_0.png'))
 
-    mask = np.array([Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png'))])
+    mask = Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png')).__array__()
 
     wc = WordCloud(
         font_path=os.path.join(FILE2_PATH, "yuanshen.ttf"),
@@ -1232,78 +1231,9 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     if char_num > 8:
         tasks = []
-<<<<<<< HEAD
-        for index,i in enumerate(char_datas):
-            async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color :tuple[int, int, int],
-                                    text_color: tuple[int, int, int], bg_detail_color: tuple[int, int, int],
-                                    char_high_color: tuple[int, int, int]):
-                char_mingzuo = 0
-                for k in char_data['constellations']:
-                    if k['is_actived']:
-                        char_mingzuo += 1
-                if char_data['rarity'] == 5:
-                    char_0 = Image.new("RGBA", (180, 90), char_high_color)
-                else:
-                    char_0 = Image.new("RGBA", (180, 90), bg_color)
-                char_0_raw = Image.open(os.path.join(TEXT_PATH, "char_0.png"))
-                alpha = char_0_raw.getchannel('A')
-                char_0.putalpha(alpha) 
-
-                char_2 = Image.new("RGBA", (180, 90), bg_detail_color)
-                char_2_raw = Image.open(os.path.join(TEXT_PATH, "char_2.png"))
-                alpha = char_2_raw.getchannel('A')
-                char_2.putalpha(alpha) 
-
-                """
-                char_3 = Image.new("RGBA", (180, 90), bg_detail_color)
-                char_3_raw = Image.open(os.path.join(TEXT_PATH, "char_3.png"))
-                alpha = char_3_raw.getchannel('A')
-                char_3.putalpha(alpha) 
-                """
-                char_1_mask = Image.open(os.path.join(TEXT_PATH, "char_1_mask.png"))
-
-                char_talent_data = await get_calculate_info(uid, str(char_data["id"]), use_cookies)
-                if not os.path.exists(os.path.join(WEAPON_PATH, str(char_data['weapon']['icon'].split('/')[-1]))):
-                    get_weapon_pic(char_data['weapon']['icon'])
-                if not os.path.exists(os.path.join(CHAR_PATH, str(char_data['id']) + ".png")):
-                    get_char_pic(char_data['id'], char_data['icon'])
-
-                char_img = Image.open(os.path.join(CHAR_PATH, str(char_data["id"]) + ".png")).resize((81, 81), Image.ANTIALIAS)
-                weapon_img = Image.open(os.path.join(WEAPON_PATH, str(char_data['weapon']['icon'].split('/')[-1]))).resize((40, 40), Image.ANTIALIAS)
-                weapon_1_mask = char_1_mask.resize((40, 40), Image.ANTIALIAS)
-                char_0_temp = Image.new("RGBA", (180, 90))
-                char_0_temp.paste(char_img,(8, 5),char_1_mask)
-                char_0_temp.paste(weapon_img,(70, 45),weapon_1_mask)
-                char_0.paste(char_0_temp, (0, 0), char_0_temp)
-                char_0.paste(char_2, (0, 0), char_2)
-                #char_0.paste(char_3, (0, 0), char_3)
-                draw_text = ImageDraw.Draw(char_0)
-                for i in range(0,2):
-                    draw_text.text((106 + 23*i, 17), f'{str(char_talent_data["data"]["skill_list"][i]["level_current"])}', text_color, genshin_font(15),anchor="mm")
-                
-                if len(char_talent_data["data"]["skill_list"]) == 7 and char_data["name"] != "珊瑚宫心海":
-                    draw_text.text((106 + 23*2, 17), f'{str(char_talent_data["data"]["skill_list"][3]["level_current"])}', text_color, genshin_font(15),anchor="mm")
-                else:
-                    draw_text.text((106 + 23*2, 17), f'{str(char_talent_data["data"]["skill_list"][2]["level_current"])}', text_color, genshin_font(15),anchor="mm")
-                
-                draw_text.text((42,77), "Lv.{}".format(str(char_data["level"])), text_color, genshin_font(16),anchor="mm")
-                draw_text.text((162,38), "{}命".format( char_mingzuo), text_color, genshin_font(18),anchor="rm")
-                draw_text.text((115,57), 'Lv.{}'.format(str(char_data['weapon']['level'])), text_color, genshin_font(18),anchor="lm")
-                draw_text.text((115,75), '{}精'.format(str(char_data['weapon']['affix_level'])), text_color, genshin_font(16),anchor="lm")
-                
-                if str(char_data["fetter"]) == "10" or str(char_data["name"]) == "旅行者":
-                    draw_text.text((74, 19), "♥", text_color, genshin_font(14),anchor="mm")
-                else:
-                    draw_text.text((73, 18), '{}'.format(str(char_data['fetter'])), text_color, genshin_font(16),anchor="mm")
-
-                char_crop = (75 + 190 * (index % 4), 800 + 100 * (index // 4))
-                img.paste(char_0, char_crop, char_0)
-            tasks.append(draw_char_pic(bg_img, i, index, char_color, text_color, bg_detail_color, char_high_color))
-=======
         for index, i in enumerate(char_datas):
             tasks.append(draw_char_pic(bg_img, i, index, char_color, text_color, bg_detail_color, char_high_color, uid,
                                        use_cookies))
->>>>>>> 1cc1d4e76593d2caa456a406f3785afb589d4660
         await asyncio.wait(tasks)
         """
             char_mingzuo = 0
@@ -1621,10 +1551,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
         text_draw.text((170, 425), f"预计                 后达到上限", text_color, genshin_font(18), anchor="lm")
         text_draw.text((208, 425), f"{coin_rec_time}", highlight_color, genshin_font(18), anchor="lm")
 
-    if daily_data['is_extra_task_reward_received']:
-        daily_task_status = "「每日委托」奖励已领取"
-    else:
-        daily_task_status = "「每日委托」奖励未领取"
+    daily_task_status = f"「每日委托」奖励{'已' if daily_data['is_extra_task_reward_received'] else '未'}领取"
 
     # 详细信息
     text_draw.text((170, 518), f"{daily_task_status}", text_color, genshin_font(18), anchor="lm")

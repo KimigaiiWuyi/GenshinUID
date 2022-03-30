@@ -1,41 +1,43 @@
-import asyncio,os,sys
-import base64,re
+import base64
 import traceback
 
 from aiocqhttp.exceptions import ActionFailed
+from aiohttp import ClientConnectorError
+from nonebot import get_bot, MessageSegment
+
 from hoshino import Service
 from hoshino.typing import CQEvent, HoshinoBot
-from nonebot import get_bot, logger, MessageSegment
-
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-from mihoyo_libs.get_data import *
 from mihoyo_libs.get_image import *
 from mihoyo_libs.get_mihoyo_bbs_data import *
 
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 sv = Service('genshinuid')
 hoshino_bot = get_bot()
 
-FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),'mihoyo_bbs')
+FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'), 'mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
+
 
 @sv.on_rex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)')
 async def send_char_adv(bot: HoshinoBot, ev: CQEvent):
     try:
-        name = str(ev.message).strip().replace(" ","")[:-3]
+        name = str(ev.message).strip().replace(" ", "")[:-3]
         im = await char_adv(name)
         await bot.send(ev, im)
     except Exception as e:
         logger.exception("获取建议失败。")
 
+
 @sv.on_rex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)')
 async def send_weapon_adv(bot: HoshinoBot, ev: CQEvent):
     try:
-        name = str(ev.message).strip().replace(" ","")[:-3]
+        name = str(ev.message).strip().replace(" ", "")[:-3]
         im = await weapon_adv(name)
         await bot.send(ev, im)
     except Exception as e:
         logger.exception("获取建议失败。")
+
 
 @sv.on_prefix('语音')
 async def send_audio(bot: HoshinoBot, ev: CQEvent):
@@ -158,7 +160,7 @@ async def send_talents(bot: HoshinoBot, ev: CQEvent):
         num = re.findall(r"[0-9]+", message)
         if len(num) == 1:
             im = await char_wiki(name, "talents", num[0])
-            if isinstance(im,list):
+            if isinstance(im, list):
                 await hoshino_bot.send_group_forward_msg(group_id=ev.group_id, messages=im)
                 return
         else:
@@ -240,6 +242,7 @@ async def clean_cache():
 async def draw_event():
     await draw_event_pic()
 
+
 @sv.on_fullmatch('开始获取米游币')
 async def send_mihoyo_coin(bot: HoshinoBot, ev: CQEvent):
     await bot.send(ev, "开始操作……", at_sender=True)
@@ -260,6 +263,7 @@ async def send_mihoyo_coin(bot: HoshinoBot, ev: CQEvent):
             await bot.send(ev, "机器人发送消息失败：{}".format(e.info['wording']))
             logger.exception("发送签到信息失败")
 
+
 @sv.on_fullmatch('全部重签')
 async def _(bot: HoshinoBot, ev: CQEvent):
     try:
@@ -273,6 +277,7 @@ async def _(bot: HoshinoBot, ev: CQEvent):
         traceback.print_exc()
         await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
 
+
 @sv.on_fullmatch('全部重获取')
 async def bbscoin_resign(bot: HoshinoBot, ev: CQEvent):
     try:
@@ -285,6 +290,7 @@ async def bbscoin_resign(bot: HoshinoBot, ev: CQEvent):
     except Exception as e:
         traceback.print_exc()
         await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
+
 
 # 每隔半小时检测树脂是否超过设定值
 @sv.scheduled_job('cron', minute="*/30")
@@ -366,10 +372,12 @@ async def daily_sign():
     conn.close()
     return
 
+
 # 每日零点五十进行米游币获取
 @sv.scheduled_job('cron', hour='0', minute="50")
 async def sign_at_night():
     await daily_mihoyo_bbs_sign()
+
 
 async def daily_mihoyo_bbs_sign():
     conn = sqlite3.connect('ID_DATA.db')
@@ -382,14 +390,15 @@ async def daily_mihoyo_bbs_sign():
         logger.info("正在执行{}".format(row[0]))
         if row[8]:
             await asyncio.sleep(5 + random.randint(1, 3))
-            im = await mihoyo_coin(str(row[2]),str(row[8]))
+            im = await mihoyo_coin(str(row[2]), str(row[8]))
             logger.info(im)
             try:
                 await hoshino_bot.call_api(api='send_private_msg',
-                                    user_id=row[2], message=im)
+                                           user_id=row[2], message=im)
             except Exception:
                 logger.exception(f"{im} Error")
     logger.info("已结束。")
+
 
 # 私聊事件
 @hoshino_bot.on_message('private')
@@ -441,19 +450,19 @@ async def setting(ctx):
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "off", "StatusC")
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
-                                    message=im, at_sender=True)
+                                       message=im, at_sender=True)
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
-                                    message="未绑定uid信息！", at_sender=True)
+                                       message="未绑定uid信息！", at_sender=True)
     elif "gs关闭自动米游币" in message:
         try:
             uid = await select_db(userid, mode="uid")
             im = await open_push(int(uid[0]), userid, "on", "StatusC")
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
-                                    message=im, at_sender=True)
+                                       message=im, at_sender=True)
         except Exception:
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
-                                    message="未绑定uid信息！", at_sender=True)
+                                       message="未绑定uid信息！", at_sender=True)
     elif 'gs开启自动签到' in message:
         try:
             uid = await select_db(userid, mode="uid")
@@ -480,6 +489,7 @@ async def setting(ctx):
             traceback.print_exc()
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message="未找到uid绑定记录。")
             logger.exception("关闭自动签到失败")
+
 
 # 群聊开启 自动签到 和 推送树脂提醒 功能
 @sv.on_prefix('gs开启')
@@ -589,10 +599,10 @@ async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
                 else:
                     return
             except ActionFailed as e:
-                await bot.send("机器人发送消息失败：{}".format(e))
+                await bot.send(ev, "机器人发送消息失败：{}".format(e))
                 logger.exception("发送设置成功信息失败")
             except Exception as e:
-                await bot.send("发生错误 {},请检查后台输出。".format(e))
+                await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
                 logger.exception("设置简洁签到报告失败")
     except Exception as e:
         await bot.send(ev, "发生错误 {},请检查后台输出。".format(e))
@@ -670,7 +680,8 @@ async def send_daily_data(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, "机器人发送消息失败：{}".format(e))
         logger.exception("发送当前状态信息失败")
 
-#图片版信息
+
+# 图片版信息
 @sv.on_fullmatch('当前信息')
 async def send_genshin_info(bot: HoshinoBot, ev: CQEvent):
     try:
@@ -678,7 +689,7 @@ async def send_genshin_info(bot: HoshinoBot, ev: CQEvent):
         uid = await select_db(ev.sender['user_id'], mode="uid")
         uid = uid[0]
         image = re.search(r"\[CQ:image,file=(.*),url=(.*)]", message)
-        im = await draw_info_pic(uid,image)
+        im = await draw_info_pic(uid, image)
         try:
             await bot.send(ev, MessageSegment.image(im), at_sender=True)
         except ActionFailed as e:
@@ -894,6 +905,9 @@ async def get_info(bot, ev):
                 except TypeError:
                     await bot.send(ev, "获取失败，可能是Cookies失效或者未打开米游社角色详情开关。")
                     logger.exception("数据获取失败（Cookie失效/不公开信息）")
+                except ClientConnectorError:
+                    await bot.send(ev, "获取失败：连接超时")
+                    logger.exception("连接超时")
                 except Exception as e:
                     await bot.send(ev, "获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。".format(e))
                     logger.exception("数据获取失败（数据状态问题）")

@@ -5,7 +5,7 @@ from nonebot.adapters.cqhttp import (Bot, GROUP, GroupMessageEvent, MessageEvent
 from nonebot.adapters.cqhttp.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+#sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 #from .get_data import *
 from .get_image import *
 from .get_mihoyo_bbs_data import *

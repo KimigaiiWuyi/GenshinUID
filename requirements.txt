@@ -10,3 +10,4 @@ beautifulsoup4>=4.10.0
 lxml>=4.7.1
 openpyxl>=3.0.9
 numpy>=1.22.3
+aiohttp>=3.8.1

@@ -67,6 +67,7 @@ daily_im = '''
 每日委托：{}/{} 奖励{}领取
 减半已用：{}/{}
 洞天宝钱：{}
+参量质变仪：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
 {}'''
@@ -458,6 +459,13 @@ async def daily(mode="push", uid=None):
                     expedition_info.append(
                         f"{avatar_name} 剩余时间{remained_timed}")
 
+            if dailydata['transformer']['recovery_time']['reached']:
+                transformer_status = "可用"
+            else:
+                transformer_time = dailydata['transformer']['recovery_time']
+                transformer_status = "还剩{}天{}小时{}分钟可用".format(transformer_time['Day'], transformer_time['Hour'], 
+                                                                     transformer_time['Minute'])
+                                                                     
             # 推送条件检查，在指令查询时 row[6] 为 0 ，而自动推送时 row[6] 为 140，这样保证用指令查询时必回复
             # 说实话我仔细看了一会才理解…
             if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
@@ -502,8 +510,9 @@ async def daily(mode="push", uid=None):
                 expedition_data = "\n".join(expedition_info)
                 send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num,
                                            is_extra_got, used_resin_discount_num,
-                                           resin_discount_num_limit, home_coin, current_expedition_num,
-                                           finished_expedition_num, max_expedition_num, expedition_data)
+                                           resin_discount_num_limit, home_coin, transformer_status, 
+                                           current_expedition_num, finished_expedition_num, 
+                                           max_expedition_num, expedition_data)
 
                 temp_list.append(
                     {"qid": row[2], "gid": row[3], "message": send_mes})

@@ -1499,7 +1499,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
 
     # 获取背景图片各项参数
     based_w = 900
-    based_h = 1380
+    based_h = 1480
     image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
@@ -1533,10 +1533,10 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
     bg_img.paste(avatar_bg_color, (113, 98), avatar_bg)
     bg_img.paste(avatar_fg, (114, 95), avatar_fg)
 
-    info1_color = Image.new("RGBA", (900, 1300), bg_color)
+    info1_color = Image.new("RGBA", (900, 1400), bg_color)
     bg_img.paste(info1_color, (0, 0), info1)
 
-    info2_color = Image.new("RGBA", (900, 1300), text_color)
+    info2_color = Image.new("RGBA", (900, 1400), text_color)
     bg_img.paste(info2_color, (0, 0), info2)
 
     bg_img.paste(info3, (0, 0), info3)
@@ -1569,8 +1569,10 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
                    anchor="lm")
 
     # 收入比例
-    for index, i in enumerate(award_data['data']['month_data']['group_by']):
-        text_draw.text((681, 445 + index * 32), f"{str(i['num'])}({str(i['percent'])}%)", text_color, genshin_font(21),
+    group_by = award_data['data']['month_data']['group_by']
+    group_by.sort(key=lambda x: (-x['action_id']))
+    for index, i in enumerate(group_by):
+        text_draw.text((681, 447 + index * 42), f"{str(i['num'])}({str(i['percent'])}%)", text_color, genshin_font(21),
                        anchor="lm")
 
     # 基本四项
@@ -1584,6 +1586,16 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
                    f"{str(daily_data['resin_discount_num_limit'] - daily_data['remain_resin_discount_num'])}/"
                    f"{daily_data['resin_discount_num_limit']}",
                    text_color, genshin_font(26), anchor="lm")
+
+    # 参量质变仪
+    if daily_data['transformer']['recovery_time']['reached']:
+        transformer_status = "已处于可用状态"
+        text_draw.text((170, 707), f"{transformer_status}", highlight_color, genshin_font(18), anchor="lm")
+    else:
+        transformer_time = daily_data['transformer']['recovery_time']
+        transformer_status = "还剩{}天{}小时{}分钟可用".format(transformer_time['Day'], transformer_time['Hour'], 
+                                                                transformer_time['Minute'])
+        text_draw.text((170, 707), f"{transformer_status}", text_color, genshin_font(18), anchor="lm")
 
     # 树脂恢复时间计算
     if int(daily_data['resin_recovery_time']) <= 0:
@@ -1663,10 +1675,10 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
             remained_timed: str = seconds2hours(i['remained_time'])
             charpic_draw.text((200, 65), f"剩余时间 {remained_timed}", text_color, genshin_font(24), anchor="lm")
 
-        bg_img.paste(charpic, (-15, 748 + 115 * index), charpic)
+        bg_img.paste(charpic, (-15, 848 + 115 * index), charpic)
 
     end_pic = Image.open(os.path.join(TEXT_PATH, "abyss_3.png"))
-    bg_img.paste(end_pic, (0, 1340), end_pic)
+    bg_img.paste(end_pic, (0, 1440), end_pic)
 
     bg_img = bg_img.convert('RGB')
     result_buffer = BytesIO()

@@ -158,7 +158,8 @@ char_adv_im = '''【{}】
 
 
 async def weapon_adv(name):
-    char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
+    #char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
+    char_adv_path = FILE_PATH
     wb = load_workbook(char_adv_path)
     ws = wb.active
 
@@ -182,7 +183,8 @@ async def weapon_adv(name):
 
 async def char_adv(name):
     char_name = None
-    char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
+    #char_adv_path = os.path.join(FILE_PATH, "mihoyo_libs/Genshin All Char.xlsx")
+    char_adv_path = FILE_PATH
     wb = load_workbook(char_adv_path)
     ws = wb.active
     char_list = ws["A"]

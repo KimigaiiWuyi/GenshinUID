@@ -1065,7 +1065,7 @@ async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: tuple
         draw_text.text((73, 18), '{}'.format(str(char_data['fetter'])), text_color, genshin_font(16),
                        anchor="mm")
 
-    char_crop = (75 + 190 * (index % 4), 800 + 100 * (index // 4))
+    char_crop = (75 + 190 * (index % 4), 900 + 100 * (index // 4))
     STATUS.remove(char_data['name'])
     img.paste(char_0, char_crop, char_0)
 

@@ -1102,7 +1102,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     # 获取背景图片各项参数
     based_w = 900
-    based_h = 970 + char_hang * 100 if char_num > 8 else 890 + char_hang * 110
+    based_h = 970 + char_hang * 100 if char_num > 8 else 990 + char_hang * 110
     image_def = CustomizeImage(image, based_w, based_h)
     bg_img = image_def.bg_img
     bg_color = image_def.bg_color
@@ -1465,7 +1465,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
             char_draw.text((218, 67), f'{str(char_weapon_level)}级{str(char_weapon_jinglian)}精', text_color,
                            genshin_font(15),
                            anchor="lm")
-            char_crop = (0, 800 + 110 * num)
+            char_crop = (0, 900 + 110 * num)
             num += 1
             bg_img.paste(charpic, char_crop, charpic)
 

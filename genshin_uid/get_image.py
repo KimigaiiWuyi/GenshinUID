@@ -1603,13 +1603,13 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
     else:
         resin_recovery_time = seconds2hours(
             daily_data['resin_recovery_time'])
-    next_resin_rec_time = seconds2hours(
-        8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
-            daily_data['resin_recovery_time'])))
-    text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18), anchor="lm")
+        next_resin_rec_time = seconds2hours(
+            8 * 60 - ((daily_data['max_resin'] - daily_data['current_resin']) * 8 * 60 - int(
+                daily_data['resin_recovery_time'])))
+        text_draw.text((268, 305), f" {next_resin_rec_time}", text_color, genshin_font(18), anchor="lm")
 
-    text_draw.text((170, 331), f"预计                后全部恢复", text_color, genshin_font(18), anchor="lm")
-    text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18), anchor="lm")
+        text_draw.text((170, 331), f"预计                后全部恢复", text_color, genshin_font(18), anchor="lm")
+        text_draw.text((208, 331), f"{resin_recovery_time}", highlight_color, genshin_font(18), anchor="lm")
 
     # 洞天宝钱时间计算
     coin_rec_time = seconds2hours(int(daily_data["home_coin_recovery_time"]))

@@ -12,7 +12,7 @@ from .get_image import draw_event_pic
 import get_mihoyo_bbs_coin as coin
 
 FILE_PATH = os.path.dirname(__file__)
-FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_libs/mihoyo_bbs')
+FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 

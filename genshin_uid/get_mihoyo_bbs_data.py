@@ -275,7 +275,7 @@ async def deal_ck(mes, qid):
 
         await cookies_db(uid, cookie, qid)
         return f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n' \
-               f'如果需要【开启自动签到】和【开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
+               f'如果需要【gs开启自动签到】和【gs开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
 
 
 async def award(uid):

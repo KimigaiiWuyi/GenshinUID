@@ -1,7 +1,7 @@
 import base64
 
 from nonebot import (get_bot, get_driver, on_command, on_regex, on_startswith, require)
-from nonebot.adapters.onebot.v11 import (Bot, GROUP, GroupMessageEvent, MessageEvent, MessageSegment, PRIVATE_FRIEND)
+from nonebot.adapters.onebot.v11 import (Bot, GroupMessageEvent, MessageEvent, MessageSegment, PRIVATE_FRIEND)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
@@ -36,8 +36,8 @@ get_audio = on_startswith("语音", priority=priority)
 get_artifacts = on_startswith("圣遗物", priority=priority)
 get_food = on_startswith("食物", priority=priority)
 
-get_uid_info = on_startswith("uid", permission=GROUP, priority=priority)
-get_mys_info = on_startswith("mys", permission=GROUP, priority=priority)
+get_uid_info = on_startswith("uid", priority=priority)
+get_mys_info = on_startswith("mys", priority=priority)
 
 get_event = on_command("活动列表", priority=priority)
 get_lots = on_command("御神签", priority=priority)
@@ -55,7 +55,7 @@ get_genshin_info = on_command("当前信息", priority=priority)
 
 add_cookie = on_startswith("添加", permission=PRIVATE_FRIEND, priority=priority)
 
-search = on_command("查询", permission=GROUP, priority=priority)
+search = on_command("查询", priority=priority)
 get_sign = on_command("签到", priority=priority)
 get_mihoyo_coin = on_command("开始获取米游币", priority=priority)
 check = on_command("校验全部Cookies", priority=priority)
@@ -1012,6 +1012,12 @@ async def send_mihoyo_bbs_info(event: MessageEvent):
 
 
 @all_recheck.handle()
-async def resign():
+async def recheck():
     await all_recheck.send("已开始执行")
-    await sign_at_night()
+    await daily_sign()
+
+
+@all_bbscoin_recheck.handle()
+async def bbs_recheck():
+    await all_recheck.send("已开始执行")
+    await daily_mihoyo_bbs_sign()

@@ -4,7 +4,7 @@ import threading
 from base64 import b64encode
 from io import BytesIO
 from re import Match, findall
-from typing import Optional
+from typing import Optional, Tuple, List
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -67,7 +67,7 @@ class CustomizeImage:
         return bg_img
 
     @staticmethod
-    def get_bg_color(edit_bg: Image) -> tuple[int, int, int]:
+    def get_bg_color(edit_bg: Image) -> Tuple[int, int, int]:
         # 获取背景主色
         color = 8
         q = edit_bg.quantize(colors=color, method=2)
@@ -85,7 +85,7 @@ class CustomizeImage:
         return bg_color
 
     @staticmethod
-    def get_text_color(bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+    def get_text_color(bg_color: Tuple[int, int, int]) -> Tuple[int, int, int]:
         # 通过背景主色（bg_color）确定文字主色
         r = 125
         if max(*bg_color) > 255 - r:
@@ -96,7 +96,7 @@ class CustomizeImage:
         return text_color
 
     @staticmethod
-    def get_char_color(bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+    def get_char_color(bg_color: Tuple[int, int, int]) -> Tuple[int, int, int]:
         r = 140
         if max(*bg_color) > 255 - r:
             r *= -1
@@ -106,7 +106,7 @@ class CustomizeImage:
         return char_color
 
     @staticmethod
-    def get_char_high_color(bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+    def get_char_high_color(bg_color: Tuple[int, int, int]) -> Tuple[int, int, int]:
         r = 140
         d = 20
         if max(*bg_color) > 255 - r:
@@ -117,7 +117,7 @@ class CustomizeImage:
         return char_color
 
     @staticmethod
-    def get_bg_detail_color(bg_color: tuple[int, int, int]) -> tuple[int, int, int]:
+    def get_bg_detail_color(bg_color: Tuple[int, int, int]) -> Tuple[int, int, int]:
         r = 140
         if max(*bg_color) > 255 - r:
             r *= -1
@@ -127,7 +127,7 @@ class CustomizeImage:
         return bg_detail_color
 
     @staticmethod
-    def get_highlight_color(color: tuple[int, int, int]) -> tuple[int, int, int]:
+    def get_highlight_color(color: Tuple[int, int, int]) -> Tuple[int, int, int]:
         red_color = color[0]
         green_color = color[1]
         blue_color = color[2]
@@ -980,7 +980,7 @@ async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optiona
     return resultmes
 
 
-async def get_all_calculate_info(client: ClientSession, uid: str, char_id: list[str], ck: str, name: list):
+async def get_all_calculate_info(client: ClientSession, uid: str, char_id: List[str], ck: str, name: list):
     tasks = []
     for id_, name_ in zip(char_id, name):
         tasks.append(get_calculate_info(client, uid, id_, ck, name_))
@@ -991,9 +991,9 @@ async def get_all_calculate_info(client: ClientSession, uid: str, char_id: list[
     return data
 
 
-async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: tuple[int, int, int],
-                        text_color: tuple[int, int, int], bg_detail_color: tuple[int, int, int],
-                        char_high_color: tuple[int, int, int], char_talent_data: dict):
+async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: Tuple[int, int, int],
+                        text_color: Tuple[int, int, int], bg_detail_color: Tuple[int, int, int],
+                        char_high_color: Tuple[int, int, int], char_talent_data: dict):
     char_mingzuo = 0
     for k in char_data['constellations']:
         if k['is_actived']:
@@ -1593,8 +1593,8 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
         text_draw.text((170, 707), f"{transformer_status}", highlight_color, genshin_font(18), anchor="lm")
     else:
         transformer_time = daily_data['transformer']['recovery_time']
-        transformer_status = "还剩{}天{}小时{}分钟可用".format(transformer_time['Day'], transformer_time['Hour'], 
-                                                                transformer_time['Minute'])
+        transformer_status = "还剩{}天{}小时{}分钟可用".format(transformer_time['Day'], transformer_time['Hour'],
+                                                      transformer_time['Minute'])
         text_draw.text((170, 707), f"{transformer_status}", text_color, genshin_font(18), anchor="lm")
 
     # 树脂恢复时间计算

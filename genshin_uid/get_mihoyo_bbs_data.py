@@ -3,13 +3,15 @@ import os
 import sys
 from base64 import b64encode
 from io import BytesIO
+from typing import List
 
 from openpyxl import load_workbook
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from .get_data import *
-from .get_image import draw_event_pic
-import get_mihoyo_bbs_coin as coin
+# 忽略PEP8 E402 module level import not at top of file 警告
+from .get_data import *  # noqa: E402
+from .get_image import draw_event_pic  # noqa: E402
+import get_mihoyo_bbs_coin as coin  # noqa: E402
 
 FILE_PATH = os.path.dirname(__file__)
 FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_libs/mihoyo_bbs')
@@ -17,47 +19,47 @@ INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 
 avatar_json = {
-    "Albedo"   : "阿贝多",
-    "Ambor"    : "安柏",
-    "Barbara"  : "芭芭拉",
-    "Beidou"   : "北斗",
-    "Bennett"  : "班尼特",
-    "Chongyun" : "重云",
-    "Diluc"    : "迪卢克",
-    "Diona"    : "迪奥娜",
-    "Eula"     : "优菈",
-    "Fischl"   : "菲谢尔",
-    "Ganyu"    : "甘雨",
-    "Hutao"    : "胡桃",
-    "Jean"     : "琴",
-    "Kazuha"   : "枫原万叶",
-    "Kaeya"    : "凯亚",
-    "Ayaka"    : "神里绫华",
-    "Keqing"   : "刻晴",
-    "Klee"     : "可莉",
-    "Lisa"     : "丽莎",
-    "Mona"     : "莫娜",
+    "Albedo": "阿贝多",
+    "Ambor": "安柏",
+    "Barbara": "芭芭拉",
+    "Beidou": "北斗",
+    "Bennett": "班尼特",
+    "Chongyun": "重云",
+    "Diluc": "迪卢克",
+    "Diona": "迪奥娜",
+    "Eula": "优菈",
+    "Fischl": "菲谢尔",
+    "Ganyu": "甘雨",
+    "Hutao": "胡桃",
+    "Jean": "琴",
+    "Kazuha": "枫原万叶",
+    "Kaeya": "凯亚",
+    "Ayaka": "神里绫华",
+    "Keqing": "刻晴",
+    "Klee": "可莉",
+    "Lisa": "丽莎",
+    "Mona": "莫娜",
     "Ningguang": "凝光",
-    "Noel"     : "诺艾尔",
-    "Qiqi"     : "七七",
-    "Razor"    : "雷泽",
-    "Rosaria"  : "罗莎莉亚",
-    "Sucrose"  : "砂糖",
+    "Noel": "诺艾尔",
+    "Qiqi": "七七",
+    "Razor": "雷泽",
+    "Rosaria": "罗莎莉亚",
+    "Sucrose": "砂糖",
     "Tartaglia": "达达利亚",
-    "Venti"    : "温迪",
+    "Venti": "温迪",
     "Xiangling": "香菱",
-    "Xiao"     : "魈",
-    "Xingqiu"  : "行秋",
-    "Xinyan"   : "辛焱",
-    "Yanfei"   : "烟绯",
-    "Zhongli"  : "钟离",
-    "Yoimiya"  : "宵宫",
-    "Sayu"     : "早柚",
-    "Shogun"   : "雷电将军",
-    "Aloy"     : "埃洛伊",
-    "Sara"     : "九条裟罗",
-    "Kokomi"   : "珊瑚宫心海",
-    "Shenhe"   : "申鹤"
+    "Xiao": "魈",
+    "Xingqiu": "行秋",
+    "Xinyan": "辛焱",
+    "Yanfei": "烟绯",
+    "Zhongli": "钟离",
+    "Yoimiya": "宵宫",
+    "Sayu": "早柚",
+    "Shogun": "雷电将军",
+    "Aloy": "埃洛伊",
+    "Sara": "九条裟罗",
+    "Kokomi": "珊瑚宫心海",
+    "Shenhe": "申鹤"
 }
 
 daily_im = '''
@@ -442,7 +444,7 @@ async def daily(mode="push", uid=None):
             current_expedition_num = dailydata['current_expedition_num']
             max_expedition_num = dailydata['max_expedition_num']
             finished_expedition_num = 0
-            expedition_info: list[str] = []
+            expedition_info: List[str] = []
             for expedition in dailydata['expeditions']:
                 avatar: str = expedition['avatar_side_icon'][89:-4]
                 try:
@@ -463,9 +465,9 @@ async def daily(mode="push", uid=None):
                 transformer_status = "可用"
             else:
                 transformer_time = dailydata['transformer']['recovery_time']
-                transformer_status = "还剩{}天{}小时{}分钟可用".format(transformer_time['Day'], transformer_time['Hour'], 
-                                                                     transformer_time['Minute'])
-                                                                     
+                transformer_status = "还剩{}天{}小时{}分钟可用".format(transformer_time['Day'], transformer_time['Hour'],
+                                                              transformer_time['Minute'])
+
             # 推送条件检查，在指令查询时 row[6] 为 0 ，而自动推送时 row[6] 为 140，这样保证用指令查询时必回复
             # 说实话我仔细看了一会才理解…
             if current_resin >= row[6] or dailydata["max_home_coin"] - dailydata["current_home_coin"] <= 100:
@@ -510,8 +512,8 @@ async def daily(mode="push", uid=None):
                 expedition_data = "\n".join(expedition_info)
                 send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num,
                                            is_extra_got, used_resin_discount_num,
-                                           resin_discount_num_limit, home_coin, transformer_status, 
-                                           current_expedition_num, finished_expedition_num, 
+                                           resin_discount_num_limit, home_coin, transformer_status,
+                                           current_expedition_num, finished_expedition_num,
                                            max_expedition_num, expedition_data)
 
                 temp_list.append(
@@ -526,7 +528,7 @@ async def mihoyo_coin(qid, s_cookies=None):
         s_cookies = await get_stoken(uid)
 
     if s_cookies:
-        get_coin = coin.mihoyobbs_coin(s_cookies)
+        get_coin = coin.MihoyoBBSCoin(s_cookies)
         im = await get_coin.task_run()
     else:
         im = "你还没有绑定Stoken~"
@@ -724,8 +726,8 @@ async def char_wiki(name, mode="char", level=None):
                     mes_list.append({
                         "type": "node",
                         "data": {
-                            "name"   : "小仙",
-                            "uin"    : "3399214199",
+                            "name": "小仙",
+                            "uin": "3399214199",
                             "content": "【" + skill_name + "】" + "\n" + skill_info
                         }
                     })
@@ -735,8 +737,8 @@ async def char_wiki(name, mode="char", level=None):
                         node_data = {
                             "type": "node",
                             "data": {
-                                "name"   : "小仙",
-                                "uin"    : "3399214199",
+                                "name": "小仙",
+                                "uin": "3399214199",
                                 "content": "lv." + str(index + 1) + "\n" + mes
                             }
                         }

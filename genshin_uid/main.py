@@ -94,7 +94,7 @@ async def push():
             else:
                 await bot.call_api(api='send_group_msg',
                                    **{'group_id': i['gid'],
-                                      'message' : MessageSegment.at(i['qid']) + f"\n{i['message']}"})
+                                      'message': MessageSegment.at(i['qid']) + f"\n{i['message']}"})
     else:
         pass
 

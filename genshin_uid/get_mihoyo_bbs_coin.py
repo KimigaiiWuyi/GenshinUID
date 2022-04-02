@@ -9,44 +9,46 @@ from get_data import old_version_get_ds_token, random_hex
 
 # 米游社的API列表
 bbs_Cookieurl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
-bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
+bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket" \
+                 "?login_ticket={}&token_types=3&uid={}"
 bbs_Taskslist = "https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState"  # 获取任务列表
 bbs_Signurl = "https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}"  # post
-bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
+bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList" \
+              "?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
 bbs_Detailurl = "https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}"
 bbs_Shareurl = "https://bbs-api.mihoyo.com/apihub/api/getShareConf?entity_id={}&entity_type=1"
 bbs_Likeurl = "https://bbs-api.mihoyo.com/apihub/sapi/upvotePost"  # post json 
 
 mihoyobbs_List = [{
-    "id"     : "1",
+    "id": "1",
     "forumId": "1",
-    "name"   : "崩坏3",
-    "url"    : "https://bbs.mihoyo.com/bh3/"
+    "name": "崩坏3",
+    "url": "https://bbs.mihoyo.com/bh3/"
 }, {
-    "id"     : "2",
+    "id": "2",
     "forumId": "26",
-    "name"   : "原神",
-    "url"    : "https://bbs.mihoyo.com/ys/"
+    "name": "原神",
+    "url": "https://bbs.mihoyo.com/ys/"
 }, {
-    "id"     : "3",
+    "id": "3",
     "forumId": "30",
-    "name"   : "崩坏2",
-    "url"    : "https://bbs.mihoyo.com/bh2/"
+    "name": "崩坏2",
+    "url": "https://bbs.mihoyo.com/bh2/"
 }, {
-    "id"     : "4",
+    "id": "4",
     "forumId": "37",
-    "name"   : "未定事件簿",
-    "url"    : "https://bbs.mihoyo.com/wd/"
+    "name": "未定事件簿",
+    "url": "https://bbs.mihoyo.com/wd/"
 }, {
-    "id"     : "5",
+    "id": "5",
     "forumId": "34",
-    "name"   : "大别野",
-    "url"    : "https://bbs.mihoyo.com/dby/"
+    "name": "大别野",
+    "url": "https://bbs.mihoyo.com/dby/"
 }, {
-    "id"     : "6",
+    "id": "6",
     "forumId": "52",
-    "name"   : "崩坏：星穹铁道",
-    "url"    : "https://bbs.mihoyo.com/sr/"
+    "name": "崩坏：星穹铁道",
+    "url": "https://bbs.mihoyo.com/sr/"
 }]
 
 
@@ -54,30 +56,30 @@ def random_text(num: int) -> str:
     return ''.join(random.sample(string.ascii_lowercase + string.digits, num))
 
 
-class mihoyobbs_coin:
+class MihoyoBBSCoin:
     def __init__(self, cookies):
         self.postsList = None
         self.headers = {
-            "DS"                : old_version_get_ds_token(True),
-            "cookie"            : cookies,
-            "x-rpc-client_type" : "2",
-            "x-rpc-app_version" : "2.7.0",
-            "x-rpc-sys_version" : "6.0.1",
-            "x-rpc-channel"     : "mihoyo",
-            "x-rpc-device_id"   : random_hex(32),
-            "x-rpc-device_name" : random_text(random.randint(1, 10)),
+            "DS": old_version_get_ds_token(True),
+            "cookie": cookies,
+            "x-rpc-client_type": "2",
+            "x-rpc-app_version": "2.7.0",
+            "x-rpc-sys_version": "6.0.1",
+            "x-rpc-channel": "mihoyo",
+            "x-rpc-device_id": random_hex(32),
+            "x-rpc-device_name": random_text(random.randint(1, 10)),
             "x-rpc-device_model": "Mi 10",
-            "Referer"           : "https://app.mihoyo.com",
-            "Host"              : "bbs-api.mihoyo.com",
-            "User-Agent"        : "okhttp/4.8.0"
+            "Referer": "https://app.mihoyo.com",
+            "Host": "bbs-api.mihoyo.com",
+            "User-Agent": "okhttp/4.8.0"
         }
         self.Task_do = {
-            "bbs_Sign"          : False,
-            "bbs_Read_posts"    : False,
+            "bbs_Sign": False,
+            "bbs_Read_posts": False,
             "bbs_Read_posts_num": 3,
-            "bbs_Like_posts"    : False,
+            "bbs_Like_posts": False,
             "bbs_Like_posts_num": 5,
-            "bbs_Share"         : False
+            "bbs_Share": False
         }
         self.mihoyobbs_List_Use = []
         self.Today_getcoins = 0
@@ -85,24 +87,24 @@ class mihoyobbs_coin:
         self.Have_coins = 0
 
     async def task_run(self):
-        await self.Load_Mihoyobbs_List_Use()
-        start = await self.Get_taskslist()
+        await self.load_mihoyo_bbs_list_use()
+        start = await self.get_tasks_list()
         self.postsList = await self.get_list()
         sign = await self.signing()
         read = await self.read_posts()
-        like = await self.Likeposts()
+        like = await self.like_posts()
         share = await self.share_post()
         im = start + "\n" + sign + "\n" + read + "\n" + like + "\n" + share
         return im
 
-    async def Load_Mihoyobbs_List_Use(self):
+    async def load_mihoyo_bbs_list_use(self):
         for i in [2, 5]:
             for k in mihoyobbs_List:
                 if i == int(k["id"]):
                     self.mihoyobbs_List_Use.append(k)
 
     # 获取任务列表，用来判断做了哪些任务
-    async def Get_taskslist(self):
+    async def get_tasks_list(self):
         # log.info("正在获取任务列表")
         async with AsyncClient() as client:
             req = await client.get(url=bbs_Taskslist, headers=self.headers)
@@ -195,7 +197,7 @@ class mihoyobbs_coin:
             return "已完成看帖任务~共计成功{}次~".format(str(num_ok))
 
     # 点赞
-    async def Likeposts(self):
+    async def like_posts(self):
         if self.Task_do["bbs_Like_posts"]:
             return "点赞任务已经完成过了~"
         else:

@@ -12,11 +12,12 @@
   <a><img src="https://s2.loli.net/2022/02/01/QlS4piWXw5rZO3D.png"></a>
 </p>
 
-
 ## 丨我该如何安装该插件？
 
-+ 如果你使用的是[Go-cqhttp](https://github.com/Mrs4s/go-cqhttp) & [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)，**安装方法查看[此处](https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%AE%89%E8%A3%85hoshinobot-)**。
-+ 如果你使用的是[Go-cqhttp](https://github.com/Mrs4s/go-cqhttp) & [NoneBot2](https://github.com/nonebot/nonebot2)，**安装方法查看[此处](https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%AE%89%E8%A3%85nonebot2)**。（**开发者正在使用**）
++ 如果你使用的是[Go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
+  & [HoshinoBot](https://github.com/Ice-Cirno/HoshinoBot)，**安装方法查看[此处](https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%AE%89%E8%A3%85hoshinobot-)**。
++ 如果你使用的是[Go-cqhttp](https://github.com/Mrs4s/go-cqhttp)
+  & [NoneBot2](https://github.com/nonebot/nonebot2)，**安装方法查看[此处](https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%AE%89%E8%A3%85nonebot2)**。（**开发者正在使用**）
 
 + 如果你想在QQ官方的频道Bot使用此插件，你需要**做好以下准备**：
   - 拥有QQ频道机器人的开发者账号（类型：私域）
@@ -26,16 +27,17 @@
 
 ## 丨我该如何获取Cookies？[#92](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)（[@RemKeeper](https://github.com/RemKeeper)）
 
-```
-var cookie=document.cookie;
+```js
+var cookie = document.cookie;
 var Str_Num = cookie.indexOf('_MHYUUID=');
-cookie ='添加 '+cookie.substring(Str_Num);
-var ask=confirm('Cookie:'+cookie+'\n\n按确认，然后粘贴发送给机器人');
-if(ask==true)
-    {copy(cookie);
-        msg=cookie}
-else
-    {msg='Cancel'}
+cookie = '添加 ' + cookie.substring(Str_Num);
+var ask = confirm('Cookie:' + cookie + '\n\n按确认，然后粘贴发送给机器人');
+if (ask == true) {
+  copy(cookie);
+  msg = cookie
+} else {
+  msg = 'Cancel'
+}
 ```
 
 1. 复制上面全部代码，然后打开https://bbs.mihoyo.com/ys/
@@ -46,11 +48,18 @@ else
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
 
 ## 丨获取米游社Stoken([AutoMihoyoBBS](https://github.com/Womsxd/AutoMihoyoBBS#%E8%8E%B7%E5%8F%96%E7%B1%B3%E6%B8%B8%E7%A4%BECookie))
+
 **前提**：已经添加过米游社Cookies，并且已经绑定过uid(仅用于米游社币的获取)
-```sh
-var cookie=document.cookie;
-var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');
-if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
+
+```js
+var cookie = document.cookie;
+var ask = confirm('Cookie:' + cookie + '\n\nDo you want to copy the cookie to the clipboard?');
+if (ask == true) {
+  copy("添加stoken" + cookie);
+  msg = cookie
+} else {
+  msg = 'Cancel'
+}
 ```
 
 1. 复制上面全部代码，然后打开http://user.mihoyo.com/
@@ -65,8 +74,10 @@ if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
 - [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它
 - [YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info) - 米游社API来自于它
 - *[MiniGG](https://www.minigg.cn/)* - Wiki API来自于它
-- [@MingxuanGame](https://github.com/MingxuanGame) - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
-- [@shirokurakana](https://github.com/shirokurakana) - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
+- [@MingxuanGame](https://github.com/MingxuanGame)
+  - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
+- [@shirokurakana](https://github.com/shirokurakana)
+  - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc2333](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档
@@ -76,8 +87,9 @@ if(ask==true){copy("添加stoken" + cookie);msg=cookie}else{msg='Cancel'}
 
 ## 丨其他
 
-+ 如果对本插件有功能建议&Bug报告，欢迎提Issuse & Pr，每一条都会详细看过
++ 如果对本插件有功能建议&Bug报告，欢迎提Issue & Pr，每一条都会详细看过
 + 如果本插件对你有帮助，不要忘了点个Star~
 + 本项目仅供学习使用，请勿用于商业用途
 + [爱发电](https://afdian.net/@KimigaiiWuyi)
-+ [GPL-3.0 License](https://github.com/KimigaiiWuyi/GenshinUID/blob/main/LICENSE) © [@KimigaiiWuyi](https://github.com/KimigaiiWuyi)
++ [GPL-3.0 License](https://github.com/KimigaiiWuyi/GenshinUID/blob/main/LICENSE)
+  © [@KimigaiiWuyi](https://github.com/KimigaiiWuyi)

@@ -5,8 +5,8 @@ from nonebot.adapters.cqhttp import (Bot, GROUP, GroupMessageEvent, MessageEvent
 from nonebot.adapters.cqhttp.exception import ActionFailed
 from nonebot.permission import SUPERUSER
 
-#sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-#from .get_data import *
+# sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+# from .get_data import *
 from .get_image import *
 from .get_mihoyo_bbs_data import *
 
@@ -88,13 +88,14 @@ async def push():
             else:
                 await bot.call_api(api='send_group_msg',
                                    **{'group_id': i['gid'],
-                                      'message' : MessageSegment.at(i['qid']) + f"\n{i['message']}"})
+                                      'message': MessageSegment.at(i['qid']) + f"\n{i['message']}"})
 
 
 # 每日零点半进行米游社签到
 @daily_sign_schedule.scheduled_job('cron', hour='0', minute="30")
 async def sign_at_night():
     await daily_sign()
+
 
 async def daily_sign():
     bot = get_bot()
@@ -160,10 +161,12 @@ async def daily_sign():
                 logger.exception("签到报告发送失败：{}".format(i["push_message"]))
             await asyncio.sleep(4 + random.randint(1, 3))
 
+
 # 每日零点五十进行米游币获取
 @daily_mihoyo_bbs_sign_schedule.scheduled_job('cron', hour='0', minute="50")
 async def sign_at_night():
     await daily_mihoyo_bbs_sign()
+
 
 async def daily_mihoyo_bbs_sign():
     bot = get_bot()
@@ -186,6 +189,7 @@ async def daily_mihoyo_bbs_sign():
                 logger.exception(f"{im} Error")
     logger.info("已结束。")
 
+
 @get_char_adv.handle()
 async def send_char_adv(bot: Bot, event: MessageEvent):
     try:
@@ -207,7 +211,7 @@ async def send_weapon_adv(bot: Bot, event: MessageEvent):
 
 
 @get_audio.handle()
-async def send_audio(bot:Bot, event: MessageEvent):
+async def send_audio(bot: Bot, event: MessageEvent):
     message = str(event.get_message()).strip()
     message = message.replace('语音', "").replace(' ', "")
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -388,7 +392,7 @@ async def send_polar(bot: Bot, event: MessageEvent):
 
 
 @get_event.handle()
-async def send_events(bot:Bot, event: MessageEvent):
+async def send_events(bot: Bot, event: MessageEvent):
     try:
         img_mes = await get_event_pic()
         await get_event.send(MessageSegment.image(img_mes))
@@ -568,7 +572,7 @@ async def close_switch_func(bot: Bot, event: MessageEvent):
         logger.exception("关闭自动签到失败")
 
 
-#图片版信息
+# 图片版信息
 @get_genshin_info.handle()
 async def send_genshin_info(bot: Bot, event: MessageEvent):
     try:
@@ -586,8 +590,8 @@ async def send_genshin_info(bot: Bot, event: MessageEvent):
     except Exception:
         await get_genshin_info.send('未找到绑定信息', at_sender=True)
         logger.exception("获取/发送每月统计失败")
-        
-        
+
+
 # 群聊内 每月统计 功能
 @monthly_data.handle()
 async def send_monthly_data(bot: Bot, event: MessageEvent):
@@ -694,7 +698,7 @@ async def send_daily_data(bot: Bot, event: MessageEvent):
 
 # 群聊内 查询uid 的命令
 @get_uid_info.handle()
-async def send_uid_info(bot:Bot, event: MessageEvent):
+async def send_uid_info(bot: Bot, event: MessageEvent):
     try:
         message = str(event.get_message()).strip().replace(
             ' ', "").replace('uid', "")
@@ -993,7 +997,8 @@ async def genshin_resign(bot: Bot):
     await all_genshinsign_recheck.send("已开始执行")
     await sign_at_night()
 
+
 @all_bbscoin_recheck.handle()
-async def bbscoin_resign(bot:Bot, event: MessageEvent):
+async def bbscoin_resign(bot: Bot, event: MessageEvent):
     await all_bbscoin_recheck.send("已开始执行")
     await daily_mihoyo_bbs_sign()

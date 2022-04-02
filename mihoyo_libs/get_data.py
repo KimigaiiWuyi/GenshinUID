@@ -404,8 +404,8 @@ async def get_stoken_by_login_ticket(loginticket, mys_id):
             url="https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket",
             params={
                 "login_ticket": loginticket,
-                "token_types" : "3",
-                "uid"         : mys_id
+                "token_types": "3",
+                "uid": mys_id
             }
         )
     return req.json()
@@ -419,15 +419,15 @@ async def get_daily_data(uid, server_id="cn_gf01"):
             req = await client.get(
                 url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/dailyNote",
                 headers={
-                    'DS'               : get_ds_token("role_id=" + uid + "&server=" + server_id),
+                    'DS': get_ds_token("role_id=" + uid + "&server=" + server_id),
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/',
-                    "Cookie"           : await owner_cookies(uid)},
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    "Cookie": await owner_cookies(uid)},
                 params={
-                    "server" : server_id,
+                    "server": server_id,
                     "role_id": uid
                 }
             )
@@ -439,15 +439,15 @@ async def get_daily_data(uid, server_id="cn_gf01"):
                 req = await client.get(
                     url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/dailyNote",
                     headers={
-                        'DS'               : get_ds_token("role_id=" + uid + "&server=" + server_id),
+                        'DS': get_ds_token("role_id=" + uid + "&server=" + server_id),
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                                      '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/',
-                        "Cookie"           : await owner_cookies(uid)},
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        "Cookie": await owner_cookies(uid)},
                     params={
-                        "server" : server_id,
+                        "server": server_id,
                         "role_id": uid
                     }
                 )
@@ -467,10 +467,10 @@ async def get_sign_list():
                 url="https://api-takumi.mihoyo.com/event/bbs_sign_reward/home",
                 headers={
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'},
+                    'Referer': 'https://webstatic.mihoyo.com/'},
                 params={
                     "act_id": "e202009291139501"
                 }
@@ -490,15 +490,15 @@ async def get_sign_info(uid, server_id="cn_gf01"):
                 url="https://api-takumi.mihoyo.com/event/bbs_sign_reward/info",
                 headers={
                     'x-rpc-app_version': mhyVersion,
-                    "Cookie"           : await owner_cookies(uid),
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    "Cookie": await owner_cookies(uid),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'},
+                    'Referer': 'https://webstatic.mihoyo.com/'},
                 params={
                     "act_id": "e202009291139501",
                     "region": server_id,
-                    "uid"   : uid
+                    "uid": uid
                 }
             )
             data = json.loads(req.text)
@@ -514,17 +514,17 @@ async def mihoyo_bbs_sign(uid, server_id="cn_gf01"):
         req = requests.post(
             url="https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign",
             headers={
-                'User_Agent'       : 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
-                                     'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
-                                     'miHoYoBBS/2.3.0',
-                "Cookie"           : await owner_cookies(uid),
-                "x-rpc-device_id"  : random_hex(32),
-                'Origin'           : 'https://webstatic.mihoyo.com',
-                'X_Requested_With' : 'com.mihoyo.hyperion',
-                'DS'               : old_version_get_ds_token(),
+                'User_Agent': 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
+                              'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
+                              'miHoYoBBS/2.3.0',
+                "Cookie": await owner_cookies(uid),
+                "x-rpc-device_id": random_hex(32),
+                'Origin': 'https://webstatic.mihoyo.com',
+                'X_Requested_With': 'com.mihoyo.hyperion',
+                'DS': old_version_get_ds_token(),
                 'x-rpc-client_type': '5',
-                'Referer'          : 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id'
-                                     '=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
+                'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id'
+                           '=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
                 'x-rpc-app_version': '2.3.0'
             },
             json={"act_id": "e202009291139501", "uid": uid, "region": server_id}
@@ -544,23 +544,23 @@ async def get_award(uid, server_id="cn_gf01"):
                 url="https://hk4e-api.mihoyo.com/event/ys_ledger/monthInfo",
                 headers={
                     'x-rpc-app_version': mhyVersion,
-                    "Cookie"           : await owner_cookies(uid),
-                    'DS'               : old_version_get_ds_token(),
-                    "x-rpc-device_id"  : random_hex(32),
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    "Cookie": await owner_cookies(uid),
+                    'DS': old_version_get_ds_token(),
+                    "x-rpc-device_id": random_hex(32),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'},
+                    'Referer': 'https://webstatic.mihoyo.com/'},
                 params={
-                    "act_id"                : "e202009291139501",
-                    "bind_region"           : server_id,
-                    "bind_uid"              : uid,
-                    "month"                 : "0",
+                    "act_id": "e202009291139501",
+                    "bind_region": server_id,
+                    "bind_uid": uid,
+                    "month": "0",
                     "bbs_presentation_style": "fullscreen",
-                    "bbs_auth_required"     : True,
-                    "utm_source"            : "bbs",
-                    "utm_medium"            : "mys",
-                    "utm_campaign"          : "icon"
+                    "bbs_auth_required": True,
+                    "utm_source": "bbs",
+                    "utm_medium": "mys",
+                    "utm_campaign": "icon"
                 }
             )
             data = json.loads(req.text)
@@ -578,16 +578,16 @@ async def get_info(uid, ck, server_id="cn_gf01"):
             req = await client.get(
                 url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/index",
                 headers={
-                    'DS'               : get_ds_token("role_id=" + uid + "&server=" + server_id),
+                    'DS': get_ds_token("role_id=" + uid + "&server=" + server_id),
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/',
-                    "Cookie"           : ck},
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    "Cookie": ck},
                 params={
                     "role_id": uid,
-                    "server" : server_id
+                    "server": server_id
                 }
             )
             data = json.loads(req.text)
@@ -598,16 +598,16 @@ async def get_info(uid, ck, server_id="cn_gf01"):
                 req = await client.get(
                     url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/index",
                     headers={
-                        'DS'               : get_ds_token("role_id=" + uid + "&server=" + server_id),
+                        'DS': get_ds_token("role_id=" + uid + "&server=" + server_id),
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                                      '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/',
-                        "Cookie"           : ck},
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        "Cookie": ck},
                     params={
                         "role_id": uid,
-                        "server" : server_id
+                        "server": server_id
                     }
                 )
             data = json.loads(req.text)
@@ -627,20 +627,20 @@ async def get_spiral_abyss_info(uid, ck, schedule_type="1", server_id="cn_gf01")
             req = await client.get(
                 url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/spiralAbyss",
                 headers={
-                    'DS'               : get_ds_token(
+                    'DS': get_ds_token(
                         "role_id=" + uid + "&schedule_type=" + schedule_type + "&server=" + server_id),
-                    'Origin'           : 'https://webstatic.mihoyo.com',
-                    'Cookie'           : ck,
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'Cookie': ck,
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS '
-                                         'X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS '
+                                  'X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'
+                    'Referer': 'https://webstatic.mihoyo.com/'
                 },
                 params={
                     "schedule_type": schedule_type,
-                    "role_id"      : uid,
-                    "server"       : server_id
+                    "role_id": uid,
+                    "server": server_id
                 }
             )
             data = json.loads(req.text)
@@ -651,24 +651,24 @@ async def get_spiral_abyss_info(uid, ck, schedule_type="1", server_id="cn_gf01")
                 req = await client.get(
                     url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/spiralAbyss",
                     headers={
-                        'DS'               : get_ds_token(
+                        'DS': get_ds_token(
                             "role_id=" + uid + "&schedule_type=" + schedule_type + "&server=" + server_id),
-                        'Origin'           : 'https://webstatic.mihoyo.com',
-                        'Cookie'           : ck,
+                        'Origin': 'https://webstatic.mihoyo.com',
+                        'Cookie': ck,
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                                      '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/'
+                        'Referer': 'https://webstatic.mihoyo.com/'
                     },
                     params={
-                        "role_id"               : uid,
-                        "server"                : server_id,
+                        "role_id": uid,
+                        "server": server_id,
                         "bbs_presentation_style": "fullscreen",
-                        "bbs_auth_required"     : "true",
-                        "utm_source"            : "bbs",
-                        "utm_medium"            : "mys",
-                        "utm_campaign"          : "icon"
+                        "bbs_auth_required": "true",
+                        "utm_source": "bbs",
+                        "utm_medium": "mys",
+                        "utm_campaign": "icon"
                     }
                 )
             data = json.loads(req.text)
@@ -687,15 +687,15 @@ def get_character(uid, character_ids, ck, server_id="cn_gf01"):
         req = requests.post(
             url="https://api-takumi.mihoyo.com/game_record/app/genshin/api/character",
             headers={
-                'DS'               : get_ds_token('', {"character_ids": character_ids, "role_id": uid,
-                                                       "server"       : server_id}),
-                'Origin'           : 'https://webstatic.mihoyo.com',
-                'Cookie'           : ck,
+                'DS': get_ds_token('', {"character_ids": character_ids, "role_id": uid,
+                                        "server": server_id}),
+                'Origin': 'https://webstatic.mihoyo.com',
+                'Cookie': ck,
                 'x-rpc-app_version': mhyVersion,
-                'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
-                                     'like Gecko) miHoYoBBS/2.11.1',
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
+                              'like Gecko) miHoYoBBS/2.11.1',
                 'x-rpc-client_type': '5',
-                'Referer'          : 'https://webstatic.mihoyo.com/'
+                'Referer': 'https://webstatic.mihoyo.com/'
             },
             json={"character_ids": character_ids, "role_id": uid, "server": server_id}
         )
@@ -706,15 +706,15 @@ def get_character(uid, character_ids, ck, server_id="cn_gf01"):
             req = requests.post(
                 url="https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/character",
                 headers={
-                    'DS'               : get_ds_token('', {"character_ids": character_ids, "role_id": uid,
-                                                           "server"       : server_id}),
-                    'Origin'           : 'https://webstatic.mihoyo.com',
-                    'Cookie'           : ck,
+                    'DS': get_ds_token('', {"character_ids": character_ids, "role_id": uid,
+                                            "server": server_id}),
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'Cookie': ck,
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'
+                    'Referer': 'https://webstatic.mihoyo.com/'
                 },
                 json={"character_ids": character_ids, "role_id": uid, "server": server_id}
             )
@@ -758,13 +758,13 @@ async def get_mihoyo_bbs_info(mysid, ck):
             req = await client.get(
                 url="https://api-takumi.mihoyo.com/game_record/card/wapi/getGameRecordCard",
                 headers={
-                    'DS'               : get_ds_token("uid=" + mysid),
+                    'DS': get_ds_token("uid=" + mysid),
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                                  'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/',
-                    "Cookie"           : ck},
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    "Cookie": ck},
                 params={"uid": mysid}
             )
             data = json.loads(req.text)
@@ -775,13 +775,13 @@ async def get_mihoyo_bbs_info(mysid, ck):
                 req = await client.get(
                     url="https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=" + mysid,
                     headers={
-                        'DS'               : get_ds_token("uid=" + mysid),
+                        'DS': get_ds_token("uid=" + mysid),
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                                      '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/',
-                        "Cookie"           : ck},
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        "Cookie": ck},
                     params={"uid": mysid}
                 )
                 data = json.loads(req.text)
@@ -801,7 +801,7 @@ async def get_audio_info(name, audioid, language="cn"):
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                               'Chrome/95.0.4638.69 Safari/537.36',
-                'Referer'   : 'https://genshin.minigg.cn/index.html'},
+                'Referer': 'https://genshin.minigg.cn/index.html'},
             params={"characters": name, "audioid": audioid, "language": language}
         )
     return req.text
@@ -863,7 +863,7 @@ async def get_char_info(name, mode="char", level=None):
                 headers={
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                                   'Chrome/95.0.4638.69 Safari/537.36',
-                    'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                    'Referer': 'https://genshin.minigg.cn/index.html'})
             data2 = json.loads(req.text)
             if "errcode" in data2:
                 async with AsyncClient() as client_:
@@ -872,7 +872,7 @@ async def get_char_info(name, mode="char", level=None):
                         headers={
                             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
                                           'like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                            'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                            'Referer': 'https://genshin.minigg.cn/index.html'})
                     data2 = json.loads(req.text)
 
     async with AsyncClient() as client:
@@ -881,7 +881,7 @@ async def get_char_info(name, mode="char", level=None):
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                               'Chrome/95.0.4638.69 Safari/537.36',
-                'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                'Referer': 'https://genshin.minigg.cn/index.html'})
         try:
             data = json.loads(req.text)
             if "errcode" in data:
@@ -891,7 +891,7 @@ async def get_char_info(name, mode="char", level=None):
                         headers={
                             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
                                           'like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                            'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                            'Referer': 'https://genshin.minigg.cn/index.html'})
                     data = json.loads(req.text)
         except:
             data = None
@@ -903,22 +903,22 @@ async def get_genshin_events(mode="List"):
         now_time = datetime.datetime.now().strftime('%Y-%m-%d')
         base_url = "https://api-takumi.mihoyo.com/event/bbs_activity_calendar/getActList"
         params = {
-            "time"    : now_time,
+            "time": now_time,
             "game_biz": "ys_cn",
-            "page"    : 1,
-            "tag_id"  : 0
+            "page": 1,
+            "tag_id": 0
         }
     else:
         base_url = "https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnn{}".format(mode)
         params = {
-            "game"     : "hk4e",
-            "game_biz" : "hk4e_cn",
-            "lang"     : "zh-cn",
+            "game": "hk4e",
+            "game_biz": "hk4e_cn",
+            "lang": "zh-cn",
             "bundle_id": "hk4e_cn",
-            "platform" : "pc",
-            "region"   : "cn_gf01",
-            "level"    : 55,
-            "uid"      : 100000000
+            "platform": "pc",
+            "region": "cn_gf01",
+            "level": 55,
+            "uid": 100000000
         }
 
     async with AsyncClient() as client:

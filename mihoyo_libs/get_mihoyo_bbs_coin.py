@@ -1,17 +1,19 @@
-import time
 import random
 import string
+import time
 
 from httpx import AsyncClient
 
-from get_data import old_version_get_ds_token,random_hex
+from get_data import old_version_get_ds_token, random_hex
 
 # 米游社的API列表
 bbs_Cookieurl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
-bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
+bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket" \
+                 "?login_ticket={}&token_types=3&uid={}"
 bbs_Taskslist = "https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState"  # 获取任务列表
 bbs_Signurl = "https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}"  # post
-bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
+bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?" \
+              "forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
 bbs_Detailurl = "https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}"
 bbs_Shareurl = "https://bbs-api.mihoyo.com/apihub/api/getShareConf?entity_id={}&entity_type=1"
 bbs_Likeurl = "https://bbs-api.mihoyo.com/apihub/sapi/upvotePost"  # post json 
@@ -48,11 +50,13 @@ mihoyobbs_List = [{
     "url": "https://bbs.mihoyo.com/sr/"
 }]
 
+
 def random_text(num: int) -> str:
     return ''.join(random.sample(string.ascii_lowercase + string.digits, num))
 
-class mihoyobbs_coin:
-    def __init__(self,cookies):
+
+class MihoyoBBSCoin:
+    def __init__(self, cookies):
         self.headers = {
             "DS": old_version_get_ds_token(True),
             "cookie": cookies,
@@ -81,31 +85,31 @@ class mihoyobbs_coin:
         self.Have_coins = 0
 
     async def task_run(self):
-        await self.Load_Mihoyobbs_List_Use()
-        start = await self.Get_taskslist()
+        await self.load_mihoyo_bbs_list_use()
+        start = await self.get_tasks_list()
         self.postsList = await self.get_list()
         sign = await self.signing()
         read = await self.read_posts()
-        like = await self.Likeposts()
+        like = await self.like_posts()
         share = await self.share_post()
         im = start + "\n" + sign + "\n" + read + "\n" + like + "\n" + share
         return im
 
-    async def Load_Mihoyobbs_List_Use(self):
-        for i in [2,5]:
+    async def load_mihoyo_bbs_list_use(self):
+        for i in [2, 5]:
             for k in mihoyobbs_List:
                 if i == int(k["id"]):
                     self.mihoyobbs_List_Use.append(k)
 
     # 获取任务列表，用来判断做了哪些任务
-    async def Get_taskslist(self):
-        #log.info("正在获取任务列表")
+    async def get_tasks_list(self):
+        # log.info("正在获取任务列表")
         async with AsyncClient() as client:
-            req = await client.get(url = bbs_Taskslist, headers = self.headers)
+            req = await client.get(url=bbs_Taskslist, headers=self.headers)
         data = req.json()
         if "err" in data["message"] or data["retcode"] == -100:
             return "你的Cookies已失效。"
-            #log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
+            # log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
         else:
             self.Today_getcoins = data["data"]["can_get_points"]
             self.Today_have_getcoins = data["data"]["already_received_points"]
@@ -119,10 +123,10 @@ class mihoyobbs_coin:
             else:
                 # 如果第0个大于或等于62则直接判定任务没做
                 if data["data"]["states"][0]["mission_id"] >= 62:
-                    #log.info(f"新的一天，今天可以获得{self.Today_getcoins}个米游币")
+                    # log.info(f"新的一天，今天可以获得{self.Today_getcoins}个米游币")
                     pass
                 else:
-                    #log.info(f"似乎还有任务没完成，今天还能获得{self.Today_getcoins}")
+                    # log.info(f"似乎还有任务没完成，今天还能获得{self.Today_getcoins}")
                     for i in data["data"]["states"]:
                         # 58是讨论区签到
                         if i["mission_id"] == 58:
@@ -157,7 +161,7 @@ class mihoyobbs_coin:
         data = req.json()
         for n in range(5):
             temp_list.append([data["data"]["list"][n]["post"]["post_id"], data["data"]["list"][n]["post"]["subject"]])
-        #log.info("已获取{}个帖子".format(len(temp_list)))
+        # log.info("已获取{}个帖子".format(len(temp_list)))
         return temp_list
 
     # 进行签到操作
@@ -175,7 +179,6 @@ class mihoyobbs_coin:
                     return "你的Cookies已失效。"
             return "已完成签到任务~"
 
-
     # 看帖子
     async def read_posts(self):
         if self.Task_do["bbs_Read_posts"]:
@@ -190,8 +193,9 @@ class mihoyobbs_coin:
                     num_ok += 1
                 time.sleep(random.randint(2, 8))
             return "已完成看帖任务~共计成功{}次~".format(str(num_ok))
+
     # 点赞
-    async def Likeposts(self):
+    async def like_posts(self):
         if self.Task_do["bbs_Like_posts"]:
             return "点赞任务已经完成过了~"
         else:
@@ -214,8 +218,8 @@ class mihoyobbs_coin:
                     if data["message"] == "OK":
                         num_cancel += 1
                 time.sleep(random.randint(2, 8))
-            return "已完成点赞任务~共计点赞{}次，取消点赞{}次~".format(str(num_ok),str(num_cancel))
-                # 分享操作
+            return "已完成点赞任务~共计点赞{}次，取消点赞{}次~".format(str(num_ok), str(num_cancel))
+            # 分享操作
 
     async def share_post(self):
         if self.Task_do["bbs_Share"]:

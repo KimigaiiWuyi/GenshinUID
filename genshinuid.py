@@ -34,7 +34,7 @@ async def send_weapon_adv(bot: HoshinoBot, ev: CQEvent):
         name = str(ev.message).strip().replace(" ", "")[:-3]
         im = await weapon_adv(name)
         await bot.send(ev, im)
-    except Exception as e:
+    except Exception:
         logger.exception("获取建议失败。")
 
 

@@ -26,16 +26,17 @@
 
 ## 丨我该如何获取Cookies？[#92](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)（[@RemKeeper](https://github.com/RemKeeper)）
 
-```
-var cookie=document.cookie;
+```js
+var cookie = document.cookie;
 var Str_Num = cookie.indexOf('_MHYUUID=');
-cookie ='添加 '+cookie.substring(Str_Num);
-var ask=confirm('Cookie:'+cookie+'\n\n按确认，然后粘贴发送给机器人');
-if(ask==true)
-    {copy(cookie);
-        msg=cookie}
-else
-    {msg='Cancel'}
+cookie = '添加 ' + cookie.substring(Str_Num);
+var ask = confirm('Cookie:' + cookie + '\n\n按确认，然后粘贴发送给机器人');
+if (ask == true) {
+  copy(cookie);
+  msg = cookie
+} else {
+  msg = 'Cancel'
+}
 ```
 
 1. 复制上面全部代码，然后打开https://bbs.mihoyo.com/ys/
@@ -46,11 +47,18 @@ else
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
 
 ## 丨获取米游社Stoken([AutoMihoyoBBS](https://github.com/Womsxd/AutoMihoyoBBS#%E8%8E%B7%E5%8F%96%E7%B1%B3%E6%B8%B8%E7%A4%BECookie))
+
 **前提**：已经添加过米游社Cookies，并且已经绑定过uid(仅用于米游社币的获取)
-```sh
-var cookie=document.cookie;
-var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');
-if(ask==true){copy("添加 stoken" + cookie);msg=cookie}else{msg='Cancel'}
+
+```js
+var cookie = document.cookie;
+var ask = confirm('Cookie:' + cookie + '\n\nDo you want to copy the cookie to the clipboard?');
+if (ask == true) {
+  copy("添加 stoken" + cookie);
+  msg = cookie
+} else {
+  msg = 'Cancel'
+}
 ```
 
 1. 复制上面全部代码，然后打开http://user.mihoyo.com/
@@ -76,7 +84,7 @@ if(ask==true){copy("添加 stoken" + cookie);msg=cookie}else{msg='Cancel'}
 
 ## 丨其他
 
-+ 如果对本插件有功能建议&Bug报告，欢迎提Issuse & Pr，每一条都会详细看过
++ 如果对本插件有功能建议&Bug报告，欢迎提Issue & Pr，每一条都会详细看过
 + 如果本插件对你有帮助，不要忘了点个Star~
 + 本项目仅供学习使用，请勿用于商业用途
 + [爱发电](https://afdian.net/@KimigaiiWuyi)

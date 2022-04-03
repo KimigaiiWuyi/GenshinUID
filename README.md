@@ -20,10 +20,10 @@
   & [NoneBot2](https://github.com/nonebot/nonebot2)，**安装方法查看[此处](https://github.com/KimigaiiWuyi/GenshinUID/wiki#%E4%B8%A8%E5%AE%89%E8%A3%85nonebot2)**。（**开发者正在使用**）
 
 + 如果你想在QQ官方的频道Bot使用此插件，你需要**做好以下准备**：
-  - 拥有QQ频道机器人的开发者账号（类型：私域）
-  - 拥有已经备案好的服务器地址（视情况后期官方放开本地图片发送而定）
-  - **腾讯频道Bot官方的文档**，查看[此处](https://bot.q.qq.com/wiki/#)
-  - 安装方法：基于官方的[PythonSDK](https://github.com/tencent-connect/botpy)，本插件的安装方法可自行摸索。
+    - 拥有QQ频道机器人的开发者账号（类型：私域）
+    - 拥有已经备案好的服务器地址（视情况后期官方放开本地图片发送而定）
+    - **腾讯频道Bot官方的文档**，查看[此处](https://bot.q.qq.com/wiki/#)
+    - 安装方法：基于官方的[PythonSDK](https://github.com/tencent-connect/botpy)，本插件的安装方法可自行摸索。
 
 ## 丨我该如何获取Cookies？[#92](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)（[@RemKeeper](https://github.com/RemKeeper)）
 
@@ -75,9 +75,9 @@ if (ask == true) {
 - [YuanShen_User_Info](https://github.com/Womsxd/YuanShen_User_Info) - 米游社API来自于它
 - *[MiniGG](https://www.minigg.cn/)* - Wiki API来自于它
 - [@MingxuanGame](https://github.com/MingxuanGame)
-  - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
+    - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
 - [@shirokurakana](https://github.com/shirokurakana)
-  - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
+    - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc2333](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档

@@ -20,7 +20,7 @@ Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 @sv.on_fullmatch('gs帮助')
 async def send_help_pic(bot: HoshinoBot, ev: CQEvent):
     try:
-        help_path = os.path.join(INDEX_PATH,"help.png")
+        help_path = os.path.join(INDEX_PATH,'help.png')
         f = open(help_path, 'rb')
         ls_f = b64encode(f.read()).decode()
         img_mes = 'base64://' + ls_f

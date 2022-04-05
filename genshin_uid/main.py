@@ -422,7 +422,7 @@ async def send_polar(event: MessageEvent):
         num = int(re.findall(r'\d+', message)[0])  # str
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         if num <= 0 or num > 6:
-            await get_weapon.finish('你家{}有{}命？'.format(m, num))
+            await get_polar.finish('你家{}有{}命？'.format(m, num))
         im = await char_wiki(m, 'constellations', num)
         await get_polar.send(im)
     except ActionFailed as e:

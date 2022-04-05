@@ -17,6 +17,37 @@ FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 
+@sv.on_fullmatch('gs帮助')
+async def send_help_pic(bot: HoshinoBot, ev: CQEvent):
+    try:
+        help_path = os.path.join(INDEX_PATH,"help.png")
+        f = open(help_path, 'rb')
+        ls_f = b64encode(f.read()).decode()
+        img_mes = 'base64://' + ls_f
+        f.close()
+        await bot.send(MessageSegment.image(img_mes))
+    except Exception:
+        logger.exception('获取帮助失败。')
+
+@sv.on_rex('[\u4e00-\u9fa5]+(推荐|攻略)')
+async def send_guide_pic(bot: HoshinoBot, ev: CQEvent):
+    try:
+        message = str(ev.message).strip().replace(' ', '')[:-2]
+        with open(os.path.join(INDEX_PATH,'char_alias.json'),'r',encoding='utf8')as fp:
+            char_data = json.load(fp)
+        name = message
+        for i in char_data:
+            if message in i:
+                name = i
+            else:
+                for k in char_data[i]:
+                    if message in k:
+                        name = i
+        #name = str(event.get_message()).strip().replace(' ', '')[:-2]
+        url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
+        await bot.send(MessageSegment.image(url))
+    except Exception:
+        logger.exception('获取建议失败。')
 
 @sv.on_rex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)')
 async def send_char_adv(bot: HoshinoBot, ev: CQEvent):

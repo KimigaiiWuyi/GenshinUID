@@ -1195,11 +1195,14 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
             under_chasms_maw = i
 
     # 层岩巨渊
-    text_draw.text((477, 727), str(chasms_maw['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((523, 753), str(under_chasms_maw['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((500, 782), 'lv.' + str(under_chasms_maw['offerings'][0]['level']), text_color, genshin_font(22))
+    if chasms_maw:
+        text_draw.text((477, 727), str(chasms_maw['exploration_percentage'] / 10) + '%', text_color,
+                    genshin_font(22))
+        text_draw.text((500, 782), 'lv.' + str(chasms_maw['offerings'][0]['level']), text_color, genshin_font(22))
+
+    if under_chasms_maw:
+        text_draw.text((523, 753), str(under_chasms_maw['exploration_percentage'] / 10) + '%', text_color,
+                    genshin_font(22))
 
     # 蒙德
     text_draw.text((235, 600), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,

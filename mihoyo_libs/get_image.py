@@ -1172,19 +1172,26 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     mondstadt = liyue = dragonspine = inazuma = offering = chasms_maw = under_chasms_maw = dict()
     for i in raw_data['world_explorations']:
-        if i['name'] == '蒙德':
+        # 蒙德
+        if i['id'] == 1:
             mondstadt = i
-        elif i['name'] == '璃月':
+        # 璃月
+        elif i['id'] == 2:
             liyue = i
-        elif i['name'] == '龙脊雪山':
+        # 龙脊雪山
+        elif i['id'] == 3:
             dragonspine = i
-        elif i['name'] == '稻妻':
+        # 稻妻
+        elif i['id'] == 4:
             inazuma = i
-        elif i['name'] == '渊下宫':
+        # 渊下宫
+        elif i['id'] == 5:
             offering = i
-        elif i['name'] == '璃月层岩巨渊':
+        # 璃月层岩巨渊
+        elif i['id'] == 6:
             chasms_maw = i
-        elif i['name'] == '璃月层岩巨渊·地下矿区':
+        # 璃月层岩巨渊·地下矿区
+        elif i['id'] == 7:
             under_chasms_maw = i
 
     # 层岩巨渊

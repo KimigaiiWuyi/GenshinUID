@@ -25,7 +25,7 @@ async def send_help_pic(bot: HoshinoBot, ev: CQEvent):
         ls_f = b64encode(f.read()).decode()
         img_mes = 'base64://' + ls_f
         f.close()
-        await bot.send(MessageSegment.image(img_mes))
+        await bot.send(ev, MessageSegment.image(img_mes))
     except Exception:
         logger.exception('获取帮助失败。')
 
@@ -45,7 +45,7 @@ async def send_guide_pic(bot: HoshinoBot, ev: CQEvent):
                         name = i
         #name = str(event.get_message()).strip().replace(' ', '')[:-2]
         url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
-        await bot.send(MessageSegment.image(url))
+        await bot.send(ev, MessageSegment.image(url))
     except Exception:
         logger.exception('获取建议失败。')
 

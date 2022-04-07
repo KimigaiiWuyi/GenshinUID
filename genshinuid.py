@@ -478,7 +478,7 @@ async def setting(ctx):
     elif 'gs开启自动米游币' in message:
         try:
             uid = await select_db(userid, mode='uid')
-            im = await open_push(int(uid[0]), userid, 'off', 'StatusC')
+            im = await open_push(int(uid[0]), userid, 'on', 'StatusC')
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
                                        message=im, at_sender=True)
         except Exception:
@@ -487,7 +487,7 @@ async def setting(ctx):
     elif 'gs关闭自动米游币' in message:
         try:
             uid = await select_db(userid, mode='uid')
-            im = await open_push(int(uid[0]), userid, 'on', 'StatusC')
+            im = await open_push(int(uid[0]), userid, 'off', 'StatusC')
             await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid,
                                        message=im, at_sender=True)
         except Exception:

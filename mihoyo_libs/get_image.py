@@ -1227,7 +1227,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     # 稻妻
     if inazuma:
-        text_draw.text((750, 588), str(inazuma:['exploration_percentage'] / 10) + '%', text_color,
+        text_draw.text((750, 588), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
                        genshin_font(22))
         text_draw.text((750, 616), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
         text_draw.text((750, 644), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,

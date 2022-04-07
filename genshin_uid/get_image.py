@@ -1205,34 +1205,39 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
                     genshin_font(22))
 
     # 蒙德
-    text_draw.text((235, 600), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((235, 630), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
+    if mondstadt:
+        text_draw.text((235, 600), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
+        text_draw.text((235, 630), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
     text_draw.text((258, 660), str(raw_data['stats']['anemoculus_number']), text_color, genshin_font(22))
 
     # 璃月
-    text_draw.text((480, 597), str(liyue['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((480, 627), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
+    if liyue:
+        text_draw.text((480, 597), str(liyue['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
+        text_draw.text((480, 627), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
     text_draw.text((503, 657), str(raw_data['stats']['geoculus_number']), text_color, genshin_font(22))
 
     # 雪山
-    text_draw.text((238, 733), str(dragonspine['exploration_percentage'] / 10) + '%',
-                   text_color,
-                   genshin_font(22))
-    text_draw.text((238, 764), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
+    if dragonspine:
+        text_draw.text((238, 733), str(dragonspine['exploration_percentage'] / 10) + '%',
+                       text_color,
+                       genshin_font(22))
+        text_draw.text((238, 764), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
 
     # 稻妻
-    text_draw.text((750, 588), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((750, 616), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
-    text_draw.text((750, 644), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
-                   genshin_font(22))
+    if inazuma:
+        text_draw.text((750, 588), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
+        text_draw.text((750, 616), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
+        text_draw.text((750, 644), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
+                       genshin_font(22))
     text_draw.text((773, 672), str(raw_data['stats']['electroculus_number']), text_color, genshin_font(22))
 
     # 渊下宫
-    text_draw.text((750, 750), str(offering['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
+    if offering:
+        text_draw.text((750, 750), str(offering['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
 
     # 家园
     if len(raw_data['homes']):

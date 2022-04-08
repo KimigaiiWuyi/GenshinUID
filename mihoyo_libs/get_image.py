@@ -1623,7 +1623,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
                 daily_data['resin_recovery_time'])))
         text_draw.text((268, 305), f' {next_resin_rec_time}', text_color, genshin_font(18), anchor='lm')
 
-        text_draw.text((170, 331), f'预计                后全部恢复', text_color, genshin_font(18), anchor='lm')
+        text_draw.text((170, 331), f'预计                 后全部恢复', text_color, genshin_font(18), anchor='lm')
         text_draw.text((208, 331), f'{resin_recovery_time}', highlight_color, genshin_font(18), anchor='lm')
 
     # 洞天宝钱时间计算

@@ -175,7 +175,7 @@ async def weapon_adv(name):
                     char_list.append(ws.cell(2 + ((r - 2) // 5) * 5, 1).value)
 
     if char_list:
-        im = ','.join(char_list)
+        im = ','.join(set(char_list))
         im += '可能会用到【{}】'.format(weapon_name)
     else:
         im = '没有角色能使用【{}】'.format(weapon_name)

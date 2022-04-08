@@ -423,8 +423,7 @@ async def daily_mihoyo_bbs_sign():
             im = await mihoyo_coin(str(row[2]), str(row[8]))
             logger.info(im)
             try:
-                await hoshino_bot.call_api(api='send_private_msg',
-                                           user_id=row[2], message=im)
+                await hoshino_bot.send_private_msg(user_id=row[2], message=im)
             except Exception:
                 logger.exception(f'{im} Error')
     logger.info('已结束。')

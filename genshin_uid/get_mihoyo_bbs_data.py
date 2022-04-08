@@ -176,10 +176,10 @@ async def weapon_adv(name):
                     weapons[weapon_name]=weapon
 
     if weapons:
-        im=[]
-        for k,v in weapons.items():
-            im.append(f'{"、".join(v)}可能会用到【{k}】')
-        im='\n'.join(im)
+        im = []
+        for k, v in weapons.items():
+            im.append(f'{"、".join(k)}可能会用到【{v}】')
+        im = '\n'.join(im)
     else:
         im = '没有角色能使用【{}】'.format(weapon_name)
     return im

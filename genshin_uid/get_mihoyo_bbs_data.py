@@ -324,7 +324,8 @@ async def audio_wiki(name, message):
                     tmp_json[_audioid].remove(audioid1)
 
     if name == '列表':
-        imgmes = 'base64://' + b64encode(open(os.path.join(INDEX_PATH, '语音.png'), 'rb').read()).decode()
+        with open(os.path.join(INDEX_PATH, '语音.png'), 'rb') as f:
+            imgmes = f.read()
         return imgmes
     elif name == '':
         return '请输入角色名。'
@@ -335,8 +336,7 @@ async def audio_wiki(name, message):
         except:
             return '语音获取失败'
         if audio:
-            audios = 'base64://' + b64encode(audio.getvalue()).decode()
-            return audios
+            return audio.getvalue()
         else:
             return '没有找到语音，请检查语音ID与角色名是否正确，如无误则可能未收录该语音'
 

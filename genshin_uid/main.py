@@ -262,7 +262,10 @@ async def send_audio(event: MessageEvent):
         if name == '列表':
             await get_audio.send(MessageSegment.image(im))
         else:
-            await get_audio.send(MessageSegment.record(im))
+            if isinstance(im, str):
+                await get_audio.send(im)
+            else:
+                await get_audio.send(MessageSegment.record(im))
     except ActionFailed:
         await get_audio.send('语音发送失败。')
         logger.exception('语音发送失败')

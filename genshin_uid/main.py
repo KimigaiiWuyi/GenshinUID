@@ -11,10 +11,7 @@ from .get_image import *
 from .get_mihoyo_bbs_data import *
 
 config = get_driver().config
-try:
-    priority = config.genshinuid_priority
-except AttributeError:
-    priority = 2
+priority = config.genshinuid_priority or 2
 superusers = {int(x) for x in config.superusers}
 
 # todo: 将重复代码提取为函数，增加代码复用性

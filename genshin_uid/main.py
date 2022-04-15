@@ -11,13 +11,20 @@ from .get_image import *
 from .get_mihoyo_bbs_data import *
 
 config = get_driver().config
-priority = config.genshinuid_priority or 2
+try:
+    priority = config.genshinuid_priority
+except AttributeError:
+    priority = 2
 superusers = {int(x) for x in config.superusers}
 
 # todo: 将重复代码提取为函数，增加代码复用性
 # 不得不说重复代码太多了很影响项目维护，同一个功能出问题所有同样的代码都要改，还容易漏
 
-schedule = require('nonebot_plugin_apscheduler').scheduler
+draw_event_schedule = require('nonebot_plugin_apscheduler').scheduler
+clean_cache_schedule = require('nonebot_plugin_apscheduler').scheduler
+daily_sign_schedule = require('nonebot_plugin_apscheduler').scheduler
+daily_mihoyo_bbs_sign_schedule = require('nonebot_plugin_apscheduler').scheduler
+resin_notic_schedule = require('nonebot_plugin_apscheduler').scheduler
 
 get_weapon = on_startswith('武器', priority=priority)
 get_char = on_startswith('角色', priority=priority)
@@ -67,19 +74,19 @@ INDEX_PATH = os.path.join(FILE_PATH, 'index')
 TEXTURE_PATH = os.path.join(FILE_PATH, 'texture2d')
 
 
-@schedule.scheduled_job('cron', hour='2')
+@draw_event_schedule.scheduled_job('cron', hour='2')
 async def draw_event():
     await draw_event_pic()
 
 
 # 每日零点清空cookies使用缓存
-@schedule.scheduled_job('cron', hour='0')
+@clean_cache_schedule.scheduled_job('cron', hour='0')
 async def clean_cache():
     await delete_cache()
 
 
 # 每隔半小时检测树脂是否超过设定值
-@schedule.scheduled_job('cron', minute='*/30')
+@resin_notic_schedule.scheduled_job('cron', minute='*/30')
 async def push():
     bot = get_bot()
     now_data = await daily()
@@ -96,7 +103,7 @@ async def push():
 
 
 # 每日零点半进行米游社签到
-@schedule.scheduled_job('cron', hour='0', minute='30')
+@daily_sign_schedule.scheduled_job('cron', hour='0', minute='30')
 async def sign_at_night():
     await daily_sign()
 
@@ -167,7 +174,7 @@ async def daily_sign():
 
 
 # 每日零点五十进行米游币获取
-@schedule.scheduled_job('cron', hour='0', minute='50')
+@daily_mihoyo_bbs_sign_schedule.scheduled_job('cron', hour='0', minute='50')
 async def sign_at_night():
     await daily_mihoyo_bbs_sign()
 

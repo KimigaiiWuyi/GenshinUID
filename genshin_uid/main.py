@@ -1,8 +1,12 @@
 import base64
 
-from nonebot import (get_bot, get_driver, on_command, on_regex, on_startswith, require)
-from nonebot.adapters.onebot.v11 import (Bot, GroupMessageEvent, MessageEvent, MessageSegment, PRIVATE_FRIEND)
+from nonebot import get_bot, get_driver, on_command, on_regex, require
+from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, Bot,
+                                         GroupMessageEvent, Message,
+                                         MessageEvent, MessageSegment)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
+from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 
 # from .get_data import *
@@ -22,35 +26,35 @@ superusers = {int(x) for x in config.superusers}
 
 scheduler = require('nonebot_plugin_apscheduler').scheduler
 
-get_weapon = on_startswith('武器', priority=priority)
-get_char = on_startswith('角色', priority=priority)
-get_cost = on_startswith('材料', priority=priority)
-get_polar = on_startswith('命座', priority=priority)
-get_talents = on_startswith('天赋', priority=priority)
-get_enemies = on_startswith('原魔', priority=priority)
-get_audio = on_startswith('语音', priority=priority)
-get_artifacts = on_startswith('圣遗物', priority=priority)
-get_food = on_startswith('食物', priority=priority)
+get_weapon = on_command('武器', priority=priority)
+get_char = on_command('角色', priority=priority)
+get_cost = on_command('材料', priority=priority)
+get_polar = on_command('命座', priority=priority)
+get_talents = on_command('天赋', priority=priority)
+get_enemies = on_command('原魔', priority=priority)
+get_audio = on_command('语音', priority=priority)
+get_artifacts = on_command('圣遗物', priority=priority)
+get_food = on_command('食物', priority=priority)
 
-get_uid_info = on_startswith('uid', priority=priority)
-get_mys_info = on_startswith('mys', priority=priority)
+get_uid_info = on_command('uid', priority=priority)
+get_mys_info = on_command('mys', priority=priority)
 
 get_event = on_command('活动列表', priority=priority)
 get_lots = on_command('御神签', priority=priority)
 get_help = on_command('gs帮助', priority=priority)
 
-open_switch = on_startswith('gs开启', priority=priority)
-close_switch = on_startswith('gs关闭', priority=priority)
+open_switch = on_command('gs开启', priority=priority)
+close_switch = on_command('gs关闭', priority=priority)
 
-link_mys = on_startswith('绑定mys', priority=priority)
-link_uid = on_startswith('绑定uid', priority=priority)
+link_mys = on_command('绑定mys', priority=priority)
+link_uid = on_command('绑定uid', priority=priority)
 
 monthly_data = on_command('每月统计', priority=priority)
 daily_data = on_command('当前状态', priority=priority)
 
 get_genshin_info = on_command('当前信息', priority=priority)
 
-add_cookie = on_startswith('添加', permission=PRIVATE_FRIEND, priority=priority)
+add_cookie = on_command('添加', permission=PRIVATE_FRIEND, priority=priority)
 
 search = on_command('查询', priority=priority)
 get_sign = on_command('签到', priority=priority)
@@ -197,7 +201,7 @@ async def daily_mihoyo_bbs_sign():
     logger.info('已结束。')
 
 @get_help.handle()
-async def send_help_pic():
+async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
     try:
         help_path = os.path.join(INDEX_PATH,'help.png')
         f = open(help_path, 'rb')
@@ -209,9 +213,9 @@ async def send_help_pic():
         logger.exception('获取帮助失败。')
 
 @get_guide_pic.handle()
-async def send_guide_pic(event: MessageEvent):
+async def send_guide_pic(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(' ', '')[:-2]
+        message = args.extract_plain_text().strip().replace(' ', '')
         with open(os.path.join(INDEX_PATH,'char_alias.json'),'r',encoding='utf8')as fp:
             char_data = json.load(fp)
         name = message
@@ -229,9 +233,9 @@ async def send_guide_pic(event: MessageEvent):
         logger.exception('获取建议失败。')
 
 @get_char_adv.handle()
-async def send_char_adv(event: MessageEvent):
+async def send_char_adv(matcher: Matcher, args: Message = CommandArg()):
     try:
-        name = str(event.get_message()).strip().replace(' ', '')[:-3]
+        name = args.extract_plain_text().strip().replace(' ', '')
         im = await char_adv(name)
         await get_char_adv.send(im)
     except Exception:
@@ -239,9 +243,9 @@ async def send_char_adv(event: MessageEvent):
 
 
 @get_weapon_adv.handle()
-async def send_weapon_adv(event: MessageEvent):
+async def send_weapon_adv(matcher: Matcher, args: Message = CommandArg()):
     try:
-        name = str(event.get_message()).strip().replace(' ', '')[:-3]
+        name = args.extract_plain_text().strip().replace(' ', '')
         im = await weapon_adv(name)
         await get_weapon_adv.send(im)
     except Exception:
@@ -249,9 +253,8 @@ async def send_weapon_adv(event: MessageEvent):
 
 
 @get_audio.handle()
-async def send_audio(event: MessageEvent):
-    message = str(event.get_message()).strip()
-    message = message.replace('语音', '').replace(' ', '')
+async def send_audio(matcher: Matcher, args: Message = CommandArg()):
+    message = args.extract_plain_text().strip().replace(' ', '')
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     im = await audio_wiki(name, message)
     try:
@@ -271,7 +274,7 @@ async def send_audio(event: MessageEvent):
 
 
 @get_lots.handle()
-async def send_lots(event: MessageEvent):
+async def send_lots(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
         qid = int(event.sender.user_id)
         raw_data = await get_a_lots(qid)
@@ -286,10 +289,9 @@ async def send_lots(event: MessageEvent):
 
 
 @get_enemies.handle()
-async def send_enemies(event: MessageEvent):
+async def send_enemies(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('原魔', '').replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         im = await enemies_wiki(message)
         await get_enemies.send(im)
     except ActionFailed as e:
@@ -301,10 +303,9 @@ async def send_enemies(event: MessageEvent):
 
 
 @get_food.handle()
-async def send_food(event: MessageEvent):
+async def send_food(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('食物', '').replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         im = await foods_wiki(message)
         await get_food.send(im)
     except ActionFailed as e:
@@ -316,10 +317,9 @@ async def send_food(event: MessageEvent):
 
 
 @get_artifacts.handle()
-async def send_artifacts(event: MessageEvent):
+async def send_artifacts(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('圣遗物', '').replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         im = await artifacts_wiki(message)
         await get_artifacts.send(im)
     except ActionFailed as e:
@@ -331,11 +331,9 @@ async def send_artifacts(event: MessageEvent):
 
 
 @get_weapon.handle()
-async def send_weapon(event: MessageEvent):
+async def send_weapon(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('武器', '')
-        message = message.replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         level = re.findall(r'[0-9]+', message)
         if len(level) == 1:
@@ -352,11 +350,9 @@ async def send_weapon(event: MessageEvent):
 
 
 @get_talents.handle()
-async def send_talents(bot: Bot, event: MessageEvent):
+async def send_talents(bot: Bot, event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('天赋', '')
-        message = message.replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         num = re.findall(r'[0-9]+', message)
         if len(num) == 1:
@@ -376,11 +372,9 @@ async def send_talents(bot: Bot, event: MessageEvent):
 
 
 @get_char.handle()
-async def send_char(event: MessageEvent):
+async def send_char(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('角色', '')
-        message = message.replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         level = re.findall(r'[0-9]+', message)
         if len(level) == 1:
@@ -397,11 +391,9 @@ async def send_char(event: MessageEvent):
 
 
 @get_cost.handle()
-async def send_cost(event: MessageEvent):
+async def send_cost(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('材料', '')
-        message = message.replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         im = await char_wiki(message, 'costs')
         await get_cost.send(im)
     except ActionFailed as e:
@@ -413,11 +405,9 @@ async def send_cost(event: MessageEvent):
 
 
 @get_polar.handle()
-async def send_polar(event: MessageEvent):
+async def send_polar(matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip()
-        message = message.replace('命座', '')
-        message = message.replace(' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         num = int(re.findall(r'\d+', message)[0])  # str
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         if num <= 0 or num > 6:
@@ -433,7 +423,7 @@ async def send_polar(event: MessageEvent):
 
 
 @get_event.handle()
-async def send_events():
+async def send_events(matcher: Matcher, args: Message = CommandArg()):
     try:
         img_path = os.path.join(FILE_PATH, 'event.jpg')
         while True:
@@ -453,9 +443,9 @@ async def send_events():
 
 
 @add_cookie.handle()
-async def add_cookie_func(event: MessageEvent):
+async def add_cookie_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        mes = str(event.get_message()).strip().replace('添加', '')
+        mes = args.extract_plain_text().strip().replace(' ', '')
         im = await deal_ck(mes, int(event.sender.user_id))
         await add_cookie.send(im)
     except ActionFailed as e:
@@ -468,10 +458,9 @@ async def add_cookie_func(event: MessageEvent):
 
 # 开启 自动签到 和 推送树脂提醒 功能
 @open_switch.handle()
-async def open_switch_func(event: MessageEvent):
+async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('gs开启', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = int(event.sender.user_id)
@@ -548,10 +537,9 @@ async def open_switch_func(event: MessageEvent):
 
 # 关闭 自动签到 和 推送树脂提醒 功能
 @close_switch.handle()
-async def close_switch_func(event: MessageEvent):
+async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('gs关闭', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = int(event.sender.user_id)
@@ -622,10 +610,9 @@ async def close_switch_func(event: MessageEvent):
 
 # 图片版信息
 @get_genshin_info.handle()
-async def send_genshin_info(event: MessageEvent):
+async def send_genshin_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         qid = int(event.sender.user_id)
         uid = await select_db(qid, mode='uid')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
@@ -642,7 +629,7 @@ async def send_genshin_info(event: MessageEvent):
 
 # 群聊内 每月统计 功能
 @monthly_data.handle()
-async def send_monthly_data(event: MessageEvent):
+async def send_monthly_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
         qid = int(event.sender.user_id)
         uid = await select_db(qid, mode='uid')
@@ -659,7 +646,7 @@ async def send_monthly_data(event: MessageEvent):
 
 # 群聊内 签到 功能
 @get_sign.handle()
-async def get_sing_func(event: MessageEvent):
+async def get_sing_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     im = None
     try:
         qid = int(event.sender.user_id)
@@ -681,7 +668,7 @@ async def get_sing_func(event: MessageEvent):
 
 # 获取米游币
 @get_mihoyo_coin.handle()
-async def send_mihoyo_coin(event: MessageEvent):
+async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     im = None
     await get_mihoyo_coin.send('开始操作……', at_sender=True)
     try:
@@ -704,7 +691,7 @@ async def send_mihoyo_coin(event: MessageEvent):
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @check.handle()
-async def check_cookies(bot: Bot):
+async def check_cookies(bot: Bot, matcher: Matcher, args: Message = CommandArg()):
     try:
         raw_mes = await check_db()
         im = raw_mes[0]
@@ -727,7 +714,7 @@ async def check_cookies(bot: Bot):
 
 # 群聊内 查询当前树脂状态以及派遣状态 的命令
 @daily_data.handle()
-async def send_daily_data(event: MessageEvent):
+async def send_daily_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
         uid = await select_db(int(event.sender.user_id), mode='uid')
         uid = uid[0]
@@ -747,10 +734,9 @@ async def send_daily_data(event: MessageEvent):
 
 # 群聊内 查询uid 的命令
 @get_uid_info.handle()
-async def send_uid_info(event: MessageEvent):
+async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('uid', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
         uid = re.findall(r'\d+', message)[0]  # str
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -825,10 +811,9 @@ async def send_uid_info(event: MessageEvent):
 
 # 群聊内 绑定uid 的命令，会绑定至当前qq号上
 @link_uid.handle()
-async def link_uid_to_qq(event: MessageEvent):
+async def link_uid_to_qq(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('绑定uid', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         uid = re.findall(r'\d+', message)[0]  # str
         await connect_db(int(event.sender.user_id), uid)
         await link_uid.send('绑定uid成功！', at_sender=True)
@@ -842,10 +827,9 @@ async def link_uid_to_qq(event: MessageEvent):
 
 # 群聊内 绑定米游社通行证 的命令，会绑定至当前qq号上，和绑定uid不冲突，两者可以同时绑定
 @link_mys.handle()
-async def link_mihoyo_bbs_to_qq(event: MessageEvent):
+async def link_mihoyo_bbs_to_qq(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('绑定mys', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         mys = re.findall(r'\d+', message)[0]  # str
         await connect_db(int(event.sender.user_id), None, mys)
         await link_mys.send('绑定米游社id成功！', at_sender=True)
@@ -859,10 +843,9 @@ async def link_mihoyo_bbs_to_qq(event: MessageEvent):
 
 # 群聊内 绑定过uid/mysid的情况下，可以查询，默认优先调用米游社通行证，多出世界等级一个参数
 @search.handle()
-async def get_info(bot: Bot, event: GroupMessageEvent):
+async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('查询', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
         at = re.search(r'\[CQ:at,qq=(\d*)]', message)
         if at:
@@ -968,10 +951,9 @@ async def get_info(bot: Bot, event: GroupMessageEvent):
 
 # 群聊内 查询米游社通行证 的命令
 @get_mys_info.handle()
-async def send_mihoyo_bbs_info(event: MessageEvent):
+async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
-        message = str(event.get_message()).strip().replace(
-            ' ', '').replace('mys', '')
+        message = args.extract_plain_text().strip().replace(' ', '')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
         uid = re.findall(r'\d+', message)[0]  # str
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -1052,5 +1034,5 @@ async def recheck():
 
 @all_bbscoin_recheck.handle()
 async def bbs_recheck():
-    await all_recheck.send('已开始执行')
+    await all_bbscoin_recheck.send('已开始执行')
     await daily_mihoyo_bbs_sign()

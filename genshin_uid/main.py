@@ -203,6 +203,9 @@ async def daily_mihoyo_bbs_sign():
 @get_help.handle()
 async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
     try:
+        if args:
+            # 防止只要是这个开头就一律响应
+            return
         help_path = os.path.join(INDEX_PATH,'help.png')
         f = open(help_path, 'rb')
         ls_f = b64encode(f.read()).decode()
@@ -276,6 +279,8 @@ async def send_audio(matcher: Matcher, args: Message = CommandArg()):
 @get_lots.handle()
 async def send_lots(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
+        if args:
+            return
         qid = int(event.sender.user_id)
         raw_data = await get_a_lots(qid)
         im = base64.b64decode(raw_data).decode('utf-8')
@@ -425,6 +430,8 @@ async def send_polar(matcher: Matcher, args: Message = CommandArg()):
 @get_event.handle()
 async def send_events(matcher: Matcher, args: Message = CommandArg()):
     try:
+        if args:
+            return
         img_path = os.path.join(FILE_PATH, 'event.jpg')
         while True:
             if os.path.exists(img_path):
@@ -631,6 +638,8 @@ async def send_genshin_info(event: MessageEvent, matcher: Matcher, args: Message
 @monthly_data.handle()
 async def send_monthly_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
+        if args:
+            return
         qid = int(event.sender.user_id)
         uid = await select_db(qid, mode='uid')
         uid = uid[0]
@@ -647,6 +656,8 @@ async def send_monthly_data(event: MessageEvent, matcher: Matcher, args: Message
 # 群聊内 签到 功能
 @get_sign.handle()
 async def get_sing_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+    if args:
+        return
     im = None
     try:
         qid = int(event.sender.user_id)
@@ -669,6 +680,8 @@ async def get_sing_func(event: MessageEvent, matcher: Matcher, args: Message = C
 # 获取米游币
 @get_mihoyo_coin.handle()
 async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+    if args:
+        return
     im = None
     await get_mihoyo_coin.send('开始操作……', at_sender=True)
     try:
@@ -693,6 +706,8 @@ async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message 
 @check.handle()
 async def check_cookies(bot: Bot, matcher: Matcher, args: Message = CommandArg()):
     try:
+        if args:
+            return
         raw_mes = await check_db()
         im = raw_mes[0]
         await check.send(im)
@@ -716,6 +731,8 @@ async def check_cookies(bot: Bot, matcher: Matcher, args: Message = CommandArg()
 @daily_data.handle()
 async def send_daily_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
     try:
+        if args:
+            return
         uid = await select_db(int(event.sender.user_id), mode='uid')
         uid = uid[0]
         mes = await daily('ask', uid)
@@ -1027,12 +1044,16 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
 
 
 @all_recheck.handle()
-async def recheck():
+async def recheck(args: Message = CommandArg()):
+    if args:
+        return
     await all_recheck.send('已开始执行')
     await daily_sign()
 
 
 @all_bbscoin_recheck.handle()
-async def bbs_recheck():
+async def bbs_recheck(args: Message = CommandArg()):
+    if args:
+        return
     await all_bbscoin_recheck.send('已开始执行')
     await daily_mihoyo_bbs_sign()

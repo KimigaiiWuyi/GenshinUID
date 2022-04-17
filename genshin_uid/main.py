@@ -6,6 +6,7 @@ from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, Bot,
                                          GroupMessageEvent, Message,
                                          MessageEvent, MessageSegment)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
+from nonebot.exception import FinishedException
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
@@ -224,6 +225,9 @@ def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):
                 # 此为bot本身由于风控或网络问题发不出消息，并非代码本身出问题
                 await matcher.send(f'发送消息失败{e.info["wording"]}')
                 logger.exception(f'发送{name}消息失败')
+            except FinishException:
+                # `finish` 会抛出此异常，应予以抛出而不处理
+                raise 
             except Exception as e:
                 # 代码本身出问题
                 if log_msg:

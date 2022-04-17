@@ -1,4 +1,5 @@
 import base64
+from functools import wraps
 
 from nonebot import get_bot, get_driver, on_command, on_regex, require
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, Bot,
@@ -200,267 +201,230 @@ async def daily_mihoyo_bbs_sign():
                 logger.exception(f'{im} Error')
     logger.info('已结束。')
 
+
+def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):
+    """
+        :说明:
+
+          捕获命令执行过程中发生的异常并回报。
+
+        :参数:
+
+          * ``name: str``: 项目的名称。
+          * ``log_msg: str = None``: 自定义捕获异常后在日志中留存的信息。留空则使用默认信息。
+          * ``fail_msg: str = None``: 自定义捕获异常后向用户回报的信息，仅在提供自定义日志信息时有效。开头带@则艾特用户。留空则与日志信息相同。
+    """
+    def wrapper(func):
+        @wraps(func)
+        async def inner(log_msg: str = log_msg, fail_msg: str =fail_msg, **kwargs):
+            matcher: Matcher = kwargs['matcher']
+            try:
+                await func(**kwargs)
+            except ActionFailed as e:
+                # 此为bot本身由于风控或网络问题发不出消息，并非代码本身出问题
+                await matcher.send(f'发送消息失败{e.info["wording"]}')
+                logger.exception(f'发送{name}消息失败')
+            except Exception as e:
+                # 代码本身出问题
+                if log_msg:
+                    if not fail_msg:
+                        fail_msg = log_msg
+                    if fail_msg[0] == '@':
+                        await matcher.send(f'{fail_msg[1:]}\n错误信息为{e}', at_sender=True)
+                    else:
+                        await matcher.send(f'{fail_msg}\n错误信息为{e}')
+                    if log_msg[0] == '@':
+                        log_msg = log_msg[1:]
+                    logger.exception(log_msg)
+                else:
+                    await matcher.send(f'发生错误 {e}，请检查后台输出。')
+                    logger.exception(f'获取{name}信息错误')
+        return inner
+    return wrapper
+
+
 @get_help.handle()
+@handle_exception('帮助')
 async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        if args:
-            # 防止只要是这个开头就一律响应
-            return
-        help_path = os.path.join(INDEX_PATH,'help.png')
-        f = open(help_path, 'rb')
-        ls_f = b64encode(f.read()).decode()
-        img_mes = 'base64://' + ls_f
-        f.close()
-        await get_help.send(MessageSegment.image(img_mes))
-    except Exception:
-        logger.exception('获取帮助失败。')
+    if args:
+        # 防止只要是这个开头就一律响应
+        return
+    help_path = os.path.join(INDEX_PATH,'help.png')
+    f = open(help_path, 'rb')
+    ls_f = b64encode(f.read()).decode()
+    img_mes = 'base64://' + ls_f
+    f.close()
+    await get_help.send(MessageSegment.image(img_mes))
+
 
 @get_guide_pic.handle()
+@handle_exception('建议')
 async def send_guide_pic(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        with open(os.path.join(INDEX_PATH,'char_alias.json'),'r',encoding='utf8')as fp:
-            char_data = json.load(fp)
-        name = message
-        for i in char_data:
-            if message in i:
-                name = i
-            else:
-                for k in char_data[i]:
-                    if message in k:
-                        name = i
-        #name = str(event.get_message()).strip().replace(' ', '')[:-2]
-        url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
-        await get_guide_pic.send(MessageSegment.image(url))
-    except Exception:
-        logger.exception('获取建议失败。')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    with open(os.path.join(INDEX_PATH,'char_alias.json'),'r',encoding='utf8')as fp:
+        char_data = json.load(fp)
+    name = message
+    for i in char_data:
+        if message in i:
+            name = i
+        else:
+            for k in char_data[i]:
+                if message in k:
+                    name = i
+    #name = str(event.get_message()).strip().replace(' ', '')[:-2]
+    url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
+    await get_guide_pic.send(MessageSegment.image(url))
 
 @get_char_adv.handle()
+@handle_exception('建议')
 async def send_char_adv(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        name = args.extract_plain_text().strip().replace(' ', '')
-        im = await char_adv(name)
-        await get_char_adv.send(im)
-    except Exception:
-        logger.exception('获取建议失败。')
+    name = args.extract_plain_text().strip().replace(' ', '')
+    im = await char_adv(name)
+    await get_char_adv.send(im)
 
 
 @get_weapon_adv.handle()
+@handle_exception('建议')
 async def send_weapon_adv(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        name = args.extract_plain_text().strip().replace(' ', '')
-        im = await weapon_adv(name)
-        await get_weapon_adv.send(im)
-    except Exception:
-        logger.exception('获取建议失败。')
+    name = args.extract_plain_text().strip().replace(' ', '')
+    im = await weapon_adv(name)
+    await get_weapon_adv.send(im)
 
 
 @get_audio.handle()
+@handle_exception('语音','语音发送失败，可能是FFmpeg环境未配置。')
 async def send_audio(matcher: Matcher, args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     im = await audio_wiki(name, message)
-    try:
-        if name == '列表':
-            await get_audio.send(MessageSegment.image(im))
+    if name == '列表':
+        await get_audio.send(MessageSegment.image(im))
+    else:
+        if isinstance(im, str):
+            await get_audio.send(im)
         else:
-            if isinstance(im, str):
-                await get_audio.send(im)
-            else:
-                await get_audio.send(MessageSegment.record(im))
-    except ActionFailed:
-        await get_audio.send('语音发送失败。')
-        logger.exception('语音发送失败')
-    except Exception:
-        await get_audio.send('可能是FFmpeg环境未配置。')
-        logger.exception('ffmpeg未配置')
+            await get_audio.send(MessageSegment.record(im))
 
 
 @get_lots.handle()
+@handle_exception('御神签')
 async def send_lots(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        if args:
-            return
-        qid = int(event.sender.user_id)
-        raw_data = await get_a_lots(qid)
-        im = base64.b64decode(raw_data).decode('utf-8')
-        await get_lots.send(im)
-    except ActionFailed as e:
-        await get_lots.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送御神签失败')
-    except Exception as e:
-        await get_lots.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取御神签错误')
+    if args:
+        return
+    qid = int(event.sender.user_id)
+    raw_data = await get_a_lots(qid)
+    im = base64.b64decode(raw_data).decode('utf-8')
+    await get_lots.send(im)
 
 
 @get_enemies.handle()
+@handle_exception('怪物')
 async def send_enemies(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        im = await enemies_wiki(message)
-        await get_enemies.send(im)
-    except ActionFailed as e:
-        await get_enemies.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送怪物信息失败')
-    except Exception as e:
-        await get_enemies.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取怪物信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    im = await enemies_wiki(message)
+    await get_enemies.send(im)
 
 
 @get_food.handle()
+@handle_exception('食物')
 async def send_food(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        im = await foods_wiki(message)
-        await get_food.send(im)
-    except ActionFailed as e:
-        await get_food.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送食物信息失败')
-    except Exception as e:
-        await get_food.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取食物信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    im = await foods_wiki(message)
+    await get_food.send(im)
 
 
 @get_artifacts.handle()
+@handle_exception('圣遗物')
 async def send_artifacts(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        im = await artifacts_wiki(message)
-        await get_artifacts.send(im)
-    except ActionFailed as e:
-        await get_artifacts.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送圣遗物信息失败')
-    except Exception as e:
-        await get_artifacts.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取圣遗物信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    im = await artifacts_wiki(message)
+    await get_artifacts.send(im)
 
 
 @get_weapon.handle()
+@handle_exception('武器')
 async def send_weapon(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-        level = re.findall(r'[0-9]+', message)
-        if len(level) == 1:
-            im = await weapon_wiki(name, level=level[0])
-        else:
-            im = await weapon_wiki(name)
-        await get_weapon.send(im)
-    except ActionFailed as e:
-        await get_weapon.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送武器信息失败')
-    except Exception as e:
-        await get_weapon.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取武器信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    level = re.findall(r'[0-9]+', message)
+    if len(level) == 1:
+        im = await weapon_wiki(name, level=level[0])
+    else:
+        im = await weapon_wiki(name)
+    await get_weapon.send(im)
 
 
 @get_talents.handle()
+@handle_exception('天赋')
 async def send_talents(bot: Bot, event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-        num = re.findall(r'[0-9]+', message)
-        if len(num) == 1:
-            im = await char_wiki(name, 'talents', num[0])
-            if isinstance(im, list):
-                await bot.call_api('send_group_forward_msg', group_id=event.group_id, messages=im)
-                return
-        else:
-            im = '参数不正确。'
-        await get_talents.send(im)
-    except ActionFailed as e:
-        await get_talents.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送天赋信息失败')
-    except Exception as e:
-        await get_talents.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取天赋信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    num = re.findall(r'[0-9]+', message)
+    if len(num) == 1:
+        im = await char_wiki(name, 'talents', num[0])
+        if isinstance(im, list):
+            await bot.call_api('send_group_forward_msg', group_id=event.group_id, messages=im)
+            return
+    else:
+        im = '参数不正确。'
+    await get_talents.send(im)
 
 
 @get_char.handle()
+@handle_exception('角色')
 async def send_char(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-        level = re.findall(r'[0-9]+', message)
-        if len(level) == 1:
-            im = await char_wiki(name, 'char', level=level[0])
-        else:
-            im = await char_wiki(name)
-        await get_char.send(im)
-    except ActionFailed as e:
-        await get_char.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送角色信息失败')
-    except Exception as e:
-        await get_char.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取角色信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    level = re.findall(r'[0-9]+', message)
+    if len(level) == 1:
+        im = await char_wiki(name, 'char', level=level[0])
+    else:
+        im = await char_wiki(name)
+    await get_char.send(im)
 
 
 @get_cost.handle()
+@handle_exception('材料')
 async def send_cost(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        im = await char_wiki(message, 'costs')
-        await get_cost.send(im)
-    except ActionFailed as e:
-        await get_cost.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送材料信息失败')
-    except Exception as e:
-        await get_cost.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取材料信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    im = await char_wiki(message, 'costs')
+    await get_cost.send(im)
 
 
 @get_polar.handle()
+@handle_exception('命座')
 async def send_polar(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        num = int(re.findall(r'\d+', message)[0])  # str
-        m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-        if num <= 0 or num > 6:
-            await get_polar.finish('你家{}有{}命？'.format(m, num))
-        im = await char_wiki(m, 'constellations', num)
-        await get_polar.send(im)
-    except ActionFailed as e:
-        await get_polar.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送命座信息失败')
-    except Exception as e:
-        await get_polar.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取命座信息错误')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    num = int(re.findall(r'\d+', message)[0])  # str
+    m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    if num <= 0 or num > 6:
+        await get_polar.finish('你家{}有{}命？'.format(m, num))
+    im = await char_wiki(m, 'constellations', num)
+    await get_polar.send(im)
 
 
 @get_event.handle()
+@handle_exception('活动')
 async def send_events(matcher: Matcher, args: Message = CommandArg()):
-    try:
-        if args:
-            return
-        img_path = os.path.join(FILE_PATH, 'event.jpg')
-        while True:
-            if os.path.exists(img_path):
-                with open(img_path, 'rb') as f:
-                    im = MessageSegment.image(f.read())
-                break
-            else:
-                await draw_event_pic()
-        await get_event.send(im)
-    except ActionFailed as e:
-        await get_event.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送活动列表失败')
-    except Exception as e:
-        await get_event.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('获取活动列表错误')
+    if args:
+        return
+    img_path = os.path.join(FILE_PATH, 'event.jpg')
+    while True:
+        if os.path.exists(img_path):
+            with open(img_path, 'rb') as f:
+                im = MessageSegment.image(f.read())
+            break
+        else:
+            await draw_event_pic()
+    await get_event.send(im)
 
 
 @add_cookie.handle()
+@handle_exception('Cookie', '校验失败！请输入正确的Cookies！')
 async def add_cookie_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        mes = args.extract_plain_text().strip().replace(' ', '')
-        im = await deal_ck(mes, int(event.sender.user_id))
-        await add_cookie.send(im)
-    except ActionFailed as e:
-        await add_cookie.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送Cookie校验信息失败')
-    except Exception as e:
-        await add_cookie.send('校验失败！请输入正确的Cookies！\n错误信息为{}'.format(e))
-        logger.exception('Cookie校验失败')
+    mes = args.extract_plain_text().strip().replace(' ', '')
+    im = await deal_ck(mes, int(event.sender.user_id))
+    await add_cookie.send(im)
 
 
 # 开启 自动签到 和 推送树脂提醒 功能
@@ -617,40 +581,28 @@ async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message
 
 # 图片版信息
 @get_genshin_info.handle()
+@handle_exception('当前','获取/发送当前信息失败', '@未找到绑定信息')
 async def send_genshin_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        qid = int(event.sender.user_id)
-        uid = await select_db(qid, mode='uid')
-        image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
-        uid = uid[0]
-        im = await draw_info_pic(uid, image)
-        await get_genshin_info.send(MessageSegment.image(im), at_sender=True)
-    except ActionFailed as e:
-        await get_genshin_info.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送每月统计信息失败')
-    except Exception:
-        await get_genshin_info.send('未找到绑定信息', at_sender=True)
-        logger.exception('获取/发送每月统计失败')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    qid = int(event.sender.user_id)
+    uid = await select_db(qid, mode='uid')
+    image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
+    uid = uid[0]
+    im = await draw_info_pic(uid, image)
+    await get_genshin_info.send(MessageSegment.image(im), at_sender=True)
 
 
 # 群聊内 每月统计 功能
 @monthly_data.handle()
+@handle_exception('每月统计','获取/发送每月统计失败', '@未找到绑定信息')
 async def send_monthly_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        if args:
-            return
-        qid = int(event.sender.user_id)
-        uid = await select_db(qid, mode='uid')
-        uid = uid[0]
-        im = await award(uid)
-        await monthly_data.send(im, at_sender=True)
-    except ActionFailed as e:
-        await monthly_data.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送每月统计信息失败')
-    except Exception:
-        await monthly_data.send('未找到绑定信息', at_sender=True)
-        logger.exception('获取/发送每月统计失败')
+    if args:
+        return
+    qid = int(event.sender.user_id)
+    uid = await select_db(qid, mode='uid')
+    uid = uid[0]
+    im = await award(uid)
+    await monthly_data.send(im, at_sender=True)
 
 
 # 群聊内 签到 功能
@@ -704,27 +656,21 @@ async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message 
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @check.handle()
+@handle_exception('Cookie校验','Cookie校验错误')
 async def check_cookies(bot: Bot, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        if args:
-            return
-        raw_mes = await check_db()
-        im = raw_mes[0]
-        await check.send(im)
-        for i in raw_mes[1]:
-            await bot.call_api(api='send_private_msg', **{
-                'user_id': i[0],
-                'message': ('您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n'
-                            '查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n'
-                            '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
-            })
-            await asyncio.sleep(3 + random.randint(1, 3))
-    except ActionFailed as e:
-        await check.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送Cookie校验信息失败')
-    except Exception as e:
-        await check.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('Cookie校验错误')
+    if args:
+        return
+    raw_mes = await check_db()
+    im = raw_mes[0]
+    await check.send(im)
+    for i in raw_mes[1]:
+        await bot.call_api(api='send_private_msg', **{
+            'user_id': i[0],
+            'message': ('您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n'
+                        '查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n'
+                        '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
+        })
+        await asyncio.sleep(3 + random.randint(1, 3))
 
 
 # 群聊内 查询当前树脂状态以及派遣状态 的命令
@@ -828,34 +774,22 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
 
 # 群聊内 绑定uid 的命令，会绑定至当前qq号上
 @link_uid.handle()
+@handle_exception('绑定uid','绑定uid异常')
 async def link_uid_to_qq(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        uid = re.findall(r'\d+', message)[0]  # str
-        await connect_db(int(event.sender.user_id), uid)
-        await link_uid.send('绑定uid成功！', at_sender=True)
-    except ActionFailed as e:
-        await link_uid.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送绑定信息失败')
-    except Exception as e:
-        await link_uid.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('绑定uid异常')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    uid = re.findall(r'\d+', message)[0]  # str
+    await connect_db(int(event.sender.user_id), uid)
+    await link_uid.send('绑定uid成功！', at_sender=True)
 
 
 # 群聊内 绑定米游社通行证 的命令，会绑定至当前qq号上，和绑定uid不冲突，两者可以同时绑定
 @link_mys.handle()
+@handle_exception('绑定米游社通行证','绑定米游社通行证异常')
 async def link_mihoyo_bbs_to_qq(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
-    try:
-        message = args.extract_plain_text().strip().replace(' ', '')
-        mys = re.findall(r'\d+', message)[0]  # str
-        await connect_db(int(event.sender.user_id), None, mys)
-        await link_mys.send('绑定米游社id成功！', at_sender=True)
-    except ActionFailed as e:
-        await link_mys.send('机器人发送消息失败：{}'.format(e.info['wording']))
-        logger.exception('发送绑定信息失败')
-    except Exception as e:
-        await link_mys.send('发生错误 {},请检查后台输出。'.format(e))
-        logger.exception('绑定米游社通行证异常')
+    message = args.extract_plain_text().strip().replace(' ', '')
+    mys = re.findall(r'\d+', message)[0]  # str
+    await connect_db(int(event.sender.user_id), None, mys)
+    await link_mys.send('绑定米游社id成功！', at_sender=True)
 
 
 # 群聊内 绑定过uid/mysid的情况下，可以查询，默认优先调用米游社通行证，多出世界等级一个参数

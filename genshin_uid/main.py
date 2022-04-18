@@ -267,8 +267,8 @@ async def send_help_pic(args: Message = CommandArg()):
 
 @get_guide_pic.handle()
 @handle_exception('建议')
-async def send_guide_pic(args: Message = CommandArg()):
-    message = args.extract_plain_text().strip().replace(' ', '')
+async def send_guide_pic(args: str = RegexMatched()):
+    message = args.strip().replace(' ', '')[:-2]
     with open(os.path.join(INDEX_PATH, 'char_alias.json'), 'r', encoding='utf8') as fp:
         char_data = json.load(fp)
     name = message

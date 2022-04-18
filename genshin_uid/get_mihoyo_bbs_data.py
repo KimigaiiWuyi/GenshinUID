@@ -129,17 +129,17 @@ food_im = """【{}】
 【材料】：
 {}"""
 
-audio_json = """{
-    '357':['357_01','357_02','357_03'],
-    '1000000':['1000000_01','1000000_02','1000000_03','1000000_04','1000000_05','1000000_06','1000000_07'],
-    '1000001':['1000001_01','1000001_02','1000001_03'],
-    '1000002':['1000002_01','1000002_02','1000002_03'],
-    '1000100':['1000100_01','1000100_02','1000100_03','1000100_04','1000100_05'],
-    '1000101':['1000101_01','1000101_02','1000101_03','1000101_04','1000101_05','1000101_06'],
-    '1000200':['1000200_01','1000200_02','1000200_03'],
-    '1010201':['1010201_01'],
-    '1000300':['1000300_01','1000300_02'],
-    '1000400':['1000400_01','1000400_02','1000400_03'],
+audio_json = {
+    '357': ['357_01', '357_02', '357_03'],
+    '1000000': ['1000000_01', '1000000_02', '1000000_03', '1000000_04', '1000000_05', '1000000_06', '1000000_07'],
+    '1000001': ['1000001_01', '1000001_02', '1000001_03'],
+    '1000002': ['1000002_01', '1000002_02', '1000002_03'],
+    '1000100': ['1000100_01', '1000100_02', '1000100_03', '1000100_04', '1000100_05'],
+    '1000101': ['1000101_01', '1000101_02', '1000101_03', '1000101_04', '1000101_05', '1000101_06'],
+    '1000200': ['1000200_01', '1000200_02', '1000200_03'],
+    '1010201': ['1010201_01'],
+    '1000300': ['1000300_01', '1000300_02'],
+    '1000400': ['1000400_01', '1000400_02', '1000400_03'],
     '1000500':['1000500_01','1000500_02','1000500_03'],
     '1010000':['1010000_01','1010000_02','1010000_03','1010000_04','1010000_05'],
     '1010001':['1010001_01','1010001_02'],
@@ -149,7 +149,7 @@ audio_json = """{
     '1010301':['1010301_01','1010301_02','1010301_03','1010301_04','1010301_05'],
     '1010400':['1010400_01','1010400_02','1010400_03'],
     '1020000':['1020000_01']
-}"""
+}
 
 char_adv_im = """【{}】
 【五星武器】：{}
@@ -181,7 +181,7 @@ async def weapon_adv(name):
             im.append(f'{"、".join(v)}可能会用到【{k}】')
         im = '\n'.join(im)
     else:
-        im = '没有角色能使用【{}】'.format(weapon_name)
+        im = '没有角色能使用【{}】'.format(name)
     return im
 
 
@@ -307,21 +307,21 @@ async def award(uid):
 
 async def audio_wiki(name, message):
     async def get(_audioid):
-        tmp_json = json.loads(audio_json)
         for _ in range(3):  # 重试3次
-            if _audioid in tmp_json:
-                if not tmp_json[_audioid]:
+            if _audioid in audio_json:
+                if not audio_json[_audioid]:
                     return
-                audioid1 = random.choice(tmp_json[_audioid])
+                audioid1 = random.choice(audio_json[_audioid])
             else:
                 audioid1 = _audioid
             url = await get_audio_info(name, audioid1)
-            req = requests.get(url)
+            async with AsyncClient() as client:
+                req = await client.get(url)
             if req.status_code == 200:
                 return BytesIO(req.content)
             else:
-                if _audioid in tmp_json:
-                    tmp_json[_audioid].remove(audioid1)
+                if _audioid in audio_json:
+                    audio_json[_audioid].remove(audioid1)
 
     if name == '列表':
         with open(os.path.join(INDEX_PATH, '语音.png'), 'rb') as f:
@@ -330,9 +330,11 @@ async def audio_wiki(name, message):
     elif name == '':
         return '请输入角色名。'
     else:
-        audioid = re.findall(r'[0-9]+', message)[0]
+        audioid = re.findall(r'\d+', message)
         try:
-            audio = await get(audioid)
+            audio = await get(audioid[0])
+        except IndexError:
+            return '请输入语音ID。'
         except:
             return '语音获取失败'
         if audio:

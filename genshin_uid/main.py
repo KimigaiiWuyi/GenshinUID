@@ -252,22 +252,22 @@ def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):
 
 @get_help.handle()
 @handle_exception('帮助')
-async def send_help_pic(args: Message = CommandArg()):
+async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
     if args:
         # 防止只要是这个开头就一律响应
-        await get_help.finish()
+        await matcher.finish()
         return
     help_path = os.path.join(INDEX_PATH, 'help.png')
     f = open(help_path, 'rb')
     ls_f = b64encode(f.read()).decode()
     img_mes = 'base64://' + ls_f
     f.close()
-    await get_help.finish(MessageSegment.image(img_mes))
+    await matcher.finish(MessageSegment.image(img_mes))
 
 
 @get_guide_pic.handle()
 @handle_exception('建议')
-async def send_guide_pic(args: str = RegexMatched()):
+async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
     message = args.strip().replace(' ', '')[:-2]
     with open(os.path.join(INDEX_PATH, 'char_alias.json'), 'r', encoding='utf8') as fp:
         char_data = json.load(fp)
@@ -281,7 +281,7 @@ async def send_guide_pic(args: str = RegexMatched()):
                     name = i
     # name = str(event.get_message()).strip().replace(' ', '')[:-2]
     url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
-    await get_guide_pic.finish(MessageSegment.image(url))
+    await matcher.finish(MessageSegment.image(url))
 
 
 @get_char_adv.handle()

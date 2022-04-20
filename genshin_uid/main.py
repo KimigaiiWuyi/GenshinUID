@@ -493,7 +493,9 @@ async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message 
                 uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), qid, str(gid), 'StatusC')
                 await matcher.finish(im, at_sender=True)
-            except Exception:
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('未绑定uid信息！', at_sender=True)
         elif m == '简洁签到报告':
             try:
@@ -506,6 +508,8 @@ async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message 
                 await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
                 logger.exception('发送设置成功信息失败')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
                 logger.exception('设置简洁签到报告失败')
     except ActionFailed as e:
@@ -581,12 +585,16 @@ async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message
                 await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
                 logger.exception('发送设置成功信息失败')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
                 logger.exception('设置简洁签到报告失败')
     except ActionFailed as e:
         await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
         logger.exception('发送开启自动签到信息失败')
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
         logger.exception('关闭自动签到失败')
 
@@ -708,6 +716,8 @@ async def send_daily_data(event: MessageEvent, matcher: Matcher, args: Message =
         await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
         logger.exception('发送当前状态信息失败')
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
         logger.exception('查询当前状态错误')
 
@@ -742,6 +752,8 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
                 await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                 logger.exception('深渊数据获取失败（Cookie失效/不公开信息）')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('深渊数据获取失败（数据状态问题）')
         elif m == '上期深渊':
@@ -766,6 +778,8 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
                 await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                 logger.exception('上期深渊数据获取失败（Cookie失效/不公开信息）')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('上期深渊数据获取失败（数据状态问题）')
         else:
@@ -782,9 +796,13 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
                 await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                 logger.exception('数据获取失败（Cookie失效/不公开信息）')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('数据获取失败（数据状态问题）')
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
         logger.exception('uid查询异常')
 
@@ -874,6 +892,8 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                     logger.exception('上期深渊数据获取失败（Cookie失效/不公开信息）')
                 except Exception as e:
+                    if isinstance(e, FinishedException):
+                        raise
                     await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('上期深渊数据获取失败（数据状态问题）')
             elif m == '词云':
@@ -890,6 +910,8 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                     logger.exception('词云数据获取失败（Cookie失效/不公开信息）')
                 except Exception as e:
+                    if isinstance(e, FinishedException):
+                        raise
                     await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('词云数据获取失败（数据状态问题）')
             elif m == '':
@@ -906,6 +928,8 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                     logger.exception('uid数据获取失败（Cookie失效/不公开信息）')
                 except Exception as e:
+                    if isinstance(e, FinishedException):
+                        raise
                     await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('数据获取失败（数据状态问题）')
             else:
@@ -913,6 +937,8 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
         else:
             await matcher.finish('未找到绑定记录！')
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
         logger.exception('查询异常')
 
@@ -947,6 +973,8 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
                 await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                 logger.exception('深渊数据获取失败（Cookie失效/不公开信息）')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('深渊数据获取失败（数据状态问题）')
         elif m == '上期深渊':
@@ -971,6 +999,8 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
                 await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                 logger.exception('上期深渊数据获取失败（Cookie失效/不公开信息）')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('上期深渊数据获取失败（数据状态问题）')
         else:
@@ -987,9 +1017,13 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
                 await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                 logger.exception('米游社数据获取失败（Cookie失效/不公开信息）')
             except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('米游社数据获取失败（数据状态问题）')
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
         logger.exception('米游社查询异常')
 

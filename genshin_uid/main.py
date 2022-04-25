@@ -461,7 +461,9 @@ async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message 
                 uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), qid, str(gid), 'StatusB')
                 await matcher.finish(im, at_sender=True)
-            except Exception:
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('未绑定uid信息！', at_sender=True)
         elif m == '推送':
             try:
@@ -477,7 +479,9 @@ async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message 
                 uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), qid, str(gid), 'StatusA')
                 await matcher.finish(im, at_sender=True)
-            except Exception:
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('未绑定uid信息！', at_sender=True)
         elif m == '自动米游币':
             try:
@@ -544,7 +548,9 @@ async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message
                 uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), qid, 'off', 'StatusB')
                 await matcher.finish(im, at_sender=True)
-            except Exception:
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('未绑定uid信息！', at_sender=True)
         elif m == '推送':
             try:
@@ -558,7 +564,9 @@ async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message
                 uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), qid, 'off', 'StatusA')
                 await matcher.finish(im, at_sender=True)
-            except Exception:
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('未绑定uid信息！', at_sender=True)
         elif m == '自动米游币':
             try:
@@ -572,7 +580,9 @@ async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message
                 uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), qid, 'off', 'StatusC')
                 await matcher.finish(im, at_sender=True)
-            except Exception:
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
                 await matcher.finish('未绑定uid信息！', at_sender=True)
         elif m == '简洁签到报告':
             try:
@@ -641,6 +651,8 @@ async def get_sing_func(event: MessageEvent, matcher: Matcher, args: Message = C
     except TypeError:
         im = '没有找到绑定信息。'
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         im = '发生错误 {},请检查后台输出。'.format(e)
         logger.exception('签到失败')
     finally:
@@ -667,6 +679,8 @@ async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message 
         im = '没有找到绑定信息。'
         logger.exception('获取米游币失败')
     except Exception as e:
+        if isinstance(e, FinishedException):
+            raise
         im = '发生错误 {},请检查后台输出。'.format(e)
         logger.exception('获取米游币失败')
     finally:
@@ -867,7 +881,9 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                 except (TypeError, IndexError):
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
                     logger.exception('深渊数据获取失败（Cookie失效/不公开信息）')
-                except Exception:
+                except Exception as e:
+                    if isinstance(e, FinishedException):
+                        raise
                     await matcher.finish('获取失败，请检查 cookie 及网络状态。')
                     logger.exception('深渊数据获取失败（数据状态问题）')
             elif m == '上期深渊':

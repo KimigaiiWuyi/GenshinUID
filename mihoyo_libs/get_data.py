@@ -105,6 +105,8 @@ async def open_push(uid, qid, status, mode):
 
 async def check_db():
     return_str = str()
+    normal_num = 0
+    invalid_str = ''
     invalid_list = []
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
@@ -120,7 +122,9 @@ async def check_db():
                 if i['game_id'] != 2:
                     mys_data['data']['list'].remove(i)
             return_str = return_str + f'uid{row[0]}/mys{mihoyo_id}的Cookies是正常的！\n'
+            normal_num += 1
         except:
+            invalid_str = invalid_str + f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！\n'
             return_str = return_str + f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！\n'
             invalid_list.append([row[2], row[0]])
             c.execute('DELETE from NewCookiesTable where UID=?', (row[0],))
@@ -128,6 +132,9 @@ async def check_db():
                 c.execute('DELETE from CookiesCache where Cookies=?', (row[1],))
             except:
                 pass
+    if len(c_data) > 9:
+        return_str = '正常Cookies数量：{}\n{}'.format(str(normal_num),
+                                                    '失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies')
     conn.commit()
     conn.close()
     return [return_str, invalid_list]

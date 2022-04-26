@@ -78,7 +78,7 @@ async def send_bluekun_pic(bot: HoshinoBot, ev: CQEvent):
                 '岩':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'}
     try:
         message = ev.message.extract_plain_text().replace(' ', '')
-        await bot.send(MessageSegment.image(pic_json[message]))
+        await bot.send(ev, MessageSegment.image(pic_json[message]))
     except:
         logger.exception('获取参考面板失败。')
 

@@ -90,9 +90,12 @@ async def send_audio(bot: HoshinoBot, ev: CQEvent):
         name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         im = await audio_wiki(name, message)
         if name == '列表':
-            await bot.send(ev, MessageSegment.image(im))
+            ls_f = base64.b64encode(im).decode()
+            img = 'base64://' + ls_f
+            await bot.send(ev, MessageSegment.image(img))
         else:
-            await bot.send(ev, MessageSegment.record(im))
+            audios = 'base64://' + b64encode(im).decode()
+            await bot.send(ev, MessageSegment.record(audios))
     except ActionFailed as e:
         logger.exception('获取语音失败')
         await bot.send(ev, '机器人发送消息失败：{}'.format(e))

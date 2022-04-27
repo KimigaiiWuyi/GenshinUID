@@ -70,6 +70,7 @@ get_char_adv = on_regex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)', prior
 get_weapon_adv = on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)', priority=priority)
 
 get_guide_pic = on_regex('[\u4e00-\u9fa5]+(推荐|攻略)', priority=priority)
+get_bluekun_pic = on_command('参考面板', priority=priority)
 
 FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), ''), 'mihoyo_libs/mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
@@ -264,7 +265,18 @@ async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
     f.close()
     await matcher.finish(MessageSegment.image(img_mes))
 
-
+@get_bluekun_pic.handle()
+@handle_exception('参考面板')
+async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
+    message = args.extract_plain_text().strip().replace(' ', '')
+    pic_json = {'雷':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/1f5e3773874fcf3177b63672b02a88d7_859652593462461477.jpg',
+                '火':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/c193d7abc4139afccd1ba892d5bb3a99_6658340945648783394.jpg',
+                '冰':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/afcd1a31744c16f81ad9d8f2d75688a0_4525405643656826681.jpg',
+                '风':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/689e93122216bfd8d231b8366e42ef46_1275479383799739625.jpg',
+                '水':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/94de0e61672fa006e7d4231caab560ca_6048387524082657410.jpg',
+                '岩':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'}
+    await matcher.finish(MessageSegment.image(pic_json[message]))
+        
 @get_guide_pic.handle()
 @handle_exception('建议')
 async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):

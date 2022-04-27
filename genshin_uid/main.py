@@ -2,9 +2,8 @@ import base64
 from functools import wraps
 
 from nonebot import get_bot, get_driver, on_command, on_regex, require, Bot
-from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND,
-                                         GroupMessageEvent, Message,
-                                         MessageEvent, MessageSegment)
+from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
+                                         Message, MessageEvent, MessageSegment)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.exception import FinishedException
 from nonebot.matcher import Matcher
@@ -64,15 +63,19 @@ get_mihoyo_coin = on_command('开始获取米游币', priority=priority)
 check = on_command('校验全部Cookies', priority=priority)
 
 all_recheck = on_command('全部重签', permission=SUPERUSER, priority=priority)
-all_bbscoin_recheck = on_command('全部重获取', permission=SUPERUSER, priority=priority)
+all_bbscoin_recheck = on_command('全部重获取',
+                                 permission=SUPERUSER,
+                                 priority=priority)
 
 get_char_adv = on_regex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)', priority=priority)
-get_weapon_adv = on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)', priority=priority)
+get_weapon_adv = on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)',
+                          priority=priority)
 
 get_guide_pic = on_regex('[\u4e00-\u9fa5]+(推荐|攻略)', priority=priority)
 get_bluekun_pic = on_command('参考面板', priority=priority)
 
-FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), ''), 'mihoyo_libs/mihoyo_bbs')
+FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), ''),
+                         'mihoyo_libs/mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 TEXTURE_PATH = os.path.join(FILE_PATH, 'texture2d')
 
@@ -96,11 +99,20 @@ async def push():
     if now_data is not None:
         for i in now_data:
             if i['gid'] == 'on':
-                await bot.call_api(api='send_private_msg', **{'user_id': i['qid'], 'message': i['message']})
+                await bot.call_api(api='send_private_msg',
+                                   **{
+                                       'user_id': i['qid'],
+                                       'message': i['message']
+                                   })
             else:
                 await bot.call_api(api='send_group_msg',
-                                   **{'group_id': i['gid'],
-                                      'message': MessageSegment.at(i['qid']) + f'\n{i["message"]}'})
+                                   **{
+                                       'group_id':
+                                       i['gid'],
+                                       'message':
+                                       MessageSegment.at(i['qid']) +
+                                       f'\n{i["message"]}'
+                                   })
     else:
         pass
 
@@ -115,8 +127,8 @@ async def daily_sign():
     bot = get_bot()
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    cursor = c.execute(
-        'SELECT *  FROM NewCookiesTable WHERE StatusB != ?', ('off',))
+    cursor = c.execute('SELECT *  FROM NewCookiesTable WHERE StatusB != ?',
+                       ('off', ))
     c_data = cursor.fetchall()
     temp_list = []
     for row in c_data:
@@ -124,7 +136,8 @@ async def daily_sign():
         if row[4] == 'on':
             try:
                 await bot.call_api(api='send_private_msg',
-                                   user_id=row[2], message=im)
+                                   user_id=row[2],
+                                   message=im)
             except Exception:
                 logger.exception(f'{im} Error')
         else:
@@ -132,7 +145,8 @@ async def daily_sign():
             if await config_check('SignReportSimple'):
                 for i in temp_list:
                     if row[4] == i['push_group']:
-                        if im == '签到失败，请检查Cookies是否失效。' or im.startswith('网络有点忙，请稍后再试~!'):
+                        if im == '签到失败，请检查Cookies是否失效。' or im.startswith(
+                                '网络有点忙，请稍后再试~!'):
                             i['failed'] += 1
                             i['push_message'] += '\n' + message
                         else:
@@ -140,11 +154,19 @@ async def daily_sign():
                         break
                 else:
                     if im == '签到失败，请检查Cookies是否失效。':
-                        temp_list.append(
-                            {'push_group': row[4], 'push_message': message, 'success': 0, 'failed': 1})
+                        temp_list.append({
+                            'push_group': row[4],
+                            'push_message': message,
+                            'success': 0,
+                            'failed': 1
+                        })
                     else:
-                        temp_list.append(
-                            {'push_group': row[4], 'push_message': '', 'success': 1, 'failed': 0})
+                        temp_list.append({
+                            'push_group': row[4],
+                            'push_message': '',
+                            'success': 1,
+                            'failed': 0
+                        })
             else:
                 for i in temp_list:
                     if row[4] == i['push_group'] and i['num'] < 4:
@@ -152,8 +174,11 @@ async def daily_sign():
                         i['num'] += 1
                         break
                 else:
-                    temp_list.append(
-                        {'push_group': row[4], 'push_message': message, 'num': 1})
+                    temp_list.append({
+                        'push_group': row[4],
+                        'push_message': message,
+                        'num': 1
+                    })
         await asyncio.sleep(6 + random.randint(1, 3))
     if await config_check('SignReportSimple'):
         for i in temp_list:
@@ -161,16 +186,19 @@ async def daily_sign():
                 report = '以下为签到失败报告：{}'.format(
                     i['push_message']) if i['push_message'] != '' else ''
                 await bot.call_api(
-                    api='send_group_msg', group_id=i['push_group'],
-                    message='今日自动签到已完成！\n本群共签到成功{}人，共签到失败{}人。{}'.format(i['success'], i['failed'], report))
+                    api='send_group_msg',
+                    group_id=i['push_group'],
+                    message='今日自动签到已完成！\n本群共签到成功{}人，共签到失败{}人。{}'.format(
+                        i['success'], i['failed'], report))
             except Exception:
                 logger.exception('签到报告发送失败：{}'.format(i['push_message']))
             await asyncio.sleep(4 + random.randint(1, 3))
     else:
         for i in temp_list:
             try:
-                await bot.call_api(
-                    api='send_group_msg', group_id=i['push_group'], message=i['push_message'])
+                await bot.call_api(api='send_group_msg',
+                                   group_id=i['push_group'],
+                                   message=i['push_message'])
             except Exception:
                 logger.exception('签到报告发送失败：{}'.format(i['push_message']))
             await asyncio.sleep(4 + random.randint(1, 3))
@@ -186,8 +214,8 @@ async def daily_mihoyo_bbs_sign():
     bot = get_bot()
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    cursor = c.execute(
-        'SELECT *  FROM NewCookiesTable WHERE StatusC != ?', ('off',))
+    cursor = c.execute('SELECT *  FROM NewCookiesTable WHERE StatusC != ?',
+                       ('off', ))
     c_data = cursor.fetchall()
     logger.info(c_data)
     for row in c_data:
@@ -198,7 +226,8 @@ async def daily_mihoyo_bbs_sign():
             logger.info(im)
             try:
                 await bot.call_api(api='send_private_msg',
-                                   user_id=row[2], message=im)
+                                   user_id=row[2],
+                                   message=im)
             except Exception:
                 logger.exception(f'{im} Error')
     logger.info('已结束。')
@@ -218,8 +247,11 @@ def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):
     """
 
     def wrapper(func):
+
         @wraps(func)
-        async def inner(log_msg: str = log_msg, fail_msg: str = fail_msg, **kwargs):
+        async def inner(log_msg: str = log_msg,
+                        fail_msg: str = fail_msg,
+                        **kwargs):
             matcher: Matcher = kwargs['matcher']
             try:
                 await func(**kwargs)
@@ -236,7 +268,8 @@ def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):
                     if not fail_msg:
                         fail_msg = log_msg
                     if fail_msg[0] == '@':
-                        await matcher.send(f'{fail_msg[1:]}\n错误信息为{e}', at_sender=True)
+                        await matcher.send(f'{fail_msg[1:]}\n错误信息为{e}',
+                                           at_sender=True)
                     else:
                         await matcher.send(f'{fail_msg}\n错误信息为{e}')
                     if log_msg[0] == '@':
@@ -265,23 +298,35 @@ async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
     f.close()
     await matcher.finish(MessageSegment.image(img_mes))
 
+
 @get_bluekun_pic.handle()
 @handle_exception('参考面板')
 async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
-    pic_json = {'雷':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/1f5e3773874fcf3177b63672b02a88d7_859652593462461477.jpg',
-                '火':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/c193d7abc4139afccd1ba892d5bb3a99_6658340945648783394.jpg',
-                '冰':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/afcd1a31744c16f81ad9d8f2d75688a0_4525405643656826681.jpg',
-                '风':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/689e93122216bfd8d231b8366e42ef46_1275479383799739625.jpg',
-                '水':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/94de0e61672fa006e7d4231caab560ca_6048387524082657410.jpg',
-                '岩':'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'}
+    pic_json = {
+        '雷':
+        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/1f5e3773874fcf3177b63672b02a88d7_859652593462461477.jpg',
+        '火':
+        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/c193d7abc4139afccd1ba892d5bb3a99_6658340945648783394.jpg',
+        '冰':
+        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/afcd1a31744c16f81ad9d8f2d75688a0_4525405643656826681.jpg',
+        '风':
+        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/689e93122216bfd8d231b8366e42ef46_1275479383799739625.jpg',
+        '水':
+        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/94de0e61672fa006e7d4231caab560ca_6048387524082657410.jpg',
+        '岩':
+        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'
+    }
     await matcher.finish(MessageSegment.image(pic_json[message]))
-        
+
+
 @get_guide_pic.handle()
 @handle_exception('建议')
 async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
     message = args.strip().replace(' ', '')[:-2]
-    with open(os.path.join(INDEX_PATH, 'char_alias.json'), 'r', encoding='utf8') as fp:
+    with open(os.path.join(INDEX_PATH, 'char_alias.json'),
+              'r',
+              encoding='utf8') as fp:
         char_data = json.load(fp)
     name = message
     for i in char_data:
@@ -327,7 +372,9 @@ async def send_audio(matcher: Matcher, args: Message = CommandArg()):
 
 @get_lots.handle()
 @handle_exception('御神签')
-async def send_lots(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_lots(event: MessageEvent,
+                    matcher: Matcher,
+                    args: Message = CommandArg()):
     if args:
         await matcher.finish()
         return
@@ -376,14 +423,19 @@ async def send_weapon(matcher: Matcher, args: Message = CommandArg()):
 
 @get_talents.handle()
 @handle_exception('天赋')
-async def send_talents(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_talents(bot: Bot,
+                       event: GroupMessageEvent,
+                       matcher: Matcher,
+                       args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     name = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     num = re.findall(r'\d+', message)
     if len(num) == 1:
         im = await char_wiki(name, 'talents', num[0])
         if isinstance(im, list):
-            await bot.call_api('send_group_forward_msg', group_id=event.group_id, messages=im)
+            await bot.call_api('send_group_forward_msg',
+                               group_id=event.group_id,
+                               messages=im)
             await matcher.finish()
             return
     else:
@@ -443,7 +495,9 @@ async def send_events(matcher: Matcher, args: Message = CommandArg()):
 
 @add_cookie.handle()
 @handle_exception('Cookie', '校验失败！请输入正确的Cookies！')
-async def add_cookie_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def add_cookie_func(event: MessageEvent,
+                          matcher: Matcher,
+                          args: Message = CommandArg()):
     mes = args.extract_plain_text().strip().replace(' ', '')
     im = await deal_ck(mes, int(event.sender.user_id))
     await matcher.finish(im)
@@ -451,7 +505,9 @@ async def add_cookie_func(event: MessageEvent, matcher: Matcher, args: Message =
 
 # 开启 自动签到 和 推送树脂提醒 功能
 @open_switch.handle()
-async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def open_switch_func(event: MessageEvent,
+                           matcher: Matcher,
+                           args: Message = CommandArg()):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -540,7 +596,9 @@ async def open_switch_func(event: MessageEvent, matcher: Matcher, args: Message 
 
 # 关闭 自动签到 和 推送树脂提醒 功能
 @close_switch.handle()
-async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def close_switch_func(event: MessageEvent,
+                            matcher: Matcher,
+                            args: Message = CommandArg()):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -624,7 +682,9 @@ async def close_switch_func(event: MessageEvent, matcher: Matcher, args: Message
 # 图片版信息
 @get_genshin_info.handle()
 @handle_exception('当前', '获取/发送当前信息失败', '@未找到绑定信息')
-async def send_genshin_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_genshin_info(event: MessageEvent,
+                            matcher: Matcher,
+                            args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     qid = int(event.sender.user_id)
     uid = await select_db(qid, mode='uid')
@@ -637,7 +697,9 @@ async def send_genshin_info(event: MessageEvent, matcher: Matcher, args: Message
 # 群聊内 每月统计 功能
 @monthly_data.handle()
 @handle_exception('每月统计', '获取/发送每月统计失败', '@未找到绑定信息')
-async def send_monthly_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_monthly_data(event: MessageEvent,
+                            matcher: Matcher,
+                            args: Message = CommandArg()):
     if args:
         await monthly_data.finish()
         return
@@ -650,7 +712,9 @@ async def send_monthly_data(event: MessageEvent, matcher: Matcher, args: Message
 
 # 群聊内 签到 功能
 @get_sign.handle()
-async def get_sing_func(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def get_sing_func(event: MessageEvent,
+                        matcher: Matcher,
+                        args: Message = CommandArg()):
     if args:
         await get_sign.finish()
         return
@@ -677,7 +741,9 @@ async def get_sing_func(event: MessageEvent, matcher: Matcher, args: Message = C
 
 # 获取米游币
 @get_mihoyo_coin.handle()
-async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_mihoyo_coin(event: MessageEvent,
+                           matcher: Matcher,
+                           args: Message = CommandArg()):
     if args:
         await get_mihoyo_coin.finish()
         return
@@ -706,7 +772,9 @@ async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher, args: Message 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @check.handle()
 @handle_exception('Cookie校验', 'Cookie校验错误')
-async def check_cookies(bot: Bot, matcher: Matcher, args: Message = CommandArg()):
+async def check_cookies(bot: Bot,
+                        matcher: Matcher,
+                        args: Message = CommandArg()):
     if args:
         await matcher.finish()
         return
@@ -714,19 +782,24 @@ async def check_cookies(bot: Bot, matcher: Matcher, args: Message = CommandArg()
     im = raw_mes[0]
     await matcher.send(im)
     for i in raw_mes[1]:
-        await bot.call_api(api='send_private_msg', **{
-            'user_id': i[0],
-            'message': ('您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n'
-                        '查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n'
-                        '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
-        })
+        await bot.call_api(api='send_private_msg',
+                           **{
+                               'user_id':
+                               i[0],
+                               'message':
+                               ('您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n'
+                                '查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n'
+                                '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
+                           })
         await asyncio.sleep(3 + random.randint(1, 3))
     await matcher.finish()
 
 
 # 群聊内 查询当前树脂状态以及派遣状态 的命令
 @daily_data.handle()
-async def send_daily_data(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_daily_data(event: MessageEvent,
+                          matcher: Matcher,
+                          args: Message = CommandArg()):
     try:
         if args:
             return
@@ -750,7 +823,9 @@ async def send_daily_data(event: MessageEvent, matcher: Matcher, args: Message =
 
 # 群聊内 查询uid 的命令
 @get_uid_info.handle()
-async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_uid_info(event: MessageEvent,
+                        matcher: Matcher,
+                        args: Message = CommandArg()):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
@@ -760,15 +835,19 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
             try:
                 if len(re.findall(r'\d+', message)) == 2:
                     floor_num = re.findall(r'\d+', message)[1]
-                    im = await draw_abyss_pic(uid, event.sender.nickname, floor_num, image)
+                    im = await draw_abyss_pic(uid, event.sender.nickname,
+                                              floor_num, image)
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
                 else:
-                    im = await draw_abyss0_pic(uid, event.sender.nickname, image)
+                    im = await draw_abyss0_pic(uid, event.sender.nickname,
+                                               image)
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
             except ActionFailed as e:
@@ -780,21 +859,26 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
             except Exception as e:
                 if isinstance(e, FinishedException):
                     raise
-                await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('深渊数据获取失败（数据状态问题）')
         elif m == '上期深渊':
             try:
                 if len(re.findall(r'\d+', message)) == 2:
                     floor_num = re.findall(r'\d+', message)[1]
-                    im = await draw_abyss_pic(uid, event.sender.nickname, floor_num, image, 2, '2')
+                    im = await draw_abyss_pic(uid, event.sender.nickname,
+                                              floor_num, image, 2, '2')
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
                 else:
-                    im = await draw_abyss0_pic(uid, event.sender.nickname, image, 2, '2')
+                    im = await draw_abyss0_pic(uid, event.sender.nickname,
+                                               image, 2, '2')
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
             except ActionFailed as e:
@@ -806,13 +890,15 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
             except Exception as e:
                 if isinstance(e, FinishedException):
                     raise
-                await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('上期深渊数据获取失败（数据状态问题）')
         else:
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 2)
                 if im.startswith('base64://'):
-                    await matcher.finish(MessageSegment.image(im), at_sender=True)
+                    await matcher.finish(MessageSegment.image(im),
+                                         at_sender=True)
                 else:
                     await matcher.finish(im, at_sender=True)
             except ActionFailed as e:
@@ -824,7 +910,8 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
             except Exception as e:
                 if isinstance(e, FinishedException):
                     raise
-                await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('数据获取失败（数据状态问题）')
     except Exception as e:
         if isinstance(e, FinishedException):
@@ -836,7 +923,9 @@ async def send_uid_info(event: MessageEvent, matcher: Matcher, args: Message = C
 # 群聊内 绑定uid 的命令，会绑定至当前qq号上
 @link_uid.handle()
 @handle_exception('绑定uid', '绑定uid异常')
-async def link_uid_to_qq(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def link_uid_to_qq(event: MessageEvent,
+                         matcher: Matcher,
+                         args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)[0]  # str
     await connect_db(int(event.sender.user_id), uid)
@@ -846,7 +935,9 @@ async def link_uid_to_qq(event: MessageEvent, matcher: Matcher, args: Message = 
 # 群聊内 绑定米游社通行证 的命令，会绑定至当前qq号上，和绑定uid不冲突，两者可以同时绑定
 @link_mys.handle()
 @handle_exception('绑定米游社通行证', '绑定米游社通行证异常')
-async def link_mihoyo_bbs_to_qq(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def link_mihoyo_bbs_to_qq(event: MessageEvent,
+                                matcher: Matcher,
+                                args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     mys = re.findall(r'\d+', message)[0]  # str
     await connect_db(int(event.sender.user_id), None, mys)
@@ -855,14 +946,21 @@ async def link_mihoyo_bbs_to_qq(event: MessageEvent, matcher: Matcher, args: Mes
 
 # 群聊内 绑定过uid/mysid的情况下，可以查询，默认优先调用米游社通行证，多出世界等级一个参数
 @search.handle()
-async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def get_info(bot: Bot,
+                   event: GroupMessageEvent,
+                   matcher: Matcher,
+                   args: Message = CommandArg()):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
         at = re.search(r'\[CQ:at,qq=(\d*)]', message)
         if at:
             qid = at.group(1)
-            mi = await bot.call_api('get_group_member_info', **{'group_id': event.group_id, 'user_id': qid})
+            mi = await bot.call_api(
+                'get_group_member_info', **{
+                    'group_id': event.group_id,
+                    'user_id': qid
+                })
             nickname = mi['nickname']
             uid = await select_db(qid)
             message = message.replace(at.group(0), '')
@@ -876,19 +974,24 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                 try:
                     if len(re.findall(r'\d+', message)) == 1:
                         floor_num = re.findall(r'\d+', message)[0]
-                        im = await draw_abyss_pic(uid[0], nickname, floor_num, image, uid[1])
+                        im = await draw_abyss_pic(uid[0], nickname, floor_num,
+                                                  image, uid[1])
                         if im.startswith('base64://'):
-                            await matcher.finish(MessageSegment.image(im), at_sender=True)
+                            await matcher.finish(MessageSegment.image(im),
+                                                 at_sender=True)
                         else:
                             await matcher.finish(im, at_sender=True)
                     else:
-                        im = await draw_abyss0_pic(uid[0], nickname, image, uid[1])
+                        im = await draw_abyss0_pic(uid[0], nickname, image,
+                                                   uid[1])
                         if im.startswith('base64://'):
-                            await matcher.finish(MessageSegment.image(im), at_sender=True)
+                            await matcher.finish(MessageSegment.image(im),
+                                                 at_sender=True)
                         else:
                             await matcher.finish(im, at_sender=True)
                 except ActionFailed as e:
-                    await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                    await matcher.finish('机器人发送消息失败：{}'.format(
+                        e.info['wording']))
                     logger.exception('发送uid深渊信息失败')
                 except (TypeError, IndexError):
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
@@ -902,19 +1005,24 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                 try:
                     if len(re.findall(r'\d+', message)) == 1:
                         floor_num = re.findall(r'\d+', message)[0]
-                        im = await draw_abyss_pic(uid[0], nickname, floor_num, image, uid[1], '2')
+                        im = await draw_abyss_pic(uid[0], nickname, floor_num,
+                                                  image, uid[1], '2')
                         if im.startswith('base64://'):
-                            await matcher.finish(MessageSegment.image(im), at_sender=True)
+                            await matcher.finish(MessageSegment.image(im),
+                                                 at_sender=True)
                         else:
                             await matcher.finish(im, at_sender=True)
                     else:
-                        im = await draw_abyss0_pic(uid[0], nickname, image, uid[1], '2')
+                        im = await draw_abyss0_pic(uid[0], nickname, image,
+                                                   uid[1], '2')
                         if im.startswith('base64://'):
-                            await matcher.finish(MessageSegment.image(im), at_sender=True)
+                            await matcher.finish(MessageSegment.image(im),
+                                                 at_sender=True)
                         else:
                             await matcher.finish(im, at_sender=True)
                 except ActionFailed as e:
-                    await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                    await matcher.finish('机器人发送消息失败：{}'.format(
+                        e.info['wording']))
                     logger.exception('发送uid上期深渊信息失败')
                 except (TypeError, IndexError):
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
@@ -922,17 +1030,20 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                 except Exception as e:
                     if isinstance(e, FinishedException):
                         raise
-                    await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                    await matcher.finish(
+                        '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('上期深渊数据获取失败（数据状态问题）')
             elif m == '词云':
                 try:
                     im = await draw_word_cloud(uid[0], image, uid[1])
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
                 except ActionFailed as e:
-                    await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                    await matcher.finish('机器人发送消息失败：{}'.format(
+                        e.info['wording']))
                     logger.exception('发送uid词云信息失败')
                 except (TypeError, IndexError):
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
@@ -940,17 +1051,20 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                 except Exception as e:
                     if isinstance(e, FinishedException):
                         raise
-                    await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                    await matcher.finish(
+                        '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('词云数据获取失败（数据状态问题）')
             elif m == '':
                 try:
                     im = await draw_pic(uid[0], nickname, image, uid[1])
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
                 except ActionFailed as e:
-                    await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                    await matcher.finish('机器人发送消息失败：{}'.format(
+                        e.info['wording']))
                     logger.exception('发送uid信息失败')
                 except (TypeError, IndexError):
                     await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
@@ -958,7 +1072,8 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
                 except Exception as e:
                     if isinstance(e, FinishedException):
                         raise
-                    await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                    await matcher.finish(
+                        '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('数据获取失败（数据状态问题）')
             else:
                 pass
@@ -973,7 +1088,9 @@ async def get_info(bot: Bot, event: GroupMessageEvent, matcher: Matcher, args: M
 
 # 群聊内 查询米游社通行证 的命令
 @get_mys_info.handle()
-async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Message = CommandArg()):
+async def send_mihoyo_bbs_info(event: MessageEvent,
+                               matcher: Matcher,
+                               args: Message = CommandArg()):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
@@ -983,15 +1100,19 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
             try:
                 if len(re.findall(r'\d+', message)) == 2:
                     floor_num = re.findall(r'\d+', message)[1]
-                    im = await draw_abyss_pic(uid, event.sender.nickname, floor_num, image, 3)
+                    im = await draw_abyss_pic(uid, event.sender.nickname,
+                                              floor_num, image, 3)
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
                 else:
-                    im = await draw_abyss0_pic(uid, event.sender.nickname, image, 3)
+                    im = await draw_abyss0_pic(uid, event.sender.nickname,
+                                               image, 3)
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
             except ActionFailed as e:
@@ -1003,21 +1124,26 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
             except Exception as e:
                 if isinstance(e, FinishedException):
                     raise
-                await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('深渊数据获取失败（数据状态问题）')
         elif m == '上期深渊':
             try:
                 if len(re.findall(r'\d+', message)) == 1:
                     floor_num = re.findall(r'\d+', message)[0]
-                    im = await draw_abyss_pic(uid, event.sender.nickname, floor_num, image, 3, '2')
+                    im = await draw_abyss_pic(uid, event.sender.nickname,
+                                              floor_num, image, 3, '2')
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
                 else:
-                    im = await draw_abyss0_pic(uid, event.sender.nickname, image, 3, '2')
+                    im = await draw_abyss0_pic(uid, event.sender.nickname,
+                                               image, 3, '2')
                     if im.startswith('base64://'):
-                        await matcher.finish(MessageSegment.image(im), at_sender=True)
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
                     else:
                         await matcher.finish(im, at_sender=True)
             except ActionFailed as e:
@@ -1029,13 +1155,15 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
             except Exception as e:
                 if isinstance(e, FinishedException):
                     raise
-                await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('上期深渊数据获取失败（数据状态问题）')
         else:
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 3)
                 if im.startswith('base64://'):
-                    await matcher.finish(MessageSegment.image(im), at_sender=True)
+                    await matcher.finish(MessageSegment.image(im),
+                                         at_sender=True)
                 else:
                     await matcher.finish(im, at_sender=True)
             except ActionFailed as e:
@@ -1047,7 +1175,8 @@ async def send_mihoyo_bbs_info(event: MessageEvent, matcher: Matcher, args: Mess
             except Exception as e:
                 if isinstance(e, FinishedException):
                     raise
-                await matcher.finish('获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('米游社数据获取失败（数据状态问题）')
     except Exception as e:
         if isinstance(e, FinishedException):

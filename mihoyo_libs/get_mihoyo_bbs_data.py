@@ -3,16 +3,18 @@ import os
 import sys
 from base64 import b64encode
 from io import BytesIO
+from typing import List
 
 from openpyxl import load_workbook
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from .get_data import *
-from .get_image import draw_event_pic
-import get_mihoyo_bbs_coin as coin
+# 忽略PEP8 E402 module level import not at top of file 警告
+from .get_data import *  # noqa: E402
+from .get_image import draw_event_pic  # noqa: E402
+import get_mihoyo_bbs_coin as coin  # noqa: E402
 
 FILE_PATH = os.path.dirname(__file__)
-FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_bbs')
+FILE2_PATH = os.path.join(FILE_PATH, 'mihoyo_libs/mihoyo_bbs')
 INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 
@@ -65,8 +67,9 @@ daily_im = """
 ==============
 原粹树脂：{}/{}{}
 每日委托：{}/{} 奖励{}领取
-周本减半：{}/{}
+减半已用：{}/{}
 洞天宝钱：{}
+参量质变仪：{}
 探索派遣：
 总数/完成/上限：{}/{}/{}
 {}"""
@@ -126,17 +129,17 @@ food_im = """【{}】
 【材料】：
 {}"""
 
-audio_json = """{
-    '357':['357_01','357_02','357_03'],
-    '1000000':['1000000_01','1000000_02','1000000_03','1000000_04','1000000_05','1000000_06','1000000_07'],
-    '1000001':['1000001_01','1000001_02','1000001_03'],
-    '1000002':['1000002_01','1000002_02','1000002_03'],
-    '1000100':['1000100_01','1000100_02','1000100_03','1000100_04','1000100_05'],
-    '1000101':['1000101_01','1000101_02','1000101_03','1000101_04','1000101_05','1000101_06'],
-    '1000200':['1000200_01','1000200_02','1000200_03'],
-    '1010201':['1010201_01'],
-    '1000300':['1000300_01','1000300_02'],
-    '1000400':['1000400_01','1000400_02','1000400_03'],
+audio_json = {
+    '357': ['357_01', '357_02', '357_03'],
+    '1000000': ['1000000_01', '1000000_02', '1000000_03', '1000000_04', '1000000_05', '1000000_06', '1000000_07'],
+    '1000001': ['1000001_01', '1000001_02', '1000001_03'],
+    '1000002': ['1000002_01', '1000002_02', '1000002_03'],
+    '1000100': ['1000100_01', '1000100_02', '1000100_03', '1000100_04', '1000100_05'],
+    '1000101': ['1000101_01', '1000101_02', '1000101_03', '1000101_04', '1000101_05', '1000101_06'],
+    '1000200': ['1000200_01', '1000200_02', '1000200_03'],
+    '1010201': ['1010201_01'],
+    '1000300': ['1000300_01', '1000300_02'],
+    '1000400': ['1000400_01', '1000400_02', '1000400_03'],
     '1000500':['1000500_01','1000500_02','1000500_03'],
     '1010000':['1010000_01','1010000_02','1010000_03','1010000_04','1010000_05'],
     '1010001':['1010001_01','1010001_02'],
@@ -146,7 +149,7 @@ audio_json = """{
     '1010301':['1010301_01','1010301_02','1010301_03','1010301_04','1010301_05'],
     '1010400':['1010400_01','1010400_02','1010400_03'],
     '1020000':['1020000_01']
-}"""
+}
 
 char_adv_im = """【{}】
 【五星武器】：{}
@@ -157,35 +160,38 @@ char_adv_im = """【{}】
 
 
 async def weapon_adv(name):
-    char_adv_path = os.path.join(FILE_PATH, 'Genshin All Char.xlsx')
+    char_adv_path = os.path.join(FILE_PATH, 'mihoyo_libs/Genshin All Char.xlsx')
     wb = load_workbook(char_adv_path)
     ws = wb.active
 
-    weapon_name = ''
-    char_list = []
+    weapons={}
     for c in range(2, 5):
         for r in range(2, 300):
             if ws.cell(r, c).value:
                 # if all(i in ws.cell(r,c).value for i in name):
                 if name in ws.cell(r, c).value:
                     weapon_name = ws.cell(r, c).value
-                    char_list.append(ws.cell(2 + ((r - 2) // 5) * 5, 1).value)
+                    weapon=weapons.get(weapon_name,[])
+                    weapon.append(ws.cell(2 + ((r - 2) // 5) * 5, 1).value)
+                    weapons[weapon_name]=weapon
 
-    if char_list != []:
-        im = ','.join(char_list)
-        im = im + '可能会用到【{}】'.format(weapon_name)
+    if weapons:
+        im = []
+        for k, v in weapons.items():
+            im.append(f'{"、".join(v)}可能会用到【{k}】')
+        im = '\n'.join(im)
     else:
         im = '没有角色能使用【{}】'.format(weapon_name)
     return im
 
 
 async def char_adv(name):
-    char_adv_path = os.path.join(FILE_PATH, 'Genshin All Char.xlsx')
+    char_name = None
+    char_adv_path = os.path.join(FILE_PATH, 'mihoyo_libs/Genshin All Char.xlsx')
     wb = load_workbook(char_adv_path)
     ws = wb.active
     char_list = ws['A']
     index = None
-    char_name = ''
     for i in char_list:
         if i.value:
             if all(g in i.value for g in name):
@@ -274,7 +280,7 @@ async def deal_ck(mes, qid):
 
         await cookies_db(uid, cookie, qid)
         return f'添加Cookies成功！\nCookies属于个人重要信息，如果你是在不知情的情况下添加，请马上修改米游社账户密码，保护个人隐私！\n————\n' \
-               f'如果需要【开启自动签到】和【开启推送】还需要使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
+               f'如果需要【gs开启自动签到】和【gs开启推送】还需要在【群聊中】使用命令“绑定uid”绑定你的uid。\n例如：绑定uid123456789。'
 
 
 async def award(uid):
@@ -301,36 +307,40 @@ async def award(uid):
 
 async def audio_wiki(name, message):
     async def get(_audioid):
-        tmp_json = json.loads(audio_json)
         for _ in range(3):  # 重试3次
-            if _audioid in tmp_json:
-                if not tmp_json[_audioid]:
+            if _audioid in audio_json:
+                if not audio_json[_audioid]:
                     return
-                audioid1 = random.choice(tmp_json[_audioid])
+                audioid1 = random.choice(audio_json[_audioid])
             else:
                 audioid1 = _audioid
             url = await get_audio_info(name, audioid1)
-            req = requests.get(url)
-            if req.headers['Content-Type'].startswith('audio'):
+            async with AsyncClient() as client:
+                req = await client.get(url)
+            if req.status_code == 200:
                 return BytesIO(req.content)
             else:
-                if _audioid in tmp_json:
-                    tmp_json[_audioid].remove(audioid1)
+                if _audioid in audio_json:
+                    audio_json[_audioid].remove(audioid1)
 
     if name == '列表':
-        imgmes = 'base64://' + b64encode(open(os.path.join(INDEX_PATH, '语音.png'), 'rb').read()).decode()
+        with open(os.path.join(INDEX_PATH, '语音.png'), 'rb') as f:
+            imgmes = f.read()
         return imgmes
     elif name == '':
-        return '角色名不正确。'
+        return '请输入角色名。'
     else:
-        audioid = re.findall(r'[0-9]+', message)[0]
+        audioid = re.findall(r'\d+', message)
         try:
-            audio = await get(audioid)
+            audio = await get(audioid[0])
+        except IndexError:
+            return '请输入语音ID。'
         except:
             return '语音获取失败'
         if audio:
-            audios = 'base64://' + b64encode(audio.getvalue()).decode()
-            return audios
+            return audio.getvalue()
+        else:
+            return '没有找到语音，请检查语音ID与角色名是否正确，如无误则可能未收录该语音'
 
 
 async def artifacts_wiki(name):
@@ -439,35 +449,48 @@ async def daily(mode='push', uid=None):
             current_expedition_num = dailydata['current_expedition_num']
             max_expedition_num = dailydata['max_expedition_num']
             finished_expedition_num = 0
-            expedition_info: list[str] = []
+            expedition_info: List[str] = []
             for expedition in dailydata['expeditions']:
                 avatar: str = expedition['avatar_side_icon'][89:-4]
-                try:
-                    avatar_name: str = avatar_json[avatar]
-                except KeyError:
-                    avatar_name: str = avatar
+            try:
+                avatar_name: str = avatar_json[avatar]
+            except KeyError:
+                avatar_name: str = avatar
 
-                if expedition['status'] == 'Finished':
-                    expedition_info.append(f'{avatar_name} 探索完成')
-                    finished_expedition_num += 1
-                else:
-                    remained_timed: str = seconds2hours(
-                        expedition['remained_time'])
-                    expedition_info.append(
-                        f'{avatar_name} 剩余时间{remained_timed}')
+            if expedition['status'] == 'Finished':
+                expedition_info.append(f'{avatar_name} 探索完成')
+                finished_expedition_num += 1
+            else:
+                remained_timed: str = seconds2hours(
+                    expedition['remained_time'])
+                expedition_info.append(
+                    f'{avatar_name} 剩余时间{remained_timed}')
 
+            if dailydata['transformer']['recovery_time']['reached']:
+                transformer_status = '可用'
+            else:
+                transformer_time = dailydata['transformer']['recovery_time']
+                transformer_status = '还剩{}天{}小时{}分钟可用'.format(transformer_time['Day'], transformer_time['Hour'],
+                                                              transformer_time['Minute'])
+
+            # 推送条件检查，在指令查询时 row[6] 为 0 ，而自动推送时 row[6] 为 140，这样保证用指令查询时必回复
+            # 说实话我仔细看了一会才理解…
             if current_resin >= row[6] or dailydata['max_home_coin'] - dailydata['current_home_coin'] <= 100:
                 tip = ''
-
+                tips = []
                 if current_resin >= row[6] != 0:
-                    tip += '\n==============\n你的树脂快满了！'
+                    tips.append('你的树脂快满了！')
                 if dailydata['max_home_coin'] - dailydata['current_home_coin'] <= 100:
-                    tip += '\n==============\n你的洞天宝钱快满了！'
-                # if finished_expedition_num >0:
-                #    tip += '\n==============\n你有探索派遣完成了！'
+                    tips.append('你的洞天宝钱快满了！')
+                if finished_expedition_num == current_expedition_num:
+                    tips.append('你的所有探索派遣完成了！')  # emmmm
+                if tips:
+                    tips.insert(0, '\n==============')
+                    tip = '\n'.join(tips)
+
                 max_resin = dailydata['max_resin']
                 rec_time = ''
-                # print(dailydata)
+                # logger.info(dailydata)
                 if current_resin < 160:
                     resin_recovery_time = seconds2hours(
                         dailydata['resin_recovery_time'])
@@ -484,30 +507,33 @@ async def daily(mode='push', uid=None):
                 used_resin_discount_num = resin_discount_num_limit - \
                                           dailydata['remain_resin_discount_num']
 
-                coin = f'{dailydata["current_home_coin"]}/{dailydata["max_home_coin"]}'
+                home_coin = f'{dailydata["current_home_coin"]}/{dailydata["max_home_coin"]}'
                 if dailydata['current_home_coin'] < dailydata['max_home_coin']:
                     coin_rec_time = seconds2hours(int(dailydata['home_coin_recovery_time']))
                     coin_add_speed = math.ceil((dailydata['max_home_coin'] - dailydata['current_home_coin']) / (
                             int(dailydata['home_coin_recovery_time']) / 60 / 60))
-                    coin += f'（{coin_rec_time} 约{coin_add_speed}/h）'
+                    home_coin += f'（{coin_rec_time} 约{coin_add_speed}/h）'
 
                 expedition_data = '\n'.join(expedition_info)
                 send_mes = daily_im.format(tip, current_resin, max_resin, rec_time, finished_task_num, total_task_num,
                                            is_extra_got, used_resin_discount_num,
-                                           resin_discount_num_limit, coin, current_expedition_num,
-                                           finished_expedition_num, max_expedition_num, expedition_data)
+                                           resin_discount_num_limit, home_coin, transformer_status,
+                                           current_expedition_num, finished_expedition_num,
+                                           max_expedition_num, expedition_data)
 
                 temp_list.append(
                     {'qid': row[2], 'gid': row[3], 'message': send_mes})
     return temp_list
 
 
-async def mihoyo_coin(qid):
+async def mihoyo_coin(qid, s_cookies=None):
     uid = await select_db(qid, mode='uid')
     uid = uid[0]
-    s_cookies = await get_stoken(uid)
+    if s_cookies is None:
+        s_cookies = await get_stoken(uid)
+
     if s_cookies:
-        get_coin = coin.mihoyobbs_coin(s_cookies)
+        get_coin = coin.MihoyoBBSCoin(s_cookies)
         im = await get_coin.task_run()
     else:
         im = '你还没有绑定Stoken~'
@@ -574,8 +600,8 @@ async def weapon_wiki(name, level=None):
 
 
 async def char_wiki(name, mode='char', level=None):
-    data = await get_char_info(name, mode, level if mode == 'char' else None)
     im = ''
+    data = await get_char_info(name, mode, level if mode == 'char' else None)
     if mode == 'char':
         if isinstance(data, list):
             im = ','.join(data)
@@ -644,7 +670,7 @@ async def char_wiki(name, mode='char', level=None):
         if 'errcode' in data:
             im = '不存在该角色。'
         else:
-            if 6 >= int(level) > 0:
+            if 7 >= int(level) > 0:
                 if int(level) <= 3:
                     if level == '1':
                         data = data['combat1']

@@ -1,11 +1,13 @@
 import base64
 from functools import wraps
+from typing import Union
 
 from nonebot import get_bot, get_driver, on_command, on_regex, require, Bot
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
-                                         Message, MessageEvent, MessageSegment)
+                                         Message, MessageEvent, MessageSegment, PrivateMessageEvent)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.exception import FinishedException
+from nonebot.internal.params import Depends
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg, RegexMatched
 from nonebot.permission import SUPERUSER
@@ -80,6 +82,40 @@ INDEX_PATH = os.path.join(FILE_PATH, 'index')
 TEXTURE_PATH = os.path.join(FILE_PATH, 'texture2d')
 
 
+# https://v2.nonebot.dev/docs/advanced/di/dependency-injection#class-%E4%BD%9C%E4%B8%BA%E4%BE%9D%E8%B5%96
+class ImageAndAt:
+    def __init__(self, event: MessageEvent):
+        self.images = []
+        self.at = []
+        for i in event.message:
+            if i.type == "image":
+                data = i.data
+                if url := data.get("url"):
+                    self.images.append(url)
+                else:
+                    continue
+            elif i.type == "at":
+                self.at.append(i.data["qq"])
+
+    def get_at(self):
+        return self.at
+
+    def get_image(self):
+        return self.images
+
+    def get_first_image(self) -> Union[str, None]:
+        try:
+            return self.images[0]
+        except IndexError:
+            return None
+
+    def get_first_at(self) -> Union[int, None]:
+        try:
+            return self.at[0]
+        except IndexError:
+            return None
+
+
 @scheduler.scheduled_job('cron', hour='2')
 async def draw_event():
     await draw_event_pic()
@@ -108,10 +144,10 @@ async def push():
                 await bot.call_api(api='send_group_msg',
                                    **{
                                        'group_id':
-                                       i['gid'],
+                                           i['gid'],
                                        'message':
-                                       MessageSegment.at(i['qid']) +
-                                       f'\n{i["message"]}'
+                                           MessageSegment.at(i['qid']) +
+                                           f'\n{i["message"]}'
                                    })
     else:
         pass
@@ -128,7 +164,7 @@ async def daily_sign():
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     cursor = c.execute('SELECT *  FROM NewCookiesTable WHERE StatusB != ?',
-                       ('off', ))
+                       ('off',))
     c_data = cursor.fetchall()
     temp_list = []
     for row in c_data:
@@ -215,7 +251,7 @@ async def daily_mihoyo_bbs_sign():
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
     cursor = c.execute('SELECT *  FROM NewCookiesTable WHERE StatusC != ?',
-                       ('off', ))
+                       ('off',))
     c_data = cursor.fetchall()
     logger.info(c_data)
     for row in c_data:
@@ -305,17 +341,17 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     pic_json = {
         '雷':
-        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/1f5e3773874fcf3177b63672b02a88d7_859652593462461477.jpg',
+            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/1f5e3773874fcf3177b63672b02a88d7_859652593462461477.jpg',
         '火':
-        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/c193d7abc4139afccd1ba892d5bb3a99_6658340945648783394.jpg',
+            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/c193d7abc4139afccd1ba892d5bb3a99_6658340945648783394.jpg',
         '冰':
-        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/afcd1a31744c16f81ad9d8f2d75688a0_4525405643656826681.jpg',
+            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/afcd1a31744c16f81ad9d8f2d75688a0_4525405643656826681.jpg',
         '风':
-        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/689e93122216bfd8d231b8366e42ef46_1275479383799739625.jpg',
+            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/689e93122216bfd8d231b8366e42ef46_1275479383799739625.jpg',
         '水':
-        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/94de0e61672fa006e7d4231caab560ca_6048387524082657410.jpg',
+            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/94de0e61672fa006e7d4231caab560ca_6048387524082657410.jpg',
         '岩':
-        'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'
+            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'
     }
     await matcher.finish(MessageSegment.image(pic_json[message]))
 
@@ -505,21 +541,24 @@ async def add_cookie_func(event: MessageEvent,
 
 # 开启 自动签到 和 推送树脂提醒 功能
 @open_switch.handle()
-async def open_switch_func(event: MessageEvent,
-                           matcher: Matcher,
-                           args: Message = CommandArg()):
+async def open_switch_func(
+        event: MessageEvent,
+        matcher: Matcher,
+        args: Message = CommandArg(),
+        at: ImageAndAt = Depends()
+):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = int(event.sender.user_id)
-        at = re.search(r'\[CQ:at,qq=(\d*)]', message)
+        at = at.get_first_at()
 
         if m == '自动签到':
             try:
                 if at and qid in superusers:
-                    qid = at.group(1)
-                elif at and at.group(1) != qid:
+                    qid = at
+                elif at and at != qid:
                     await matcher.finish('你没有权限。', at_sender=True)
                     return
                 else:
@@ -536,8 +575,8 @@ async def open_switch_func(event: MessageEvent,
         elif m == '推送':
             try:
                 if at and qid in superusers:
-                    qid = at.group(1)
-                elif at and at.group(1) != qid:
+                    qid = at
+                elif at and at != qid:
                     await matcher.finish('你没有权限。', at_sender=True)
                     return
                 else:
@@ -554,8 +593,8 @@ async def open_switch_func(event: MessageEvent,
         elif m == '自动米游币':
             try:
                 if at and qid in superusers:
-                    qid = at.group(1)
-                elif at and at.group(1) != qid:
+                    qid = at
+                elif at and at != qid:
                     await matcher.finish('你没有权限。', at_sender=True)
                     return
                 else:
@@ -596,21 +635,24 @@ async def open_switch_func(event: MessageEvent,
 
 # 关闭 自动签到 和 推送树脂提醒 功能
 @close_switch.handle()
-async def close_switch_func(event: MessageEvent,
-                            matcher: Matcher,
-                            args: Message = CommandArg()):
+async def close_switch_func(
+        event: MessageEvent,
+        matcher: Matcher,
+        args: Message = CommandArg(),
+        at: ImageAndAt = Depends()
+):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = int(event.sender.user_id)
-        at = re.search(r'\[CQ:at,qq=(\d*)]', message)
+        at = at.get_first_at()
 
         if m == '自动签到':
             try:
                 if at and qid in superusers:
-                    qid = at.group(1)
-                elif at and at.group(1) != qid:
+                    qid = at
+                elif at and at != qid:
                     await matcher.finish('你没有权限。', at_sender=True)
                     return
                 else:
@@ -625,8 +667,8 @@ async def close_switch_func(event: MessageEvent,
         elif m == '推送':
             try:
                 if at and qid in superusers:
-                    qid = at.group(1)
-                elif at and at.group(1) != qid:
+                    qid = at
+                elif at and at != qid:
                     await matcher.finish('你没有权限。', at_sender=True)
                     return
                 else:
@@ -641,8 +683,8 @@ async def close_switch_func(event: MessageEvent,
         elif m == '自动米游币':
             try:
                 if at and qid in superusers:
-                    qid = at.group(1)
-                elif at and at.group(1) != qid:
+                    qid = at
+                elif at and at != qid:
                     await matcher.finish('你没有权限。', at_sender=True)
                     return
                 else:
@@ -682,13 +724,14 @@ async def close_switch_func(event: MessageEvent,
 # 图片版信息
 @get_genshin_info.handle()
 @handle_exception('当前', '获取/发送当前信息失败', '@未找到绑定信息')
-async def send_genshin_info(event: MessageEvent,
-                            matcher: Matcher,
-                            args: Message = CommandArg()):
-    message = args.extract_plain_text().strip().replace(' ', '')
+async def send_genshin_info(
+        event: MessageEvent,
+        matcher: Matcher,
+        image: ImageAndAt = Depends()
+):
     qid = int(event.sender.user_id)
     uid = await select_db(qid, mode='uid')
-    image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
+    image = image.get_first_image()
     uid = uid[0]
     im = await draw_info_pic(uid, image)
     await matcher.finish(MessageSegment.image(im), at_sender=True)
@@ -785,11 +828,11 @@ async def check_cookies(bot: Bot,
         await bot.call_api(api='send_private_msg',
                            **{
                                'user_id':
-                               i[0],
+                                   i[0],
                                'message':
-                               ('您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n'
-                                '查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n'
-                                '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
+                                   ('您绑定的Cookies（uid{}）已失效，以下功能将会受到影响：\n'
+                                    '查看完整信息列表\n查看深渊配队\n自动签到/当前状态/每月统计\n'
+                                    '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
                            })
         await asyncio.sleep(3 + random.randint(1, 3))
     await matcher.finish()
@@ -823,12 +866,15 @@ async def send_daily_data(event: MessageEvent,
 
 # 群聊内 查询uid 的命令
 @get_uid_info.handle()
-async def send_uid_info(event: MessageEvent,
-                        matcher: Matcher,
-                        args: Message = CommandArg()):
+async def send_uid_info(
+        event: MessageEvent,
+        matcher: Matcher,
+        args: Message = CommandArg(),
+        image: ImageAndAt = Depends()
+):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
-        image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
+        image = image.get_first_image()
         uid = re.findall(r'\d+', message)[0]  # str
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         if m == '深渊':
@@ -946,24 +992,26 @@ async def link_mihoyo_bbs_to_qq(event: MessageEvent,
 
 # 群聊内 绑定过uid/mysid的情况下，可以查询，默认优先调用米游社通行证，多出世界等级一个参数
 @search.handle()
-async def get_info(bot: Bot,
-                   event: GroupMessageEvent,
-                   matcher: Matcher,
-                   args: Message = CommandArg()):
+async def get_info(
+        bot: Bot,
+        event: Union[GroupMessageEvent, PrivateMessageEvent],
+        matcher: Matcher,
+        args: Message = CommandArg(),
+        custom: ImageAndAt = Depends()
+):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
-        image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
-        at = re.search(r'\[CQ:at,qq=(\d*)]', message)
+        image = custom.get_first_image()
+        at = custom.get_first_at()
         if at:
-            qid = at.group(1)
             mi = await bot.call_api(
                 'get_group_member_info', **{
                     'group_id': event.group_id,
-                    'user_id': qid
+                    'user_id': at
                 })
             nickname = mi['nickname']
-            uid = await select_db(qid)
-            message = message.replace(at.group(0), '')
+            uid = await select_db(at)
+            message = message.replace(str(at), '')
         else:
             nickname = event.sender.nickname
             uid = await select_db(int(event.sender.user_id))
@@ -1088,12 +1136,15 @@ async def get_info(bot: Bot,
 
 # 群聊内 查询米游社通行证 的命令
 @get_mys_info.handle()
-async def send_mihoyo_bbs_info(event: MessageEvent,
-                               matcher: Matcher,
-                               args: Message = CommandArg()):
+async def send_mihoyo_bbs_info(
+        event: MessageEvent,
+        matcher: Matcher,
+        args: Message = CommandArg(),
+        image: ImageAndAt = Depends()
+):
     try:
         message = args.extract_plain_text().strip().replace(' ', '')
-        image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', message)
+        image = image.get_first_image()
         uid = re.findall(r'\d+', message)[0]  # str
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
         if m == '深渊':

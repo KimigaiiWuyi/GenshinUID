@@ -3,7 +3,7 @@ import math
 import threading
 from base64 import b64encode
 from io import BytesIO
-from re import Match, findall
+from re import findall
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -29,7 +29,7 @@ BG_PATH = os.path.join(FILE2_PATH, 'bg')
 
 
 class CustomizeImage:
-    def __init__(self, image: Match, based_w: int, based_h: int) -> None:
+    def __init__(self, image: str, based_w: int, based_h: int) -> None:
 
         self.bg_img = self.get_image(image, based_w, based_h)
         self.bg_color = self.get_bg_color(self.bg_img)
@@ -40,14 +40,13 @@ class CustomizeImage:
         self.char_high_color = self.get_char_high_color(self.bg_color)
 
     @staticmethod
-    def get_image(image: Match, based_w: int, based_h: int) -> Image:
+    def get_image(image: str, based_w: int, based_h: int) -> Image:
         # 获取背景图片
         bg2_path = os.path.join(BG_PATH, random.choice([x for x in os.listdir(BG_PATH)
                                                         if os.path.isfile(os.path.join(BG_PATH, x))]))
 
         if image:
-            image_data = image.group(2)
-            edit_bg = Image.open(BytesIO(get(image_data).content))
+            edit_bg = Image.open(BytesIO(get(image).content))
         else:
             edit_bg = Image.open(bg2_path)
 
@@ -260,7 +259,7 @@ class GetCookies:
             return '没有可以使用的Cookies！'
 
 
-async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2):
+async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
     def create_rounded_rectangle_mask(rectangle, _radius):
         solid_fill = (50, 50, 50, 255)
         img = Image.new('RGBA', rectangle.size, (0, 0, 0, 0))
@@ -485,9 +484,8 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     is_edit = False
     if image:
-        image_data = image.group(2)
         with open(os.path.join(TEXT_PATH, nickname + '.png'), 'wb') as f:
-            f.write(get(image_data).content)
+            f.write(get(image).content)
         is_edit = True
 
     if is_edit:
@@ -824,7 +822,7 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date='1'):
     return resultmes
 
 
-async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optional[Match] = None, mode: int = 2,
+async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optional[str] = None, mode: int = 2,
                          date: str = '1'):
     # 获取Cookies
     data_def = GetCookies()
@@ -1068,9 +1066,10 @@ async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: Tuple
     char_crop = (75 + 190 * (index % 4), 900 + 100 * (index // 4))
     STATUS.remove(char_data['name'])
     img.paste(char_0, char_crop, char_0)
+    logger.debug(f"Draw {char_data['name']}")
 
 
-async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode: int = 2,
+async def draw_pic(uid: str, nickname: str, image: Optional[str] = None, mode: int = 2,
                    role_level: Optional[int] = None):
     # 获取Cookies
     data_def = GetCookies()
@@ -1493,7 +1492,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     return resultmes
 
 
-async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
+async def draw_info_pic(uid: str, image: Optional[str] = None) -> str:
     def seconds2hours(seconds: int) -> str:
         m, s = divmod(int(seconds), 60)
         h, m = divmod(m, 60)

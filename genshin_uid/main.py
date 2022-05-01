@@ -867,7 +867,7 @@ async def send_daily_data(event: MessageEvent,
 # 群聊内 查询uid 的命令
 @get_uid_info.handle()
 async def send_uid_info(
-        event: MessageEvent,
+        event: Union[GroupMessageEvent, PrivateMessageEvent],
         matcher: Matcher,
         args: Message = CommandArg(),
         image: ImageAndAt = Depends()
@@ -1137,7 +1137,7 @@ async def get_info(
 # 群聊内 查询米游社通行证 的命令
 @get_mys_info.handle()
 async def send_mihoyo_bbs_info(
-        event: MessageEvent,
+        event: Union[GroupMessageEvent, PrivateMessageEvent],
         matcher: Matcher,
         args: Message = CommandArg(),
         image: ImageAndAt = Depends()

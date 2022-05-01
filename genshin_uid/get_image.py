@@ -46,9 +46,9 @@ class CustomizeImage:
                                                         if os.path.isfile(os.path.join(BG_PATH, x))]))
 
         if image:
-            edit_bg = Image.open(BytesIO(get(image).content))
+            edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
         else:
-            edit_bg = Image.open(bg2_path)
+            edit_bg = Image.open(bg2_path).convert('RGBA')
 
         # 确定图片的长宽
         based_scale = '%.3f' % (based_w / based_h)

@@ -69,11 +69,11 @@ all_bbscoin_recheck = on_command('全部重获取',
                                  permission=SUPERUSER,
                                  priority=priority)
 
-get_char_adv = on_regex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)', priority=priority)
-get_weapon_adv = on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)',
+get_char_adv = on_regex('([\u4e00-\u9fa5]+)(用什么|能用啥|怎么养)', priority=priority)
+get_weapon_adv = on_regex('([\u4e00-\u9fa5]+)(能给谁|给谁用|要给谁|谁能用)',
                           priority=priority)
 
-get_guide_pic = on_regex('[\u4e00-\u9fa5]+(推荐|攻略)', priority=priority)
+get_guide_pic = on_regex('([\u4e00-\u9fa5]+)(推荐|攻略)', priority=priority)
 get_bluekun_pic = on_command('参考面板', priority=priority)
 
 FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), ''),
@@ -359,7 +359,7 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
 @get_guide_pic.handle()
 @handle_exception('建议')
 async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
-    message = args.strip().replace(' ', '')[:-2]
+    message = args.strip().replace(' ', '')[0]
     with open(os.path.join(INDEX_PATH, 'char_alias.json'),
               'r',
               encoding='utf8') as fp:
@@ -380,14 +380,14 @@ async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
 @get_char_adv.handle()
 @handle_exception('建议')
 async def send_char_adv(matcher: Matcher, args: str = RegexMatched()):
-    im = await char_adv(args[:-2])
+    im = await char_adv(args[0])
     await matcher.finish(im)
 
 
 @get_weapon_adv.handle()
 @handle_exception('建议')
 async def send_weapon_adv(matcher: Matcher, args: str = RegexMatched()):
-    im = await weapon_adv(args[:-3])
+    im = await weapon_adv(args[0])
     await matcher.finish(im)
 
 

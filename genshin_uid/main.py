@@ -1,6 +1,6 @@
 import base64
 from functools import wraps
-from typing import Union
+from typing import Union, Any
 
 from nonebot import get_bot, get_driver, on_command, on_regex, require, Bot
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
@@ -9,7 +9,7 @@ from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.exception import FinishedException
 from nonebot.internal.params import Depends
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg, RegexMatched
+from nonebot.params import CommandArg, RegexGroup
 from nonebot.permission import SUPERUSER
 
 # from .get_data import *
@@ -358,7 +358,7 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
 
 @get_guide_pic.handle()
 @handle_exception('建议')
-async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
+async def send_guide_pic(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()):
     message = args[0].strip().replace(' ', '')
     with open(os.path.join(INDEX_PATH, 'char_alias.json'),
               'r',
@@ -379,14 +379,14 @@ async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
 
 @get_char_adv.handle()
 @handle_exception('建议')
-async def send_char_adv(matcher: Matcher, args: str = RegexMatched()):
+async def send_char_adv(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()):
     im = await char_adv(args[0])
     await matcher.finish(im)
 
 
 @get_weapon_adv.handle()
 @handle_exception('建议')
-async def send_weapon_adv(matcher: Matcher, args: str = RegexMatched()):
+async def send_weapon_adv(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()):
     im = await weapon_adv(args[0])
     await matcher.finish(im)
 

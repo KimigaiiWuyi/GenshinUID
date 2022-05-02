@@ -359,7 +359,7 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
 @get_guide_pic.handle()
 @handle_exception('建议')
 async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
-    message = args.strip().replace(' ', '')[0]
+    message = args[0].strip().replace(' ', '')
     with open(os.path.join(INDEX_PATH, 'char_alias.json'),
               'r',
               encoding='utf8') as fp:

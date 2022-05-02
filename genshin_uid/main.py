@@ -1,6 +1,6 @@
 import base64
 from functools import wraps
-from typing import Union
+from typing import Union, Any
 
 from nonebot import get_bot, get_driver, on_command, on_regex, require, Bot
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
@@ -9,7 +9,7 @@ from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.exception import FinishedException
 from nonebot.internal.params import Depends
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg, RegexMatched
+from nonebot.params import CommandArg, RegexGroup
 from nonebot.permission import SUPERUSER
 
 # from .get_data import *
@@ -69,11 +69,11 @@ all_bbscoin_recheck = on_command('全部重获取',
                                  permission=SUPERUSER,
                                  priority=priority)
 
-get_char_adv = on_regex('[\u4e00-\u9fa5]+(用什么|能用啥|怎么养)', priority=priority)
-get_weapon_adv = on_regex('[\u4e00-\u9fa5]+(能给谁|给谁用|要给谁|谁能用)',
+get_char_adv = on_regex('([\u4e00-\u9fa5]+)(用什么|能用啥|怎么养)', priority=priority)
+get_weapon_adv = on_regex('([\u4e00-\u9fa5]+)(能给谁|给谁用|要给谁|谁能用)',
                           priority=priority)
 
-get_guide_pic = on_regex('[\u4e00-\u9fa5]+(推荐|攻略)', priority=priority)
+get_guide_pic = on_regex('([\u4e00-\u9fa5]+)(推荐|攻略)', priority=priority)
 get_bluekun_pic = on_command('参考面板', priority=priority)
 
 FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), ''),
@@ -358,8 +358,8 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
 
 @get_guide_pic.handle()
 @handle_exception('建议')
-async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
-    message = args.strip().replace(' ', '')[:-2]
+async def send_guide_pic(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()):
+    message = args[0].strip().replace(' ', '')
     with open(os.path.join(INDEX_PATH, 'char_alias.json'),
               'r',
               encoding='utf8') as fp:
@@ -379,15 +379,15 @@ async def send_guide_pic(matcher: Matcher, args: str = RegexMatched()):
 
 @get_char_adv.handle()
 @handle_exception('建议')
-async def send_char_adv(matcher: Matcher, args: str = RegexMatched()):
-    im = await char_adv(args[:-2])
+async def send_char_adv(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()):
+    im = await char_adv(args[0])
     await matcher.finish(im)
 
 
 @get_weapon_adv.handle()
 @handle_exception('建议')
-async def send_weapon_adv(matcher: Matcher, args: str = RegexMatched()):
-    im = await weapon_adv(args[:-3])
+async def send_weapon_adv(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()):
+    im = await weapon_adv(args[0])
     await matcher.finish(im)
 
 

@@ -16,7 +16,7 @@ sample = {
 
 char_json = {}
 
-wb = load_workbook('..\genshin_uid\mihoyo_libs\Genshin All Char.xlsx')
+wb = load_workbook('../genshin_uid/mihoyo_libs/Genshin All Char.xlsx')
 ws = wb.active
 for char_i in range(2, 336, 5):  # 角色行
     char_name = ws.cell(char_i, 1).value.replace('\n', '')
@@ -42,5 +42,5 @@ for char_i in range(2, 336, 5):  # 角色行
 
     char_json[char_name] = char_sample
 
-with open('..\genshin_uid\mihoyo_libs\char_adv_list.json', 'w', encoding='utf-8') as f:
+with open('../genshin_uid/mihoyo_libs/char_adv_list.json', 'w', encoding='utf-8') as f:
     json.dump(char_json, f, indent=2, ensure_ascii=False)

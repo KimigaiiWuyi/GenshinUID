@@ -160,7 +160,7 @@ char_adv_im = """【{}】
 
 
 async def weapon_adv(name):
-    char_adv_path = os.path.join(FILE_PATH, 'mihoyo_libs/Genshin All Char.xlsx')
+    char_adv_path = os.path.join(FILE_PATH, 'Genshin All Char.xlsx')
     wb = load_workbook(char_adv_path)
     ws = wb.active
 

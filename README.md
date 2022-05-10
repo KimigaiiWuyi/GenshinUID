@@ -81,7 +81,9 @@ if (ask == true) {
 - [@MingxuanGame](https://github.com/MingxuanGame)
   - [Nonebot2-beta1](https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1)分支新建与维护
 - [@shirokurakana](https://github.com/shirokurakana)
-  - [Nonebot2-beta1 分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
+  - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
+- [@猫冬](https://bbs.mihoyo.com/ys/accountCenter/postList?id=74019947) - 原神攻略的**授权**使用
+- [@blue菌hehe](https://bbs.mihoyo.com/ys/accountCenter/postList?id=160367110) - 参考面板的**授权**使用
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc2333](https://github.com/lgc2333) - 众多优秀 PR 贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易 Cookies 获取文档

@@ -3,7 +3,7 @@ import math
 import threading
 from base64 import b64encode
 from io import BytesIO
-from re import Match, findall
+from re import findall
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -29,7 +29,7 @@ BG_PATH = os.path.join(FILE2_PATH, 'bg')
 
 
 class CustomizeImage:
-    def __init__(self, image: Match, based_w: int, based_h: int) -> None:
+    def __init__(self, image: str, based_w: int, based_h: int) -> None:
 
         self.bg_img = self.get_image(image, based_w, based_h)
         self.bg_color = self.get_bg_color(self.bg_img)
@@ -40,16 +40,15 @@ class CustomizeImage:
         self.char_high_color = self.get_char_high_color(self.bg_color)
 
     @staticmethod
-    def get_image(image: Match, based_w: int, based_h: int) -> Image:
+    def get_image(image: str, based_w: int, based_h: int) -> Image:
         # 获取背景图片
         bg2_path = os.path.join(BG_PATH, random.choice([x for x in os.listdir(BG_PATH)
                                                         if os.path.isfile(os.path.join(BG_PATH, x))]))
 
         if image:
-            image_data = image.group(2)
-            edit_bg = Image.open(BytesIO(get(image_data).content))
+            edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
         else:
-            edit_bg = Image.open(bg2_path)
+            edit_bg = Image.open(bg2_path).convert('RGBA')
 
         # 确定图片的长宽
         based_scale = '%.3f' % (based_w / based_h)
@@ -260,7 +259,7 @@ class GetCookies:
             return '没有可以使用的Cookies！'
 
 
-async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2):
+async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
     def create_rounded_rectangle_mask(rectangle, _radius):
         solid_fill = (50, 50, 50, 255)
         img = Image.new('RGBA', rectangle.size, (0, 0, 0, 0))
@@ -485,9 +484,8 @@ async def draw_word_cloud(uid: str, image: Optional[Match] = None, mode: int = 2
 
     is_edit = False
     if image:
-        image_data = image.group(2)
         with open(os.path.join(TEXT_PATH, nickname + '.png'), 'wb') as f:
-            f.write(get(image_data).content)
+            f.write(get(image).content)
         is_edit = True
 
     if is_edit:
@@ -824,7 +822,7 @@ async def draw_abyss0_pic(uid, nickname, image=None, mode=2, date='1'):
     return resultmes
 
 
-async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optional[Match] = None, mode: int = 2,
+async def draw_abyss_pic(uid: str, nickname: str, floor_num: int, image: Optional[str] = None, mode: int = 2,
                          date: str = '1'):
     # 获取Cookies
     data_def = GetCookies()
@@ -1068,9 +1066,10 @@ async def draw_char_pic(img: Image, char_data: dict, index: int, bg_color: Tuple
     char_crop = (75 + 190 * (index % 4), 900 + 100 * (index // 4))
     STATUS.remove(char_data['name'])
     img.paste(char_0, char_crop, char_0)
+    logger.debug(f"Draw {char_data['name']}")
 
 
-async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode: int = 2,
+async def draw_pic(uid: str, nickname: str, image: Optional[str] = None, mode: int = 2,
                    role_level: Optional[int] = None):
     # 获取Cookies
     data_def = GetCookies()
@@ -1172,57 +1171,72 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
 
     mondstadt = liyue = dragonspine = inazuma = offering = chasms_maw = under_chasms_maw = dict()
     for i in raw_data['world_explorations']:
-        if i['name'] == '蒙德':
+        # 蒙德
+        if i['id'] == 1:
             mondstadt = i
-        elif i['name'] == '璃月':
+        # 璃月
+        elif i['id'] == 2:
             liyue = i
-        elif i['name'] == '龙脊雪山':
+        # 龙脊雪山
+        elif i['id'] == 3:
             dragonspine = i
-        elif i['name'] == '稻妻':
+        # 稻妻
+        elif i['id'] == 4:
             inazuma = i
-        elif i['name'] == '渊下宫':
+        # 渊下宫
+        elif i['id'] == 5:
             offering = i
-        elif i['name'] == '璃月层岩巨渊':
+        # 璃月层岩巨渊
+        elif i['id'] == 6:
             chasms_maw = i
-        elif i['name'] == '璃月层岩巨渊·地下矿区':
+        # 璃月层岩巨渊·地下矿区
+        elif i['id'] == 7:
             under_chasms_maw = i
 
     # 层岩巨渊
-    text_draw.text((477, 727), str(chasms_maw['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((523, 753), str(under_chasms_maw['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((500, 782), 'lv.' + str(under_chasms_maw['offerings'][0]['level']), text_color, genshin_font(22))
+    if chasms_maw:
+        text_draw.text((477, 727), str(chasms_maw['exploration_percentage'] / 10) + '%', text_color,
+                    genshin_font(22))
+        text_draw.text((500, 782), 'lv.' + str(chasms_maw['offerings'][0]['level']), text_color, genshin_font(22))
+
+    if under_chasms_maw:
+        text_draw.text((523, 753), str(under_chasms_maw['exploration_percentage'] / 10) + '%', text_color,
+                    genshin_font(22))
 
     # 蒙德
-    text_draw.text((235, 600), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((235, 630), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
+    if mondstadt:
+        text_draw.text((235, 600), str(mondstadt['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
+        text_draw.text((235, 630), 'lv.' + str(mondstadt['level']), text_color, genshin_font(22))
     text_draw.text((258, 660), str(raw_data['stats']['anemoculus_number']), text_color, genshin_font(22))
 
     # 璃月
-    text_draw.text((480, 597), str(liyue['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((480, 627), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
+    if liyue:
+        text_draw.text((480, 597), str(liyue['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
+        text_draw.text((480, 627), 'lv.' + str(liyue['level']), text_color, genshin_font(22))
     text_draw.text((503, 657), str(raw_data['stats']['geoculus_number']), text_color, genshin_font(22))
 
     # 雪山
-    text_draw.text((238, 733), str(dragonspine['exploration_percentage'] / 10) + '%',
-                   text_color,
-                   genshin_font(22))
-    text_draw.text((238, 764), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
+    if dragonspine:
+        text_draw.text((238, 733), str(dragonspine['exploration_percentage'] / 10) + '%',
+                       text_color,
+                       genshin_font(22))
+        text_draw.text((238, 764), 'lv.' + str(dragonspine['level']), text_color, genshin_font(22))
 
     # 稻妻
-    text_draw.text((750, 588), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
-    text_draw.text((750, 616), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
-    text_draw.text((750, 644), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
-                   genshin_font(22))
+    if inazuma:
+        text_draw.text((750, 588), str(inazuma['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
+        text_draw.text((750, 616), 'lv.' + str(inazuma['level']), text_color, genshin_font(22))
+        text_draw.text((750, 644), 'lv.' + str(inazuma['offerings'][0]['level']), text_color,
+                       genshin_font(22))
     text_draw.text((773, 672), str(raw_data['stats']['electroculus_number']), text_color, genshin_font(22))
 
     # 渊下宫
-    text_draw.text((750, 750), str(offering['exploration_percentage'] / 10) + '%', text_color,
-                   genshin_font(22))
+    if offering:
+        text_draw.text((750, 750), str(offering['exploration_percentage'] / 10) + '%', text_color,
+                       genshin_font(22))
 
     # 家园
     if len(raw_data['homes']):
@@ -1478,7 +1492,7 @@ async def draw_pic(uid: str, nickname: str, image: Optional[Match] = None, mode:
     return resultmes
 
 
-async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
+async def draw_info_pic(uid: str, image: Optional[str] = None) -> str:
     def seconds2hours(seconds: int) -> str:
         m, s = divmod(int(seconds), 60)
         h, m = divmod(m, 60)
@@ -1608,7 +1622,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
                 daily_data['resin_recovery_time'])))
         text_draw.text((268, 305), f' {next_resin_rec_time}', text_color, genshin_font(18), anchor='lm')
 
-        text_draw.text((170, 331), f'预计                后全部恢复', text_color, genshin_font(18), anchor='lm')
+        text_draw.text((170, 331), f'预计                 后全部恢复', text_color, genshin_font(18), anchor='lm')
         text_draw.text((208, 331), f'{resin_recovery_time}', highlight_color, genshin_font(18), anchor='lm')
 
     # 洞天宝钱时间计算

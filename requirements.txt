@@ -1,8 +1,8 @@
 nonebot2>=2.0.0b2
 nonebot-adapter-onebot>=2.0.0b1
 
-requests==2.25.1
-httpx==0.18.1
+requests==2.27.1
+httpx>=0.18.1
 Pillow>=8.3.1
 nonebot-plugin-apscheduler>=0.1.2
 wordcloud>=1.8.1
@@ -11,3 +11,4 @@ lxml>=4.7.1
 openpyxl>=3.0.9
 numpy>=1.22.3
 aiohttp>=3.8.1
+aiofiles>=0.8.0

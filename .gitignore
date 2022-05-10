@@ -2,3 +2,4 @@
 .idea/**
 venv/**
 genshin_uid/mihoyo_libs/mihoyo_bbs/bg/**
+!/tests/.pytest_cache/

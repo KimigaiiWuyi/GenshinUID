@@ -15,6 +15,8 @@ from httpx import AsyncClient
 from nonebot import logger
 
 mhyVersion = '2.11.1'
+o_url = 'https://api-takumi.mihoyo.com'
+n_url = 'https://api-takumi-record.mihoyo.com'
 
 BASE_PATH = os.path.dirname(__file__)
 BASE2_PATH = os.path.join(BASE_PATH, 'mihoyo_bbs')
@@ -408,7 +410,7 @@ def get_ds_token(q='', b=None):
 async def get_stoken_by_login_ticket(loginticket, mys_id):
     async with AsyncClient() as client:
         req = await client.get(
-            url='https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket',
+            url= o_url + '/auth/api/getMultiTokenByLoginTicket',
             params={
                 'login_ticket': loginticket,
                 'token_types' : '3',
@@ -424,7 +426,7 @@ async def get_daily_data(uid, server_id='cn_gf01'):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url='https://api-takumi.mihoyo.com/game_record/app/genshin/api/dailyNote',
+                url= n_url + '/game_record/app/genshin/api/dailyNote',
                 headers={
                     'DS'               : get_ds_token('role_id=' + uid + '&server=' + server_id),
                     'x-rpc-app_version': mhyVersion,
@@ -471,7 +473,7 @@ async def get_sign_list():
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url='https://api-takumi.mihoyo.com/event/bbs_sign_reward/home',
+                url = o_url + '/event/bbs_sign_reward/home',
                 headers={
                     'x-rpc-app_version': mhyVersion,
                     'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
@@ -494,7 +496,7 @@ async def get_sign_info(uid, server_id='cn_gf01'):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url='https://api-takumi.mihoyo.com/event/bbs_sign_reward/info',
+                url= o_url + '/event/bbs_sign_reward/info',
                 headers={
                     'x-rpc-app_version': mhyVersion,
                     'Cookie'           : await owner_cookies(uid),
@@ -519,7 +521,7 @@ async def mihoyo_bbs_sign(uid, server_id='cn_gf01'):
         server_id = 'cn_qd01'
     try:
         req = requests.post(
-            url='https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign',
+            url= o_url + '/event/bbs_sign_reward/sign',
             headers={
                 'User_Agent'       : 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
                                      'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
@@ -583,7 +585,7 @@ async def get_info(uid, ck, server_id='cn_gf01'):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url='https://api-takumi.mihoyo.com/game_record/app/genshin/api/index',
+                url= n_url + '/game_record/app/genshin/api/index',
                 headers={
                     'DS'               : get_ds_token('role_id=' + uid + '&server=' + server_id),
                     'x-rpc-app_version': mhyVersion,
@@ -632,7 +634,7 @@ async def get_spiral_abyss_info(uid, ck, schedule_type='1', server_id='cn_gf01')
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url='https://api-takumi.mihoyo.com/game_record/app/genshin/api/spiralAbyss',
+                url= n_url + '/game_record/app/genshin/api/spiralAbyss',
                 headers={
                     'DS'               : get_ds_token(
                         'role_id=' + uid + '&schedule_type=' + schedule_type + '&server=' + server_id),
@@ -692,7 +694,7 @@ def get_character(uid, character_ids, ck, server_id='cn_gf01'):
         server_id = 'cn_qd01'
     try:
         req = requests.post(
-            url='https://api-takumi.mihoyo.com/game_record/app/genshin/api/character',
+            url= n_url + '/game_record/app/genshin/api/character',
             headers={
                 'DS'               : get_ds_token('', {'character_ids': character_ids, 'role_id': uid,
                                                        'server'       : server_id}),
@@ -737,7 +739,7 @@ def get_character(uid, character_ids, ck, server_id='cn_gf01'):
 async def get_calculate_info(client: ClientSession, uid, char_id, ck, name, server_id='cn_gf01'):
     if uid[0] == '5':
         server_id = 'cn_qd01'
-    url = 'https://api-takumi.mihoyo.com/event/e20200928calculate/v1/sync/avatar/detail'
+    url = o_url + '/event/e20200928calculate/v1/sync/avatar/detail'
     req = await client.get(
         url=url,
         headers={
@@ -763,7 +765,7 @@ async def get_mihoyo_bbs_info(mysid, ck):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url='https://api-takumi.mihoyo.com/game_record/card/wapi/getGameRecordCard',
+                url = n_url + '/game_record/card/wapi/getGameRecordCard',
                 headers={
                     'DS'               : get_ds_token('uid=' + mysid),
                     'x-rpc-app_version': mhyVersion,

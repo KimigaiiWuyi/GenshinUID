@@ -234,7 +234,9 @@ def error_db(ck, err):
     elif err == 'limit30':
         c.execute('UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?',
                   ('limit30', ck))
-
+    conn.commit()
+    conn.close()
+    return
 
 def cache_db(uid, mode=1, mys=None):
     conn = sqlite3.connect('ID_DATA.db')

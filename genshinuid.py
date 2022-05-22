@@ -540,11 +540,11 @@ async def setting(ctx):
 @sv.on_prefix('gs开启')
 async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
     try:
+        at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
         message = ev.message.extract_plain_text()
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = ev.sender['user_id']
-        at = re.search(r'\[CQ:at,qq=(\d*)]', message)
 
         if m == '自动签到':
             try:
@@ -608,11 +608,11 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
 @sv.on_prefix('gs关闭')
 async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
     try:
+        at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
         message = ev.message.extract_plain_text()
         m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
 
         qid = ev.sender['user_id']
-        at = re.search(r'\[CQ:at,qq=(\d*)]', message)
 
         if m == '自动签到':
             try:

@@ -549,11 +549,11 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
         if m == '自动签到':
             try:
                 if at:
-                    if at and at.group(1) != qid:
+                    if qid in bot.config.SUPERUSERS:
+                        qid = at.group(1)
+                    else:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
-                    else:
-                        qid = at.group(1)
                 else:
                     qid = ev.sender['user_id']
                 gid = ev.group_id
@@ -569,11 +569,11 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
         elif m == '推送':
             try:
                 if at:
-                    if at and at.group(1) != qid:
+                    if qid in bot.config.SUPERUSERS:
+                        qid = at.group(1)
+                    else:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
-                    else:
-                        qid = at.group(1)
                 else:
                     qid = ev.sender['user_id']
                 gid = ev.group_id
@@ -617,11 +617,11 @@ async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
         if m == '自动签到':
             try:
                 if at:
-                    if at and at.group(1) != qid:
+                    if qid in bot.config.SUPERUSERS:
+                        qid = at.group(1)
+                    else:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
-                    else:
-                        qid = at.group(1)
                 else:
                     qid = ev.sender['user_id']
                 uid = await select_db(qid, mode='uid')
@@ -636,11 +636,11 @@ async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
         elif m == '推送':
             try:
                 if at:
-                    if at and at.group(1) != qid:
+                    if qid in bot.config.SUPERUSERS:
+                        qid = at.group(1)
+                    else:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
-                    else:
-                        qid = at.group(1)
                 else:
                     qid = ev.sender['user_id']
                 uid = await select_db(qid, mode='uid')

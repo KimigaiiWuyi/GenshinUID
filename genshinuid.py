@@ -552,8 +552,12 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
                     if at and at.group(1) != qid:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
+                    else:
+                        qid = at.group(1)
+                else:
+                    qid = ev.sender['user_id']
                 gid = ev.group_id
-                uid = await select_db(ev.sender['user_id'], mode='uid')
+                uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), ev.sender['user_id'], str(gid), 'StatusB')
                 await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
@@ -568,8 +572,12 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
                     if at and at.group(1) != qid:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
+                    else:
+                        qid = at.group(1)
+                else:
+                    qid = ev.sender['user_id']
                 gid = ev.group_id
-                uid = await select_db(ev.sender['user_id'], mode='uid')
+                uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), ev.sender['user_id'], str(gid), 'StatusA')
                 await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
@@ -612,7 +620,11 @@ async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
                     if at and at.group(1) != qid:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
-                uid = await select_db(ev.sender['user_id'], mode='uid')
+                    else:
+                        qid = at.group(1)
+                else:
+                    qid = ev.sender['user_id']
+                uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), ev.sender['user_id'], 'off', 'StatusB')
                 await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:
@@ -627,7 +639,11 @@ async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
                     if at and at.group(1) != qid:
                         await bot.send(ev, '你没有权限。', at_sender=True)
                         return
-                uid = await select_db(ev.sender['user_id'], mode='uid')
+                    else:
+                        qid = at.group(1)
+                else:
+                    qid = ev.sender['user_id']
+                uid = await select_db(qid, mode='uid')
                 im = await open_push(int(uid[0]), ev.sender['user_id'], 'off', 'StatusA')
                 await bot.send(ev, im, at_sender=True)
             except ActionFailed as e:

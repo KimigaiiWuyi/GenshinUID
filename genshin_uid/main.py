@@ -1,15 +1,15 @@
 import base64
 from functools import wraps
-from typing import Union, Any
+from typing import Any, Union
 
-from nonebot import get_bot, get_driver, on_command, on_regex, require, Bot
+from nonebot import Bot, get_bot, get_driver, on_command, on_regex, require
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
-                                         Message, MessageEvent, MessageSegment, PrivateMessageEvent)
+                                         Message, MessageEvent, MessageSegment,
+                                         PrivateMessageEvent)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.exception import FinishedException
-from nonebot.internal.params import Depends
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg, RegexGroup
+from nonebot.params import CommandArg, Depends, RegexGroup
 from nonebot.permission import SUPERUSER
 
 # from .get_data import *

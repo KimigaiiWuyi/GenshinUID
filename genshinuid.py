@@ -437,11 +437,12 @@ async def daily_mihoyo_bbs_sign():
         if row[8]:
             await asyncio.sleep(5 + random.randint(1, 3))
             im = await mihoyo_coin(str(row[2]), str(row[8]))
-            logger.info(im)
             try:
-                await hoshino_bot.send_private_msg(user_id=row[2], message=im)
+                logger.info('已执行完毕：{}'.format(row[0]))
+                if await config_check('MhyBBSCoinReport'):
+                    await hoshino_bot.send_private_msg(user_id=row[2], message=im)
             except Exception:
-                logger.exception(f'{im} Error')
+                logger.exception('执行失败：{}'.format(row[0]))
     logger.info('已结束。')
 
 
@@ -599,6 +600,19 @@ async def open_switch_func(bot: HoshinoBot, ev: CQEvent):
             except Exception as e:
                 await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
                 logger.exception('设置简洁签到报告失败')
+        elif m == '米游币推送':
+            try:
+                if qid in bot.config.SUPERUSERS:
+                    _ = await config_check('MhyBBSCoinReport', 'OPEN')
+                    await bot.send(ev, '米游币推送已开启！\n该选项不会影响到实际米游币获取，仅开启私聊推送！\n*【管理员命令全局生效】', at_sender=True)
+                else:
+                    return
+            except ActionFailed as e:
+                await bot.send(ev, '机器人发送消息失败：{}'.format(e))
+                logger.exception('发送设置成功信息失败')
+            except Exception as e:
+                await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
+                logger.exception('设置米游币推送失败')
     except Exception as e:
         await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
         logger.exception('开启功能失败')
@@ -665,6 +679,19 @@ async def close_switch_func(bot: HoshinoBot, ev: CQEvent):
             except Exception as e:
                 await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
                 logger.exception('设置简洁签到报告失败')
+        elif m == '米游币推送':
+            try:
+                if qid in bot.config.SUPERUSERS:
+                    _ = await config_check('MhyBBSCoinReport', 'CLOSED')
+                    await bot.send(ev, '米游币推送已关闭！\n该选项不会影响到实际米游币获取，仅关闭私聊推送！\n*【管理员命令全局生效】', at_sender=True)
+                else:
+                    return
+            except ActionFailed as e:
+                await bot.send(ev, '机器人发送消息失败：{}'.format(e))
+                logger.exception('发送设置成功信息失败')
+            except Exception as e:
+                await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
+                logger.exception('设置米游币推送失败')
     except Exception as e:
         await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
         logger.exception('关闭功能失败')

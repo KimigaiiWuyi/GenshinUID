@@ -1,15 +1,15 @@
 import base64
 from functools import wraps
-from typing import Union, Any
+from typing import Any, Union
 
-from nonebot import get_bot, get_driver, on_command, on_regex, require, Bot
+from nonebot import Bot, get_bot, get_driver, on_command, on_regex, require
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
-                                         Message, MessageEvent, MessageSegment, PrivateMessageEvent)
+                                         Message, MessageEvent, MessageSegment,
+                                         PrivateMessageEvent)
 from nonebot.adapters.onebot.v11.exception import ActionFailed
 from nonebot.exception import FinishedException
-from nonebot.internal.params import Depends
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg, RegexGroup
+from nonebot.params import CommandArg, Depends, RegexGroup
 from nonebot.permission import SUPERUSER
 
 # from .get_data import *
@@ -259,13 +259,14 @@ async def daily_mihoyo_bbs_sign():
         if row[8]:
             await asyncio.sleep(5 + random.randint(1, 3))
             im = await mihoyo_coin(str(row[2]), str(row[8]))
-            logger.info(im)
             try:
-                await bot.call_api(api='send_private_msg',
-                                   user_id=row[2],
-                                   message=im)
+                logger.info('已执行完毕：{}'.format(row[0]))
+                if await config_check('MhyBBSCoinReport'):
+                    await bot.call_api(api='send_private_msg',
+                                    user_id=row[2],
+                                    message=im)
             except Exception:
-                logger.exception(f'{im} Error')
+                logger.exception('执行失败：{}'.format(row[0]))
     logger.info('已结束。')
 
 
@@ -623,6 +624,21 @@ async def open_switch_func(
                     raise
                 await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
                 logger.exception('设置简洁签到报告失败')
+        elif m == '米游币推送':
+            try:
+                if qid in superusers:
+                    _ = await config_check('MhyBBSCoinReport', 'OPEN')
+                    await matcher.finish('米游币推送已开启！\n该选项不会影响到实际米游币获取，仅开启私聊推送！\n*【管理员命令全局生效】', at_sender=True)
+                else:
+                    return
+            except ActionFailed as e:
+                await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                logger.exception('发送设置成功信息失败')
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
+                await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
+                logger.exception('设置米游币推送失败')
     except ActionFailed as e:
         await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
         logger.exception('发送开启自动签到信息失败')
@@ -711,6 +727,21 @@ async def close_switch_func(
                     raise
                 await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
                 logger.exception('设置简洁签到报告失败')
+        elif m == '米游币推送':
+            try:
+                if qid in superusers:
+                    _ = await config_check('MhyBBSCoinReport', 'CLOSED')
+                    await matcher.finish('米游币推送已关闭！\n该选项不会影响到实际米游币获取，仅关闭私聊推送！\n*【管理员命令全局生效】', at_sender=True)
+                else:
+                    return
+            except ActionFailed as e:
+                await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                logger.exception('发送设置成功信息失败')
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
+                await matcher.finish('发生错误 {},请检查后台输出。'.format(e))
+                logger.exception('设置米游币推送失败')
     except ActionFailed as e:
         await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
         logger.exception('发送开启自动签到信息失败')

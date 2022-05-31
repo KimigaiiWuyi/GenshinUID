@@ -1798,3 +1798,89 @@ async def draw_event_pic() -> None:
     base_img.save(os.path.join(FILE2_PATH, 'event.jpg'), format='JPEG', subsampling=0, quality=90)
 
     return
+
+async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None, mode: int = 2) -> str:
+    # 获取Cookies
+    data_def = GetCookies()
+    retcode = await data_def.get_useable_cookies(uid, mode)
+    if not retcode:
+        return retcode
+    raw_data = data_def.raw_data
+    uid = data_def.uid
+    nickname = data_def.nickname if data_def.nickname else nickname
+
+    # 记录数据
+    raw_data = raw_data['data']
+    max_data = {'成就':646,'华丽的宝箱':131,'珍贵的宝箱':344,'精致的宝箱':1218,'普通的宝箱':1653}
+
+    achieve = raw_data['stats']['achievement_number']
+    chest4 = raw_data['stats']['common_chest_number']
+    chest3 = raw_data['stats']['exquisite_chest_number']
+    chest2 = raw_data['stats']['precious_chest_number']
+    chest1 = raw_data['stats']['luxurious_chest_number']
+
+    async def dataToDataStr(max, my) -> str:
+        return [str(100 * round((my / max), 2)) + '% | ' + str(my) + '/' + str(max), round((my / max),2) * 490 ]
+
+    achieveStr = await dataToDataStr(max_data['成就'], achieve)
+    chest1Str =await dataToDataStr(max_data['华丽的宝箱'], chest1)
+    chest2Str = await dataToDataStr(max_data['珍贵的宝箱'], chest2)
+    chest3Str = await dataToDataStr(max_data['精致的宝箱'], chest3)
+    chest4Str = await dataToDataStr(max_data['普通的宝箱'], chest4)
+
+    # 计算
+    val = str(round((achieveStr[1] + chest1Str[1] + chest2Str[1] + chest3Str[1] + chest4Str[1]) / 24.5, 2 )) + '%'
+    left = (max_data['华丽的宝箱'] - chest1) * 10 + \
+           (max_data['珍贵的宝箱'] - chest2) * 5 + \
+           (max_data['精致的宝箱'] - chest3) * 2 + \
+           (max_data['普通的宝箱'] - chest4) * 0 + \
+           (max_data['成就'] - achieve) * 5
+
+    # 获取背景图片各项参数
+    based_w = 590
+    based_h = 580
+    image_def = CustomizeImage(image, based_w, based_h)
+    bg_img = image_def.bg_img
+    text_color = (255, 255, 255)
+
+    # 确定texture2D路径
+    collect_path = os.path.join(TEXT_PATH, 'collect_bg.png')
+
+    # 操作图片
+    collect_img = Image.open(collect_path)
+    bg_img.paste(collect_img, (0, 0), collect_img)
+    text_draw = ImageDraw.Draw(bg_img)
+
+    # 用户信息
+    text_draw.text((140, 60), f'{nickname}', text_color, genshin_font(28), anchor='lm')
+    text_draw.text((140, 90), 'UID ' + f'{uid}', text_color, genshin_font(14), anchor='lm')
+
+    text_draw.text((449, 48), str(val), text_color, genshin_font(30), anchor='lm')
+    text_draw.text((416, 97), f'约{str(left)}原石', text_color, genshin_font(30), anchor='lm')
+
+    # 成就
+    text_draw.text((540, 165), achieveStr[0], text_color, genshin_font(26), anchor='rm')
+
+    # 宝箱
+    text_draw.text((540, 165 + 87), chest1Str[0], text_color, genshin_font(24), anchor='rm')
+    text_draw.text((540, 165 + 87 * 2), chest2Str[0], text_color, genshin_font(24), anchor='rm')
+    text_draw.text((540, 165 + 87 * 3), chest3Str[0], text_color, genshin_font(24), anchor='rm')
+    text_draw.text((540, 165 + 87 * 4), chest4Str[0], text_color, genshin_font(24), anchor='rm')    
+
+    base = 191.5
+    offset = 86.5
+
+    # 进度条
+    text_draw.rounded_rectangle((50, base, 50 + achieveStr[1], base + 12), fill=(234, 210, 124), radius = 20)
+    text_draw.rounded_rectangle((50, base + offset, 50 + chest1Str[1], base + offset + 12), fill=(235, 173, 43), radius = 20)
+    text_draw.rounded_rectangle((50, base + offset * 2, 50 + chest2Str[1], base + offset * 2 + 12), fill=(218, 128, 248), radius = 20)
+    text_draw.rounded_rectangle((50, base + offset * 3, 50 + chest3Str[1], base + offset * 3 + 12), fill=(60, 122, 227), radius = 20)
+    text_draw.rounded_rectangle((50, base + offset * 4, 50 + chest4Str[1], base + offset * 4 + 12), fill=(168, 248, 177), radius = 20)
+
+    # 转换之后发送
+    bg_img = bg_img.convert('RGB')
+    result_buffer = BytesIO()
+    bg_img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+    imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
+    resultmes = imgmes
+    return resultmes

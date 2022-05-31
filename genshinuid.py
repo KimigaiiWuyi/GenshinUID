@@ -980,6 +980,25 @@ async def get_info(bot, ev):
                 except Exception as e:
                     await bot.send(ev, '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('词云数据获取失败（数据状态问题）')
+            elif m == '收集':
+                try:
+                    im = await draw_collect_card(uid[0], nickname, image, uid[1])
+                    if im.startswith('base64://'):
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                    else:
+                        await bot.send(ev, im, at_sender=True)
+                except ActionFailed as e:
+                    await bot.send(ev, '机器人发送消息失败：{}'.format(e))
+                    logger.exception('发送uid信息失败')
+                except TypeError:
+                    await bot.send(ev, '获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
+                    logger.exception('数据获取失败（Cookie失效/不公开信息）')
+                except ClientConnectorError:
+                    await bot.send(ev, '获取失败：连接超时')
+                    logger.exception('连接超时')
+                except Exception as e:
+                    await bot.send(ev, '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                    logger.exception('数据获取失败（数据状态问题）')
             elif m == '':
                 try:
                     im = await draw_pic(uid[0], nickname, image, uid[1])

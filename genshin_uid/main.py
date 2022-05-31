@@ -1133,6 +1133,27 @@ async def get_info(
                     await matcher.finish(
                         '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('词云数据获取失败（数据状态问题）')
+            elif m == '收集':
+                try:
+                    im = await draw_collect_card(uid[0], nickname, image, uid[1])
+                    if im.startswith('base64://'):
+                        await matcher.finish(MessageSegment.image(im),
+                                             at_sender=True)
+                    else:
+                        await matcher.finish(im, at_sender=True)
+                except ActionFailed as e:
+                    await matcher.finish('机器人发送消息失败：{}'.format(
+                        e.info['wording']))
+                    logger.exception('发送收集信息失败')
+                except (TypeError, IndexError):
+                    await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
+                    logger.exception('收集数据获取失败（Cookie失效/不公开信息）')
+                except Exception as e:
+                    if isinstance(e, FinishedException):
+                        raise
+                    await matcher.finish(
+                        '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                    logger.exception('收集数据获取失败（数据状态问题）')
             elif m == '':
                 try:
                     im = await draw_pic(uid[0], nickname, image, uid[1])

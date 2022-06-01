@@ -1,23 +1,21 @@
 import base64
-from pathlib import Path
 from functools import wraps
 from typing import Any, Union
 
 from nonebot import Bot, get_bot, get_driver, on_command, on_regex, require
-from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
-                                         Message, MessageEvent, MessageSegment,
-                                         PrivateMessageEvent, ActionFailed)
+from nonebot.adapters.onebot.v11 import (ActionFailed, GroupMessageEvent, Message, MessageEvent, MessageSegment,
+                                         PRIVATE_FRIEND, PrivateMessageEvent)
 from nonebot.exception import FinishedException
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg, Depends, RegexGroup
 from nonebot.permission import SUPERUSER
 
+from .enkaToData.drawCharCard import *
+from .enkaToData.enkaToData import *
 # from .get_data import *
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from .get_image import *
 from .get_mihoyo_bbs_data import *
-from enkaToData.enkaToData import *
-from enkaToData.drawCharCard import *
 
 R_PATH = Path(__file__).parents[0]
 
@@ -121,9 +119,11 @@ class ImageAndAt:
         except IndexError:
             return None
 
+
 @scheduler.scheduled_job('cron', hour='4')
 async def daily_refresh_charData():
     await refresh_charData()
+
 
 async def refresh_charData():
     conn = sqlite3.connect('ID_DATA.db')
@@ -144,6 +144,7 @@ async def refresh_charData():
             return f'执行失败从{uid}！共刷新{str(t)}个角色！'
     else:
         return f'执行成功！共刷新{str(t)}个角色！'
+
 
 @scheduler.scheduled_job('cron', hour='2')
 async def draw_event():
@@ -174,7 +175,7 @@ async def push():
                                    **{
                                        'group_id':
                                            i['gid'],
-                                       'message':
+                                       'message' :
                                            MessageSegment.at(i['qid']) +
                                            f'\n{i["message"]}'
                                    })
@@ -220,17 +221,17 @@ async def daily_sign():
                 else:
                     if im == '签到失败，请检查Cookies是否失效。':
                         temp_list.append({
-                            'push_group': row[4],
+                            'push_group'  : row[4],
                             'push_message': message,
-                            'success': 0,
-                            'failed': 1
+                            'success'     : 0,
+                            'failed'      : 1
                         })
                     else:
                         temp_list.append({
-                            'push_group': row[4],
+                            'push_group'  : row[4],
                             'push_message': '',
-                            'success': 1,
-                            'failed': 0
+                            'success'     : 1,
+                            'failed'      : 0
                         })
             else:
                 for i in temp_list:
@@ -240,9 +241,9 @@ async def daily_sign():
                         break
                 else:
                     temp_list.append({
-                        'push_group': row[4],
+                        'push_group'  : row[4],
                         'push_message': message,
-                        'num': 1
+                        'num'         : 1
                     })
         await asyncio.sleep(6 + random.randint(1, 3))
     if await config_check('SignReportSimple'):
@@ -292,8 +293,8 @@ async def daily_mihoyo_bbs_sign():
                 logger.info('已执行完毕：{}'.format(row[0]))
                 if await config_check('MhyBBSCoinReport'):
                     await bot.call_api(api='send_private_msg',
-                                    user_id=row[2],
-                                    message=im)
+                                       user_id=row[2],
+                                       message=im)
             except Exception:
                 logger.exception('执行失败：{}'.format(row[0]))
     logger.info('已结束。')
@@ -367,9 +368,9 @@ async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
 
 @refresh.handle()
 @handle_exception('面板')
-async def send_card_info(matcher: Matcher, 
-                        event: Union[GroupMessageEvent, PrivateMessageEvent], 
-                        args: Message = CommandArg()):
+async def send_card_info(matcher: Matcher,
+                         event: Union[GroupMessageEvent, PrivateMessageEvent],
+                         args: Message = CommandArg()):
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
@@ -382,7 +383,7 @@ async def send_card_info(matcher: Matcher,
             if qid in superusers:
                 await refresh.send('开始刷新全部数据，这可能需要相当长的一段时间！！')
                 im = await refresh_charData()
-                await matcher.finsih(str(im))
+                await matcher.finish(str(im))
                 return
             else:
                 return
@@ -390,7 +391,7 @@ async def send_card_info(matcher: Matcher,
             uid = await select_db(qid, mode='uid')
             uid = uid[0]
     im = await enkaToData(uid)
-    await matcher.finsih(str(im))
+    await matcher.finish(str(im))
     logger.info(f'UID{uid}获取角色数据成功！')
 
 
@@ -1096,7 +1097,7 @@ async def get_info(
             mi = await bot.call_api(
                 'get_group_member_info', **{
                     'group_id': event.group_id,
-                    'user_id': at
+                    'user_id' : at
                 })
             nickname = mi['nickname']
             uid = await select_db(at)
@@ -1254,8 +1255,8 @@ async def get_info(
                     else:
                         char_name = m
                         with open(os.path.join(INDEX_PATH, 'char_alias.json'),
-                                'r',
-                                encoding='utf8') as fp:
+                                  'r',
+                                  encoding='utf8') as fp:
                             char_data = json.load(fp)
                         for i in char_data:
                             if char_name in i:
@@ -1266,8 +1267,8 @@ async def get_info(
                                         char_name = i
 
                         with open(R_PATH / 'enkaToData' / 'player' / str(uid) / f'{char_name}.json',
-                                'r',
-                                encoding='utf8') as fp:
+                                  'r',
+                                  encoding='utf8') as fp:
                             raw_data = json.load(fp)
                         im = await draw_char_card(raw_data, image)
                         await matcher.finish(MessageSegment.image(im), at_sender=True)

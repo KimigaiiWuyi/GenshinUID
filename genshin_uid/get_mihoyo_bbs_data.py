@@ -19,47 +19,47 @@ INDEX_PATH = os.path.join(FILE2_PATH, 'index')
 Texture_PATH = os.path.join(FILE2_PATH, 'texture2d')
 
 avatar_json = {
-    'Albedo': '阿贝多',
-    'Ambor': '安柏',
-    'Barbara': '芭芭拉',
-    'Beidou': '北斗',
-    'Bennett': '班尼特',
-    'Chongyun': '重云',
-    'Diluc': '迪卢克',
-    'Diona': '迪奥娜',
-    'Eula': '优菈',
-    'Fischl': '菲谢尔',
-    'Ganyu': '甘雨',
-    'Hutao': '胡桃',
-    'Jean': '琴',
-    'Kazuha': '枫原万叶',
-    'Kaeya': '凯亚',
-    'Ayaka': '神里绫华',
-    'Keqing': '刻晴',
-    'Klee': '可莉',
-    'Lisa': '丽莎',
-    'Mona': '莫娜',
+    'Albedo'   : '阿贝多',
+    'Ambor'    : '安柏',
+    'Barbara'  : '芭芭拉',
+    'Beidou'   : '北斗',
+    'Bennett'  : '班尼特',
+    'Chongyun' : '重云',
+    'Diluc'    : '迪卢克',
+    'Diona'    : '迪奥娜',
+    'Eula'     : '优菈',
+    'Fischl'   : '菲谢尔',
+    'Ganyu'    : '甘雨',
+    'Hutao'    : '胡桃',
+    'Jean'     : '琴',
+    'Kazuha'   : '枫原万叶',
+    'Kaeya'    : '凯亚',
+    'Ayaka'    : '神里绫华',
+    'Keqing'   : '刻晴',
+    'Klee'     : '可莉',
+    'Lisa'     : '丽莎',
+    'Mona'     : '莫娜',
     'Ningguang': '凝光',
-    'Noel': '诺艾尔',
-    'Qiqi': '七七',
-    'Razor': '雷泽',
-    'Rosaria': '罗莎莉亚',
-    'Sucrose': '砂糖',
+    'Noel'     : '诺艾尔',
+    'Qiqi'     : '七七',
+    'Razor'    : '雷泽',
+    'Rosaria'  : '罗莎莉亚',
+    'Sucrose'  : '砂糖',
     'Tartaglia': '达达利亚',
-    'Venti': '温迪',
+    'Venti'    : '温迪',
     'Xiangling': '香菱',
-    'Xiao': '魈',
-    'Xingqiu': '行秋',
-    'Xinyan': '辛焱',
-    'Yanfei': '烟绯',
-    'Zhongli': '钟离',
-    'Yoimiya': '宵宫',
-    'Sayu': '早柚',
-    'Shogun': '雷电将军',
-    'Aloy': '埃洛伊',
-    'Sara': '九条裟罗',
-    'Kokomi': '珊瑚宫心海',
-    'Shenhe': '申鹤'
+    'Xiao'     : '魈',
+    'Xingqiu'  : '行秋',
+    'Xinyan'   : '辛焱',
+    'Yanfei'   : '烟绯',
+    'Zhongli'  : '钟离',
+    'Yoimiya'  : '宵宫',
+    'Sayu'     : '早柚',
+    'Shogun'   : '雷电将军',
+    'Aloy'     : '埃洛伊',
+    'Sara'     : '九条裟罗',
+    'Kokomi'   : '珊瑚宫心海',
+    'Shenhe'   : '申鹤'
 }
 
 daily_im = """
@@ -130,7 +130,7 @@ food_im = """【{}】
 {}"""
 
 audio_json = {
-    '357': ['357_01', '357_02', '357_03'],
+    '357'    : ['357_01', '357_02', '357_03'],
     '1000000': ['1000000_01', '1000000_02', '1000000_03', '1000000_04', '1000000_05', '1000000_06', '1000000_07'],
     '1000001': ['1000001_01', '1000001_02', '1000001_03'],
     '1000002': ['1000002_01', '1000002_02', '1000002_03'],
@@ -690,8 +690,8 @@ async def char_wiki(name, mode='char', level=None):
                     mes_list.append({
                         'type': 'node',
                         'data': {
-                            'name': '小仙',
-                            'uin': '3399214199',
+                            'name'   : '小仙',
+                            'uin'    : '3399214199',
                             'content': '【' + skill_name + '】' + '\n' + skill_info
                         }
                     })
@@ -701,8 +701,8 @@ async def char_wiki(name, mode='char', level=None):
                         node_data = {
                             'type': 'node',
                             'data': {
-                                'name': '小仙',
-                                'uin': '3399214199',
+                                'name'   : '小仙',
+                                'uin'    : '3399214199',
                                 'content': 'lv.' + str(index + 1) + '\n' + mes
                             }
                         }

@@ -1,8 +1,9 @@
-from pathlib import Path
-from typing import Optional
-import httpx
 import json
 import time
+from pathlib import Path
+from typing import Optional
+
+import httpx
 
 R_PATH = Path(__file__).parents[0]
 MAP_PATH = R_PATH / 'map'
@@ -46,8 +47,9 @@ with open(MAP_PATH / skillId2Name_fileName, "r", encoding='UTF-8') as f:
 with open(MAP_PATH / talentId2Name_fileName, "r", encoding='UTF-8') as f:
     talentId2Name = json.load(f)
 
-with open(MAP_PATH / avatarName2Element_fileName,'r', encoding='UTF-8') as f:
+with open(MAP_PATH / avatarName2Element_fileName, 'r', encoding='UTF-8') as f:
     avatarName2Element = json.load(f)
+
 
 async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
     if enka_data:
@@ -56,18 +58,18 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
         enka_data = json.loads(httpx.get(f'https://enka.shinshin.moe/u/{str(uid)}/__data.json').text)
     if enka_data == {}:
         return enka_data
-    now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+    now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     playerInfo = enka_data['playerInfo']
     path = PLAYER_PATH / str(uid)
     path.mkdir(parents=True, exist_ok=True)
-    with open(path / '{}.json'.format(str(uid)),'w', encoding='UTF-8') as file:
+    with open(path / '{}.json'.format(str(uid)), 'w', encoding='UTF-8') as file:
         json.dump(playerInfo, file, ensure_ascii=False)
-    with open(path / 'rawData.json','w', encoding='UTF-8') as file:
+    with open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
         json.dump(enka_data, file, ensure_ascii=False)
 
     if 'avatarInfoList' not in enka_data:
         return f'UID{uid}刷新失败！未打开角色展柜!'
-        
+
     char_name_list = []
     for char in enka_data['avatarInfoList']:
         # 处理基本信息
@@ -86,21 +88,20 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             char_data['avatarElement'] = avatarName2Element[char_data['avatarName']]
         except KeyError:
             check = skillId2Name['Name'][str(list(char['skillLevelMap'].keys())[0])]
-            if '风' in check :
+            if '风' in check:
                 char_data['avatarElement'] = 'Anemo'
-            elif '雷' in check :
+            elif '雷' in check:
                 char_data['avatarElement'] = 'Electro'
-            elif '岩' in check :
+            elif '岩' in check:
                 char_data['avatarElement'] = 'Geo'
-            elif '草' in check :
+            elif '草' in check:
                 char_data['avatarElement'] = 'Dendro'
-            elif '冰' in check :
+            elif '冰' in check:
                 char_data['avatarElement'] = 'Cryo'
-            elif '水' in check :
+            elif '水' in check:
                 char_data['avatarElement'] = 'Hydro'
             else:
                 char_data['avatarElement'] = 'Pyro'
-
 
         char_data['dataTime'] = now
 
@@ -120,7 +121,7 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
         talent_temp = []
         if 'talentIdList' in char:
             talentTemp = {}
-            for index,talent in enumerate(char['talentIdList']):
+            for index, talent in enumerate(char['talentIdList']):
                 talentTemp['talentId'] = char['talentIdList'][index]
                 talentTemp['talentName'] = talentId2Name['Name'][str(talent)]
                 talentTemp['talentIcon'] = talentId2Name['Icon'][str(talent)]
@@ -129,34 +130,34 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
 
         # 处理属性
         fight_prop = {}
-            # 血量
+        # 血量
         fight_prop['hp'] = char["fightPropMap"]["2000"]
         fight_prop['baseHp'] = char["fightPropMap"]["1"]
         fight_prop['addHp'] = char["fightPropMap"]["2000"] - char["fightPropMap"]["1"]
-            # 攻击力
+        # 攻击力
         fight_prop['atk'] = char["fightPropMap"]["2001"]
         fight_prop['baseAtk'] = char["fightPropMap"]["4"]
         fight_prop['addAtk'] = char["fightPropMap"]["2001"] - char["fightPropMap"]["4"]
-            # 防御力
+        # 防御力
         fight_prop['def'] = char["fightPropMap"]["2002"]
         fight_prop['baseDef'] = char["fightPropMap"]["7"]
         fight_prop['addDef'] = char["fightPropMap"]["2002"] - char["fightPropMap"]["7"]
-            # 元素精通
+        # 元素精通
         fight_prop['elementalMastery'] = char["fightPropMap"]["28"]
-            # 暴击率
+        # 暴击率
         fight_prop['critRate'] = char["fightPropMap"]["20"]
-            # 暴击伤害
+        # 暴击伤害
         fight_prop['critDmg'] = char["fightPropMap"]["22"]
-            # 充能效率
+        # 充能效率
         fight_prop['energyRecharge'] = char["fightPropMap"]["23"]
-            # 治疗&受治疗
+        # 治疗&受治疗
         fight_prop['healBonus'] = char["fightPropMap"]["26"]
         fight_prop['healedBonus'] = char["fightPropMap"]["27"]
-            # 物理伤害加成 & 抗性
+        # 物理伤害加成 & 抗性
         fight_prop['physicalDmgSub'] = char["fightPropMap"]["29"]
         fight_prop['physicalDmgBonus'] = char["fightPropMap"]["30"]
-            # 伤害加成
-        for i in range(40,47):
+        # 伤害加成
+        for i in range(40, 47):
             if char["fightPropMap"][str(i)] > 0:
                 fight_prop['dmgBonus'] = char["fightPropMap"][str(i)]
                 break
@@ -192,7 +193,8 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             weapon_prop_temp['statValue'] = k['statValue']
             weapon_info['weaponStats'].append(weapon_prop_temp)
         # 武器特效，须请求API
-        effect_raw = json.loads(httpx.get('https://info.minigg.cn/weapons?query={}'.format(weapon_info['weaponName'])).text)
+        effect_raw = json.loads(
+            httpx.get('https://info.minigg.cn/weapons?query={}'.format(weapon_info['weaponName'])).text)
         if 'effect' in effect_raw:
             effect = effect_raw['effect'].format(*effect_raw['r{}'.format(str(weapon_info['weaponAffix']))])
         else:
@@ -217,14 +219,15 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             artifact_temp['aritifactLevel'] = artifact['reliquary']['level'] - 1
 
             artifact_temp['reliquaryMainstat'] = artifact['flat']['reliquaryMainstat']
-            artifact_temp['reliquaryMainstat']['statName'] = propId2Name[artifact_temp['reliquaryMainstat']['mainPropId']]
-            
+            artifact_temp['reliquaryMainstat']['statName'] = propId2Name[
+                artifact_temp['reliquaryMainstat']['mainPropId']]
+
             artifact_temp['reliquarySubstats'] = artifact['flat']['reliquarySubstats']
             for sub in artifact_temp['reliquarySubstats']:
                 sub['statName'] = propId2Name[sub['appendPropId']]
             artifacts_info.append(artifact_temp)
         char_data['equipList'] = artifacts_info
-        with open(path / '{}.json'.format(avatarName),'w', encoding='UTF-8') as file:
+        with open(path / '{}.json'.format(avatarName), 'w', encoding='UTF-8') as file:
             json.dump(char_data, file, ensure_ascii=False)
     char_name_list_str = ','.join(char_name_list)
     return f'UID{uid}刷新成功！刷新角色：{char_name_list_str}'

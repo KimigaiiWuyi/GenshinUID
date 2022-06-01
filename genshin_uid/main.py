@@ -5,8 +5,7 @@ from typing import Any, Union
 from nonebot import Bot, get_bot, get_driver, on_command, on_regex, require
 from nonebot.adapters.onebot.v11 import (PRIVATE_FRIEND, GroupMessageEvent,
                                          Message, MessageEvent, MessageSegment,
-                                         PrivateMessageEvent)
-from nonebot.adapters.onebot.v11.exception import ActionFailed
+                                         PrivateMessageEvent, ActionFailed)
 from nonebot.exception import FinishedException
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg, Depends, RegexGroup

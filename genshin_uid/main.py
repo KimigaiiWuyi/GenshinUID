@@ -10,8 +10,8 @@ from nonebot.matcher import Matcher
 from nonebot.params import CommandArg, Depends, RegexGroup
 from nonebot.permission import SUPERUSER
 
-from enkaToData.drawCharCard import *
-from enkaToData.enkaToData import *
+from .enkaToData.drawCharCard import *
+from .enkaToData.enkaToData import *
 # from .get_data import *
 # sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from .get_image import *

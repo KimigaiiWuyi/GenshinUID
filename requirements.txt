@@ -1,4 +1,4 @@
-nonebot2>=2.0.0b2
+nonebot2==2.0.0b2
 nonebot-adapter-onebot>=2.0.0b1
 
 requests==2.27.1

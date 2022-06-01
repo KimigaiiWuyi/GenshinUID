@@ -3,7 +3,7 @@ nonebot-adapter-onebot>=2.0.0b1
 
 requests==2.27.1
 httpx>=0.18.1
-Pillow>=8.3.1
+Pillow>=9.1.1
 nonebot-plugin-apscheduler>=0.1.2
 wordcloud>=1.8.1
 beautifulsoup4>=4.10.0

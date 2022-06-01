@@ -339,7 +339,7 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
                 uid = await select_db(qid, mode='uid')
                 uid = uid[0]
         im = await enkaToData(uid)
-        await bot.send(str(im))
+        await bot.send(ev, str(im))
         logger.info(ev, f'UID{uid}获取角色数据成功！')
     except:
         await bot.send(ev, '获取角色数据失败！')

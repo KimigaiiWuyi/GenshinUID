@@ -292,8 +292,6 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> str:
     img = img.convert('RGB')
     result_buffer = BytesIO()
     img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    #img.save(R_PATH / 'result.png', format='JPEG', subsampling=0, quality=90)
-    img.save(result_buffer, format='PNG')
     imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
     resultmes = imgmes
     return resultmes

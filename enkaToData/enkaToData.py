@@ -114,7 +114,12 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             skill_temp['skillIcon'] = skillId2Name['Icon'][skill_temp['skillId']]
             char_data['avatarSkill'].append(skill_temp)
 
-        char_data['avatarEnName'] = char_data['avatarSkill'][-1]['skillIcon'].split('_')[-2]
+        if char_data['avatarName'] == '神里绫华':
+            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], char_data['avatarSkill'][0]
+            char_data['avatarSkill'][2], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], char_data['avatarSkill'][2]
+            char_data['avatarEnName'] = char_data['avatarSkill'][1]['skillIcon'].split('_')[-2]
+        else:
+            char_data['avatarEnName'] = char_data['avatarSkill'][-1]['skillIcon'].split('_')[-2]
 
         # 处理命座
         talent_temp = []

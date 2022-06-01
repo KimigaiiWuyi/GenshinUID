@@ -382,7 +382,7 @@ async def send_card_info(matcher: Matcher,
             if qid in superusers:
                 await refresh.send('开始刷新全部数据，这可能需要相当长的一段时间！！')
                 im = await refresh_charData()
-                await matcher.finsih(str(im))
+                await matcher.finish(str(im))
                 return
             else:
                 return
@@ -390,7 +390,7 @@ async def send_card_info(matcher: Matcher,
             uid = await select_db(qid, mode='uid')
             uid = uid[0]
     im = await enkaToData(uid)
-    await matcher.finsih(str(im))
+    await matcher.finish(str(im))
     logger.info(f'UID{uid}获取角色数据成功！')
 
 

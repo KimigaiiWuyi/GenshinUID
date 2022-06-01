@@ -1820,7 +1820,7 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
     chest1 = raw_data['stats']['luxurious_chest_number']
 
     async def dataToDataStr(max, my) -> str:
-        return [str(100 * round((my / max), 2)) + '% | ' + str(my) + '/' + str(max), round((my / max), 2) * 490]
+        return [str(round(100 * (my / max), 2)) + '% | ' + str(my) + '/' + str(max), round((my / max), 2) * 490]
 
     achieveStr = await dataToDataStr(max_data['成就'], achieve)
     chest1Str = await dataToDataStr(max_data['华丽的宝箱'], chest1)

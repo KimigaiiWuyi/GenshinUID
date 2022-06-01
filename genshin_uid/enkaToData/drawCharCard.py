@@ -1,10 +1,10 @@
 import math
-from base64 import b64encode
 from io import BytesIO
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 from httpx import get
+from nonebot import logger
 
 R_PATH = Path(__file__).parents[0]
 TEXT_PATH = R_PATH / 'texture2D'
@@ -49,7 +49,7 @@ def strLenth(r: str, size: int, limit: int = 540) -> str:
     return result
 
 
-async def draw_char_card(raw_data: dict, charUrl: str = None) -> str:
+async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     img = Image.open(TEXT_PATH / '{}.png'.format(raw_data['avatarElement']))
     char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
     char_imfo_mask = Image.open(TEXT_PATH / 'char_info_mask.png')
@@ -300,8 +300,5 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> str:
     img = img.convert('RGB')
     result_buffer = BytesIO()
     img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    # img.save(R_PATH / 'result.png', format='JPEG', subsampling=0, quality=90)
-    img.save(result_buffer, format='PNG')
-    imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
-    resultmes = imgmes
-    return resultmes
+    res = result_buffer.getvalue()
+    return res

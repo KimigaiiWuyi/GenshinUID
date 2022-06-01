@@ -1196,12 +1196,12 @@ async def draw_pic(uid: str, nickname: str, image: Optional[str] = None, mode: i
     # 层岩巨渊
     if chasms_maw:
         text_draw.text((477, 727), str(chasms_maw['exploration_percentage'] / 10) + '%', text_color,
-                    genshin_font(22))
+                       genshin_font(22))
         text_draw.text((500, 782), 'lv.' + str(chasms_maw['offerings'][0]['level']), text_color, genshin_font(22))
 
     if under_chasms_maw:
         text_draw.text((523, 753), str(under_chasms_maw['exploration_percentage'] / 10) + '%', text_color,
-                    genshin_font(22))
+                       genshin_font(22))
 
     # 蒙德
     if mondstadt:
@@ -1798,6 +1798,7 @@ async def draw_event_pic() -> None:
 
     return
 
+
 async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None, mode: int = 2) -> str:
     # 获取Cookies
     data_def = GetCookies()
@@ -1810,7 +1811,7 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
 
     # 记录数据
     raw_data = raw_data['data']
-    max_data = {'成就':646,'华丽的宝箱':131,'珍贵的宝箱':344,'精致的宝箱':1218,'普通的宝箱':1653}
+    max_data = {'成就': 646, '华丽的宝箱': 131, '珍贵的宝箱': 344, '精致的宝箱': 1218, '普通的宝箱': 1653}
 
     achieve = raw_data['stats']['achievement_number']
     chest4 = raw_data['stats']['common_chest_number']
@@ -1819,16 +1820,16 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
     chest1 = raw_data['stats']['luxurious_chest_number']
 
     async def dataToDataStr(max, my) -> str:
-        return [str(100 * round((my / max), 2)) + '% | ' + str(my) + '/' + str(max), round((my / max),2) * 490 ]
+        return [str(100 * round((my / max), 2)) + '% | ' + str(my) + '/' + str(max), round((my / max), 2) * 490]
 
     achieveStr = await dataToDataStr(max_data['成就'], achieve)
-    chest1Str =await dataToDataStr(max_data['华丽的宝箱'], chest1)
+    chest1Str = await dataToDataStr(max_data['华丽的宝箱'], chest1)
     chest2Str = await dataToDataStr(max_data['珍贵的宝箱'], chest2)
     chest3Str = await dataToDataStr(max_data['精致的宝箱'], chest3)
     chest4Str = await dataToDataStr(max_data['普通的宝箱'], chest4)
 
     # 计算
-    val = str(round((achieveStr[1] + chest1Str[1] + chest2Str[1] + chest3Str[1] + chest4Str[1]) / 24.5, 2 )) + '%'
+    val = str(round((achieveStr[1] + chest1Str[1] + chest2Str[1] + chest3Str[1] + chest4Str[1]) / 24.5, 2)) + '%'
     left = (max_data['华丽的宝箱'] - chest1) * 10 + \
            (max_data['珍贵的宝箱'] - chest2) * 5 + \
            (max_data['精致的宝箱'] - chest3) * 2 + \
@@ -1864,17 +1865,21 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
     text_draw.text((540, 165 + 87), chest1Str[0], text_color, genshin_font(24), anchor='rm')
     text_draw.text((540, 165 + 87 * 2), chest2Str[0], text_color, genshin_font(24), anchor='rm')
     text_draw.text((540, 165 + 87 * 3), chest3Str[0], text_color, genshin_font(24), anchor='rm')
-    text_draw.text((540, 165 + 87 * 4), chest4Str[0], text_color, genshin_font(24), anchor='rm')    
+    text_draw.text((540, 165 + 87 * 4), chest4Str[0], text_color, genshin_font(24), anchor='rm')
 
     base = 191.5
     offset = 86.5
 
     # 进度条
-    text_draw.rounded_rectangle((50, base, 50 + achieveStr[1], base + 12), fill=(234, 210, 124), radius = 20)
-    text_draw.rounded_rectangle((50, base + offset, 50 + chest1Str[1], base + offset + 12), fill=(235, 173, 43), radius = 20)
-    text_draw.rounded_rectangle((50, base + offset * 2, 50 + chest2Str[1], base + offset * 2 + 12), fill=(218, 128, 248), radius = 20)
-    text_draw.rounded_rectangle((50, base + offset * 3, 50 + chest3Str[1], base + offset * 3 + 12), fill=(60, 122, 227), radius = 20)
-    text_draw.rounded_rectangle((50, base + offset * 4, 50 + chest4Str[1], base + offset * 4 + 12), fill=(168, 248, 177), radius = 20)
+    text_draw.rounded_rectangle((50, base, 50 + achieveStr[1], base + 12), fill=(234, 210, 124), radius=20)
+    text_draw.rounded_rectangle((50, base + offset, 50 + chest1Str[1], base + offset + 12), fill=(235, 173, 43),
+                                radius=20)
+    text_draw.rounded_rectangle((50, base + offset * 2, 50 + chest2Str[1], base + offset * 2 + 12),
+                                fill=(218, 128, 248), radius=20)
+    text_draw.rounded_rectangle((50, base + offset * 3, 50 + chest3Str[1], base + offset * 3 + 12), fill=(60, 122, 227),
+                                radius=20)
+    text_draw.rounded_rectangle((50, base + offset * 4, 50 + chest4Str[1], base + offset * 4 + 12),
+                                fill=(168, 248, 177), radius=20)
 
     # 转换之后发送
     bg_img = bg_img.convert('RGB')

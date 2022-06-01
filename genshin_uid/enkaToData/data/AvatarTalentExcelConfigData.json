@@ -1,0 +1,6817 @@
+[
+    {
+        "talentId": 21,
+        "nameTextMapHash": 3364696049,
+        "descTextMapHash": 194851991,
+        "icon": "UI_Talent_S_Ayaka_01",
+        "mainCostItemId": 1102,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayaka_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.30000001192092896,
+            0.10000000149011612,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 22,
+        "nameTextMapHash": 562006217,
+        "descTextMapHash": 846522047,
+        "icon": "UI_Talent_S_Ayaka_02",
+        "prevTalent": 21,
+        "mainCostItemId": 1102,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayaka_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 23,
+        "nameTextMapHash": 1186654377,
+        "descTextMapHash": 2194749263,
+        "icon": "UI_Talent_U_Ayaka_02",
+        "prevTalent": 22,
+        "mainCostItemId": 1102,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayaka_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 24,
+        "nameTextMapHash": 2463454169,
+        "descTextMapHash": 2503540655,
+        "icon": "UI_Talent_S_Ayaka_03",
+        "prevTalent": 23,
+        "mainCostItemId": 1102,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayaka_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 25,
+        "nameTextMapHash": 51561297,
+        "descTextMapHash": 2689473807,
+        "icon": "UI_Talent_U_Ayaka_01",
+        "prevTalent": 24,
+        "mainCostItemId": 1102,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayaka_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 26,
+        "nameTextMapHash": 2587184913,
+        "descTextMapHash": 1834326191,
+        "icon": "UI_Talent_S_Ayaka_04",
+        "prevTalent": 25,
+        "mainCostItemId": 1102,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayaka_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            10.0,
+            2.9800000190734863,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 31,
+        "nameTextMapHash": 2935753641,
+        "descTextMapHash": 988897943,
+        "icon": "UI_Talent_S_Qin_01",
+        "mainCostItemId": 1103,
+        "mainCostItemCount": 1,
+        "openConfig": "Qin_Talent_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 32,
+        "nameTextMapHash": 573725673,
+        "descTextMapHash": 544290319,
+        "icon": "UI_Talent_S_Qin_02",
+        "prevTalent": 31,
+        "mainCostItemId": 1103,
+        "mainCostItemCount": 1,
+        "openConfig": "Qin_Talent_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.15000000596046448,
+            15.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 33,
+        "nameTextMapHash": 997607873,
+        "descTextMapHash": 3837932671,
+        "icon": "UI_Talent_U_Qin_02",
+        "prevTalent": 32,
+        "mainCostItemId": 1103,
+        "mainCostItemCount": 1,
+        "openConfig": "Qin_Talent_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 34,
+        "nameTextMapHash": 2887613457,
+        "descTextMapHash": 2911211423,
+        "icon": "UI_Talent_S_Qin_03",
+        "prevTalent": 33,
+        "mainCostItemId": 1103,
+        "mainCostItemCount": 1,
+        "openConfig": "Qin_Talent_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 35,
+        "nameTextMapHash": 2712156785,
+        "descTextMapHash": 3588133439,
+        "icon": "UI_Talent_U_Qin_01",
+        "prevTalent": 34,
+        "mainCostItemId": 1103,
+        "mainCostItemCount": 1,
+        "openConfig": "Qin_Talent_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 36,
+        "nameTextMapHash": 3167949041,
+        "descTextMapHash": 4148193751,
+        "icon": "UI_Talent_S_Qin_04",
+        "prevTalent": 35,
+        "mainCostItemId": 1103,
+        "mainCostItemCount": 1,
+        "openConfig": "Qin_Talent_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 41,
+        "nameTextMapHash": 12874089,
+        "descTextMapHash": 1939598815,
+        "icon": "UI_Talent_S_Lisa_01",
+        "mainCostItemId": 1106,
+        "mainCostItemCount": 1,
+        "openConfig": "Lisa_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 42,
+        "nameTextMapHash": 1523216321,
+        "descTextMapHash": 607155167,
+        "icon": "UI_Talent_S_Lisa_02",
+        "prevTalent": 41,
+        "mainCostItemId": 1106,
+        "mainCostItemCount": 1,
+        "openConfig": "Lisa_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 43,
+        "nameTextMapHash": 3707731441,
+        "descTextMapHash": 3643569183,
+        "icon": "UI_Talent_U_Lisa_02",
+        "prevTalent": 42,
+        "mainCostItemId": 1106,
+        "mainCostItemCount": 1,
+        "openConfig": "Lisa_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 44,
+        "nameTextMapHash": 1540277121,
+        "descTextMapHash": 4061309583,
+        "icon": "UI_Talent_S_Lisa_03",
+        "prevTalent": 43,
+        "mainCostItemId": 1106,
+        "mainCostItemCount": 1,
+        "openConfig": "Lisa_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 45,
+        "nameTextMapHash": 2256541273,
+        "descTextMapHash": 1025564511,
+        "icon": "UI_Talent_U_Lisa_01",
+        "prevTalent": 44,
+        "mainCostItemId": 1106,
+        "mainCostItemCount": 1,
+        "openConfig": "Lisa_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 46,
+        "nameTextMapHash": 2935728161,
+        "descTextMapHash": 2237370327,
+        "icon": "UI_Talent_S_Lisa_04",
+        "prevTalent": 45,
+        "mainCostItemId": 1106,
+        "mainCostItemCount": 1,
+        "openConfig": "Lisa_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 71,
+        "nameTextMapHash": 1939010113,
+        "descTextMapHash": 1376664943,
+        "icon": "UI_Talent_S_PlayerWind_01",
+        "mainCostItemId": 915,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Wind_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 72,
+        "nameTextMapHash": 202198665,
+        "descTextMapHash": 1959927503,
+        "icon": "UI_Talent_S_PlayerWind_02",
+        "prevTalent": 71,
+        "mainCostItemId": 915,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Wind_Constellation_2",
+        "addProps": [
+            {
+                "propType": "FIGHT_PROP_CHARGE_EFFICIENCY",
+                "value": 0.1599999964237213
+            },
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 73,
+        "nameTextMapHash": 3296754769,
+        "descTextMapHash": 125832943,
+        "icon": "UI_Talent_U_PlayerWind_02",
+        "prevTalent": 72,
+        "mainCostItemId": 915,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Wind_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 74,
+        "nameTextMapHash": 2963680761,
+        "descTextMapHash": 3431258791,
+        "icon": "UI_Talent_S_PlayerWind_03",
+        "prevTalent": 73,
+        "mainCostItemId": 915,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Wind_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 75,
+        "nameTextMapHash": 1400173321,
+        "descTextMapHash": 2655543991,
+        "icon": "UI_Talent_U_PlayerWind_01",
+        "prevTalent": 74,
+        "mainCostItemId": 915,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Wind_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 76,
+        "nameTextMapHash": 3558611633,
+        "descTextMapHash": 2741900303,
+        "icon": "UI_Talent_S_PlayerWind_04",
+        "prevTalent": 75,
+        "mainCostItemId": 915,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Wind_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 91,
+        "nameTextMapHash": 3120087313,
+        "descTextMapHash": 3266302015,
+        "icon": "UI_Talent_S_PlayerRock_01",
+        "mainCostItemId": 917,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Rock_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 92,
+        "nameTextMapHash": 1377520009,
+        "descTextMapHash": 80364831,
+        "icon": "UI_Talent_S_PlayerRock_02",
+        "prevTalent": 91,
+        "mainCostItemId": 917,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Rock_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 93,
+        "nameTextMapHash": 622533617,
+        "descTextMapHash": 4258516863,
+        "icon": "UI_Talent_U_PlayerRock_02",
+        "prevTalent": 92,
+        "mainCostItemId": 917,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Rock_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 94,
+        "nameTextMapHash": 161259209,
+        "descTextMapHash": 21981831,
+        "icon": "UI_Talent_S_PlayerRock_03",
+        "prevTalent": 93,
+        "mainCostItemId": 917,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Rock_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 95,
+        "nameTextMapHash": 4177873769,
+        "descTextMapHash": 1928504199,
+        "icon": "UI_Talent_U_PlayerRock_01",
+        "prevTalent": 94,
+        "mainCostItemId": 917,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Rock_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 96,
+        "nameTextMapHash": 4065853553,
+        "descTextMapHash": 3925312399,
+        "icon": "UI_Talent_S_PlayerRock_04",
+        "prevTalent": 95,
+        "mainCostItemId": 917,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Rock_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 101,
+        "nameTextMapHash": 712206481,
+        "descTextMapHash": 2010794039,
+        "icon": "UI_Talent_S_PlayerElectric_01",
+        "mainCostItemId": 914,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Electric_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 102,
+        "nameTextMapHash": 23741097,
+        "descTextMapHash": 2404048095,
+        "icon": "UI_Talent_S_PlayerElectric_02",
+        "prevTalent": 101,
+        "mainCostItemId": 914,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Electric_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            8.0,
+            -0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 103,
+        "nameTextMapHash": 3477728697,
+        "descTextMapHash": 2609784303,
+        "icon": "UI_Talent_U_PlayerElectric_01",
+        "prevTalent": 102,
+        "mainCostItemId": 914,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Electric_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 104,
+        "nameTextMapHash": 2462745745,
+        "descTextMapHash": 3753803103,
+        "icon": "UI_Talent_S_PlayerElectric_03",
+        "prevTalent": 103,
+        "mainCostItemId": 914,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Electric_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.3499999940395355,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 105,
+        "nameTextMapHash": 2241540777,
+        "descTextMapHash": 1981840967,
+        "icon": "UI_Talent_U_PlayerElectric_02",
+        "prevTalent": 104,
+        "mainCostItemId": 914,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Electric_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 106,
+        "nameTextMapHash": 1885207465,
+        "descTextMapHash": 1464554295,
+        "icon": "UI_Talent_S_PlayerElectric_04",
+        "prevTalent": 105,
+        "mainCostItemId": 914,
+        "mainCostItemCount": 1,
+        "openConfig": "Player_Electric_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 141,
+        "nameTextMapHash": 696499609,
+        "descTextMapHash": 1541078791,
+        "icon": "UI_Talent_S_Barbara_01",
+        "mainCostItemId": 1114,
+        "mainCostItemCount": 1,
+        "openConfig": "Barbara_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 142,
+        "nameTextMapHash": 3458095841,
+        "descTextMapHash": 3401415943,
+        "icon": "UI_Talent_S_Barbara_02",
+        "prevTalent": 141,
+        "mainCostItemId": 1114,
+        "mainCostItemCount": 1,
+        "openConfig": "Barbara_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 143,
+        "nameTextMapHash": 929991257,
+        "descTextMapHash": 3525415831,
+        "icon": "UI_Talent_U_Barbara_02",
+        "prevTalent": 142,
+        "mainCostItemId": 1114,
+        "mainCostItemCount": 1,
+        "openConfig": "Barbara_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 144,
+        "nameTextMapHash": 2093148473,
+        "descTextMapHash": 1120190279,
+        "icon": "UI_Talent_S_Barbara_03",
+        "prevTalent": 143,
+        "mainCostItemId": 1114,
+        "mainCostItemCount": 1,
+        "openConfig": "Barbara_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 145,
+        "nameTextMapHash": 3139814905,
+        "descTextMapHash": 1422637159,
+        "icon": "UI_Talent_U_Barbara_01",
+        "prevTalent": 144,
+        "mainCostItemId": 1114,
+        "mainCostItemCount": 1,
+        "openConfig": "Barbara_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 146,
+        "nameTextMapHash": 2183173281,
+        "descTextMapHash": 3744328127,
+        "icon": "UI_Talent_S_Barbara_04",
+        "prevTalent": 145,
+        "mainCostItemId": 1114,
+        "mainCostItemCount": 1,
+        "openConfig": "Barbara_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 151,
+        "nameTextMapHash": 1478938545,
+        "descTextMapHash": 2364565991,
+        "icon": "UI_Talent_S_Kaeya_01",
+        "mainCostItemId": 1115,
+        "mainCostItemCount": 1,
+        "openConfig": "Kaeya_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 152,
+        "nameTextMapHash": 1425365945,
+        "descTextMapHash": 2342848423,
+        "icon": "UI_Talent_S_Kaeya_02",
+        "prevTalent": 151,
+        "mainCostItemId": 1115,
+        "mainCostItemCount": 1,
+        "openConfig": "Kaeya_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 153,
+        "nameTextMapHash": 1397996209,
+        "descTextMapHash": 4020405287,
+        "icon": "UI_Talent_U_Kaeya_01",
+        "prevTalent": 152,
+        "mainCostItemId": 1115,
+        "mainCostItemCount": 1,
+        "openConfig": "Kaeya_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 154,
+        "nameTextMapHash": 1595754497,
+        "descTextMapHash": 3513562087,
+        "icon": "UI_Talent_S_Kaeya_03",
+        "prevTalent": 153,
+        "mainCostItemId": 1115,
+        "mainCostItemCount": 1,
+        "openConfig": "Kaeya_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 155,
+        "nameTextMapHash": 1102683585,
+        "descTextMapHash": 3968399879,
+        "icon": "UI_Talent_U_Kaeya_02",
+        "prevTalent": 154,
+        "mainCostItemId": 1115,
+        "mainCostItemCount": 1,
+        "openConfig": "Kaeya_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 156,
+        "nameTextMapHash": 2310553705,
+        "descTextMapHash": 3726105031,
+        "icon": "UI_Talent_S_Kaeya_04",
+        "prevTalent": 155,
+        "mainCostItemId": 1115,
+        "mainCostItemCount": 1,
+        "openConfig": "Kaeya_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 161,
+        "nameTextMapHash": 1050836105,
+        "descTextMapHash": 4178291015,
+        "icon": "UI_Talent_S_Diluc_01",
+        "mainCostItemId": 1116,
+        "mainCostItemCount": 1,
+        "openConfig": "Diluc_Talent_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 162,
+        "nameTextMapHash": 610672953,
+        "descTextMapHash": 3591206935,
+        "icon": "UI_Talent_S_Diluc_02",
+        "prevTalent": 161,
+        "mainCostItemId": 1116,
+        "mainCostItemCount": 1,
+        "openConfig": "Diluc_Talent_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.05000000074505806,
+            10.0,
+            3.0,
+            1.5,
+            0.0
+        ]
+    },
+    {
+        "talentId": 163,
+        "nameTextMapHash": 4084228505,
+        "descTextMapHash": 4123556519,
+        "icon": "UI_Talent_U_Diluc_01",
+        "prevTalent": 162,
+        "mainCostItemId": 1116,
+        "mainCostItemCount": 1,
+        "openConfig": "Diluc_Talent_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 164,
+        "nameTextMapHash": 1732979729,
+        "descTextMapHash": 3027261279,
+        "icon": "UI_Talent_S_Diluc_03",
+        "prevTalent": 163,
+        "mainCostItemId": 1116,
+        "mainCostItemCount": 1,
+        "openConfig": "Diluc_Talent_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 165,
+        "nameTextMapHash": 2293832361,
+        "descTextMapHash": 1232419951,
+        "icon": "UI_Talent_U_Diluc_02",
+        "prevTalent": 164,
+        "mainCostItemId": 1116,
+        "mainCostItemCount": 1,
+        "openConfig": "Diluc_Talent_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 166,
+        "nameTextMapHash": 4215692089,
+        "descTextMapHash": 2507810183,
+        "icon": "UI_Talent_S_Diluc_04",
+        "prevTalent": 165,
+        "mainCostItemId": 1116,
+        "mainCostItemCount": 1,
+        "openConfig": "Diluc_Talent_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            6.0,
+            0.30000001192092896,
+            0.30000001192092896,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 201,
+        "nameTextMapHash": 456119193,
+        "descTextMapHash": 3596694423,
+        "icon": "UI_Talent_S_Razor_01",
+        "mainCostItemId": 1120,
+        "mainCostItemCount": 1,
+        "openConfig": "Razor_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 202,
+        "nameTextMapHash": 3370625609,
+        "descTextMapHash": 791295375,
+        "icon": "UI_Talent_S_Razor_02",
+        "prevTalent": 201,
+        "mainCostItemId": 1120,
+        "mainCostItemCount": 1,
+        "openConfig": "Razor_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 203,
+        "nameTextMapHash": 3366391689,
+        "descTextMapHash": 2668228831,
+        "icon": "UI_Talent_U_Razor_02",
+        "prevTalent": 202,
+        "mainCostItemId": 1120,
+        "mainCostItemCount": 1,
+        "openConfig": "Razor_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 204,
+        "nameTextMapHash": 770839401,
+        "descTextMapHash": 3886927615,
+        "icon": "UI_Talent_S_Razor_03",
+        "prevTalent": 203,
+        "mainCostItemId": 1120,
+        "mainCostItemCount": 1,
+        "openConfig": "Razor_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 205,
+        "nameTextMapHash": 1781683177,
+        "descTextMapHash": 2350685383,
+        "icon": "UI_Talent_U_Razor_01",
+        "prevTalent": 204,
+        "mainCostItemId": 1120,
+        "mainCostItemCount": 1,
+        "openConfig": "Razor_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 206,
+        "nameTextMapHash": 4050704465,
+        "descTextMapHash": 2977840775,
+        "icon": "UI_Talent_S_Razor_04",
+        "prevTalent": 205,
+        "mainCostItemId": 1120,
+        "mainCostItemCount": 1,
+        "openConfig": "Razor_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 211,
+        "nameTextMapHash": 1803598873,
+        "descTextMapHash": 2709231575,
+        "icon": "UI_Talent_S_Ambor_01",
+        "mainCostItemId": 1121,
+        "mainCostItemCount": 1,
+        "openConfig": "Ambor_Talent_212",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 212,
+        "nameTextMapHash": 2183507145,
+        "descTextMapHash": 967025055,
+        "icon": "UI_Talent_S_Ambor_02",
+        "prevTalent": 211,
+        "mainCostItemId": 1121,
+        "mainCostItemCount": 1,
+        "openConfig": "Ambor_Talent_213",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 213,
+        "nameTextMapHash": 1196596641,
+        "descTextMapHash": 2432552951,
+        "icon": "UI_Talent_U_Ambor_02",
+        "prevTalent": 212,
+        "mainCostItemId": 1121,
+        "mainCostItemCount": 1,
+        "openConfig": "Ambor_Talent_E_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 214,
+        "nameTextMapHash": 2969048825,
+        "descTextMapHash": 3308085223,
+        "icon": "UI_Talent_S_Ambor_03",
+        "prevTalent": 213,
+        "mainCostItemId": 1121,
+        "mainCostItemCount": 1,
+        "openConfig": "Ambor_Talent_211",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 215,
+        "nameTextMapHash": 1752633193,
+        "descTextMapHash": 3697934583,
+        "icon": "UI_Talent_U_Ambor_01",
+        "prevTalent": 214,
+        "mainCostItemId": 1121,
+        "mainCostItemCount": 1,
+        "openConfig": "Ambor_Talent_S_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 216,
+        "nameTextMapHash": 1429105737,
+        "descTextMapHash": 2414194279,
+        "icon": "UI_Talent_S_Ambor_04",
+        "prevTalent": 215,
+        "mainCostItemId": 1121,
+        "mainCostItemCount": 1,
+        "openConfig": "Ambor_Talent_216",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.15000000596046448,
+            10.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 221,
+        "nameTextMapHash": 2201097153,
+        "descTextMapHash": 665988159,
+        "icon": "UI_Talent_S_Venti_01",
+        "mainCostItemId": 1122,
+        "mainCostItemCount": 1,
+        "openConfig": "Venti_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 222,
+        "nameTextMapHash": 509053297,
+        "descTextMapHash": 577887399,
+        "icon": "UI_Talent_S_Venti_02",
+        "prevTalent": 221,
+        "mainCostItemId": 1122,
+        "mainCostItemCount": 1,
+        "openConfig": "Venti_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 223,
+        "nameTextMapHash": 1436400889,
+        "descTextMapHash": 1214899311,
+        "icon": "UI_Talent_U_Venti_02",
+        "prevTalent": 222,
+        "mainCostItemId": 1122,
+        "mainCostItemCount": 1,
+        "openConfig": "Venti_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 224,
+        "nameTextMapHash": 2667025441,
+        "descTextMapHash": 3475049103,
+        "icon": "UI_Talent_S_Venti_03",
+        "prevTalent": 223,
+        "mainCostItemId": 1122,
+        "mainCostItemCount": 1,
+        "openConfig": "Venti_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 225,
+        "nameTextMapHash": 3652037273,
+        "descTextMapHash": 3697781887,
+        "icon": "UI_Talent_U_Venti_01",
+        "prevTalent": 224,
+        "mainCostItemId": 1122,
+        "mainCostItemCount": 1,
+        "openConfig": "Venti_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 226,
+        "nameTextMapHash": 544150889,
+        "descTextMapHash": 1651730135,
+        "icon": "UI_Talent_S_Venti_04",
+        "prevTalent": 225,
+        "mainCostItemId": 1122,
+        "mainCostItemCount": 1,
+        "openConfig": "Venti_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 231,
+        "nameTextMapHash": 1194445449,
+        "descTextMapHash": 3866122911,
+        "icon": "UI_Talent_S_Xiangling_01",
+        "mainCostItemId": 1123,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiangling_Talent_231",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 232,
+        "nameTextMapHash": 1745094577,
+        "descTextMapHash": 515394687,
+        "icon": "UI_Talent_S_Xiangling_02",
+        "prevTalent": 231,
+        "mainCostItemId": 1123,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiangling_Talent_232",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            2.0,
+            0.75,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 233,
+        "nameTextMapHash": 2414003921,
+        "descTextMapHash": 1194236287,
+        "icon": "UI_Talent_U_Xiangling_02",
+        "prevTalent": 232,
+        "mainCostItemId": 1123,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiangling_Talent_E_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 234,
+        "nameTextMapHash": 2365969361,
+        "descTextMapHash": 2051519231,
+        "icon": "UI_Talent_S_Xiangling_03",
+        "prevTalent": 233,
+        "mainCostItemId": 1123,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiangling_Talent_234",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 235,
+        "nameTextMapHash": 4257441793,
+        "descTextMapHash": 4011282063,
+        "icon": "UI_Talent_U_Xiangling_01",
+        "prevTalent": 234,
+        "mainCostItemId": 1123,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiangling_Talent_S_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 236,
+        "nameTextMapHash": 2739862033,
+        "descTextMapHash": 366896479,
+        "icon": "UI_Talent_S_Xiangling_04",
+        "prevTalent": 235,
+        "mainCostItemId": 1123,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiangling_Talent_236",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 241,
+        "nameTextMapHash": 1598246073,
+        "descTextMapHash": 2899101639,
+        "icon": "UI_Talent_S_Beidou_02",
+        "mainCostItemId": 1124,
+        "mainCostItemCount": 1,
+        "openConfig": "Beidou_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.1599999964237213,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 242,
+        "nameTextMapHash": 2620399769,
+        "descTextMapHash": 2277441935,
+        "icon": "UI_Talent_S_Beidou_01",
+        "prevTalent": 241,
+        "mainCostItemId": 1124,
+        "mainCostItemCount": 1,
+        "openConfig": "Beidou_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 243,
+        "nameTextMapHash": 2741836993,
+        "descTextMapHash": 4053128919,
+        "icon": "UI_Talent_U_Beidou_01",
+        "prevTalent": 242,
+        "mainCostItemId": 1124,
+        "mainCostItemCount": 1,
+        "openConfig": "Beidou_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 244,
+        "nameTextMapHash": 1523101409,
+        "descTextMapHash": 1024043391,
+        "icon": "UI_Talent_S_Beidou_03",
+        "prevTalent": 243,
+        "mainCostItemId": 1124,
+        "mainCostItemCount": 1,
+        "openConfig": "Beidou_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            10.0,
+            0.10000000149011612,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 245,
+        "nameTextMapHash": 2181637521,
+        "descTextMapHash": 938587127,
+        "icon": "UI_Talent_U_Beidou_02",
+        "prevTalent": 244,
+        "mainCostItemId": 1124,
+        "mainCostItemCount": 1,
+        "openConfig": "Beidou_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 246,
+        "nameTextMapHash": 688452449,
+        "descTextMapHash": 1391917287,
+        "icon": "UI_Talent_S_Beidou_04",
+        "prevTalent": 245,
+        "mainCostItemId": 1124,
+        "mainCostItemCount": 1,
+        "openConfig": "Beidou_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 251,
+        "nameTextMapHash": 792197377,
+        "descTextMapHash": 3521725647,
+        "icon": "UI_Talent_S_Xingqiu_01",
+        "mainCostItemId": 1125,
+        "mainCostItemCount": 1,
+        "openConfig": "Xingqiu_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 252,
+        "nameTextMapHash": 4158193737,
+        "descTextMapHash": 1801328303,
+        "icon": "UI_Talent_S_Xingqiu_02",
+        "prevTalent": 251,
+        "mainCostItemId": 1125,
+        "mainCostItemCount": 1,
+        "openConfig": "Xingqiu_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 253,
+        "nameTextMapHash": 3515928625,
+        "descTextMapHash": 2322919439,
+        "icon": "UI_Talent_U_Xingqiu_01",
+        "prevTalent": 252,
+        "mainCostItemId": 1125,
+        "mainCostItemCount": 1,
+        "openConfig": "Xingqiu_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 254,
+        "nameTextMapHash": 3998346513,
+        "descTextMapHash": 2523868735,
+        "icon": "UI_Talent_S_Xingqiu_03",
+        "prevTalent": 253,
+        "mainCostItemId": 1125,
+        "mainCostItemCount": 1,
+        "openConfig": "Xingqiu_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 255,
+        "nameTextMapHash": 2024007257,
+        "descTextMapHash": 3421075471,
+        "icon": "UI_Talent_U_Xingqiu_02",
+        "prevTalent": 254,
+        "mainCostItemId": 1125,
+        "mainCostItemCount": 1,
+        "openConfig": "Xingqiu_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 256,
+        "nameTextMapHash": 4055521313,
+        "descTextMapHash": 2227218487,
+        "icon": "UI_Talent_S_Xingqiu_04",
+        "prevTalent": 255,
+        "mainCostItemId": 1125,
+        "mainCostItemCount": 1,
+        "openConfig": "Xingqiu_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 261,
+        "nameTextMapHash": 3656758641,
+        "descTextMapHash": 2211607487,
+        "icon": "UI_Talent_S_Xiao_01",
+        "mainCostItemId": 1126,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiao_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 262,
+        "nameTextMapHash": 1959296641,
+        "descTextMapHash": 2430102759,
+        "icon": "UI_Talent_S_Xiao_02",
+        "prevTalent": 261,
+        "mainCostItemId": 1126,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiao_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 263,
+        "nameTextMapHash": 2385509657,
+        "descTextMapHash": 627668303,
+        "icon": "UI_Talent_U_Xiao_01",
+        "prevTalent": 262,
+        "mainCostItemId": 1126,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiao_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 264,
+        "nameTextMapHash": 3724086753,
+        "descTextMapHash": 2599764583,
+        "icon": "UI_Talent_S_Xiao_03",
+        "prevTalent": 263,
+        "mainCostItemId": 1126,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiao_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 265,
+        "nameTextMapHash": 4032000625,
+        "descTextMapHash": 934068495,
+        "icon": "UI_Talent_U_Xiao_02",
+        "prevTalent": 264,
+        "mainCostItemId": 1126,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiao_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 266,
+        "nameTextMapHash": 998328113,
+        "descTextMapHash": 2528103471,
+        "icon": "UI_Talent_S_Xiao_04",
+        "prevTalent": 265,
+        "mainCostItemId": 1126,
+        "mainCostItemCount": 1,
+        "openConfig": "Xiao_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 271,
+        "nameTextMapHash": 2798083633,
+        "descTextMapHash": 3095075175,
+        "icon": "UI_Talent_S_Ningguang_01",
+        "mainCostItemId": 1127,
+        "mainCostItemCount": 1,
+        "openConfig": "Ningguang_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 272,
+        "nameTextMapHash": 3383823929,
+        "descTextMapHash": 215899111,
+        "icon": "UI_Talent_S_Ningguang_05",
+        "prevTalent": 271,
+        "mainCostItemId": 1127,
+        "mainCostItemCount": 1,
+        "openConfig": "Ningguang_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 273,
+        "nameTextMapHash": 2150334649,
+        "descTextMapHash": 3390871,
+        "icon": "UI_Talent_U_Ningguang_02",
+        "prevTalent": 272,
+        "mainCostItemId": 1127,
+        "mainCostItemCount": 1,
+        "openConfig": "Ningguang_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 274,
+        "nameTextMapHash": 900430793,
+        "descTextMapHash": 3712986823,
+        "icon": "UI_Talent_S_Ningguang_03",
+        "prevTalent": 273,
+        "mainCostItemId": 1127,
+        "mainCostItemCount": 1,
+        "openConfig": "Ningguang_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 275,
+        "nameTextMapHash": 276636521,
+        "descTextMapHash": 1513475887,
+        "icon": "UI_Talent_U_Ningguang_01",
+        "prevTalent": 274,
+        "mainCostItemId": 1127,
+        "mainCostItemCount": 1,
+        "openConfig": "Ningguang_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 276,
+        "nameTextMapHash": 637125593,
+        "descTextMapHash": 1654510391,
+        "icon": "UI_Talent_S_Ningguang_04",
+        "prevTalent": 275,
+        "mainCostItemId": 1127,
+        "mainCostItemCount": 1,
+        "openConfig": "Ningguang_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 291,
+        "nameTextMapHash": 600240137,
+        "descTextMapHash": 4004824647,
+        "icon": "UI_Talent_S_Klee_01",
+        "mainCostItemId": 1129,
+        "mainCostItemCount": 1,
+        "openConfig": "Klee_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 292,
+        "nameTextMapHash": 328772169,
+        "descTextMapHash": 4201661495,
+        "icon": "UI_Talent_S_Klee_02",
+        "prevTalent": 291,
+        "mainCostItemId": 1129,
+        "mainCostItemCount": 1,
+        "openConfig": "Klee_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 293,
+        "nameTextMapHash": 1369435161,
+        "descTextMapHash": 2182377015,
+        "icon": "UI_Talent_U_Klee_01",
+        "prevTalent": 292,
+        "mainCostItemId": 1129,
+        "mainCostItemCount": 1,
+        "openConfig": "Klee_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 294,
+        "nameTextMapHash": 1327047857,
+        "descTextMapHash": 3999371183,
+        "icon": "UI_Talent_S_Klee_03",
+        "prevTalent": 293,
+        "mainCostItemId": 1129,
+        "mainCostItemCount": 1,
+        "openConfig": "Klee_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 295,
+        "nameTextMapHash": 3317796233,
+        "descTextMapHash": 4010119167,
+        "icon": "UI_Talent_U_Klee_02",
+        "prevTalent": 294,
+        "mainCostItemId": 1129,
+        "mainCostItemCount": 1,
+        "openConfig": "Klee_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 296,
+        "nameTextMapHash": 1554210529,
+        "descTextMapHash": 1281989519,
+        "icon": "UI_Talent_S_Klee_04",
+        "prevTalent": 295,
+        "mainCostItemId": 1129,
+        "mainCostItemCount": 1,
+        "openConfig": "Klee_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 301,
+        "nameTextMapHash": 3111572937,
+        "descTextMapHash": 2163509591,
+        "icon": "UI_Talent_S_Zhongli_01",
+        "mainCostItemId": 1130,
+        "mainCostItemCount": 1,
+        "openConfig": "Zhongli_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 302,
+        "nameTextMapHash": 519733529,
+        "descTextMapHash": 3521405695,
+        "icon": "UI_Talent_S_Zhongli_02",
+        "prevTalent": 301,
+        "mainCostItemId": 1130,
+        "mainCostItemCount": 1,
+        "openConfig": "Zhongli_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 303,
+        "nameTextMapHash": 1427308897,
+        "descTextMapHash": 706146151,
+        "icon": "UI_Talent_U_Zhongli_01",
+        "prevTalent": 302,
+        "mainCostItemId": 1130,
+        "mainCostItemCount": 1,
+        "openConfig": "Zhongli_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 304,
+        "nameTextMapHash": 583045657,
+        "descTextMapHash": 1050713703,
+        "icon": "UI_Talent_S_Zhongli_03",
+        "prevTalent": 303,
+        "mainCostItemId": 1130,
+        "mainCostItemCount": 1,
+        "openConfig": "Zhongli_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 305,
+        "nameTextMapHash": 3586646841,
+        "descTextMapHash": 2198645143,
+        "icon": "UI_Talent_U_Zhongli_02",
+        "prevTalent": 304,
+        "mainCostItemId": 1130,
+        "mainCostItemCount": 1,
+        "openConfig": "Zhongli_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 306,
+        "nameTextMapHash": 2555647321,
+        "descTextMapHash": 221212679,
+        "icon": "UI_Talent_S_Zhongli_04",
+        "prevTalent": 305,
+        "mainCostItemId": 1130,
+        "mainCostItemCount": 1,
+        "openConfig": "Zhongli_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            0.07999999821186066,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 311,
+        "nameTextMapHash": 5726609,
+        "descTextMapHash": 379923407,
+        "icon": "UI_Talent_S_Fischl_01",
+        "mainCostItemId": 1131,
+        "mainCostItemCount": 1,
+        "openConfig": "Fischl_Talent_331",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.2199999988079071,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 312,
+        "nameTextMapHash": 899523649,
+        "descTextMapHash": 3682583391,
+        "icon": "UI_Talent_S_Fischl_02",
+        "prevTalent": 311,
+        "mainCostItemId": 1131,
+        "mainCostItemCount": 1,
+        "openConfig": "Fischl_Talent_332",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 313,
+        "nameTextMapHash": 1999125225,
+        "descTextMapHash": 1088869759,
+        "icon": "UI_Talent_U_Fischl_01",
+        "prevTalent": 312,
+        "mainCostItemId": 1131,
+        "mainCostItemCount": 1,
+        "openConfig": "Fischl_Talent_S_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 314,
+        "nameTextMapHash": 469910073,
+        "descTextMapHash": 733548871,
+        "icon": "UI_Talent_S_Fischl_03",
+        "prevTalent": 313,
+        "mainCostItemId": 1131,
+        "mainCostItemCount": 1,
+        "openConfig": "Fischl_Talent_334",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.2200000286102295,
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 315,
+        "nameTextMapHash": 3322353681,
+        "descTextMapHash": 2975315583,
+        "icon": "UI_Talent_U_Fischl_02",
+        "prevTalent": 314,
+        "mainCostItemId": 1131,
+        "mainCostItemCount": 1,
+        "openConfig": "Fischl_Talent_E_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 316,
+        "nameTextMapHash": 2314026161,
+        "descTextMapHash": 3112929279,
+        "icon": "UI_Talent_S_Fischl_04",
+        "prevTalent": 315,
+        "mainCostItemId": 1131,
+        "mainCostItemCount": 1,
+        "openConfig": "Fischl_Talent_336",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 321,
+        "nameTextMapHash": 804447537,
+        "descTextMapHash": 2073825087,
+        "icon": "UI_Talent_S_Bennett_01",
+        "mainCostItemId": 1132,
+        "mainCostItemCount": 1,
+        "openConfig": "Bennett_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 322,
+        "nameTextMapHash": 2431201553,
+        "descTextMapHash": 471991591,
+        "icon": "UI_Talent_S_Bennett_02",
+        "prevTalent": 321,
+        "mainCostItemId": 1132,
+        "mainCostItemCount": 1,
+        "openConfig": "Bennett_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.699999988079071,
+            0.30000001192092896,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 323,
+        "nameTextMapHash": 698148913,
+        "descTextMapHash": 1713009919,
+        "icon": "UI_Talent_U_Bennett_01",
+        "prevTalent": 322,
+        "mainCostItemId": 1132,
+        "mainCostItemCount": 1,
+        "openConfig": "Bennett_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 324,
+        "nameTextMapHash": 3306938097,
+        "descTextMapHash": 3601575975,
+        "icon": "UI_Talent_S_Bennett_03",
+        "prevTalent": 323,
+        "mainCostItemId": 1132,
+        "mainCostItemCount": 1,
+        "openConfig": "Bennett_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.350000023841858,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 325,
+        "nameTextMapHash": 2443947665,
+        "descTextMapHash": 2838302743,
+        "icon": "UI_Talent_U_Bennett_02",
+        "prevTalent": 324,
+        "mainCostItemId": 1132,
+        "mainCostItemCount": 1,
+        "openConfig": "Bennett_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 326,
+        "nameTextMapHash": 3326774305,
+        "descTextMapHash": 596615087,
+        "icon": "UI_Talent_S_Bennett_04",
+        "prevTalent": 325,
+        "mainCostItemId": 1132,
+        "mainCostItemCount": 1,
+        "openConfig": "Bennett_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 331,
+        "nameTextMapHash": 1777276769,
+        "descTextMapHash": 926660471,
+        "icon": "UI_Talent_S_Tartaglia_01",
+        "mainCostItemId": 1133,
+        "mainCostItemCount": 1,
+        "openConfig": "Tartaglia_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 332,
+        "nameTextMapHash": 3821979753,
+        "descTextMapHash": 3189611455,
+        "icon": "UI_Talent_S_Tartaglia_02",
+        "prevTalent": 331,
+        "mainCostItemId": 1133,
+        "mainCostItemCount": 1,
+        "openConfig": "Tartaglia_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 333,
+        "nameTextMapHash": 1562607913,
+        "descTextMapHash": 1409214983,
+        "icon": "UI_Talent_U_Tartaglia_01",
+        "prevTalent": 332,
+        "mainCostItemId": 1133,
+        "mainCostItemCount": 1,
+        "openConfig": "Tartaglia_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 334,
+        "nameTextMapHash": 3252659577,
+        "descTextMapHash": 2705925063,
+        "icon": "UI_Talent_S_Tartaglia_05",
+        "prevTalent": 333,
+        "mainCostItemId": 1133,
+        "mainCostItemCount": 1,
+        "openConfig": "Tartaglia_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 335,
+        "nameTextMapHash": 1429851537,
+        "descTextMapHash": 2922457007,
+        "icon": "UI_Talent_U_Tartaglia_02",
+        "prevTalent": 334,
+        "mainCostItemId": 1133,
+        "mainCostItemCount": 1,
+        "openConfig": "Tartaglia_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 336,
+        "nameTextMapHash": 1479737849,
+        "descTextMapHash": 792778623,
+        "icon": "UI_Talent_S_Tartaglia_04",
+        "prevTalent": 335,
+        "mainCostItemId": 1133,
+        "mainCostItemCount": 1,
+        "openConfig": "Tartaglia_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 341,
+        "nameTextMapHash": 3743570273,
+        "descTextMapHash": 2305612271,
+        "icon": "UI_Talent_S_Noel_01",
+        "mainCostItemId": 1134,
+        "mainCostItemCount": 1,
+        "openConfig": "Noel_Talent_341",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 342,
+        "nameTextMapHash": 680992073,
+        "descTextMapHash": 2663640239,
+        "icon": "UI_Talent_S_Noel_02",
+        "prevTalent": 341,
+        "mainCostItemId": 1134,
+        "mainCostItemCount": 1,
+        "openConfig": "Noel_Talent_342",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -0.20000000298023224,
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 343,
+        "nameTextMapHash": 4141797449,
+        "descTextMapHash": 2912207711,
+        "icon": "UI_Talent_U_Noel_01",
+        "prevTalent": 342,
+        "mainCostItemId": 1134,
+        "mainCostItemCount": 1,
+        "openConfig": "Noel_Talent_S_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 344,
+        "nameTextMapHash": 50520097,
+        "descTextMapHash": 4101456727,
+        "icon": "UI_Talent_S_Noel_03",
+        "prevTalent": 343,
+        "mainCostItemId": 1134,
+        "mainCostItemCount": 1,
+        "openConfig": "Noel_Talent_344",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 345,
+        "nameTextMapHash": 976069081,
+        "descTextMapHash": 2820351255,
+        "icon": "UI_Talent_U_Noel_02",
+        "prevTalent": 344,
+        "mainCostItemId": 1134,
+        "mainCostItemCount": 1,
+        "openConfig": "Noel_Talent_E_Levelup",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 346,
+        "nameTextMapHash": 79084353,
+        "descTextMapHash": 2091165375,
+        "icon": "UI_Talent_S_Noel_04",
+        "prevTalent": 345,
+        "mainCostItemId": 1134,
+        "mainCostItemCount": 1,
+        "openConfig": "Noel_Talent_346",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 351,
+        "nameTextMapHash": 3894833521,
+        "descTextMapHash": 1696126103,
+        "icon": "UI_Talent_S_Qiqi_01",
+        "mainCostItemId": 1135,
+        "mainCostItemCount": 1,
+        "openConfig": "Qiqi_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 352,
+        "nameTextMapHash": 388179873,
+        "descTextMapHash": 606329007,
+        "icon": "UI_Talent_S_Qiqi_02",
+        "prevTalent": 351,
+        "mainCostItemId": 1135,
+        "mainCostItemCount": 1,
+        "openConfig": "Qiqi_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 353,
+        "nameTextMapHash": 1454042537,
+        "descTextMapHash": 2773207751,
+        "icon": "UI_Talent_U_Qiqi_01",
+        "prevTalent": 352,
+        "mainCostItemId": 1135,
+        "mainCostItemCount": 1,
+        "openConfig": "Qiqi_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 354,
+        "nameTextMapHash": 3785958321,
+        "descTextMapHash": 1811613895,
+        "icon": "UI_Talent_S_Qiqi_03",
+        "prevTalent": 353,
+        "mainCostItemId": 1135,
+        "mainCostItemCount": 1,
+        "openConfig": "Qiqi_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 355,
+        "nameTextMapHash": 243639329,
+        "descTextMapHash": 655434095,
+        "icon": "UI_Talent_U_Qiqi_02",
+        "prevTalent": 354,
+        "mainCostItemId": 1135,
+        "mainCostItemCount": 1,
+        "openConfig": "Qiqi_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 356,
+        "nameTextMapHash": 1456237985,
+        "descTextMapHash": 1392516727,
+        "icon": "UI_Talent_S_Qiqi_04",
+        "prevTalent": 355,
+        "mainCostItemId": 1135,
+        "mainCostItemCount": 1,
+        "openConfig": "Qiqi_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 361,
+        "nameTextMapHash": 1859111849,
+        "descTextMapHash": 3874733319,
+        "icon": "UI_Talent_S_Chongyun_01",
+        "mainCostItemId": 1136,
+        "mainCostItemCount": 1,
+        "openConfig": "Chongyun_Talent_361",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 362,
+        "nameTextMapHash": 1016771721,
+        "descTextMapHash": 1537894911,
+        "icon": "UI_Talent_S_Chongyun_02",
+        "prevTalent": 361,
+        "mainCostItemId": 1136,
+        "mainCostItemCount": 1,
+        "openConfig": "Chongyun_Talent_362",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 363,
+        "nameTextMapHash": 294514897,
+        "descTextMapHash": 1615074199,
+        "icon": "UI_Talent_U_Chongyun_01",
+        "prevTalent": 362,
+        "mainCostItemId": 1136,
+        "mainCostItemCount": 1,
+        "openConfig": "Chongyun_ElementBurst_Up",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 364,
+        "nameTextMapHash": 1282888193,
+        "descTextMapHash": 461481359,
+        "icon": "UI_Talent_S_Chongyun_03",
+        "prevTalent": 363,
+        "mainCostItemId": 1136,
+        "mainCostItemCount": 1,
+        "openConfig": "Chongyun_Talent_22",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 365,
+        "nameTextMapHash": 1493556457,
+        "descTextMapHash": 3819808039,
+        "icon": "UI_Talent_U_Chongyun_02",
+        "prevTalent": 364,
+        "mainCostItemId": 1136,
+        "mainCostItemCount": 1,
+        "openConfig": "Chongyun_ElementSkill_Up",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 366,
+        "nameTextMapHash": 3391919345,
+        "descTextMapHash": 121953951,
+        "icon": "UI_Talent_S_Chongyun_04",
+        "prevTalent": 365,
+        "mainCostItemId": 1136,
+        "mainCostItemCount": 1,
+        "openConfig": "Chongyun_Talent_366",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 371,
+        "nameTextMapHash": 2361723385,
+        "descTextMapHash": 975174791,
+        "icon": "UI_Talent_S_Ganyu_01",
+        "mainCostItemId": 1137,
+        "mainCostItemCount": 1,
+        "openConfig": "Ganyu_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -0.15000000596046448,
+            6.0,
+            2.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 372,
+        "nameTextMapHash": 1383329801,
+        "descTextMapHash": 3346118319,
+        "icon": "UI_Talent_S_Ganyu_02",
+        "prevTalent": 371,
+        "mainCostItemId": 1137,
+        "mainCostItemCount": 1,
+        "openConfig": "Ganyu_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 373,
+        "nameTextMapHash": 3222345473,
+        "descTextMapHash": 2569532143,
+        "icon": "UI_Talent_U_Ganyu_01",
+        "prevTalent": 372,
+        "mainCostItemId": 1137,
+        "mainCostItemCount": 1,
+        "openConfig": "Ganyu_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 374,
+        "nameTextMapHash": 3290499593,
+        "descTextMapHash": 1565817023,
+        "icon": "UI_Talent_S_Ganyu_03",
+        "prevTalent": 373,
+        "mainCostItemId": 1137,
+        "mainCostItemCount": 1,
+        "openConfig": "Ganyu_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 375,
+        "nameTextMapHash": 1752707929,
+        "descTextMapHash": 1288501871,
+        "icon": "UI_Talent_U_Ganyu_02",
+        "prevTalent": 374,
+        "mainCostItemId": 1137,
+        "mainCostItemCount": 1,
+        "openConfig": "Ganyu_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 376,
+        "nameTextMapHash": 37217545,
+        "descTextMapHash": 3563825719,
+        "icon": "UI_Talent_S_Ganyu_04",
+        "prevTalent": 375,
+        "mainCostItemId": 1137,
+        "mainCostItemCount": 1,
+        "openConfig": "Ganyu_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 381,
+        "nameTextMapHash": 4171208737,
+        "descTextMapHash": 3462874567,
+        "icon": "UI_Talent_S_Albedo_01",
+        "mainCostItemId": 1138,
+        "mainCostItemCount": 1,
+        "openConfig": "Albedo_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.2000000476837158,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 382,
+        "nameTextMapHash": 151370681,
+        "descTextMapHash": 2243530431,
+        "icon": "UI_Talent_S_Albedo_02",
+        "prevTalent": 381,
+        "mainCostItemId": 1138,
+        "mainCostItemCount": 1,
+        "openConfig": "Albedo_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 383,
+        "nameTextMapHash": 625211161,
+        "descTextMapHash": 4113451831,
+        "icon": "UI_Talent_U_Albedo_01",
+        "prevTalent": 382,
+        "mainCostItemId": 1138,
+        "mainCostItemCount": 1,
+        "openConfig": "Albedo_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 384,
+        "nameTextMapHash": 1728244745,
+        "descTextMapHash": 1431711711,
+        "icon": "UI_Talent_S_Albedo_03",
+        "prevTalent": 383,
+        "mainCostItemId": 1138,
+        "mainCostItemCount": 1,
+        "openConfig": "Albedo_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 385,
+        "nameTextMapHash": 3896567129,
+        "descTextMapHash": 3779396687,
+        "icon": "UI_Talent_U_Albedo_02",
+        "prevTalent": 384,
+        "mainCostItemId": 1138,
+        "mainCostItemCount": 1,
+        "openConfig": "Albedo_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 386,
+        "nameTextMapHash": 3605875457,
+        "descTextMapHash": 2084479351,
+        "icon": "UI_Talent_S_Albedo_04",
+        "prevTalent": 385,
+        "mainCostItemId": 1138,
+        "mainCostItemCount": 1,
+        "openConfig": "Albedo_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 391,
+        "nameTextMapHash": 2653503505,
+        "descTextMapHash": 1358209303,
+        "icon": "UI_Talent_S_Diona_01",
+        "mainCostItemId": 1139,
+        "mainCostItemCount": 1,
+        "openConfig": "Diona_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 392,
+        "nameTextMapHash": 3233494081,
+        "descTextMapHash": 2723142055,
+        "icon": "UI_Talent_S_Diona_02",
+        "prevTalent": 391,
+        "mainCostItemId": 1139,
+        "mainCostItemCount": 1,
+        "openConfig": "Diona_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.15000000596046448,
+            0.5,
+            5.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 393,
+        "nameTextMapHash": 1153113417,
+        "descTextMapHash": 266501231,
+        "icon": "UI_Talent_U_Diona_01",
+        "prevTalent": 392,
+        "mainCostItemId": 1139,
+        "mainCostItemCount": 1,
+        "openConfig": "Diona_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 394,
+        "nameTextMapHash": 389925129,
+        "descTextMapHash": 1880884495,
+        "icon": "UI_Talent_S_Diona_03",
+        "prevTalent": 393,
+        "mainCostItemId": 1139,
+        "mainCostItemCount": 1,
+        "openConfig": "Diona_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 395,
+        "nameTextMapHash": 2582391273,
+        "descTextMapHash": 859024503,
+        "icon": "UI_Talent_U_Diona_02",
+        "prevTalent": 394,
+        "mainCostItemId": 1139,
+        "mainCostItemCount": 1,
+        "openConfig": "Diona_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 396,
+        "nameTextMapHash": 3637405321,
+        "descTextMapHash": 1673554303,
+        "icon": "UI_Talent_S_Diona_04",
+        "prevTalent": 395,
+        "mainCostItemId": 1139,
+        "mainCostItemCount": 1,
+        "openConfig": "Diona_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            200.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 411,
+        "nameTextMapHash": 3262519193,
+        "descTextMapHash": 452602631,
+        "icon": "UI_Talent_S_Mona_01",
+        "mainCostItemId": 1141,
+        "mainCostItemCount": 1,
+        "openConfig": "Mona_Talent_01",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448,
+            5.0,
+            8.0
+        ]
+    },
+    {
+        "talentId": 412,
+        "nameTextMapHash": 3030801713,
+        "descTextMapHash": 2775748423,
+        "icon": "UI_Talent_S_Mona_02",
+        "prevTalent": 411,
+        "mainCostItemId": 1141,
+        "mainCostItemCount": 1,
+        "openConfig": "Mona_Talent_02",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            1.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 413,
+        "nameTextMapHash": 3782923609,
+        "descTextMapHash": 4292322247,
+        "icon": "UI_Talent_U_Mona_01",
+        "prevTalent": 412,
+        "mainCostItemId": 1141,
+        "mainCostItemCount": 1,
+        "openConfig": "Mona_Talent_03",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 414,
+        "nameTextMapHash": 488631345,
+        "descTextMapHash": 4223850175,
+        "icon": "UI_Talent_S_Mona_03",
+        "prevTalent": 413,
+        "mainCostItemId": 1141,
+        "mainCostItemCount": 1,
+        "openConfig": "Mona_Talent_04",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -0.15000000596046448,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 415,
+        "nameTextMapHash": 496658001,
+        "descTextMapHash": 167333135,
+        "icon": "UI_Talent_U_Mona_02",
+        "prevTalent": 414,
+        "mainCostItemId": 1141,
+        "mainCostItemCount": 1,
+        "openConfig": "Mona_Talent_05",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 416,
+        "nameTextMapHash": 300946497,
+        "descTextMapHash": 2932631807,
+        "icon": "UI_Talent_S_Mona_04",
+        "prevTalent": 415,
+        "mainCostItemId": 1141,
+        "mainCostItemCount": 1,
+        "openConfig": "Mona_Talent_06",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.6000000238418579,
+            1.7999999523162842,
+            8.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 421,
+        "nameTextMapHash": 3733936569,
+        "descTextMapHash": 2584168503,
+        "icon": "UI_Talent_S_Keqing_01",
+        "mainCostItemId": 1142,
+        "mainCostItemCount": 1,
+        "openConfig": "Keqing_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 422,
+        "nameTextMapHash": 1003272937,
+        "descTextMapHash": 2875204959,
+        "icon": "UI_Talent_S_Keqing_02",
+        "prevTalent": 421,
+        "mainCostItemId": 1142,
+        "mainCostItemCount": 1,
+        "openConfig": "Keqing_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 423,
+        "nameTextMapHash": 1005679025,
+        "descTextMapHash": 1530917495,
+        "icon": "UI_Talent_U_Keqing_01",
+        "prevTalent": 422,
+        "mainCostItemId": 1142,
+        "mainCostItemCount": 1,
+        "openConfig": "Keqing_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 424,
+        "nameTextMapHash": 2598965033,
+        "descTextMapHash": 2256041831,
+        "icon": "UI_Talent_S_Keqing_03",
+        "prevTalent": 423,
+        "mainCostItemId": 1142,
+        "mainCostItemCount": 1,
+        "openConfig": "Keqing_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            10.0,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 425,
+        "nameTextMapHash": 1939891865,
+        "descTextMapHash": 1494899271,
+        "icon": "UI_Talent_U_Keqing_02",
+        "prevTalent": 424,
+        "mainCostItemId": 1142,
+        "mainCostItemCount": 1,
+        "openConfig": "Keqing_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 426,
+        "nameTextMapHash": 547902305,
+        "descTextMapHash": 1142266335,
+        "icon": "UI_Talent_S_Keqing_04",
+        "prevTalent": 425,
+        "mainCostItemId": 1142,
+        "mainCostItemCount": 1,
+        "openConfig": "Keqing_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.05999999865889549,
+            8.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 431,
+        "nameTextMapHash": 1387979801,
+        "descTextMapHash": 659439671,
+        "icon": "UI_Talent_S_Sucrose_01",
+        "mainCostItemId": 1143,
+        "mainCostItemCount": 1,
+        "openConfig": "Sucrose_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 432,
+        "nameTextMapHash": 412718689,
+        "descTextMapHash": 393014655,
+        "icon": "UI_Talent_S_Sucrose_02",
+        "prevTalent": 431,
+        "mainCostItemId": 1143,
+        "mainCostItemCount": 1,
+        "openConfig": "Sucrose_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 433,
+        "nameTextMapHash": 3504453161,
+        "descTextMapHash": 3346841599,
+        "icon": "UI_Talent_U_Sucrose_01",
+        "prevTalent": 432,
+        "mainCostItemId": 1143,
+        "mainCostItemCount": 1,
+        "openConfig": "Sucrose_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 434,
+        "nameTextMapHash": 2203237409,
+        "descTextMapHash": 1019396935,
+        "icon": "UI_Talent_S_Sucrose_03",
+        "prevTalent": 433,
+        "mainCostItemId": 1143,
+        "mainCostItemCount": 1,
+        "openConfig": "Sucrose_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 435,
+        "nameTextMapHash": 1605290329,
+        "descTextMapHash": 901461951,
+        "icon": "UI_Talent_U_Sucrose_02",
+        "prevTalent": 434,
+        "mainCostItemId": 1143,
+        "mainCostItemCount": 1,
+        "openConfig": "Sucrose_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 436,
+        "nameTextMapHash": 344305449,
+        "descTextMapHash": 4078577031,
+        "icon": "UI_Talent_S_Sucrose_04",
+        "prevTalent": 435,
+        "mainCostItemId": 1143,
+        "mainCostItemCount": 1,
+        "openConfig": "Sucrose_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 441,
+        "nameTextMapHash": 3068951001,
+        "descTextMapHash": 3151757471,
+        "icon": "UI_Talent_S_Xinyan_01",
+        "mainCostItemId": 1144,
+        "mainCostItemCount": 1,
+        "openConfig": "Xinyan_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.11999999731779099,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 442,
+        "nameTextMapHash": 2247567929,
+        "descTextMapHash": 4058915415,
+        "icon": "UI_Talent_S_Xinyan_02",
+        "prevTalent": 441,
+        "mainCostItemId": 1144,
+        "mainCostItemCount": 1,
+        "openConfig": "Xinyan_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 443,
+        "nameTextMapHash": 3545262929,
+        "descTextMapHash": 4067254263,
+        "icon": "UI_Talent_U_Xinyan_01",
+        "prevTalent": 442,
+        "mainCostItemId": 1144,
+        "mainCostItemCount": 1,
+        "openConfig": "Xinyan_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 444,
+        "nameTextMapHash": 3472180281,
+        "descTextMapHash": 630340871,
+        "icon": "UI_Talent_S_Xinyan_03",
+        "prevTalent": 443,
+        "mainCostItemId": 1144,
+        "mainCostItemCount": 1,
+        "openConfig": "Xinyan_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -0.15000000596046448,
+            12.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 445,
+        "nameTextMapHash": 3343552585,
+        "descTextMapHash": 1190369383,
+        "icon": "UI_Talent_U_Xinyan_02",
+        "prevTalent": 444,
+        "mainCostItemId": 1144,
+        "mainCostItemCount": 1,
+        "openConfig": "Xinyan_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 446,
+        "nameTextMapHash": 2632855681,
+        "descTextMapHash": 1450102367,
+        "icon": "UI_Talent_S_Xinyan_04",
+        "prevTalent": 445,
+        "mainCostItemId": 1144,
+        "mainCostItemCount": 1,
+        "openConfig": "Xinyan_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -0.30000001192092896,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 451,
+        "nameTextMapHash": 1747862233,
+        "descTextMapHash": 3325524863,
+        "icon": "UI_Talent_S_Rosaria_01",
+        "mainCostItemId": 1145,
+        "mainCostItemCount": 1,
+        "openConfig": "Rosaria_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.10000000149011612,
+            4.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 452,
+        "nameTextMapHash": 3870318265,
+        "descTextMapHash": 1426432255,
+        "icon": "UI_Talent_S_Rosaria_02",
+        "prevTalent": 451,
+        "mainCostItemId": 1145,
+        "mainCostItemCount": 1,
+        "openConfig": "Rosaria_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 453,
+        "nameTextMapHash": 3057954913,
+        "descTextMapHash": 3853272615,
+        "icon": "UI_Talent_U_Rosaria_01",
+        "prevTalent": 452,
+        "mainCostItemId": 1145,
+        "mainCostItemCount": 1,
+        "openConfig": "Rosaria_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 454,
+        "nameTextMapHash": 1072343465,
+        "descTextMapHash": 1502603863,
+        "icon": "UI_Talent_S_Rosaria_03",
+        "prevTalent": 453,
+        "mainCostItemId": 1145,
+        "mainCostItemCount": 1,
+        "openConfig": "Rosaria_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 455,
+        "nameTextMapHash": 1802655737,
+        "descTextMapHash": 2207642951,
+        "icon": "UI_Talent_U_Rosaria_02",
+        "prevTalent": 454,
+        "mainCostItemId": 1145,
+        "mainCostItemCount": 1,
+        "openConfig": "Rosaria_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 456,
+        "nameTextMapHash": 3739872265,
+        "descTextMapHash": 1651444399,
+        "icon": "UI_Talent_S_Rosaria_04",
+        "prevTalent": 455,
+        "mainCostItemId": 1145,
+        "mainCostItemCount": 1,
+        "openConfig": "Rosaria_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            10.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 461,
+        "nameTextMapHash": 2081199193,
+        "descTextMapHash": 67778231,
+        "icon": "UI_Talent_S_Hutao_03",
+        "mainCostItemId": 1146,
+        "mainCostItemCount": 1,
+        "openConfig": "Hutao_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 462,
+        "nameTextMapHash": 1768747369,
+        "descTextMapHash": 3620258903,
+        "icon": "UI_Talent_S_Hutao_01",
+        "prevTalent": 461,
+        "mainCostItemId": 1146,
+        "mainCostItemCount": 1,
+        "openConfig": "Hutao_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 463,
+        "nameTextMapHash": 3111083697,
+        "descTextMapHash": 3057870071,
+        "icon": "UI_Talent_U_Hutao_01",
+        "prevTalent": 462,
+        "mainCostItemId": 1146,
+        "mainCostItemCount": 1,
+        "openConfig": "Hutao_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 464,
+        "nameTextMapHash": 4276933609,
+        "descTextMapHash": 3695286279,
+        "icon": "UI_Talent_S_Hutao_02",
+        "prevTalent": 463,
+        "mainCostItemId": 1146,
+        "mainCostItemCount": 1,
+        "openConfig": "Hutao_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.11999999731779099,
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 465,
+        "nameTextMapHash": 658527361,
+        "descTextMapHash": 2735458983,
+        "icon": "UI_Talent_U_Hutao_02",
+        "prevTalent": 464,
+        "mainCostItemId": 1146,
+        "mainCostItemCount": 1,
+        "openConfig": "Hutao_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 466,
+        "nameTextMapHash": 2361886209,
+        "descTextMapHash": 3811817239,
+        "icon": "UI_Talent_S_Hutao_04",
+        "prevTalent": 465,
+        "mainCostItemId": 1146,
+        "mainCostItemCount": 1,
+        "openConfig": "Hutao_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.25,
+            10.0,
+            2.0,
+            1.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 471,
+        "nameTextMapHash": 2040563073,
+        "descTextMapHash": 3794647287,
+        "icon": "UI_Talent_S_Kazuha_01",
+        "mainCostItemId": 1147,
+        "mainCostItemCount": 1,
+        "openConfig": "Kazuha_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 472,
+        "nameTextMapHash": 7765353,
+        "descTextMapHash": 57094423,
+        "icon": "UI_Talent_S_Kazuha_02",
+        "prevTalent": 471,
+        "mainCostItemId": 1147,
+        "mainCostItemCount": 1,
+        "openConfig": "Kazuha_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            200.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 473,
+        "nameTextMapHash": 2202533753,
+        "descTextMapHash": 190411063,
+        "icon": "UI_Talent_U_Kazuha_01",
+        "prevTalent": 472,
+        "mainCostItemId": 1147,
+        "mainCostItemCount": 1,
+        "openConfig": "Kazuha_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 474,
+        "nameTextMapHash": 2888381665,
+        "descTextMapHash": 2322280143,
+        "icon": "UI_Talent_S_Kazuha_03",
+        "prevTalent": 473,
+        "mainCostItemId": 1147,
+        "mainCostItemCount": 1,
+        "openConfig": "Kazuha_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            4.0,
+            2.0,
+            0.75,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 475,
+        "nameTextMapHash": 4207271041,
+        "descTextMapHash": 4023044479,
+        "icon": "UI_Talent_U_Kazuha_02",
+        "prevTalent": 474,
+        "mainCostItemId": 1147,
+        "mainCostItemCount": 1,
+        "openConfig": "Kazuha_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 476,
+        "nameTextMapHash": 234189249,
+        "descTextMapHash": 2071805463,
+        "icon": "UI_Talent_S_Kazuha_04",
+        "prevTalent": 475,
+        "mainCostItemId": 1147,
+        "mainCostItemCount": 1,
+        "openConfig": "Kazuha_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0020000000949949026,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 481,
+        "nameTextMapHash": 690499809,
+        "descTextMapHash": 3765119039,
+        "icon": "UI_Talent_S_Feiyan_01",
+        "mainCostItemId": 1148,
+        "mainCostItemCount": 1,
+        "openConfig": "Feiyan_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -0.10000000149011612,
+            -0.10000000149011612,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 482,
+        "nameTextMapHash": 886053825,
+        "descTextMapHash": 821476695,
+        "icon": "UI_Talent_S_Feiyan_02",
+        "prevTalent": 481,
+        "mainCostItemId": 1148,
+        "mainCostItemCount": 1,
+        "openConfig": "Feiyan_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 483,
+        "nameTextMapHash": 168010785,
+        "descTextMapHash": 246599983,
+        "icon": "UI_Talent_U_Feiyan_01",
+        "prevTalent": 482,
+        "mainCostItemId": 1148,
+        "mainCostItemCount": 1,
+        "openConfig": "Feiyan_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 484,
+        "nameTextMapHash": 2878639121,
+        "descTextMapHash": 1661753439,
+        "icon": "UI_Talent_S_Feiyan_03",
+        "prevTalent": 483,
+        "mainCostItemId": 1148,
+        "mainCostItemCount": 1,
+        "openConfig": "Feiyan_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.44999998807907104,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 485,
+        "nameTextMapHash": 3698266505,
+        "descTextMapHash": 876690903,
+        "icon": "UI_Talent_U_Feiyan_02",
+        "prevTalent": 484,
+        "mainCostItemId": 1148,
+        "mainCostItemCount": 1,
+        "openConfig": "Feiyan_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 486,
+        "nameTextMapHash": 3677492353,
+        "descTextMapHash": 2987376519,
+        "icon": "UI_Talent_S_Feiyan_04",
+        "prevTalent": 485,
+        "mainCostItemId": 1148,
+        "mainCostItemCount": 1,
+        "openConfig": "Feiyan_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 491,
+        "nameTextMapHash": 106208137,
+        "descTextMapHash": 3438911311,
+        "icon": "UI_Talent_S_Yoimiya_01",
+        "mainCostItemId": 1149,
+        "mainCostItemCount": 1,
+        "openConfig": "Yoimiya_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.0,
+            0.20000000298023224,
+            20.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 492,
+        "nameTextMapHash": 3836801473,
+        "descTextMapHash": 2102275567,
+        "icon": "UI_Talent_S_Yoimiya_02",
+        "prevTalent": 491,
+        "mainCostItemId": 1149,
+        "mainCostItemCount": 1,
+        "openConfig": "Yoimiya_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.25,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 493,
+        "nameTextMapHash": 3467544337,
+        "descTextMapHash": 3229313215,
+        "icon": "UI_Talent_U_Yoimiya_01",
+        "prevTalent": 492,
+        "mainCostItemId": 1149,
+        "mainCostItemCount": 1,
+        "openConfig": "Yoimiya_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 494,
+        "nameTextMapHash": 2352994657,
+        "descTextMapHash": 2299629615,
+        "icon": "UI_Talent_S_Yoimiya_03",
+        "prevTalent": 493,
+        "mainCostItemId": 1149,
+        "mainCostItemCount": 1,
+        "openConfig": "Yoimiya_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.2000000476837158,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 495,
+        "nameTextMapHash": 3785597649,
+        "descTextMapHash": 1007404639,
+        "icon": "UI_Talent_U_Yoimiya_02",
+        "prevTalent": 494,
+        "mainCostItemId": 1149,
+        "mainCostItemCount": 1,
+        "openConfig": "Yoimiya_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 496,
+        "nameTextMapHash": 3248653433,
+        "descTextMapHash": 1202044591,
+        "icon": "UI_Talent_S_Yoimiya_04",
+        "prevTalent": 495,
+        "mainCostItemId": 1149,
+        "mainCostItemCount": 1,
+        "openConfig": "Yoimiya_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.6000000238418579,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 501,
+        "nameTextMapHash": 288006665,
+        "descTextMapHash": 3077252167,
+        "icon": "UI_Talent_S_Tohma_01",
+        "mainCostItemId": 1150,
+        "mainCostItemCount": 1,
+        "openConfig": "Tohma_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            3.0,
+            20.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 502,
+        "nameTextMapHash": 4132403369,
+        "descTextMapHash": 1866802871,
+        "icon": "UI_Talent_S_Tohma_02",
+        "prevTalent": 501,
+        "mainCostItemId": 1150,
+        "mainCostItemCount": 1,
+        "openConfig": "Tohma_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 503,
+        "nameTextMapHash": 2578792073,
+        "descTextMapHash": 2167442199,
+        "icon": "UI_Talent_U_Tohma_01",
+        "prevTalent": 502,
+        "mainCostItemId": 1150,
+        "mainCostItemCount": 1,
+        "openConfig": "Tohma_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 504,
+        "nameTextMapHash": 1754888249,
+        "descTextMapHash": 976028519,
+        "icon": "UI_Talent_S_Tohma_03",
+        "prevTalent": 503,
+        "mainCostItemId": 1150,
+        "mainCostItemCount": 1,
+        "openConfig": "Tohma_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 505,
+        "nameTextMapHash": 3609710361,
+        "descTextMapHash": 1553651527,
+        "icon": "UI_Talent_U_Tohma_02",
+        "prevTalent": 504,
+        "mainCostItemId": 1150,
+        "mainCostItemCount": 1,
+        "openConfig": "Tohma_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 506,
+        "nameTextMapHash": 297689921,
+        "descTextMapHash": 2142833663,
+        "icon": "UI_Talent_S_Tohma_04",
+        "prevTalent": 505,
+        "mainCostItemId": 1150,
+        "mainCostItemCount": 1,
+        "openConfig": "Tohma_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 511,
+        "nameTextMapHash": 1401913601,
+        "descTextMapHash": 1142115463,
+        "icon": "UI_Talent_S_Eula_02",
+        "mainCostItemId": 1151,
+        "mainCostItemCount": 1,
+        "openConfig": "Eula_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            6.0,
+            18.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 512,
+        "nameTextMapHash": 4116602505,
+        "descTextMapHash": 2873233407,
+        "icon": "UI_Talent_S_Eula_01",
+        "prevTalent": 511,
+        "mainCostItemId": 1151,
+        "mainCostItemCount": 1,
+        "openConfig": "Eula_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 513,
+        "nameTextMapHash": 4017023737,
+        "descTextMapHash": 3953679079,
+        "icon": "UI_Talent_U_Eula_01",
+        "prevTalent": 512,
+        "mainCostItemId": 1151,
+        "mainCostItemCount": 1,
+        "openConfig": "Eula_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 514,
+        "nameTextMapHash": 260126841,
+        "descTextMapHash": 2211149663,
+        "icon": "UI_Talent_S_Eula_03",
+        "prevTalent": 513,
+        "mainCostItemId": 1151,
+        "mainCostItemCount": 1,
+        "openConfig": "Eula_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 515,
+        "nameTextMapHash": 3295716345,
+        "descTextMapHash": 4202659807,
+        "icon": "UI_Talent_U_Eula_02",
+        "prevTalent": 514,
+        "mainCostItemId": 1151,
+        "mainCostItemCount": 1,
+        "openConfig": "Eula_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 516,
+        "nameTextMapHash": 1963500825,
+        "descTextMapHash": 658737255,
+        "icon": "UI_Talent_S_Eula_04",
+        "prevTalent": 515,
+        "mainCostItemId": 1151,
+        "mainCostItemCount": 1,
+        "openConfig": "Eula_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            5.0,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 521,
+        "nameTextMapHash": 1241899985,
+        "descTextMapHash": 705509495,
+        "icon": "UI_Talent_S_Shougun_01",
+        "mainCostItemId": 1152,
+        "mainCostItemCount": 1,
+        "openConfig": "Shougun_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.800000011920929,
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 522,
+        "nameTextMapHash": 2594998721,
+        "descTextMapHash": 4099832223,
+        "icon": "UI_Talent_S_Shougun_03",
+        "prevTalent": 521,
+        "mainCostItemId": 1152,
+        "mainCostItemCount": 1,
+        "openConfig": "Shougun_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.6000000238418579,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 523,
+        "nameTextMapHash": 250956849,
+        "descTextMapHash": 3261842327,
+        "icon": "UI_Talent_U_Shougun_02",
+        "prevTalent": 522,
+        "mainCostItemId": 1152,
+        "mainCostItemCount": 1,
+        "openConfig": "Shougun_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 524,
+        "nameTextMapHash": 1996396257,
+        "descTextMapHash": 4043363607,
+        "icon": "UI_Talent_S_Shougun_02",
+        "prevTalent": 523,
+        "mainCostItemId": 1152,
+        "mainCostItemCount": 1,
+        "openConfig": "Shougun_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 525,
+        "nameTextMapHash": 361792665,
+        "descTextMapHash": 1503284487,
+        "icon": "UI_Talent_U_Shougun_01",
+        "prevTalent": 524,
+        "mainCostItemId": 1152,
+        "mainCostItemCount": 1,
+        "openConfig": "Shougun_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 526,
+        "nameTextMapHash": 1600914409,
+        "descTextMapHash": 1732565431,
+        "icon": "UI_Talent_S_Shougun_04",
+        "prevTalent": 525,
+        "mainCostItemId": 1152,
+        "mainCostItemCount": 1,
+        "openConfig": "Shougun_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 531,
+        "nameTextMapHash": 1959569841,
+        "descTextMapHash": 443786623,
+        "icon": "UI_Talent_S_Sayu_01",
+        "mainCostItemId": 1153,
+        "mainCostItemCount": 1,
+        "openConfig": "Sayu_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 532,
+        "nameTextMapHash": 2759348737,
+        "descTextMapHash": 2039052767,
+        "icon": "UI_Talent_S_Sayu_02",
+        "prevTalent": 531,
+        "mainCostItemId": 1153,
+        "mainCostItemCount": 1,
+        "openConfig": "Sayu_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.032999999821186066,
+            20.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 533,
+        "nameTextMapHash": 1035025377,
+        "descTextMapHash": 2151111671,
+        "icon": "UI_Talent_U_Sayu_02",
+        "prevTalent": 532,
+        "mainCostItemId": 1153,
+        "mainCostItemCount": 1,
+        "openConfig": "Sayu_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 534,
+        "nameTextMapHash": 3582154129,
+        "descTextMapHash": 2015470223,
+        "icon": "UI_Talent_S_Sayu_03",
+        "prevTalent": 533,
+        "mainCostItemId": 1153,
+        "mainCostItemCount": 1,
+        "openConfig": "Sayu_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.2000000476837158,
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 535,
+        "nameTextMapHash": 4066463977,
+        "descTextMapHash": 3761904935,
+        "icon": "UI_Talent_U_Sayu_01",
+        "prevTalent": 534,
+        "mainCostItemId": 1153,
+        "mainCostItemCount": 1,
+        "openConfig": "Sayu_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 536,
+        "nameTextMapHash": 3913839841,
+        "descTextMapHash": 3551240383,
+        "icon": "UI_Talent_S_Sayu_04",
+        "prevTalent": 535,
+        "mainCostItemId": 1153,
+        "mainCostItemCount": 1,
+        "openConfig": "Sayu_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0020000000949949026,
+            4.0,
+            3.0,
+            6000.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 541,
+        "nameTextMapHash": 693089601,
+        "descTextMapHash": 448795879,
+        "icon": "UI_Talent_S_Kokomi_01",
+        "mainCostItemId": 1154,
+        "mainCostItemCount": 1,
+        "openConfig": "Kokomi_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 542,
+        "nameTextMapHash": 3826006561,
+        "descTextMapHash": 2419325143,
+        "icon": "UI_Talent_S_Kokomi_02",
+        "prevTalent": 541,
+        "mainCostItemId": 1154,
+        "mainCostItemCount": 1,
+        "openConfig": "Kokomi_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.04500000178813934,
+            0.006000000052154064,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 543,
+        "nameTextMapHash": 2416690001,
+        "descTextMapHash": 3060614847,
+        "icon": "UI_Talent_U_Kokomi_02",
+        "prevTalent": 542,
+        "mainCostItemId": 1154,
+        "mainCostItemCount": 1,
+        "openConfig": "Kokomi_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 544,
+        "nameTextMapHash": 1493731113,
+        "descTextMapHash": 387385127,
+        "icon": "UI_Talent_S_Kokomi_03",
+        "prevTalent": 543,
+        "mainCostItemId": 1154,
+        "mainCostItemCount": 1,
+        "openConfig": "Kokomi_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.800000011920929,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 545,
+        "nameTextMapHash": 2584265937,
+        "descTextMapHash": 421479455,
+        "icon": "UI_Talent_U_Kokomi_01",
+        "prevTalent": 544,
+        "mainCostItemId": 1154,
+        "mainCostItemCount": 1,
+        "openConfig": "Kokomi_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 546,
+        "nameTextMapHash": 652576049,
+        "descTextMapHash": 2604721911,
+        "icon": "UI_Talent_S_Kokomi_04",
+        "prevTalent": 545,
+        "mainCostItemId": 1154,
+        "mainCostItemCount": 1,
+        "openConfig": "Kokomi_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.800000011920929,
+            0.4000000059604645,
+            4.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 551,
+        "nameTextMapHash": 674796161,
+        "descTextMapHash": 438942695,
+        "icon": "UI_Talent_S_Gorou_01",
+        "mainCostItemId": 1155,
+        "mainCostItemCount": 1,
+        "openConfig": "Gorou_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            -2.0,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 552,
+        "nameTextMapHash": 879885745,
+        "descTextMapHash": 2750519095,
+        "icon": "UI_Talent_S_Gorou_02",
+        "prevTalent": 551,
+        "mainCostItemId": 1155,
+        "mainCostItemCount": 1,
+        "openConfig": "Gorou_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 553,
+        "nameTextMapHash": 1718191057,
+        "descTextMapHash": 3711276975,
+        "icon": "UI_Talent_U_Gorou_01",
+        "prevTalent": 552,
+        "mainCostItemId": 1155,
+        "mainCostItemCount": 1,
+        "openConfig": "Gorou_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 554,
+        "nameTextMapHash": 3990139889,
+        "descTextMapHash": 2595428727,
+        "icon": "UI_Talent_S_Gorou_03",
+        "prevTalent": 553,
+        "mainCostItemId": 1155,
+        "mainCostItemCount": 1,
+        "openConfig": "Gorou_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 555,
+        "nameTextMapHash": 1205827537,
+        "descTextMapHash": 1584361191,
+        "icon": "UI_Talent_U_Gorou_02",
+        "prevTalent": 554,
+        "mainCostItemId": 1155,
+        "mainCostItemCount": 1,
+        "openConfig": "Gorou_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 556,
+        "nameTextMapHash": 3335516265,
+        "descTextMapHash": 622715863,
+        "icon": "UI_Talent_S_Gorou_04",
+        "prevTalent": 555,
+        "mainCostItemId": 1155,
+        "mainCostItemCount": 1,
+        "openConfig": "Gorou_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.20000000298023224,
+            0.4000000059604645,
+            12.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 561,
+        "nameTextMapHash": 2730852953,
+        "descTextMapHash": 2966673567,
+        "icon": "UI_Talent_S_Sara_05",
+        "mainCostItemId": 1156,
+        "mainCostItemCount": 1,
+        "openConfig": "Sara_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            3.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 562,
+        "nameTextMapHash": 828426713,
+        "descTextMapHash": 3371927015,
+        "icon": "UI_Talent_S_Sara_02",
+        "prevTalent": 561,
+        "mainCostItemId": 1156,
+        "mainCostItemCount": 1,
+        "openConfig": "Sara_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.30000001192092896,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 563,
+        "nameTextMapHash": 847916265,
+        "descTextMapHash": 1002234751,
+        "icon": "UI_Talent_U_Sara_02",
+        "prevTalent": 562,
+        "mainCostItemId": 1156,
+        "mainCostItemCount": 1,
+        "openConfig": "Sara_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 564,
+        "nameTextMapHash": 4283074321,
+        "descTextMapHash": 3556395063,
+        "icon": "UI_Talent_S_Sara_03",
+        "prevTalent": 563,
+        "mainCostItemId": 1156,
+        "mainCostItemCount": 1,
+        "openConfig": "Sara_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 565,
+        "nameTextMapHash": 747301089,
+        "descTextMapHash": 3457909759,
+        "icon": "UI_Talent_U_Sara_01",
+        "prevTalent": 564,
+        "mainCostItemId": 1156,
+        "mainCostItemCount": 1,
+        "openConfig": "Sara_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 566,
+        "nameTextMapHash": 165492609,
+        "descTextMapHash": 3985105143,
+        "icon": "UI_Talent_S_Sara_04",
+        "prevTalent": 565,
+        "mainCostItemId": 1156,
+        "mainCostItemCount": 1,
+        "openConfig": "Sara_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.6000000238418579,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 571,
+        "nameTextMapHash": 1236864529,
+        "descTextMapHash": 2717145007,
+        "icon": "UI_Talent_S_Itto_01",
+        "mainCostItemId": 1157,
+        "mainCostItemCount": 1,
+        "openConfig": "Itto_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            1.0,
+            0.5,
+            3.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 572,
+        "nameTextMapHash": 2007985425,
+        "descTextMapHash": 3672317095,
+        "icon": "UI_Talent_S_Itto_02",
+        "prevTalent": 571,
+        "mainCostItemId": 1157,
+        "mainCostItemCount": 1,
+        "openConfig": "Itto_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.5,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 573,
+        "nameTextMapHash": 4058778385,
+        "descTextMapHash": 2337487487,
+        "icon": "UI_Talent_U_Itto_01",
+        "prevTalent": 572,
+        "mainCostItemId": 1157,
+        "mainCostItemCount": 1,
+        "openConfig": "Itto_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 574,
+        "nameTextMapHash": 351727225,
+        "descTextMapHash": 574002791,
+        "icon": "UI_Talent_S_Itto_03",
+        "prevTalent": 573,
+        "mainCostItemId": 1157,
+        "mainCostItemCount": 1,
+        "openConfig": "Itto_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.20000000298023224,
+            10.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 575,
+        "nameTextMapHash": 2178273601,
+        "descTextMapHash": 3097963231,
+        "icon": "UI_Talent_U_Itto_02",
+        "prevTalent": 574,
+        "mainCostItemId": 1157,
+        "mainCostItemCount": 1,
+        "openConfig": "Itto_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 576,
+        "nameTextMapHash": 2138862273,
+        "descTextMapHash": 3956713543,
+        "icon": "UI_Talent_S_Itto_04",
+        "prevTalent": 575,
+        "mainCostItemId": 1157,
+        "mainCostItemCount": 1,
+        "openConfig": "Itto_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.699999988079071,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 581,
+        "nameTextMapHash": 2281393129,
+        "descTextMapHash": 3672936767,
+        "icon": "UI_Talent_S_Yae_01",
+        "mainCostItemId": 1158,
+        "mainCostItemCount": 1,
+        "openConfig": "Yae_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            8.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 582,
+        "nameTextMapHash": 2254983737,
+        "descTextMapHash": 1386782575,
+        "icon": "UI_Talent_S_Yae_02",
+        "prevTalent": 581,
+        "mainCostItemId": 1158,
+        "mainCostItemCount": 1,
+        "openConfig": "Yae_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.559999942779541,
+            0.6000000238418579,
+            1.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 583,
+        "nameTextMapHash": 516586793,
+        "descTextMapHash": 509551311,
+        "icon": "UI_Talent_U_Yae_01",
+        "prevTalent": 582,
+        "mainCostItemId": 1158,
+        "mainCostItemCount": 1,
+        "openConfig": "Yae_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 584,
+        "nameTextMapHash": 1524489289,
+        "descTextMapHash": 580900487,
+        "icon": "UI_Talent_S_Yae_03",
+        "prevTalent": 583,
+        "mainCostItemId": 1158,
+        "mainCostItemCount": 1,
+        "openConfig": "Yae_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 585,
+        "nameTextMapHash": 3181299049,
+        "descTextMapHash": 2441345199,
+        "icon": "UI_Talent_U_Yae_02",
+        "prevTalent": 584,
+        "mainCostItemId": 1158,
+        "mainCostItemCount": 1,
+        "openConfig": "Yae_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 586,
+        "nameTextMapHash": 913339777,
+        "descTextMapHash": 2127512239,
+        "icon": "UI_Talent_S_Yae_04",
+        "prevTalent": 585,
+        "mainCostItemId": 1158,
+        "mainCostItemCount": 1,
+        "openConfig": "Yae_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.6000000238418579,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 601,
+        "nameTextMapHash": 748294089,
+        "descTextMapHash": 3598001479,
+        "icon": "UI_Talent_S_Yelan_01",
+        "mainCostItemId": 1160,
+        "mainCostItemCount": 1,
+        "openConfig": "Yelan_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 602,
+        "nameTextMapHash": 1030894625,
+        "descTextMapHash": 1733458319,
+        "icon": "UI_Talent_S_Yelan_02",
+        "prevTalent": 601,
+        "mainCostItemId": 1160,
+        "mainCostItemCount": 1,
+        "openConfig": "Yelan_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.14000000059604645,
+            1.7999999523162842,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 603,
+        "nameTextMapHash": 2703450625,
+        "descTextMapHash": 887338575,
+        "icon": "UI_Talent_U_Yelan_01",
+        "prevTalent": 602,
+        "mainCostItemId": 1160,
+        "mainCostItemCount": 1,
+        "openConfig": "Yelan_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 604,
+        "nameTextMapHash": 2029790617,
+        "descTextMapHash": 2426727055,
+        "icon": "UI_Talent_S_Yelan_03",
+        "prevTalent": 603,
+        "mainCostItemId": 1160,
+        "mainCostItemCount": 1,
+        "openConfig": "Yelan_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            25.0,
+            4.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 605,
+        "nameTextMapHash": 2362082321,
+        "descTextMapHash": 2488367639,
+        "icon": "UI_Talent_U_Yelan_02",
+        "prevTalent": 604,
+        "mainCostItemId": 1160,
+        "mainCostItemCount": 1,
+        "openConfig": "Yelan_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 606,
+        "nameTextMapHash": 1272265729,
+        "descTextMapHash": 824672567,
+        "icon": "UI_Talent_S_Yelan_04",
+        "prevTalent": 605,
+        "mainCostItemId": 1160,
+        "mainCostItemCount": 1,
+        "openConfig": "Yelan_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            5.0,
+            20.0,
+            1.559999942779541,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 621,
+        "nameTextMapHash": 1426348289,
+        "descTextMapHash": 4200726279,
+        "icon": "UI_Talent_S_Aloy_Lock",
+        "mainCostItemId": 1162,
+        "mainCostItemCount": 1,
+        "openConfig": "",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 622,
+        "nameTextMapHash": 3468411401,
+        "descTextMapHash": 1371842791,
+        "icon": "UI_Talent_S_Aloy_Lock",
+        "prevTalent": 621,
+        "mainCostItemId": 1162,
+        "mainCostItemCount": 1,
+        "openConfig": "",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 623,
+        "nameTextMapHash": 2621661209,
+        "descTextMapHash": 873529775,
+        "icon": "UI_Talent_S_Aloy_Lock",
+        "prevTalent": 622,
+        "mainCostItemId": 1162,
+        "mainCostItemCount": 1,
+        "openConfig": "",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 624,
+        "nameTextMapHash": 890048705,
+        "descTextMapHash": 2073552343,
+        "icon": "UI_Talent_S_Aloy_Lock",
+        "prevTalent": 623,
+        "mainCostItemId": 1162,
+        "mainCostItemCount": 1,
+        "openConfig": "",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 625,
+        "nameTextMapHash": 2013072401,
+        "descTextMapHash": 554591055,
+        "icon": "UI_Talent_S_Aloy_Lock",
+        "prevTalent": 624,
+        "mainCostItemId": 1162,
+        "mainCostItemCount": 1,
+        "openConfig": "",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 626,
+        "nameTextMapHash": 3578739209,
+        "descTextMapHash": 1335613687,
+        "icon": "UI_Talent_S_Aloy_Lock",
+        "prevTalent": 625,
+        "mainCostItemId": 1162,
+        "mainCostItemCount": 1,
+        "openConfig": "",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 631,
+        "nameTextMapHash": 4149849577,
+        "descTextMapHash": 1344815239,
+        "icon": "UI_Talent_S_Shenhe_02",
+        "mainCostItemId": 1163,
+        "mainCostItemCount": 1,
+        "openConfig": "Shenhe_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 632,
+        "nameTextMapHash": 865989105,
+        "descTextMapHash": 626517111,
+        "icon": "UI_Talent_S_Shenhe_01",
+        "prevTalent": 631,
+        "mainCostItemId": 1163,
+        "mainCostItemCount": 1,
+        "openConfig": "Shenhe_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 633,
+        "nameTextMapHash": 1441248001,
+        "descTextMapHash": 552199,
+        "icon": "UI_Talent_U_Shenhe_01",
+        "prevTalent": 632,
+        "mainCostItemId": 1163,
+        "mainCostItemCount": 1,
+        "openConfig": "Shenhe_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 634,
+        "nameTextMapHash": 2316341393,
+        "descTextMapHash": 3717716927,
+        "icon": "UI_Talent_S_Shenhe_03",
+        "prevTalent": 633,
+        "mainCostItemId": 1163,
+        "mainCostItemCount": 1,
+        "openConfig": "Shenhe_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.05000000074505806,
+            50.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 635,
+        "nameTextMapHash": 2221287353,
+        "descTextMapHash": 3627816983,
+        "icon": "UI_Talent_U_Shenhe_02",
+        "prevTalent": 634,
+        "mainCostItemId": 1163,
+        "mainCostItemCount": 1,
+        "openConfig": "Shenhe_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 636,
+        "nameTextMapHash": 1596851281,
+        "descTextMapHash": 2857247287,
+        "icon": "UI_Talent_S_Shenhe_04",
+        "prevTalent": 635,
+        "mainCostItemId": 1163,
+        "mainCostItemCount": 1,
+        "openConfig": "Shenhe_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 641,
+        "nameTextMapHash": 3266663729,
+        "descTextMapHash": 196548151,
+        "icon": "UI_Talent_S_Yunjin_01",
+        "mainCostItemId": 1164,
+        "mainCostItemCount": 1,
+        "openConfig": "Yunjin_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 642,
+        "nameTextMapHash": 3949157249,
+        "descTextMapHash": 1258924591,
+        "icon": "UI_Talent_S_Yunjin_02",
+        "prevTalent": 641,
+        "mainCostItemId": 1164,
+        "mainCostItemCount": 1,
+        "openConfig": "Yunjin_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            12.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 643,
+        "nameTextMapHash": 3536888569,
+        "descTextMapHash": 26925591,
+        "icon": "UI_Talent_U_Yunjin_01",
+        "prevTalent": 642,
+        "mainCostItemId": 1164,
+        "mainCostItemCount": 1,
+        "openConfig": "Yunjin_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 644,
+        "nameTextMapHash": 2785617601,
+        "descTextMapHash": 2804375063,
+        "icon": "UI_Talent_S_Yunjin_03",
+        "prevTalent": 643,
+        "mainCostItemId": 1164,
+        "mainCostItemCount": 1,
+        "openConfig": "Yunjin_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            12.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 645,
+        "nameTextMapHash": 1985942201,
+        "descTextMapHash": 1265824527,
+        "icon": "UI_Talent_U_Yunjin_02",
+        "prevTalent": 644,
+        "mainCostItemId": 1164,
+        "mainCostItemCount": 1,
+        "openConfig": "Yunjin_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 646,
+        "nameTextMapHash": 2696040833,
+        "descTextMapHash": 3355249799,
+        "icon": "UI_Talent_S_Yunjin_04",
+        "prevTalent": 645,
+        "mainCostItemId": 1164,
+        "mainCostItemCount": 1,
+        "openConfig": "Yunjin_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.11999999731779099,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 651,
+        "nameTextMapHash": 3845919769,
+        "descTextMapHash": 248122007,
+        "icon": "UI_Talent_S_Shinobu_01",
+        "mainCostItemId": 1165,
+        "mainCostItemCount": 1,
+        "openConfig": "Shinobu_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 652,
+        "nameTextMapHash": 1476645953,
+        "descTextMapHash": 1650156031,
+        "icon": "UI_Talent_S_Shinobu_02",
+        "prevTalent": 651,
+        "mainCostItemId": 1165,
+        "mainCostItemCount": 1,
+        "openConfig": "Shinobu_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 653,
+        "nameTextMapHash": 969784713,
+        "descTextMapHash": 1031038967,
+        "icon": "UI_Talent_U_Shinobu_01",
+        "prevTalent": 652,
+        "mainCostItemId": 1165,
+        "mainCostItemCount": 1,
+        "openConfig": "Shinobu_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 654,
+        "nameTextMapHash": 1870557153,
+        "descTextMapHash": 1847218111,
+        "icon": "UI_Talent_S_Shinobu_03",
+        "prevTalent": 653,
+        "mainCostItemId": 1165,
+        "mainCostItemCount": 1,
+        "openConfig": "Shinobu_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.09700000286102295,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 655,
+        "nameTextMapHash": 2031120145,
+        "descTextMapHash": 70909911,
+        "icon": "UI_Talent_U_Shinobu_02",
+        "prevTalent": 654,
+        "mainCostItemId": 1165,
+        "mainCostItemCount": 1,
+        "openConfig": "Shinobu_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 656,
+        "nameTextMapHash": 856483153,
+        "descTextMapHash": 3252448839,
+        "icon": "UI_Talent_S_Shinobu_04",
+        "prevTalent": 655,
+        "mainCostItemId": 1165,
+        "mainCostItemCount": 1,
+        "openConfig": "Shinobu_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.25,
+            15.0,
+            150.0,
+            60.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 661,
+        "nameTextMapHash": 2715418569,
+        "descTextMapHash": 501879071,
+        "icon": "UI_Talent_S_Ayato_01",
+        "mainCostItemId": 1166,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayato_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.5,
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 662,
+        "nameTextMapHash": 4259062785,
+        "descTextMapHash": 3191408815,
+        "icon": "UI_Talent_S_Ayato_02",
+        "prevTalent": 661,
+        "mainCostItemId": 1166,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayato_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 663,
+        "nameTextMapHash": 2402833929,
+        "descTextMapHash": 893583671,
+        "icon": "UI_Talent_U_Ayato_02",
+        "prevTalent": 662,
+        "mainCostItemId": 1166,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayato_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 664,
+        "nameTextMapHash": 517644137,
+        "descTextMapHash": 1916995439,
+        "icon": "UI_Talent_S_Ayato_03",
+        "prevTalent": 663,
+        "mainCostItemId": 1166,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayato_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 665,
+        "nameTextMapHash": 993707681,
+        "descTextMapHash": 2541322175,
+        "icon": "UI_Talent_U_Ayato_01",
+        "prevTalent": 664,
+        "mainCostItemId": 1166,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayato_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 666,
+        "nameTextMapHash": 1168376425,
+        "descTextMapHash": 2267009151,
+        "icon": "UI_Talent_S_Ayato_04",
+        "prevTalent": 665,
+        "mainCostItemId": 1166,
+        "mainCostItemCount": 1,
+        "openConfig": "Ayato_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    }
+]

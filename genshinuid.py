@@ -10,8 +10,8 @@ from nonebot import MessageSegment, get_bot
 
 from .mihoyo_libs.get_image import *
 from .mihoyo_libs.get_mihoyo_bbs_data import *
-from enkaToData.enkaToData import *
-from enkaToData.drawCharCard import *
+from .enkaToData.enkaToData import *
+from .enkaToData.drawCharCard import *
 
 R_PATH = Path(__file__).parents[0]
 
@@ -340,9 +340,9 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
                 uid = uid[0]
         im = await enkaToData(uid)
         await bot.send(str(im))
-        logger.info(f'UID{uid}获取角色数据成功！')
+        logger.info(ev, f'UID{uid}获取角色数据成功！')
     except:
-        await bot.send('获取角色数据失败！')
+        await bot.send(ev, '获取角色数据失败！')
         logger.exception('获取角色数据失败！')
 
 @sv.on_fullmatch('开始获取米游币')
@@ -1091,7 +1091,7 @@ async def get_info(bot, ev):
                             if '\u4e00' <= file_name[0] <= '\u9fff':
                                 char_list.append(file_name.split('.')[0])
                         char_list_str = ','.join(char_list)
-                        await bot.send(f'UID{uid}当前缓存角色:{char_list_str}', at_sender=True)
+                        await bot.send(ev, f'UID{uid}当前缓存角色:{char_list_str}', at_sender=True)
                     else:
                         char_name = m
                         with open(os.path.join(INDEX_PATH, 'char_alias.json'),
@@ -1111,7 +1111,7 @@ async def get_info(bot, ev):
                                 encoding='utf8') as fp:
                             raw_data = json.load(fp)
                         im = await draw_char_card(raw_data, image)
-                        await bot.send(MessageSegment.image(im), at_sender=True)
+                        await bot.send(ev, MessageSegment.image(im), at_sender=True)
                 except Exception:
                     logger.exception('获取信息失败,你可以使用强制刷新命令进行刷新。')
         else:

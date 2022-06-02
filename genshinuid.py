@@ -329,7 +329,7 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
         else:
             if m == '全部数据':
                 if qid in bot.config.SUPERUSERS:
-                    await bot.send('开始刷新全部数据，这可能需要相当长的一段时间！！')
+                    await bot.send(ev, '开始刷新全部数据，这可能需要相当长的一段时间！！')
                     im = await refresh_charData()
                     await bot.send(ev, str(im))
                     return

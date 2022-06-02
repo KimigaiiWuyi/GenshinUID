@@ -331,7 +331,7 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
                 if qid in bot.config.SUPERUSERS:
                     await bot.send('开始刷新全部数据，这可能需要相当长的一段时间！！')
                     im = await refresh_charData()
-                    await bot.send(str(im))
+                    await bot.send(ev, str(im))
                     return
                 else:
                     return
@@ -340,7 +340,7 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
                 uid = uid[0]
         im = await enkaToData(uid)
         await bot.send(ev, str(im))
-        logger.info(ev, f'UID{uid}获取角色数据成功！')
+        logger.info(f'UID{uid}获取角色数据成功！')
     except:
         await bot.send(ev, '获取角色数据失败！')
         logger.exception('获取角色数据失败！')

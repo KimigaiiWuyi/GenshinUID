@@ -124,8 +124,8 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
         # 处理命座
         talent_temp = []
         if 'talentIdList' in char:
-            talentTemp = {}
             for index,talent in enumerate(char['talentIdList']):
+                talentTemp = {}
                 talentTemp['talentId'] = char['talentIdList'][index]
                 talentTemp['talentName'] = talentId2Name['Name'][str(talent)]
                 talentTemp['talentIcon'] = talentId2Name['Icon'][str(talent)]

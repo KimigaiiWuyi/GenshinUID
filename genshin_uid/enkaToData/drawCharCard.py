@@ -58,21 +58,23 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     if charUrl:
         char_img = Image.open(BytesIO(get(charUrl).content)).convert('RGBA')
     else:
-        char_img = Image.open(GACHA_PATH / 'UI_Gacha_AvatarIcon_{}.png'.format(raw_data['avatarEnName']))  # 角色图像
+        char_img = Image.open(GACHA_PATH / 'UI_Gacha_AvatarImg_{}.png'.format(raw_data['avatarEnName']))  # 角色图像
 
     # 确定图片的长宽
     w, h = char_img.size
-    if (w, h) != (320, 1024):
-        based_scale = '%.3f' % (based_w / based_h)
+    if (w, h) != (based_w, based_h):
+        offset = 200
+        based_new_w, based_new_h = based_w + offset, based_h + offset
+        based_scale = '%.3f' % (based_new_w / based_new_h)
         scale_f = '%.3f' % (w / h)
-        new_w = math.ceil(based_h * float(scale_f))
-        new_h = math.ceil(based_w / float(scale_f))
+        new_w = math.ceil(based_new_h * float(scale_f))
+        new_h = math.ceil(based_new_w / float(scale_f))
         if scale_f > based_scale:
-            bg_img2 = char_img.resize((new_w, based_h), Image.Resampling.LANCZOS)
-            char_img = bg_img2.crop((new_w / 2 - 160, 0, new_w / 2 + 160, based_h))
+            bg_img2 = char_img.resize((new_w, based_new_h), Image.Resampling.LANCZOS)
+            char_img = bg_img2.crop((new_w/2 - based_new_w /2 + offset, 0, new_w/2 + based_new_w /2 , based_new_h - offset))
         else:
-            bg_img2 = char_img.resize((based_w, new_h), Image.Resampling.LANCZOS)
-            char_img = bg_img2.crop((0, new_h / 2 - 512, based_w, new_h / 2 + 512))
+            bg_img2 = char_img.resize((based_new_w , new_h), Image.Resampling.LANCZOS)
+            char_img = bg_img2.crop((0 + offset , new_h/2 - based_new_h/2, based_new_w , new_h/2 + based_new_h/2 - offset))
     else:
         pass
 

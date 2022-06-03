@@ -54,11 +54,12 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
     char_imfo_mask = Image.open(TEXT_PATH / 'char_info_mask.png')
 
-    based_w, based_h = 320, 1024
+    #based_w, based_h = 320, 1024
+    based_w, based_h = 600, 1200
     if charUrl:
         char_img = Image.open(BytesIO(get(charUrl).content)).convert('RGBA')
     else:
-        char_img = Image.open(GACHA_PATH / 'UI_Gacha_AvatarImg_{}.png'.format(raw_data['avatarEnName']))  # 角色图像
+        char_img = Image.open(GACHA_PATH / 'UI_Gacha_AvatarImg_{}.png'.format(raw_data['avatarEnName'])) #角色图像
 
     # 确定图片的长宽
     w, h = char_img.size
@@ -77,10 +78,10 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             char_img = bg_img2.crop((0 + offset , new_h/2 - based_new_h/2, based_new_w , new_h/2 + based_new_h/2 - offset))
     else:
         pass
-
-    img_temp = Image.new('RGBA', (320, 1024), (0, 0, 0, 0))
-    img_temp.paste(char_img, (0, 0), char_imfo_mask)
-    img.paste(img_temp, (41, 29), img_temp)
+    
+    img_temp = Image.new('RGBA', (based_w, based_h), (0,0,0,0))
+    img_temp.paste(char_img,(0,0),char_imfo_mask)
+    img.paste(img_temp, (0, 0), img_temp)
     img.paste(char_info_1, (0, 0), char_info_1)
 
     # holo_img = Image.open(TEXT_PATH / 'icon_holo.png')

@@ -1087,7 +1087,7 @@ async def get_info(bot, ev):
                         char_file_list = uid_fold.glob('*')
                         char_list = []
                         for i in char_file_list:
-                            file_name = str(i).split('/')[-1]
+                            file_name = i.name
                             if '\u4e00' <= file_name[0] <= '\u9fff':
                                 char_list.append(file_name.split('.')[0])
                         char_list_str = ','.join(char_list)

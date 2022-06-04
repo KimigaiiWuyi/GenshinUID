@@ -10,22 +10,26 @@ ICON_PATH = R_PATH / 'icon'
 DATA_PATH = R_PATH / 'data'
 PLAYER_PATH = R_PATH / 'player'
 
-verison = '2.7.0'
+version = '2.7.0'
+version_old = '2.6.0'
 
-avatarName2Element_fileName = f'avatarName2Element_mapping_{verison}.json'
-weaponHash2Name_fileName = f'weaponHash2Name_mapping_{verison}.json'
-weaponHash2Type_fileName = f'weaponHash2Type_mapping_{verison}.json'
-skillId2Name_fileName = f'skillId2Name_mapping_{verison}.json'
-talentId2Name_fileName = f'talentId2Name_mapping_{verison}.json'
-avatarId2Name_fileName = f'avatarId2Name_mapping_{verison}.json'
+avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
+weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
+weaponHash2Type_fileName = f'weaponHash2Type_mapping_{version}.json'
+skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
+talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
+avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
+
+artifact2attr_fileName = f'artifact2attr_mapping_{version_old}.json'
+icon2Name_fileName = f'icon2Name_mapping_{version_old}.json'
 
 with open(MAP_PATH / avatarId2Name_fileName, "r", encoding='UTF-8') as f:
     avatarId2Name = json.load(f)
 
-with open(MAP_PATH / 'icon2Name_mapping_2.6.0.json', "r", encoding='UTF-8') as f:
+with open(MAP_PATH / icon2Name_fileName, "r", encoding='UTF-8') as f:
     icon2Name = json.load(f)
 
-with open(MAP_PATH / 'artifact2attr_mapping_2.6.0.json', "r", encoding='UTF-8') as f:
+with open(MAP_PATH / artifact2attr_fileName, "r", encoding='UTF-8') as f:
     artifact2attr = json.load(f)
 
 with open(MAP_PATH / 'propId2Name_mapping.json', "r", encoding='UTF-8') as f:
@@ -46,7 +50,7 @@ with open(MAP_PATH / skillId2Name_fileName, "r", encoding='UTF-8') as f:
 with open(MAP_PATH / talentId2Name_fileName, "r", encoding='UTF-8') as f:
     talentId2Name = json.load(f)
 
-with open(MAP_PATH / avatarName2Element_fileName,'r', encoding='UTF-8') as f:
+with open(MAP_PATH / avatarName2Element_fileName, 'r', encoding='UTF-8') as f:
     avatarName2Element = json.load(f)
 
 async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
@@ -214,7 +218,7 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             artifact_temp['nameTextMapHash'] = artifact['flat']['nameTextMapHash']
             artifact_temp['icon'] = artifact['flat']['icon']
             artifact_temp['aritifactName'] = icon2Name[artifact['flat']['icon']]
-            artifact_temp['aritifactSetsName'] = artifact2attr['mapping'][artifact_temp['aritifactName']]
+            artifact_temp['aritifactSetsName'] = artifact2attr[artifact_temp['aritifactName']]
             artifact_temp['aritifactSetPiece'] = artifactId2Piece[artifact_temp['icon'].split('_')[-1]][0]
             artifact_temp['aritifactPieceName'] = artifactId2Piece[artifact_temp['icon'].split('_')[-1]][1]
 

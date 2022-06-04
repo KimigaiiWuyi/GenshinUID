@@ -198,6 +198,11 @@ async def char_adv(name):
                         im.append(f'[{arti[0]}]两件套 + [{arti[1]}]两件套')
                     else:
                         im.append(f'[{arti[0]}]四件套')
+            if remark := info['remark']:
+                im.append('-=-=-=-=-=-=-=-=-=-')
+                im.append('备注：')
+                mark = "\n".join(remark)
+                im.append(f'{mark}')
             return '\n'.join(im)
 
     return '没有找到角色信息'

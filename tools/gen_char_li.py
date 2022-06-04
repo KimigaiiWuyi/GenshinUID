@@ -38,7 +38,8 @@ for char_i in range(2, 336, 5):  # 角色行
             char_sample['artifact'].append(artifact)
 
         if remark := ws.cell(row, 7).value:
-            char_sample['remark'].append(remark)
+            if row > 7:
+                char_sample['remark'].append(remark)
 
     char_json[char_name] = char_sample
 

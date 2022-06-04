@@ -5,6 +5,8 @@ from base64 import b64encode
 from io import BytesIO
 from typing import List
 
+import aiofiles
+
 from openpyxl import load_workbook
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -161,88 +163,58 @@ char_adv_im = """【{}】
 
 
 async def weapon_adv(name):
-    char_adv_path = os.path.join(FILE_PATH, 'Genshin All Char.xlsx')
-    wb = load_workbook(char_adv_path)
-    ws = wb.active
+    async with aiofiles.open(os.path.join(FILE_PATH, 'mihoyo_libs/char_adv_list.json'), encoding='utf-8') as f:
+        adv_li = json.loads(await f.read())
+    weapons = {}
+    for char, info in adv_li.items():
+        char_weapons = []
+        for i in info['weapon'].values():  # 3 stars, 4 stars, 5 stars
+            char_weapons.extend(i)
 
-    weapons={}
-    for c in range(2, 5):
-        for r in range(2, 300):
-            if ws.cell(r, c).value:
-                # if all(i in ws.cell(r,c).value for i in name):
-                if name in ws.cell(r, c).value:
-                    weapon_name = ws.cell(r, c).value
-                    weapon=weapons.get(weapon_name,[])
-                    weapon.append(ws.cell(2 + ((r - 2) // 5) * 5, 1).value)
-                    weapons[weapon_name]=weapon
+        for weapon_name in char_weapons:
+            if name in weapon_name:  # fuzzy search
+                char_weapon = weapons.get(weapon_name, [])
+                char_weapon.append(char)
+                weapons[weapon_name] = char_weapon
 
     if weapons:
         im = []
         for k, v in weapons.items():
-            im.append(f'{"、".join(v)}可能会用到【{k}】')
+            im.append(f'{"、".join(v)} 可能会用到【{k}】')
         im = '\n'.join(im)
     else:
-        im = '没有角色能使用【{}】'.format(weapon_name)
+        im = '没有角色能使用【{}】'.format(name)
+    # print(im)
     return im
 
 
 async def char_adv(name):
-    char_name = None
-    char_adv_path = os.path.join(FILE_PATH, 'Genshin All Char.xlsx')
-    # char_adv_path = FILE_PATH
-    wb = load_workbook(char_adv_path)
-    ws = wb.active
-    char_list = ws['A']
-    index = None
-    for i in char_list:
-        if i.value:
-            if all(g in i.value for g in name):
-                # if name in i.value:
-                index = i.row
-                char_name = i.value
-    if index:
-        weapon_5star = ''
-        for i in range(index, index + 5):
-            if ws.cell(i, 2).value:
-                weapon_5star += ws.cell(i, 2).value + '>'
-        if weapon_5star != '':
-            weapon_5star = weapon_5star[:-1]
-        else:
-            weapon_5star = '无推荐'
+    async with aiofiles.open(os.path.join(FILE_PATH, 'mihoyo_libs/char_adv_list.json'), encoding='utf-8') as f:
+        adv_li = json.loads(await f.read())
+    for char, info in adv_li.items():
+        if name in char:
+            im = [f'「{char}」', '-=-=-=-=-=-=-=-=-=-']
+            if weapon_5 := info['weapon']['5']:
+                im.append(f'推荐5★武器：{"、".join(weapon_5)}')
+            if weapon_4 := info['weapon']['4']:
+                im.append(f'推荐4★武器：{"、".join(weapon_4)}')
+            if weapon_3 := info['weapon']['3']:
+                im.append(f'推荐3★武器：{"、".join(weapon_3)}')
+            if artifacts := info['artifact']:
+                im.append('推荐圣遗物搭配：')
+                for arti in artifacts:
+                    if len(arti) > 1:
+                        im.append(f'[{arti[0]}]两件套 + [{arti[1]}]两件套')
+                    else:
+                        im.append(f'[{arti[0]}]四件套')
+            if remark := info['remark']:
+                im.append('-=-=-=-=-=-=-=-=-=-')
+                im.append('备注：')
+                mark = "\n".join(remark)
+                im.append(f'{mark}')
+            return '\n'.join(im)
 
-        weapon_4star = ''
-        for i in range(index, index + 5):
-            if ws.cell(i, 3).value:
-                weapon_4star += ws.cell(i, 3).value + '>'
-        if weapon_4star != '':
-            weapon_4star = weapon_4star[:-1]
-        else:
-            weapon_4star = '无推荐'
-
-        weapon_3star = ''
-        for i in range(index, index + 5):
-            if ws.cell(i, 4).value:
-                weapon_3star += ws.cell(i, 4).value + '>'
-        if weapon_3star != '':
-            weapon_3star = weapon_3star[:-1]
-        else:
-            weapon_3star = '无推荐'
-
-        artifacts = ''
-        for i in range(index, index + 5):
-            if ws.cell(i, 5).value:
-                if ws.cell(i, 6).value:
-                    artifacts += ws.cell(i, 5).value + '*2' + ws.cell(i, 6).value + '*2' + '\n'
-                else:
-                    artifacts += ws.cell(i, 5).value + '*4' + '\n'
-
-        if artifacts != '':
-            artifacts = artifacts[:-1]
-        else:
-            artifacts = '无推荐'
-
-        im = char_adv_im.format(char_name, weapon_5star, weapon_4star, weapon_3star, artifacts)
-        return im
+    return '没有找到角色信息'
 
 
 async def deal_ck(mes, qid):

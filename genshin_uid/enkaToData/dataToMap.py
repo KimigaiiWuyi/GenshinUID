@@ -8,14 +8,18 @@ R_PATH = Path(__file__).parents[0]
 MAP_PATH = R_PATH / 'map'
 DATA_PATH = R_PATH / 'data'
 
-verison = '2.7.0'
+version = '2.7.0'
+version_old = '2.6.0'
 
-avatarName2Element_fileName = f'avatarName2Element_mapping_{verison}.json'
-weaponHash2Name_fileName = f'weaponHash2Name_mapping_{verison}.json'
-weaponHash2Type_fileName = f'weaponHash2Type_mapping_{verison}.json'
-skillId2Name_fileName = f'skillId2Name_mapping_{verison}.json'
-talentId2Name_fileName = f'talentId2Name_mapping_{verison}.json'
-avatarId2Name_fileName = f'avatarId2Name_mapping_{verison}.json'
+avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
+weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
+weaponHash2Type_fileName = f'weaponHash2Type_mapping_{version}.json'
+skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
+talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
+avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
+
+artifact2attr_fileName = f'artifact2attr_mapping_{version_old}.json'
+icon2Name_fileName = f'icon2Name_mapping_{version_old}.json'
 
 with open(DATA_PATH / 'textMap.json', "r", encoding='UTF-8') as f:
     raw_data = json.load(f)
@@ -62,7 +66,7 @@ async def weaponHash2NameJson() -> None:
         json.dump(temp, file, ensure_ascii=False)
 
 
-async def weaponHash2NameJson() -> None:
+async def weaponHash2TypeJson() -> None:
     with open(DATA_PATH / 'WeaponExcelConfigData.json', "r", encoding='UTF-8') as f:
         weapon_data = json.load(f)
 
@@ -111,6 +115,33 @@ async def talentId2NameJson() -> None:
     with open(MAP_PATH / talentId2Name_fileName, 'w', encoding='UTF-8') as file:
         json.dump(temp, file, ensure_ascii=False)
 
+async def artifact2attrJson() -> None:
+    with open(DATA_PATH / 'ReliquaryExcelConfigData.json', "r", encoding='UTF-8') as f:
+        reliquary_data = json.load(f)
+    
+    with open(DATA_PATH / 'DisplayItemExcelConfigData.json', "r", encoding='UTF-8') as f:
+        Display_data = json.load(f)
+
+    temp = {}
+    for i in reliquary_data:
+        temp[str(i['icon'])] = raw_data[str(i['nameTextMapHash'])]
+
+    with open(MAP_PATH / icon2Name_fileName, 'w', encoding='UTF-8') as file:
+        json.dump(temp, file, ensure_ascii=False)
+    
+    temp2 = {}
+    for i in Display_data:
+        if i['icon'].startswith('UI_RelicIcon'):
+            temp2[raw_data[str(i['nameTextMapHash'])]] = '_'.join(i['icon'].split('_')[:-1])
+
+    temp3 = {}
+    for i in temp:
+        for k in temp2:
+            if i.startswith(temp2[k]):
+                temp3[temp[i]] = k
+
+    with open(MAP_PATH / artifact2attr_fileName, 'w', encoding='UTF-8') as file:
+        json.dump(temp3, file, ensure_ascii=False)
 
 async def main():
     await avatarId2NameJson()
@@ -119,6 +150,6 @@ async def main():
     await skillId2NameJson()
     await talentId2NameJson()
     await weaponHash2NameJson()
-
+    await artifact2attrJson()
 
 asyncio.run(main())

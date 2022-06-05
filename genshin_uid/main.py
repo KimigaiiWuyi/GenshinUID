@@ -1273,6 +1273,9 @@ async def get_info(
                             raw_data = json.load(fp)
                         im = await draw_char_card(raw_data, image)
                         await matcher.finish(MessageSegment.image(im), at_sender=True)
+                except FileNotFoundError:
+                    await matcher.finish(f'你还没有{m}的缓存噢！\n请先使用【强制刷新】命令来缓存数据！\n或者使用【查询展柜角色】命令查看已缓存角色！', at_sender=True)
+                    logger.exception('获取信息失败,你可以使用强制刷新命令进行刷新。')
                 except ActionFailed as e:
                     await matcher.finish('机器人发送消息失败：{}'.format(
                         e.info['wording']))

@@ -1029,7 +1029,7 @@ async def send_uid_info(
                 await matcher.finish(
                     '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                 logger.exception('上期深渊数据获取失败（数据状态问题）')
-        else:
+        elif m == '':
             try:
                 im = await draw_pic(uid, event.sender.nickname, image, 2)
                 if im.startswith('base64://'):
@@ -1037,6 +1037,53 @@ async def send_uid_info(
                                          at_sender=True)
                 else:
                     await matcher.finish(im, at_sender=True)
+            except ActionFailed as e:
+                await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
+                logger.exception('发送uid信息失败')
+            except (TypeError, IndexError):
+                await matcher.finish('获取失败，可能是Cookies失效或者未打开米游社角色详情开关。')
+                logger.exception('数据获取失败（Cookie失效/不公开信息）')
+            except Exception as e:
+                if isinstance(e, FinishedException):
+                    raise
+                await matcher.finish(
+                    '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
+                logger.exception('数据获取失败（数据状态问题）')
+        else:
+            try:
+                if m == '展柜角色':
+                    uid_fold = R_PATH / 'enkaToData' / 'player' / str(uid)
+                    char_file_list = uid_fold.glob('*')
+                    char_list = []
+                    for i in char_file_list:
+                        file_name = str(i).split('/')[-1]
+                        if '\u4e00' <= file_name[0] <= '\u9fff':
+                            char_list.append(file_name.split('.')[0])
+                    char_list_str = ','.join(char_list)
+                    await matcher.finish(f'UID{uid}当前缓存角色:{char_list_str}', at_sender=True)
+                else:
+                    char_name = m
+                    with open(os.path.join(INDEX_PATH, 'char_alias.json'),
+                            'r',
+                            encoding='utf8') as fp:
+                        char_data = json.load(fp)
+                    for i in char_data:
+                        if char_name in i:
+                            char_name = i
+                        else:
+                            for k in char_data[i]:
+                                if char_name in k:
+                                    char_name = i
+
+                    with open(R_PATH / 'enkaToData' / 'player' / str(uid) / f'{char_name}.json',
+                            'r',
+                            encoding='utf8') as fp:
+                        raw_data = json.load(fp)
+                    im = await draw_char_card(raw_data, image)
+                    await matcher.finish(MessageSegment.image(im), at_sender=True)
+            except FileNotFoundError:
+                await matcher.finish(f'你还没有{m}的缓存噢！\n请先使用【强制刷新】命令来缓存数据！\n或者使用【查询展柜角色】命令查看已缓存角色！', at_sender=True)
+                logger.exception('获取信息失败,你可以使用强制刷新命令进行刷新。')
             except ActionFailed as e:
                 await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
                 logger.exception('发送uid信息失败')

@@ -149,7 +149,7 @@ async def main():
     await weaponHash2NameJson()
     await skillId2NameJson()
     await talentId2NameJson()
-    await weaponHash2NameJson()
+    await weaponHash2TypeJson()
     await artifact2attrJson()
 
 asyncio.run(main())

@@ -1112,6 +1112,9 @@ async def get_info(bot, ev):
                             raw_data = json.load(fp)
                         im = await draw_char_card(raw_data, image)
                         await bot.send(ev, MessageSegment.image(im), at_sender=True)
+                except FileNotFoundError:
+                    await bot.send(ev, f'你还没有{m}的缓存噢！\n请先使用【强制刷新】命令来缓存数据！\n或者使用【查询展柜角色】命令查看已缓存角色！', at_sender=True)
+                    logger.exception('获取信息失败,你可以使用强制刷新命令进行刷新。')
                 except Exception:
                     logger.exception('获取信息失败,你可以使用强制刷新命令进行刷新。')
         else:

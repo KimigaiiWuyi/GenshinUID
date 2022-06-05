@@ -1811,7 +1811,7 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
 
     # 记录数据
     raw_data = raw_data['data']
-    max_data = {'成就': 646, '华丽的宝箱': 131, '珍贵的宝箱': 344, '精致的宝箱': 1218, '普通的宝箱': 1653}
+    max_data = {'成就':646,'华丽的宝箱':131,'珍贵的宝箱':347,'精致的宝箱':1221,'普通的宝箱':1658}
 
     achieve = raw_data['stats']['achievement_number']
     chest4 = raw_data['stats']['common_chest_number']
@@ -1820,16 +1820,16 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
     chest1 = raw_data['stats']['luxurious_chest_number']
 
     async def dataToDataStr(max, my) -> str:
-        return [str(round(100 * (my / max), 2)) + '% | ' + str(my) + '/' + str(max), round((my / max), 2) * 490]
+        return [str(100 * float('{:.2f}'.format(my / max))) + '% | ' + str(my) + '/' + str(max), float('{:.2f}'.format(my / max)) * 490 ]
 
     achieveStr = await dataToDataStr(max_data['成就'], achieve)
-    chest1Str = await dataToDataStr(max_data['华丽的宝箱'], chest1)
+    chest1Str =await dataToDataStr(max_data['华丽的宝箱'], chest1)
     chest2Str = await dataToDataStr(max_data['珍贵的宝箱'], chest2)
     chest3Str = await dataToDataStr(max_data['精致的宝箱'], chest3)
     chest4Str = await dataToDataStr(max_data['普通的宝箱'], chest4)
 
     # 计算
-    val = str(round((achieveStr[1] + chest1Str[1] + chest2Str[1] + chest3Str[1] + chest4Str[1]) / 24.5, 2)) + '%'
+    val = str(float('{:.2f}'.format((achieveStr[1] + chest1Str[1] + chest2Str[1] + chest3Str[1] + chest4Str[1]) / 24.5))) + '%'
     left = (max_data['华丽的宝箱'] - chest1) * 10 + \
            (max_data['珍贵的宝箱'] - chest2) * 5 + \
            (max_data['精致的宝箱'] - chest3) * 2 + \

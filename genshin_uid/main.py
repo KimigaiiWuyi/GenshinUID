@@ -434,7 +434,10 @@ async def send_guide_pic(matcher: Matcher, args: Tuple[Any, ...] = RegexGroup())
                     name = i
     # name = str(event.get_message()).strip().replace(' ', '')[:-2]
     url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
-    await matcher.finish(MessageSegment.image(url))
+    if httpx.head(url).status_code == 200:
+        await matcher.finish(MessageSegment.image(url))
+    else:
+        return
 
 
 @get_char_adv.handle()

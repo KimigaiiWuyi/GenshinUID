@@ -531,7 +531,7 @@ async def get_event_pic():
 async def weapon_wiki(name, level=None):
     data = await get_weapon_info(name)
     if 'errcode' in data:
-        im = '武器不存在。'
+        im = '该武器不存在。'
     elif level:
         data2 = await get_weapon_info(name, level)
         if data['substat'] != '':

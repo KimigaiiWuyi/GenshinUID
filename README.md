@@ -80,6 +80,7 @@ if (ask == true) {
   - [Nonebot2-beta1分支的修复与优化](https://github.com/KimigaiiWuyi/GenshinUID/pull/118)
 - [@猫冬](https://bbs.mihoyo.com/ys/accountCenter/postList?id=74019947) - 原神攻略的**授权**使用
 - [@blue菌hehe](https://bbs.mihoyo.com/ys/accountCenter/postList?id=160367110) - 参考面板的**授权**使用
+- [@Enka.Network](https://enka.shinshin.moe/) - 展柜面板的数据来源
 - [@AMEKENN](https://github.com/AMEKENN) - 米游社签到部分的代码指导
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@RemKeeper](https://github.com/RemKeeper) - 简易Cookies获取文档

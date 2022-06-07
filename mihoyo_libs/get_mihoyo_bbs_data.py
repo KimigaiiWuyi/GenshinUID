@@ -163,7 +163,7 @@ char_adv_im = """【{}】
 
 
 async def weapon_adv(name):
-    async with aiofiles.open(os.path.join(FILE_PATH, 'mihoyo_libs/char_adv_list.json'), encoding='utf-8') as f:
+    async with aiofiles.open(os.path.join(FILE_PATH, 'char_adv_list.json'), encoding='utf-8') as f:
         adv_li = json.loads(await f.read())
     weapons = {}
     for char, info in adv_li.items():
@@ -189,7 +189,7 @@ async def weapon_adv(name):
 
 
 async def char_adv(name):
-    async with aiofiles.open(os.path.join(FILE_PATH, 'mihoyo_libs/char_adv_list.json'), encoding='utf-8') as f:
+    async with aiofiles.open(os.path.join(FILE_PATH, 'char_adv_list.json'), encoding='utf-8') as f:
         adv_li = json.loads(await f.read())
     for char, info in adv_li.items():
         if name in char:

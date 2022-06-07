@@ -409,7 +409,7 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
         '风':
             'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/689e93122216bfd8d231b8366e42ef46_1275479383799739625.jpg',
         '水':
-            'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/94de0e61672fa006e7d4231caab560ca_6048387524082657410.jpg',
+            'https://upload-bbs.mihoyo.com/upload/2022/05/31/160367110/de5d77307f6997f5e94e2834f9ca86f0_8212017873163996402.png',
         '岩':
             'https://upload-bbs.mihoyo.com/upload/2022/04/04/160367110/d9a7c73f2c2f08ba6f0e960d4e815012_5142810778120366748.jpg'
     }

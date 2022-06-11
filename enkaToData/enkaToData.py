@@ -118,7 +118,7 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             skill_temp['skillIcon'] = skillId2Name['Icon'][skill_temp['skillId']]
             char_data['avatarSkill'].append(skill_temp)
 
-        if char_data['avatarName'] == '神里绫华':
+        if char_data['avatarName'] in ['神里绫华', '安柏']:
             char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], char_data['avatarSkill'][0]
             char_data['avatarSkill'][2], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], char_data['avatarSkill'][2]
             char_data['avatarEnName'] = char_data['avatarSkill'][1]['skillIcon'].split('_')[-2]
@@ -212,6 +212,7 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
         # 处理圣遗物
         artifacts_info = []
         artifacts_data = char['equipList'][:-1]
+        artifact_set_list = []
         for artifact in artifacts_data:
             artifact_temp = {}
             artifact_temp['itemId'] = artifact['itemId']
@@ -219,6 +220,7 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             artifact_temp['icon'] = artifact['flat']['icon']
             artifact_temp['aritifactName'] = icon2Name[artifact['flat']['icon']]
             artifact_temp['aritifactSetsName'] = artifact2attr[artifact_temp['aritifactName']]
+            artifact_set_list.append(artifact_temp['aritifactSetsName'])
             artifact_temp['aritifactSetPiece'] = artifactId2Piece[artifact_temp['icon'].split('_')[-1]][0]
             artifact_temp['aritifactPieceName'] = artifactId2Piece[artifact_temp['icon'].split('_')[-1]][1]
 
@@ -232,7 +234,21 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             for sub in artifact_temp['reliquarySubstats']:
                 sub['statName'] = propId2Name[sub['appendPropId']]
             artifacts_info.append(artifact_temp)
+
+        equipSetList = set(artifact_set_list)
+        char_data['equipSets'] = {'type':'','set':''}
         char_data['equipList'] = artifacts_info
+        for equip in equipSetList:
+            if artifact_set_list.count(equip) >= 4:
+                char_data['equipSets']['type'] = '4'
+                char_data['equipSets']['set'] = equip
+                break
+            elif artifact_set_list.count(equip) == 1:
+                pass
+            elif artifact_set_list.count(equip) >= 2:
+                char_data['equipSets']['type'] += '2'
+                char_data['equipSets']['set'] += equip
+                
         with open(path / '{}.json'.format(avatarName),'w', encoding='UTF-8') as file:
             json.dump(char_data, file, ensure_ascii=False)
     char_name_list_str = ','.join(char_name_list)

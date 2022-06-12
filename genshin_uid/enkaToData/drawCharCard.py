@@ -1,6 +1,8 @@
 import math
+import json
 from io import BytesIO
 from pathlib import Path
+import string
 
 from PIL import Image, ImageDraw, ImageFont
 from httpx import get
@@ -12,6 +14,7 @@ ICON_PATH = R_PATH / 'icon'
 GACHA_PATH = R_PATH / 'gachaImg'
 PLAYER_PATH = R_PATH / 'player'
 RELIC_PATH = R_PATH / 'relicIcon'
+MAP_PATH = R_PATH / 'map'
 
 COLOR_MAP = {'Anemo'  : (3, 90, 77), 'Cryo': (5, 85, 151), 'Dendro': (4, 87, 3),
              'Electro': (47, 1, 85), 'Geo': (85, 34, 1), 'Hydro': (4, 6, 114), 'Pyro': (88, 4, 4)}
@@ -150,6 +153,7 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
 
     # 圣遗物部分
     artifactsAllScore = 0
+    equipMain = ''
     for aritifact in raw_data['equipList']:
         artifacts_img = Image.open(TEXT_PATH / 'char_info_artifacts.png')
         artifacts_piece_img = Image.open(RELIC_PATH / '{}.png'.format(aritifact['icon']))
@@ -224,10 +228,37 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             img.paste(artifacts_img, (318, 1075), artifacts_img)
         elif artifactsPos == '时之沙':
             img.paste(artifacts_img, (618, 1075), artifacts_img)
+            if '元素' in mainName:
+                equipMain += mainName[2]
+            elif '百分比' in mainName:
+                if '血量' in mainName:
+                    equipMain += '生'
+                else:
+                    equipMain += mainName[3]
+            else:
+                equipMain += mainName[0]
         elif artifactsPos == '空之杯':
             img.paste(artifacts_img, (18, 1447), artifacts_img)
+            if '元素' in mainName:
+                equipMain += mainName[2]
+            elif '百分比' in mainName:
+                if '血量' in mainName:
+                    equipMain += '生'
+                else:
+                    equipMain += mainName[3]
+            else:
+                equipMain += mainName[0]
         elif artifactsPos == '理之冠':
             img.paste(artifacts_img, (318, 1447), artifacts_img)
+            if '元素' in mainName:
+                equipMain += mainName[2]
+            elif '百分比' in mainName:
+                if '血量' in mainName:
+                    equipMain += '生'
+                else:
+                    equipMain += mainName[3]
+            else:
+                equipMain += mainName[0]
 
     char_name = raw_data['avatarName']
     char_level = raw_data['avatarLevel']
@@ -235,9 +266,34 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
 
     # 评分算法
     # 圣遗物总分 + 角色等级 + (a+e+q)*4 + 武器等级 * （ 1+（武器精炼数 -1） * 0.25）
+    '''
     charAllScore = artifactsAllScore + int(char_level) + \
                    (a_skill_level + e_skill_level + q_skill_level) * 4 + \
                    int(weaponLevel) * (1 + ((int(weaponAffix) - 1) * 0.25))
+    '''
+    if 'equipSets' in raw_data:
+        equipSets = raw_data['equipSets']
+    else:
+        artifact_set_list = []
+        for i in raw_data['equipList']:
+            artifact_set_list.append(i['aritifactSetsName'])
+        equipSetList = set(artifact_set_list)
+        equipSets = {'type':'','set':''}
+        for equip in equipSetList:
+            if artifact_set_list.count(equip) >= 4:
+                equipSets['type'] = '4'
+                equipSets['set'] = equip
+                break
+            elif artifact_set_list.count(equip) == 1:
+                pass
+            elif artifact_set_list.count(equip) >= 2:
+                equipSets['type'] += '2'
+                equipSets['set'] += equip
+    
+    if equipSets['type'] in ['2','']:
+        seq = ''
+    else:
+        seq = '{}|{}|{}'.format(weaponName.replace('「','').replace('」',''),equipSets['set'],equipMain)
 
     # 角色基本信息
     img_text = ImageDraw.Draw(img)
@@ -263,11 +319,106 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     critrate = fight_prop['critRate']
     critdmg = fight_prop['critDmg']
     ce = fight_prop['energyRecharge']
-    dmgBonus = fight_prop['dmgBonus']
+    dmgBonus = fight_prop['dmgBonus'] if fight_prop['physicalDmgBonus'] <= fight_prop['dmgBonus'] else fight_prop['physicalDmgBonus']
 
     hp_green = fight_prop['addHp']
     attack_green = fight_prop['addAtk']
     defense_green = fight_prop['addDef']
+
+    with open(MAP_PATH / 'dmgMap.json', 'r', encoding='UTF-8') as f:
+        dmgMap = json.load(f)
+    
+    for action in dmgMap[char_name]:
+        if action['seq'] == seq:
+            cal = action
+            break
+    else:
+        if '钟离' in char_name:
+            cal = dmgMap[char_name][-1]
+        else:
+            cal = dmgMap[char_name][0]
+
+    print(seq)
+    print(cal)
+    if cal['action'] == 'E刹那之花':
+        effect_prop = defense
+    elif cal['key'] == '攻击力':
+        effect_prop = attack
+    elif cal['key'] == '防御力':
+        effect_prop = defense
+    elif cal['key'] == '血量':
+        effect_prop = hp
+    
+    if '踩班' in cal['action']:
+        effect_prop += 1202
+        effect_prop += fight_prop['baseAtk'] * 0.25
+    
+    if '胡桃' in char_name:
+        effect_prop += 0.4 * hp if 0.4 * hp <= fight_prop['baseAtk'] * 4 else fight_prop['baseAtk'] * 4
+
+    if '蒸发' in cal['action'] or '融化' in cal['action']:
+        if '蒸发' in cal['action']:
+            if raw_data['avatarElement'] == 'Pyro':
+                k = 1.5
+            else:
+                k = 2
+        elif '融化' in cal['action']:
+            if raw_data['avatarElement'] == 'Pyro':
+                k = 2
+            else:
+                k = 1.5
+        
+        if '魔女' in equipSets['set']:
+            a = 0.15
+        else:
+            a = 0
+        add_dmg = k*(1+(2.78*em)/(em+1400)+a)
+    else:
+        add_dmg = 1
+    
+    if equipSets['type'] in ['2','']:
+        dmgBonus_cal = dmgBonus
+    else:
+        if '追忆' in equipSets['set']:
+            dmgBonus_cal = dmgBonus + 0.5
+        elif '绝缘' in equipSets['set']:
+            Bouns = ce * 0.25 if ce * 0.25 <= 0.75 else 0.75
+            dmgBonus_cal = dmgBonus + Bouns
+        else:
+            dmgBonus_cal = dmgBonus
+
+    if '魈' in char_name:
+        dmgBonus_cal += 0.906
+
+    if cal['action'] == '扩散':
+        dmg = 868 * 1.15 * (1+0.6+(16*em)/(em+2000))
+    elif '霄宫' in char_name:
+        dmg = effect_prop * cal['power'] * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+    elif cal['action'] == '开Q普攻' and '心海' in char_name:
+        dmg = (effect_prop * cal['power'] + hp*(0.871+0.15*dmgBonus_cal)) * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+    elif cal['action'] == 'Q开盾天星':
+        effect_prop = attack
+        dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+    elif isinstance(cal['power'], str):
+        if cal['power'] == '攻击力':
+            dmg = attack
+        elif cal['power'] == '防御力':
+            dmg = defense
+        else:
+            power = cal['power'].split('+')
+            dmg = effect_prop * float(power[0]) / 100 + float(power[1])
+    elif cal['val'] != 'any':
+        dmg = effect_prop * cal['power'] * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+    else:
+        dmg = attack
+    print(dmg)
+    
+    if cal['val'] != 'any':
+        percent = '{:.2f}'.format(dmg / cal['val'] * 100)
+    elif cal['power'] == '攻击力':
+        percent = '{:.2f}'.format(dmg / cal['atk'] * 100)
+    else:
+        percent = '{:.2f}'.format(dmg / cal['other'] * 100)
 
     # 属性
     img_text.text((785, 174), str(round(hp)), (255, 255, 255), genshin_font_origin(28), anchor='rm')
@@ -294,11 +445,8 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     img_text.text((780, 600), f'数据最后更新于{data_time}', (255, 255, 255), genshin_font_origin(22), anchor='rm')
 
     # 角色评分
-    img_text.text((904, 1505), f'圣遗物总分', (255, 255, 255), genshin_font_origin(45), anchor='rm')
-    img_text.text((904, 1570), f'{round(artifactsAllScore, 1)}', (255, 255, 255), genshin_font_origin(60), anchor='rm')
-
-    img_text.text((904, 1655), f'角色评分', (255, 255, 255), genshin_font_origin(45), anchor='rm')
-    img_text.text((904, 1720), f'{round(charAllScore, 1)}', (255, 255, 255), genshin_font_origin(60), anchor='rm')
+    img_text.text((768, 1557), f'{round(artifactsAllScore, 1)}', (255, 255, 255), genshin_font_origin(50), anchor='mm')
+    img_text.text((768, 1690), f'{str(percent)+"%"}', (255, 255, 255), genshin_font_origin(50), anchor='mm')
 
     img = img.convert('RGB')
     result_buffer = BytesIO()

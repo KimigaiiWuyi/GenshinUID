@@ -398,7 +398,7 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
         dmgBonus_cal += 0.906
     elif '绫华' in char_name:
         dmgBonus_cal += 0.18
-    elif '霄宫' in char_name:
+    elif '宵宫' in char_name:
         dmgBonus_cal += 0.5
     elif '九条' in char_name:
         effect_prop += 0.9129 * fight_prop['baseAtk']

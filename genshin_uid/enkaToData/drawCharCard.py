@@ -228,7 +228,9 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             img.paste(artifacts_img, (318, 1075), artifacts_img)
         elif artifactsPos == '时之沙':
             img.paste(artifacts_img, (618, 1075), artifacts_img)
-            if '元素' in mainName:
+            if '伤害加成' in mainName:
+                equipMain += mainName[0]
+            elif '元素' in mainName:
                 equipMain += mainName[2]
             elif '百分比' in mainName:
                 if '血量' in mainName:
@@ -239,7 +241,9 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
                 equipMain += mainName[0]
         elif artifactsPos == '空之杯':
             img.paste(artifacts_img, (18, 1447), artifacts_img)
-            if '元素' in mainName:
+            if '伤害加成' in mainName:
+                equipMain += mainName[0]
+            elif '元素' in mainName:
                 equipMain += mainName[2]
             elif '百分比' in mainName:
                 if '血量' in mainName:
@@ -250,7 +254,9 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
                 equipMain += mainName[0]
         elif artifactsPos == '理之冠':
             img.paste(artifacts_img, (318, 1447), artifacts_img)
-            if '元素' in mainName:
+            if '伤害加成' in mainName:
+                equipMain += mainName[0]
+            elif '元素' in mainName:
                 equipMain += mainName[2]
             elif '百分比' in mainName:
                 if '血量' in mainName:
@@ -353,9 +359,6 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
         effect_prop += 1202
         effect_prop += fight_prop['baseAtk'] * 0.25
     
-    if '胡桃' in char_name:
-        effect_prop += 0.4 * hp if 0.4 * hp <= fight_prop['baseAtk'] * 4 else fight_prop['baseAtk'] * 4
-
     if '蒸发' in cal['action'] or '融化' in cal['action']:
         if '蒸发' in cal['action']:
             if raw_data['avatarElement'] == 'Pyro':
@@ -387,18 +390,45 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
         else:
             dmgBonus_cal = dmgBonus
 
-    if '魈' in char_name:
+    critdmg_cal = critdmg
+
+    if '胡桃' in char_name:
+        effect_prop += 0.4 * hp if 0.4 * hp <= fight_prop['baseAtk'] * 4 else fight_prop['baseAtk'] * 4
+    elif '魈' in char_name:
         dmgBonus_cal += 0.906
+    elif '绫华' in char_name:
+        dmgBonus_cal += 0.18
+    elif '宵宫' in char_name:
+        dmgBonus_cal += 0.5
+    elif '九条' in char_name:
+        effect_prop += 0.9129 * fight_prop['baseAtk']
+        critdmg_cal += 0.6
+    
+    if '雾切' in weaponName:
+        dmgBonus_cal += 0.28
+    elif '弓藏' in weaponName and '首' in cal['action']:
+        dmgBonus_cal += 0.8
+    elif '飞雷' in weaponName and '首' in cal['action']:
+        dmgBonus_cal += 0.4
+    elif '试作澹月' in weaponName:
+        effect_prop += fight_prop['baseAtk'] * 0.72
+    elif '冬极' in weaponName:
+        effect_prop += fight_prop['baseAtk'] * 0.48
+        dmgBonus_cal += 0.12
 
     if cal['action'] == '扩散':
         dmg = 868 * 1.15 * (1+0.6+(16*em)/(em+2000))
     elif '霄宫' in char_name:
-        dmg = effect_prop * cal['power'] * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+        dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
     elif cal['action'] == '开Q普攻' and '心海' in char_name:
-        dmg = (effect_prop * cal['power'] + hp*(0.871+0.15*dmgBonus_cal)) * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+        dmg = (effect_prop * cal['power'] + hp*(0.871+0.15*dmgBonus_cal)) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+    elif '绫人' in char_name:
+        dmg = (effect_prop * cal['power'] + 0.0222 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+    elif '迪奥娜' in char_name:
+        dmg = (effect_prop * cal['power'] + 1905) * 1.9
     elif cal['action'] == 'Q开盾天星':
         effect_prop = attack
-        dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+        dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
     elif isinstance(cal['power'], str):
         if cal['power'] == '攻击力':
             dmg = attack
@@ -408,7 +438,7 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             power = cal['power'].split('+')
             dmg = effect_prop * float(power[0]) / 100 + float(power[1])
     elif cal['val'] != 'any':
-        dmg = effect_prop * cal['power'] * (1 + critdmg) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+        dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
     else:
         dmg = attack
     print(dmg)

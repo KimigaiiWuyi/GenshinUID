@@ -3,10 +3,11 @@ import json
 from io import BytesIO
 from pathlib import Path
 import string
+from io import BytesIO
+from base64 import b64encode
 
 from PIL import Image, ImageDraw, ImageFont
 from httpx import get
-from nonebot import logger
 
 R_PATH = Path(__file__).parents[0]
 TEXT_PATH = R_PATH / 'texture2D'
@@ -481,5 +482,6 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     img = img.convert('RGB')
     result_buffer = BytesIO()
     img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    res = result_buffer.getvalue()
+    imgmes = 'base64://' + b64encode(result_buffer.getvalue()).decode()
+    res = imgmes
     return res

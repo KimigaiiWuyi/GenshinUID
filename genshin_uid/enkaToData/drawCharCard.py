@@ -15,6 +15,7 @@ GACHA_PATH = R_PATH / 'gachaImg'
 PLAYER_PATH = R_PATH / 'player'
 RELIC_PATH = R_PATH / 'relicIcon'
 MAP_PATH = R_PATH / 'map'
+ETC_PATH = R_PATH / 'etc'
 
 COLOR_MAP = {'Anemo'  : (3, 90, 77), 'Cryo': (5, 85, 151), 'Dendro': (4, 87, 3),
              'Electro': (47, 1, 85), 'Geo': (85, 34, 1), 'Hydro': (4, 6, 114), 'Pyro': (88, 4, 4)}
@@ -55,35 +56,53 @@ def strLenth(r: str, size: int, limit: int = 540) -> str:
 async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     img = Image.open(TEXT_PATH / '{}.png'.format(raw_data['avatarElement']))
     char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
-    char_imfo_mask = Image.open(TEXT_PATH / 'char_info_mask.png')
+    char_info_mask = Image.open(TEXT_PATH / 'char_info_mask.png')
+    
+    char_name = raw_data['avatarName']
+    char_level = raw_data['avatarLevel']
+    char_fetter = raw_data['avatarFetter']
+
+    # 引入offset
+    with open(ETC_PATH / 'avatarOffsetMap.json', 'r', encoding='UTF-8') as f:
+        avatarOffsetMap = json.load(f)
 
     #based_w, based_h = 320, 1024
     based_w, based_h = 600, 1200
     if charUrl:
+        offset_x, offset_y = 200, 0
         char_img = Image.open(BytesIO(get(charUrl).content)).convert('RGBA')
     else:
+        if char_name in avatarOffsetMap:
+            offset_x, offset_y = avatarOffsetMap[char_name][0], avatarOffsetMap[char_name][1]
+        else:
+            offset_x, offset_y = 200, 0
         char_img = Image.open(GACHA_PATH / 'UI_Gacha_AvatarImg_{}.png'.format(raw_data['avatarEnName'])) #角色图像
 
     # 确定图片的长宽
     w, h = char_img.size
     if (w, h) != (based_w, based_h):
-        offset = 200
-        based_new_w, based_new_h = based_w + offset, based_h + offset
+        #offset_all = offset_x if offset_x >= offset_y else offset_y
+        based_new_w, based_new_h = based_w + offset_x, based_h + offset_y
         based_scale = '%.3f' % (based_new_w / based_new_h)
         scale_f = '%.3f' % (w / h)
         new_w = math.ceil(based_new_h * float(scale_f))
         new_h = math.ceil(based_new_w / float(scale_f))
         if scale_f > based_scale:
             bg_img2 = char_img.resize((new_w, based_new_h), Image.Resampling.LANCZOS)
-            char_img = bg_img2.crop((new_w/2 - based_new_w /2 + offset, 0, new_w/2 + based_new_w /2 , based_new_h - offset))
+            x1 = new_w/2 - based_new_w /2 + offset_x
+            y1 = 0
+            x2 = new_w/2 + based_new_w /2
+            y2 = based_new_h - offset_y
         else:
             bg_img2 = char_img.resize((based_new_w , new_h), Image.Resampling.LANCZOS)
-            char_img = bg_img2.crop((0 + offset , new_h/2 - based_new_h/2, based_new_w , new_h/2 + based_new_h/2 - offset))
-    else:
-        pass
-    
+            x1 = 0 + offset_x
+            y1 = new_h/2 - based_new_h/2
+            x2 = based_new_w
+            y2 = new_h/2 + based_new_h/2 - offset_y
+        char_img = bg_img2.crop((x1, y1, x2, y2))
+
     img_temp = Image.new('RGBA', (based_w, based_h), (0,0,0,0))
-    img_temp.paste(char_img,(0,0),char_imfo_mask)
+    img_temp.paste(char_img,(0,0),char_info_mask)
     img.paste(img_temp, (0, 0), img_temp)
     img.paste(char_info_1, (0, 0), char_info_1)
 
@@ -266,10 +285,6 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             else:
                 equipMain += mainName[0]
 
-    char_name = raw_data['avatarName']
-    char_level = raw_data['avatarLevel']
-    char_fetter = raw_data['avatarFetter']
-
     # 评分算法
     # 圣遗物总分 + 角色等级 + (a+e+q)*4 + 武器等级 * （ 1+（武器精炼数 -1） * 0.25）
     '''
@@ -331,124 +346,127 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     attack_green = fight_prop['addAtk']
     defense_green = fight_prop['addDef']
 
-    with open(MAP_PATH / 'dmgMap.json', 'r', encoding='UTF-8') as f:
+    with open(ETC_PATH / 'dmgMap.json', 'r', encoding='UTF-8') as f:
         dmgMap = json.load(f)
     
-    for action in dmgMap[char_name]:
-        if action['seq'] == seq:
-            cal = action
-            break
-    else:
-        if '钟离' in char_name:
-            cal = dmgMap[char_name][-1]
+    if char_name in dmgMap:
+        for action in dmgMap[char_name]:
+            if action['seq'] == seq:
+                cal = action
+                break
         else:
-            cal = dmgMap[char_name][0]
+            if '钟离' in char_name:
+                cal = dmgMap[char_name][-1]
+            else:
+                cal = dmgMap[char_name][0]
 
-    print(seq)
-    print(cal)
-    if cal['action'] == 'E刹那之花':
-        effect_prop = defense
-    elif cal['key'] == '攻击力':
-        effect_prop = attack
-    elif cal['key'] == '防御力':
-        effect_prop = defense
-    elif cal['key'] == '血量':
-        effect_prop = hp
-    
-    if '踩班' in cal['action']:
-        effect_prop += 1202
-        effect_prop += fight_prop['baseAtk'] * 0.25
-    
-    if '蒸发' in cal['action'] or '融化' in cal['action']:
-        if '蒸发' in cal['action']:
-            if raw_data['avatarElement'] == 'Pyro':
-                k = 1.5
-            else:
-                k = 2
-        elif '融化' in cal['action']:
-            if raw_data['avatarElement'] == 'Pyro':
-                k = 2
-            else:
-                k = 1.5
+        print(seq)
+        print(cal)
+        if cal['action'] == 'E刹那之花':
+            effect_prop = defense
+        elif cal['key'] == '攻击力':
+            effect_prop = attack
+        elif cal['key'] == '防御力':
+            effect_prop = defense
+        elif cal['key'] == '血量':
+            effect_prop = hp
         
-        if '魔女' in equipSets['set']:
-            a = 0.15
+        if '踩班' in cal['action']:
+            effect_prop += 1202
+            effect_prop += fight_prop['baseAtk'] * 0.25
+        
+        if '蒸发' in cal['action'] or '融化' in cal['action']:
+            if '蒸发' in cal['action']:
+                if raw_data['avatarElement'] == 'Pyro':
+                    k = 1.5
+                else:
+                    k = 2
+            elif '融化' in cal['action']:
+                if raw_data['avatarElement'] == 'Pyro':
+                    k = 2
+                else:
+                    k = 1.5
+            
+            if '魔女' in equipSets['set']:
+                a = 0.15
+            else:
+                a = 0
+            add_dmg = k*(1+(2.78*em)/(em+1400)+a)
         else:
-            a = 0
-        add_dmg = k*(1+(2.78*em)/(em+1400)+a)
-    else:
-        add_dmg = 1
-    
-    if equipSets['type'] in ['2','']:
-        dmgBonus_cal = dmgBonus
-    else:
-        if '追忆' in equipSets['set']:
-            dmgBonus_cal = dmgBonus + 0.5
-        elif '绝缘' in equipSets['set']:
-            Bouns = ce * 0.25 if ce * 0.25 <= 0.75 else 0.75
-            dmgBonus_cal = dmgBonus + Bouns
-        else:
+            add_dmg = 1
+        
+        if equipSets['type'] in ['2','']:
             dmgBonus_cal = dmgBonus
-
-    critdmg_cal = critdmg
-
-    if '胡桃' in char_name:
-        effect_prop += 0.4 * hp if 0.4 * hp <= fight_prop['baseAtk'] * 4 else fight_prop['baseAtk'] * 4
-    elif '魈' in char_name:
-        dmgBonus_cal += 0.906
-    elif '绫华' in char_name:
-        dmgBonus_cal += 0.18
-    elif '宵宫' in char_name:
-        dmgBonus_cal += 0.5
-    elif '九条' in char_name:
-        effect_prop += 0.9129 * fight_prop['baseAtk']
-        critdmg_cal += 0.6
-    
-    if '雾切' in weaponName:
-        dmgBonus_cal += 0.28
-    elif '弓藏' in weaponName and '首' in cal['action']:
-        dmgBonus_cal += 0.8
-    elif '飞雷' in weaponName and '首' in cal['action']:
-        dmgBonus_cal += 0.4
-    elif '试作澹月' in weaponName:
-        effect_prop += fight_prop['baseAtk'] * 0.72
-    elif '冬极' in weaponName:
-        effect_prop += fight_prop['baseAtk'] * 0.48
-        dmgBonus_cal += 0.12
-
-    if cal['action'] == '扩散':
-        dmg = 868 * 1.15 * (1+0.6+(16*em)/(em+2000))
-    elif '霄宫' in char_name:
-        dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
-    elif cal['action'] == '开Q普攻' and '心海' in char_name:
-        dmg = (effect_prop * cal['power'] + hp*(0.871+0.15*dmgBonus_cal)) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
-    elif '绫人' in char_name:
-        dmg = (effect_prop * cal['power'] + 0.0222 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
-    elif '迪奥娜' in char_name:
-        dmg = (effect_prop * cal['power'] + 1905) * 1.9
-    elif cal['action'] == 'Q开盾天星':
-        effect_prop = attack
-        dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
-    elif isinstance(cal['power'], str):
-        if cal['power'] == '攻击力':
-            dmg = attack
-        elif cal['power'] == '防御力':
-            dmg = defense
         else:
-            power = cal['power'].split('+')
-            dmg = effect_prop * float(power[0]) / 100 + float(power[1])
-    elif cal['val'] != 'any':
-        dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+            if '追忆' in equipSets['set']:
+                dmgBonus_cal = dmgBonus + 0.5
+            elif '绝缘' in equipSets['set']:
+                Bouns = ce * 0.25 if ce * 0.25 <= 0.75 else 0.75
+                dmgBonus_cal = dmgBonus + Bouns
+            else:
+                dmgBonus_cal = dmgBonus
+
+        critdmg_cal = critdmg
+
+        if '胡桃' in char_name:
+            effect_prop += 0.4 * hp if 0.4 * hp <= fight_prop['baseAtk'] * 4 else fight_prop['baseAtk'] * 4
+        elif '魈' in char_name:
+            dmgBonus_cal += 0.906
+        elif '绫华' in char_name:
+            dmgBonus_cal += 0.18
+        elif '宵宫' in char_name:
+            dmgBonus_cal += 0.5
+        elif '九条' in char_name:
+            effect_prop += 0.9129 * fight_prop['baseAtk']
+            critdmg_cal += 0.6
+        
+        if '雾切' in weaponName:
+            dmgBonus_cal += 0.28
+        elif '弓藏' in weaponName and '首' in cal['action']:
+            dmgBonus_cal += 0.8
+        elif '飞雷' in weaponName and '首' in cal['action']:
+            dmgBonus_cal += 0.4
+        elif '试作澹月' in weaponName:
+            effect_prop += fight_prop['baseAtk'] * 0.72
+        elif '冬极' in weaponName:
+            effect_prop += fight_prop['baseAtk'] * 0.48
+            dmgBonus_cal += 0.12
+
+        if cal['action'] == '扩散':
+            dmg = 868 * 1.15 * (1+0.6+(16*em)/(em+2000))
+        elif '霄宫' in char_name:
+            dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+        elif cal['action'] == '开Q普攻' and '心海' in char_name:
+            dmg = (effect_prop * cal['power'] + hp*(0.871+0.15*dmgBonus_cal)) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+        elif '绫人' in char_name:
+            dmg = (effect_prop * cal['power'] + 0.0222 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+        elif '迪奥娜' in char_name:
+            dmg = (effect_prop * cal['power'] + 1905) * 1.9
+        elif cal['action'] == 'Q开盾天星':
+            effect_prop = attack
+            dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+        elif isinstance(cal['power'], str):
+            if cal['power'] == '攻击力':
+                dmg = attack
+            elif cal['power'] == '防御力':
+                dmg = defense
+            else:
+                power = cal['power'].split('+')
+                dmg = effect_prop * float(power[0]) / 100 + float(power[1])
+        elif cal['val'] != 'any':
+            dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+        else:
+            dmg = attack
+        print(dmg)
+
+        if cal['val'] != 'any':
+            percent = '{:.2f}'.format(dmg / cal['val'] * 100)
+        elif cal['power'] == '攻击力':
+            percent = '{:.2f}'.format(dmg / cal['atk'] * 100)
+        else:
+            percent = '{:.2f}'.format(dmg / cal['other'] * 100)
     else:
-        dmg = attack
-    print(dmg)
-    
-    if cal['val'] != 'any':
-        percent = '{:.2f}'.format(dmg / cal['val'] * 100)
-    elif cal['power'] == '攻击力':
-        percent = '{:.2f}'.format(dmg / cal['atk'] * 100)
-    else:
-        percent = '{:.2f}'.format(dmg / cal['other'] * 100)
+        percent = 0.00
 
     # 属性
     img_text.text((785, 174), str(round(hp)), (255, 255, 255), genshin_font_origin(28), anchor='rm')

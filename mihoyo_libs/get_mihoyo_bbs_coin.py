@@ -3,13 +3,14 @@ import string
 import time
 
 from httpx import AsyncClient
+from nonebot import logger
 
 from get_data import old_version_get_ds_token, random_hex
 
 # 米游社的API列表
 bbs_Cookieurl = 'https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}'
-bbs_Cookieurl2 = 'https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket' \
-                 '?login_ticket={}&token_types=3&uid={}'
+bbs_Cookieurl2 = 'https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?' \
+                 'login_ticket={}&token_types=3&uid={}'
 bbs_Taskslist = 'https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState'  # 获取任务列表
 bbs_Signurl = 'https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}'  # post
 bbs_Listurl = 'https://bbs-api.mihoyo.com/post/api/getForumPostList?' \
@@ -57,6 +58,7 @@ def random_text(num: int) -> str:
 
 class MihoyoBBSCoin:
     def __init__(self, cookies):
+        self.postsList = None
         self.headers = {
             'DS'                : old_version_get_ds_token(True),
             'cookie'            : cookies,
@@ -150,12 +152,12 @@ class MihoyoBBSCoin:
                                 self.Task_do['bbs_Share'] = True
                                 # 分享帖子，是最后一个任务，到这里了下面都是一次性任务，直接跳出循环
                                 break
-            return '开始执行~'
+            return '今日完成情况!'
 
     # 获取要帖子列表
     async def get_list(self) -> list:
         temp_list = []
-        print('正在获取帖子列表......')
+        logger.info('正在获取帖子列表......')
         async with AsyncClient() as client:
             req = await client.get(url=bbs_Listurl.format(self.mihoyobbs_List_Use[0]['forumId']), headers=self.headers)
         data = req.json()
@@ -177,7 +179,7 @@ class MihoyoBBSCoin:
                     time.sleep(random.randint(2, 8))
                 else:
                     return '你的Cookies已失效。'
-            return '已完成签到任务~'
+            return 'SignM:完成!'
 
     # 看帖子
     async def read_posts(self):
@@ -192,12 +194,12 @@ class MihoyoBBSCoin:
                 if data['message'] == 'OK':
                     num_ok += 1
                 time.sleep(random.randint(2, 8))
-            return '已完成看帖任务~共计成功{}次~'.format(str(num_ok))
+            return 'ReadM:成功!Read:{}!'.format(str(num_ok))
 
     # 点赞
     async def like_posts(self):
         if self.Task_do['bbs_Like_posts']:
-            return '点赞任务已经完成过了~'
+            return 'Like任务已经完成过了~'
         else:
             num_ok = 0
             num_cancel = 0
@@ -218,7 +220,7 @@ class MihoyoBBSCoin:
                     if data['message'] == 'OK':
                         num_cancel += 1
                 time.sleep(random.randint(2, 8))
-            return '已完成点赞任务~共计点赞{}次，取消点赞{}次~'.format(str(num_ok), str(num_cancel))
+            return 'LikeM:完成!like:{}，dislike:{}!'.format(str(num_ok), str(num_cancel))
             # 分享操作
 
     async def share_post(self):
@@ -230,7 +232,7 @@ class MihoyoBBSCoin:
                     req = await client.get(url=bbs_Shareurl.format(self.postsList[0][0]), headers=self.headers)
                 data = req.json()
                 if data['message'] == 'OK':
-                    return '已完成分享任务~获得10米游币~'
+                    return 'ShareM:完成!'
                 else:
                     time.sleep(random.randint(2, 8))
             time.sleep(random.randint(2, 8))

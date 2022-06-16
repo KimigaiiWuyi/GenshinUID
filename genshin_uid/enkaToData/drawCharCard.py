@@ -90,15 +90,15 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
         if scale_f > based_scale:
             bg_img2 = char_img.resize((new_w, based_new_h), Image.Resampling.LANCZOS)
             x1 = new_w/2 - based_new_w /2 + offset_x
-            y1 = 0
+            y1 = 0 + offset_y / 2 
             x2 = new_w/2 + based_new_w /2
-            y2 = based_new_h - offset_y
+            y2 = based_new_h - offset_y / 2
         else:
             bg_img2 = char_img.resize((based_new_w , new_h), Image.Resampling.LANCZOS)
             x1 = 0 + offset_x
-            y1 = new_h/2 - based_new_h/2
+            y1 = new_h/2 - based_new_h/2 + offset_y / 2 
             x2 = based_new_w
-            y2 = new_h/2 + based_new_h/2 - offset_y
+            y2 = new_h/2 + based_new_h/2 - offset_y / 2
         char_img = bg_img2.crop((x1, y1, x2, y2))
 
     img_temp = Image.new('RGBA', (based_w, based_h), (0,0,0,0))

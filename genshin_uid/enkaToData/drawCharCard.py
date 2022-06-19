@@ -266,7 +266,7 @@ async def get_char_percent(raw_data: dict) -> str:
             power = cal['power'].split('+')
             dmg = (effect_prop * float(power[0]) / 100 + float(power[1])) * (1 + healBouns_cal)
         elif '心海' in char_name and cal['action'] == '开Q普攻':
-            dmg = (attack * cal['power'] + hp*(0.0971 + 0.15 * healBouns_cal)) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+            dmg = (attack * cal['power'] + hp*(0.0971 + 0.15 * healBouns_cal)) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
         elif '心海' in char_name and cal['action'] == '水母回血':
             dmg = (862 + 0.0748 * hp) * (1 + healBouns_cal)
         elif char_name in ['芭芭拉', '早柚', '琴', '七七']:
@@ -445,6 +445,9 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             mainValueStr = str(mainValue)
         else:
             mainValueStr = str(mainValue) + '%'
+        
+        if '伤害加成' in mainName:
+            mainName = mainName.replace('伤害加成', '伤加成').replace('元素', '').replace('理', '')
 
         mainNameNew = mainName.replace('百分比', '')
 
@@ -461,6 +464,7 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
                 subValueStr = str(subValue)
             else:
                 subValueStr = str(subValue) + '%'
+                subValueStr = subValueStr.replace('百分比', '')
             artifactsScore += await get_artifacts_score(subName, subValue)
             artifacts_text.text((20, 263 + index * 30), '·{}+{}'.format(subName, subValueStr), (255, 255, 255),
                                 genshin_font_origin(25), anchor='lm')

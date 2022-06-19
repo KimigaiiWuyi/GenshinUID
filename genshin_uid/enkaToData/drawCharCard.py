@@ -162,6 +162,8 @@ async def get_char_percent(raw_data: dict) -> str:
             effect_prop = attack
         
         dmgBonus_value_cal = 0
+        dmgBonus_cal = dmgBonus
+
         if '夜兰' in char_name:
             effect_prop = hp
         elif '胡桃' in char_name:
@@ -201,22 +203,20 @@ async def get_char_percent(raw_data: dict) -> str:
             add_dmg = 1
         
         if equipSets['type'] in ['2','','22']:
-            dmgBonus_cal = dmgBonus
+            pass
         else:
             if '追忆' in equipSets['set']:
-                dmgBonus_cal = dmgBonus + 0.5
+                dmgBonus_cal += 0.5
             elif '绝缘' in equipSets['set']:
                 Bouns = ce * 0.25 if ce * 0.25 <= 0.75 else 0.75
-                dmgBonus_cal = dmgBonus + Bouns
+                dmgBonus_cal += Bouns
             elif '乐团' in equipSets['set']:
                 if weaponType in ['法器', '弓']:
-                    dmgBonus_cal = dmgBonus + 0.35
+                    dmgBonus_cal += 0.35
             elif '华馆' in equipSets['set']:
                 if raw_data['avatarElement'] == 'Geo':
                     effect_prop += 0.24 * defense
                     dmgBonus_cal += 0.24
-            else:
-                dmgBonus_cal = dmgBonus
 
         critdmg_cal = critdmg
         healBouns_cal = healBouns

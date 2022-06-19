@@ -416,25 +416,24 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
 
     weaponEffect = strLenth(weaponEffect, 25, 455)
     weapon_text.text((25, 335), weaponEffect, (255, 255, 255), genshin_font_origin(25))
-    img.paste(weapon_img, (387, 570), weapon_img)
+    img.paste(weapon_img, (387, 590), weapon_img)
 
     # 圣遗物部分
     artifactsAllScore = 0
-    equipMain = ''
     for aritifact in raw_data['equipList']:
         artifacts_img = Image.open(TEXT_PATH / 'char_info_artifacts.png')
         artifacts_piece_img = Image.open(RELIC_PATH / '{}.png'.format(aritifact['icon']))
-        artifacts_piece_new_img = artifacts_piece_img.resize((180, 180), Image.Resampling.LANCZOS).convert("RGBA")
-        artifacts_piece_new_img.putalpha(
-            artifacts_piece_new_img.getchannel('A').point(lambda x: round(x * 0.5) if x > 0 else 0))
+        artifacts_piece_new_img = artifacts_piece_img.resize((75, 75), Image.Resampling.LANCZOS).convert("RGBA")
+        #artifacts_piece_new_img.putalpha(
+        #    artifacts_piece_new_img.getchannel('A').point(lambda x: round(x * 0.5) if x > 0 else 0))
 
-        artifacts_img.paste(artifacts_piece_new_img, (100, 35), artifacts_piece_new_img)
+        artifacts_img.paste(artifacts_piece_new_img, (195, 35), artifacts_piece_new_img)
         aritifactStar_img = get_star_png(aritifact['aritifactStar'])
         artifactsPos = aritifact['aritifactPieceName']
 
         artifacts_img.paste(aritifactStar_img, (20, 165), aritifactStar_img)
         artifacts_text = ImageDraw.Draw(artifacts_img)
-        artifacts_text.text((30, 66), aritifact['aritifactName'], (255, 255, 255), genshin_font_origin(34), anchor='lm')
+        artifacts_text.text((30, 66), aritifact['aritifactName'][:4], (255, 255, 255), genshin_font_origin(34), anchor='lm')
         artifacts_text.text((30, 102), artifactsPos, (255, 255, 255), genshin_font_origin(20), anchor='lm')
 
         mainValue = aritifact['reliquaryMainstat']['statValue']
@@ -451,8 +450,8 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
 
         mainNameNew = mainName.replace('百分比', '')
 
-        artifacts_text.text((26, 140), mainNameNew, (255, 255, 255), genshin_font_origin(28), anchor='lm')
-        artifacts_text.text((268, 140), mainValueStr, (255, 255, 255), genshin_font_origin(28), anchor='rm')
+        artifacts_text.text((30, 141), mainNameNew, (255, 255, 255), genshin_font_origin(28), anchor='lm')
+        artifacts_text.text((263, 141), mainValueStr, (255, 255, 255), genshin_font_origin(28), anchor='rm')
         artifacts_text.text((55, 219), '+{}'.format(str(mainLevel)), (255, 255, 255), genshin_font_origin(24),
                             anchor='mm')
 
@@ -464,10 +463,12 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
                 subValueStr = str(subValue)
             else:
                 subValueStr = str(subValue) + '%'
-                subValueStr = subValueStr.replace('百分比', '')
             artifactsScore += await get_artifacts_score(subName, subValue)
-            artifacts_text.text((20, 263 + index * 30), '·{}+{}'.format(subName, subValueStr), (255, 255, 255),
+            subNameStr = subName.replace('百分比', '').replace('元素', '')
+            artifacts_text.text((20, 256 + index * 33), '·{}'.format(subNameStr), (255, 255, 255),
                                 genshin_font_origin(25), anchor='lm')
+            artifacts_text.text((268, 256 + index * 33), '{}'.format(subValueStr), (255, 255, 255),
+                                genshin_font_origin(25), anchor='rm')
         artifactsAllScore += artifactsScore
         artifacts_text.text((268, 190), f'{math.ceil(artifactsScore)}分', (255, 255, 255), genshin_font_origin(23),
                             anchor='rm')

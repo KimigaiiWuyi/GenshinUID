@@ -1,8 +1,8 @@
 import math
-import json
+import json,asyncio
 from io import BytesIO
 from pathlib import Path
-
+from typing import List, Optional, Tuple
 from PIL import Image, ImageDraw, ImageFont
 from httpx import get
 from nonebot import logger
@@ -19,8 +19,15 @@ ETC_PATH = R_PATH / 'etc'
 COLOR_MAP = {'Anemo'  : (3, 90, 77), 'Cryo': (5, 85, 151), 'Dendro': (4, 87, 3),
              'Electro': (47, 1, 85), 'Geo': (85, 34, 1), 'Hydro': (4, 6, 114), 'Pyro': (88, 4, 4)}
 
-SCORE_VALUE_MAP = {'暴击率': 2, '暴击伤害': 1, '元素精通': 0.25, '元素充能效率': 0.65, '百分比血量': 0.86,
+SCORE_MAP = {'暴击率': 2, '暴击伤害': 1, '元素精通': 0.25, '元素充能效率': 0.65, '百分比血量': 0.86,
                      '百分比攻击力': 1, '百分比防御力': 0.7, '血量': 0.014, '攻击力': 0.12, '防御力': 0.18}
+
+VALUE_MAP = {'攻击力': 4.975, '血量': 4.975, '防御力': 6.2, '元素精通': 19.75, 
+             '元素充能效率': 5.5, '暴击率': 3.3, '暴击伤害': 6.6}
+
+# 引入ValueMap
+with open(ETC_PATH / 'ValueAttrMap.json', 'r', encoding='UTF-8') as f:
+    ATTR_MAP = json.load(f)
 
 # 引入dmgMap
 with open(ETC_PATH / 'dmgMap.json', 'r', encoding='UTF-8') as f:
@@ -29,6 +36,10 @@ with open(ETC_PATH / 'dmgMap.json', 'r', encoding='UTF-8') as f:
 # 引入offset
 with open(ETC_PATH / 'avatarOffsetMap.json', 'r', encoding='UTF-8') as f:
     avatarOffsetMap = json.load(f)
+
+# 引入offset2
+with open(ETC_PATH / 'avatarCardOffsetMap.json', 'r', encoding='UTF-8') as f:
+    avatarCardOffsetMap = json.load(f)
 
 def genshin_font_origin(size: int) -> ImageFont:
     return ImageFont.truetype(str(TEXT_PATH / 'yuanshen_origin.ttf'), size=size)
@@ -63,9 +74,46 @@ def strLenth(r: str, size: int, limit: int = 540) -> str:
 
 
 async def get_artifacts_score(subName: str, subValue: int) -> int:
-    score = subValue * SCORE_VALUE_MAP[subName]
+    score = subValue * SCORE_MAP[subName]
     return score
 
+async def get_artifacts_value(subName: str, subValue: int, baseAtk: int, 
+                              baseHp: int, baseDef: int, charName: str) -> int:
+    if charName not in ATTR_MAP:
+        ATTR_MAP[charName] = ['攻击力', '暴击率', '暴击伤害']
+    if subName in ATTR_MAP[charName] and subName in ['血量', '防御力', '攻击力']:
+        if subName == '血量':
+            base = (subValue / baseHp) * 100
+        elif subName == '防御力':
+            base = (subValue / baseDef) * 100
+        elif subName == '攻击力':
+            base = (subValue / baseAtk) * 100
+        value = float('{:.2f}'.format(base / VALUE_MAP[subName]))
+    elif subName in ['百分比血量', '百分比防御力', '百分比攻击力']:
+        subName = subName.replace('百分比', '')
+        if subName in ATTR_MAP[charName]:
+            value = float('{:.2f}'.format(subValue / VALUE_MAP[subName]))
+        else:
+            return 0
+    else:
+        if subName in ATTR_MAP[charName]:
+            value = float('{:.2f}'.format(subValue / VALUE_MAP[subName]))
+        else:
+            value = 0
+    
+    if charName == '胡桃' and subName == '攻击力':
+        value = value * 0.4
+    return value
+
+async def get_all_artifacts_value(raw_data: dict, baseHp: int, baseAtk: int, baseDef: int, char_name: str) -> int:
+    artifactsValue = 0
+    for aritifact in raw_data:
+        for  i in aritifact['reliquarySubstats']:
+            subName = i['statName']
+            subValue = i['statValue']
+            value_temp = await get_artifacts_value(subName, subValue, baseAtk, baseHp, baseDef, char_name)
+            artifactsValue += value_temp
+    return artifactsValue
 
 async def get_first_main(mainName: str) -> str:
     if '伤害加成' in mainName:
@@ -427,6 +475,23 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     weapon_text.text((25, 335), weaponEffect, (255, 255, 255), genshin_font_origin(25))
     img.paste(weapon_img, (387, 590), weapon_img)
 
+    fight_prop = raw_data['avatarFightProp']
+    hp = fight_prop['hp']
+    baseHp = fight_prop['baseHp']
+    attack = fight_prop['atk']
+    baseAtk = fight_prop['baseAtk']
+    defense = fight_prop['def']
+    baseDef = fight_prop['baseDef']
+    em = fight_prop['elementalMastery']
+    critrate = fight_prop['critRate']
+    critdmg = fight_prop['critDmg']
+    ce = fight_prop['energyRecharge']
+    dmgBonus = fight_prop['dmgBonus'] if fight_prop['physicalDmgBonus'] <= fight_prop['dmgBonus'] else fight_prop['physicalDmgBonus']
+
+    hp_green = fight_prop['addHp']
+    attack_green = fight_prop['addAtk']
+    defense_green = fight_prop['addDef']
+
     # 圣遗物部分
     artifactsAllScore = 0
     for aritifact in raw_data['equipList']:
@@ -472,14 +537,26 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
                 subValueStr = str(subValue)
             else:
                 subValueStr = str(subValue) + '%'
-            artifactsScore += await get_artifacts_score(subName, subValue)
+            #artifactsScore += await get_artifacts_score(subName, subValue)
+            value_temp = await get_artifacts_value(subName, subValue, baseAtk, baseHp, baseDef, char_name)
+            artifactsScore += value_temp
             subNameStr = subName.replace('百分比', '').replace('元素', '')
-            artifacts_text.text((20, 256 + index * 33), '·{}'.format(subNameStr), (255, 255, 255),
+            if value_temp == 0:
+                artifacts_color = (160, 160, 160)
+            elif value_temp >= 4.5:
+                artifacts_color = (247, 50, 50)
+            else:
+                artifacts_color = (255, 255, 100)
+            artifacts_text.text((20, 256 + index * 33), '·{}'.format(subNameStr), artifacts_color,
                                 genshin_font_origin(25), anchor='lm')
-            artifacts_text.text((268, 256 + index * 33), '{}'.format(subValueStr), (255, 255, 255),
+            artifacts_text.text((268, 256 + index * 33), '{}'.format(subValueStr), artifacts_color,
                                 genshin_font_origin(25), anchor='rm')
+        if artifactsScore >= 6:
+            artifactsScore_color = (247, 26, 26)
+        else:
+            artifactsScore_color = (255, 255, 255)
         artifactsAllScore += artifactsScore
-        artifacts_text.text((268, 190), f'{math.ceil(artifactsScore)}分', (255, 255, 255), genshin_font_origin(23),
+        artifacts_text.text((268, 190), '{:.2f}'.format(artifactsScore) + '条', artifactsScore_color, genshin_font_origin(23),
                             anchor='rm')
 
         if artifactsPos == '生之花':
@@ -509,20 +586,6 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     # img_text.text((110, 973), q_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
     img_text.text((103, 1016), f'{str(q_skill_level)}', (255, 255, 255), genshin_font_origin(30), anchor='mm')
 
-    fight_prop = raw_data['avatarFightProp']
-    hp = fight_prop['hp']
-    attack = fight_prop['atk']
-    defense = fight_prop['def']
-    em = fight_prop['elementalMastery']
-    critrate = fight_prop['critRate']
-    critdmg = fight_prop['critDmg']
-    ce = fight_prop['energyRecharge']
-    dmgBonus = fight_prop['dmgBonus'] if fight_prop['physicalDmgBonus'] <= fight_prop['dmgBonus'] else fight_prop['physicalDmgBonus']
-
-    hp_green = fight_prop['addHp']
-    attack_green = fight_prop['addAtk']
-    defense_green = fight_prop['addDef']
-
     # 属性
     img_text.text((785, 174), str(round(hp)), (255, 255, 255), genshin_font_origin(28), anchor='rm')
     img_text.text((785, 227), str(round(attack)), (255, 255, 255), genshin_font_origin(28), anchor='rm')
@@ -551,6 +614,117 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     img_text.text((768, 1557), f'{round(artifactsAllScore, 1)}', (255, 255, 255), genshin_font_origin(50), anchor='mm')
     percent = await get_char_percent(raw_data)
     img_text.text((768, 1690), f'{str(percent)+"%"}', (255, 255, 255), genshin_font_origin(50), anchor='mm')
+
+    img = img.convert('RGB')
+    result_buffer = BytesIO()
+    img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+    res = result_buffer.getvalue()
+    return res
+
+async def draw_single_card(img: Image, char: dict, index: int, color: Tuple[int, int, int],
+                           x_limit: int, char_card_mask: Image, char_card_1: Image, img_card: Image):
+
+    size_36 = genshin_font_origin(36)
+    size_46 = genshin_font_origin(46)
+
+    img_base = Image.open(TEXT_PATH / '{}.png'.format(char['avatarElement']))
+    if char['char_name'] in avatarCardOffsetMap:
+        offset_x, offset_y = avatarCardOffsetMap[char['char_name']][0], avatarCardOffsetMap[char['char_name']][1]
+    else:
+        offset_x, offset_y = 200, 0
+    char_img = Image.open(GACHA_PATH / 'UI_Gacha_AvatarImg_{}.png'.format(char['avatarEnName']))
+    
+    img_base.paste(char_img, (-439 + offset_x, 130 + offset_y), char_img)
+    img_card.paste(img_base, (-25, -260), char_card_mask)
+    img_card = Image.alpha_composite(img_card, char_card_1)
+    #img_card.paste(img_card, (0, 0), img_card)
+
+    char_card_text = ImageDraw.Draw(img_card)
+
+    char_card_text.text((448, 59.2), f'{str(round(char["critrate"] * 100, 2))}%', color, size_36, anchor='lm')
+    char_card_text.text((448, 122.2), f'{str(round(char["critdmg"] * 100, 2))}%', color, size_36, anchor='lm')
+
+    char_card_text.text((410.9, 252.6), str(char['a_skill_level']), color, size_36, anchor='mm')
+    char_card_text.text((485, 252.6), str(char['e_skill_level']), color, size_36, anchor='mm')
+    char_card_text.text((558, 252.6), str(char['q_skill_level']), color, size_36, anchor='mm')
+
+    if float(char['percent']) >= 100:
+        percent_color = (204, 57, 78)
+    else:
+        percent_color = color
+    
+    if char['value'] >= 28.5:
+        value_color = (204, 57, 78)
+    else:
+        value_color = color
+        
+    char_card_text.text((742, 253.1), str(char['percent']) + '%', percent_color, size_46, anchor='mm')
+    char_card_text.text((742, 113.1), str(char['value']) + '条', value_color, size_46, anchor='mm')
+
+    char_card_text.text((21.2, 70.5), f'{str(char["talent_num"])}命', color, size_36, anchor='lm')
+    char_card_text.text((21.2, 129.8), f'{str(char["weapon_affix"])}精', color, size_36, anchor='lm')
+
+    img.paste(img_card, ((index % x_limit) * 900, (index // x_limit) * 300), img_card)
+
+async def draw_cahrcard_list(uid: str,limit :int = 24) -> str:
+    uid_fold = PLAYER_PATH / str(uid)
+    char_file_list = uid_fold.glob('*')
+    char_list = []
+    for i in char_file_list:
+        file_name = i.name
+        if '\u4e00' <= file_name[0] <= '\u9fff':
+            char_list.append(file_name.split('.')[0])
+    if not char_list:
+        return '你还没有已缓存的角色！\n请先使用【强制刷新】进行刷新！'
+    
+    char_done_list = []
+    for char_name in char_list:
+        temp = {}
+        with open(uid_fold / f'{char_name}.json', 'r', encoding='UTF-8') as f:
+            raw_data = json.load(f)
+
+        fight_prop = raw_data['avatarFightProp']
+        skillList = raw_data['avatarSkill']
+
+        temp['char_name'] = char_name
+        temp['avatarEnName'] = raw_data['avatarEnName']
+        temp['avatarElement'] = raw_data['avatarElement']
+        temp['percent'] = await get_char_percent(raw_data)
+        temp['critrate'] = fight_prop['critRate']
+        temp['critdmg'] = fight_prop['critDmg']
+        baseHp = fight_prop['baseHp']
+        baseAtk = fight_prop['baseAtk']
+        baseDef = fight_prop['baseDef']
+        temp['value'] = await get_all_artifacts_value(raw_data['equipList'], baseHp, baseAtk, baseDef, char_name)
+        temp['value'] = float('{:.2f}'.format(temp['value']))
+        temp['avatarElement'] = raw_data['avatarElement']
+        temp['a_skill_level'] = skillList[0]['skillLevel']
+        temp['e_skill_level'] = skillList[1]['skillLevel']
+        temp['q_skill_level'] = skillList[-1]['skillLevel']
+        temp['talent_num'] = len(raw_data['talentList'])
+        temp['weapon_affix'] = raw_data['weaponInfo']['weaponAffix']
+        char_done_list.append(temp)
+    
+    # 排序
+    char_done_list.sort(key=lambda x: (-float(x['percent'])))
+    char_done_list = char_done_list[:limit]
+
+    char_card_1 = Image.open(TEXT_PATH / 'charcard_1.png')
+    char_card_mask = Image.open(TEXT_PATH / 'charcard_mask.png')
+
+    x_limit = 2
+    color = (255, 255, 255)
+    x_tile = (len(char_done_list) + x_limit - 1) // x_limit
+    y_tile = math.ceil(len(char_done_list) / x_tile)
+    x_tile, y_tile = x_tile if x_tile <= y_tile else y_tile, y_tile if y_tile >= x_tile else x_tile
+
+    img = Image.new('RGBA', (900 * x_tile, 300 * y_tile), (0, 0, 0))
+    img_card = Image.new('RGBA', (900, 300))
+
+    tasks = []
+    for index, char in enumerate(char_done_list):
+        tasks.append(draw_single_card(img, char, index, color, x_limit, char_card_mask, char_card_1, img_card))
+    await asyncio.wait(tasks)
 
     img = img.convert('RGB')
     result_buffer = BytesIO()

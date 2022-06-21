@@ -252,4 +252,4 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
         with open(path / '{}.json'.format(avatarName),'w', encoding='UTF-8') as file:
             json.dump(char_data, file, ensure_ascii=False)
     char_name_list_str = ','.join(char_name_list)
-    return f'UID{uid}刷新成功！刷新角色：{char_name_list_str}'
+    return f'UID{uid}刷新完成！\n本次缓存：{char_name_list_str}'

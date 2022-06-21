@@ -102,6 +102,7 @@ async def get_char_percent(raw_data: dict) -> str:
     attack_green = fight_prop['addAtk']
     defense_green = fight_prop['addDef']
 
+    r = 0.9
     equipMain = ''
     for aritifact in raw_data['equipList']:
         mainName = aritifact['reliquaryMainstat']['statName']
@@ -174,6 +175,12 @@ async def get_char_percent(raw_data: dict) -> str:
         elif '诺艾尔' in char_name:
             effect_prop = attack
             effect_prop += 1.3 * defense
+        elif '优菈' in char_name:
+            r = 1.065
+        elif '钟离' in char_name:
+            r = 1.05
+        elif '辛焱' in char_name:
+            r = 1.025
         
         if '踩班' in cal['action']:
             effect_prop += 1202
@@ -245,6 +252,8 @@ async def get_char_percent(raw_data: dict) -> str:
             dmgBonus_value_cal += 0.4 * defense
         elif '螭骨剑' in weaponName:
             dmgBonus_cal += 0.4
+        elif '松籁响起之时' in weaponName:
+            effect_prop += fight_prop['baseAtk'] * 0.2
         elif '试作澹月' in weaponName:
             effect_prop += fight_prop['baseAtk'] * 0.72
         elif '冬极' in weaponName:
@@ -261,30 +270,30 @@ async def get_char_percent(raw_data: dict) -> str:
         if cal['action'] == '扩散':
             dmg = 868 * 1.15 * (1+0.6+(16*em)/(em+2000))
         elif '霄宫' in char_name:
-            dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+            dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg * 1.5879
         elif '班尼特' in char_name and 'Q治疗' in cal['action']:
             power = cal['power'].split('+')
             dmg = (effect_prop * float(power[0]) / 100 + float(power[1])) * (1 + healBouns_cal)
         elif '心海' in char_name and cal['action'] == '开Q普攻':
-            dmg = (attack * cal['power'] + hp*(0.0971 + 0.15 * healBouns_cal)) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+            dmg = (attack * cal['power'] + hp*(0.0971 + 0.15 * healBouns_cal)) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg
         elif '心海' in char_name and cal['action'] == '水母回血':
             dmg = (862 + 0.0748 * hp) * (1 + healBouns_cal)
         elif char_name in ['芭芭拉', '早柚', '琴', '七七']:
             power = cal['power'].split('+')
             dmg = (effect_prop * float(power[0]) / 100 + float(power[1])) * (1 + healBouns_cal)
         elif '绫人' in char_name:
-            dmg = (effect_prop * cal['power'] + 0.0222 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg * 1.5879
+            dmg = (effect_prop * cal['power'] + 0.0222 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg * 1.5879
         elif char_name in ['荒泷一斗', '诺艾尔']:
-            dmg = (effect_prop * cal['power'] + dmgBonus_value_cal) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9
+            dmg = (effect_prop * cal['power'] + dmgBonus_value_cal) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * r
         elif '迪奥娜' in char_name:
             dmg = (effect_prop * cal['power'] + 1905) * 1.9
         elif '钟离' in char_name and 'E实际盾值' in cal['action']:
             dmg = (2506 + hp * cal['power']) * 1.5 * 1.3
         elif cal['action'] == 'Q开盾天星':
             effect_prop = attack
-            dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+            dmg = (effect_prop * cal['power'] + 0.33 * hp) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg
         elif '凝光' in char_name:
-            dmg = effect_prop * cal['power'] * (1 + critdmg_cal * critrate) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+            dmg = effect_prop * cal['power'] * (1 + critdmg_cal * critrate) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg
         elif isinstance(cal['power'], str):
             if cal['power'] == '攻击力':
                 dmg = attack
@@ -294,7 +303,7 @@ async def get_char_percent(raw_data: dict) -> str:
                 power = cal['power'].split('+')
                 dmg = effect_prop * float(power[0]) / 100 + float(power[1])
         elif cal['val'] != 'any':
-            dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * 0.9 * add_dmg
+            dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg
         else:
             dmg = attack
         print(dmg)

@@ -2,6 +2,7 @@ import math
 import json,asyncio
 from io import BytesIO
 from pathlib import Path
+from typing import List, Optional, Tuple
 from base64 import b64encode
 
 from PIL import Image, ImageDraw, ImageFont

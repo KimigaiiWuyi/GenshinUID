@@ -62,7 +62,8 @@ avatar_json = {
     'Sara'     : '九条裟罗',
     'Kokomi'   : '珊瑚宫心海',
     'Shenhe'   : '申鹤',
-    'Yelan'    : '夜兰'
+    'Yelan'    : '夜兰',
+    'Shinobo'  : '久岐忍'
 }
 
 daily_im = """

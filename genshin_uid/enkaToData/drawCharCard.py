@@ -212,6 +212,7 @@ async def get_char_percent(raw_data: dict) -> str:
         
         dmgBonus_value_cal = 0
         dmgBonus_cal = dmgBonus
+        em_cal = em
 
         if '夜兰' in char_name:
             effect_prop = hp
@@ -223,6 +224,8 @@ async def get_char_percent(raw_data: dict) -> str:
         elif '诺艾尔' in char_name:
             effect_prop = attack
             effect_prop += 1.3 * defense
+        elif '烟绯' in char_name:
+            dmgBonus_value_cal += 0.6 + 0.2
         elif '优菈' in char_name:
             r = 1.065
         elif '钟离' in char_name:
@@ -233,6 +236,30 @@ async def get_char_percent(raw_data: dict) -> str:
         if '踩班' in cal['action']:
             effect_prop += 1202
             effect_prop += fight_prop['baseAtk'] * 0.25
+        
+        if '雾切' in weaponName:
+            dmgBonus_cal += 0.28
+        elif '弓藏' in weaponName and ('首' in cal['action'] or '击' in cal['action'] or '两段' in cal['action']):
+            dmgBonus_cal += 0.8
+        elif '飞雷' in weaponName and ('首' in cal['action'] or '击' in cal['action'] or '两段' in cal['action']):
+            dmgBonus_cal += 0.4
+        elif '阿莫斯' in weaponName:
+            dmgBonus_cal += 0.52    
+        elif '破魔' in weaponName:
+            dmgBonus_cal += 0.18*2
+        elif '赤角石溃杵' in weaponName and ('首' in cal['action'] or '击' in cal['action'] or '两段' in cal['action']):
+            dmgBonus_value_cal += 0.4 * defense
+        elif '螭骨剑' in weaponName:
+            dmgBonus_cal += 0.4
+        elif '松籁响起之时' in weaponName:
+            effect_prop += fight_prop['baseAtk'] * 0.2
+        elif '试作澹月' in weaponName:
+            effect_prop += fight_prop['baseAtk'] * 0.72
+        elif '流浪乐章' in weaponName and '烟绯' in char_name:
+            em_cal += 480
+        elif '冬极' in weaponName:
+            effect_prop += fight_prop['baseAtk'] * 0.48
+            dmgBonus_cal += 0.12
         
         if '蒸发' in cal['action'] or '融化' in cal['action']:
             if '蒸发' in cal['action']:
@@ -253,7 +280,7 @@ async def get_char_percent(raw_data: dict) -> str:
                     a = 0.15
                 else:
                     a = 0
-            add_dmg = k*(1+(2.78*em)/(em+1400)+a)
+            add_dmg = k*(1+(2.78*em_cal)/(em_cal+1400)+a)
         else:
             add_dmg = 1
         
@@ -285,28 +312,6 @@ async def get_char_percent(raw_data: dict) -> str:
         elif '九条' in char_name:
             effect_prop += 0.9129 * fight_prop['baseAtk']
             critdmg_cal += 0.6
-        
-        if '雾切' in weaponName:
-            dmgBonus_cal += 0.28
-        elif '弓藏' in weaponName and ('首' in cal['action'] or '击' in cal['action'] or '两段' in cal['action']):
-            dmgBonus_cal += 0.8
-        elif '飞雷' in weaponName and ('首' in cal['action'] or '击' in cal['action'] or '两段' in cal['action']):
-            dmgBonus_cal += 0.4
-        elif '阿莫斯' in weaponName:
-            dmgBonus_cal += 0.52    
-        elif '破魔' in weaponName:
-            dmgBonus_cal += 0.18*2
-        elif '赤角石溃杵' in weaponName and ('首' in cal['action'] or '击' in cal['action'] or '两段' in cal['action']):
-            dmgBonus_value_cal += 0.4 * defense
-        elif '螭骨剑' in weaponName:
-            dmgBonus_cal += 0.4
-        elif '松籁响起之时' in weaponName:
-            effect_prop += fight_prop['baseAtk'] * 0.2
-        elif '试作澹月' in weaponName:
-            effect_prop += fight_prop['baseAtk'] * 0.72
-        elif '冬极' in weaponName:
-            effect_prop += fight_prop['baseAtk'] * 0.48
-            dmgBonus_cal += 0.12
 
         if '治疗' in cal['action']:
             if equipSets['type'] in ['2','']:
@@ -316,7 +321,7 @@ async def get_char_percent(raw_data: dict) -> str:
                     healBouns_cal += 0.2
 
         if cal['action'] == '扩散':
-            dmg = 868 * 1.15 * (1+0.6+(16*em)/(em+2000))
+            dmg = 868 * 1.15 * (1+0.6+(16*em_cal)/(em_cal+2000))
         elif '霄宫' in char_name:
             dmg = effect_prop * cal['power'] * (1 + critdmg_cal) * (1 + dmgBonus_cal) * 0.5 * r * add_dmg * 1.5879
         elif '班尼特' in char_name and 'Q治疗' in cal['action']:

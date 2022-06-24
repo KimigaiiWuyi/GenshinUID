@@ -664,28 +664,30 @@ async def char_wiki(name, mode='char', level=None):
                     labels = ''.join(data['attributes']['labels'])
                     parameters_label = re.findall(r'{[a-zA-Z0-9]+:[a-zA-Z0-9]+}', labels)
 
-                    labels = []
+                    labels = {}
                     for i in parameters_label:
-                        i = i.replace('{', '').replace('}', '').split(':')[-1]
-                        labels.append(i)
-                        
-                    for i in data['attributes']['parameters']:
-                        for index, j in enumerate(data['attributes']['parameters'][i]):
-                            if add_switch:
-                                parameters.append({})
+                        value_type = i.replace('{', '').replace('}', '').split(':')[-1]
+                        value_index = i.replace('{', '').replace('}', '').split(':')[0]
+                        labels[value_index] = value_type
+                    
+                    for para in data['attributes']['parameters']:
+                        if para in labels:
+                            label_str = labels[para]
+                            for index, j in enumerate(data['attributes']['parameters'][para]):
+                                if add_switch:
+                                    parameters.append({})
 
-                            label_str = labels[int(i.replace('param', '')) - 1]
-                            if label_str == 'F1P':
-                                parameters[index].update({i: '%.2f%%' % (j * 100)})
-                            if label_str == 'F2P':
-                                parameters[index].update({i: '%.1f%%' % (j * 100)})
-                            elif label_str == 'F1':
-                                parameters[index].update({i: '%.1f' % j})
-                            elif label_str == 'P':
-                                parameters[index].update({i: str(round(j * 100)) + '%'})
-                            elif label_str == 'I':
-                                parameters[index].update({i: '%.2f' % j})
-                        add_switch = False
+                                if label_str == 'F1P':
+                                    parameters[index].update({para: '%.2f%%' % (j * 100)})
+                                if label_str == 'F2P':
+                                    parameters[index].update({para: '%.1f%%' % (j * 100)})
+                                elif label_str == 'F1':
+                                    parameters[index].update({para: '%.1f' % j})
+                                elif label_str == 'P':
+                                    parameters[index].update({para: str(round(j * 100)) + '%'})
+                                elif label_str == 'I':
+                                    parameters[index].update({para: '%.2f' % j})
+                            add_switch = False
 
                     for k in data['attributes']['labels']:
                         k = re.sub(r':[a-zA-Z0-9]+}', '}', k)

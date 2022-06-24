@@ -524,10 +524,7 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
         else:
             mainValueStr = str(mainValue) + '%'
         
-        if '伤害加成' in mainName:
-            mainName = mainName.replace('伤害加成', '伤加成').replace('元素', '').replace('理', '')
-
-        mainNameNew = mainName.replace('百分比', '')
+        mainNameNew = mainName.replace('百分比', '').replace('伤害加成', '伤加成').replace('元素', '').replace('理', '')
 
         artifacts_text.text((30, 141), mainNameNew, (255, 255, 255), genshin_font_origin(28), anchor='lm')
         artifacts_text.text((263, 141), mainValueStr, (255, 255, 255), genshin_font_origin(28), anchor='rm')

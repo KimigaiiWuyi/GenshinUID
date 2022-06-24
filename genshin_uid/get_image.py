@@ -295,8 +295,6 @@ async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
     raw_data = raw_data['data']
     raw_char_data = raw_data['avatars']
     raw_abyss_data = data_def.raw_abyss_data
-    with open('test.json', 'w', encoding='UTF-8') as file:
-        json.dump(raw_abyss_data, file, ensure_ascii=False)
 
     char_data = raw_data['avatars']
     raw_abyss_data = raw_abyss_data['data']

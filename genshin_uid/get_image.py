@@ -281,74 +281,38 @@ async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
 
         return img
 
-    nickname = ''
-    while True:
-        use_cookies = cache_db(uid, mode - 1)
-        if use_cookies == '':
-            return '绑定记录不存在。'
-        elif use_cookies == '没有可以使用的Cookies！':
-            return '没有可以使用的Cookies！'
+    # 获取Cookies
+    data_def = GetCookies()
+    retcode = await data_def.get_useable_cookies(uid, mode)
+    if not retcode:
+        return retcode
+    raw_data = data_def.raw_data
+    use_cookies = data_def.useable_cookies
+    uid = data_def.uid
+    nickname = data_def.nickname if data_def.nickname else nickname
 
-        if mode == 3:
-            mys_data = await get_mihoyo_bbs_info(uid, use_cookies)
-            for i in mys_data['data']['list']:
-                if i['game_id'] != 2:
-                    mys_data['data']['list'].remove(i)
-            uid = mys_data['data']['list'][0]['game_role_id']
-            nickname = mys_data['data']['list'][0]['nickname']
-            # role_level = mys_data['data']['list'][0]['level']
-            raw_data = await get_info(uid, use_cookies)
-            raw_abyss_data = await get_spiral_abyss_info(uid, use_cookies)
-        else:
-            raw_abyss_data = await get_spiral_abyss_info(uid, use_cookies)
-            raw_data = await get_info(uid, use_cookies)
-
-        if raw_data['retcode'] != 0:
-            if raw_data['retcode'] == 10001:
-                # return ('Cookie错误/过期，请重置Cookie')
-                error_db(use_cookies, 'error')
-            elif raw_data['retcode'] == 10101:
-                # return ('当前cookies已达到30人上限！')
-                error_db(use_cookies, 'limit30')
-            elif raw_data['retcode'] == 10102:
-                return '当前查询id已经设置了隐私，无法查询！'
-            else:
-                return (
-                        'Api报错，返回内容为：\r\n'
-                        + str(raw_data) + '\r\n出现这种情况可能的UID输入错误 or 不存在'
-                )
-        else:
-            break
-
-    raw_abyss_data = raw_abyss_data['data']
+    # 获取数据
     raw_data = raw_data['data']
+    raw_char_data = raw_data['avatars']
+    raw_abyss_data = data_def.raw_abyss_data
+    with open('test.json', 'w', encoding='UTF-8') as file:
+        json.dump(raw_abyss_data, file, ensure_ascii=False)
 
-    # char_data = raw_data['avatars']
-    # char_num = len(raw_data['avatars'])
+    char_data = raw_data['avatars']
+    raw_abyss_data = raw_abyss_data['data']
 
-    char_datas = []
+    char_ids = []
+    char_names = []
 
-    def get_char_id(start, end):
-        for char in range(start, end):
-            char_rawdata = get_character(uid, [char], use_cookies)
+    for i in char_data:
+        char_ids.append(i['id'])
+        char_names.append(i['name'])
 
-            if char_rawdata['retcode'] != -1:
-                char_datas.append(char_rawdata['data']['avatars'][0])
-
-    thread_list = []
-    st = 8
-    for i in range(0, 8):
-        thread = threading.Thread(target=get_char_id, args=(10000002 + i * st, 10000002 + (i + 1) * st))
-        thread_list.append(thread)
-
-    for t in thread_list:
-        t.setDaemon(True)
-        t.start()
-
-    for t in thread_list:
-        t.join()
+    char_rawdata = get_character(uid, char_ids, use_cookies)
+    char_datas = char_rawdata['data']['avatars']
 
     weapons_datas = []
+
     for i in char_datas:
         weapons_datas.append(i['weapon'])
 
@@ -472,38 +436,14 @@ async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
             word_str['这一击，贯穿星辰'] = l4_size
     else:
         pass
-
-    bg_list = random.choice([x for x in os.listdir(BG_PATH)
-                             if os.path.isfile(os.path.join(BG_PATH, x))])
-
-    bg2_path = os.path.join(BG_PATH, bg_list)
-
+    
+    # 获取背景图片各项参数
     based_w = 900
     based_h = 1000
-    based_scale = '%.3f' % (based_w / based_h)
-
-    is_edit = False
-    if image:
-        with open(os.path.join(TEXT_PATH, nickname + '.png'), 'wb') as f:
-            f.write(get(image).content)
-        is_edit = True
-
-    if is_edit:
-        bg_path_edit = os.path.join(TEXT_PATH, f'{nickname}.png')
-    else:
-        bg_path_edit = bg2_path
-
-    edit_bg = Image.open(bg_path_edit)
-    w, h = edit_bg.size
-    scale_f = '%.3f' % (w / h)
-    new_w = math.ceil(based_h * float(scale_f))
-    new_h = math.ceil(based_w / float(scale_f))
-    if scale_f > based_scale:
-        bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
-    else:
-        bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
-
-    bg_img = bg_img2.crop((0, 0, based_w, based_h))
+    image_def = CustomizeImage(image, based_w, based_h)
+    bg_img = image_def.bg_img
+    bg_color = image_def.bg_color
+    text_color = image_def.text_color
 
     x, y = 50, 153
     radius = 50
@@ -513,7 +453,7 @@ async def draw_word_cloud(uid: str, image: Optional[str] = None, mode: int = 2):
 
     panle = Image.open(os.path.join(TEXT_PATH, 'wordcloud_0.png'))
 
-    mask = np.array([Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png'))])
+    mask = np.array(Image.open(os.path.join(TEXT_PATH, 'wordcloudmask.png')))
 
     wc = WordCloud(
         font_path=os.path.join(FILE2_PATH, 'yuanshen.ttf'),

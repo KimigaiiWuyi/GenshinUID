@@ -657,45 +657,41 @@ async def char_wiki(name, mode='char', level=None):
                     skill_info = data['info']
                     skill_detail = ''
 
-                    """
-                    for i in data['attributes']['parameters']:
-                        temp = ''
-                        for k in data['attributes']['parameters'][i]:
-                            if str(k).count('.') == 1:
-                                temp += '%.2f%%' % (k * 100) + '/'
-                            else:
-                                temp = k
-                                break
-                        data['attributes']['parameters'][i] = temp[:-1]
-
-                    for i in data['attributes']['labels']:
-                        #i = i.replace('{','{{')
-                        i = re.sub(r':[a-zA-Z0-9]+}', '}', i)
-                        #i.replace(r':[a-zA-Z0-9]+}','}')
-                        skill_detail += i + '\n'
-
-                    skill_detail = skill_detail.format(**data['attributes']['parameters'])
-                    """
                     mes_list = []
                     parameters = []
                     add_switch = True
+
+                    labels = ''.join(data['attributes']['labels'])
+                    parameters_label = re.findall(r'{[a-zA-Z0-9]+:[a-zA-Z0-9]+}', labels)
+
+                    labels = []
+                    for i in parameters_label:
+                        i = i.replace('{', '').replace('}', '').split(':')[-1]
+                        labels.append(i)
+                        
                     for i in data['attributes']['parameters']:
                         for index, j in enumerate(data['attributes']['parameters'][i]):
                             if add_switch:
                                 parameters.append({})
-                            if str(j).count('.') == 1 and j <= 20:
+
+                            label_str = labels[int(i.replace('param', '')) - 1]
+                            if label_str == 'F1P':
                                 parameters[index].update({i: '%.2f%%' % (j * 100)})
-                            elif str(j).count('.') == 1:
-                                parameters[index].update({i: '%.2f' % (j * 100)})
-                            else:
-                                parameters[index].update({i: j})
+                            if label_str == 'F2P':
+                                parameters[index].update({i: '%.1f%%' % (j * 100)})
+                            elif label_str == 'F1':
+                                parameters[index].update({i: '%.1f' % j})
+                            elif label_str == 'P':
+                                parameters[index].update({i: str(round(j * 100)) + '%'})
+                            elif label_str == 'I':
+                                parameters[index].update({i: '%.2f' % j})
                         add_switch = False
 
                     for k in data['attributes']['labels']:
                         k = re.sub(r':[a-zA-Z0-9]+}', '}', k)
                         skill_detail += k + '\n'
 
-                    skill_detail = skill_detail[:-1]
+                    skill_detail = skill_detail[:-1].replace('|', ' | ')
 
                     for i in range(1, 10):
                         if i % 2 != 0:

@@ -1,5 +1,5 @@
-nonebot2==2.0.0b2
-nonebot-adapter-onebot>=2.0.0b1
+nonebot2==2.0.0b4
+nonebot-adapter-onebot>=2.1.1
 
 requests==2.27.1
 httpx>=0.18.1

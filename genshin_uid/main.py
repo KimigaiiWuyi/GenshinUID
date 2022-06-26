@@ -86,6 +86,11 @@ INDEX_PATH = os.path.join(FILE_PATH, 'index')
 TEXTURE_PATH = os.path.join(FILE_PATH, 'texture2d')
 
 
+CK_HINT = '''获取Cookies教程：https://github.com/KimigaiiWuyi/GenshinUID/issues/255
+绑定uid：uid为原神uid，如绑定uid12345
+绑定mys：mys为米游社通行证，如绑定mys12345'''
+
+
 # https://v2.nonebot.dev/docs/advanced/di/dependency-injection#class-%E4%BD%9C%E4%B8%BA%E4%BE%9D%E8%B5%96
 class ImageAndAt:
     def __init__(self, event: MessageEvent):
@@ -816,7 +821,7 @@ async def close_switch_func(
 
 # 图片版信息
 @get_genshin_info.handle()
-@handle_exception('当前', '获取/发送当前信息失败', '@未找到绑定信息')
+@handle_exception('当前', '获取/发送当前信息失败', '@未找到绑定信息\n' + CK_HINT)
 async def send_genshin_info(
         event: MessageEvent,
         matcher: Matcher,
@@ -832,7 +837,7 @@ async def send_genshin_info(
 
 # 群聊内 每月统计 功能
 @monthly_data.handle()
-@handle_exception('每月统计', '获取/发送每月统计失败', '@未找到绑定信息')
+@handle_exception('每月统计', '获取/发送每月统计失败', '@未找到绑定信息\n' + CK_HINT)
 async def send_monthly_data(event: MessageEvent,
                             matcher: Matcher,
                             args: Message = CommandArg()):
@@ -861,7 +866,7 @@ async def get_sing_func(event: MessageEvent,
         uid = uid[0]
         im = await sign(uid)
     except TypeError:
-        im = '没有找到绑定信息。'
+        im = '没有找到绑定信息。\n' + CK_HINT
     except Exception as e:
         if isinstance(e, FinishedException):
             raise
@@ -890,7 +895,7 @@ async def send_mihoyo_coin(event: MessageEvent,
         im_mes = await mihoyo_coin(qid)
         im = im_mes
     except TypeError or AttributeError:
-        im = '没有找到绑定信息。'
+        im = '没有找到绑定信息。\n' + CK_HINT
         logger.exception('获取米游币失败')
     except Exception as e:
         if isinstance(e, FinishedException):
@@ -945,7 +950,7 @@ async def send_daily_data(event: MessageEvent,
         im = mes[0]['message']
         await matcher.finish(im, at_sender=True)
     except TypeError:
-        im = '没有找到绑定信息。'
+        im = '没有找到绑定信息。\n' + CK_HINT
         await matcher.finish(im, at_sender=True)
     except ActionFailed as e:
         await matcher.finish('机器人发送消息失败：{}'.format(e.info['wording']))
@@ -1340,7 +1345,7 @@ async def get_info(
                         '获取失败，有可能是数据状态有问题,\n{}\n请检查后台输出。'.format(e))
                     logger.exception('数据获取失败（数据状态问题）')
         else:
-            await matcher.finish('未找到绑定记录！')
+            await matcher.finish('未找到绑定记录！\n' + CK_HINT)
     except Exception as e:
         if isinstance(e, FinishedException):
             raise

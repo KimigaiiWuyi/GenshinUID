@@ -22,6 +22,10 @@ FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 
+CK_HINT = '''获取Cookies教程：https://github.com/KimigaiiWuyi/GenshinUID/issues/255
+绑定uid：uid为原神uid，如绑定uid12345
+绑定mys：mys为米游社通行证，如绑定mys12345'''
+
 @sv.on_fullmatch('gs帮助')
 async def send_help_pic(bot: HoshinoBot, ev: CQEvent):
     try:
@@ -356,7 +360,7 @@ async def send_mihoyo_coin(bot: HoshinoBot, ev: CQEvent):
         im_mes = await mihoyo_coin(int(qid))
         im = im_mes
     except TypeError or AttributeError:
-        im = '没有找到绑定信息。'
+        im = '没有找到绑定信息。\n' + CK_HINT
         logger.exception('获取米游币失败')
     except Exception as e:
         im = '发生错误 {},请检查后台输出。'.format(e)
@@ -536,7 +540,7 @@ async def setting(ctx):
                                        message='机器人发送消息失败：{}'.format(e))
             logger.exception('私聊）发送开启推送信息失败')
         except Exception:
-            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到uid绑定记录。')
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到绑定记录！\n' + CK_HINT)
             logger.exception('开启推送失败')
     elif 'gs关闭推送' in message:
         try:
@@ -548,7 +552,7 @@ async def setting(ctx):
                                        message='机器人发送消息失败：{}'.format(e))
             logger.exception('私聊）发送关闭推送信息失败')
         except Exception:
-            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到uid绑定记录。')
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到绑定记录！\n' + CK_HINT)
             logger.exception('关闭推送失败')
     elif 'gs开启自动米游币' in message:
         try:
@@ -579,7 +583,7 @@ async def setting(ctx):
             logger.exception('私聊）发送开启自动签到信息失败')
         except Exception:
             traceback.print_exc()
-            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到uid绑定记录。')
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到绑定记录！\n' + CK_HINT)
             logger.exception('开启自动签到失败')
     elif 'gs关闭自动签到' in message:
         try:
@@ -592,7 +596,7 @@ async def setting(ctx):
             logger.exception('私聊）发送关闭自动签到信息失败')
         except Exception:
             traceback.print_exc()
-            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到uid绑定记录。')
+            await hoshino_bot.send_msg(self_id=sid, user_id=userid, group_id=gid, message='未找到绑定记录！\n' + CK_HINT)
             logger.exception('关闭自动签到失败')
 
 
@@ -768,7 +772,7 @@ async def send_monthly_data(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, '机器人发送消息失败：{}'.format(e))
         logger.exception('发送每月统计信息失败')
     except Exception:
-        await bot.send(ev, '未找到绑定信息', at_sender=True)
+        await bot.send(ev, '没有找到绑定信息。\n' + CK_HINT, at_sender=True)
         logger.exception('获取每月统计失败')
 
 
@@ -784,7 +788,7 @@ async def get_sing_func(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, '机器人发送消息失败：{}'.format(e))
         logger.exception('发送签到信息失败')
     except Exception:
-        await bot.send(ev, '未找到绑定信息', at_sender=True)
+        await bot.send(ev, '没有找到绑定信息。\n' + CK_HINT, at_sender=True)
         logger.exception('签到失败')
 
 
@@ -818,7 +822,7 @@ async def send_daily_data(bot: HoshinoBot, ev: CQEvent):
         mes = await daily('ask', uid)
         im = mes[0]['message']
     except Exception:
-        im = '没有找到绑定信息。'
+        im = '没有找到绑定信息。\n' + CK_HINT
         logger.exception('获取当前状态失败')
 
     try:
@@ -843,7 +847,7 @@ async def send_genshin_info(bot: HoshinoBot, ev: CQEvent):
             await bot.send(ev, '机器人发送消息失败：{}'.format(e))
             logger.exception('发送当前信息信息失败')
     except Exception:
-        im = '没有找到绑定信息。'
+        im = '没有找到绑定信息。\n' + CK_HINT
         await bot.send(ev, im, at_sender=True)
         logger.exception('获取当前信息失败')
 
@@ -1165,7 +1169,7 @@ async def get_info(bot, ev):
                 except Exception:
                     logger.exception('获取信息失败,你可以使用强制刷新命令进行刷新。')
         else:
-            await bot.send(ev, '未找到绑定记录！')
+            await bot.send(ev, '未找到绑定记录！\n' + CK_HINT)
     except Exception as e:
         await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
         logger.exception('查询异常')

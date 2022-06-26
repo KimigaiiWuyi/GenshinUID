@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import math
 import threading
 from base64 import b64encode
@@ -156,6 +157,10 @@ def genshin_font(size: int):
     return ImageFont.truetype(os.path.join(FILE2_PATH, 'yuanshen.ttf'), size=size)
 
 
+def genshin_font_origin(size: int) -> ImageFont:
+    return ImageFont.truetype(os.path.join(FILE2_PATH, 'yuanshen_origin.ttf'), size=size)
+
+    
 def get_char_pic(_id: str, url: str):
     with open(os.path.join(CHAR_PATH, f'{_id}.png'), 'wb') as f:
         f.write(get(url).content)
@@ -1641,6 +1646,16 @@ async def draw_info_pic(uid: str, image: Optional[str] = None) -> str:
 
 
 async def draw_event_pic() -> None:
+    async def get_month_and_time(time_data: str) -> List:
+        time_data = time_data.split(' ')
+        month = time_data[0].split('/', 1)[1]
+        time = ':'.join(time_data[1].split(':')[:-1])
+        if int(time.split(':')[0]) <= 12:
+            time = time + 'AM'
+        else:
+            time = time + 'PM'
+        return [month, time]
+
     raw_data = await get_genshin_events('List')
     raw_time_data = await get_genshin_events('Content')
 
@@ -1656,7 +1671,9 @@ async def draw_event_pic() -> None:
                         time_data = content_bs.find_all('p')[index + 1].text
                         if '<t class=' in time_data:
                             time_data = findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', time_data)[0]
-                        k['time_data'] = time_data
+                        month_start, time_start = await get_month_and_time(time_data)
+                        k['start_time'] = [month_start, time_start]
+                        k['end_time'] = ['更新后', '永久开放']
                     elif value.text == '〓活动时间〓':
                         time_data = content_bs.find_all('p')[index + 1].text
                         if '<t class=' in time_data:
@@ -1666,9 +1683,47 @@ async def draw_event_pic() -> None:
                                     time_datas.append(findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', s)[0])
                                 else:
                                     time_datas.append(s)
-                            k['time_data'] = '——'.join(time_datas)
+                            if ' ' in time_datas[0]:
+                                month_start, time_start = await get_month_and_time(time_datas[0])
+                            else:
+                                month_start, time_start = '版本更新后', '更新后'
+
+                            if ' ' in time_datas[1]:
+                                month_end, time_end = await get_month_and_time(time_datas[1])
+                            else:
+                                month_end, time_end = '永久开放', '更新后'
+                            k['start_time'] = [month_start, time_start]
+                            k['end_time'] = [month_end, time_end]
+                        elif '活动内容' in time_data:
+                            for n in range(2, 10):
+                                time_data = content_bs.find_all('p')[index + n].text
+                                if '版本更新后' in time_data:
+                                    time_data_end = content_bs.find_all('p')[index + n + 1].text
+                                    if '<t class=' in time_data_end:
+                                        time_data_end = findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', time_data_end)[0]
+                                        month_end, time_end = await get_month_and_time(time_data_end)
+                                        k['start_time'] = [time_data[:5], '更新后']
+                                        k['end_time'] = [month_end, time_end]
+                                    else:
+                                        k['start_time'] = [time_data, '维护后']
+                                        k['end_time'] = ['更新后', '永久开放']
+                                    break
+                                elif '<t class=' in time_data:
+                                    time_data = findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', time_data)[0]
+                                    month_start, time_start = await get_month_and_time(time_data)
+                                    k['start_time'] = [month_start, time_start]
+                                    time_data_end = content_bs.find_all('p')[index + n + 1].text
+                                    if '<t class=' in time_data_end:
+                                        time_data_end = findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', time_data_end)[0]
+                                        month_end, time_end = await get_month_and_time(time_data_end)
+                                        k['end_time'] = [month_end, time_end]
+                                    else:
+                                        k['end_time'] = ['更新后', '永久开放']
+                                    break
                         else:
-                            k['time_data'] = time_data
+                            month_start, time_start = await get_month_and_time(time_data)
+                            k['start_time'] = [month_start, time_start]
+                            k['end_time'] = ['更新后', '永久开放']
                     elif value.text == '〓祈愿介绍〓':
                         start_time = content_bs.find_all('tr')[1].td.find_all('p')[0].text
                         if '<t class=' in start_time:
@@ -1677,8 +1732,12 @@ async def draw_event_pic() -> None:
                                            content_bs.find_all('tr')[1].td.find_all('p')[2].text)[0]
                         if '<t class=' in end_time:
                             end_time = findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', end_time)[0]
-                        time_data = start_time + '——' + end_time
-                        k['time_data'] = time_data
+
+                        month_start, time_start = await get_month_and_time(start_time)
+                        month_end, time_end = await get_month_and_time(end_time)
+
+                        k['start_time'] = [month_start, time_start]
+                        k['end_time'] = [month_end, time_end]
 
         if '冒险助力礼包' in k['title'] or '纪行' in k['title']:
             continue
@@ -1689,51 +1748,59 @@ async def draw_event_pic() -> None:
         elif k['tag_label'] == '活动':
             event_data['normal_event'].append(k)
 
-    # base_h = 900 + ((1 + (len(event_data['normal_event'])+len(event_data['other_event'])))//2)*390 + ((1 + len(
-    # event_data['gacha_event']))//2)*533
-    base_h = 600 + len(event_data['normal_event']) * (390 + 90) + len(event_data['gacha_event']) * (533 + 90)
-    base_img = Image.new(mode='RGB', size=(1080, base_h), color=(237, 217, 195))
+    base_h = 450 + len(event_data['normal_event']) * (270 + 10) + len(event_data['gacha_event']) * (370 + 10)
+    base_img = Image.new(mode='RGBA', size=(950, base_h), color=(255, 253, 248, 255))
 
-    event1_path = os.path.join(TEXT_PATH, 'event_1.png')
-    event2_path = os.path.join(TEXT_PATH, 'event_2.png')
-    # event3_path = os.path.join(TEXT_PATH,'event_3.png')
-    event1 = Image.open(event1_path)
-    event2 = Image.open(event2_path)
-    # event3 = Image.open(event3_path)
+    text_color = (60, 59, 64)
+    event_color = (250, 93, 93)
+    gacha_color = (93, 198, 250)
+    font_l = genshin_font_origin(52)
+    font_m = genshin_font_origin(34)
+    font_s = genshin_font_origin(28)
+    
+    now_time = datetime.datetime.now().strftime('%Y/%m/%d')
+    event_title_path = os.path.join(TEXT_PATH, 'event_title.png')
+    event_title = Image.open(event_title_path)
+    event_title_draw = ImageDraw.Draw(event_title)
+    event_title_draw.text((7, 380), now_time, font = font_l, fill = text_color, anchor='lm')
+    base_img.paste(event_title, (0, 0), event_title)
 
-    base_img.paste(event1, (0, 0), event1)
-    # base_img.paste(event2,(0,300+((1+len(event_data['normal_event']))//2)*390),event2)
-    base_img.paste(event2, (0, len(event_data['normal_event']) * (390 + 90) + 300), event2)
-    # base_img.paste(event3,(0,600+((1+len(event_data['normal_event']))//2)*390 + ((1 + len(event_data[
-    # 'gacha_event']))//2)*533),event3)
-
-    time_img1 = Image.new(mode='RGB', size=(1080, len(event_data['normal_event']) * (390 + 90)), color=(237, 130, 116))
-    time_img2 = Image.new(mode='RGB', size=(1080, len(event_data['gacha_event']) * (533 + 90)), color=(237, 130, 116))
-    base_img.paste(time_img1, (0, 300))
-    base_img.paste(time_img2, (0, 600 + len(event_data['normal_event']) * (390 + 90)))
-    base_draw = ImageDraw.Draw(base_img)
     for index, value in enumerate(event_data['normal_event']):
+        event_img = Image.new(mode='RGBA', size=(950, 280))
         img = Image.open(BytesIO(get(value['banner']).content))
-        base_draw.text((540, 300 + 45 + 390 + (390 + 90) * index + 1),
-                       value['time_data'], (255, 255, 255), genshin_font(42),
-                       anchor='mm')
-        # base_img.paste(img,((index%2)*1080,300 + 390*(index//2)))
-        base_img.paste(img, (0, 300 + (390 + 90) * index))
+        img = img.resize((745, 270), Image.Resampling.LANCZOS)
+        event_img.paste(img, (205, 10))
+        event_img_draw = ImageDraw.Draw(event_img)
+
+        event_img_draw.rectangle([(0, 0), (950, 10)], fill = event_color)
+        event_img_draw.polygon([(32, 150), (32, 176), (55,163)], fill = (243, 110, 110))
+        event_img_draw.text((8, 83), value['start_time'][0], text_color, font_l, anchor='lm')
+        event_img_draw.text((8, 129), value['start_time'][1], text_color, font_s, anchor='lm')
+        event_img_draw.text((39, 213), value['end_time'][0], text_color, font_l, anchor='lm')
+        event_img_draw.text((39, 256), value['end_time'][1], text_color, font_s, anchor='lm')
+
+        base_img.paste(event_img, (0, 450 + 280 * index), event_img)
 
     for index, value in enumerate(event_data['gacha_event']):
+        event_img = Image.new(mode='RGBA', size=(950, 380))
         img = Image.open(BytesIO(get(value['banner']).content))
-        base_draw.text((540, 600 + 45 + (390 + 90) * len(event_data['normal_event']) + 533 + index * (533 + 90)),
-                       value['time_data'], (255, 255, 255), genshin_font(42),
-                       anchor='mm')
-        # base_img.paste(img,((index%2)*1080,600 + ((1 + len(event_data['normal_event']))//2)*390 + 533*(index//2)))
-        base_img.paste(img, (0, 600 + (390 + 90) * len(event_data['normal_event']) + index * (533 + 90)))
-    # for index,value in enumerate(event_data['other_event']): img = Image.open(BytesIO(requests.get(value[
-    # 'banner']).content)) base_img.paste(img,((index%2)*1080,900 + ((1 + len(event_data['normal_event']))//2)*390 +
-    # ((1 + len(event_data['gacha_event']))//2)*533 + 390*(index//2)))
+        img = img.resize((745, 370), Image.Resampling.LANCZOS)
+        event_img.paste(img, (205, 10))
+        event_img_draw = ImageDraw.Draw(event_img)
+
+        event_img_draw.rectangle([(0, 0), (950, 10)], fill = gacha_color)
+        event_img_draw.rectangle([(8, 45), (58, 75)], fill = gacha_color)
+        event_img_draw.text((65, 60), '祈愿', text_color, font_m, anchor='lm')
+        event_img_draw.polygon([(32, 250), (32, 276), (55,263)], fill = (243, 110, 110))
+        event_img_draw.text((8, 183), value['start_time'][0], text_color, font_l, anchor='lm')
+        event_img_draw.text((8, 229), value['start_time'][1], text_color, font_s, anchor='lm')
+        event_img_draw.text((39, 313), value['end_time'][0], text_color, font_l, anchor='lm')
+        event_img_draw.text((39, 356), value['end_time'][1], text_color, font_s, anchor='lm')
+        
+        base_img.paste(event_img, (0, 450 + len(event_data['normal_event']) * 280 + 380 * index), event_img)
 
     base_img = base_img.convert('RGB')
     base_img.save(os.path.join(FILE2_PATH, 'event.jpg'), format='JPEG', subsampling=0, quality=90)
-
     return
 
 

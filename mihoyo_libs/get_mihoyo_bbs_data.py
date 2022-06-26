@@ -678,11 +678,13 @@ async def char_wiki(name, mode='char', level=None):
                                     parameters.append({})
 
                                 if label_str == 'F1P':
-                                    parameters[index].update({para: '%.2f%%' % (j * 100)})
-                                if label_str == 'F2P':
                                     parameters[index].update({para: '%.1f%%' % (j * 100)})
+                                if label_str == 'F2P':
+                                    parameters[index].update({para: '%.2f%%' % (j * 100)})
                                 elif label_str == 'F1':
                                     parameters[index].update({para: '%.1f' % j})
+                                elif label_str == 'F2':
+                                    parameters[index].update({para: '%.2f' % j})
                                 elif label_str == 'P':
                                     parameters[index].update({para: str(round(j * 100)) + '%'})
                                 elif label_str == 'I':

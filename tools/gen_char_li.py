@@ -31,7 +31,9 @@ for char_i in range(2, 336, 5):  # 角色行
             char_sample['weapon']['5'].append(star_5)
         if star_4 := ws.cell(row, 3).value:
             char_sample['weapon']['4'].append(star_4)
-
+        if star_3 := ws.cell(row, 4).value:
+            char_sample['weapon']['3'].append(star_3)
+            
         artifact = []
         if arti_1 := ws.cell(row, 5).value:
             artifact.append(arti_1)

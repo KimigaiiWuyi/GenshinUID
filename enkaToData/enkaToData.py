@@ -89,22 +89,21 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
         try:
             char_data['avatarElement'] = avatarName2Element[char_data['avatarName']]
         except KeyError:
-            check = skillId2Name['Name'][str(list(char['skillLevelMap'].keys())[0])]
-            if '风' in check :
+            check = skillId2Name['Name'][str(list(char['skillLevelMap'].keys())[2])]
+            if '风' in check:
                 char_data['avatarElement'] = 'Anemo'
-            elif '雷' in check :
+            elif '雷' in check:
                 char_data['avatarElement'] = 'Electro'
-            elif '岩' in check :
+            elif '岩' in check:
                 char_data['avatarElement'] = 'Geo'
-            elif '草' in check :
+            elif '草' in check:
                 char_data['avatarElement'] = 'Dendro'
-            elif '冰' in check :
+            elif '冰' in check:
                 char_data['avatarElement'] = 'Cryo'
-            elif '水' in check :
+            elif '水' in check:
                 char_data['avatarElement'] = 'Hydro'
             else:
                 char_data['avatarElement'] = 'Pyro'
-
 
         char_data['dataTime'] = now
 
@@ -119,9 +118,17 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             char_data['avatarSkill'].append(skill_temp)
 
         if char_data['avatarName'] in ['神里绫华', '安柏']:
-            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], char_data['avatarSkill'][0]
-            char_data['avatarSkill'][2], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], char_data['avatarSkill'][2]
+            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
+                                                                        char_data['avatarSkill'][0]
+            char_data['avatarSkill'][2], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
+                                                                        char_data['avatarSkill'][2]
             char_data['avatarEnName'] = char_data['avatarSkill'][1]['skillIcon'].split('_')[-2]
+        elif char_data['avatarName'] in ['旅行者']:
+            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
+                                                                        char_data['avatarSkill'][0]
+            char_data['avatarSkill'][1], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
+                                                                        char_data['avatarSkill'][1]
+            char_data['avatarEnName'] = str(avatarId)
         else:
             char_data['avatarEnName'] = char_data['avatarSkill'][-1]['skillIcon'].split('_')[-2]
 

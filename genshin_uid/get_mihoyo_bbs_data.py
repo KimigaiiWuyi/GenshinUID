@@ -158,25 +158,42 @@ async def weapon_adv(name):
     async with aiofiles.open(os.path.join(FILE_PATH, 'mihoyo_libs/char_adv_list.json'), encoding='utf-8') as f:
         adv_li = json.loads(await f.read())
     weapons = {}
+    artifacts = {}
     for char, info in adv_li.items():
         char_weapons = []
+        char_artifacts = []
+
         for i in info['weapon'].values():  # 3 stars, 4 stars, 5 stars
             char_weapons.extend(i)
+        for i in info['artifact']:
+            char_artifacts.extend(i)
+        #char_artifacts = list(set(char_artifacts))
 
         for weapon_name in char_weapons:
             if name in weapon_name:  # fuzzy search
                 char_weapon = weapons.get(weapon_name, [])
                 char_weapon.append(char)
                 weapons[weapon_name] = char_weapon
+        for artifact_name in char_artifacts:
+            if name in artifact_name:  # fuzzy search
+                char_artifact = artifacts.get(artifact_name, [])
+                char_artifact.append(char)
+                char_artifact = list(set(char_artifact))
+                artifacts[artifact_name] = char_artifact
 
+    im = []
     if weapons:
-        im = []
+        im.append('✨武器：')
         for k, v in weapons.items():
             im.append(f'{"、".join(v)} 可能会用到【{k}】')
-        im = '\n'.join(im)
-    else:
+    if artifacts:
+        im.append('✨圣遗物：')
+        for k, v in artifacts.items():
+            im.append(f'{"、".join(v)} 可能会用到【{k}】')
+    if im == []:
         im = '没有角色能使用【{}】'.format(name)
-    # print(im)
+    else:
+        im = '\n'.join(im)
     return im
 
 

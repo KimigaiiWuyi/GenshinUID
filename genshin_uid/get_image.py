@@ -167,6 +167,8 @@ def get_char_pic(_id: str, url: str):
 
 
 def get_char_done_pic(_id: str, url: str, star: int):
+    name = url.split('_')[-1]
+    url = 'https://upload-bbs.mihoyo.com/game_record/genshin/character_icon/UI_AvatarIcon_' + name
     char_data = get(url).content
     if star == 4:
         star1_path = os.path.join(TEXT_PATH, '4star_1.png')

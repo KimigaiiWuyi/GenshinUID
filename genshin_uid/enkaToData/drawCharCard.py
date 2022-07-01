@@ -16,6 +16,9 @@ RELIC_PATH = R_PATH / 'relicIcon'
 MAP_PATH = R_PATH / 'map'
 ETC_PATH = R_PATH / 'etc'
 
+version = '2.7.0'
+avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
+
 COLOR_MAP = {'Anemo'  : (3, 90, 77), 'Cryo': (5, 85, 151), 'Dendro': (4, 87, 3),
              'Electro': (47, 1, 85), 'Geo': (85, 34, 1), 'Hydro': (4, 6, 114), 'Pyro': (88, 4, 4)}
 
@@ -444,6 +447,15 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     e_skill_level = skillList[1]['skillLevel']
     q_skill_name = skillList[-1]['skillName']
     q_skill_level = skillList[-1]['skillLevel']
+
+    skill_add = avatarName2SkillAdd[char_name]
+    for skillAdd_index in range(0, 2):
+        if len(raw_data['talentList']) >= 3 + skillAdd_index * 2:
+            if skill_add[skillAdd_index] == 'E':
+                e_skill_level += 3
+            elif skill_add[skillAdd_index] == 'Q':
+                q_skill_level += 3
+
     for skill_num, skill in enumerate(skillList[0:2] + [skillList[-1]]):
         skill_img = Image.open(ICON_PATH / '{}.png'.format(skill['skillIcon']))
         skill_img_new = skill_img.resize((50, 50), Image.Resampling.LANCZOS).convert("RGBA")

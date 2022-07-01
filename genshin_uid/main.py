@@ -67,6 +67,7 @@ search = on_command('查询', priority=priority)
 get_sign = on_command('签到', priority=priority)
 get_mihoyo_coin = on_command('开始获取米游币', priority=priority)
 check = on_command('校验全部Cookies', priority=priority)
+check_stoken = on_command('校验全部Stoken', priority=priority)
 
 all_recheck = on_command('全部重签', permission=SUPERUSER, priority=priority)
 all_bbscoin_recheck = on_command('全部重获取',
@@ -933,6 +934,33 @@ async def check_cookies(bot: Bot,
                                     '请及时重新绑定Cookies并重新开关相应功能。').format(i[1])
                            })
         await asyncio.sleep(3 + random.randint(1, 3))
+    await matcher.finish()
+
+
+# 群聊内 校验Stoken 是否正常的功能，不正常自动删掉
+@check_stoken.handle()
+@handle_exception('Stoken校验', 'Stoken校验错误')
+async def check_cookies(bot: Bot,
+                        matcher: Matcher,
+                        args: Message = CommandArg()):
+    if args:
+        await matcher.finish()
+        return
+    raw_mes = await check_stoken_db()
+    im = raw_mes[0]
+    await matcher.send(im)
+    for i in raw_mes[1]:
+        await bot.call_api(api='send_private_msg',
+                           **{
+                               'user_id':
+                                   i[0],
+                               'message':
+                                   ('您绑定的Stoken（uid{}）已失效，以下功能将会受到影响：\n'
+                                    'gs开启自动米游币，开始获取米游币。\n'
+                                    '重新添加后需要重新开启自动米游币。').format(i[1])
+                           })
+        await asyncio.sleep(3 + random.randint(1, 3))
+
     await matcher.finish()
 
 

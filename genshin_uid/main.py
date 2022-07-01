@@ -289,7 +289,9 @@ async def daily_mihoyo_bbs_sign():
     cursor = c.execute('SELECT *  FROM NewCookiesTable WHERE StatusC != ?',
                        ('off',))
     c_data = cursor.fetchall()
-    logger.info(c_data)
+    im_success = 0
+    im_failed = 0
+    im_failed_str = ''
     for row in c_data:
         logger.info('正在执行{}'.format(row[0]))
         if row[8]:
@@ -297,13 +299,21 @@ async def daily_mihoyo_bbs_sign():
             im = await mihoyo_coin(str(row[2]), str(row[8]))
             try:
                 logger.info('已执行完毕：{}'.format(row[0]))
+                im_success += 1
                 if await config_check('MhyBBSCoinReport'):
                     await bot.call_api(api='send_private_msg',
                                        user_id=row[2],
                                        message=im)
             except Exception:
                 logger.exception('执行失败：{}'.format(row[0]))
-    logger.info('已结束。')
+                im_failed += 1
+                im_failed_str += '\n' + '执行失败：{}'.format(row[0])
+    faild_im = '\n以下为签到失败报告：{}'.format(im_failed_str) if im_failed_str != '' else ''
+    im = '今日获取mhycoin成功数量：{}，失败数量：{}{}'.format(im_success, im_failed, faild_im)
+    for qid in superusers:
+        await bot.call_api(api='send_private_msg', user_id = qid, message = im)
+        await asyncio.sleep(5 + random.randint(1, 3))
+    logger.info('米游币获取已结束。')
 
 
 def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):
@@ -940,7 +950,7 @@ async def check_cookies(bot: Bot,
 # 群聊内 校验Stoken 是否正常的功能，不正常自动删掉
 @check_stoken.handle()
 @handle_exception('Stoken校验', 'Stoken校验错误')
-async def check_cookies(bot: Bot,
+async def check_stoken(bot: Bot,
                         matcher: Matcher,
                         args: Message = CommandArg()):
     if args:

@@ -813,6 +813,27 @@ async def check_cookies(bot: HoshinoBot, ev: CQEvent):
         logger.exception('Cookie校验错误')
 
 
+# 群聊内 校验Stoken 是否正常的功能，不正常自动删掉
+@sv.on_fullmatch('校验全部Stoken')
+async def check_stoken(bot: HoshinoBot, ev: CQEvent):
+    try:
+        raw_mes = await check_stoken_db()
+        im = raw_mes[0]
+        await bot.send(ev, im)
+        for i in raw_mes[1]:
+            await bot.send_private_msg(user_id=i[0],
+                                       message='您绑定的Stoken（uid{}）已失效，以下功能将会受到影响：\n'
+                                               'gs开启自动米游币，开始获取米游币。\n'
+                                               '重新添加后需要重新开启自动米游币。'.format(i[1]))
+            await asyncio.sleep(3 + random.randint(1, 3))
+    except ActionFailed as e:
+        await bot.send(ev, '机器人发送消息失败：{}'.format(e))
+        logger.exception('发送Cookie校验信息失败')
+    except Exception as e:
+        await bot.send(ev, '发生错误 {},请检查后台输出。'.format(e))
+        logger.exception('Cookie校验错误')
+
+
 # 群聊内 查询当前树脂状态以及派遣状态 的命令
 @sv.on_fullmatch('当前状态')
 async def send_daily_data(bot: HoshinoBot, ev: CQEvent):

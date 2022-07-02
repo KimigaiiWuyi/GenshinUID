@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 from base64 import b64encode
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageChops
 from httpx import get
 from nonebot import logger
 
@@ -21,8 +21,8 @@ ETC_PATH = R_PATH / 'etc'
 version = '2.7.0'
 avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
 
-COLOR_MAP = {'Anemo'  : (3, 90, 77), 'Cryo': (5, 85, 151), 'Dendro': (4, 87, 3),
-             'Electro': (47, 1, 85), 'Geo': (85, 34, 1), 'Hydro': (4, 6, 114), 'Pyro': (88, 4, 4)}
+COLOR_MAP = {'Anemo'  : (43, 170, 163), 'Cryo': (97, 168, 202), 'Dendro': (84, 169, 62),
+             'Electro': (150, 62, 169), 'Geo': (169, 143, 62), 'Hydro': (66, 98, 182), 'Pyro': (169, 62, 67)}
 
 SCORE_MAP = {'暴击率': 2, '暴击伤害': 1, '元素精通': 0.25, '元素充能效率': 0.65, '百分比血量': 0.86,
                      '百分比攻击力': 1, '百分比防御力': 0.7, '血量': 0.014, '攻击力': 0.12, '防御力': 0.18}
@@ -380,15 +380,10 @@ async def get_char_percent(raw_data: dict) -> str:
 
 
 async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
-    img = Image.open(TEXT_PATH / '{}.png'.format(raw_data['avatarElement']))
-    char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
-    char_info_mask = Image.open(TEXT_PATH / 'char_info_mask.png')
-    
     char_name = raw_data['avatarName']
     char_level = raw_data['avatarLevel']
     char_fetter = raw_data['avatarFetter']
 
-    #based_w, based_h = 320, 1024
     based_w, based_h = 600, 1200
     if charUrl:
         offset_x, offset_y = 200, 0
@@ -422,6 +417,16 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             x2 = based_new_w
             y2 = new_h/2 + based_new_h/2 - offset_y / 2
         char_img = bg_img2.crop((x1, y1, x2, y2))
+
+    img_w, img_h = 950, 1850
+    overlay = Image.open(TEXT_PATH / 'overlay.png')
+    overlay_w, overlay_h = overlay.size
+    if overlay_h < img_h:
+        new_overlay_h = img_h
+        new_overlay_w = math.ceil(new_overlay_h * overlay_w / overlay_h)
+        overlay = overlay.resize((new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS)
+    color_img = Image.new('RGBA', overlay.size, COLOR_MAP[raw_data['avatarElement']])
+    img = ImageChops.overlay(color_img, overlay)
 
     img_temp = Image.new('RGBA', (based_w, based_h), (0,0,0,0))
     img_temp.paste(char_img,(0,0),char_info_mask)

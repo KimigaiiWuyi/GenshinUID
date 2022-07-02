@@ -427,7 +427,9 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
         overlay = overlay.resize((new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS)
     color_img = Image.new('RGBA', overlay.size, COLOR_MAP[raw_data['avatarElement']])
     img = ImageChops.overlay(color_img, overlay)
-
+    char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
+    char_info_mask = Image.open(TEXT_PATH / 'char_info_mask.png')
+    
     img_temp = Image.new('RGBA', (based_w, based_h), (0,0,0,0))
     img_temp.paste(char_img,(0,0),char_info_mask)
     img.paste(img_temp, (0, 0), img_temp)

@@ -28,6 +28,9 @@ SCORE_MAP = {'暴击率': 2, '暴击伤害': 1, '元素精通': 0.25, '元素充
 VALUE_MAP = {'攻击力': 4.975, '血量': 4.975, '防御力': 6.2, '元素精通': 19.75, 
              '元素充能效率': 5.5, '暴击率': 3.3, '暴击伤害': 6.6}
 
+with open(MAP_PATH / avatarName2SkillAdd_fileName, "r", encoding='UTF-8') as f:
+    avatarName2SkillAdd = json.load(f)
+    
 # 引入ValueMap
 with open(ETC_PATH / 'ValueAttrMap.json', 'r', encoding='UTF-8') as f:
     ATTR_MAP = json.load(f)

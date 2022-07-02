@@ -1650,6 +1650,7 @@ async def draw_info_pic(uid: str, image: Optional[Match] = None) -> str:
 async def draw_event_pic() -> None:
     async def get_month_and_time(time_data: str) -> List:
         time_data = time_data.split(' ')
+        time_data[0] = time_data[0].replace('-', '/')
         month = time_data[0].split('/', 1)[1]
         time = ':'.join(time_data[1].split(':')[:-1])
         if int(time.split(':')[0]) <= 12:
@@ -1774,6 +1775,10 @@ async def draw_event_pic() -> None:
         event_img.paste(img, (205, 10))
         event_img_draw = ImageDraw.Draw(event_img)
 
+        if isinstance(value['start_time'], str):
+            value['start_time'] = await get_month_and_time(value['start_time'])
+        if isinstance(value['end_time'], str):
+            value['end_time'] = await get_month_and_time(value['end_time'])
         event_img_draw.rectangle([(0, 0), (950, 10)], fill = event_color)
         event_img_draw.polygon([(32, 150), (32, 176), (55,163)], fill = (243, 110, 110))
         event_img_draw.text((8, 83), value['start_time'][0], text_color, font_l, anchor='lm')

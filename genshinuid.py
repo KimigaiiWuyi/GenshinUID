@@ -513,7 +513,7 @@ async def daily_mihoyo_bbs_sign():
                 im_failed_str += '\n' + '执行失败：{}'.format(row[0])
     faild_im = '\n以下为签到失败报告：{}'.format(im_failed_str) if im_failed_str != '' else ''
     im = '今日获取mhycoin成功数量：{}，失败数量：{}{}'.format(im_success, im_failed, faild_im)
-    for qid in bot.config.SUPERUSERS:
+    for qid in hoshino_bot.config.SUPERUSERS:
         await hoshino_bot.send_private_msg(user_id = qid, message = im)
         await asyncio.sleep(5 + random.randint(1, 3))
     logger.info('已结束。')

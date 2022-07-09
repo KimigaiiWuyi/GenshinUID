@@ -38,6 +38,31 @@ async def send_help_pic(bot: HoshinoBot, ev: CQEvent):
     except Exception:
         logger.exception('获取帮助失败。')
 
+@sv.on_prefix('毕业度统计')
+async def send_charcard_list(bot: HoshinoBot, ev: CQEvent):
+    message = ev.message.extract_plain_text()
+    message = message.replace(' ', '')
+    at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
+    limit = re.findall(r'\d+', message)  # str
+    if len(limit) >= 1:
+        limit = int(limit[0])
+    else:
+        limit = 24
+    if at:
+        at = at.group(1)
+        uid = await select_db(at, mode='uid')
+        message = message.replace(str(at), '')
+    else:
+        uid = await select_db(int(event.sender.user_id), mode='uid')
+    uid = uid[0]
+    im = await draw_cahrcard_list(uid, limit)
+
+    if isinstance(im, bytes):
+        await bot.send(ev, MessageSegment.image(im))
+    else:
+        await bot.send(ev, str(im))
+    logger.info(f'UID{uid}获取角色数据成功！')
+
 @sv.on_rex('[\u4e00-\u9fa5]+(推荐|攻略)')
 async def send_guide_pic(bot: HoshinoBot, ev: CQEvent):
     try:

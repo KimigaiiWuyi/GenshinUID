@@ -7,6 +7,8 @@ from PIL import Image, ImageDraw, ImageFont, ImageChops
 from httpx import get
 from nonebot import logger
 
+from .dmgCalc.dmgCalc import *
+
 R_PATH = Path(__file__).parents[0]
 TEXT_PATH = R_PATH / 'texture2D'
 ICON_PATH = R_PATH / 'icon'
@@ -27,9 +29,6 @@ SCORE_MAP = {'暴击率': 2, '暴击伤害': 1, '元素精通': 0.25, '元素充
 
 VALUE_MAP = {'攻击力': 4.975, '血量': 4.975, '防御力': 6.2, '元素精通': 19.75, 
              '元素充能效率': 5.5, '暴击率': 3.3, '暴击伤害': 6.6}
-
-with open(MAP_PATH / avatarName2SkillAdd_fileName, "r", encoding='UTF-8') as f:
-    avatarName2SkillAdd = json.load(f)
     
 # 引入ValueMap
 with open(ETC_PATH / 'ValueAttrMap.json', 'r', encoding='UTF-8') as f:
@@ -419,13 +418,15 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
             y2 = new_h/2 + based_new_h/2 - offset_y / 2
         char_img = bg_img2.crop((x1, y1, x2, y2))
 
-    img_w, img_h = 950, 1850
+    dmg_img, dmg_len = await draw_dmgCacl_img(raw_data)
+    img_w, img_h = 950, 1850 + dmg_len * 40
     overlay = Image.open(TEXT_PATH / 'overlay.png')
     overlay_w, overlay_h = overlay.size
     if overlay_h < img_h:
         new_overlay_h = img_h
         new_overlay_w = math.ceil(new_overlay_h * overlay_w / overlay_h)
         overlay = overlay.resize((new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS)
+        overlay = overlay.crop((0, 0, img_w, img_h))
     color_img = Image.new('RGBA', overlay.size, COLOR_MAP[raw_data['avatarElement']])
     img = ImageChops.overlay(color_img, overlay)
     char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
@@ -435,6 +436,7 @@ async def draw_char_card(raw_data: dict, charUrl: str = None) -> bytes:
     img_temp.paste(char_img,(0,0),char_info_mask)
     img.paste(img_temp, (0, 0), img_temp)
     img.paste(char_info_1, (0, 0), char_info_1)
+    img.paste(dmg_img,(0,1850),dmg_img)
 
     lock_img = Image.open(TEXT_PATH / 'icon_lock.png')
 

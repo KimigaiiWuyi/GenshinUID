@@ -279,9 +279,9 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
     text_color = (255, 255, 255)
     title_color = (255, 255, 100)
     text_size = genshin_font_origin(28)
-    result_draw.text((60, 22), '角色动作', title_color, text_size, anchor='lm')
-    result_draw.text((450, 22), '暴击伤害', title_color, text_size, anchor='lm')
-    result_draw.text((690, 22), '期望伤害', title_color, text_size, anchor='lm')
+    result_draw.text((45, 22), '角色动作', title_color, text_size, anchor='lm')
+    result_draw.text((460, 22), '暴击伤害', title_color, text_size, anchor='lm')
+    result_draw.text((695, 22), '期望伤害', title_color, text_size, anchor='lm')
     
     for index, power_name in enumerate(power_list):
         attack_type = power_name[0]
@@ -331,9 +331,9 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
             crit_dmg = (effect_prop * power_percent + power_value) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * d * r + add_dmg
             avg_dmg = (crit_dmg - add_dmg) * critrate_cal + (1 - critrate_cal) * (effect_prop * power_percent + power_value) * (1 + dmgBonus_cal) * d * r + add_dmg
 
-        result_draw.text((60, 22 + (index + 1) * 40), power_list[power_name]['power_name'], text_color, text_size, anchor='lm')
-        result_draw.text((450, 22 + (index + 1) * 40), str(round(crit_dmg)), text_color, text_size, anchor='lm')
-        result_draw.text((690, 22 + (index + 1) * 40), str(round(avg_dmg)), text_color, text_size, anchor='lm')
+        result_draw.text((45, 22 + (index + 1) * 40), power_list[power_name]['power_name'], text_color, text_size, anchor='lm')
+        result_draw.text((460, 22 + (index + 1) * 40), str(round(crit_dmg)), text_color, text_size, anchor='lm')
+        result_draw.text((695, 22 + (index + 1) * 40), str(round(avg_dmg)), text_color, text_size, anchor='lm')
         
     return result_img, len(power_list) + 2
 

@@ -53,7 +53,7 @@ async def send_charcard_list(bot: HoshinoBot, ev: CQEvent):
         uid = await select_db(at, mode='uid')
         message = message.replace(str(at), '')
     else:
-        uid = await select_db(int(event.sender.user_id), mode='uid')
+        uid = await select_db(int(ev.sender['user_id']), mode='uid')
     uid = uid[0]
     im = await draw_cahrcard_list(uid, limit)
 

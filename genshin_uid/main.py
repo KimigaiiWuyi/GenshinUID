@@ -52,6 +52,7 @@ open_switch = on_command('gs开启', priority=priority)
 close_switch = on_command('gs关闭', priority=priority)
 
 refresh = on_command('强制刷新', priority=priority)
+get_charcard_list = on_command('毕业度统计', priority=priority)
 
 link_mys = on_command('绑定mys', priority=priority)
 link_uid = on_command('绑定uid', priority=priority)
@@ -380,6 +381,36 @@ async def send_help_pic(matcher: Matcher, args: Message = CommandArg()):
     img_mes = 'base64://' + ls_f
     f.close()
     await matcher.finish(MessageSegment.image(img_mes))
+
+
+@get_charcard_list.handle()
+@handle_exception('毕业度统计')
+async def send_charcard_list(bot: Bot,
+                             event: Union[GroupMessageEvent, PrivateMessageEvent],
+                             matcher: Matcher,
+                             args: Message = CommandArg(),
+                             custom: ImageAndAt = Depends()):
+
+    message = args.extract_plain_text().strip().replace(' ', '')
+    limit = re.findall(r'\d+', message)  # str
+    if len(limit) >= 1:
+        limit = int(limit[0])
+    else:
+        limit = 24
+    at = custom.get_first_at()
+    if at:
+        uid = await select_db(at, mode='uid')
+        message = message.replace(str(at), '')
+    else:
+        uid = await select_db(int(event.sender.user_id), mode='uid')
+    uid = uid[0]
+    im = await draw_cahrcard_list(uid, limit)
+
+    if isinstance(im, bytes):
+        await matcher.finish(MessageSegment.image(im))
+    else:
+        await matcher.finish(str(im))
+    logger.info(f'UID{uid}获取角色数据成功！')
 
 
 @refresh.handle()

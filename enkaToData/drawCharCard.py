@@ -653,7 +653,9 @@ async def draw_single_card(img: Image, char: dict, index: int, color: Tuple[int,
     size_36 = genshin_font_origin(36)
     size_46 = genshin_font_origin(46)
 
-    img_base = Image.open(TEXT_PATH / '{}.png'.format(char['avatarElement']))
+    overlay = Image.open(TEXT_PATH / 'overlay.png')
+    color_img = Image.new('RGBA', overlay.size, COLOR_MAP[char['avatarElement']])
+    img_base = ImageChops.overlay(color_img, overlay)
     if char['char_name'] in avatarCardOffsetMap:
         offset_x, offset_y = avatarCardOffsetMap[char['char_name']][0], avatarCardOffsetMap[char['char_name']][1]
     else:

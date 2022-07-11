@@ -56,8 +56,8 @@ async def send_charcard_list(bot: HoshinoBot, ev: CQEvent):
         uid = await select_db(int(ev.sender['user_id']), mode='uid')
     uid = uid[0]
     im = await draw_cahrcard_list(uid, limit)
-
-    if isinstance(im, bytes):
+    
+    if im.startswith('base64://'):
         await bot.send(ev, MessageSegment.image(im))
     else:
         await bot.send(ev, str(im))

@@ -1105,6 +1105,182 @@
     },
     {
         "weaponType": "WEAPON_SWORD_ONE_HAND",
+        "rankLevel": 4,
+        "weaponBaseExp": 50000,
+        "skillAffix": [
+            111416,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 42.4010009765625,
+                "type": "GROW_CURVE_ATTACK_201"
+            },
+            {
+                "propType": "FIGHT_PROP_ATTACK_PERCENT",
+                "initValue": 0.09000000357627869,
+                "type": "GROW_CURVE_CRITICAL_201"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Sword_Youtou/Equip_Sword_Youtou_OverrideTexture/Equip_Sword_Youtou_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Sword_Youtou/Equip_Sword_Youtou_OverrideTexture/Equip_Sword_Youtou_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Sword_Youtou_Awaken",
+        "weaponPromoteId": 11416,
+        "storyId": 191416,
+        "awakenCosts": [],
+        "gachaCardNameHashSuffix": 1709216277,
+        "gachaCardNameHashPre": 189,
+        "enhanceRule": 1,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 2,
+        "id": 11416,
+        "nameTextMapHash": 1012170803,
+        "descTextMapHash": 2752898277,
+        "icon": "UI_EquipIcon_Sword_Youtou",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50011416
+    },
+    {
+        "weaponType": "WEAPON_SWORD_ONE_HAND",
+        "rankLevel": 4,
+        "weaponBaseExp": 50000,
+        "skillAffix": [
+            111419,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 42.4010009765625,
+                "type": "GROW_CURVE_ATTACK_201"
+            },
+            {
+                "propType": "FIGHT_PROP_ATTACK_PERCENT",
+                "initValue": 0.09000000357627869,
+                "type": "GROW_CURVE_CRITICAL_201"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Sword_YoutouEnchanted/Equip_Sword_YoutouEnchanted_OverrideTexture/Equip_Sword_YoutouEnchanted_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Sword_YoutouEnchanted/Equip_Sword_YoutouEnchanted_OverrideTexture/Equip_Sword_YoutouEnchanted_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Sword_YoutouEnchanted",
+        "weaponPromoteId": 11419,
+        "awakenCosts": [],
+        "gachaCardNameHashSuffix": 2306240074,
+        "gachaCardNameHashPre": 152,
+        "enhanceRule": 1,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 2,
+        "id": 11419,
+        "nameTextMapHash": 1499745907,
+        "descTextMapHash": 3371445901,
+        "icon": "UI_EquipIcon_Sword_YoutouEnchanted",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50011419
+    },
+    {
+        "weaponType": "WEAPON_SWORD_ONE_HAND",
+        "rankLevel": 4,
+        "weaponBaseExp": 50000,
+        "skillAffix": [
+            111420,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 42.4010009765625,
+                "type": "GROW_CURVE_ATTACK_201"
+            },
+            {
+                "propType": "FIGHT_PROP_ATTACK_PERCENT",
+                "type": "GROW_CURVE_CRITICAL_201"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Sword_YoutouShattered/Equip_Sword_YoutouShattered_OverrideTexture/Equip_Sword_YoutouShattered_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Sword_YoutouEnchanted/Equip_Sword_YoutouEnchanted_OverrideTexture/Equip_Sword_YoutouEnchanted_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Sword_YoutouShattered",
+        "weaponPromoteId": 11420,
+        "awakenCosts": [],
+        "gachaCardNameHashSuffix": 2104593925,
+        "gachaCardNameHashPre": 76,
+        "enhanceRule": 1,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 2,
+        "id": 11420,
+        "nameTextMapHash": 1538092267,
+        "descTextMapHash": 2589761045,
+        "icon": "UI_EquipIcon_Sword_YoutouShattered",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50011420
+    },
+    {
+        "weaponType": "WEAPON_SWORD_ONE_HAND",
+        "rankLevel": 4,
+        "weaponBaseExp": 50000,
+        "skillAffix": [
+            111421,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 42.4010009765625,
+                "type": "GROW_CURVE_ATTACK_201"
+            },
+            {
+                "propType": "FIGHT_PROP_ATTACK_PERCENT",
+                "initValue": 0.04500000178813934,
+                "type": "GROW_CURVE_CRITICAL_201"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Sword_YoutouEnchanted/Equip_Sword_YoutouEnchanted_OverrideTexture/Equip_Sword_YoutouEnchanted_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Sword_YoutouEnchanted/Equip_Sword_YoutouEnchanted_OverrideTexture/Equip_Sword_YoutouEnchanted_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Sword_YoutouEnchanted",
+        "weaponPromoteId": 11421,
+        "awakenCosts": [],
+        "gachaCardNameHashSuffix": 2306240074,
+        "gachaCardNameHashPre": 152,
+        "enhanceRule": 1,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 2,
+        "id": 11421,
+        "nameTextMapHash": 3464027035,
+        "descTextMapHash": 2488602445,
+        "icon": "UI_EquipIcon_Sword_YoutouEnchanted",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50011421
+    },
+    {
+        "weaponType": "WEAPON_SWORD_ONE_HAND",
         "rankLevel": 5,
         "weaponBaseExp": 300000,
         "skillAffix": [

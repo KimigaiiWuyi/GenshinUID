@@ -4966,6 +4966,69 @@
         "globalValueKey": ""
     },
     {
+        "id": 10591,
+        "nameTextMapHash": 2195671413,
+        "abilityName": "Avatar_Heizo_ExtraAttack",
+        "descTextMapHash": 1669209888,
+        "skillIcon": "Skill_A_Catalyst_MD",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 5931,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10592,
+        "nameTextMapHash": 3012298293,
+        "abilityName": "",
+        "descTextMapHash": 2688600376,
+        "skillIcon": "Skill_S_Heizo_01",
+        "cdTime": 10.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 5932,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10595,
+        "nameTextMapHash": 3584687669,
+        "abilityName": "",
+        "descTextMapHash": 2838062416,
+        "skillIcon": "Skill_E_Heizo_01",
+        "cdTime": 12.0,
+        "costElemType": "Wind",
+        "costElemVal": 40.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 5939,
+        "globalValueKey": ""
+    },
+    {
         "id": 10602,
         "nameTextMapHash": 123614933,
         "abilityName": "",
@@ -5929,6 +5992,44 @@
         "globalValueKey": ""
     },
     {
+        "id": 20036,
+        "nameTextMapHash": 772855381,
+        "abilityName": "",
+        "descTextMapHash": 2318193040,
+        "skillIcon": "Skill_S_SummerTimeV2Quest_BanSkill",
+        "costStamina": 999999.0,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20037,
+        "nameTextMapHash": 1636845245,
+        "abilityName": "",
+        "descTextMapHash": 834739912,
+        "skillIcon": "Skill_E_SummerTimeV2Quest_BanSkill",
+        "costStamina": 999999.0,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
         "id": 20040,
         "nameTextMapHash": 3692781493,
         "abilityName": "ActivityAbility_CatchAnimal_Shoot",
@@ -5987,7 +6088,7 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": "",
-        "JDCHIOJLKEC": 3
+        "PBFNJNELDIK": 3
     },
     {
         "id": 20100,
@@ -8184,6 +8285,25 @@
         "abilityName": "",
         "descTextMapHash": 1364748616,
         "skillIcon": "Skill_A_04",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5059010,
+        "nameTextMapHash": 3825685805,
+        "abilityName": "",
+        "descTextMapHash": 37222848,
+        "skillIcon": "Skill_A_Catalyst_MD",
         "maxChargeNum": 1,
         "triggerID": 30,
         "lockShape": "CircleLockEnemyR5H6HC",

@@ -74,6 +74,9 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
     prop['healBouns'] = fight_prop['healBonus']
     prop['shieldBouns'] = 0
 
+    if char_name not in char_action:
+        faild_img = Image.new('RGBA', (950, 1))
+        return faild_img, 0
     power_list = char_action[char_name]
 
     if weaponType == '法器' or char_name in ['荒泷一斗', '刻晴', '诺艾尔']:

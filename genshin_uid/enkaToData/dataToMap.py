@@ -8,8 +8,7 @@ R_PATH = Path(__file__).parents[0]
 MAP_PATH = R_PATH / 'map'
 DATA_PATH = R_PATH / 'data'
 
-version = '2.7.0'
-version_old = '2.6.0'
+version = '2.8.0'
 
 avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
 weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
@@ -18,8 +17,8 @@ skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
 talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
 avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
 
-artifact2attr_fileName = f'artifact2attr_mapping_{version_old}.json'
-icon2Name_fileName = f'icon2Name_mapping_{version_old}.json'
+artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
+icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 
 with open(DATA_PATH / 'textMap.json', "r", encoding='UTF-8') as f:
     raw_data = json.load(f)
@@ -60,7 +59,8 @@ async def weaponHash2NameJson() -> None:
 
     temp = {}
     for i in weapon_data:
-        temp[str(i['nameTextMapHash'])] = raw_data[str(i['nameTextMapHash'])]
+        if str(i['nameTextMapHash']) in raw_data:
+            temp[str(i['nameTextMapHash'])] = raw_data[str(i['nameTextMapHash'])]
 
     with open(MAP_PATH / weaponHash2Name_fileName, 'w', encoding='UTF-8') as file:
         json.dump(temp, file, ensure_ascii=False)
@@ -96,8 +96,9 @@ async def skillId2NameJson() -> None:
 
     temp = {'Name': {}, 'Icon': {}}
     for i in skill_data:
-        temp['Name'][str(i['id'])] = raw_data[str(i['nameTextMapHash'])]
-        temp['Icon'][str(i['id'])] = i['skillIcon']
+        if str(i['nameTextMapHash']) in raw_data:
+            temp['Name'][str(i['id'])] = raw_data[str(i['nameTextMapHash'])]
+            temp['Icon'][str(i['id'])] = i['skillIcon']
 
     with open(MAP_PATH / skillId2Name_fileName, 'w', encoding='UTF-8') as file:
         json.dump(temp, file, ensure_ascii=False)

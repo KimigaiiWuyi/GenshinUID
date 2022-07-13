@@ -6029,6 +6029,137 @@
         ]
     },
     {
+        "talentId": 591,
+        "nameTextMapHash": 1159663785,
+        "descTextMapHash": 2455515991,
+        "icon": "UI_Talent_S_Heizo_01",
+        "mainCostItemId": 1159,
+        "mainCostItemCount": 1,
+        "openConfig": "Heizo_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            5.0,
+            0.15000000596046448,
+            10.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 592,
+        "nameTextMapHash": 286623921,
+        "descTextMapHash": 3972074095,
+        "icon": "UI_Talent_S_Heizo_02",
+        "prevTalent": 591,
+        "mainCostItemId": 1159,
+        "mainCostItemCount": 1,
+        "openConfig": "Heizo_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 593,
+        "nameTextMapHash": 2470569577,
+        "descTextMapHash": 2770450111,
+        "icon": "UI_Talent_U_Heizo_01",
+        "prevTalent": 592,
+        "mainCostItemId": 1159,
+        "mainCostItemCount": 1,
+        "openConfig": "Heizo_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 594,
+        "nameTextMapHash": 501887121,
+        "descTextMapHash": 1412115951,
+        "icon": "UI_Talent_S_Heizo_03",
+        "prevTalent": 593,
+        "mainCostItemId": 1159,
+        "mainCostItemCount": 1,
+        "openConfig": "Heizo_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            9.0,
+            1.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 595,
+        "nameTextMapHash": 298040329,
+        "descTextMapHash": 4071192391,
+        "icon": "UI_Talent_U_Heizo_02",
+        "prevTalent": 594,
+        "mainCostItemId": 1159,
+        "mainCostItemCount": 1,
+        "openConfig": "Heizo_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 596,
+        "nameTextMapHash": 2921909753,
+        "descTextMapHash": 757878495,
+        "icon": "UI_Talent_S_Heizo_04",
+        "prevTalent": 595,
+        "mainCostItemId": 1159,
+        "mainCostItemCount": 1,
+        "openConfig": "Heizo_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.03999999910593033,
+            0.3199999928474426,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
         "talentId": 601,
         "nameTextMapHash": 748294089,
         "descTextMapHash": 3598001479,

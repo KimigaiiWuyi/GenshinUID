@@ -18,7 +18,7 @@ RELIC_PATH = R_PATH / 'relicIcon'
 MAP_PATH = R_PATH / 'map'
 ETC_PATH = R_PATH / 'etc'
 
-version = '2.7.0'
+version = '2.8.0'
 avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
 
 COLOR_MAP = {'Anemo'  : (43, 170, 163), 'Cryo': (97, 168, 202), 'Dendro': (84, 169, 62),

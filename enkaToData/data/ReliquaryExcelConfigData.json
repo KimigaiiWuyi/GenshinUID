@@ -102097,7 +102097,7 @@
     {
         "equipType": "EQUIP_RING",
         "showPic": "Eff_UI_RelicIcon_15003_1",
-        "rankLevel": 4,
+        "rankLevel": 5,
         "mainPropDepotId": 5099,
         "appendPropDepotId": 964,
         "appendPropNum": 4,
@@ -102109,8 +102109,8 @@
             17,
             21
         ],
-        "baseConvExp": 2520,
-        "maxLevel": 17,
+        "baseConvExp": 3780,
+        "maxLevel": 21,
         "storyId": 185031,
         "destroyReturnMaterial": [],
         "destroyReturnMaterialCount": [],
@@ -102121,7 +102121,7 @@
         "itemType": "ITEM_RELIQUARY",
         "weight": 1,
         "rank": 10,
-        "gadgetId": 70600044,
+        "gadgetId": 70600045,
         "dropable": true
     },
     {
@@ -102217,8 +102217,8 @@
     {
         "equipType": "EQUIP_SHOES",
         "showPic": "Eff_UI_RelicIcon_15003_5",
-        "rankLevel": 4,
-        "mainPropDepotId": 1099,
+        "rankLevel": 5,
+        "mainPropDepotId": 1095,
         "appendPropDepotId": 963,
         "appendPropNum": 4,
         "setId": 15003,
@@ -102229,8 +102229,8 @@
             17,
             21
         ],
-        "baseConvExp": 2520,
-        "maxLevel": 17,
+        "baseConvExp": 3780,
+        "maxLevel": 21,
         "storyId": 185035,
         "destroyReturnMaterial": [],
         "destroyReturnMaterialCount": [],
@@ -102241,7 +102241,7 @@
         "itemType": "ITEM_RELIQUARY",
         "weight": 1,
         "rank": 10,
-        "gadgetId": 70600044,
+        "gadgetId": 70600045,
         "dropable": true
     },
     {

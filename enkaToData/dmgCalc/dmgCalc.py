@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageChops
 DMG_PATH = Path(__file__).parents[0]
 DMG_TEXT_PATH = DMG_PATH / 'texture2d'
 
-version = '2.7.0'
+version = '2.8.0'
 avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
 
 with open(DMG_PATH / avatarName2SkillAdd_fileName, "r", encoding='UTF-8') as f:
@@ -74,6 +74,9 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
     prop['healBouns'] = fight_prop['healBonus']
     prop['shieldBouns'] = 0
 
+    if char_name not in char_action:
+        faild_img = Image.new('RGBA', (950, 1))
+        return faild_img, 0
     power_list = char_action[char_name]
 
     if weaponType == '法器' or char_name in ['荒泷一斗', '刻晴', '诺艾尔']:

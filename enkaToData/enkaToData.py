@@ -10,8 +10,7 @@ ICON_PATH = R_PATH / 'icon'
 DATA_PATH = R_PATH / 'data'
 PLAYER_PATH = R_PATH / 'player'
 
-version = '2.7.0'
-version_old = '2.6.0'
+version = '2.8.0'
 
 avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
 weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
@@ -20,8 +19,8 @@ skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
 talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
 avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
 
-artifact2attr_fileName = f'artifact2attr_mapping_{version_old}.json'
-icon2Name_fileName = f'icon2Name_mapping_{version_old}.json'
+artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
+icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 
 with open(MAP_PATH / avatarId2Name_fileName, "r", encoding='UTF-8') as f:
     avatarId2Name = json.load(f)

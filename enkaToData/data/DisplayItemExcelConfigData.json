@@ -96,6 +96,16 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 718006855,
+        "rankLevel": 4,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410010,
+        "nameTextMapHash": 1349879729,
+        "descTextMapHash": 297508946,
+        "icon": "UI_DisplayItemIcon_410010",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 1010293015,
         "rankLevel": 1,
         "param": 10001,

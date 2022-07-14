@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageChops
 DMG_PATH = Path(__file__).parents[0]
 DMG_TEXT_PATH = DMG_PATH / 'texture2d'
 
-version = '2.7.0'
+version = '2.8.0'
 avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
 
 with open(DMG_PATH / avatarName2SkillAdd_fileName, "r", encoding='UTF-8') as f:

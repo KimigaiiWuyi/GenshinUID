@@ -1649,14 +1649,30 @@ async def draw_info_pic(uid: str, image: Optional[str] = None) -> str:
 
 async def draw_event_pic() -> None:
     async def get_month_and_time(time_data: str) -> List:
-        time_data = time_data.split(' ')
-        time_data[0] = time_data[0].replace('-', '/')
-        month = time_data[0].split('/', 1)[1]
-        time = ':'.join(time_data[1].split(':')[:-1])
-        if int(time.split(':')[0]) <= 12:
-            time = time + 'AM'
+        """
+        :说明:
+        接收时间字符串`2022/02/09 18:59:59`
+        转换为`['02/09', '18:59PM']`
+        :参数:
+        * time_data (str): 时间字符串。
+        :返回:
+        * [month, time] (list): ['02/09', '18:59PM']。
+        """
+        if '永久开放' in time_data:
+            month = time_data[:5]
+            time = '永久开放'
+        if '更新后' in time_data:
+            month = time_data[:5]
+            time = '更新后'
         else:
-            time = time + 'PM'
+            time_data = time_data.split(' ')
+            time_data[0] = time_data[0].replace('-', '/')
+            month = time_data[0].split('/', 1)[1]
+            time = ':'.join(time_data[1].split(':')[:-1])
+            if int(time.split(':')[0]) <= 12:
+                time = time + 'AM'
+            else:
+                time = time + 'PM'
         return [month, time]
 
     raw_data = await get_genshin_events('List')
@@ -1693,8 +1709,10 @@ async def draw_event_pic() -> None:
 
                             if ' ' in time_datas[1]:
                                 month_end, time_end = await get_month_and_time(time_datas[1])
+                            elif '版本结束' in time_datas[1]:
+                                month_end, time_end = time_datas[1][:5], '结束后'
                             else:
-                                month_end, time_end = '永久开放', '更新后'
+                                month_end, time_end = '更新后', '永久开放'
                             k['start_time'] = [month_start, time_start]
                             k['end_time'] = [month_end, time_end]
                         elif '活动内容' in time_data:
@@ -1720,6 +1738,8 @@ async def draw_event_pic() -> None:
                                         time_data_end = findall('<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>', time_data_end)[0]
                                         month_end, time_end = await get_month_and_time(time_data_end)
                                         k['end_time'] = [month_end, time_end]
+                                    elif '版本结束' in time_data_end:
+                                        k['end_time'] = [time_data_end[1:6], '结束']
                                     else:
                                         k['end_time'] = ['更新后', '永久开放']
                                     break

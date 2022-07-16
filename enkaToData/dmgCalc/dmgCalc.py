@@ -49,6 +49,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
     q_skill_name = skillList[-1]['skillName']
     prop['Q_skill_level'] = skillList[-1]['skillLevel']
 
+    enemy_level = char_level
     skill_add = avatarName2SkillAdd[char_name]
     for skillAdd_index in range(0, 2):
         if len(raw_data['talentList']) >= 3 + skillAdd_index * 2:
@@ -70,55 +71,38 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
     prop['critdmg'] = fight_prop['critDmg']
     prop['ce'] = fight_prop['energyRecharge']
     prop['physicalDmgBonus'] = physicalDmgBonus = fight_prop['physicalDmgBonus']
-    prop['dmgBonus'] = dmgBonus = fight_prop['dmgBonus'] if fight_prop['physicalDmgBonus'] <= fight_prop['dmgBonus'] else fight_prop['physicalDmgBonus']
+    prop['dmgBonus'] = dmgBonus = fight_prop['dmgBonus']
     prop['healBouns'] = fight_prop['healBonus']
     prop['shieldBouns'] = 0
-
+        
     if char_name not in char_action:
         faild_img = Image.new('RGBA', (950, 1))
         return faild_img, 0
     power_list = char_action[char_name]
 
-    if weaponType == '法器' or char_name in ['荒泷一斗', '刻晴', '诺艾尔']:
-        prop['A_dmgBonus'] = dmgBonus
-        prop['B_dmgBonus'] = dmgBonus
-        prop['C_dmgBonus'] = dmgBonus
-    elif weaponType == '弓':
-        prop['A_dmgBonus'] = physicalDmgBonus
-        prop['B_dmgBonus'] = dmgBonus
-        prop['C_dmgBonus'] = physicalDmgBonus
-    else:
-        prop['A_dmgBonus'] = physicalDmgBonus
-        prop['B_dmgBonus'] = physicalDmgBonus
-        prop['C_dmgBonus'] = physicalDmgBonus
+    for prop_attr in ['dmgBonus', 'critrate', 'critdmg', 'addDmg', 'd', 'r', 'ignoreDef']:
+        for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
+            prop['{}_{}'.format(prop_limit, prop_attr)] = 0
 
-    prop['E_dmgBonus'] = 0
-    prop['Q_dmgBonus'] = 0
-
-    prop['A_critrate'] = 0
-    prop['B_critrate'] = 0
-    prop['C_critrate'] = 0
-    prop['E_critrate'] = 0
-    prop['Q_critrate'] = 0
-
-    prop['A_critdmg'] = 0
-    prop['B_critdmg'] = 0
-    prop['C_critdmg'] = 0
-    prop['E_critdmg'] = 0
-    prop['Q_critdmg'] = 0
-
-    prop['A_addDmg'] = 0
-    prop['B_addDmg'] = 0
-    prop['C_addDmg'] = 0
-    prop['E_addDmg'] = 0
-    prop['Q_addDmg'] = 0
+    for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
+        if weaponType == '法器' or char_name in ['荒泷一斗', '刻晴', '诺艾尔']:
+            prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
+        elif weaponType == '弓':
+            if prop_limit in ['A', 'C']:
+                prop['{}_dmgBonus'.format(prop_limit)] = physicalDmgBonus
+            elif prop_limit in ['B', 'E', 'Q']:
+                prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
+        else:
+            if prop_limit in ['A', 'B', 'C']:
+                prop['{}_dmgBonus'.format(prop_limit)] = physicalDmgBonus
+            elif prop_limit in ['E', 'Q']:
+                prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
 
     prop['hp_green'] = fight_prop['addHp']
     prop['attack_green'] = fight_prop['addAtk']
     prop['defense_green'] = fight_prop['addDef']
 
     prop['r'] = 0.1
-    prop['d'] = 0
     prop['a'] = 0
     prop['g'] = 0
     prop['k'] = 1
@@ -143,6 +127,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
                 equipSets['type'] += '2'
                 equipSets['set'] += '|' + equip
 
+    if equipSets['set'].startswith('|'):
+        equipSets['set'] = equipSets['set'][1:]
     all_effect = []
 
     # 计算圣遗物buff
@@ -219,7 +205,6 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
 
     sp = []
     # 计算全部的buff，添加入属性
-    print(all_effect)
     if all_effect:
         all_effect = ';'.join(all_effect)
         all_effect_list = all_effect.split(';')
@@ -267,7 +252,6 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
             else:
                 prop['{}'.format(effect_attr)] += effect_value
 
-    print(prop)
     w = 950
     h = 40 * (len(power_list) + 1) 
     result_img = Image.new('RGBA', (w, h), (0, 0, 0, 0))
@@ -317,13 +301,14 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
 
         power_percent, power_value = await power_to_value(power, power_plus)
         
-        dmgBonus_cal = prop['dmgBonus'] + prop['{}_dmgBonus'.format(attack_type)] + sp_dmgBonus
+        dmgBonus_cal = prop['{}_dmgBonus'.format(attack_type)] + sp_dmgBonus
         critdmg_cal = prop['critdmg'] + prop['{}_critdmg'.format(attack_type)]
         critrate_cal = prop['critrate'] + prop['{}_critrate'.format(attack_type)]
-        d = (char_level + 100) / ((char_level + 100) + (1-prop['d']) * (char_level + 100))
+        d_cal = (char_level + 100) / ((char_level + 100) + (1-prop['{}_d'.format(attack_type)]) * (1-prop['{}_ignoreDef'.format(attack_type)]) * (enemy_level + 100))
         r = 1 - prop['r']
         e_dmg = prop['k']*(1+(2.78*prop['em'])/(prop['em']+1400)+prop['a'])
         add_dmg = prop['{}_addDmg'.format(attack_type)] + sp_addDmg
+
         if '治疗' in power_name:
             crit_dmg = avg_dmg = (effect_prop * power_percent + power_value) * (1 + prop['healBouns'])
         elif '护盾' in power_name:
@@ -331,8 +316,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Image:
         elif '提升' in power_name or '提高' in power_name:
             continue
         else:
-            crit_dmg = (effect_prop * power_percent + power_value) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * d * r + add_dmg
-            avg_dmg = (crit_dmg - add_dmg) * critrate_cal + (1 - critrate_cal) * (effect_prop * power_percent + power_value) * (1 + dmgBonus_cal) * d * r + add_dmg
+            crit_dmg = (effect_prop * power_percent + power_value) * (1 + critdmg_cal) * (1 + dmgBonus_cal) * d_cal * r + add_dmg
+            avg_dmg = (crit_dmg - add_dmg) * critrate_cal + (1 - critrate_cal) * (effect_prop * power_percent + power_value) * (1 + dmgBonus_cal) * d_cal * r + add_dmg
 
         result_draw.text((45, 22 + (index + 1) * 40), power_list[power_name]['power_name'], text_color, text_size, anchor='lm')
         result_draw.text((460, 22 + (index + 1) * 40), str(round(crit_dmg)), text_color, text_size, anchor='lm')

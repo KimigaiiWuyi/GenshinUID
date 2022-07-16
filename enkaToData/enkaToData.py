@@ -56,7 +56,7 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
     if enka_data:
         pass
     else:
-        enka_data = json.loads(httpx.get(f'https://enka.shinshin.moe/u/{str(uid)}/__data.json').text)
+        enka_data = json.loads(httpx.get(f'https://enka.network/u/{str(uid)}/__data.json').text)
     if enka_data == {}:
         return enka_data
     now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))

@@ -1842,7 +1842,7 @@ async def draw_collect_card(uid: str, nickname: str, image: Optional[str] = None
 
     # 记录数据
     raw_data = raw_data['data']
-    max_data = {'成就':646,'华丽的宝箱':131,'珍贵的宝箱':347,'精致的宝箱':1221,'普通的宝箱':1658}
+    max_data = {'成就':649,'华丽的宝箱':139,'珍贵的宝箱':368,'精致的宝箱':1306,'普通的宝箱':1776}
 
     achieve = raw_data['stats']['achievement_number']
     chest4 = raw_data['stats']['common_chest_number']

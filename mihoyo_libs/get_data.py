@@ -27,13 +27,18 @@ INDEX_PATH = os.path.join(BASE2_PATH, 'index')
 async def config_check(func, mode='CHECK'):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    c.execute("""CREATE TABLE IF NOT EXISTS Config
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS Config
             (Name TEXT PRIMARY KEY     NOT NULL,
             Status      TEXT,
             GroupList   TEXT,
-            Extra       TEXT);""")
-    c.execute('INSERT OR IGNORE INTO Config (Name,Status) \
-                            VALUES (?, ?)', (func, 'on'))
+            Extra       TEXT);"""
+    )
+    c.execute(
+        'INSERT OR IGNORE INTO Config (Name,Status) \
+                            VALUES (?, ?)',
+        (func, 'on'),
+    )
     if mode == 'CHECK':
         cursor = c.execute('SELECT * from Config WHERE Name = ?', (func,))
         c_data = cursor.fetchall()
@@ -57,14 +62,16 @@ async def config_check(func, mode='CHECK'):
 async def get_a_lots(qid):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    c.execute("""CREATE TABLE IF NOT EXISTS UseridDict
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS UseridDict
             (QID INT PRIMARY KEY     NOT NULL,
             lots        TEXT,
             cache       TEXT,
             permission  TEXT,
             Status      TEXT,
             Subscribe   TEXT,
-            Extra       TEXT);""")
+            Extra       TEXT);"""
+    )
     cursor = c.execute('SELECT * from UseridDict WHERE QID = ?', (qid,))
     c_data = cursor.fetchall()
     with open(os.path.join(INDEX_PATH, 'lots.txt'), 'r') as f:
@@ -74,8 +81,11 @@ async def get_a_lots(qid):
     if len(c_data) == 0:
         num = random.randint(1, len(raw_data) - 1)
         data = raw_data[num]
-        c.execute('INSERT OR IGNORE INTO UseridDict (QID,lots) \
-                            VALUES (?, ?)', (qid, str(num)))
+        c.execute(
+            'INSERT OR IGNORE INTO UseridDict (QID,lots) \
+                            VALUES (?, ?)',
+            (qid, str(num)),
+        )
     else:
         if c_data[0][1] is None:
             num = random.randint(0, len(raw_data) - 1)
@@ -96,7 +106,10 @@ async def open_push(uid, qid, status, mode):
     c_data = cursor.fetchall()
     if len(c_data) != 0:
         try:
-            c.execute('UPDATE NewCookiesTable SET {s} = ?,QID = ? WHERE UID=?'.format(s=mode), (status, qid, uid))
+            c.execute(
+                'UPDATE NewCookiesTable SET {s} = ?,QID = ? WHERE UID=?'.format(s=mode),
+                (status, qid, uid),
+            )
             conn.commit()
             conn.close()
             return '成功！'
@@ -138,8 +151,10 @@ async def check_db():
                 pass
             logger.info(f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！')
     if len(c_data) > 9:
-        return_str = '正常Cookies数量：{}\n{}'.format(str(normal_num),
-                                                 '失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies')
+        return_str = '正常Cookies数量：{}\n{}'.format(
+            str(normal_num),
+            '失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies',
+        )
     conn.commit()
     conn.close()
     logger.info('已完成Cookies检查！')
@@ -151,6 +166,7 @@ async def check_db():
 async def check_stoken_db():
     def random_text(num: int) -> str:
         return ''.join(random.sample(string.ascii_lowercase + string.digits, num))
+
     return_str = str()
     normal_num = 0
     invalid_str = ''
@@ -163,35 +179,40 @@ async def check_stoken_db():
         if row[1] is None:
             continue
         async with AsyncClient() as client:
-            req = await client.get(url=bbs_Taskslist, 
-                                    headers = {
-                                        'DS'                : old_version_get_ds_token(True),
-                                        'cookie'            : row[1],
-                                        'x-rpc-client_type' : '2',
-                                        'x-rpc-app_version' : '2.7.0',
-                                        'x-rpc-sys_version' : '6.0.1',
-                                        'x-rpc-channel'     : 'mihoyo',
-                                        'x-rpc-device_id'   : random_hex(32),
-                                        'x-rpc-device_name' : random_text(random.randint(1, 10)),
-                                        'x-rpc-device_model': 'Mi 10',
-                                        'Referer'           : 'https://app.mihoyo.com',
-                                        'Host'              : 'bbs-api.mihoyo.com',
-                                        'User-Agent'        : 'okhttp/4.8.0'
-                                    })
+            req = await client.get(
+                url=bbs_Taskslist,
+                headers={
+                    'DS': old_version_get_ds_token(True),
+                    'cookie': row[1],
+                    'x-rpc-client_type': '2',
+                    'x-rpc-app_version': '2.7.0',
+                    'x-rpc-sys_version': '6.0.1',
+                    'x-rpc-channel': 'mihoyo',
+                    'x-rpc-device_id': random_hex(32),
+                    'x-rpc-device_name': random_text(random.randint(1, 10)),
+                    'x-rpc-device_model': 'Mi 10',
+                    'Referer': 'https://app.mihoyo.com',
+                    'Host': 'bbs-api.mihoyo.com',
+                    'User-Agent': 'okhttp/4.8.0',
+                },
+            )
         data = req.json()
         if 'err' in data['message'] or data['retcode'] == -100:
             invalid_str = invalid_str + f'uid{row[0]}的Stoken是异常的！已删除该条Stoken！\n'
             return_str = return_str + f'uid{row[0]}的Stoken是异常的！已删除该条Stoken！\n'
             invalid_list.append([row[2], row[0]])
-            c.execute('UPDATE NewCookiesTable SET Stoken = ? WHERE UID=?', (None, row[0]))
+            c.execute(
+                'UPDATE NewCookiesTable SET Stoken = ? WHERE UID=?', (None, row[0])
+            )
             logger.info(f'uid{row[0]}的Stoken是异常的！已删除该条Stoken！')
         else:
             return_str = return_str + f'uid{row[0]}的Stoken是正常的！\n'
             logger.info(f'uid{row[0]}的Stoken是正常的！')
             normal_num += 1
     if len(c_data) > 9:
-        return_str = '正常Stoken数量：{}\n{}'.format(str(normal_num),
-                                                 '失效Stoken:\n' + invalid_str if invalid_str else '无失效Stoken')
+        return_str = '正常Stoken数量：{}\n{}'.format(
+            str(normal_num), '失效Stoken:\n' + invalid_str if invalid_str else '无失效Stoken'
+        )
     conn.commit()
     conn.close()
     logger.info('已完成Stoken检查!')
@@ -203,13 +224,18 @@ async def check_stoken_db():
 async def connect_db(userid, uid=None, mys=None):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    c.execute("""CREATE TABLE IF NOT EXISTS UIDDATA
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS UIDDATA
         (USERID INT PRIMARY KEY     NOT NULL,
         UID         TEXT,
-        MYSID       TEXT);""")
+        MYSID       TEXT);"""
+    )
 
-    c.execute('INSERT OR IGNORE INTO UIDDATA (USERID,UID,MYSID) \
-    VALUES (?, ?,?)', (userid, uid, mys))
+    c.execute(
+        'INSERT OR IGNORE INTO UIDDATA (USERID,UID,MYSID) \
+    VALUES (?, ?,?)',
+        (userid, uid, mys),
+    )
 
     if uid:
         c.execute('UPDATE UIDDATA SET UID = ? WHERE USERID=?', (uid, userid))
@@ -259,11 +285,15 @@ async def delete_cache():
         conn = sqlite3.connect('ID_DATA.db')
         c = conn.cursor()
         c.execute('DROP TABLE CookiesCache')
-        c.execute('UPDATE NewCookiesTable SET Extra = ? WHERE Extra=?', (None, 'limit30'))
-        c.execute("""CREATE TABLE IF NOT EXISTS CookiesCache
+        c.execute(
+            'UPDATE NewCookiesTable SET Extra = ? WHERE Extra=?', (None, 'limit30')
+        )
+        c.execute(
+            """CREATE TABLE IF NOT EXISTS CookiesCache
         (UID TEXT PRIMARY KEY,
         MYSID         TEXT,
-        Cookies       TEXT);""")
+        Cookies       TEXT);"""
+        )
         conn.commit()
         conn.close()
         logger.info('————UID查询缓存已清空————')
@@ -287,16 +317,20 @@ def error_db(ck, err):
     if err == 'error':
         c.execute('UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?', ('error', ck))
     elif err == 'limit30':
-        c.execute('UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?', ('limit30', ck))
+        c.execute(
+            'UPDATE NewCookiesTable SET Extra = ? WHERE Cookies=?', ('limit30', ck)
+        )
 
 
 def cache_db(uid, mode=1, mys=None):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
-    c.execute("""CREATE TABLE IF NOT EXISTS CookiesCache
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS CookiesCache
         (UID TEXT PRIMARY KEY,
         MYSID         TEXT,
-        Cookies       TEXT);""")
+        Cookies       TEXT);"""
+    )
 
     if mode == 1:
         if mys:
@@ -310,7 +344,9 @@ def cache_db(uid, mode=1, mys=None):
     if len(c_data) == 0:
         if mode == 2:
             conn.create_function('REGEXP', 2, regex_func)
-            cursor = c.execute('SELECT *  FROM NewCookiesTable WHERE REGEXP(Cookies, ?)', (uid,))
+            cursor = c.execute(
+                'SELECT *  FROM NewCookiesTable WHERE REGEXP(Cookies, ?)', (uid,)
+            )
             d_data = cursor.fetchall()
 
         else:
@@ -321,34 +357,56 @@ def cache_db(uid, mode=1, mys=None):
             if d_data[0][7] != 'error':
                 use = d_data[0][1]
                 if mode == 1:
-                    c.execute('INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
-                            VALUES (?, ?)', (use, uid))
+                    c.execute(
+                        'INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
+                            VALUES (?, ?)',
+                        (use, uid),
+                    )
                 elif mode == 2:
-                    c.execute('INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
-                            VALUES (?, ?)', (use, uid))
+                    c.execute(
+                        'INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
+                            VALUES (?, ?)',
+                        (use, uid),
+                    )
             else:
-                cookies_row = c.execute('SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1')
+                cookies_row = c.execute(
+                    'SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1'
+                )
                 e_data = cookies_row.fetchall()
                 if len(e_data) != 0:
                     if mode == 1:
-                        c.execute('INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
-                                VALUES (?, ?)', (e_data[0][1], uid))
+                        c.execute(
+                            'INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
+                                VALUES (?, ?)',
+                            (e_data[0][1], uid),
+                        )
                     elif mode == 2:
-                        c.execute('INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
-                                VALUES (?, ?)', (e_data[0][1], uid))
+                        c.execute(
+                            'INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
+                                VALUES (?, ?)',
+                            (e_data[0][1], uid),
+                        )
                     use = e_data[0][1]
                 else:
                     return '没有可以使用的Cookies！'
         else:
-            cookies_row = c.execute('SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1')
+            cookies_row = c.execute(
+                'SELECT * FROM NewCookiesTable WHERE Extra IS NULL ORDER BY RANDOM() LIMIT 1'
+            )
             e_data = cookies_row.fetchall()
             if len(e_data) != 0:
                 if mode == 1:
-                    c.execute('INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
-                            VALUES (?, ?)', (e_data[0][1], uid))
+                    c.execute(
+                        'INSERT OR IGNORE INTO CookiesCache (Cookies,UID) \
+                            VALUES (?, ?)',
+                        (e_data[0][1], uid),
+                    )
                 elif mode == 2:
-                    c.execute('INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
-                            VALUES (?, ?)', (e_data[0][1], uid))
+                    c.execute(
+                        'INSERT OR IGNORE INTO CookiesCache (Cookies,MYSID) \
+                            VALUES (?, ?)',
+                        (e_data[0][1], uid),
+                    )
                 use = e_data[0][1]
             else:
                 return '没有可以使用的Cookies！'
@@ -374,7 +432,8 @@ async def cookies_db(uid, cookies, qid):
     conn = sqlite3.connect('ID_DATA.db')
     c = conn.cursor()
 
-    c.execute("""CREATE TABLE IF NOT EXISTS NewCookiesTable
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS NewCookiesTable
     (UID INT PRIMARY KEY     NOT NULL,
     Cookies         TEXT,
     QID         INT,
@@ -382,13 +441,17 @@ async def cookies_db(uid, cookies, qid):
     StatusB     TEXT,
     StatusC     TEXT,
     NUM         INT,
-    Extra       TEXT);""")
+    Extra       TEXT);"""
+    )
 
     cursor = c.execute('SELECT * from NewCookiesTable WHERE UID = ?', (uid,))
     c_data = cursor.fetchall()
     if len(c_data) == 0:
-        c.execute('INSERT OR IGNORE INTO NewCookiesTable (Cookies,UID,StatusA,StatusB,StatusC,NUM,QID) \
-            VALUES (?, ?,?,?,?,?,?)', (cookies, uid, 'off', 'off', 'off', 140, qid))
+        c.execute(
+            'INSERT OR IGNORE INTO NewCookiesTable (Cookies,UID,StatusA,StatusB,StatusC,NUM,QID) \
+            VALUES (?, ?,?,?,?,?,?)',
+            (cookies, uid, 'off', 'off', 'off', 140, qid),
+        )
     else:
         c.execute('UPDATE NewCookiesTable SET Cookies = ? WHERE UID=?', (cookies, uid))
 
@@ -404,7 +467,9 @@ async def stoken_db(s_cookies, uid):
     if 'Stoken' not in columns:
         c.execute('ALTER TABLE NewCookiesTable ADD COLUMN Stoken TEXT')
 
-    c.execute('UPDATE NewCookiesTable SET Stoken = ? WHERE UID=?', (s_cookies, int(uid)))
+    c.execute(
+        'UPDATE NewCookiesTable SET Stoken = ? WHERE UID=?', (s_cookies, int(uid))
+    )
 
     conn.commit()
     conn.close()
@@ -437,7 +502,7 @@ async def owner_cookies(uid):
 
 
 def random_hex(length):
-    result = hex(random.randint(0, 16 ** length)).replace('0x', '').upper()
+    result = hex(random.randint(0, 16**length)).replace('0x', '').upper()
     if len(result) < length:
         result = '0' * (length - len(result)) + result
     return result
@@ -451,7 +516,7 @@ def md5(text):
 
 def old_version_get_ds_token(mysbbs=False):
     if mysbbs:
-        n = 'fd3ykrh7o1j54g581upo1tvpam0dsgtf'
+        n = 'dWCcD2FsOUXEstC5f9xubswZxEeoBOTc'
     else:
         n = 'h8w582wxwgqvahcdkpvdhbh2w9casgfl'
     i = str(int(time.time()))
@@ -475,12 +540,8 @@ def get_ds_token(q='', b=None):
 async def get_stoken_by_login_ticket(loginticket, mys_id):
     async with AsyncClient() as client:
         req = await client.get(
-            url= o_url + '/auth/api/getMultiTokenByLoginTicket',
-            params={
-                'login_ticket': loginticket,
-                'token_types' : '3',
-                'uid'         : mys_id
-            }
+            url=o_url + '/auth/api/getMultiTokenByLoginTicket',
+            params={'login_ticket': loginticket, 'token_types': '3', 'uid': mys_id},
         )
     return req.json()
 
@@ -491,19 +552,17 @@ async def get_daily_data(uid, server_id='cn_gf01'):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url= n_url + '/game_record/app/genshin/api/dailyNote',
+                url=n_url + '/game_record/app/genshin/api/dailyNote',
                 headers={
-                    'DS'               : get_ds_token('role_id=' + uid + '&server=' + server_id),
+                    'DS': get_ds_token('role_id=' + uid + '&server=' + server_id),
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/',
-                    'Cookie'           : await owner_cookies(uid)},
-                params={
-                    'server' : server_id,
-                    'role_id': uid
-                }
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    'Cookie': await owner_cookies(uid),
+                },
+                params={'server': server_id, 'role_id': uid},
             )
             data = json.loads(req.text)
         return data
@@ -513,17 +572,15 @@ async def get_daily_data(uid, server_id='cn_gf01'):
                 req = await client.get(
                     url='https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/dailyNote',
                     headers={
-                        'DS'               : get_ds_token('role_id=' + uid + '&server=' + server_id),
+                        'DS': get_ds_token('role_id=' + uid + '&server=' + server_id),
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                        '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/',
-                        'Cookie'           : await owner_cookies(uid)},
-                    params={
-                        'server' : server_id,
-                        'role_id': uid
-                    }
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        'Cookie': await owner_cookies(uid),
+                    },
+                    params={'server': server_id, 'role_id': uid},
                 )
             data = json.loads(req.text)
             return data
@@ -538,16 +595,15 @@ async def get_sign_list():
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url = o_url + '/event/bbs_sign_reward/home',
+                url=o_url + '/event/bbs_sign_reward/home',
                 headers={
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'},
-                params={
-                    'act_id': 'e202009291139501'
-                }
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                },
+                params={'act_id': 'e202009291139501'},
             )
             data = json.loads(req.text)
         return data
@@ -561,19 +617,16 @@ async def get_sign_info(uid, server_id='cn_gf01'):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url= o_url + '/event/bbs_sign_reward/info',
+                url=o_url + '/event/bbs_sign_reward/info',
                 headers={
                     'x-rpc-app_version': mhyVersion,
-                    'Cookie'           : await owner_cookies(uid),
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'Cookie': await owner_cookies(uid),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'},
-                params={
-                    'act_id': 'e202009291139501',
-                    'region': server_id,
-                    'uid'   : uid
-                }
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                },
+                params={'act_id': 'e202009291139501', 'region': server_id, 'uid': uid},
             )
             data = json.loads(req.text)
         return data
@@ -586,22 +639,22 @@ async def mihoyo_bbs_sign(uid, server_id='cn_gf01'):
         server_id = 'cn_qd01'
     try:
         req = requests.post(
-            url= o_url + '/event/bbs_sign_reward/sign',
+            url=o_url + '/event/bbs_sign_reward/sign',
             headers={
-                'User_Agent'       : 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
-                                     'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
-                                     'miHoYoBBS/2.3.0',
-                'Cookie'           : await owner_cookies(uid),
-                'x-rpc-device_id'  : random_hex(32),
-                'Origin'           : 'https://webstatic.mihoyo.com',
-                'X_Requested_With' : 'com.mihoyo.hyperion',
-                'DS'               : old_version_get_ds_token(),
+                'User_Agent': 'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
+                'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
+                'miHoYoBBS/2.3.0',
+                'Cookie': await owner_cookies(uid),
+                'x-rpc-device_id': random_hex(32),
+                'Origin': 'https://webstatic.mihoyo.com',
+                'X_Requested_With': 'com.mihoyo.hyperion',
+                'DS': old_version_get_ds_token(),
                 'x-rpc-client_type': '5',
-                'Referer'          : 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id'
-                                     '=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
-                'x-rpc-app_version': '2.3.0'
+                'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id'
+                '=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
+                'x-rpc-app_version': '2.3.0',
             },
-            json={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id}
+            json={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
         )
         data2 = json.loads(req.text)
         return data2
@@ -618,24 +671,25 @@ async def get_award(uid, server_id='cn_gf01'):
                 url='https://hk4e-api.mihoyo.com/event/ys_ledger/monthInfo',
                 headers={
                     'x-rpc-app_version': mhyVersion,
-                    'Cookie'           : await owner_cookies(uid),
-                    'DS'               : old_version_get_ds_token(),
-                    'x-rpc-device_id'  : random_hex(32),
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'Cookie': await owner_cookies(uid),
+                    'DS': old_version_get_ds_token(),
+                    'x-rpc-device_id': random_hex(32),
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'},
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                },
                 params={
-                    'act_id'                : 'e202009291139501',
-                    'bind_region'           : server_id,
-                    'bind_uid'              : uid,
-                    'month'                 : '0',
+                    'act_id': 'e202009291139501',
+                    'bind_region': server_id,
+                    'bind_uid': uid,
+                    'month': '0',
                     'bbs_presentation_style': 'fullscreen',
-                    'bbs_auth_required'     : True,
-                    'utm_source'            : 'bbs',
-                    'utm_medium'            : 'mys',
-                    'utm_campaign'          : 'icon'
-                }
+                    'bbs_auth_required': True,
+                    'utm_source': 'bbs',
+                    'utm_medium': 'mys',
+                    'utm_campaign': 'icon',
+                },
             )
             data = json.loads(req.text)
         return data
@@ -650,19 +704,17 @@ async def get_info(uid, ck, server_id='cn_gf01'):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url= n_url + '/game_record/app/genshin/api/index',
+                url=n_url + '/game_record/app/genshin/api/index',
                 headers={
-                    'DS'               : get_ds_token('role_id=' + uid + '&server=' + server_id),
+                    'DS': get_ds_token('role_id=' + uid + '&server=' + server_id),
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/',
-                    'Cookie'           : ck},
-                params={
-                    'role_id': uid,
-                    'server' : server_id
-                }
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    'Cookie': ck,
+                },
+                params={'role_id': uid, 'server': server_id},
             )
             data = json.loads(req.text)
         return data
@@ -672,17 +724,15 @@ async def get_info(uid, ck, server_id='cn_gf01'):
                 req = await client.get(
                     url='https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/index',
                     headers={
-                        'DS'               : get_ds_token('role_id=' + uid + '&server=' + server_id),
+                        'DS': get_ds_token('role_id=' + uid + '&server=' + server_id),
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                        '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/',
-                        'Cookie'           : ck},
-                    params={
-                        'role_id': uid,
-                        'server' : server_id
-                    }
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        'Cookie': ck,
+                    },
+                    params={'role_id': uid, 'server': server_id},
                 )
             data = json.loads(req.text)
             return data
@@ -699,23 +749,29 @@ async def get_spiral_abyss_info(uid, ck, schedule_type='1', server_id='cn_gf01')
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url= n_url + '/game_record/app/genshin/api/spiralAbyss',
+                url=n_url + '/game_record/app/genshin/api/spiralAbyss',
                 headers={
-                    'DS'               : get_ds_token(
-                        'role_id=' + uid + '&schedule_type=' + schedule_type + '&server=' + server_id),
-                    'Origin'           : 'https://webstatic.mihoyo.com',
-                    'Cookie'           : ck,
+                    'DS': get_ds_token(
+                        'role_id='
+                        + uid
+                        + '&schedule_type='
+                        + schedule_type
+                        + '&server='
+                        + server_id
+                    ),
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'Cookie': ck,
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS '
-                                         'X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS '
+                    'X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'
+                    'Referer': 'https://webstatic.mihoyo.com/',
                 },
                 params={
                     'schedule_type': schedule_type,
-                    'role_id'      : uid,
-                    'server'       : server_id
-                }
+                    'role_id': uid,
+                    'server': server_id,
+                },
             )
             data = json.loads(req.text)
         return data
@@ -725,25 +781,31 @@ async def get_spiral_abyss_info(uid, ck, schedule_type='1', server_id='cn_gf01')
                 req = await client.get(
                     url='https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/spiralAbyss',
                     headers={
-                        'DS'               : get_ds_token(
-                            'role_id=' + uid + '&schedule_type=' + schedule_type + '&server=' + server_id),
-                        'Origin'           : 'https://webstatic.mihoyo.com',
-                        'Cookie'           : ck,
+                        'DS': get_ds_token(
+                            'role_id='
+                            + uid
+                            + '&schedule_type='
+                            + schedule_type
+                            + '&server='
+                            + server_id
+                        ),
+                        'Origin': 'https://webstatic.mihoyo.com',
+                        'Cookie': ck,
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                        '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/'
+                        'Referer': 'https://webstatic.mihoyo.com/',
                     },
                     params={
-                        'role_id'               : uid,
-                        'server'                : server_id,
+                        'role_id': uid,
+                        'server': server_id,
                         'bbs_presentation_style': 'fullscreen',
-                        'bbs_auth_required'     : 'true',
-                        'utm_source'            : 'bbs',
-                        'utm_medium'            : 'mys',
-                        'utm_campaign'          : 'icon'
-                    }
+                        'bbs_auth_required': 'true',
+                        'utm_source': 'bbs',
+                        'utm_medium': 'mys',
+                        'utm_campaign': 'icon',
+                    },
                 )
             data = json.loads(req.text)
             return data
@@ -759,19 +821,25 @@ def get_character(uid, character_ids, ck, server_id='cn_gf01'):
         server_id = 'cn_qd01'
     try:
         req = requests.post(
-            url= n_url + '/game_record/app/genshin/api/character',
+            url=n_url + '/game_record/app/genshin/api/character',
             headers={
-                'DS'               : get_ds_token('', {'character_ids': character_ids, 'role_id': uid,
-                                                       'server'       : server_id}),
-                'Origin'           : 'https://webstatic.mihoyo.com',
-                'Cookie'           : ck,
+                'DS': get_ds_token(
+                    '',
+                    {
+                        'character_ids': character_ids,
+                        'role_id': uid,
+                        'server': server_id,
+                    },
+                ),
+                'Origin': 'https://webstatic.mihoyo.com',
+                'Cookie': ck,
                 'x-rpc-app_version': mhyVersion,
-                'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
-                                     'like Gecko) miHoYoBBS/2.11.1',
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
+                'like Gecko) miHoYoBBS/2.11.1',
                 'x-rpc-client_type': '5',
-                'Referer'          : 'https://webstatic.mihoyo.com/'
+                'Referer': 'https://webstatic.mihoyo.com/',
             },
-            json={'character_ids': character_ids, 'role_id': uid, 'server': server_id}
+            json={'character_ids': character_ids, 'role_id': uid, 'server': server_id},
         )
         data2 = json.loads(req.text)
         return data2
@@ -780,17 +848,27 @@ def get_character(uid, character_ids, ck, server_id='cn_gf01'):
             req = requests.post(
                 url='https://api-takumi-record.mihoyo.com/game_record/app/genshin/api/character',
                 headers={
-                    'DS'               : get_ds_token('', {'character_ids': character_ids, 'role_id': uid,
-                                                           'server'       : server_id}),
-                    'Origin'           : 'https://webstatic.mihoyo.com',
-                    'Cookie'           : ck,
+                    'DS': get_ds_token(
+                        '',
+                        {
+                            'character_ids': character_ids,
+                            'role_id': uid,
+                            'server': server_id,
+                        },
+                    ),
+                    'Origin': 'https://webstatic.mihoyo.com',
+                    'Cookie': ck,
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/'
+                    'Referer': 'https://webstatic.mihoyo.com/',
                 },
-                json={'character_ids': character_ids, 'role_id': uid, 'server': server_id}
+                json={
+                    'character_ids': character_ids,
+                    'role_id': uid,
+                    'server': server_id,
+                },
             )
             data = json.loads(req.text)
             return data
@@ -801,25 +879,26 @@ def get_character(uid, character_ids, ck, server_id='cn_gf01'):
         logger.info(e.with_traceback)
 
 
-async def get_calculate_info(client: ClientSession, uid, char_id, ck, name, server_id='cn_gf01'):
+async def get_calculate_info(
+    client: ClientSession, uid, char_id, ck, name, server_id='cn_gf01'
+):
     if uid[0] == '5':
         server_id = 'cn_qd01'
     url = o_url + '/event/e20200928calculate/v1/sync/avatar/detail'
     req = await client.get(
         url=url,
         headers={
-            'DS'               : get_ds_token('uid={}&avatar_id={}&region={}'.format(uid, char_id, server_id)),
+            'DS': get_ds_token(
+                'uid={}&avatar_id={}&region={}'.format(uid, char_id, server_id)
+            ),
             'x-rpc-app_version': mhyVersion,
-            'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                 'KHTML, like Gecko) miHoYoBBS/2.11.1',
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+            'KHTML, like Gecko) miHoYoBBS/2.11.1',
             'x-rpc-client_type': '5',
-            'Referer'          : 'https://webstatic.mihoyo.com/',
-            'Cookie'           : ck},
-        params={
-            'avatar_id': char_id,
-            'uid'      : uid,
-            'region'   : server_id
-        }
+            'Referer': 'https://webstatic.mihoyo.com/',
+            'Cookie': ck,
+        },
+        params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
     )
     data = await req.json()
     data.update({'name': name})
@@ -830,16 +909,17 @@ async def get_mihoyo_bbs_info(mysid, ck):
     try:
         async with AsyncClient() as client:
             req = await client.get(
-                url = n_url + '/game_record/card/wapi/getGameRecordCard',
+                url=n_url + '/game_record/card/wapi/getGameRecordCard',
                 headers={
-                    'DS'               : get_ds_token('uid=' + mysid),
+                    'DS': get_ds_token('uid=' + mysid),
                     'x-rpc-app_version': mhyVersion,
-                    'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
-                                         'KHTML, like Gecko) miHoYoBBS/2.11.1',
+                    'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 ('
+                    'KHTML, like Gecko) miHoYoBBS/2.11.1',
                     'x-rpc-client_type': '5',
-                    'Referer'          : 'https://webstatic.mihoyo.com/',
-                    'Cookie'           : ck},
-                params={'uid': mysid}
+                    'Referer': 'https://webstatic.mihoyo.com/',
+                    'Cookie': ck,
+                },
+                params={'uid': mysid},
             )
             data = json.loads(req.text)
         return data
@@ -847,16 +927,18 @@ async def get_mihoyo_bbs_info(mysid, ck):
         try:
             async with AsyncClient() as client:
                 req = await client.get(
-                    url='https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid=' + mysid,
+                    url='https://api-takumi-record.mihoyo.com/game_record/card/wapi/getGameRecordCard?uid='
+                    + mysid,
                     headers={
-                        'DS'               : get_ds_token('uid=' + mysid),
+                        'DS': get_ds_token('uid=' + mysid),
                         'x-rpc-app_version': mhyVersion,
-                        'User-Agent'       : 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
-                                             '(KHTML, like Gecko) miHoYoBBS/2.11.1',
+                        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 '
+                        '(KHTML, like Gecko) miHoYoBBS/2.11.1',
                         'x-rpc-client_type': '5',
-                        'Referer'          : 'https://webstatic.mihoyo.com/',
-                        'Cookie'           : ck},
-                    params={'uid': mysid}
+                        'Referer': 'https://webstatic.mihoyo.com/',
+                        'Cookie': ck,
+                    },
+                    params={'uid': mysid},
                 )
                 data = json.loads(req.text)
             return data
@@ -874,9 +956,10 @@ async def get_audio_info(name, audioid, language='cn'):
             url=url,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                              'Chrome/95.0.4638.69 Safari/537.36',
-                'Referer'   : 'https://genshin.minigg.cn/index.html'},
-            params={'characters': name, 'audioid': audioid, 'language': language}
+                'Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html',
+            },
+            params={'characters': name, 'audioid': audioid, 'language': language},
         )
     return req.text
 
@@ -891,8 +974,9 @@ async def get_weapon_info(name, level=None):
             url='https://info.minigg.cn/weapons',
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                              'Chrome/95.0.4638.69 Safari/537.36'},
-            params=params
+                'Chrome/95.0.4638.69 Safari/537.36'
+            },
+            params=params,
         )
     data = json.loads(req.text)
     return data
@@ -905,8 +989,9 @@ async def get_misc_info(mode, name):
             url=url,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                              'Chrome/97.0.4692.71 Safari/537.36'},
-            params={'query': name}
+                'Chrome/97.0.4692.71 Safari/537.36'
+            },
+            params={'query': name},
         )
     data = json.loads(req.text)
     return data
@@ -936,8 +1021,10 @@ async def get_char_info(name, mode='char', level=None):
                 url=url2,
                 headers={
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                                  'Chrome/95.0.4638.69 Safari/537.36',
-                    'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                    'Chrome/95.0.4638.69 Safari/537.36',
+                    'Referer': 'https://genshin.minigg.cn/index.html',
+                },
+            )
             data2 = json.loads(req.text)
             if 'errcode' in data2:
                 async with AsyncClient() as client_:
@@ -945,8 +1032,10 @@ async def get_char_info(name, mode='char', level=None):
                         url=url3,
                         headers={
                             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
-                                          'like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                            'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                            'like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                            'Referer': 'https://genshin.minigg.cn/index.html',
+                        },
+                    )
                     data2 = json.loads(req.text)
 
     async with AsyncClient() as client:
@@ -954,8 +1043,10 @@ async def get_char_info(name, mode='char', level=None):
             url=url,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                              'Chrome/95.0.4638.69 Safari/537.36',
-                'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                'Chrome/95.0.4638.69 Safari/537.36',
+                'Referer': 'https://genshin.minigg.cn/index.html',
+            },
+        )
         try:
             data = json.loads(req.text)
             if 'errcode' in data:
@@ -964,8 +1055,10 @@ async def get_char_info(name, mode='char', level=None):
                         url=url + '&matchCategories=true',
                         headers={
                             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, '
-                                          'like Gecko) Chrome/95.0.4638.69 Safari/537.36',
-                            'Referer'   : 'https://genshin.minigg.cn/index.html'})
+                            'like Gecko) Chrome/95.0.4638.69 Safari/537.36',
+                            'Referer': 'https://genshin.minigg.cn/index.html',
+                        },
+                    )
                     data = json.loads(req.text)
         except:
             data = None
@@ -975,24 +1068,23 @@ async def get_char_info(name, mode='char', level=None):
 async def get_genshin_events(mode='List'):
     if mode == 'Calendar':
         now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-        base_url = 'https://api-takumi.mihoyo.com/event/bbs_activity_calendar/getActList'
-        params = {
-            'time'    : now_time,
-            'game_biz': 'ys_cn',
-            'page'    : 1,
-            'tag_id'  : 0
-        }
+        base_url = (
+            'https://api-takumi.mihoyo.com/event/bbs_activity_calendar/getActList'
+        )
+        params = {'time': now_time, 'game_biz': 'ys_cn', 'page': 1, 'tag_id': 0}
     else:
-        base_url = 'https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnn{}'.format(mode)
+        base_url = 'https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnn{}'.format(
+            mode
+        )
         params = {
-            'game'     : 'hk4e',
-            'game_biz' : 'hk4e_cn',
-            'lang'     : 'zh-cn',
+            'game': 'hk4e',
+            'game_biz': 'hk4e_cn',
+            'lang': 'zh-cn',
             'bundle_id': 'hk4e_cn',
-            'platform' : 'pc',
-            'region'   : 'cn_gf01',
-            'level'    : 55,
-            'uid'      : 100000000
+            'platform': 'pc',
+            'region': 'cn_gf01',
+            'level': 55,
+            'uid': 100000000,
         }
 
     async with AsyncClient() as client:
@@ -1000,8 +1092,9 @@ async def get_genshin_events(mode='List'):
             url=base_url,
             headers={
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                              'Chrome/95.0.4638.69 Safari/537.36'},
-            params=params
+                'Chrome/95.0.4638.69 Safari/537.36'
+            },
+            params=params,
         )
     data = json.loads(req.text)
     return data

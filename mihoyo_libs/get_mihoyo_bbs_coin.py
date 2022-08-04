@@ -63,7 +63,7 @@ class MihoyoBBSCoin:
             'DS'                : old_version_get_ds_token(True),
             'cookie'            : cookies,
             'x-rpc-client_type' : '2',
-            'x-rpc-app_version' : '2.7.0',
+            'x-rpc-app_version' : '2.28.1',
             'x-rpc-sys_version' : '6.0.1',
             'x-rpc-channel'     : 'mihoyo',
             'x-rpc-device_id'   : random_hex(32),

@@ -648,11 +648,11 @@ async def mihoyo_bbs_sign(uid, server_id='cn_gf01'):
                 'x-rpc-device_id': random_hex(32),
                 'Origin': 'https://webstatic.mihoyo.com',
                 'X_Requested_With': 'com.mihoyo.hyperion',
-                'DS': old_version_get_ds_token(),
-                'x-rpc-client_type': '5',
+                'DS': old_version_get_ds_token(True),
+                'x-rpc-client_type': '2',
                 'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id'
                 '=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
-                'x-rpc-app_version': '2.3.0',
+                'x-rpc-app_version': '2.28.1',
             },
             json={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
         )

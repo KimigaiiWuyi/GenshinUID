@@ -107,7 +107,10 @@ async def draw_resin_img(uid: str) -> Image.Image:
         with open(enta_data_path, 'r', encoding='utf-8') as f:
             player_data = json.load(f)
     else:
-        player_data = await get_enka_info(uid)
+        try:
+            player_data = await get_enka_info(uid)
+        except:
+            player_data = {}
 
     # 处理数据
     if player_data:

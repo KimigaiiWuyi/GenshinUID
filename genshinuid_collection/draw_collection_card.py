@@ -1,5 +1,5 @@
-from typing import List
 from pathlib import Path
+from typing import List, Union
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
@@ -40,11 +40,11 @@ async def dataToDataStr(max: int, my: int) -> List:
     ]
 
 
-async def draw_collection_img(uid: str, mode: str = 'uid'):
+async def draw_collection_img(uid: str) -> Union[bytes, str]:
     # 获取Cookies
     data_def = GetCookies()
     retcode = await data_def.get_useable_cookies(uid)
-    if not retcode:
+    if retcode:
         return retcode
     raw_data = data_def.raw_data
     if data_def.uid:
@@ -54,7 +54,7 @@ async def draw_collection_img(uid: str, mode: str = 'uid'):
     if raw_data:
         raw_data = raw_data['data']
     else:
-        return
+        return '获取数据为空!'
 
     # 获取背景图片各项参数
     img = await get_simple_bg(based_w, based_h)

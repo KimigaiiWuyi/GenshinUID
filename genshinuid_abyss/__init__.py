@@ -30,8 +30,6 @@ async def send_abyss_info(
     # 判断uid
     if args[2] != 'mys':
         if args[3] is None:
-            if args[2] is None:
-                return
             uid = await select_db(qid, mode='uid')
             uid = str(uid)
         elif len(args[3]) != 9:

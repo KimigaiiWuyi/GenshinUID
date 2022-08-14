@@ -2,10 +2,9 @@ import json
 import asyncio
 from pathlib import Path
 
-import httpx
 import openpyxl
 
-from ..utils.minigg_api.get_minigg_data import get_misc_info
+from utils.minigg_api.get_minigg_data import get_misc_info
 
 version = '2.7.0'
 version_old = '2.6.0'

@@ -28,6 +28,9 @@ async def make_bound(x: float, y: float, width: int):
 async def draw_genshin_map(
     map_id: models.MapID, resource_name: str
 ) -> Union[bytes, str]:
+    map_path = MAP_DATA / f'{map_id.name}.png'
+    if not map_path.exists():
+        return '请先使用[生成地图]生成可用地图...'
     resource_img = Image.new('RGBA', (1000, 1400), 'white')
     maps = await request.get_maps(map_id)
     labels = await request.get_labels(map_id)
@@ -76,7 +79,7 @@ async def draw_genshin_map(
                 transmittable_converted,
             ]
         ]
-    genshin_map = Image.open(MAP_DATA / f'{map_id.name}.png')
+    genshin_map = Image.open(map_path)
     lt_point = group_point[0][0]
     rb_point = group_point[0][1]
     genshin_map = genshin_map.crop(

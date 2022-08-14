@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, List
 
 from httpx import Response, AsyncClient
 
@@ -10,7 +10,7 @@ from .models import Spot, Tree, MapID, Point, MapInfo, SpotKinds
 CLIENT = AsyncClient(
     base_url="https://api-static.mihoyo.com/common/blackboard/ys_obc/v1/map"
 )
-Spots = dict[int, list[Spot]]
+Spots = dict[int, List[Spot]]
 
 
 async def _request(endpoint: str) -> dict[str, Any]:
@@ -22,7 +22,7 @@ async def _request(endpoint: str) -> dict[str, Any]:
     return data["data"]
 
 
-async def get_labels(map_id: MapID) -> list[Tree]:
+async def get_labels(map_id: MapID) -> List[Tree]:
     """
     获取米游社资源列表
 
@@ -31,13 +31,13 @@ async def get_labels(map_id: MapID) -> list[Tree]:
             地图 ID
 
     返回：
-        `list[Tree]`
+        `List[Tree]`
     """
     data = await _request(f"/label/tree?map_id={map_id}&app_sn=ys_obc")
     return [Tree.parse_obj(i) for i in data["tree"]]
 
 
-async def get_points(map_id: MapID) -> list[Point]:
+async def get_points(map_id: MapID) -> List[Point]:
     """
     获取米游社坐标列表
 
@@ -46,10 +46,10 @@ async def get_points(map_id: MapID) -> list[Point]:
             地图 ID
 
     返回：
-        `list[Point]`
+        `List[Point]`
     """
-    data = await _request(f"/point/list?map_id={map_id}&app_sn=ys_obc")
-    return [Point.parse_obj(i) for i in data["point_list"]]
+    data = await _request(f"/point/List?map_id={map_id}&app_sn=ys_obc")
+    return [Point.parse_obj(i) for i in data["point_List"]]
 
 
 async def get_maps(map_id: MapID) -> MapInfo:
@@ -131,5 +131,5 @@ async def get_spot_from_game(
         data = _raise_for_retcode(resp)
         spots: Spots = {}
         for k, v in data["spots"].items():
-            spots[int(k)] = [Spot.parse_obj(i) for i in v["list"]]
+            spots[int(k)] = [Spot.parse_obj(i) for i in v["List"]]
         return spots, spot_kinds_data

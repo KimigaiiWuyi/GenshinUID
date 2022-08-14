@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from io import BytesIO
-from asyncio import gather, create_task
+from typing import List
 
 from PIL import Image
 from httpx import AsyncClient
@@ -63,7 +63,7 @@ async def get_map_by_pos(map: Maps, x: int | float) -> Image.Image:
     return await get_img(map.slices[int(x // 4096)])
 
 
-def get_points_by_id(id_: int, points: list[Point]) -> list[XYPoint]:
+def get_points_by_id(id_: int, points: List[Point]) -> List[XYPoint]:
     """
     根据 Label ID 获取坐标点
 
@@ -71,11 +71,11 @@ def get_points_by_id(id_: int, points: list[Point]) -> list[XYPoint]:
         id_: `int`
             Label ID
 
-        points: `list[Point]`
+        points: `List[Point]`
             米游社坐标点列表，可通过 `get_points` 获取
 
     返回：
-        `list[XYPoint]`
+        `List[XYPoint]`
     """
     return [
         XYPoint(point.x_pos, point.y_pos)
@@ -84,19 +84,19 @@ def get_points_by_id(id_: int, points: list[Point]) -> list[XYPoint]:
     ]
 
 
-def convert_pos(points: list[XYPoint], origin: list[int]) -> list[XYPoint]:
+def convert_pos(points: List[XYPoint], origin: List[int]) -> List[XYPoint]:
     """
     将米游社资源坐标转换为以左上角为原点的坐标系的坐标
 
     参数：
-        points: `list[XYPoint]`
+        points: `List[XYPoint]`
             米游社资源坐标
 
-        origin: `list[Point]`
+        origin: `List[Point]`
             米游社地图 Origin，可通过 `get_maps` 获取
 
     返回：
-        `list[XYPoint]`
+        `List[XYPoint]`
 
     示例：
         >>> from genshinmap.models import XYPoint

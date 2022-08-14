@@ -19,6 +19,8 @@ openpyxl = "^3.0.10"
 aiohttp = "^3.8.1"
 SQLAlchemy = "^1.4.39"
 Pillow = "^9.2.0"
+scikit-learn = "^1.1.2"
+shapely = "^1.8.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
@@ -45,3 +47,7 @@ extra_standard_library = ["typing_extensions"]
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = 'aliyun.mirrors'
+url = "http://mirrors.aliyun.com/pypi/simple/"

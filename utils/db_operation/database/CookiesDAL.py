@@ -179,7 +179,7 @@ class CookiesDAL:
                 StatusC='off',
                 NUM=140,
                 Extra=None,
-                SToken=None,
+                Stoken=None,
             )
             self.db_session.add(new_data)
         await self.db_session.flush()  # type: ignore

@@ -32,7 +32,7 @@ class PushDataDAL:
             GoValue=120,
             GoIsPush='off',
             TransformPush='off',
-            TransformValue=3,
+            TransformValue=140,
             TransformIsPush='off',
         )
         self.db_session.add(new_data)

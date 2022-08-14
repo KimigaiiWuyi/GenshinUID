@@ -174,7 +174,7 @@ async def get_first_main(mainName: str) -> str:
 
 
 async def get_char_percent(raw_data: dict) -> str:
-    percent = ''
+    percent = '0.0'
     char_name = raw_data['avatarName']
     weaponName = raw_data['weaponInfo']['weaponName']
     weaponType = raw_data['weaponInfo']['weaponType']
@@ -1044,7 +1044,12 @@ async def draw_single_card(
     size_36 = genshin_font_origin(36)
     size_46 = genshin_font_origin(46)
 
-    img_base = Image.open(TEXT_PATH / '{}.png'.format(char['avatarElement']))
+    overlay = Image.open(TEXT_PATH / 'overlay.png')
+    color_img = Image.new(
+        'RGBA', overlay.size, COLOR_MAP[char['avatarElement']]
+    )
+    img_base = ImageChops.overlay(color_img, overlay)
+    '''
     if char['char_name'] in avatarCardOffsetMap:
         offset_x, offset_y = (
             avatarCardOffsetMap[char['char_name']][0],
@@ -1052,11 +1057,11 @@ async def draw_single_card(
         )
     else:
         offset_x, offset_y = 200, 0
-    char_img = Image.open(
-        GACHA_PATH / 'UI_Gacha_AvatarImg_{}.png'.format(char['avatarEnName'])
-    )
+    '''
+    offset_x, offset_y = 0, 0
+    char_img = Image.open(GACHA_PATH / f'{char["char_name"]}.png')
 
-    img_base.paste(char_img, (-439 + offset_x, 130 + offset_y), char_img)
+    img_base.paste(char_img, (-760 + offset_x, 110 + offset_y), char_img)
     img_card.paste(img_base, (-25, -260), char_card_mask)
     img_card = Image.alpha_composite(img_card, char_card_1)
     # img_card.paste(img_card, (0, 0), img_card)

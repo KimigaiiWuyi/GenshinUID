@@ -97,7 +97,7 @@ async def refresh_char_data():
             im = await enka_to_data(uid)
             logger.info(im)
             t += 1
-            await asyncio.sleep(18 + random.randint(2, 6))
+            await asyncio.sleep(35 + random.randint(1, 20))
         except:
             logger.exception(f'{uid}刷新失败！')
             logger.error(f'{uid}刷新失败！本次自动刷新结束！')

@@ -53,6 +53,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             label_kanji = laber_kanji_list[0]
         label_attr = re.findall(r'{[a-zA-Z0-9]+:[a-zA-Z0-9]+}', label_split)
         temp = []
+        parameter_list = {}
         for k in label_attr:
             value_type = k.replace('{', '').replace('}', '').split(':')[-1]
             value_index = k.replace('{', '').replace('}', '').split(':')[0]
@@ -65,10 +66,11 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
                 from_type_to_value(value_type, parameter)
                 for parameter in parameter_list['value']
             ]
+            print(parameter_list)
             for indexA, j in enumerate(parameter_list['value']):
                 try:
                     if '低空/高空坠地' in label:
-                        pass
+                        temp = parameter_list['value']
                     else:
                         parameter_list['value'][indexA] = (
                             temp[indexA]
@@ -78,8 +80,6 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
                 except:
                     temp = parameter_list['value']
                     break
-        else:
-            parameter_list = {}
 
         if '心海' in char:
             label_name = label_name.replace('提升', '提高')

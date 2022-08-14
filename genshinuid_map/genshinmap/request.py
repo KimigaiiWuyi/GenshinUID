@@ -48,8 +48,8 @@ async def get_points(map_id: MapID) -> List[Point]:
     返回：
         `List[Point]`
     """
-    data = await _request(f"/point/List?map_id={map_id}&app_sn=ys_obc")
-    return [Point.parse_obj(i) for i in data["point_List"]]
+    data = await _request(f"/point/list?map_id={map_id}&app_sn=ys_obc")
+    return [Point.parse_obj(i) for i in data["point_list"]]
 
 
 async def get_maps(map_id: MapID) -> MapInfo:
@@ -131,5 +131,5 @@ async def get_spot_from_game(
         data = _raise_for_retcode(resp)
         spots: Spots = {}
         for k, v in data["spots"].items():
-            spots[int(k)] = [Spot.parse_obj(i) for i in v["List"]]
+            spots[int(k)] = [Spot.parse_obj(i) for i in v["list"]]
         return spots, spot_kinds_data

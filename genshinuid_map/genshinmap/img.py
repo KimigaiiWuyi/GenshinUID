@@ -75,7 +75,7 @@ def k_means_points(
             (
                 XYPoint(pos_array_[:, 0].min(), pos_array_[:, 1].min()),
                 XYPoint(pos_array_[:, 0].max(), pos_array_[:, 1].max()),
-                List(map(lambda p: XYPoint(p.x, p.y), i)),
+                list(map(lambda p: XYPoint(p.x, p.y), i)),
             )
         )
     return sorted(

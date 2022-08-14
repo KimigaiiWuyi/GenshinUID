@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import IntEnum
-from typing import List, NamedTuple
+from typing import List, Optional, NamedTuple
 
 from pydantic import HttpUrl, BaseModel, validator
 
@@ -84,8 +84,8 @@ class MapInfo(BaseModel):
     detail: Maps
     node_type: int
     children: list
-    icon: HttpUrl | None
-    ch_ext: str | None
+    icon: Optional[HttpUrl]
+    ch_ext: Optional[str]
 
     @validator("detail", pre=True)
     def detail_str_to_maps(cls, v):

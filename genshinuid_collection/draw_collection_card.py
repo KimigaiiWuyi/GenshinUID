@@ -43,7 +43,7 @@ async def dataToDataStr(max: int, my: int) -> List:
 async def draw_collection_img(uid: str, mode: str = 'uid'):
     # 获取Cookies
     data_def = GetCookies()
-    retcode = await data_def.get_useable_cookies(uid, mode)
+    retcode = await data_def.get_useable_cookies(uid)
     if not retcode:
         return retcode
     raw_data = data_def.raw_data

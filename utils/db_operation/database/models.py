@@ -7,6 +7,7 @@ from .db_config import Base, engine
 
 class PushData(Base):
     __tablename__ = 'PushData'
+    __table_args__ = {'extend_existing': True}
 
     UID = Column(Integer, primary_key=True)
     CoinPush = Column(String, nullable=True)

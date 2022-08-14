@@ -1,10 +1,5 @@
 import os.path
 
-from nonebot import load_plugins, logger
+from nonebot import load_plugins
 
-load_plugins(
-    os.path.dirname(__file__)
-)
-
-logger.warning('我们更推荐用本项目目录下的genshin_uid包作为插件加载，而不是整个项目')
-logger.warning('本项目目录下的__init__.py仅作适配用')
+load_plugins(os.path.dirname(__file__))

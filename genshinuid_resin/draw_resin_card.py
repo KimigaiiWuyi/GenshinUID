@@ -74,7 +74,7 @@ async def get_resin_img(qid: int):
             status = await owner_cookies(uid)
             if status != '该用户没有绑定过Cookies噢~':
                 useable_uid_list.append(uid)
-        logger.info('[每日信息]可用UID: {}'.format(uid_list))
+        logger.info('[每日信息]可用UID: {}'.format(useable_uid_list))
         # 开始绘图任务
         task = []
         img = Image.new(
@@ -103,7 +103,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     enta_data_path = (
         Path(__file__).parents[1] / 'player' / uid / 'rawData.json'
     )
-    if enta_data_path.exists:
+    if enta_data_path.exists():
         with open(enta_data_path, 'r', encoding='utf-8') as f:
             player_data = json.load(f)
     else:

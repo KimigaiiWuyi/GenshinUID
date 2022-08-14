@@ -98,7 +98,14 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             prop['{}_{}'.format(prop_limit, prop_attr)] = 0
 
     for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
-        if weaponType == '法器' or char_name in ['荒泷一斗', '刻晴', '诺艾尔']:
+        if weaponType == '法器' or char_name in [
+            '荒泷一斗',
+            '刻晴',
+            '诺艾尔',
+            '胡桃',
+            '宵宫',
+            '魈',
+        ]:
             prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
         elif weaponType == '弓':
             if prop_limit in ['A', 'C']:

@@ -72,4 +72,5 @@ async def create_all():
         await conn.run_sync(Base.metadata.create_all)
 
 
-asyncio.run(create_all())
+loop = asyncio.new_event_loop()
+loop.run_until_complete(create_all())

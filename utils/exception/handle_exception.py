@@ -32,13 +32,6 @@ def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):  # t
             except FinishedException:
                 # `finish` 会抛出此异常，应予以抛出而不处理
                 raise
-            except TypeError:
-                await matcher.send(UID_HINT)
-                logger.exception(f'获取{name}信息错误')
-            except IndexError:
-                # 一般为没有找到绑定信息
-                await matcher.send(f'{CK_HINT}')
-                logger.exception(f'获取{name}信息错误')
             except Exception as e:
                 # 代码本身出问题
                 if log_msg:

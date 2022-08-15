@@ -53,7 +53,7 @@ async def sign_in(uid) -> str:
         ]
         get_im = f'本次签到获得{getitem}x{getnum}'
         new_sign_info = await get_sign_info(uid)
-        new_sign_info = sign_info['data']
+        new_sign_info = new_sign_info['data']
         if new_sign_info['is_sign'] == True:
             mes_im = '签到成功'
         else:

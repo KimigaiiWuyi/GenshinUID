@@ -1,5 +1,6 @@
 import asyncio
 
+from .backup_data import data_backup
 from ..all_import import *  # noqa: F403, F401
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
 from ..utils.download_resource.download_all_resource import (
@@ -9,6 +10,13 @@ from ..utils.download_resource.download_all_resource import (
 check = on_command('校验全部Cookies')
 check_stoken = on_command('校验全部Stoken')
 download_resource = on_command('下载全部资源')
+
+backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
+
+
+@backup_scheduler.scheduled_job('cron', hour=0)
+async def daily_refresh_charData():
+    await data_backup()
 
 
 @download_resource.handle()

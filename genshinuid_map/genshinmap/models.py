@@ -31,7 +31,7 @@ class Label(BaseModel):
     display_priority: int
     children: list
     activity_page_label: int
-    area_page_label: list[int]
+    area_page_label: List[int]
     is_all_area: bool
 
 
@@ -45,7 +45,7 @@ class Tree(BaseModel):
     jump_type: int
     jump_target_id: int
     display_priority: int
-    children: list[Label]
+    children: List[Label]
     activity_page_label: int
     area_page_label: List
     is_all_area: bool
@@ -66,10 +66,10 @@ class Slice(BaseModel):
 
 
 class Maps(BaseModel):
-    slices: list[HttpUrl]
-    origin: list[int]
-    total_size: list[int]
-    padding: list[int]
+    slices: List[HttpUrl]
+    origin: List[int]
+    total_size: List[int]
+    padding: List[int]
 
     @validator("slices", pre=True)
     def slices_to_list(cls, v):

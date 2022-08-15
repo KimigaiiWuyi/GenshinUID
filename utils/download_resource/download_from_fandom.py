@@ -1,11 +1,11 @@
-import re
-import random
 import asyncio
+import random
+import re
 
 import aiofiles  # type: ignore
+from aiohttp.client import ClientSession
 from bs4 import BeautifulSoup
 from nonebot.log import logger
-from aiohttp.client import ClientSession
 
 MAX_TASKS = 4
 from .RESOURCE_PATH import *  # noqa: E501
@@ -20,24 +20,25 @@ async def get_url(url: str, sess: ClientSession):
 
 
 async def _download(
-    url: str,
-    sess: ClientSession,
-    sem: asyncio.Semaphore,
-    file_name: str,
-    file_path: Path,
+        url: str,
+        sess: ClientSession,
+        sem: asyncio.Semaphore,
+        file_name: str,
+        file_path: Path,
+        log_prefix: str
 ):
     async with sem:
-        logger.info(f'正在下载{file_name},URL为{url}')
+        logger.info(f'{log_prefix}正在下载 {file_name} ,URL为{url}')
         async with sess.get(url, timeout=60) as res:
             content = await res.read()
 
         if res.status != 200:
-            logger.info(f"下载失败: {res.status}")
+            logger.info(f"{log_prefix}{file_name} 下载失败: {res.status}")
 
         async with aiofiles.open(file_path / file_name, "+wb") as f:
             await asyncio.sleep(random.randint(0, 3))
             await f.write(content)
-            logger.info(f"下载成功: {res.status}")
+            logger.info(f"{log_prefix}{file_name} 下载成功: {res.status}")
 
 
 async def get_char_url_list():
@@ -57,9 +58,9 @@ async def get_char_url_list():
         char_list = {}
         for i in raw_data:
             char_url = (
-                "https://genshin-impact.fandom.com"
-                + i.find("a")["href"]
-                + "/Media"
+                    "https://genshin-impact.fandom.com"
+                    + i.find("a")["href"]
+                    + "/Media"
             )
             if i.find("a")["title"] != "Traveler":
                 char_list[i.find("a")["title"]] = char_url
@@ -70,10 +71,10 @@ async def download_by_fandom(char_list: dict):
     # 判断需要下载哪些圣遗物图片
     fandom_download_list = {}
     if len(list(CHAR_NAMECARD_PATH.iterdir())) < len(char_list):
-        logger.info(f'本次需要下载图片')
+        logger.info(f'[fandom] 本次需要下载图片')
         await get_namecard_and_gacha_pic(char_list)
     else:
-        logger.info('无需下载名片和抽卡图片!')
+        logger.info('[fandom] 无需下载名片和抽卡图片!')
     return ''
 
 
@@ -81,13 +82,16 @@ async def get_namecard_and_gacha_pic(char_list: dict):
     tasks = []
     sem = asyncio.Semaphore(MAX_TASKS)
     async with ClientSession() as sess:
-        for i in char_list.keys():
+        li = char_list.keys()
+        for index, i in enumerate(li):
+            log_prefix = f'[fandom {index + 1}/{len(li)}] '
+
             char_data = await get_url(char_list[i], sess)
             char_info_data = await get_url(char_list[i][:-6], sess)
             info_bs = BeautifulSoup(char_info_data, 'lxml')
             chinese_name = info_bs.find_all("span", lang='zh-Hans')[0].text
             avatar_id = await name_to_avatar_id(chinese_name)
-            logger.info(f'正在下载{chinese_name}的图片资源...')
+            logger.info(f'{log_prefix}正在下载{chinese_name}的图片资源...')
             char_data_bs = BeautifulSoup(char_data, 'lxml')
 
             gachaImg_data = char_data_bs.find_all(
@@ -109,7 +113,7 @@ async def get_namecard_and_gacha_pic(char_list: dict):
             namecard_url = re.search(r"[\s\S]+.png", namecard).group(0)
 
             # 添加任务
-            logger.info(f'添加{chinese_name}的名片资源下载任务...')
+            logger.info(f'{log_prefix}添加{chinese_name}的名片资源下载任务...')
             tasks.append(
                 asyncio.wait_for(
                     _download(
@@ -118,11 +122,12 @@ async def get_namecard_and_gacha_pic(char_list: dict):
                         sem,
                         f'{chinese_name}.png',
                         CHAR_NAMECARD_PATH,
+                        log_prefix
                     ),
                     timeout=30,
                 )
             )
-            logger.info(f'添加{chinese_name}的抽卡图片资源下载任务...')
+            logger.info(f'{log_prefix}添加{chinese_name}的抽卡图片资源下载任务...')
             tasks.append(
                 asyncio.wait_for(
                     _download(
@@ -131,6 +136,7 @@ async def get_namecard_and_gacha_pic(char_list: dict):
                         sem,
                         f'{chinese_name}.png',
                         GACHA_IMG_PATH,
+                        log_prefix
                     ),
                     timeout=30,
                 )

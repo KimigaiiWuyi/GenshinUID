@@ -1,15 +1,9 @@
-import asyncio
-
 from .backup_data import data_backup
 from ..all_import import *  # noqa: F403, F401
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
-from ..utils.download_resource.download_all_resource import (
-    download_all_resource,
-)
 
 check = on_command('校验全部Cookies')
 check_stoken = on_command('校验全部Stoken')
-download_resource = on_command('下载全部资源')
 
 backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
@@ -19,23 +13,11 @@ async def daily_refresh_charData():
     await data_backup()
 
 
-@download_resource.handle()
-@handle_exception('下载全部资源', '资源下载错误')
-async def send_download_resource_msg(
-    matcher: Matcher, args: Message = CommandArg()
-):
-    if args:
-        return
-    await matcher.send('正在开始下载~可能需要较久的时间!')
-    im = await download_all_resource()
-    await matcher.finish(im)
-
-
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @check.handle()
 @handle_exception('Cookie校验', 'Cookie校验错误')
 async def send_check_cookie(
-    bot: Bot, matcher: Matcher, args: Message = CommandArg()
+        bot: Bot, matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         await matcher.finish()
@@ -62,7 +44,7 @@ async def send_check_cookie(
 @check_stoken.handle()
 @handle_exception('Stoken校验', 'Stoken校验错误')
 async def send_check_stoken(
-    bot: Bot, matcher: Matcher, args: Message = CommandArg()
+        bot: Bot, matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         await matcher.finish()

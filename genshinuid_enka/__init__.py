@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from .draw_char_card import *
@@ -11,11 +12,8 @@ from ..utils.alias.alias_to_char_name import alias_to_char_name
 
 refresh = on_command('强制刷新')
 get_charcard_list = on_command('毕业度统计')
-get_char_info = on_regex(
-    r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|查询|mys)([0-9]+)?'
-    r'([\u4e00-\u9fffa-zA-Z0-9]*)'
-    r'(\[CQ:at,qq=[0-9]+\])?( )?$',
+get_char_info = on_command(
+    '查询',
     priority=2,
 )
 
@@ -29,33 +27,36 @@ PLAYER_PATH = Path(__file__).parents[1] / 'player'
 async def send_char_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    args: Tuple[Any, ...] = RegexGroup(),
+    args: Message = CommandArg(),
     custom: ImageAndAt = Depends(),
 ):
+    if args is None:
+        return
     logger.info('开始执行[查询角色面板]')
-    logger.info('[查询角色面板]参数: {}'.format(args))
+    raw_mes = args.extract_plain_text().strip()
     at = custom.get_first_at()
+    img = custom.get_first_image()
+
     if at:
         qid = at
     else:
         qid = event.user_id
     logger.info('[查询角色面板]QQ: {}'.format(qid))
 
-    if args[2] != 'mys':
-        if args[3] is None:
-            uid = await select_db(qid, mode='uid')
-            uid = str(uid)
-        elif len(args[3]) != 9:
-            return
-        else:
-            uid = args[3]
+    # 获取uid
+    uid = re.findall(r'\d+', raw_mes)
+    if uid:
+        uid = uid[0]
     else:
-        uid = await convert_mysid(args[3])
-
+        uid = await select_db(qid, mode='uid')
+        uid = str(uid)
     logger.info('[查询角色面板]uid: {}'.format(uid))
 
+    # 获取角色名
+    char_name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+
     player_path = PLAYER_PATH / str(uid)
-    if args[4] == '展柜角色':
+    if char_name == '展柜角色':
         char_file_list = player_path.glob('*')
         char_list = []
         for i in char_file_list:
@@ -64,10 +65,11 @@ async def send_char_info(
                 char_list.append(file_name.split('.')[0])
         char_list_str = ','.join(char_list)
         await matcher.finish(f'UID{uid}当前缓存角色:{char_list_str}', at_sender=True)
-    elif args[4] is None:
-        return
     else:
-        char_name = await alias_to_char_name(args[4])
+        if '旅行者' in char_name:
+            char_name = '旅行者'
+        else:
+            char_name = await alias_to_char_name(char_name)
         char_path = player_path / f'{char_name}.json'
         if char_path.exists():
             with open(char_path, 'r', encoding='utf8') as fp:
@@ -75,7 +77,7 @@ async def send_char_info(
         else:
             await matcher.finish(CHAR_HINT.format(char_name), at_sender=True)
 
-    im = await draw_char_img(char_data)
+    im = await draw_char_img(char_data, img)
 
     if isinstance(im, str):
         await matcher.finish(im)

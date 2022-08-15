@@ -24,7 +24,14 @@ async def deal_ck(mes, qid):
     elif 'login_ticket' in simp_dict:
         # 寻找stoken
         login_ticket = simp_dict['login_ticket'].value
-        account_id = simp_dict['login_uid'].value
+        if 'login_uid' in simp_dict:
+            account_id = simp_dict['login_uid'].value
+        elif 'stuid' in simp_dict:
+            account_id = simp_dict['stuid'].value
+        elif 'ltuid' in simp_dict:
+            account_id = simp_dict['ltuid'].value
+        else:
+            return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
         stoken_data = await get_stoken_by_login_ticket(
             login_ticket, account_id
         )

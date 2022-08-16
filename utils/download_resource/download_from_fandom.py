@@ -1,11 +1,11 @@
-import asyncio
-import random
 import re
+import random
+import asyncio
 
 import aiofiles  # type: ignore
-from aiohttp.client import ClientSession
 from bs4 import BeautifulSoup
 from nonebot.log import logger
+from aiohttp.client import ClientSession
 
 MAX_TASKS = 4
 from .RESOURCE_PATH import *  # noqa: E501
@@ -20,12 +20,12 @@ async def get_url(url: str, sess: ClientSession):
 
 
 async def _download(
-        url: str,
-        sess: ClientSession,
-        sem: asyncio.Semaphore,
-        file_name: str,
-        file_path: Path,
-        log_prefix: str
+    url: str,
+    sess: ClientSession,
+    sem: asyncio.Semaphore,
+    file_name: str,
+    file_path: Path,
+    log_prefix: str,
 ):
     async with sem:
         logger.info(f'{log_prefix}正在下载 {file_name} ,URL为{url}')
@@ -58,9 +58,9 @@ async def get_char_url_list():
         char_list = {}
         for i in raw_data:
             char_url = (
-                    "https://genshin-impact.fandom.com"
-                    + i.find("a")["href"]
-                    + "/Media"
+                "https://genshin-impact.fandom.com"
+                + i.find("a")["href"]
+                + "/Media"
             )
             if i.find("a")["title"] != "Traveler":
                 char_list[i.find("a")["title"]] = char_url
@@ -107,10 +107,16 @@ async def get_namecard_and_gacha_pic(char_list: dict):
             else:
                 namecard = namecard_data[-2].find_all("img")[0]["src"]
 
-            gachaImg_url = re.search(
-                r"[\s\S]+.png", gachaImg_data[0]['src']
-            ).group(0)
-            namecard_url = re.search(r"[\s\S]+.png", namecard).group(0)
+            gachaImg_url = re.search(r"[\s\S]+.png", gachaImg_data[0]['src'])
+            if gachaImg_url:
+                gachaImg_url = gachaImg_url.group(0)
+            else:
+                continue
+            namecard_url = re.search(r"[\s\S]+.png", namecard)
+            if namecard_url:
+                namecard_url = namecard_url.group(0)
+            else:
+                continue
 
             # 添加任务
             logger.info(f'{log_prefix}添加{chinese_name}的名片资源下载任务...')
@@ -122,7 +128,7 @@ async def get_namecard_and_gacha_pic(char_list: dict):
                         sem,
                         f'{chinese_name}.png',
                         CHAR_NAMECARD_PATH,
-                        log_prefix
+                        log_prefix,
                     ),
                     timeout=30,
                 )
@@ -136,7 +142,7 @@ async def get_namecard_and_gacha_pic(char_list: dict):
                         sem,
                         f'{chinese_name}.png',
                         GACHA_IMG_PATH,
-                        log_prefix
+                        log_prefix,
                     ),
                     timeout=30,
                 )

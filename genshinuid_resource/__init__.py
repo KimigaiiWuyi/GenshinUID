@@ -11,7 +11,7 @@ download_resource = on_command('下载全部资源')
 @download_resource.handle()
 @handle_exception('下载全部资源', '资源下载错误')
 async def send_download_resource_msg(
-        matcher: Matcher, args: Message = CommandArg()
+    matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         return

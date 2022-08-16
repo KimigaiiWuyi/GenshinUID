@@ -17,7 +17,7 @@ async def daily_refresh_charData():
 @check.handle()
 @handle_exception('Cookie校验', 'Cookie校验错误')
 async def send_check_cookie(
-        bot: Bot, matcher: Matcher, args: Message = CommandArg()
+    bot: Bot, matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         await matcher.finish()
@@ -44,7 +44,7 @@ async def send_check_cookie(
 @check_stoken.handle()
 @handle_exception('Stoken校验', 'Stoken校验错误')
 async def send_check_stoken(
-        bot: Bot, matcher: Matcher, args: Message = CommandArg()
+    bot: Bot, matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         await matcher.finish()

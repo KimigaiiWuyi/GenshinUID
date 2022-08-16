@@ -1,14 +1,15 @@
+import json
 import asyncio
 from typing import List
 
 import aiofiles  # type: ignore
-from aiohttp.client import ClientSession
 from nonebot.log import logger
+from aiohttp.client import ClientSession
 
 from .RESOURCE_PATH import *  # noqa: E501
-from .resource_list import CHAR_ALL_LIST, REL_ALL_LIST, WEAPON_ALL_LIST
 from ..alias.alias_to_char_name import alias_to_char_name
 from ..alias.avatarId_and_name_covert import name_to_avatar_id
+from .resource_list import REL_ALL_LIST, CHAR_ALL_LIST, WEAPON_ALL_LIST
 from ..minigg_api.get_minigg_data import (
     get_char_info,
     get_misc_info,
@@ -19,12 +20,12 @@ MAX_TASKS = 5
 
 
 async def _download(
-        url: str,
-        sess: ClientSession,
-        sem: asyncio.Semaphore,
-        file_name: str,
-        file_path: Path,
-        log_prefix: str
+    url: str,
+    sess: ClientSession,
+    sem: asyncio.Semaphore,
+    file_name: str,
+    file_path: Path,
+    log_prefix: str,
 ):
     async with sem:
         logger.info(f'{log_prefix}正在下载 {file_name} ,URL为{url}')
@@ -77,7 +78,7 @@ async def download_by_minigg():
     # 判断需要下载哪些圣遗物图片
     rel_download_list = []
     for rel in REL_ALL_LIST:
-        rel_path = REL_PATH / f'{rel}.png'
+        rel_path = REL_PATH / f'{rel}.json'
         if not rel_path.exists():
             rel_download_list.append(rel)
     if rel_download_list:
@@ -133,7 +134,7 @@ async def get_char_pic(name_list: List):
                                 sem,
                                 f'{avatar_id}.png',
                                 CHAR_STAND_PATH,
-                                log_prefix
+                                log_prefix,
                             ),
                             timeout=35,
                         )
@@ -148,7 +149,7 @@ async def get_char_pic(name_list: List):
                             sem,
                             f'{avatar_id}.png',
                             CHAR_SIDE_PATH,
-                            log_prefix
+                            log_prefix,
                         ),
                         timeout=30,
                     )
@@ -163,7 +164,7 @@ async def get_char_pic(name_list: List):
                             sem,
                             f'{avatar_id}.png',
                             CHAR_PATH,
-                            log_prefix
+                            log_prefix,
                         ),
                         timeout=30,
                     )
@@ -212,7 +213,7 @@ async def get_weapon_pic(name_list: List):
                         sem,
                         f'{name}.png',
                         WEAPON_PATH,
-                        log_prefix
+                        log_prefix,
                     ),
                     timeout=30,
                 )
@@ -259,11 +260,13 @@ async def get_rel_pic(name_list: List):
                                 sem,
                                 f'{p_name}.png',
                                 REL_PATH,
-                                log_prefix
+                                log_prefix,
                             ),
                             timeout=30,
                         )
                     )
+            with open(REL_PATH / f'{name}.json', 'w', encoding='utf8') as f:
+                json.dump(raw_data, f, ensure_ascii=False, indent=4)
             if len(tasks) > MAX_TASKS:
                 faild.extend(await _gather(tasks, faild, name))
                 tasks = []

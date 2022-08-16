@@ -1,4 +1,5 @@
 import asyncio
+import threading
 
 from sqlalchemy import Column, String, Integer
 
@@ -72,4 +73,4 @@ async def create_all():
         await conn.run_sync(Base.metadata.create_all)
 
 
-asyncio.run(create_all())
+threading.Thread(target=lambda: asyncio.run(create_all()), daemon=True).start()

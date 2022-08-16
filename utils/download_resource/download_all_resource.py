@@ -1,7 +1,7 @@
 import asyncio
 
-from .download_from_fandom import download_by_fandom, get_char_url_list
 from .download_from_minigg import download_by_minigg
+from .download_from_fandom import get_char_url_list, download_by_fandom
 
 
 async def download_all_resource():

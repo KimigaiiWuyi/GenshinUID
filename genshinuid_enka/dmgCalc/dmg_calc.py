@@ -15,9 +15,6 @@ avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
 with open(DMG_PATH / avatarName2SkillAdd_fileName, "r", encoding='UTF-8') as f:
     avatarName2SkillAdd = json.load(f)
 
-with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
-    char_action = json.load(f)
-
 with open(DMG_PATH / 'artifacts_effect.json', "r", encoding='UTF-8') as f:
     artifacts_effect_map = json.load(f)
 
@@ -35,6 +32,8 @@ dmgBar_2 = Image.open(DMG_TEXT_PATH / 'dmgBar_2.png')
 
 
 async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
+    with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
+        char_action = json.load(f)
     char_name = raw_data['avatarName']
     char_level = int(raw_data['avatarLevel'])
     weaponName = raw_data['weaponInfo']['weaponName']
@@ -83,6 +82,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         return faild_img, 0
     power_list = char_action[char_name]
 
+    # 给每个技能 分别添加上属性
     for prop_attr in [
         'dmgBonus',
         'critrate',
@@ -97,6 +97,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
             prop['{}_{}'.format(prop_limit, prop_attr)] = 0
 
+    # 计算角色伤害加成应该使用什么
     for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
         if weaponType == '法器' or char_name in [
             '荒泷一斗',
@@ -118,6 +119,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             elif prop_limit in ['E', 'Q']:
                 prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
 
+    # 初始化各种值
     prop['hp_green'] = fight_prop['addHp']
     prop['attack_green'] = fight_prop['addAtk']
     prop['defense_green'] = fight_prop['addDef']
@@ -190,6 +192,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         else:
             break
 
+    # 开启效果
     power_effect = ''
     if 'effect' in power_list:
         for skill_effect_single in power_list['effect']:
@@ -197,7 +200,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             skill_effect_value = skill_effect_single['value']
             skill_effect = skill_effect_single['effect']
             skill_effect_level = prop[
-                '{}_skill_level'.format(skill_effect_name)
+                '{}_skill_level'.format(skill_effect_name[0])
             ]
             skill_effect_value_detail = skill_effect_value[skill_effect_level]
             if skill_effect[-1] == '}':
@@ -210,9 +213,9 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                     if i == 'effect':
                         pass
                     else:
-                        power_list[i]['power_name'] = (
-                            '开{}后 '.format(skill_effect_name)
-                            + power_list[i]['power_name']
+                        power_list[i]['name'] = (
+                            '开{}后 '.format(skill_effect_name[0])
+                            + power_list[i]['name']
                         )
             else:
                 for i in power_list:
@@ -225,13 +228,31 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                         elif '冲击伤害' in i:
                             add_type = 'C'
                         if add_type in add_limit[0]:
-                            power_list[i]['power_name'] = (
-                                '开{}后 '.format(skill_effect_name)
-                                + power_list[i]['power_name']
+                            power_list[i]['name'] = (
+                                '开{}后 '.format(skill_effect_name[0])
+                                + power_list[i]['name']
                             )
             power_effect = skill_effect.format(skill_effect_value_detail)
             all_effect.append(power_effect)
         del power_list['effect']
+
+    extra_effect = {}
+    if 'extra' in power_list:
+        if char_name == '雷电将军':
+            extra_value = (
+                float(
+                    power_list["extra"]["value"][
+                        prop["Q_skill_level"]
+                    ].replace("%", "")
+                )
+                * 0.6
+            )
+            extra_effect = {'Q梦想一刀基础伤害(满愿力)': extra_value}
+        del power_list['extra']
+
+    # 在计算buff前, 引入特殊效果
+    if char_name == '雷电将军':
+        all_effect.append('Q:dmgBonus+27')
 
     sp = []
     # 计算全部的buff，添加入属性
@@ -354,6 +375,12 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             effect_prop = prop['defense']
         else:
             effect_prop = prop['attack']
+
+        if extra_effect and power_name in extra_effect:
+            effect_prop += (
+                effect_prop + extra_effect[power_name] * prop['baseattack']
+            )
+
         power = power_list[power_name]['value'][
             prop['{}_skill_level'.format(power_name[0])]
         ]
@@ -373,9 +400,28 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             * (enemy_level + 100)
         )
         r = 1 - prop['r']
-        e_dmg = prop['k'] * (
-            1 + (2.78 * prop['em']) / (prop['em'] + 1400) + prop['a']
-        )
+
+        # 计算元素反应
+        for reaction in ['蒸发', '融化']:
+            if reaction in power_list[power_name]['name']:
+                k = 0
+                if reaction == '蒸发':
+                    if raw_data['avatarElement'] == 'Pyro':
+                        k = 1.5
+                    else:
+                        k = 2
+                elif reaction == '融化':
+                    if raw_data['avatarElement'] == 'Pyro':
+                        k = 2
+                    else:
+                        k = 1.5
+                reaction_add_dmg = k * (
+                    1 + (2.78 * prop['em']) / (prop['em'] + 1400) + prop['a']
+                )
+                break
+        else:
+            reaction_add_dmg = 1
+
         add_dmg = prop['{}_addDmg'.format(attack_type)] + sp_addDmg
 
         if '治疗' in power_name:
@@ -391,7 +437,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         else:
             crit_dmg = (effect_prop * power_percent + power_value) * (
                 1 + critdmg_cal
-            ) * (1 + dmgBonus_cal) * d_cal * r + add_dmg
+            ) * (1 + dmgBonus_cal) * d_cal * r * reaction_add_dmg + add_dmg
             avg_dmg = (
                 (crit_dmg - add_dmg) * critrate_cal
                 + (1 - critrate_cal)
@@ -399,12 +445,13 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 * (1 + dmgBonus_cal)
                 * d_cal
                 * r
+                * reaction_add_dmg
                 + add_dmg
             )
 
         result_draw.text(
             (45, 22 + (index + 1) * 40),
-            power_list[power_name]['power_name'],
+            power_list[power_name]['name'],
             text_color,
             text_size,
             anchor='lm',

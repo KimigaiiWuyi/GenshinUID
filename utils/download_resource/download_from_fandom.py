@@ -68,9 +68,10 @@ async def get_char_url_list():
 
 
 async def download_by_fandom(char_list: dict):
-    # 判断需要下载哪些圣遗物图片
-    fandom_download_list = {}
-    if len(list(CHAR_NAMECARD_PATH.iterdir())) < len(char_list):
+    # 判断需要下载哪些名片和抽卡图片
+    if len(list(CHAR_NAMECARD_PATH.iterdir())) < len(char_list) or len(
+        list(CHAR_STAND_PATH.iterdir())
+    ) < len(char_list):
         logger.info(f'[fandom] 本次需要下载图片')
         await get_namecard_and_gacha_pic(char_list)
     else:

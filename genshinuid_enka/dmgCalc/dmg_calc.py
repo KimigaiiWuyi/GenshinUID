@@ -4,6 +4,7 @@ from typing import Tuple
 
 from PIL import Image, ImageDraw
 
+from .base_value import base_value_list
 from ...utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
 DMG_PATH = Path(__file__).parents[0]
@@ -402,7 +403,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         )
         r = 1 - prop['r']
 
-        # 计算元素反应
+        # 计算元素反应 增幅
         for reaction in ['蒸发', '融化']:
             if reaction in power_list[power_name]['name']:
                 k = 0
@@ -429,6 +430,14 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             crit_dmg = avg_dmg = (
                 effect_prop * power_percent + power_value
             ) * (1 + prop['healBouns'])
+        elif '扩散伤害' in power_name:
+            crit_dmg = avg_dmg = (
+                base_value_list[char_level]
+                * 1.2
+                * (1 + (16.0 * prop['em']) / (prop['em'] + 2000) + prop['a'])
+                * r
+            )
+            power_list[power_name]['name'] = power_list[power_name]['name'][1:]
         elif '伤害值提升' in power_name:
             crit_dmg = avg_dmg = effect_prop * power_percent + power_value
         elif '护盾' in power_name:

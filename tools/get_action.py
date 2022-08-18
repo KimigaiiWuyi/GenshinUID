@@ -7,8 +7,18 @@ from copy import deepcopy
 import httpx
 
 path = Path(__file__).parents[1] / 'utils' / 'alias' / 'avatarId2Name.json'
+element_path = (
+    Path(__file__).parents[1]
+    / 'utils'
+    / 'enka_api'
+    / 'map'
+    / 'avatarName2Element_mapping_2.8.0.json'
+)
 with open(path, 'r', encoding='utf-8') as f:
     char_id_list = json.load(f)
+
+with open(element_path, 'r', encoding='utf-8') as f:
+    char_element_list = json.load(f)
 
 char_list = []
 char_action = {}
@@ -28,6 +38,7 @@ extra = {
     '香菱': {'E喷火伤害': '蒸发', 'Q旋火轮伤害': '蒸发'},
     '达达利亚': {'Q技能伤害·近战': '蒸发', 'Q技能伤害·远程': '蒸发'},
     '雷电将军': {'Q梦想一刀基础伤害': '满愿力'},
+    '甘雨': {'A霜华矢命中伤害': '融化', 'A霜华矢·霜华绽发伤害': '融化'},
 }
 template = {'A重击伤害': {'name': 'A重击伤害', 'type': '', 'plus': 1, 'value': []}}
 
@@ -57,6 +68,15 @@ def from_type_to_value(value_type: str, para):
 def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
     result = {}
     for label in labels:
+        if char != '旅行者':
+            if char_element_list[char] == 'Anemo':
+                if 'A扩散伤害' not in result:
+                    result['A扩散伤害'] = {
+                        'name': 'A扩散伤害',
+                        'type': '扩散',
+                        'plus': 0,
+                        'value': [str(i) for i in range(1, 11)],
+                    }
         # 拿到形如{param1:F1P}的字典
         label_split = label.split('|')[-1]
         # 拿到单个标签的名称，形如一段伤害

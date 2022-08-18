@@ -141,7 +141,11 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
         }
 
         if '提升' in label_name:
-            if '伤害提升' in label_name:
+            # 云瑾和申鹤
+            if '伤害值提升' in label_name:
+                parameter_list['name'] = fill_label(label_name, index)
+                result[fill_label(label_name, index)] = parameter_list
+            elif '伤害提升' in label_name:
                 add_type = ''
                 # 寻找有没有合适的加成eg
                 target = 0

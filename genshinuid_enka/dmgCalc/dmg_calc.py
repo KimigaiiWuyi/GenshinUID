@@ -108,6 +108,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             '魈',
         ]:
             prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
+        elif '万叶' in char_name and len(raw_data['talentList']) >= 6:
+            prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
         elif weaponType == '弓':
             if prop_limit in ['A', 'C']:
                 prop['{}_dmgBonus'.format(prop_limit)] = physicalDmgBonus
@@ -128,6 +130,12 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     prop['a'] = 0
     prop['g'] = 0
     prop['k'] = 1
+
+    all_effect = []
+
+    # 计算武器buff
+    weapon_effet = weapons_effect_map[weaponName][str(weaponAffix)]
+    all_effect.append(weapon_effet)
 
     # 计算圣遗物套装
     if 'equipSets' in raw_data:
@@ -151,7 +159,6 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
 
     if equipSets['set'].startswith('|'):
         equipSets['set'] = equipSets['set'][1:]
-    all_effect = []
 
     # 计算圣遗物buff
     if equipSets['type'] == '4':
@@ -173,10 +180,6 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 if temp_number >= 2:
                     break
         all_effect.extend(temp)
-
-    # 计算武器buff
-    weapon_effet = weapons_effect_map[weaponName][str(weaponAffix)]
-    all_effect.append(weapon_effet)
 
     # 计算技能buff
     for talent in char_talent_effect_map[char_name]:
@@ -376,17 +379,15 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         else:
             effect_prop = prop['attack']
 
-        if extra_effect and power_name in extra_effect:
-            effect_prop += (
-                effect_prop + extra_effect[power_name] * prop['baseattack']
-            )
-
         power = power_list[power_name]['value'][
             prop['{}_skill_level'.format(power_name[0])]
         ]
         power_plus = power_list[power_name]['plus']
 
         power_percent, power_value = await power_to_value(power, power_plus)
+
+        if extra_effect and power_name in extra_effect:
+            power_percent += extra_effect[power_name]
 
         dmgBonus_cal = prop['{}_dmgBonus'.format(attack_type)] + sp_dmgBonus
         critdmg_cal = prop['critdmg'] + prop['{}_critdmg'.format(attack_type)]
@@ -428,6 +429,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             crit_dmg = avg_dmg = (
                 effect_prop * power_percent + power_value
             ) * (1 + prop['healBouns'])
+        elif '伤害值提升' in power_name:
+            crit_dmg = avg_dmg = effect_prop * power_percent + power_value
         elif '护盾' in power_name:
             crit_dmg = avg_dmg = (
                 effect_prop * power_percent + power_value

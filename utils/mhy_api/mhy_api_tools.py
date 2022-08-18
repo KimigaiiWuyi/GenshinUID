@@ -22,7 +22,7 @@ def old_version_get_ds_token(mysbbs=False):
     if mysbbs:
         n = 'dWCcD2FsOUXEstC5f9xubswZxEeoBOTc'
     else:
-        n = 'h8w582wxwgqvahcdkpvdhbh2w9casgfl'
+        n = 'z8DRIUjNDT7IT5IZXvrUAxyupA1peND9'
     i = str(int(time.time()))
     r = ''.join(random.sample(string.ascii_lowercase + string.digits, 6))
     c = md5('salt=' + n + '&t=' + i + '&r=' + r)

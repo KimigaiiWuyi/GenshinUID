@@ -40,7 +40,7 @@ MIHOYO_BBS_PLAYER_INFO_URL = (
 
 # 米游社的API列表
 bbs_Taskslist = BBS_URL + '/apihub/sapi/getUserMissionsState'  # 获取任务列表
-bbs_Signurl = BBS_URL + '/apihub/sapi/signIn?gids={}'  # post
+bbs_Signurl = BBS_URL + '/apihub/app/api/signIn'  # post
 bbs_Listurl = (
     BBS_URL + '/post/api/getForumPostList?'
     'forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1'

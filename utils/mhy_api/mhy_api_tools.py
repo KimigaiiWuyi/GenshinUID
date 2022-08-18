@@ -29,12 +29,15 @@ def old_version_get_ds_token(mysbbs=False):
     return i + ',' + r + ',' + c
 
 
-def get_ds_token(q='', b=None):
+def get_ds_token(q='', b=None, salt=None):
     if b:
         br = json.dumps(b)
     else:
         br = ''
-    s = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
+    if salt:
+        s = salt
+    else:
+        s = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
     t = str(int(time.time()))
     r = str(random.randint(100000, 200000))
     c = md5('salt=' + s + '&t=' + t + '&r=' + r + '&b=' + br + '&q=' + q)

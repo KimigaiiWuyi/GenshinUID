@@ -1,12 +1,17 @@
 import time
 import random
 import string
+from copy import deepcopy
 
 from httpx import AsyncClient
 from nonebot.log import logger
 
 from ..utils.mhy_api.mhy_api import *
-from ..utils.mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
+from ..utils.mhy_api.mhy_api_tools import (
+    random_hex,
+    get_ds_token,
+    old_version_get_ds_token,
+)
 
 mihoyobbs_List = [
     {
@@ -56,12 +61,12 @@ class MihoyoBBSCoin:
     def __init__(self, cookies):
         self.postsList = None
         self.headers = {
-            'DS': old_version_get_ds_token(True),
+            'DS': old_version_get_ds_token(),
             'cookie': cookies,
             'x-rpc-client_type': '2',
-            'x-rpc-app_version': '2.28.1',
+            'x-rpc-app_version': '2.34.1',
             'x-rpc-sys_version': '6.0.1',
-            'x-rpc-channel': 'mihoyo',
+            'x-rpc-channel': 'miyousheluodi',
             'x-rpc-device_id': random_hex(32),
             'x-rpc-device_name': random_text(random.randint(1, 10)),
             'x-rpc-device_model': 'Mi 10',
@@ -106,8 +111,8 @@ class MihoyoBBSCoin:
             req = await client.get(url=bbs_Taskslist, headers=self.headers)
         data = req.json()
         if 'err' in data['message'] or data['retcode'] == -100:
-            return '你的Cookies已失效。'
             logger.error('获取任务列表失败，你的cookie可能已过期，请重新设置cookie。')
+            return '你的Cookies已失效。'
         else:
             self.Today_getcoins = data['data']['can_get_points']
             self.Today_have_getcoins = data['data']['already_received_points']
@@ -179,12 +184,16 @@ class MihoyoBBSCoin:
         if self.Task_do['bbs_Sign']:
             return '讨论区任务已经完成过了~'
         else:
+            header = deepcopy(self.headers)
             for i in self.mihoyobbs_List_Use:
+                header['DS'] = get_ds_token(
+                    '', {'gids': i['id']}, 't0qEgfub6cvueAPgR5m9aQWWVciEer7v'
+                )
                 async with AsyncClient() as client:
                     req = await client.post(
-                        url=bbs_Signurl.format(i['id']),
-                        data={},
-                        headers=self.headers,
+                        url=bbs_Signurl,
+                        json={'gids': i['id']},
+                        headers=header,
                     )
                 data = req.json()
                 if 'err' not in data['message']:

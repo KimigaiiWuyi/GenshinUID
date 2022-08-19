@@ -381,7 +381,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             effect_prop = prop['attack']
 
         power = power_list[power_name]['value'][
-            prop['{}_skill_level'.format(power_name[0])]
+            prop['{}_skill_level'.format(power_name[0])] - 1
         ]
         power_plus = power_list[power_name]['plus']
 
@@ -432,7 +432,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             ) * (1 + prop['healBouns'])
         elif '扩散伤害' in power_name:
             crit_dmg = avg_dmg = (
-                base_value_list[char_level]
+                base_value_list[char_level - 1]
                 * 1.2
                 * (1 + (16.0 * prop['em']) / (prop['em'] + 2000) + prop['a'])
                 * r

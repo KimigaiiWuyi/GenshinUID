@@ -107,6 +107,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             '胡桃',
             '宵宫',
             '魈',
+            '神里绫华',
         ]:
             prop['{}_dmgBonus'.format(prop_limit)] = dmgBonus
         elif '万叶' in char_name and len(raw_data['talentList']) >= 6:

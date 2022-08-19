@@ -366,6 +366,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         else:
             if '重击' in power_name or '瞄准射击' in power_name:
                 attack_type = 'B'
+            elif '破局矢' in power_name or '霜华矢' in power_name:
+                attack_type = 'B'
             elif '冲击伤害' in power_name:
                 attack_type = 'C'
             elif '段' in power_name and '伤害' in power_name:
@@ -395,7 +397,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             effect_prop = prop['attack']
 
         power = power_list[power_name]['value'][
-            prop['{}_skill_level'.format(power_name[0])]
+            prop['{}_skill_level'.format(power_name[0])] - 1
         ]
         power_plus = power_list[power_name]['plus']
 

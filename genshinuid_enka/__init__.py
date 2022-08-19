@@ -139,6 +139,10 @@ async def send_card_info(
         else:
             uid = await select_db(qid, mode='uid')
             uid = str(uid)
+            if not uid:
+                await matcher.finish(
+                    '未绑定uid!\n请先发送[绑定uidxxxxx]绑定一个uid!', at_sender=True
+                )
     im = await enka_to_data(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
     await matcher.finish(str(im))

@@ -17,11 +17,7 @@ async def deal_ck(mes, qid):
     else:
         return '该用户没有绑定过UID噢~'
     im_list = []
-    if 'cookie_token' in simp_dict:
-        # 寻找uid
-        account_id = simp_dict['account_id'].value
-        cookie_token = simp_dict['cookie_token'].value
-    elif 'login_ticket' in simp_dict:
+    if 'login_ticket' in simp_dict:
         # 寻找stoken
         login_ticket = simp_dict['login_ticket'].value
         if 'login_uid' in simp_dict:
@@ -43,6 +39,10 @@ async def deal_ck(mes, qid):
             stoken, account_id
         )
         cookie_token = cookie_token_data['data']['cookie_token']
+    elif 'cookie_token' in simp_dict:
+        # 寻找uid
+        account_id = simp_dict['account_id'].value
+        cookie_token = simp_dict['cookie_token'].value
     else:
         return '添加Cookies失败!Cookies中应该包含cookie_token或者login_ticket相关信息！\n可以尝试退出米游社登陆重新登陆获取！'
     account_cookie = f'account_id={account_id};cookie_token={cookie_token}'

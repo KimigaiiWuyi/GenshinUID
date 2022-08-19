@@ -114,9 +114,6 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             ]
             if indexA == 0:
                 temp_value = temp
-                # 雷神
-                if '愿力加成' in label_name:
-                    break
             # 只采用高空坠地的倍率
             elif indexA == 1 and '低空/高空坠地' in label:
                 temp_value = temp

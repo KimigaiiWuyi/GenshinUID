@@ -245,11 +245,19 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         if char_name == '雷电将军':
             extra_value = (
                 float(
-                    power_list["extra"]["value"][
-                        prop["Q_skill_level"]
-                    ].replace("%", "")
+                    power_list["extra"]["value"][prop["Q_skill_level"] - 1]
+                    .replace("%", "")
+                    .split('+')[0]
                 )
                 * 0.6
+            )
+            extra_value2 = float(
+                power_list["extra"]["value"][prop["Q_skill_level"] - 1]
+                .replace("%", "")
+                .split('+')[1]
+            )
+            all_effect.append(
+                f'Q一段伤害:attack+{60*extra_value2};Q重击伤害:attack+{60*extra_value2};Q高空下落伤害:attack+{60*extra_value2}'
             )
             extra_effect = {'Q梦想一刀基础伤害(满愿力)': extra_value}
         del power_list['extra']
@@ -317,7 +325,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 effect_value = float(effect_value)
 
             if effect_limit:
-                if '\u4e00' <= effect_limit[0] <= '\u9fff':
+                if '\u4e00' <= effect_limit[-1] <= '\u9fff':
                     sp.append(
                         {
                             'effect_name': effect_limit,
@@ -353,26 +361,32 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
 
     for index, power_name in enumerate(power_list):
         attack_type = power_name[0]
-        if '重击' in power_name or '瞄准射击' in power_name:
-            attack_type = 'B'
-        elif '冲击伤害' in power_name:
-            attack_type = 'C'
-        elif '段' in power_name and '伤害' in power_name:
-            attack_type = 'A'
+        if char_name == '雷电将军':
+            pass
+        else:
+            if '重击' in power_name or '瞄准射击' in power_name:
+                attack_type = 'B'
+            elif '冲击伤害' in power_name:
+                attack_type = 'C'
+            elif '段' in power_name and '伤害' in power_name:
+                attack_type = 'A'
 
         sp_dmgBonus = 0
         sp_addDmg = 0
+        sp_attack = 0
 
         if sp:
             for sp_single in sp:
-                if sp_single['effect_name'] == power_name[1:]:
+                if sp_single['effect_name'] in power_name:
                     if sp_single['effect_attr'] == 'dmgBouns':
                         sp_dmgBonus += sp_single['effect_value']
                     elif sp_single['effect_attr'] == 'addDmg':
                         sp_addDmg += sp_single['effect_value']
+                    elif sp_single['effect_attr'] == 'attack':
+                        sp_attack += sp_single['effect_value']
 
         if '攻击' in power_list[power_name]['type']:
-            effect_prop = prop['attack']
+            effect_prop = prop['attack'] + sp_attack
         elif '生命值' in power_list[power_name]['type']:
             effect_prop = prop['hp']
         elif '防御' in power_list[power_name]['type']:
@@ -381,7 +395,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             effect_prop = prop['attack']
 
         power = power_list[power_name]['value'][
-            prop['{}_skill_level'.format(power_name[0])] - 1
+            prop['{}_skill_level'.format(power_name[0])]
         ]
         power_plus = power_list[power_name]['plus']
 

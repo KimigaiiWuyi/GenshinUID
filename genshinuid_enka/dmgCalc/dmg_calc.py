@@ -381,7 +381,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             effect_prop = prop['attack']
 
         power = power_list[power_name]['value'][
-            prop['{}_skill_level'.format(power_name[0])]
+            prop['{}_skill_level'.format(power_name[0])] - 1
         ]
         power_plus = power_list[power_name]['plus']
 

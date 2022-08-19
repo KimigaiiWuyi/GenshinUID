@@ -21,6 +21,7 @@ SQLAlchemy = "^1.4.39"
 Pillow = "^9.2.0"
 scikit-learn = "^1.1.2"
 shapely = "^1.8.2"
+aiosqlite = "^0.17.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

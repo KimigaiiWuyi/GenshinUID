@@ -19,7 +19,7 @@ already = 0
 async def sign_in(uid) -> str:
     logger.info(f'[签到] {uid} 开始执行签到')
     sign_info = await get_sign_info(uid)
-    if sign_info and 'data' in sign_info:
+    if sign_info and 'data' in sign_info and sign_info['data']:
         sign_info = sign_info['data']
     else:
         logger.warning(f'[签到] {uid} 出错, 请检查Cookies是否过期！')

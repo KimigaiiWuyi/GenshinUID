@@ -35,6 +35,7 @@ dmgBar_2 = Image.open(DMG_TEXT_PATH / 'dmgBar_2.png')
 async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
         char_action = json.load(f)
+    # 获取值
     char_name = raw_data['avatarName']
     char_level = int(raw_data['avatarLevel'])
     weaponName = raw_data['weaponInfo']['weaponName']
@@ -78,13 +79,21 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     prop['healBouns'] = fight_prop['healBonus']
     prop['shieldBouns'] = 0
 
+    # 无action情况兜底
     if char_name not in char_action:
         faild_img = Image.new('RGBA', (950, 1))
         return faild_img, 0
+
+    # 拿到倍率表
     power_list = char_action[char_name]
 
     # 给每个技能 分别添加上属性
     for prop_attr in [
+        'attack',
+        'defense',
+        'em',
+        'ce',
+        'hp',
         'dmgBonus',
         'critrate',
         'critdmg',
@@ -96,7 +105,18 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         if prop_attr in ['addDmg', 'd', 'r', 'ignoreDef']:
             prop['{}'.format(prop_attr)] = 0
         for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
-            prop['{}_{}'.format(prop_limit, prop_attr)] = 0
+            if prop_attr in [
+                'attack',
+                'defense',
+                'em',
+                'critrate',
+                'critdmg',
+                'ce',
+                'hp',
+            ]:
+                prop[f'{prop_limit}_{prop_attr}'] = prop[prop_attr]
+            else:
+                prop[f'{prop_limit}_{prop_attr}'] = 0
 
     # 计算角色伤害加成应该使用什么
     for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
@@ -241,6 +261,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             all_effect.append(power_effect)
         del power_list['effect']
 
+    # 特殊效果,目前仅有雷神满愿力
     extra_effect = {}
     if 'extra' in power_list:
         if char_name == '雷电将军':
@@ -269,63 +290,93 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
 
     sp = []
     # 计算全部的buff，添加入属性
+    print(all_effect)
     if all_effect:
+        # 把所有的效果都用;链接
         all_effect = ';'.join(all_effect)
+        # 然后再分隔成list
         all_effect_list = all_effect.split(';')
+        # 遍历每个效果
         for effect in all_effect_list:
+            # 空效果跳过
             if effect == '':
                 continue
 
+            # 如果效果没有限制条件,即dmgBonus+27这种,往前面增加:,方便后续分割
             effect_limit = ''
             if ':' in effect:
                 pass
             else:
                 effect = ':' + effect
 
+            # 分割效果
+            # 例如:Q:dmgBonus+27
+            # 分割后:
+            # effect_limit = Q
             effect_limit = effect.split(':')[0]
+            # effect_name = dmgBonus
             effect_attr = effect.split(':')[1].split('+')[0]
+            # effect_value = 27
             effect_value = effect.split(':')[1].split('+')[-1]
 
             base_check = True
+            # 寻找effect_value是否存在%,形如: 27%ce,即 增加值是由自身ce值确定的
             if '%' in effect_value:
+                # 如果存在%, 进行分割
+                # 拿到基于的属性,例如ce
                 effect_value_base_on_attr = effect_value.split('%')[-1]
+                # 查找是否有多个%,例如一开始的"Q:dmgBonus+75%25%ce"意思是按照25%的元素充能增加伤害,上限为75%
+                # 则这里会分割成['75', '25'] 然后 按%链接 即去掉最后一项,变为75%25
                 effect_value_base_on_value = '%'.join(
                     effect_value.split('%')[:-1]
                 )
+                # 如果还有%存在,即形如75%25的情况
                 if '%' in effect_value_base_on_value:
+                    # 最大值 effect_value_base_on_max_value = 75
                     effect_value_base_on_max_value = (
                         effect_value_base_on_value.split('%')[0]
                     )
+                    # 根据百分比的值 effect_value_base_on_max_value = 25
                     effect_value_base_on_value = (
                         effect_value_base_on_value.split('%')[-1]
                     )
+                    # 按照百分比计算增加值
                     effect_now_value = (
                         float(effect_value_base_on_value)
                         * prop[effect_value_base_on_attr]
                     )
+                    # 比大小, 上限不能超过75
                     effect_value = (
                         float(effect_value_base_on_max_value)
                         if effect_now_value
                         >= float(effect_value_base_on_max_value)
                         else effect_now_value
                     )
+                # 如果不存在最大值,即形如25%ce的情况
                 else:
+                    # 直接计算增加值
                     effect_value = (
                         float(effect_value_base_on_value)
                         * prop[effect_value_base_on_attr]
                     )
                 base_check = False
 
+            # 如果要增加的属性不是em元素精通,那么都要除于100
             if effect_attr != 'em':
+                # 正常除100
                 effect_value = float(effect_value) / 100
+                # 如果属性是血量,攻击,防御值,并且是按照%增加的,那么增加值应为百分比乘上基础值
                 if effect_attr in ['hp', 'attack', 'defense'] and base_check:
                     effect_value += (
                         effect_value * prop['base{}'.format(effect_attr)]
                     )
+            # 元素精通则为正常值
             else:
                 effect_value = float(effect_value)
 
+            # 如果效果有限制条件
             if effect_limit:
+                # 如果限制条件为中文,则为特殊label才生效
                 if '\u4e00' <= effect_limit[-1] <= '\u9fff':
                     sp.append(
                         {
@@ -334,17 +385,27 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                             'effect_value': effect_value,
                         }
                     )
+                # 如果限制条件为英文,例如Q,则为Q才生效
                 else:
+                    # 形如ABC:dmgBouns+75,则遍历ABC,增加值
                     for limit in effect_limit:
                         prop[
                             '{}_{}'.format(limit, effect_attr)
                         ] += effect_value
+            # 如果没有限制条件,直接增加
             else:
-                prop['{}'.format(effect_attr)] += effect_value
+                if effect_attr in ['a', 'd', 'r', 'addDmg', 'ignoreDef']:
+                    pass
+                else:
+                    for attr in ['A', 'B', 'C', 'E', 'Q']:
+                        prop[f'{attr}_{effect_attr}'] += effect_value
+                prop[f'{effect_attr}'] += effect_value
 
+    # 计算伤害计算部分图片长宽值
     w = 950
     h = 40 * (len(power_list) + 1)
     result_img = Image.new('RGBA', (w, h), (0, 0, 0, 0))
+    # 反复贴上不同颜色的长条
     for i in range(0, len(power_list) + 1):
         if i % 2 == 0:
             result_img.paste(dmgBar_1, (0, i * 40))
@@ -361,19 +422,26 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     result_draw.text((695, 22), '期望伤害', title_color, text_size, anchor='lm')
 
     for index, power_name in enumerate(power_list):
+        # 攻击类型ABCEQ应为label首位
         attack_type = power_name[0]
+        # 如果是雷电将军, 则就按首位,因为Q的几段伤害均视为元素爆发
         if char_name == '雷电将军':
             pass
         else:
+            # 重击或瞄准射击在label内,则视为B重击伤害,例如公子E内的重击伤害,不视为E伤害,而是B伤害
             if '重击' in power_name or '瞄准射击' in power_name:
                 attack_type = 'B'
+            # 特殊重击类型,例如甘雨和夜兰
             elif '破局矢' in power_name or '霜华矢' in power_name:
                 attack_type = 'B'
-            elif '冲击伤害' in power_name:
+            # 下落伤害类型,例如魈
+            elif '高空下落' in power_name:
                 attack_type = 'C'
+            # 一段伤害, 二段伤害等等 应视为A伤害
             elif '段' in power_name and '伤害' in power_name:
                 attack_type = 'A'
 
+        # 额外的伤害增益,基于之前的特殊label
         sp_dmgBonus = 0
         sp_addDmg = 0
         sp_attack = 0
@@ -388,30 +456,35 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                     elif sp_single['effect_attr'] == 'attack':
                         sp_attack += sp_single['effect_value']
 
+        # 根据type计算有效属性
         if '攻击' in power_list[power_name]['type']:
-            effect_prop = prop['attack'] + sp_attack
+            effect_prop = prop[f'{power_name[0]}_attack'] + sp_attack
         elif '生命值' in power_list[power_name]['type']:
-            effect_prop = prop['hp']
+            effect_prop = prop[f'{power_name[0]}_hp']
         elif '防御' in power_list[power_name]['type']:
-            effect_prop = prop['defense']
+            effect_prop = prop[f'{power_name[0]}_defense']
         else:
-            effect_prop = prop['attack']
+            effect_prop = prop[f'{power_name[0]}_attack']
 
+        # 按照ABCEQ等级查找倍率
         power = power_list[power_name]['value'][
             prop['{}_skill_level'.format(power_name[0])] - 1
         ]
+        # 计算是否多次伤害
         power_plus = power_list[power_name]['plus']
 
+        # 拿到百分比和固定值,百分比为float,形如2.2 也就是202%
         power_percent, power_value = await power_to_value(power, power_plus)
 
+        # 额外加成,目前只有雷神
         if extra_effect and power_name in extra_effect:
             power_percent += extra_effect[power_name]
 
+        # 计算这个label的伤害加成为多少
         dmgBonus_cal = prop['{}_dmgBonus'.format(attack_type)] + sp_dmgBonus
-        critdmg_cal = prop['critdmg'] + prop['{}_critdmg'.format(attack_type)]
-        critrate_cal = (
-            prop['critrate'] + prop['{}_critrate'.format(attack_type)]
-        )
+        critdmg_cal = prop['{}_critdmg'.format(attack_type)]
+        critrate_cal = prop['{}_critrate'.format(attack_type)]
+        em_cal = prop['{}_em'.format(attack_type)]
         d_cal = (char_level + 100) / (
             (char_level + 100)
             + (1 - prop['{}_d'.format(attack_type)])
@@ -435,7 +508,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                     else:
                         k = 1.5
                 reaction_add_dmg = k * (
-                    1 + (2.78 * prop['em']) / (prop['em'] + 1400) + prop['a']
+                    1 + (2.78 * em_cal) / (em_cal + 1400) + prop['a']
                 )
                 break
         else:
@@ -451,7 +524,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             crit_dmg = avg_dmg = (
                 base_value_list[char_level - 1]
                 * 1.2
-                * (1 + (16.0 * prop['em']) / (prop['em'] + 2000) + prop['a'])
+                * (1 + (16.0 * em_cal) / (em_cal + 2000) + prop['a'])
                 * r
             )
             power_list[power_name]['name'] = power_list[power_name]['name'][1:]

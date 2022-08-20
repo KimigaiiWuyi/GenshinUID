@@ -23,7 +23,7 @@ with open(element_path, 'r', encoding='utf-8') as f:
 char_list = []
 char_action = {}
 INDEX_MAP = ['', 'A', 'E', 'Q']
-attack_type_list = {'普通攻击': 'A', '重击': 'B', '坠地冲击': 'C', '战技': 'E', '爆发': 'Q'}
+attack_type_list = {'普通攻击': 'A', '重击': 'B', '下落攻击': 'C', '战技': 'E', '爆发': 'Q'}
 label_type_list = {
     '攻击': 'attack',
     '充能效率': 'ce',

@@ -25,6 +25,9 @@ char_action = {}
 INDEX_MAP = ['', 'A', 'E', 'Q']
 attack_type_list = {'普通攻击': 'A', '重击': 'B', '下落攻击': 'C', '战技': 'E', '爆发': 'Q'}
 label_type_list = {
+    '普通攻击': 'A',
+    '重击': 'B',
+    '下落攻击': 'C',
     '攻击': 'attack',
     '充能效率': 'ce',
     '生命值': 'hp',
@@ -145,7 +148,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
         # 提升指提升百分比 例如  E:dmgBouns+50%
         # 提高指提高固定值 例如  Q:addDmg+40%defense
 
-        label_keyword_hurt_list = ['一段', '肆阶']
+        label_keyword_hurt_list = ['一段', '壹阶', '贰阶', '叁阶', '肆阶']
         label_keyword_up_list = {
             '普通攻击': 'A:addDmg',
             '重击': 'B:addDmg',
@@ -157,7 +160,9 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             '元素精通': 'em',
         }
 
-        if '提升' in label_name:
+        if '持续时间' in label_name:
+            continue
+        elif '提升' in label_name:
             # 云瑾和申鹤
             if '伤害值提升' in label_name:
                 parameter_list['name'] = fill_label(label_name, index)

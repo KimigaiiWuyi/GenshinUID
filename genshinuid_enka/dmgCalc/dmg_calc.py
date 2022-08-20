@@ -99,6 +99,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         'critdmg',
         'addDmg',
         'd',
+        'g',
         'r',
         'ignoreDef',
     ]:
@@ -287,6 +288,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     # 在计算buff前, 引入特殊效果
     if char_name == '雷电将军':
         all_effect.append('Q:dmgBonus+27')
+    elif char_name == '钟离':
+        all_effect.append('r+-20')
 
     sp = []
     # 计算全部的buff，添加入属性
@@ -491,7 +494,12 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             * (1 - prop['{}_ignoreDef'.format(attack_type)])
             * (enemy_level + 100)
         )
-        r = 1 - prop['r']
+        if prop['r'] > 0.75:
+            r = 1 / (1 + 4 * prop['r'])
+        elif prop['r'] > 0:
+            r = 1 - prop['r']
+        else:
+            r = 1 - prop['r'] / 2
 
         # 计算元素反应 增幅
         for reaction in ['蒸发', '融化']:
@@ -525,6 +533,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 base_value_list[char_level - 1]
                 * 1.2
                 * (1 + (16.0 * em_cal) / (em_cal + 2000) + prop['a'])
+                * (1 + prop['g'] / 100)
                 * r
             )
             power_list[power_name]['name'] = power_list[power_name]['name'][1:]
@@ -592,8 +601,11 @@ async def power_to_value(power: str, power_plus: int) -> Tuple[float, float]:
             power_value = 0
         else:
             power_value = float(power_value)
-    else:
+    elif '%' in power:
         power_percent = float(power.replace('%', '')) / 100 * power_plus
         power_value = 0
+    else:
+        power_percent = 0
+        power_value = float(power)
 
     return power_percent, power_value

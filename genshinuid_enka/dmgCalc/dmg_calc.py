@@ -225,9 +225,9 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             skill_effect_name = skill_effect_single['name']
             skill_effect_value = skill_effect_single['value']
             skill_effect = skill_effect_single['effect']
-            skill_effect_level = prop[
-                '{}_skill_level'.format(skill_effect_name[0])
-            ]
+            skill_effect_level = (
+                prop['{}_skill_level'.format(skill_effect_name[0])] - 1
+            )
             skill_effect_value_detail = skill_effect_value[skill_effect_level]
             if skill_effect[-1] == '}':
                 skill_effect_value_detail = skill_effect_value_detail.replace(

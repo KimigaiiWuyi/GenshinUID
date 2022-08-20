@@ -18,6 +18,10 @@ def md5(text):
     return md5_func.hexdigest()
 
 
+def random_text(num: int) -> str:
+    return ''.join(random.sample(string.ascii_lowercase + string.digits, num))
+
+
 def old_version_get_ds_token(mysbbs=False):
     if mysbbs:
         n = 'dWCcD2FsOUXEstC5f9xubswZxEeoBOTc'

@@ -8,7 +8,12 @@ BBS_TASKLIST = BBS_URL + '/apihub/sapi/getUserMissionsState'
 '''账号相关'''
 # 通过LoginTicket获取Stoken
 GET_STOKEN_URL = OLD_URL + '/auth/api/getMultiTokenByLoginTicket'
+# 通过Stoken获取Cookie_token
 GET_COOKIE_TOKEN_URL = OLD_URL + '/auth/api/getCookieAccountInfoBySToken'
+# 通过Stoken获取AuthKey
+GET_AUTHKEY_URL = OLD_URL + '/binding/api/genAuthKey'
+# 通过AuthKey获取gachalogs
+GET_GACHA_LOG_URL = HK4_URL + '/event/gacha_info/api/getGachaLog'
 
 '''米游社相关'''
 # 获取签到列表

@@ -1,13 +1,17 @@
 import copy
+import time
+import random
 from typing import Optional
+from http.cookies import SimpleCookie
 
 from nonebot.log import logger
 from aiohttp import ClientSession
 
 from .mhy_api import *
-from ..db_operation.db_operation import cache_db, owner_cookies
+from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
 from .mhy_api_tools import (  # noqa: F401,F403
     random_hex,
+    random_text,
     get_ds_token,
     old_version_get_ds_token,
 )
@@ -24,56 +28,67 @@ _HEADER = {
 }
 
 
-async def _mhy_request(
-    url: str,
-    method: str = 'get',
-    header: dict = _HEADER,
-    params: dict = {},
-    data: dict = {},
-    sess: Optional[ClientSession] = None,
-) -> dict:
-    """
-    :说明:
-      访问URL并进行json解析返回。
-    :参数:
-      * url (str): MihoyoAPI。
-      * method (str): `post` or `get`。
-      * header (str): 默认为_HEADER。
-      * params (dict): 参数。
-      * data (dict): 参数(`post`方法需要传)。
-      * client (ClientSession): 可选, 指定client。
-    :返回:
-      * result (dict): json.loads()解析字段。
-    """
-    try:
-        if sess is None:
-            async with ClientSession() as sess:
-                if method == 'get':
-                    async with sess.get(
-                        url=url, headers=header, params=params
-                    ) as res:
-                        result = await res.json()
-                else:
-                    async with sess.post(
-                        url=url, headers=header, json=data
-                    ) as res:
-                        result = await res.json()
-            return result
-        else:
-            if method == 'get':
-                async with sess.get(
-                    url=url, headers=header, params=params
-                ) as res:
-                    result = await res.json()
-            else:
-                async with sess.post(
-                    url=url, headers=header, json=data
-                ) as res:
-                    result = await res.json()
-            return result
-    except:
-        logger.exception('访问{}失败！'.format(url))
-        return {}
+async def get_gacha_log_by_authkey(uid: str) -> dict:
+    server_id = 'cn_gf01'
+    if uid[0] == '5':
+        server_id = 'cn_qd01'
+    authkey_rawdata = await get_authkey_by_cookie(uid)
+    authkey = authkey_rawdata['data']['authkey']
+    data = await _mhy_request(
+        url=GET_GACHA_LOG_URL,
+        method='get',
+        header=_HEADER,
+        params={
+            'authkey_ver': '1',
+            'sign_type': '2',
+            'auth_appid': 'webview_gacha',
+            'init_type': '200',  # init 哪个池子都无所谓，但下面这个 gacha_id 跟这里对应
+            'gacha_id': 'fecafa7b6560db5f3182222395d88aaa6aaac1bc',
+            'timestamp': str(int(time.time())),  # 实际好像并不是请求时的时间戳
+            'lang': 'zh-cn',
+            'device_type': 'mobile',
+            'plat_type': 'ios',  # 'android'
+            'region': server_id,  # 'cn_gf01'
+            'authkey': authkey,
+            'game_biz': 'hk4e_cn',  # 'hk4e_cn'
+            'gacha_type': '301',  # 查询时更新
+            'page': '1',  # 查询时更新
+            'size': '999',  # 查询时更新
+            'end_id': 0,  # 查询时更新
+        },
+    )
+    print(data)
+    return data
+
+
+async def get_authkey_by_cookie(uid: str) -> dict:
+    server_id = 'cn_gf01'
+    if uid[0] == '5':
+        server_id = 'cn_qd01'
+    HEADER = copy.deepcopy(_HEADER)
+    HEADER['Cookie'] = await get_stoken(uid)
+    HEADER['DS'] = old_version_get_ds_token(True)
+    HEADER['User-Agent'] = 'okhttp/4.8.0'
+    HEADER['x-rpc-app_version'] = '2.28.1'
+    HEADER['x-rpc-client_type'] = '2'
+    HEADER['x-rpc-channel'] = 'mihoyo'
+    HEADER['x-rpc-device_id'] = random_hex(32)
+    HEADER['x-rpc-device_name'] = random_text(random.randint(1, 10))
+    HEADER['x-rpc-device_model'] = 'Mi 10'
+    HEADER['Referer'] = 'https://app.mihoyo.com'
+    HEADER['Host'] = 'bbs-api.mihoyo.com'
+    authkey = await _mhy_request(
+        url=GET_AUTHKEY_URL,
+        method='post',
+        header=HEADER,
+        data={
+            'auth_appid': 'webview_gacha',
+            'game_biz': 'hk4e_cn',  # 'hk4e_cn'
+            'game_uid': uid,  # '100000123'
+            'region': server_id,  # 'cn_gf01'
+        },
+    )
+    return authkey
 
 
 async def get_stoken_by_login_ticket(loginticket: str, mys_id: str) -> dict:
@@ -284,7 +299,7 @@ async def get_calculate_info(
 
 
 async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
-    """
+    '''
     :说明:
       返回米游社账号对应的游戏角色信息。
       包括原神, 崩坏3 等等。
@@ -296,7 +311,7 @@ async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
       * ck (str): 米游社Cookie。
     :返回:
       * mys_data (dict): 米游社账号的游戏角色信息。
-    """
+    '''
     if ck is None:
         ck = str(await cache_db(mysid))
     HEADER = copy.deepcopy(_HEADER)
@@ -309,3 +324,55 @@ async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
         params={'uid': mysid},
     )
     return data
+
+
+async def _mhy_request(
+    url: str,
+    method: str = 'get',
+    header: dict = _HEADER,
+    params: dict = {},
+    data: dict = {},
+    sess: Optional[ClientSession] = None,
+) -> dict:
+    '''
+    :说明:
+      访问URL并进行json解析返回。
+    :参数:
+      * url (str): MihoyoAPI。
+      * method (str): `post` or `get`。
+      * header (str): 默认为_HEADER。
+      * params (dict): 参数。
+      * data (dict): 参数(`post`方法需要传)。
+      * client (ClientSession): 可选, 指定client。
+    :返回:
+      * result (dict): json.loads()解析字段。
+    '''
+    try:
+        if sess is None:
+            async with ClientSession() as sess:
+                if method == 'get':
+                    async with sess.get(
+                        url=url, headers=header, params=params
+                    ) as res:
+                        result = await res.json()
+                else:
+                    async with sess.post(
+                        url=url, headers=header, json=data
+                    ) as res:
+                        result = await res.json()
+            return result
+        else:
+            if method == 'get':
+                async with sess.get(
+                    url=url, headers=header, params=params
+                ) as res:
+                    result = await res.json()
+            else:
+                async with sess.post(
+                    url=url, headers=header, json=data
+                ) as res:
+                    result = await res.json()
+            return result
+    except:
+        logger.exception('访问{}失败！'.format(url))
+        return {}

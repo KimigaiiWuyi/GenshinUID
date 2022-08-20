@@ -59,7 +59,7 @@ def random_text(num: int) -> str:
 
 class MihoyoBBSCoin:
     def __init__(self, cookies):
-        self.postsList = None
+        self.postsList = []
         self.headers = {
             'DS': old_version_get_ds_token(),
             'cookie': cookies,
@@ -95,8 +95,11 @@ class MihoyoBBSCoin:
         read = await self.read_posts()
         like = await self.like_posts()
         share = await self.share_post()
-        im = start + '\n' + sign + '\n' + read + '\n' + like + '\n' + share
-        return im
+        if start and sign and read and like and share:
+            im = '\n'.join([start, sign, read, like, share])
+            return im
+        else:
+            return '米游社币任务执行出错了~'
 
     async def load_mihoyo_bbs_list_use(self):
         for i in [2, 5]:

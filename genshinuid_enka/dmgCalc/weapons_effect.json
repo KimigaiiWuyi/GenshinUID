@@ -756,11 +756,11 @@
     "5": "attack+40"
   },
   "护摩之杖": {
-    "1": "attack+1.8%hp",
-    "2": "attack+2.2%hp",
-    "3": "attack+2.6%hp",
-    "4": "attack+3.0%hp",
-    "5": "attack+3.4%hp"
+    "1": "attack+1%hp",
+    "2": "attack+1.2%hp",
+    "3": "attack+1.4%hp",
+    "4": "attack+1.6%hp",
+    "5": "attack+1.8%hp"
   },
   "斫峰之刃": {
     "1": "shieldBouns+20;attack+20",

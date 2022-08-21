@@ -15,5 +15,7 @@ async def send_monthly_data(
         await monthly_data.finish()
     qid = event.sender.user_id
     uid = await select_db(qid, mode='uid')
+    if not uid:
+        await matcher.finish(UID_HINT)
     im = await award(uid)
     await matcher.finish(im, at_sender=True)

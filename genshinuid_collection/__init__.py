@@ -42,6 +42,9 @@ async def send_collection_info(
         uid = await convert_mysid(args[3])
     logger.info('[查询收集信息]uid: {}'.format(uid))
 
+    if not uid:
+        await matcher.finish(UID_HINT)
+
     im = await draw_collection_img(uid)
     if isinstance(im, str):
         await matcher.finish(im)

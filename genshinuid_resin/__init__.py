@@ -33,6 +33,10 @@ async def send_daily_info(
 
     uid: str = await select_db(qid, mode='uid')  # type: ignore
     logger.info('[每日信息文字版]UID: {}'.format(uid))
+
+    if not uid:
+        await matcher.finish(UID_HINT)
+
     im = await get_resin_text(uid)
     await matcher.finish(im)
 

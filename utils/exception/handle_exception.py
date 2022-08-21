@@ -1,3 +1,4 @@
+import re
 from functools import wraps
 
 from nonebot.log import logger
@@ -33,6 +34,9 @@ def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):  # t
                 # `finish` 会抛出此异常，应予以抛出而不处理
                 raise
             except Exception as e:
+                # 如果e内包含敏感信息，应在此处进行处理
+                if 'SQL' in str(e):
+                    e = '数据库操作失败!可能正在[校验全部Cookies]\n敏感信息已抹去...请等待一段时间后重试!'
                 # 代码本身出问题
                 if log_msg:
                     if not fail_msg:

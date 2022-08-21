@@ -29,51 +29,51 @@ async def sign_in(uid) -> str:
         global already
         already += 1
         return '今日已签到!'
-    sign_data = await mihoyo_bbs_sign(uid=uid)
-    logger.debug(sign_data)
-    if sign_data:
-        if 'risk_code' in sign_data['data']:
+    ua_list = ['iphone', 'android', 'iphone', 'android']
+    for index, ua in enumerate(ua_list):
+        sign_data = await mihoyo_bbs_sign(uid=uid, ua=ua)
+        logger.debug(sign_data)
+        if (
+            sign_data
+            and 'data' in sign_data
+            and sign_data['data']
+            and 'risk_code' in sign_data['data']
+        ):
             if sign_data['data']['risk_code'] == 375:
-                for _ in range(4):
-                    sign_data = await mihoyo_bbs_sign(uid=uid)
-                    if 'data' in sign_data:
-                        if 'risk_code' in sign_data['data']:
-                            if sign_data['data']['risk_code'] == 0:
-                                logger.info(f'[签到] {uid} 该用户成功跳过校验码！')
-                                break
-                            else:
-                                logger.info(f'[签到] {uid} 该用户出现校验码，等待重试...')
-                                await asyncio.sleep(35 + random.randint(1, 20))
-                        else:
-                            logger.warning(f'[签到] 超过请求阈值...')
-                            return '签到失败...出现验证码!请过段时间[全部重签]或者手动至米游社进行签到！'
-                    else:
-                        logger.warning(f'[签到] 超过请求阈值...')
-                        return '签到失败...出现验证码!请过段时间[全部重签]或者手动至米游社进行签到！'
+                logger.info(f'[签到] {uid} 该用户出现校验码，开始重试第 {index + 1} 次')
+                await asyncio.sleep(40 + random.randint(1, 20))
+                continue
+            else:
+                if index == 0:
+                    logger.info(f'[签到] {uid} 该用户无校验码!')
                 else:
-                    logger.warning(f'[签到] {uid} 该用户出现校验码，校验失败！')
-                    return '签到失败...出现验证码!请过段时间[全部重签]或者手动至米游社进行签到！'
-        sign_list = await get_sign_list()
-        status = sign_data['message']
-        getitem = sign_list['data']['awards'][
-            int(sign_info['total_sign_day']) - 1
-        ]['name']
-        getnum = sign_list['data']['awards'][
-            int(sign_info['total_sign_day']) - 1
-        ]['cnt']
-        get_im = f'本次签到获得{getitem}x{getnum}'
-        new_sign_info = await get_sign_info(uid)
-        new_sign_info = new_sign_info['data']
-        if new_sign_info['is_sign'] == True:
-            mes_im = '签到成功'
+                    logger.info(f'[签到] {uid} 该用户无校验码! 重试 {index} 次成功!')
+                break
         else:
-            mes_im = f'签到失败, 状态为:{status}'
-        sign_missed = sign_info['sign_cnt_missed']
-        im = mes_im + '!' + '\n' + get_im + '\n' + f'本月漏签次数：{sign_missed}'
-        logger.info(f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
+            logger.warning(f'[签到] 超过请求阈值...')
+            return '签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到！'
     else:
         im = '签到失败!'
         logger.warning(f'[签到] {uid} 签到失败, 结果: {im}')
+        return im
+    sign_list = await get_sign_list()
+    status = sign_data['message']
+    getitem = sign_list['data']['awards'][
+        int(sign_info['total_sign_day']) - 1
+    ]['name']
+    getnum = sign_list['data']['awards'][int(sign_info['total_sign_day']) - 1][
+        'cnt'
+    ]
+    get_im = f'本次签到获得{getitem}x{getnum}'
+    new_sign_info = await get_sign_info(uid)
+    new_sign_info = new_sign_info['data']
+    if new_sign_info['is_sign'] == True:
+        mes_im = '签到成功'
+    else:
+        mes_im = f'签到失败, 状态为:{status}'
+    sign_missed = sign_info['sign_cnt_missed']
+    im = mes_im + '!' + '\n' + get_im + '\n' + f'本月漏签次数：{sign_missed}'
+    logger.info(f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
     return im
 
 

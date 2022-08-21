@@ -102,6 +102,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         'g',
         'r',
         'ignoreDef',
+        'shieldBouns',
+        'physicalDmgBonus',
     ]:
         if prop_attr in ['addDmg', 'd', 'r', 'ignoreDef']:
             prop['{}'.format(prop_attr)] = 0
@@ -114,6 +116,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 'critdmg',
                 'ce',
                 'hp',
+                'physicalDmgBonus',
             ]:
                 prop[f'{prop_limit}_{prop_attr}'] = prop[prop_attr]
             else:
@@ -262,7 +265,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             all_effect.append(power_effect)
         del power_list['effect']
 
-    # 特殊效果,目前仅有雷神满愿力
+    # 特殊效果,目前有雷神满愿力
     extra_effect = {}
     if 'extra' in power_list:
         if char_name == '雷电将军':
@@ -484,16 +487,31 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             power_percent += extra_effect[power_name]
 
         # 计算这个label的伤害加成为多少
-        dmgBonus_cal = prop['{}_dmgBonus'.format(attack_type)] + sp_dmgBonus
+        # 这个label是否为物理伤害
+        if power_name in ['Q光降之剑基础伤害', 'Q光降之剑基础伤害(13层)', 'Q每层能量伤害']:
+            dmgBonus_cal = (
+                prop['{}_dmgBonus'.format(attack_type)]
+                + sp_dmgBonus
+                + prop['physicalDmgBonus']
+            )
+        # 常规元素伤害
+        else:
+            dmgBonus_cal = (
+                prop['{}_dmgBonus'.format(attack_type)] + sp_dmgBonus
+            )
+        # 计算暴击伤害
         critdmg_cal = prop['{}_critdmg'.format(attack_type)]
+        # 计算暴击率
         critrate_cal = prop['{}_critrate'.format(attack_type)]
         em_cal = prop['{}_em'.format(attack_type)]
+        # 计算防御区
         d_cal = (char_level + 100) / (
             (char_level + 100)
             + (1 - prop['{}_d'.format(attack_type)])
             * (1 - prop['{}_ignoreDef'.format(attack_type)])
             * (enemy_level + 100)
         )
+        # 计算抗性区
         if prop['r'] > 0.75:
             r = 1 / (1 + 4 * prop['r'])
         elif prop['r'] > 0:
@@ -524,6 +542,19 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
 
         add_dmg = prop['{}_addDmg'.format(attack_type)] + sp_addDmg
 
+        # 特殊伤害提高
+        sp_power_percent = 0
+        if '13层' in power_name:
+            sp_power_percent = (
+                float(
+                    power_list['Q每层能量伤害']['value'][
+                        prop['{}_skill_level'.format(power_name[0])] - 1
+                    ].replace('%', '')
+                )
+                / 100
+            ) * 13
+
+        # 根据label_name 计算数值
         if '治疗' in power_name:
             crit_dmg = avg_dmg = (
                 effect_prop * power_percent + power_value
@@ -546,13 +577,18 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         elif '提升' in power_name or '提高' in power_name:
             continue
         else:
-            crit_dmg = (effect_prop * power_percent + power_value) * (
-                1 + critdmg_cal
-            ) * (1 + dmgBonus_cal) * d_cal * r * reaction_add_dmg + add_dmg
+            crit_dmg = (
+                effect_prop * (power_percent + sp_power_percent) + power_value
+            ) * (1 + critdmg_cal) * (
+                1 + dmgBonus_cal
+            ) * d_cal * r * reaction_add_dmg + add_dmg
             avg_dmg = (
                 (crit_dmg - add_dmg) * critrate_cal
                 + (1 - critrate_cal)
-                * (effect_prop * power_percent + power_value)
+                * (
+                    effect_prop * (power_percent + sp_power_percent)
+                    + power_value
+                )
                 * (1 + dmgBonus_cal)
                 * d_cal
                 * r

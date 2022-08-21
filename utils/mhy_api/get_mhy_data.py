@@ -53,11 +53,10 @@ async def get_gacha_log_by_authkey(uid: str) -> dict:
             'game_biz': 'hk4e_cn',  # 'hk4e_cn'
             'gacha_type': '301',  # 查询时更新
             'page': '1',  # 查询时更新
-            'size': '999',  # 查询时更新
+            'size': '20',  # 查询时更新
             'end_id': 0,  # 查询时更新
         },
     )
-    print(data)
     return data
 
 
@@ -69,8 +68,8 @@ async def get_authkey_by_cookie(uid: str) -> dict:
     HEADER['Cookie'] = await get_stoken(uid)
     HEADER['DS'] = old_version_get_ds_token(True)
     HEADER['User-Agent'] = 'okhttp/4.8.0'
-    HEADER['x-rpc-app_version'] = '2.28.1'
-    HEADER['x-rpc-client_type'] = '2'
+    HEADER['x-rpc-app_version'] = '2.35.2'
+    HEADER['x-rpc-client_type'] = '5'
     HEADER['x-rpc-channel'] = 'mihoyo'
     HEADER['x-rpc-device_id'] = random_hex(32)
     HEADER['x-rpc-device_name'] = random_text(random.randint(1, 10))
@@ -159,19 +158,25 @@ async def get_sign_info(uid, server_id='cn_gf01') -> dict:
     return data
 
 
-async def mihoyo_bbs_sign(uid, server_id='cn_gf01') -> dict:
+async def mihoyo_bbs_sign(uid, ua=None, server_id='cn_gf01') -> dict:
     if uid[0] == '5':
         server_id = 'cn_qd01'
     HEADER = copy.deepcopy(_HEADER)
-    HEADER['User_Agent'] = (
-        'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
-        'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
-        'miHoYoBBS/2.3.0'
-    )
+    if ua == 'iphone':
+        HEADER['User-Agent'] = (
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)'
+            'AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/miHoYoBBS/2.35.2'
+        )
+    else:
+        HEADER['User_Agent'] = (
+            'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) AppleWebKit/537.36 ('
+            'KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.101 Mobile Safari/537.36 '
+            'miHoYoBBS/2.35.2'
+        )
     HEADER['Cookie'] = await owner_cookies(uid)
     HEADER['x-rpc-device_id'] = random_hex(32)
-    HEADER['x-rpc-app_version'] = '2.28.1'
-    HEADER['x-rpc-client_type'] = '2'
+    HEADER['x-rpc-app_version'] = '2.35.2'
+    HEADER['x-rpc-client_type'] = '5'
     HEADER['X_Requested_With'] = 'com.mihoyo.hyperion'
     HEADER['DS'] = old_version_get_ds_token(True)
     HEADER['Referer'] = (

@@ -88,7 +88,8 @@ async def get_resin_img(qid: int):
         res = await convert_img(img)
         logger.info('[查询每日信息]绘图已完成,等待发送!')
     except TypeError:
-        res = '查询不到该QQ号的UID信息,请联系管理员检查后台输出!'
+        logger.exception('[查询每日信息]绘图失败!')
+        res = '你绑定过的UID中可能存在过期CK~请重新绑定一下噢~'
 
     return res
 

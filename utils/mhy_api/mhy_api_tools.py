@@ -24,7 +24,7 @@ def random_text(num: int) -> str:
 
 def old_version_get_ds_token(mysbbs=False):
     if mysbbs:
-        n = 'dWCcD2FsOUXEstC5f9xubswZxEeoBOTc'
+        n = 'N50pqm7FSy2AkFz2B3TqtuZMJ5TOl3Ep'
     else:
         n = 'z8DRIUjNDT7IT5IZXvrUAxyupA1peND9'
     i = str(int(time.time()))

@@ -52,25 +52,31 @@ with open(MAP_PATH / talentId2Name_fileName, "r", encoding='UTF-8') as f:
 with open(MAP_PATH / avatarName2Element_fileName, 'r', encoding='UTF-8') as f:
     avatarName2Element = json.load(f)
 
+
 async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
     if enka_data:
         pass
     else:
-        enka_data = json.loads(httpx.get(url=f'https://enka.network/u/{str(uid)}/__data.json', headers={'User-Agent': 'GenshinUID/2.0'}).text)
+        enka_data = json.loads(
+            httpx.get(
+                url=f'https://enka.minigg.cn/u/{str(uid)}/__data.json',
+                headers={'User-Agent': 'GenshinUID/2.1'},
+            ).text
+        )
     if enka_data == {}:
         return enka_data
-    now = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+    now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     playerInfo = enka_data['playerInfo']
     path = PLAYER_PATH / str(uid)
     path.mkdir(parents=True, exist_ok=True)
-    with open(path / '{}.json'.format(str(uid)),'w', encoding='UTF-8') as file:
+    with open(path / '{}.json'.format(str(uid)), 'w', encoding='UTF-8') as file:
         json.dump(playerInfo, file, ensure_ascii=False)
-    with open(path / 'rawData.json','w', encoding='UTF-8') as file:
+    with open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
         json.dump(enka_data, file, ensure_ascii=False)
 
     if 'avatarInfoList' not in enka_data:
         return f'UID{uid}刷新失败！未打开角色展柜!'
-        
+
     char_name_list = []
     for char in enka_data['avatarInfoList']:
         # 处理基本信息
@@ -117,24 +123,36 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             char_data['avatarSkill'].append(skill_temp)
 
         if char_data['avatarName'] in ['神里绫华', '安柏']:
-            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
-                                                                        char_data['avatarSkill'][0]
-            char_data['avatarSkill'][2], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
-                                                                        char_data['avatarSkill'][2]
-            char_data['avatarEnName'] = char_data['avatarSkill'][1]['skillIcon'].split('_')[-2]
+            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = (
+                char_data['avatarSkill'][-1],
+                char_data['avatarSkill'][0],
+            )
+            char_data['avatarSkill'][2], char_data['avatarSkill'][-1] = (
+                char_data['avatarSkill'][-1],
+                char_data['avatarSkill'][2],
+            )
+            char_data['avatarEnName'] = char_data['avatarSkill'][1]['skillIcon'].split(
+                '_'
+            )[-2]
         elif char_data['avatarName'] in ['旅行者']:
-            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
-                                                                        char_data['avatarSkill'][0]
-            char_data['avatarSkill'][1], char_data['avatarSkill'][-1] = char_data['avatarSkill'][-1], \
-                                                                        char_data['avatarSkill'][1]
+            char_data['avatarSkill'][0], char_data['avatarSkill'][-1] = (
+                char_data['avatarSkill'][-1],
+                char_data['avatarSkill'][0],
+            )
+            char_data['avatarSkill'][1], char_data['avatarSkill'][-1] = (
+                char_data['avatarSkill'][-1],
+                char_data['avatarSkill'][1],
+            )
             char_data['avatarEnName'] = str(avatarId)
         else:
-            char_data['avatarEnName'] = char_data['avatarSkill'][-1]['skillIcon'].split('_')[-2]
+            char_data['avatarEnName'] = char_data['avatarSkill'][-1]['skillIcon'].split(
+                '_'
+            )[-2]
 
         # 处理命座
         talent_temp = []
         if 'talentIdList' in char:
-            for index,talent in enumerate(char['talentIdList']):
+            for index, talent in enumerate(char['talentIdList']):
                 talentTemp = {}
                 talentTemp['talentId'] = char['talentIdList'][index]
                 talentTemp['talentName'] = talentId2Name['Name'][str(talent)]
@@ -144,34 +162,34 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
 
         # 处理属性
         fight_prop = {}
-            # 血量
+        # 血量
         fight_prop['hp'] = char["fightPropMap"]["2000"]
         fight_prop['baseHp'] = char["fightPropMap"]["1"]
         fight_prop['addHp'] = char["fightPropMap"]["2000"] - char["fightPropMap"]["1"]
-            # 攻击力
+        # 攻击力
         fight_prop['atk'] = char["fightPropMap"]["2001"]
         fight_prop['baseAtk'] = char["fightPropMap"]["4"]
         fight_prop['addAtk'] = char["fightPropMap"]["2001"] - char["fightPropMap"]["4"]
-            # 防御力
+        # 防御力
         fight_prop['def'] = char["fightPropMap"]["2002"]
         fight_prop['baseDef'] = char["fightPropMap"]["7"]
         fight_prop['addDef'] = char["fightPropMap"]["2002"] - char["fightPropMap"]["7"]
-            # 元素精通
+        # 元素精通
         fight_prop['elementalMastery'] = char["fightPropMap"]["28"]
-            # 暴击率
+        # 暴击率
         fight_prop['critRate'] = char["fightPropMap"]["20"]
-            # 暴击伤害
+        # 暴击伤害
         fight_prop['critDmg'] = char["fightPropMap"]["22"]
-            # 充能效率
+        # 充能效率
         fight_prop['energyRecharge'] = char["fightPropMap"]["23"]
-            # 治疗&受治疗
+        # 治疗&受治疗
         fight_prop['healBonus'] = char["fightPropMap"]["26"]
         fight_prop['healedBonus'] = char["fightPropMap"]["27"]
-            # 物理伤害加成 & 抗性
+        # 物理伤害加成 & 抗性
         fight_prop['physicalDmgSub'] = char["fightPropMap"]["29"]
         fight_prop['physicalDmgBonus'] = char["fightPropMap"]["30"]
-            # 伤害加成
-        for i in range(40,47):
+        # 伤害加成
+        for i in range(40, 47):
             if char["fightPropMap"][str(i)] > 0:
                 fight_prop['dmgBonus'] = char["fightPropMap"][str(i)]
                 break
@@ -196,7 +214,9 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             weapon_info['promoteLevel'] = 0
         weapon_info['weaponLevel'] = weapon_data['weapon']['level']
         if 'affixMap' in weapon_data['weapon']:
-            weapon_info['weaponAffix'] = list(weapon_data['weapon']['affixMap'].values())[0] + 1
+            weapon_info['weaponAffix'] = (
+                list(weapon_data['weapon']['affixMap'].values())[0] + 1
+            )
         else:
             weapon_info['weaponAffix'] = 1
         weapon_info['weaponStats'] = []
@@ -207,9 +227,17 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             weapon_prop_temp['statValue'] = k['statValue']
             weapon_info['weaponStats'].append(weapon_prop_temp)
         # 武器特效，须请求API
-        effect_raw = json.loads(httpx.get('https://info.minigg.cn/weapons?query={}'.format(weapon_info['weaponName'])).text)
+        effect_raw = json.loads(
+            httpx.get(
+                'https://info.minigg.cn/weapons?query={}'.format(
+                    weapon_info['weaponName']
+                )
+            ).text
+        )
         if 'effect' in effect_raw:
-            effect = effect_raw['effect'].format(*effect_raw['r{}'.format(str(weapon_info['weaponAffix']))])
+            effect = effect_raw['effect'].format(
+                *effect_raw['r{}'.format(str(weapon_info['weaponAffix']))]
+            )
         else:
             effect = '无特效。'
         weapon_info['weaponEffect'] = effect
@@ -225,24 +253,32 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             artifact_temp['nameTextMapHash'] = artifact['flat']['nameTextMapHash']
             artifact_temp['icon'] = artifact['flat']['icon']
             artifact_temp['aritifactName'] = icon2Name[artifact['flat']['icon']]
-            artifact_temp['aritifactSetsName'] = artifact2attr[artifact_temp['aritifactName']]
+            artifact_temp['aritifactSetsName'] = artifact2attr[
+                artifact_temp['aritifactName']
+            ]
             artifact_set_list.append(artifact_temp['aritifactSetsName'])
-            artifact_temp['aritifactSetPiece'] = artifactId2Piece[artifact_temp['icon'].split('_')[-1]][0]
-            artifact_temp['aritifactPieceName'] = artifactId2Piece[artifact_temp['icon'].split('_')[-1]][1]
+            artifact_temp['aritifactSetPiece'] = artifactId2Piece[
+                artifact_temp['icon'].split('_')[-1]
+            ][0]
+            artifact_temp['aritifactPieceName'] = artifactId2Piece[
+                artifact_temp['icon'].split('_')[-1]
+            ][1]
 
             artifact_temp['aritifactStar'] = artifact['flat']['rankLevel']
             artifact_temp['aritifactLevel'] = artifact['reliquary']['level'] - 1
 
             artifact_temp['reliquaryMainstat'] = artifact['flat']['reliquaryMainstat']
-            artifact_temp['reliquaryMainstat']['statName'] = propId2Name[artifact_temp['reliquaryMainstat']['mainPropId']]
-            
+            artifact_temp['reliquaryMainstat']['statName'] = propId2Name[
+                artifact_temp['reliquaryMainstat']['mainPropId']
+            ]
+
             artifact_temp['reliquarySubstats'] = artifact['flat']['reliquarySubstats']
             for sub in artifact_temp['reliquarySubstats']:
                 sub['statName'] = propId2Name[sub['appendPropId']]
             artifacts_info.append(artifact_temp)
 
         equipSetList = set(artifact_set_list)
-        char_data['equipSets'] = {'type':'','set':''}
+        char_data['equipSets'] = {'type': '', 'set': ''}
         char_data['equipList'] = artifacts_info
         for equip in equipSetList:
             if artifact_set_list.count(equip) >= 4:
@@ -254,8 +290,8 @@ async def enkaToData(uid: str, enka_data: Optional[dict] = None) -> dict:
             elif artifact_set_list.count(equip) >= 2:
                 char_data['equipSets']['type'] += '2'
                 char_data['equipSets']['set'] += equip
-                
-        with open(path / '{}.json'.format(avatarName),'w', encoding='UTF-8') as file:
+
+        with open(path / '{}.json'.format(avatarName), 'w', encoding='UTF-8') as file:
             json.dump(char_data, file, ensure_ascii=False)
     char_name_list_str = ','.join(char_name_list)
     return f'UID{uid}刷新完成！\n本次缓存：{char_name_list_str}'

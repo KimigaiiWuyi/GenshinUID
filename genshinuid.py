@@ -22,6 +22,7 @@ FILE_PATH = os.path.join(os.path.join(os.path.dirname(__file__), 'mihoyo_libs'),
 INDEX_PATH = os.path.join(FILE_PATH, 'index')
 Texture_PATH = os.path.join(FILE_PATH, 'texture2d')
 
+AUTO_REFRESH = False
 CK_HINT = '''获取Cookies教程：https://github.com/KimigaiiWuyi/GenshinUID/issues/255
 绑定uid：uid为原神uid，如绑定uid12345
 绑定mys：mys为米游社通行证，如绑定mys12345'''
@@ -327,7 +328,9 @@ async def draw_event():
 
 @sv.scheduled_job('cron', hour='4')
 async def daily_refresh_charData():
-    await refresh_charData()
+    global AUTO_REFRESH
+    if AUTO_REFRESH:
+        await refresh_charData()
 
 async def refresh_charData():
     conn = sqlite3.connect('ID_DATA.db')

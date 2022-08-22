@@ -17,6 +17,8 @@ get_char_info = on_command(
     priority=2,
 )
 
+AUTO_REFRESH = False
+
 refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
 PLAYER_PATH = Path(__file__).parents[1] / 'player'
@@ -111,7 +113,9 @@ async def refresh_char_data():
 
 @refresh_scheduler.scheduled_job('cron', hour='4')
 async def daily_refresh_charData():
-    await refresh_char_data()
+    global AUTO_REFRESH
+    if AUTO_REFRESH:
+        await refresh_char_data()
 
 
 @refresh.handle()

@@ -71,7 +71,9 @@ async def enka_to_data(
         pass
     else:
         enka_data = await get_enka_info(uid)
-    if enka_data is None:
+    if isinstance(enka_data, str):
+        return enka_data
+    elif enka_data is None:
         return {}
 
     now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))

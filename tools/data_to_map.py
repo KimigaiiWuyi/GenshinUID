@@ -4,11 +4,13 @@ from pathlib import Path
 
 import httpx
 
+from ..version import Genshin_version
+
 R_PATH = Path(__file__).parents[0]
 MAP_PATH = Path(__file__).parents[1] / 'utils' / 'enka_api' / 'map'
 DATA_PATH = R_PATH / 'gs_data'
 
-version = '2.8.0'
+version = Genshin_version
 
 avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
 weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
@@ -79,7 +81,10 @@ async def weaponHash2NameJson() -> None:
 
     temp = {}
     for i in weapon_data:
-        temp[str(i['nameTextMapHash'])] = raw_data[str(i['nameTextMapHash'])]
+        if str(i['nameTextMapHash']) in raw_data:
+            temp[str(i['nameTextMapHash'])] = raw_data[
+                str(i['nameTextMapHash'])
+            ]
 
     with open(
         MAP_PATH / weaponHash2Name_fileName, 'w', encoding='UTF-8'
@@ -123,8 +128,9 @@ async def skillId2NameJson() -> None:
 
     temp = {'Name': {}, 'Icon': {}}
     for i in skill_data:
-        temp['Name'][str(i['id'])] = raw_data[str(i['nameTextMapHash'])]
-        temp['Icon'][str(i['id'])] = i['skillIcon']
+        if str(i['nameTextMapHash']) in raw_data:
+            temp['Name'][str(i['id'])] = raw_data[str(i['nameTextMapHash'])]
+            temp['Icon'][str(i['id'])] = i['skillIcon']
 
     with open(MAP_PATH / skillId2Name_fileName, 'w', encoding='UTF-8') as file:
         json.dump(temp, file, ensure_ascii=False)

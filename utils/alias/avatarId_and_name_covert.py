@@ -1,8 +1,15 @@
 import json
 from pathlib import Path
 
+from ...version import Genshin_version
+
 with open(
-    Path(__file__).parent / 'avatarId2Name.json', 'r', encoding='utf8'
+    Path(__file__).parents[1]
+    / 'enka_api'
+    / 'map'
+    / f'avatarId2Name_mapping_{Genshin_version}.json',
+    'r',
+    encoding='utf8',
 ) as fp:
     char_id_data = json.load(fp)
 

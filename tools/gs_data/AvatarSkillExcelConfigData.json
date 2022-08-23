@@ -1362,6 +1362,50 @@
         "globalValueKey": ""
     },
     {
+        "id": 10117,
+        "nameTextMapHash": 2178570213,
+        "abilityName": "",
+        "descTextMapHash": 1543524448,
+        "skillIcon": "Skill_E_PlayerGrass_01",
+        "cdTime": 8.0,
+        "maxChargeNum": 1,
+        "triggerID": 32,
+        "lockShape": "CircleLockEnemyR10H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 1132,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10118,
+        "nameTextMapHash": 2504837493,
+        "abilityName": "",
+        "descTextMapHash": 2829038472,
+        "skillIcon": "Skill_S_PlayerGrass_01",
+        "cdTime": 20.0,
+        "costElemType": "Grass",
+        "costElemVal": 80.0,
+        "maxChargeNum": 1,
+        "triggerID": 35,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 1139,
+        "globalValueKey": ""
+    },
+    {
         "id": 10160,
         "nameTextMapHash": 2878874285,
         "abilityName": "Avatar_Diluc_ExtraAttack",
@@ -5593,6 +5637,235 @@
         "globalValueKey": ""
     },
     {
+        "id": 10671,
+        "nameTextMapHash": 3768859965,
+        "abilityName": "Avatar_Collei_PressShoot",
+        "descTextMapHash": 2885504752,
+        "skillIcon": "Skill_A_02",
+        "isRanged": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6731,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10672,
+        "nameTextMapHash": 2943851901,
+        "abilityName": "",
+        "descTextMapHash": 1878895672,
+        "skillIcon": "Skill_S_Collei_01",
+        "cdTime": 12.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6732,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10675,
+        "nameTextMapHash": 1430301637,
+        "abilityName": "",
+        "descTextMapHash": 744666440,
+        "skillIcon": "Skill_E_Collei_01",
+        "cdTime": 15.0,
+        "costElemType": "Grass",
+        "costElemVal": 60.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6739,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10674,
+        "nameTextMapHash": 3984738037,
+        "abilityName": "Avatar_Ganyu_AimPressShoot",
+        "descTextMapHash": 3948721200,
+        "skillIcon": "Skill_A_02",
+        "isRanged": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10681,
+        "nameTextMapHash": 3134128957,
+        "abilityName": "Avatar_Dori_ExtraAttack",
+        "descTextMapHash": 145589464,
+        "skillIcon": "Skill_A_04",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6831,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10682,
+        "nameTextMapHash": 2851422357,
+        "abilityName": "",
+        "descTextMapHash": 289369624,
+        "skillIcon": "Skill_S_Dori_01",
+        "cdTime": 9.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6832,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10685,
+        "nameTextMapHash": 4155943733,
+        "abilityName": "",
+        "descTextMapHash": 3813497976,
+        "skillIcon": "Skill_E_Dori_01",
+        "cdTime": 20.0,
+        "costElemType": "Electric",
+        "costElemVal": 80.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6839,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10691,
+        "nameTextMapHash": 3409522557,
+        "abilityName": "Avatar_Tighnari_PressShoot",
+        "descTextMapHash": 416050040,
+        "skillIcon": "Skill_A_02",
+        "isRanged": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6931,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10692,
+        "nameTextMapHash": 3726986301,
+        "abilityName": "",
+        "descTextMapHash": 3970361016,
+        "skillIcon": "Skill_S_Tighnari_01",
+        "cdTime": 12.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6932,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10693,
+        "nameTextMapHash": 1376683245,
+        "abilityName": "Avatar_Tighnari_AimPressShoot",
+        "descTextMapHash": 229413576,
+        "skillIcon": "Skill_A_02",
+        "isRanged": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10695,
+        "nameTextMapHash": 3822928381,
+        "abilityName": "",
+        "descTextMapHash": 1756743120,
+        "skillIcon": "Skill_E_Tighnari_01",
+        "cdTime": 12.0,
+        "costElemType": "Grass",
+        "costElemVal": 40.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 6939,
+        "globalValueKey": ""
+    },
+    {
         "id": 20001,
         "nameTextMapHash": 1936482797,
         "abilityName": "Dvalin_S01_AirGun",
@@ -6088,7 +6361,47 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": "",
-        "PBFNJNELDIK": 3
+        "OOKJFEOLHMF": 3
+    },
+    {
+        "id": 20043,
+        "nameTextMapHash": 2192716101,
+        "abilityName": "",
+        "descTextMapHash": 1590479648,
+        "skillIcon": "",
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "triggerID": 201,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20044,
+        "nameTextMapHash": 2165605389,
+        "abilityName": "",
+        "descTextMapHash": 2463830256,
+        "skillIcon": "",
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "triggerID": 201,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
     },
     {
         "id": 20100,
@@ -6895,6 +7208,46 @@
         "globalValueKey": ""
     },
     {
+        "id": 20330,
+        "nameTextMapHash": 1226553101,
+        "abilityName": "ActivityAbility_Lannaluo_Shoot",
+        "descTextMapHash": 1148068200,
+        "skillIcon": "Btn_Arana_Shoot",
+        "cdTime": 1.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20331,
+        "nameTextMapHash": 77403669,
+        "abilityName": "ActivityAbility_Lannaluo_Skill",
+        "descTextMapHash": 4099927704,
+        "skillIcon": "Btn_Arana_Exchange",
+        "cdTime": 1.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
         "id": 10384,
         "nameTextMapHash": 1543775045,
         "abilityName": "",
@@ -7048,6 +7401,25 @@
         "globalValueKey": ""
     },
     {
+        "id": 100547,
+        "nameTextMapHash": 3401752693,
+        "abilityName": "Avatar_PlayerBoy_ExtraAttack_Grass",
+        "descTextMapHash": 234884616,
+        "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 1130,
+        "globalValueKey": ""
+    },
+    {
         "id": 100550,
         "nameTextMapHash": 3538369725,
         "abilityName": "Avatar_PlayerGirl_ExtraAttack_Common",
@@ -7175,6 +7547,25 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "proudSkillGroupId": 1031,
+        "globalValueKey": ""
+    },
+    {
+        "id": 100557,
+        "nameTextMapHash": 1727970205,
+        "abilityName": "Avatar_PlayerGirl_ExtraAttack_Grass",
+        "descTextMapHash": 3455702216,
+        "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 1131,
         "globalValueKey": ""
     },
     {
@@ -8418,6 +8809,63 @@
         "abilityName": "",
         "descTextMapHash": 865157264,
         "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5067010,
+        "nameTextMapHash": 1232154725,
+        "abilityName": "",
+        "descTextMapHash": 283402864,
+        "skillIcon": "Skill_A_02",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5068010,
+        "nameTextMapHash": 2106573173,
+        "abilityName": "",
+        "descTextMapHash": 3419961824,
+        "skillIcon": "Skill_A_04",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5069010,
+        "nameTextMapHash": 19903157,
+        "abilityName": "",
+        "descTextMapHash": 2231084184,
+        "skillIcon": "Skill_A_02",
         "maxChargeNum": 1,
         "triggerID": 30,
         "lockShape": "CircleLockEnemyR5H6HC",

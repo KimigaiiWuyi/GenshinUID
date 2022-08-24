@@ -7,6 +7,7 @@ from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.get_cookies.get_cookies import GetCookies
+from ..utils.download_resource.download_url import download_file
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
@@ -46,6 +47,13 @@ async def get_talent_pic(talent: int) -> Image.Image:
 
 async def get_rank_data(data: dict, path: Path):
     char_id = data[0]['avatar_id']
+    # 只下载侧视图
+    if path == CHAR_SIDE_PATH:
+        # 确认角色头像路径
+        char_side_path = CHAR_PATH / f'{char_id}.png'
+        # 不存在自动下载
+        if not char_side_path.exists():
+            await download_file(data[0]['avatar_icon'], 3, f'{char_id}.png')
     char_pic = Image.open(path / f'{char_id}.png').convert('RGBA')
     if path == CHAR_STAND_PATH:
         char_pic = char_pic.resize((862, 528), Image.Resampling.BICUBIC)  # type: ignore
@@ -65,8 +73,13 @@ async def _draw_abyss_card(
     char_card = Image.new('RGBA', (150, 190), (0, 0, 0, 0))
     # 根据稀有度获取背景
     char_bg = await get_rarity_pic(char['rarity'])
+    # 确认角色头像路径
+    char_pic_path = CHAR_PATH / f'{char["id"]}.png'
+    # 不存在自动下载
+    if not char_pic_path.exists():
+        await download_file(char['icon'], 1, f'{char["id"]}.png')
     char_pic = (
-        Image.open(CHAR_PATH / f'{char["id"]}.png')
+        Image.open(char_pic_path)
         .convert('RGBA')
         .resize((150, 150), Image.Resampling.LANCZOS)  # type: ignore
     )

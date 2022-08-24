@@ -4,13 +4,14 @@ from typing import Tuple
 
 from PIL import Image, ImageDraw
 
+from ...version import Genshin_version
 from .base_value import base_value_list
 from ...utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
 DMG_PATH = Path(__file__).parents[0]
 DMG_TEXT_PATH = DMG_PATH / 'texture2d'
 
-version = '2.8.0'
+version = Genshin_version
 avatarName2SkillAdd_fileName = f'avatarName2SkillAdd_mapping_{version}.json'
 
 with open(DMG_PATH / avatarName2SkillAdd_fileName, "r", encoding='UTF-8') as f:

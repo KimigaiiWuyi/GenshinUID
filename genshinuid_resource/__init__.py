@@ -11,9 +11,14 @@ download_resource = on_command('下载全部资源')
 @download_resource.handle()
 @handle_exception('下载全部资源', '资源下载错误')
 async def send_download_resource_msg(
-    matcher: Matcher, args: Message = CommandArg()
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+    args: Message = CommandArg(),
 ):
     if args:
+        return
+    qid = event.sender.user_id
+    if qid not in SUPERUSERS:
         return
     await matcher.send('正在开始下载~可能需要较久的时间!')
     im = await download_all_resource()

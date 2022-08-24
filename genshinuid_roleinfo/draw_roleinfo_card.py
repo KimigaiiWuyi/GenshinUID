@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw
 
 from ..utils.get_cookies.get_cookies import GetCookies
 from ..utils.mhy_api.get_mhy_data import get_character
+from ..utils.download_resource.download_url import download_file
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
@@ -69,22 +70,40 @@ async def _draw_char_full_pic(img: Image.Image, char_data: dict, index: int):
         char_card_img.paste(char_card_bg5, (0, 0))
     else:
         char_card_img.paste(char_card_bg4, (0, 0))
-    weapon_pic = Image.open(
-        WEAPON_PATH / f'{char_data["weapon"]["name"]}.png'
-    ).convert('RGBA')
+    # 确认武器路径
+    weapon_pic_path = WEAPON_PATH / f'{char_data["weapon"]["name"]}.png'
+    # 不存在自动下载
+    if not weapon_pic_path.exists():
+        await download_file(
+            char_data['weapon']['icon'],
+            5,
+            f'{char_data["weapon"]["name"]}.png',
+        )
+    # 粘贴武器图片
+    weapon_pic = Image.open(weapon_pic_path).convert('RGBA')
     weapon_pic_scale = weapon_pic.resize((50, 50))
+    # 确认角色头像路径
+    char_pic_path = CHAR_PATH / f'{char_data["id"]}.png'
+    # 不存在自动下载
+    if not char_pic_path.exists():
+        await download_file(char_data['icon'], 1, f'{char_data["id"]}.png')
+    # 粘贴角色头像
     char_img = Image.open(CHAR_PATH / f'{char_data["id"]}.png').convert('RGBA')
+    # 缩放至合适大小
     char_img_scale = char_img.resize((148, 148))
     char_card_img.paste(char_img_scale, (-20, 5), char_img_scale)
     char_card_img.paste(char_card_fg, (0, 0), char_card_fg)
+    # 命座和好感的图片
     fetter_pic = await get_fetter_pic(char_data['fetter'])
     talent_pic = await get_talent_pic(char_data['actived_constellation_num'])
-    weapon_bg_pic = await get_weapon_pic(char_data['weapon']['rarity'])
     char_card_img.paste(fetter_pic, (17, 110), fetter_pic)
     char_card_img.paste(talent_pic, (177, 24), talent_pic)
+    # 武器
+    weapon_bg_pic = await get_weapon_pic(char_data['weapon']['rarity'])
     char_card_img.paste(weapon_bg_pic, (105, 83), weapon_bg_pic)
     char_card_img.paste(weapon_pic_scale, (105, 83), weapon_pic_scale)
     char_draw = ImageDraw.Draw(char_card_img)
+    # 写字
     char_draw.text(
         (114, 37),
         f'Lv{char_data["level"]}',
@@ -343,11 +362,27 @@ async def _draw_char_8_pic(img: Image.Image, char_data: dict, index: int):
         char_card_img.paste(char_card8_bg5, (0, 0))
     else:
         char_card_img.paste(char_card8_bg4, (0, 0))
-    weapon_pic = Image.open(
-        WEAPON_PATH / f'{char_data["weapon"]["name"]}.png'
-    ).convert('RGBA')
+    # 确认武器路径
+    weapon_pic_path = WEAPON_PATH / f'{char_data["weapon"]["name"]}.png'
+    # 不存在自动下载
+    if not weapon_pic_path.exists():
+        await download_file(
+            char_data['weapon']['icon'],
+            5,
+            f'{char_data["weapon"]["name"]}.png',
+        )
+    # 粘贴武器图片
+    weapon_pic = Image.open(weapon_pic_path).convert('RGBA')
     weapon_pic_scale = weapon_pic.resize((50, 50))
+    # 确认角色头像路径
+    char_pic_path = CHAR_PATH / f'{char_data["id"]}.png'
+    # 不存在自动下载
+    if not char_pic_path.exists():
+        await download_file(char_data['icon'], 1, f'{char_data["id"]}.png')
+    # 粘贴角色图片
     char_img = Image.open(CHAR_PATH / f'{char_data["id"]}.png').convert('RGBA')
+
+    # 角色立绘
     char_stand_img = Image.open(
         CHAR_STAND_PATH / f'{char_data["id"]}.png'
     ).convert('RGBA')

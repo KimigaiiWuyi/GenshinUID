@@ -34,30 +34,49 @@ async def get_gacha_log_by_authkey(uid: str) -> dict:
         server_id = 'cn_qd01'
     authkey_rawdata = await get_authkey_by_cookie(uid)
     authkey = authkey_rawdata['data']['authkey']
-    data = await _mhy_request(
-        url=GET_GACHA_LOG_URL,
-        method='get',
-        header=_HEADER,
-        params={
-            'authkey_ver': '1',
-            'sign_type': '2',
-            'auth_appid': 'webview_gacha',
-            'init_type': '200',  # init 哪个池子都无所谓，但下面这个 gacha_id 跟这里对应
-            'gacha_id': 'fecafa7b6560db5f3182222395d88aaa6aaac1bc',
-            'timestamp': str(int(time.time())),  # 实际好像并不是请求时的时间戳
-            'lang': 'zh-cn',
-            'device_type': 'mobile',
-            'plat_type': 'ios',  # 'android'
-            'region': server_id,  # 'cn_gf01'
-            'authkey': authkey,
-            'game_biz': 'hk4e_cn',  # 'hk4e_cn'
-            'gacha_type': '301',  # 查询时更新
-            'page': '1',  # 查询时更新
-            'size': '20',  # 查询时更新
-            'end_id': 0,  # 查询时更新
-        },
-    )
-    return data
+    gacha_type_meta_data = {
+        '新手祈愿': ['100'],
+        '常驻祈愿': ['200'],
+        '角色祈愿': ['301', '400'],
+        '武器祈愿': ['302'],
+    }
+    full_data = {}
+    gacha_log = []
+    for gacha_name in gacha_type_meta_data:
+        for gacha_type in gacha_type_meta_data[gacha_name]:
+            end_id = 0
+            for page in range(1, 999):
+                raw_data = await _mhy_request(
+                    url=GET_GACHA_LOG_URL,
+                    method='get',
+                    header=_HEADER,
+                    params={
+                        'authkey_ver': '1',
+                        'sign_type': '2',
+                        'auth_appid': 'webview_gacha',
+                        'init_type': '200',  # init 哪个池子都无所谓，但下面这个 gacha_id 跟这里对应
+                        'gacha_id': 'fecafa7b6560db5f3182222395d88aaa6aaac1bc',
+                        'timestamp': str(int(time.time())),  # 实际好像并不是请求时的时间戳
+                        'lang': 'zh-cn',
+                        'device_type': 'mobile',
+                        'plat_type': 'ios',  # 'android'
+                        'region': server_id,  # 'cn_gf01'
+                        'authkey': authkey,
+                        'game_biz': 'hk4e_cn',  # 'hk4e_cn'
+                        'gacha_type': gacha_type,  # 查询时更新
+                        'page': page,  # 查询时更新
+                        'size': '20',  # 查询时更新
+                        'end_id': end_id,  # 查询时更新
+                    },
+                )
+                data = raw_data['data']['list']  # type:list
+                if data == []:
+                    break
+                end_id = data[-1]["id"]
+                gacha_log.extend(data)
+        full_data[gacha_name] = gacha_log
+        gacha_log = []
+    return full_data
 
 
 async def get_authkey_by_cookie(uid: str) -> dict:
@@ -69,13 +88,14 @@ async def get_authkey_by_cookie(uid: str) -> dict:
     HEADER['DS'] = old_version_get_ds_token(True)
     HEADER['User-Agent'] = 'okhttp/4.8.0'
     HEADER['x-rpc-app_version'] = '2.35.2'
+    HEADER['x-rpc-sys_version'] = '12'
     HEADER['x-rpc-client_type'] = '5'
     HEADER['x-rpc-channel'] = 'mihoyo'
     HEADER['x-rpc-device_id'] = random_hex(32)
     HEADER['x-rpc-device_name'] = random_text(random.randint(1, 10))
     HEADER['x-rpc-device_model'] = 'Mi 10'
     HEADER['Referer'] = 'https://app.mihoyo.com'
-    HEADER['Host'] = 'bbs-api.mihoyo.com'
+    HEADER['Host'] = 'api-takumi.mihoyo.com'
     authkey = await _mhy_request(
         url=GET_AUTHKEY_URL,
         method='post',

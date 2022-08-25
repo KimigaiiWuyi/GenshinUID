@@ -20,7 +20,7 @@ get_abyss_info = on_regex(
     '查询你的或者指定人的深渊战绩',
     detail_des=(
             '指令：'
-            '<ft color=(238,120,0)>[查询'
+            '<ft color=(238,120,0)>[查询</ft>'
             '<ft color=(125,125,125)>(@某人)</ft>'
             '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
             '<ft color=(125,125,125)>(上期)</ft>'

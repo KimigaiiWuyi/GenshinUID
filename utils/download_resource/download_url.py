@@ -11,6 +11,7 @@ PATH_MAP = {
     5: WEAPON_PATH,
     6: CHAR_NAMECARD_PATH,
     7: REL_PATH,
+    8: ICON_PATH,
 }
 
 

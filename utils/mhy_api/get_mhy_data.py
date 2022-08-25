@@ -16,6 +16,13 @@ from .mhy_api_tools import (  # noqa: F401,F403
     old_version_get_ds_token,
 )
 
+gacha_type_meta_data = {
+    '新手祈愿': ['100'],
+    '常驻祈愿': ['200'],
+    '角色祈愿': ['301', '400'],
+    '武器祈愿': ['302'],
+}
+
 mhyVersion = '2.11.1'
 
 _HEADER = {
@@ -28,20 +35,26 @@ _HEADER = {
 }
 
 
-async def get_gacha_log_by_authkey(uid: str) -> dict:
+async def get_gacha_log_by_authkey(
+    uid: str, old_data: Optional[dict] = None
+) -> dict:
     server_id = 'cn_gf01'
     if uid[0] == '5':
         server_id = 'cn_qd01'
     authkey_rawdata = await get_authkey_by_cookie(uid)
+    if authkey_rawdata == {}:
+        return {}
     authkey = authkey_rawdata['data']['authkey']
-    gacha_type_meta_data = {
-        '新手祈愿': ['100'],
-        '常驻祈愿': ['200'],
-        '角色祈愿': ['301', '400'],
-        '武器祈愿': ['302'],
-    }
-    full_data = {}
-    gacha_log = []
+    if old_data:
+        full_data = old_data
+    else:
+        full_data = {
+            '新手祈愿': [],
+            '常驻祈愿': [],
+            '角色祈愿': [],
+            '武器祈愿': [],
+        }
+    temp = []
     for gacha_name in gacha_type_meta_data:
         for gacha_type in gacha_type_meta_data[gacha_name]:
             end_id = 0
@@ -73,9 +86,14 @@ async def get_gacha_log_by_authkey(uid: str) -> dict:
                 if data == []:
                     break
                 end_id = data[-1]["id"]
-                gacha_log.extend(data)
-        full_data[gacha_name] = gacha_log
-        gacha_log = []
+                if data[-1] in full_data[gacha_name]:
+                    for item in data:
+                        if item not in full_data[gacha_name]:
+                            temp.append(item)
+                    full_data[gacha_name].extend(temp)
+                    temp = []
+                    break
+                full_data[gacha_name].extend(data)
     return full_data
 
 
@@ -84,7 +102,10 @@ async def get_authkey_by_cookie(uid: str) -> dict:
     if uid[0] == '5':
         server_id = 'cn_qd01'
     HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = await get_stoken(uid)
+    stoken = await get_stoken(uid)
+    if stoken == '该用户没有绑定过Stoken噢~':
+        return {}
+    HEADER['Cookie'] = stoken
     HEADER['DS'] = old_version_get_ds_token(True)
     HEADER['User-Agent'] = 'okhttp/4.8.0'
     HEADER['x-rpc-app_version'] = '2.35.2'
@@ -368,7 +389,7 @@ async def _mhy_request(
       * header (str): 默认为_HEADER。
       * params (dict): 参数。
       * data (dict): 参数(`post`方法需要传)。
-      * client (ClientSession): 可选, 指定client。
+      * sess (ClientSession): 可选, 指定client。
     :返回:
       * result (dict): json.loads()解析字段。
     '''
@@ -388,15 +409,11 @@ async def _mhy_request(
             return result
         else:
             if method == 'get':
-                async with sess.get(
-                    url=url, headers=header, params=params
-                ) as res:
-                    result = await res.json()
+                req = await sess.get(url=url, headers=header, params=params)
+                result = await req.json()
             else:
-                async with sess.post(
-                    url=url, headers=header, json=data
-                ) as res:
-                    result = await res.json()
+                req = await sess.post(url=url, headers=header, json=data)
+                result = await req.json()
             return result
     except:
         logger.exception('访问{}失败！'.format(url))

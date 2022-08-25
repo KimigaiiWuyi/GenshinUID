@@ -22,7 +22,7 @@ get_abyss_info = on_regex(
             '指令：'
             '<ft color=(238,120,0)>[查询'
             '<ft color=(125,125,125)>(@某人)</ft>'
-            '/uidxxx/mysxxx]</ft>'
+            '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
             '<ft color=(125,125,125)>(上期)</ft>'
             '<ft color=(238,120,0)>深渊</ft>'
             '<ft color=(125,125,125)>(xx层)</ft>\n'

@@ -30,7 +30,7 @@ get_abyss_info = on_regex(
             ' \n'
             '示例：\n'
             '<ft color=(238,120,0)>查询深渊</ft>；\n'
-            '<ft color=(238,120,0)>查询uid123456789上期深渊</ft>；\n'
+            '<ft color=(238,120,0)>uid123456789上期深渊</ft>；\n'
             '<ft color=(238,120,0)>查询@无疑Wuyi 上期深渊12层</ft>'
     )
 )

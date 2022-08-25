@@ -6,13 +6,21 @@ from copy import deepcopy
 
 import httpx
 
-path = Path(__file__).parents[1] / 'utils' / 'alias' / 'avatarId2Name.json'
+Genshin_version = '3.0.0'
+
+path = (
+    Path(__file__).parents[1]
+    / 'utils'
+    / 'enka_api'
+    / 'map'
+    / f'avatarId2Name_mapping_{Genshin_version}.json'
+)
 element_path = (
     Path(__file__).parents[1]
     / 'utils'
     / 'enka_api'
     / 'map'
-    / 'avatarName2Element_mapping_2.8.0.json'
+    / f'avatarName2Element_mapping_{Genshin_version}.json'
 )
 with open(path, 'r', encoding='utf-8') as f:
     char_id_list = json.load(f)

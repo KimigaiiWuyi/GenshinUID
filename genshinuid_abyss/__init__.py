@@ -20,8 +20,10 @@ get_abyss_info = on_regex(
     '查询你的或者指定人的深渊战绩',
     detail_des=(
             '指令：'
-            '<ft color=(238,120,0)>[查询/uidxxx/mysxxx]</ft>'
-            '<ft color=(125,125,125)>(@某人)(上期)</ft>'
+            '<ft color=(238,120,0)>[查询'
+            '<ft color=(125,125,125)>(@某人)</ft>'
+            '/uidxxx/mysxxx]</ft>'
+            '<ft color=(125,125,125)>(上期)</ft>'
             '<ft color=(238,120,0)>深渊</ft>'
             '<ft color=(125,125,125)>(xx层)</ft>\n'
             ' \n'  # 如果想要空行，请在换行符前面打个空格，不然会忽略换行符

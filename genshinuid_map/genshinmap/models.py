@@ -15,7 +15,7 @@ class MapID(IntEnum):
     """渊下宫"""
     chasm = 9
     """层岩巨渊·地下矿区"""
-    golden_apple_archipelago = 12
+    # golden_apple_archipelago = 12
     """金苹果群岛"""
 
 
@@ -66,14 +66,14 @@ class Slice(BaseModel):
 
 
 class Maps(BaseModel):
-    slices: List[HttpUrl]
+    slices: List[List[HttpUrl]]
     origin: List[int]
     total_size: List[int]
     padding: List[int]
 
     @validator("slices", pre=True)
     def slices_to_list(cls, v):
-        return [i["url"] for i in v[0]]
+        return [[i["url"] for i in y] for y in v]
 
 
 class MapInfo(BaseModel):

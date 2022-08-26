@@ -1,6 +1,7 @@
 import copy
 import time
 import random
+import asyncio
 from typing import Optional
 from http.cookies import SimpleCookie
 
@@ -82,7 +83,10 @@ async def get_gacha_log_by_authkey(
                         'end_id': end_id,  # 查询时更新
                     },
                 )
-                data = raw_data['data']['list']  # type:list
+                if 'data' in raw_data and 'list' in 'data':
+                    data = raw_data['data']['list']  # type:list
+                else:
+                    return {}
                 if data == []:
                     break
                 end_id = data[-1]["id"]
@@ -94,6 +98,7 @@ async def get_gacha_log_by_authkey(
                     temp = []
                     break
                 full_data[gacha_name].extend(data)
+                await asyncio.sleep(0.6)
     return full_data
 
 

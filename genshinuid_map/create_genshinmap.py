@@ -13,8 +13,11 @@ async def create_genshin_map():
     for map_id in models.MapID:
         maps = await request.get_maps(map_id)
         points = await request.get_points(map_id)
+        # 获取七天神像锚点
         mark_god = utils.get_points_by_id(2, points)
+        # 获取传送锚点
         mark_trans = utils.get_points_by_id(3, points)
+        # 转换两个锚点为标准坐标
         mark_god_converted = utils.convert_pos(mark_god, maps.detail.origin)
         mark_trans_converted = utils.convert_pos(
             mark_trans, maps.detail.origin

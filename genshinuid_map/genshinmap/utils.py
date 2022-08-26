@@ -39,11 +39,14 @@ async def make_map(map: Maps) -> Image.Image:
         `get_map_by_pos`
     """
     img = Image.new("RGBA", tuple(map.total_size))
-    x = 0
-    for url in map.slices:
-        m = await get_img(url)
-        img.paste(m, (x, 0))
-        x += 4096
+    y = 0
+    for y_index in map.slices:
+        x = 0
+        for url in y_index:
+            m = await get_img(url)
+            img.paste(m, (x, y))
+            x += 4096
+        y += 4096
     return img
 
 

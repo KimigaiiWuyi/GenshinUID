@@ -80,7 +80,7 @@ async def _draw_card(
 async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
-        return '你还没有祈愿数据噢~\n请添加Stoken后使用命令`刷新数据`更新祈愿数据~'
+        return '你还没有祈愿数据噢~\n请添加Stoken后使用命令`刷新抽卡记录`更新祈愿数据~'
     with open(path, 'r', encoding='UTF-8') as f:
         gacha_data = json.load(f)
 

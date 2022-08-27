@@ -36,6 +36,8 @@ async def save_gachalogs(uid: str):
     raw_data = await get_gacha_log_by_authkey(uid, gachalogs_history)
     if raw_data == {}:
         return '你还没有绑定过Stoken噢~'
+    if not raw_data:
+        return '你还没有绑定过Stoken或者Stoken已失效~'
     result['uid'] = uid
     result['data_time'] = current_time
     result['normal_gacha_num'] = len(raw_data['常驻祈愿'])

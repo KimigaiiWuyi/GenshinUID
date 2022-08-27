@@ -54,6 +54,9 @@ async def send_char_info(
         uid = str(uid)
     logger.info('[查询角色面板]uid: {}'.format(uid))
 
+    if '未找到绑定的UID' in uid:
+        await matcher.finish(UID_HINT)
+
     # 获取角色名
     char_name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
 

@@ -44,7 +44,7 @@ async def send_role_info(
 
     logger.info('[查询角色信息]uid: {}'.format(uid))
 
-    if not uid:
+    if '未找到绑定的UID' in uid:
         await matcher.finish(UID_HINT)
 
     im = await draw_pic(uid)

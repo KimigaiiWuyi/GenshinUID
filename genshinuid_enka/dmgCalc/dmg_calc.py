@@ -5,6 +5,9 @@ from typing import Tuple
 from PIL import Image, ImageDraw
 
 from ...version import Genshin_version
+
+# 元素百分比
+# 超导：扩散：感电：碎冰：超载：绽放：超绽放/烈绽放：超激化：蔓激化=1 : 1.2 : 2.4 : 3 : 4 : 4 : 6 : 2.3 : 2.5
 from .base_value import base_value_list
 from ...utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
@@ -541,6 +544,25 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         else:
             reaction_add_dmg = 1
 
+        # 计算草系相关反应
+        reaction_power = 0
+        for reaction in ['超激化', '蔓激化']:
+            if reaction in power_list[power_name]['name']:
+                if reaction == '超激化':
+                    k = 2.3
+                else:
+                    k = 2.5
+                reaction_power = (
+                    k
+                    * base_value_list[char_level - 1]
+                    * (1 + (5 * em_cal) / (em_cal + 1200))
+                )
+                break
+
+        # 草系反应增加到倍率区
+        power_value += reaction_power
+
+        # 计算直接增加的伤害
         add_dmg = prop['{}_addDmg'.format(attack_type)] + sp_addDmg
 
         # 特殊伤害提高

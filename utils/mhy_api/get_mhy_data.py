@@ -38,14 +38,17 @@ _HEADER = {
 
 async def get_gacha_log_by_authkey(
     uid: str, old_data: Optional[dict] = None
-) -> dict:
+) -> Optional[dict]:
     server_id = 'cn_gf01'
     if uid[0] == '5':
         server_id = 'cn_qd01'
     authkey_rawdata = await get_authkey_by_cookie(uid)
     if authkey_rawdata == {}:
-        return {}
-    authkey = authkey_rawdata['data']['authkey']
+        return None
+    if 'data' in authkey_rawdata and 'authkey' in authkey_rawdata['data']:
+        authkey = authkey_rawdata['data']['authkey']
+    else:
+        return None
     if old_data:
         full_data = old_data
     else:
@@ -98,7 +101,7 @@ async def get_gacha_log_by_authkey(
                     temp = []
                     break
                 full_data[gacha_name].extend(data)
-                await asyncio.sleep(0.6)
+                await asyncio.sleep(0.7)
     return full_data
 
 

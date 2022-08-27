@@ -86,7 +86,7 @@ async def get_gacha_log_by_authkey(
                         'end_id': end_id,  # 查询时更新
                     },
                 )
-                if 'data' in raw_data and 'list' in 'data':
+                if 'data' in raw_data and 'list' in raw_data['data']:
                     data = raw_data['data']['list']  # type:list
                 else:
                     return {}

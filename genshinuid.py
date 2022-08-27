@@ -815,7 +815,7 @@ async def send_monthly_data(bot: HoshinoBot, ev: CQEvent):
 
 
 # 群聊内 签到 功能
-@sv.on_fullmatch('签到')
+@sv.on_fullmatch('米游社签到')
 async def get_sing_func(bot: HoshinoBot, ev: CQEvent):
     try:
         uid = await select_db(ev.sender['user_id'], mode='uid')

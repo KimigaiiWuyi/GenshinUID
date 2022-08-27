@@ -77,8 +77,8 @@ async def enka_to_data(
     if isinstance(enka_data, dict):
         if 'playerInfo' not in enka_data:
             im = (
-                f'服务器正在维护或者关闭中...\n'
-                '检查https://enka.network/u/{uid}是否可以访问\n'
+                '服务器正在维护或者关闭中...\n'
+                f'检查https://enka.network/u/{uid}是否可以访问\n'
                 '如可以访问,尝试[切换api]或上报Bug!'
             )
             return im

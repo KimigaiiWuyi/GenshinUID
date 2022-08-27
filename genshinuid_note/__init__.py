@@ -15,7 +15,10 @@ async def send_monthly_data(
         await monthly_data.finish()
     qid = event.sender.user_id
     uid = await select_db(qid, mode='uid')
-    if not uid:
-        await matcher.finish(UID_HINT)
+    if isinstance(uid, str):
+        if '未找到绑定的UID' in uid:
+            await matcher.finish(UID_HINT)
+    else:
+        await matcher.finish('发生未知错误...')
     im = await award(uid)
     await matcher.finish(im, at_sender=True)

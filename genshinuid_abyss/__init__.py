@@ -64,7 +64,7 @@ async def send_abyss_info(
 
     logger.info('[查询深渊信息]uid: {}'.format(uid))
 
-    if not uid:
+    if '未找到绑定的UID' in uid:
         await matcher.finish(UID_HINT)
 
     # 判断深渊期数

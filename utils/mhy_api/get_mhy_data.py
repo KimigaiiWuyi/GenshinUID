@@ -55,9 +55,7 @@ _HEADER = {
 async def get_gacha_log_by_authkey(
     uid: str, old_data: Optional[dict] = None
 ) -> Optional[dict]:
-    server_id = 'cn_gf01'
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
+    server_id = 'cn_qd01' if uid[0] == '5' else 'cn_gf01'
     authkey_rawdata = await get_authkey_by_cookie(uid)
     if authkey_rawdata == {}:
         return None
@@ -65,15 +63,7 @@ async def get_gacha_log_by_authkey(
         authkey = authkey_rawdata['data']['authkey']
     else:
         return None
-    if old_data:
-        full_data = old_data
-    else:
-        full_data = {
-            '新手祈愿': [],
-            '常驻祈愿': [],
-            '角色祈愿': [],
-            '武器祈愿': [],
-        }
+    full_data = old_data or {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
     temp = []
     for gacha_name in gacha_type_meta_data:
         for gacha_type in gacha_type_meta_data[gacha_name]:
@@ -87,23 +77,24 @@ async def get_gacha_log_by_authkey(
                         'authkey_ver': '1',
                         'sign_type': '2',
                         'auth_appid': 'webview_gacha',
-                        'init_type': '200',  # init 哪个池子都无所谓，但下面这个 gacha_id 跟这里对应  # noqa: E501
+                        'init_type': '200',
                         'gacha_id': 'fecafa7b6560db5f3182222395d88aaa6aaac1bc',
-                        'timestamp': str(int(time.time())),  # 实际好像并不是请求时的时间戳
+                        'timestamp': str(int(time.time())),
                         'lang': 'zh-cn',
                         'device_type': 'mobile',
-                        'plat_type': 'ios',  # 'android'
-                        'region': server_id,  # 'cn_gf01'
+                        'plat_type': 'ios',
+                        'region': server_id,
                         'authkey': authkey,
-                        'game_biz': 'hk4e_cn',  # 'hk4e_cn'
-                        'gacha_type': gacha_type,  # 查询时更新
-                        'page': page,  # 查询时更新
-                        'size': '20',  # 查询时更新
-                        'end_id': end_id,  # 查询时更新
+                        'game_biz': 'hk4e_cn',
+                        'gacha_type': gacha_type,
+                        'page': page,
+                        'size': '20',
+                        'end_id': end_id,
                     },
                 )
+
                 if 'data' in raw_data and 'list' in raw_data['data']:
-                    data = raw_data['data']['list']  # type:list
+                    data = raw_data['data']['list']
                 else:
                     logger.warning(raw_data)
                     return {}
@@ -123,9 +114,7 @@ async def get_gacha_log_by_authkey(
 
 
 async def get_authkey_by_cookie(uid: str) -> dict:
-    server_id = 'cn_gf01'
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
+    server_id = 'cn_qd01' if uid[0] == '5' else 'cn_gf01'
     HEADER = copy.deepcopy(_HEADER)
     stoken = await get_stoken(uid)
     if stoken == '该用户没有绑定过Stoken噢~':
@@ -148,11 +137,12 @@ async def get_authkey_by_cookie(uid: str) -> dict:
         header=HEADER,
         data={
             'auth_appid': 'webview_gacha',
-            'game_biz': 'hk4e_cn',  # 'hk4e_cn'
-            'game_uid': uid,  # '100000123'
-            'region': server_id,  # 'cn_gf01'
+            'game_biz': 'hk4e_cn',
+            'game_uid': uid,
+            'region': server_id,
         },
     )
+
     return authkey
 
 
@@ -190,13 +180,14 @@ async def get_daily_data(uid: str, server_id: str = 'cn_gf01') -> dict:
         server_id = 'cn_qd01'
     HEADER = copy.deepcopy(_HEADER)
     HEADER['Cookie'] = await owner_cookies(uid)
-    HEADER['DS'] = get_ds_token('role_id=' + uid + '&server=' + server_id)
+    HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
     data = await _mhy_request(
         url=DAILY_NOTE_URL,
         method='get',
         header=HEADER,
         params={'server': server_id, 'role_id': uid},
     )
+
     return data
 
 
@@ -291,13 +282,14 @@ async def get_info(uid, ck, server_id='cn_gf01') -> dict:
         server_id = 'cn_qd01'
     HEADER = copy.deepcopy(_HEADER)
     HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token('role_id=' + uid + '&server=' + server_id)
+    HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
     data = await _mhy_request(
         url=PLAYER_INFO_URL,
         method='get',
         header=HEADER,
         params={'server': server_id, 'role_id': uid},
     )
+
     return data
 
 
@@ -309,12 +301,7 @@ async def get_spiral_abyss_info(
     HEADER = copy.deepcopy(_HEADER)
     HEADER['Cookie'] = ck
     HEADER['DS'] = get_ds_token(
-        'role_id='
-        + uid
-        + '&schedule_type='
-        + schedule_type
-        + '&server='
-        + server_id
+        f'role_id={uid}&schedule_type={schedule_type}&server={server_id}'
     )
     data = await _mhy_request(
         url=PLAYER_ABYSS_INFO_URL,
@@ -359,13 +346,15 @@ async def get_calculate_info(
     HEADER = copy.deepcopy(_HEADER)
     HEADER['Cookie'] = ck
     HEADER['DS'] = get_ds_token(
-        'uid={}&avatar_id={}&region={}'.format(uid, char_id, server_id)
+        f'uid={uid}&avatar_id={char_id}&region={server_id}'
     )
+
     req = await client.get(
         url=CALCULATE_INFO_URL,
         headers=HEADER,
         params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
     )
+
     data = await req.json()
     data.update({'name': name})
     return data
@@ -389,7 +378,7 @@ async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
         ck = str(await cache_db(mysid))
     HEADER = copy.deepcopy(_HEADER)
     HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token('uid=' + mysid)
+    HEADER['DS'] = get_ds_token(f'uid={mysid}')
     data = await _mhy_request(
         url=MIHOYO_BBS_PLAYER_INFO_URL,
         method='get',
@@ -403,8 +392,8 @@ async def _mhy_request(
     url: str,
     method: str = 'get',
     header: dict = _HEADER,
-    params: dict = {},
-    data: dict = {},
+    params: dict = None,
+    data: dict = None,
     sess: Optional[ClientSession] = None,
 ) -> dict:
     '''
@@ -420,6 +409,10 @@ async def _mhy_request(
     :返回:
       * result (dict): json.loads()解析字段。
     '''
+    if params is None:
+        params = {}
+    if data is None:
+        data = {}
     try:
         if sess is None:
             async with ClientSession() as sess:
@@ -433,15 +426,13 @@ async def _mhy_request(
                         url=url, headers=header, json=data
                     ) as res:
                         result = await res.json()
-            return result
         else:
             if method == 'get':
                 req = await sess.get(url=url, headers=header, params=params)
-                result = await req.json()
             else:
                 req = await sess.post(url=url, headers=header, json=data)
-                result = await req.json()
-            return result
+            result = await req.json()
+        return result
     except Exception:
-        logger.exception('访问{}失败！'.format(url))
+        logger.exception(f'访问{url}失败！')
         return {}

@@ -6,7 +6,13 @@ from pathlib import Path
 
 from httpx import AsyncClient
 
-from .get_wiki_template import *  # noqa
+from .get_wiki_template import (
+    food_im,
+    weapon_im,
+    audio_json,
+    artifacts_im,
+    char_info_im,
+)
 from ..utils.minigg_api.get_minigg_data import (
     get_char_info,
     get_misc_info,

@@ -8,8 +8,8 @@ from shutil import copyfile
 from httpx import AsyncClient
 from nonebot.log import logger
 
+from .gsuid_db_pool import gsuid_pool
 from ..mhy_api.mhy_api import bbs_Taskslist
-from .gsuid_db_pool import *  # noqa: F401,F403
 from ..mhy_api.get_mhy_data import get_mihoyo_bbs_info
 from ..mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
 

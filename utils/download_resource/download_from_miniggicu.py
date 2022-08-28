@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 
-from .RESOURCE_PATH import *
 from .download_url import PATH_MAP, download_file
 
 MINIGG_FILE = 'https://file.minigg.icu/genshin/KimigaiiWuyi/resource/'

@@ -1,6 +1,5 @@
 import asyncio
 from pathlib import Path
-from typing import List, Tuple, Optional
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw

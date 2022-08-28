@@ -6,12 +6,11 @@ from pathlib import Path
 from typing import Tuple, Union, Optional
 
 from httpx import get
-from nonebot.log import logger
 from PIL import Image, ImageDraw, ImageChops
 
-from .dmgCalc.dmg_calc import *
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from .dmgCalc.dmg_calc import draw_dmgCacl_img, avatarName2SkillAdd
 
 R_PATH = Path(__file__).parent
 RESOURCE_PATH = Path(__file__).parents[1] / 'resource'

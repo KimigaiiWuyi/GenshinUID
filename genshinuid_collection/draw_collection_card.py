@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import List, Union
 
-from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.get_cookies.get_cookies import GetCookies

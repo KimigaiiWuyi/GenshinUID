@@ -2,7 +2,12 @@ import json
 
 from httpx import AsyncClient
 
-from .minigg_api import *  # noqa: F401, F403
+from .minigg_api import (
+    MINIGG_ENKA_URL,
+    MINIGG_MISC_URL,
+    MINIGG_AUDIO_URL,
+    MINIGG_WEAPON_URL,
+)
 
 
 async def get_minigg_enka_info(uid: str):

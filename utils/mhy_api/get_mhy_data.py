@@ -3,18 +3,32 @@ import time
 import random
 import asyncio
 from typing import Optional
-from http.cookies import SimpleCookie
 
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-from .mhy_api import *
 from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
-from .mhy_api_tools import (  # noqa: F401,F403
+from .mhy_api_tools import (
     random_hex,
     random_text,
     get_ds_token,
     old_version_get_ds_token,
+)
+from .mhy_api import (
+    SIGN_URL,
+    SIGN_INFO_URL,
+    SIGN_LIST_URL,
+    DAILY_NOTE_URL,
+    GET_STOKEN_URL,
+    GET_AUTHKEY_URL,
+    PLAYER_INFO_URL,
+    GET_GACHA_LOG_URL,
+    MONTHLY_AWARD_URL,
+    CALCULATE_INFO_URL,
+    GET_COOKIE_TOKEN_URL,
+    PLAYER_ABYSS_INFO_URL,
+    PLAYER_DETAIL_INFO_URL,
+    MIHOYO_BBS_PLAYER_INFO_URL,
 )
 
 gacha_type_meta_data = {

@@ -1,16 +1,17 @@
 import re
 import random
 import asyncio
+from pathlib import Path
 
-import aiofiles  # type: ignore
+import aiofiles
 from bs4 import BeautifulSoup
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 
-MAX_TASKS = 4
-from .RESOURCE_PATH import *  # noqa: E501
 from ..alias.avatarId_and_name_covert import name_to_avatar_id
+from .RESOURCE_PATH import GACHA_IMG_PATH, CHAR_STAND_PATH, CHAR_NAMECARD_PATH
 
+MAX_TASKS = 4
 baseurl = 'https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki'
 
 

@@ -2,7 +2,7 @@ from typing import Optional
 
 from nonebot.log import logger
 
-from ..utils.message.error_reply import *  # noqa: F403,F401
+from ..utils.message.error_reply import CK_HINT
 from ..utils.db_operation.db_operation import (
     open_push,
     config_check,

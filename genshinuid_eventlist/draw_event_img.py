@@ -1,12 +1,12 @@
 from io import BytesIO
 from re import findall
+from typing import List
 from pathlib import Path
 from datetime import datetime
-from typing import Any, List, Tuple, Union
 
 from httpx import get
 from bs4 import BeautifulSoup
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw
 
 from .get_event_data import get_genshin_events
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin

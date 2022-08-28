@@ -2,7 +2,7 @@ import math
 import random
 from io import BytesIO
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import Tuple, Union
 
 from PIL import Image
 from httpx import get

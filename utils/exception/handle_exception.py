@@ -1,11 +1,8 @@
-import re
 from functools import wraps
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.exception import ActionFailed, FinishedException
-
-from ..message.error_reply import *  # noqa: F403,F401
 
 
 def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):  # type: ignore

@@ -1,14 +1,13 @@
 import json
 import asyncio
+from typing import List
 from pathlib import Path
-from typing import List, Tuple
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.mhy_api.get_mhy_data import get_daily_data
 from ..utils.enka_api.get_enka_data import get_enka_info
-from ..utils.message.error_reply import *  # noqa: F403,F401
 from ..utils.alias.enName_to_avatarId import enName_to_avatarId
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg

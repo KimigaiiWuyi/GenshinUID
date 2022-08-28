@@ -1,7 +1,7 @@
 import time
 import asyncio
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw

@@ -18,7 +18,10 @@ async def get_genshin_events(mode: str = 'List') -> dict:
     """
     if mode == 'Calendar':
         now_time = datetime.datetime.now().strftime('%Y-%m-%d')
-        base_url = 'https://api-takumi.mihoyo.com/event/bbs_activity_calendar/getActList'
+        base_url = (
+            'https://api-takumi.mihoyo.com'
+            '/event/bbs_activity_calendar/getActList'
+        )
         params = {
             'time': now_time,
             'game_biz': 'ys_cn',
@@ -26,9 +29,10 @@ async def get_genshin_events(mode: str = 'List') -> dict:
             'tag_id': 0,
         }
     else:
-        base_url = 'https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api/getAnn{}'.format(
-            mode
-        )
+        base_url = (
+            'https://hk4e-api.mihoyo.com'
+            '/common/hk4e_cn/announcement/api/getAnn{}'
+        ).format(mode)
         params = {
             'game': 'hk4e',
             'game_biz': 'hk4e_cn',
@@ -44,8 +48,11 @@ async def get_genshin_events(mode: str = 'List') -> dict:
         req = await client.get(
             url=base_url,
             headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                'Chrome/95.0.4638.69 Safari/537.36'
+                'User-Agent': (
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                    'AppleWebKit/537.36 (KHTML, like Gecko) '
+                    'Chrome/95.0.4638.69 Safari/537.36'
+                )
             },
             params=params,
         )

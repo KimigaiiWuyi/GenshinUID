@@ -560,7 +560,7 @@ async def draw_char_img(
         new_overlay_h = img_h
         new_overlay_w = math.ceil(new_overlay_h * overlay_w / overlay_h)
         overlay = overlay.resize(
-            (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS  # type: ignore
+            (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS
         )
         overlay = overlay.crop((0, 0, img_w, img_h))
     color_img = Image.new(
@@ -744,7 +744,9 @@ async def draw_char_img(
             (75, 75), Image.Resampling.LANCZOS  # type: ignore
         ).convert("RGBA")
         # artifacts_piece_new_img.putalpha(
-        #    artifacts_piece_new_img.getchannel('A').point(lambda x: round(x * 0.5) if x > 0 else 0))
+        # artifacts_piece_new_img.getchannel('A').point(
+        #     lambda x: round(x * 0.5) if x > 0 else 0
+        # )
 
         artifacts_img.paste(
             artifacts_piece_new_img, (195, 35), artifacts_piece_new_img
@@ -890,7 +892,13 @@ async def draw_char_img(
     )
 
     # aeq
-    # img_text.text((110, 771), a_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
+    # img_text.text(
+    #     (110, 771),
+    #     a_skill_name,
+    #     (255, 255, 255),
+    #     genshin_font_origin(26),
+    #     anchor='lm',
+    # )
     img_text.text(
         (103, 812),
         f'{str(a_skill_level)}',
@@ -899,7 +907,13 @@ async def draw_char_img(
         anchor='mm',
     )
 
-    # img_text.text((110, 872), e_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
+    # img_text.text(
+    #     (110, 872),
+    #     e_skill_name,
+    #     (255, 255, 255),
+    #     genshin_font_origin(26),
+    #     anchor='lm',
+    # )
     img_text.text(
         (103, 915),
         f'{str(e_skill_level)}',
@@ -908,7 +922,13 @@ async def draw_char_img(
         anchor='mm',
     )
 
-    # img_text.text((110, 973), q_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
+    # img_text.text(
+    #     (110, 973),
+    #     q_skill_name,
+    #     (255, 255, 255),
+    #     genshin_font_origin(26),
+    #     anchor='lm',
+    # )
     img_text.text(
         (103, 1016),
         f'{str(q_skill_level)}',

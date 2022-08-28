@@ -287,7 +287,11 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 .split('+')[1]
             )
             all_effect.append(
-                f'Q一段伤害:attack+{60*extra_value2};Q重击伤害:attack+{60*extra_value2};Q高空下落伤害:attack+{60*extra_value2}'
+                (
+                    f'Q一段伤害:attack+{60*extra_value2};'
+                    f'Q重击伤害:attack+{60*extra_value2};'
+                    f'Q高空下落伤害:attack+{60*extra_value2}'
+                )
             )
             extra_effect = {'Q梦想一刀基础伤害(满愿力)': extra_value}
         del power_list['extra']

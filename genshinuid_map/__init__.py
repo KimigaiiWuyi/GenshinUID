@@ -101,9 +101,12 @@ async def send_find_map_msg(
         await matcher.finish(MessageSegment.image(resource_temp_path))
     else:
         await matcher.send(
-            f'正在查找{args},可能需要比较久的时间...\n当前地图：{MAP_CHN_NAME.get(MAP_ID_LIST[0])}'
+            (
+                f'正在查找{args},可能需要比较久的时间...\n'
+                f'当前地图：{MAP_CHN_NAME.get(MAP_ID_LIST[0])}'
+            )
         )
-        logger.info(f'本地未缓存,正在渲染...')
+        logger.info('本地未缓存,正在渲染...')
         im = await draw_genshin_map(MAP_ID_LIST[0], args)
     if isinstance(im, str):
         await matcher.finish(im)

@@ -72,7 +72,7 @@ async def download_by_fandom(char_list: dict):
     if len(list(CHAR_NAMECARD_PATH.iterdir())) < len(char_list) or len(
         list(CHAR_STAND_PATH.iterdir())
     ) < len(char_list):
-        logger.info(f'[fandom] 本次需要下载图片')
+        logger.info('[fandom] 本次需要下载图片')
         await get_namecard_and_gacha_pic(char_list)
     else:
         logger.info('[fandom] 无需下载名片和抽卡图片!')

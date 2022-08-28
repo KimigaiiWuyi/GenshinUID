@@ -11,13 +11,13 @@ from nonebot.adapters.onebot.v11 import (
     PrivateMessageEvent,
 )
 
-from utils.message.error_reply import UID_HINT
-from genshinuid_resin.notice import get_notice_list
-from utils.db_operation.db_operation import select_db
-from utils.message.get_image_and_at import ImageAndAt
-from genshinuid_resin.resin_text import get_resin_text
-from genshinuid_resin.draw_resin_card import get_resin_img
-from utils.exception.handle_exception import handle_exception
+from .notice import get_notice_list
+from .resin_text import get_resin_text
+from .draw_resin_card import get_resin_img
+from ..utils.message.error_reply import UID_HINT
+from ..utils.db_operation.db_operation import select_db
+from ..utils.message.get_image_and_at import ImageAndAt
+from ..utils.exception.handle_exception import handle_exception
 
 notice_scheduler = require('nonebot_plugin_apscheduler').scheduler
 get_resin_info = on_command(

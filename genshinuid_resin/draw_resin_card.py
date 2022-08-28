@@ -6,13 +6,13 @@ from pathlib import Path
 from nonebot.log import logger
 from PIL import Image, ImageDraw
 
-from utils.mhy_api.get_mhy_data import get_daily_data
-from utils.enka_api.get_enka_data import get_enka_info
-from utils.alias.enName_to_avatarId import enName_to_avatarId
-from utils.draw_image_tools.send_image_tool import convert_img
-from utils.draw_image_tools.draw_image_tool import get_simple_bg
-from utils.genshin_fonts.genshin_fonts import genshin_font_origin
-from utils.db_operation.db_operation import select_db, owner_cookies
+from ..utils.mhy_api.get_mhy_data import get_daily_data
+from ..utils.enka_api.get_enka_data import get_enka_info
+from ..utils.alias.enName_to_avatarId import enName_to_avatarId
+from ..utils.draw_image_tools.send_image_tool import convert_img
+from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
+from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from ..utils.db_operation.db_operation import select_db, owner_cookies
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 CHAR_SIDE_PATH = Path(__file__).parents[1] / 'resource' / 'char_side'
@@ -130,7 +130,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
         world_level_str = f'探索等级{str(world_level)}'
     else:
         signature = '暂无获取数据'
-        world_level_str = f'暂无数据'
+        world_level_str = '暂无数据'
 
     # 获取背景图片各项参数
     img = await get_simple_bg(based_w, based_h)

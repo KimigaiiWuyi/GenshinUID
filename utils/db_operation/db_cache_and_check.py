@@ -8,10 +8,10 @@ from shutil import copyfile
 from httpx import AsyncClient
 from nonebot.log import logger
 
-from utils.mhy_api.mhy_api import bbs_Taskslist
-from utils.db_operation.gsuid_db_pool import gsuid_pool
-from utils.mhy_api.get_mhy_data import get_mihoyo_bbs_info
-from utils.mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
+from ..mhy_api.mhy_api import bbs_Taskslist
+from ..db_operation.gsuid_db_pool import gsuid_pool
+from ..mhy_api.get_mhy_data import get_mihoyo_bbs_info
+from ..mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
 
 
 async def check_db():
@@ -62,7 +62,7 @@ async def check_db():
     conn.close()
     logger.info('已完成Cookies检查！')
     logger.info(f'正常Cookies数量：{str(normal_num)}')
-    logger.info(f'失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies')
+    logger.info('失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies')
     return [return_str, invalid_list]
 
 
@@ -137,7 +137,7 @@ async def check_stoken_db():
     conn.close()
     logger.info('已完成Stoken检查!')
     logger.info(f'正常Stoken数量：{normal_num}')
-    logger.info(f'失效Stoken:\n' + invalid_str if invalid_str else '无失效Stoken')
+    logger.info('失效Stoken:\n' + invalid_str if invalid_str else '无失效Stoken')
     return [return_str, invalid_list]
 
 

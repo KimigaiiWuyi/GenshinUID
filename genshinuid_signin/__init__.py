@@ -8,15 +8,16 @@ from nonebot.permission import SUPERUSER
 from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 
-from config import priority
-from utils.db_operation.db_operation import select_db
-from genshinuid_signin.sign import sign_in, daily_sign
-from utils.exception.handle_exception import handle_exception
+from ..config import priority
+from .sign import sign_in, daily_sign
+from ..utils.db_operation.db_operation import select_db
+from ..utils.exception.handle_exception import handle_exception
 
 sign_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
 get_sign = on_command('签到', priority=priority)
 all_recheck = on_command('全部重签', permission=SUPERUSER, priority=priority)
+
 
 # 每日零点半执行米游社原神签到
 @sign_scheduler.scheduled_job('cron', hour='0', minute='30')

@@ -95,12 +95,17 @@ async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
             'list': [],
         }
         data_list = gacha_data['data'][i]
+        is_not_first = False
         num_temp = []
         num = 1
         for data in data_list[::-1]:
             if data['rank_type'] == '5':
                 data['gacha_num'] = num
-                num_temp.append(num)
+                # 排除第一个
+                if is_not_first:
+                    num_temp.append(num)
+                if num_temp == []:
+                    is_not_first = True
                 total_data[i]['list'].append(data)
                 num = 1
                 total_data[i]['total'] += 1
@@ -178,18 +183,25 @@ async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
             )
         )
         title = Image.alpha_composite(title, temp_mask)
+
         if total_data[i]['avg'] == 0:
             level = 3
-        elif total_data[i]['avg'] <= 43:
-            level = 5
-        elif total_data[i]['avg'] <= 60:
-            level = 4
-        elif total_data[i]['avg'] <= 72:
-            level = 3
-        elif total_data[i]['avg'] <= 80:
-            level = 2
         else:
-            level = 1
+            # 非酋 <= 90
+            # 小非 <= 80
+            # 稳定 <= 72
+            # 小欧 <= 60
+            # 欧皇 <= 43
+            # 武器统一减10
+            for num_index, num in enumerate([42, 58, 68, 75, 90]):
+                if i == '武器祈愿':
+                    num -= 10
+                if total_data[i]['avg'] <= num:
+                    level = 5 - num_index
+                    break
+            else:
+                level = 3
+
         tag_pic = await _get_tag(level)
         tag_pic = tag_pic.resize((208, 88))
         title.paste(tag_pic, (35, 54), tag_pic)

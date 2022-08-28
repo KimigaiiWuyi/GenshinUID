@@ -1,6 +1,20 @@
+import asyncio
 import threading
+from typing import Union
 
-from ..all_import import *  # noqa: F403, F401
+from nonebot import on_command
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
+from nonebot.permission import SUPERUSER
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
+
+from ..utils.exception.handle_exception import handle_exception
 from ..utils.download_resource.download_all_resource import (
     download_all_resource,
 )
@@ -11,14 +25,14 @@ download_resource = on_command('下载全部资源')
 @download_resource.handle()
 @handle_exception('下载全部资源', '资源下载错误')
 async def send_download_resource_msg(
+    bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
     args: Message = CommandArg(),
 ):
     if args:
         return
-    qid = event.sender.user_id
-    if qid not in SUPERUSERS:
+    if not await SUPERUSER(bot, event):
         return
     await matcher.send('正在开始下载~可能需要较久的时间!')
     im = await download_all_resource()

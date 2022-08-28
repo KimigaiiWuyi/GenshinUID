@@ -1,16 +1,32 @@
-from typing import Dict
+from pathlib import Path
+from typing import Any, Dict, Union
 
-from nonebot.params import RegexDict
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot import on_regex, on_command
+from nonebot.permission import SUPERUSER
+from nonebot.params import RegexDict, CommandArg
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
 
-from ..all_import import *  # noqa
+from config import priority
+
 from .genshinmap.models import MapID
 from .create_genshinmap import create_genshin_map
 from .draw_genshinmap_card import draw_genshin_map
+from ..utils.exception.handle_exception import handle_exception
 
 create_map = on_command('生成地图', block=True)
 change_map = on_command('切换地图', block=True)
-find_map = on_regex(r'^(?P<name>.*)(在哪里|在哪|哪里有|哪儿有|哪有|在哪儿)$', priority=2)
-find_map2 = on_regex(r'^(哪里有|哪儿有|哪有)(?P<name>.*)$', priority=2)
+find_map = on_regex(
+    r'^(?P<name>.*)(在哪里|在哪|哪里有|哪儿有|哪有|在哪儿)$', priority=priority
+)
+find_map2 = on_regex(r'^(哪里有|哪儿有|哪有)(?P<name>.*)$', priority=priority)
 
 MAP_DATA = Path(__file__).parent / 'map_data'
 MAP_ID_LIST = [
@@ -30,14 +46,14 @@ MAP_CHN_NAME = {
 @change_map.handle()
 @handle_exception('切换地图')
 async def send_change_map_msg(
+    bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
     args: Message = CommandArg(),
 ):
     if args:
         return
-    qid = event.sender.user_id
-    if qid not in SUPERUSERS:
+    if not await SUPERUSER(bot, event):
         return
     logger.info('[切换地图]正在执行...')
     MAP_ID_LIST.append(MAP_ID_LIST[0])
@@ -51,14 +67,14 @@ async def send_change_map_msg(
 @create_map.handle()
 @handle_exception('生成地图')
 async def send_create_map_msg(
+    bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
     args: Message = CommandArg(),
 ):
     if args:
         return
-    qid = event.sender.user_id
-    if qid not in SUPERUSERS:
+    if not await SUPERUSER(bot, event):
         return
     logger.info('[生成地图]正在执行...')
     await matcher.send('地图正在初始化...可能需要较长时间!')
@@ -70,7 +86,7 @@ async def send_create_map_msg(
 @find_map2.handle()
 @handle_exception('查找资源点')
 async def send_find_map_msg(
-    matcher: Matcher, args: Dict[str, Any] = RegexDict()  # noqa
+    matcher: Matcher, args: Dict[str, Any] = RegexDict()
 ):
     logger.info(f'[查找资源点]正在执行...当前地图为{MAP_ID_LIST[0].name}')
     logger.info('[查找资源点]参数: {}'.format(args))

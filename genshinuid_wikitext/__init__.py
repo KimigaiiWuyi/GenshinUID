@@ -1,4 +1,17 @@
-from ..all_import import *  # noqa: F401, F403
+import re
+
+from nonebot import on_command
+from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    MessageSegment,
+    GroupMessageEvent,
+)
+
+from ..config import priority
+from ..utils.exception.handle_exception import handle_exception
 from .get_wiki_text import (
     char_wiki,
     audio_wiki,

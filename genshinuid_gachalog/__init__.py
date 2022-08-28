@@ -1,10 +1,20 @@
+from typing import Any, Tuple, Union
+
+from nonebot import on_command
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
+from nonebot.adapters.onebot.v11 import (
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
+
 from .get_gachalogs import save_gachalogs
-from ..all_import import *  # noqa: F403,F401
 from .draw_gachalogs import draw_gachalogs_img
+from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
-from ..utils.message.get_image_and_at import ImageAndAt
-from ..utils.message.error_reply import *  # noqa: F403,F401
-from ..utils.mhy_api.get_mhy_data import get_gacha_log_by_authkey
+from ..utils.exception.handle_exception import handle_exception
 
 get_gacha_log = on_command('刷新抽卡记录')
 get_gacha_log_card = on_command('抽卡记录')
@@ -15,7 +25,6 @@ get_gacha_log_card = on_command('抽卡记录')
 async def send_gacha_log_card_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    custom: ImageAndAt = Depends(),
     args: Tuple[Any, ...] = CommandArg(),
 ):
     logger.info('开始执行[抽卡记录]')
@@ -37,7 +46,6 @@ async def send_gacha_log_card_info(
 async def send_daily_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    custom: ImageAndAt = Depends(),
     args: Tuple[Any, ...] = CommandArg(),
 ):
     logger.info('开始执行[刷新抽卡记录]')

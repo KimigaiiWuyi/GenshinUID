@@ -369,6 +369,8 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                         float(effect_value_base_on_value)
                         * prop[effect_value_base_on_attr]
                     )
+                    if effect_attr in ['dmgBonus', 'critDmg', 'critrate']:
+                        effect_value = float(effect_value / 100)
                 base_check = False
 
             # 如果要增加的属性不是em元素精通,那么都要除于100
@@ -383,7 +385,6 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             # 元素精通则为正常值
             else:
                 effect_value = float(effect_value)
-
             # 如果效果有限制条件
             if effect_limit:
                 # 如果限制条件为中文,则为特殊label才生效

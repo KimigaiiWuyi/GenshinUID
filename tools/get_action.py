@@ -55,6 +55,7 @@ extra = {
     '行秋': {'E技能伤害': '蒸发'},
     '八重神子': {'Q天狐霆雷伤害': '超激化', 'E杀生樱伤害·叁阶': '超激化'},
     '菲谢尔': {'E奥兹攻击伤害': '超激化'},
+    '久岐忍': {'Q单次伤害': '超激化'},
 }
 template = {'A重击伤害': {'name': 'A重击伤害', 'type': '', 'plus': 1, 'value': []}}
 
@@ -132,6 +133,9 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
                 temp_value = temp
             # 只采用高空坠地的倍率
             elif indexA == 1 and '低空/高空坠地' in label:
+                temp_value = temp
+            # 阿忍仅计算50%血量以下伤害
+            elif indexA == 1 and char == '久岐忍':
                 temp_value = temp
             # 埃洛伊特殊值
             elif indexA == 2 and char == '埃洛伊':

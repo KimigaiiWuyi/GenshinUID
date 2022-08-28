@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 
-from ..alias.avatarId_and_name_covert import name_to_avatar_id
 from .RESOURCE_PATH import GACHA_IMG_PATH, CHAR_STAND_PATH, CHAR_NAMECARD_PATH
 
 MAX_TASKS = 4
@@ -92,7 +91,6 @@ async def get_namecard_and_gacha_pic(char_list: dict):
             char_info_data = await get_url(char_list[i][:-6], sess)
             info_bs = BeautifulSoup(char_info_data, 'lxml')
             chinese_name = info_bs.find_all("span", lang='zh-Hans')[0].text
-            avatar_id = await name_to_avatar_id(chinese_name)
             logger.info(f'{log_prefix}正在下载{chinese_name}的图片资源...')
             char_data_bs = BeautifulSoup(char_data, 'lxml')
 

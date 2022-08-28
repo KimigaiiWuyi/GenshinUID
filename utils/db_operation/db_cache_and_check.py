@@ -8,10 +8,10 @@ from shutil import copyfile
 from httpx import AsyncClient
 from nonebot.log import logger
 
-from .gsuid_db_pool import gsuid_pool
-from ..mhy_api.mhy_api import bbs_Taskslist
-from ..mhy_api.get_mhy_data import get_mihoyo_bbs_info
-from ..mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
+from utils.mhy_api.mhy_api import bbs_Taskslist
+from utils.db_operation.gsuid_db_pool import gsuid_pool
+from utils.mhy_api.get_mhy_data import get_mihoyo_bbs_info
+from utils.mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
 
 
 async def check_db():
@@ -37,7 +37,7 @@ async def check_db():
             )
             normal_num += 1
             logger.info(f'uid{row[0]}/mys{mihoyo_id}的Cookies是正常的！')
-        except:
+        except Exception:
             invalid_str = (
                 invalid_str + f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！\n'
             )
@@ -50,7 +50,7 @@ async def check_db():
                 c.execute(
                     'DELETE from CookiesCache where Cookies=?', (row[1],)
                 )
-            except:
+            except Exception:
                 pass
             logger.info(f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！')
     if len(c_data) > 9:
@@ -73,7 +73,7 @@ async def refresh_ck(uid, mysid):
         c.execute(
             'DELETE from CookiesCache where uid=? or mysid = ?', (uid, mysid)
         )
-    except:
+    except Exception:
         pass
 
 
@@ -152,7 +152,7 @@ async def delete_cache():
             os.remove(f'ID_DATA_BAK_{endday_format}.db')
             logger.info(f'————已删除数据库备份{endday_format}————')
         logger.info('————数据库成功备份————')
-    except:
+    except Exception:
         logger.info('————数据库备份失败————')
 
     try:
@@ -172,7 +172,7 @@ async def delete_cache():
         conn.commit()
         conn.close()
         logger.info('————UID查询缓存已清空————')
-    except:
+    except Exception:
         logger.info('\nerror\n')
 
     try:
@@ -182,5 +182,5 @@ async def delete_cache():
         conn.commit()
         conn.close()
         logger.info('————御神签缓存已清空————')
-    except:
+    except Exception:
         logger.info('\nerror\n')

@@ -7,14 +7,14 @@ from typing import Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
-from .mhy_api_tools import (
+from utils.db_operation.db_operation import cache_db, get_stoken, owner_cookies
+from utils.mhy_api.mhy_api_tools import (
     random_hex,
     random_text,
     get_ds_token,
     old_version_get_ds_token,
 )
-from .mhy_api import (
+from utils.mhy_api.mhy_api import (
     SIGN_URL,
     SIGN_INFO_URL,
     SIGN_LIST_URL,
@@ -438,6 +438,6 @@ async def _mhy_request(
                 req = await sess.post(url=url, headers=header, json=data)
                 result = await req.json()
             return result
-    except:
+    except Exception:
         logger.exception('访问{}失败！'.format(url))
         return {}

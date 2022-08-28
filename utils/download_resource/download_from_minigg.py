@@ -55,7 +55,7 @@ async def download_by_minigg():
         char_id = await name_to_avatar_id(char)
         char_path = CHAR_PATH / f'{char_id}.png'
         char_side_path = CHAR_SIDE_PATH / f'{char_id}.png'
-        char_stand_path = CHAR_STAND_PATH / f'{char_id}.png'
+        # char_stand_path = CHAR_STAND_PATH / f'{char_id}.png'
         if not char_path.exists() or not char_side_path.exists():
             char_download_list.append(char)
     if char_download_list:

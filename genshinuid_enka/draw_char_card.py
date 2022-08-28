@@ -194,9 +194,9 @@ async def get_char_percent(raw_data: dict) -> str:
     )
     healBouns = fight_prop['healBonus']
 
-    hp_green = fight_prop['addHp']
-    attack_green = fight_prop['addAtk']
-    defense_green = fight_prop['addDef']
+    # hp_green = fight_prop['addHp']
+    # attack_green = fight_prop['addAtk']
+    # defense_green = fight_prop['addDef']
 
     r = 0.9
     equipMain = ''
@@ -601,11 +601,11 @@ async def draw_char_img(
 
     # 天赋处理
     skillList = raw_data['avatarSkill']
-    a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
+    # a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
     a_skill_level = skillList[0]['skillLevel']
-    e_skill_name = skillList[1]['skillName']
+    # e_skill_name = skillList[1]['skillName']
     e_skill_level = skillList[1]['skillLevel']
-    q_skill_name = skillList[-1]['skillName']
+    # q_skill_name = skillList[-1]['skillName']
     q_skill_level = skillList[-1]['skillLevel']
 
     skill_add = avatarName2SkillAdd[char_name]

@@ -47,12 +47,12 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     weaponAffix = raw_data['weaponInfo']['weaponAffix']
 
     skillList = raw_data['avatarSkill']
-    a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
+    # a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
     prop = {}
     prop['A_skill_level'] = skillList[0]['skillLevel']
-    e_skill_name = skillList[1]['skillName']
+    # e_skill_name = skillList[1]['skillName']
     prop['E_skill_level'] = skillList[1]['skillLevel']
-    q_skill_name = skillList[-1]['skillName']
+    # q_skill_name = skillList[-1]['skillName']
     prop['Q_skill_level'] = skillList[-1]['skillLevel']
 
     enemy_level = char_level
@@ -200,7 +200,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             first_artifact = equipSets['set'][-3:]
         else:
             first_artifact = equipSets['set'][-2:]
-        second_artifact = equipSets['set'][:2]
+        # second_artifact = equipSets['set'][:2]
         temp = []
         temp_number = 0
         for artifacts_single_effect in artifacts_effect_map:

@@ -140,6 +140,6 @@ async def get_char_info(name, mode='char', level=None):
                 async with AsyncClient() as client_:
                     req = await client_.get(url=url + '&matchCategories=true')
                     data = json.loads(req.text)
-        except:
+        except Exception:
             data = None
     return data if data2 is None else [data, data2]

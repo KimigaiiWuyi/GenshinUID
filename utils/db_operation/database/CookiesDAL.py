@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 from sqlalchemy import Column, update
 from sqlalchemy.sql.expression import func
 
-from .models import CookiesCache, NewCookiesTable
+from utils.db_operation.database.models import CookiesCache, NewCookiesTable
 
 
 class CookiesDAL:
@@ -15,7 +15,7 @@ class CookiesDAL:
     async def get_user_data(self, uid: str) -> Optional[NewCookiesTable]:
         try:
             await self.db_session.execute('ALTER TABLE NewCookiesTable ADD COLUMN Stoken TEXT')  # type: ignore
-        except:
+        except Exception:
             pass
         sql = select(NewCookiesTable).where(NewCookiesTable.UID == uid)
         result = await self.db_session.execute(sql)  # type: ignore

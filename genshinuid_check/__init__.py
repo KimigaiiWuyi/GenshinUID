@@ -1,5 +1,13 @@
+import random
+import asyncio
+
+from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
+from nonebot import require, on_command
+from nonebot.adapters.onebot.v11 import Bot, Message
+
 from .backup_data import data_backup
-from ..all_import import *  # noqa: F403, F401
+from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
 
 check = on_command('校验全部Cookies')

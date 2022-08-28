@@ -1,20 +1,37 @@
 import re
+import json
+import random
+import asyncio
 from pathlib import Path
+from typing import Union
 
-from .draw_char_card import *
-from .draw_char_card import draw_char_img
-from ..all_import import *  # noqa: F401,F403
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot import require, on_command
+from nonebot.permission import SUPERUSER
+from nonebot.params import Depends, CommandArg
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
+
+from ..config import priority
 from ..utils.enka_api.enka_to_data import enka_to_data
-from ..utils.db_operation.db_operation import get_all_uid
-from ..utils.message.error_reply import *  # noqa: F401,F403
-from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
+from ..utils.message.get_image_and_at import ImageAndAt
+from ..utils.message.error_reply import UID_HINT, CHAR_HINT
+from .draw_char_card import draw_char_img, draw_cahrcard_list
 from ..utils.alias.alias_to_char_name import alias_to_char_name
+from ..utils.exception.handle_exception import handle_exception
+from ..utils.db_operation.db_operation import select_db, get_all_uid
 
 refresh = on_command('强制刷新')
 get_charcard_list = on_command('毕业度统计')
 get_char_info = on_command(
     '查询',
-    priority=2,
+    priority=priority,
 )
 
 AUTO_REFRESH = False
@@ -124,6 +141,7 @@ async def daily_refresh_charData():
 @refresh.handle()
 @handle_exception('强制刷新')
 async def send_card_info(
+    bot: Bot,
     matcher: Matcher,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     args: Message = CommandArg(),
@@ -137,7 +155,7 @@ async def send_card_info(
         uid = uid[0]
     else:
         if m == '全部数据':
-            if qid in SUPERUSERS:
+            if await SUPERUSER(bot, event):
                 await matcher.send('开始刷新全部数据，这可能需要相当长的一段时间！！')
                 im = await refresh_char_data()
                 await matcher.finish(str(im))

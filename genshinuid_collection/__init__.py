@@ -1,9 +1,21 @@
-from ..all_import import *  # noqa: F403,F401
+from typing import Any, Tuple, Union
+
+from nonebot import on_regex
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.params import Depends, RegexGroup
+from nonebot.adapters.onebot.v11 import (
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
+
+from ..utils.message.error_reply import UID_HINT
 from .draw_collection_card import draw_collection_img
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
-from ..utils.message.error_reply import *  # noqa: F403,F401
 from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
+from ..utils.exception.handle_exception import handle_exception
 
 get_collection_info = on_regex(
     r'^(\[CQ:at,qq=[0-9]+\])?( )?'

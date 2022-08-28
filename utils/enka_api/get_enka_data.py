@@ -1,10 +1,9 @@
-from asyncio.log import logger
 import json
+from asyncio.log import logger
 
 from httpx import AsyncClient
 
-from .enka_api import ENKA_DATA_URL, MICROGG_DATA_URL, MINIGG_DATA_URL
-
+from .enka_api import ENKA_DATA_URL, MINIGG_DATA_URL, MICROGG_DATA_URL
 
 ENKA_API = [MINIGG_DATA_URL, ENKA_DATA_URL, MICROGG_DATA_URL]
 HEADER = {'User-Agent': 'GenshinUID/3.1'}

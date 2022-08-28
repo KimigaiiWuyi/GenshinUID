@@ -89,6 +89,7 @@ async def get_gacha_log_by_authkey(
                 if 'data' in raw_data and 'list' in raw_data['data']:
                     data = raw_data['data']['list']  # type:list
                 else:
+                    logger.warning(raw_data)
                     return {}
                 if data == []:
                     break

@@ -17,6 +17,8 @@ async def deal_ck(mes, qid):
     else:
         return '该用户没有绑定过UID噢~'
     im_list = []
+    is_add_stoken = False
+    app_cookie, stoken = '', ''
     if 'login_ticket' in simp_dict:
         # 寻找stoken
         login_ticket = simp_dict['login_ticket'].value
@@ -33,12 +35,11 @@ async def deal_ck(mes, qid):
         )
         stoken = stoken_data['data']['list'][0]['token']
         app_cookie = f'stuid={account_id};stoken={stoken}'
-        await stoken_db(app_cookie, uid)
-        im_list.append(f'添加Stoken成功，stuid={account_id}，stoken={stoken}')
         cookie_token_data = await get_cookie_token_by_stoken(
             stoken, account_id
         )
         cookie_token = cookie_token_data['data']['cookie_token']
+        is_add_stoken = True
     elif 'cookie_token' in simp_dict:
         # 寻找uid
         account_id = simp_dict['account_id'].value
@@ -56,6 +57,9 @@ async def deal_ck(mes, qid):
         return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
     await refresh_ck(uid, account_id)
     await cookies_db(uid, account_cookie, qid)
+    if is_add_stoken:
+        await stoken_db(app_cookie, uid)
+        im_list.append(f'添加Stoken成功，stuid={account_id}，stoken={stoken}')
     im_list.append(
         f'添加Cookies成功，account_id={account_id}，cookie_token={cookie_token}'
     )

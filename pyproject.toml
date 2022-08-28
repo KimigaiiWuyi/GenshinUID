@@ -22,6 +22,8 @@ Pillow = "^9.2.0"
 scikit-learn = "^1.1.2"
 shapely = "^1.8.2"
 aiosqlite = "^0.17.0"
+nonebot-plugin-apscheduler = "^0.1.4"
+aiofiles = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
@@ -51,4 +53,4 @@ build-backend = "poetry.core.masonry.api"
 
 [[tool.poetry.source]]
 name = 'aliyun.mirrors'
-url = "http://mirrors.aliyun.com/pypi/simple/"
+url = "https://mirrors.aliyun.com/pypi/simple/"

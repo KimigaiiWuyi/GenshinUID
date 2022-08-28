@@ -11,9 +11,8 @@ from nonebot.adapters.onebot.v11 import (
     MessageSegment,
 )
 
-from config import priority
-
 from .add_ck import deal_ck
+from ..config import priority
 from .draw_user_card import get_user_card
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db

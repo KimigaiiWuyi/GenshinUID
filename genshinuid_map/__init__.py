@@ -14,8 +14,7 @@ from nonebot.adapters.onebot.v11 import (
     PrivateMessageEvent,
 )
 
-from config import priority
-
+from ..config import priority
 from .genshinmap.models import MapID
 from .create_genshinmap import create_genshin_map
 from .draw_genshinmap_card import draw_genshin_map

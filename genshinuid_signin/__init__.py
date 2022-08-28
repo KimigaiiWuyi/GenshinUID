@@ -8,7 +8,7 @@ from nonebot.permission import SUPERUSER
 from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 
-from config import priority
+from ..config import priority
 
 from .sign import sign_in, daily_sign
 from ..utils.db_operation.db_operation import select_db

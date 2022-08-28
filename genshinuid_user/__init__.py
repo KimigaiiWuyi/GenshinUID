@@ -11,7 +11,7 @@ from nonebot.adapters.onebot.v11 import (
     MessageSegment,
 )
 
-from config import priority
+from ..config import priority
 
 from .add_ck import deal_ck
 from .draw_user_card import get_user_card

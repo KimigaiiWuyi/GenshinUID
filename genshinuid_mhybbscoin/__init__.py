@@ -8,7 +8,7 @@ from nonebot.permission import SUPERUSER
 from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 
-from genshinuid_mhybbscoin.daily_mihoyo_bbs_coin import (
+from .daily_mihoyo_bbs_coin import (
     mihoyo_coin,
     all_daily_mihoyo_bbs_coin,
 )

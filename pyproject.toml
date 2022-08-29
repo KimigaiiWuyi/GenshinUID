@@ -1,0 +1,54 @@
+[tool.poetry]
+name = "GenshinUID"
+version = "0.1.0"
+description = "基于HoshinoBot/NoneBot2/QQ官方频道Bot(PythonSDK)的原神Uid查询/原神Wiki/米社签到/树脂提醒插件"
+authors = ["Your Name <you@example.com>"]
+license = "GPL-3.0-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+nonebot2 = "^2.0.0-beta.4"
+nonebot-adapter-onebot = "^2.1.1"
+requests = "^2.28.1"
+httpx = "^0.23.0"
+wordcloud = "^1.8.2"
+numpy = "^1.23.1"
+beautifulsoup4 = "^4.11.1"
+lxml = "^4.9.1"
+openpyxl = "^3.0.10"
+aiohttp = "^3.8.1"
+SQLAlchemy = "^1.4.39"
+Pillow = "^9.2.0"
+scikit-learn = "^1.1.2"
+shapely = "^1.8.2"
+aiosqlite = "^0.17.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+black = "^22.6.0"
+isort = "^5.10.1"
+pre-commit = "^2.20.0"
+
+[tool.black]
+line-length = 79
+target-version = ["py38", "py39", "py310"]
+include = '\.pyi?$'
+skip-string-normalization = true
+extend-exclude = '''
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 79
+length_sort = true
+skip_gitignore = true
+force_sort_within_sections = true
+extra_standard_library = ["typing_extensions"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = 'aliyun.mirrors'
+url = "http://mirrors.aliyun.com/pypi/simple/"

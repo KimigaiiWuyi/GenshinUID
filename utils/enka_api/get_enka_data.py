@@ -3,7 +3,8 @@ from asyncio.log import logger
 
 from httpx import AsyncClient
 
-from .enka_api import ENKA_DATA_URL, MINIGG_DATA_URL, MICROGG_DATA_URL
+from .enka_api import ENKA_DATA_URL, MICROGG_DATA_URL, MINIGG_DATA_URL
+
 
 ENKA_API = [MINIGG_DATA_URL, ENKA_DATA_URL, MICROGG_DATA_URL]
 HEADER = {'User-Agent': 'GenshinUID/3.1'}
@@ -35,7 +36,7 @@ async def get_enka_info(uid: str):
         req = await client.get(url=url, headers=HEADER)
     try:
         data = json.loads(req.text)
-    except Exception:
+    except:
         logger.exception(req.text)
         data = {}
     return data

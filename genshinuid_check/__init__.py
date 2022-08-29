@@ -1,14 +1,15 @@
-import random
 import asyncio
+import random
 
+from nonebot import on_command, require
+from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
-from nonebot import require, on_command
-from nonebot.adapters.onebot.v11 import Bot, Message
 
 from .backup_data import data_backup
-from ..utils.exception.handle_exception import handle_exception
+from ..genshinuid_meta import register_menu
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
+from ..utils.exception.handle_exception import handle_exception
 
 check = on_command('校验全部Cookies')
 check_stoken = on_command('校验全部Stoken')
@@ -24,8 +25,21 @@ async def daily_refresh_charData():
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉
 @check.handle()
 @handle_exception('Cookie校验', 'Cookie校验错误')
+@register_menu(
+    '校验全部Cookies',
+    '校验全部Cookies',
+    '校验数据库内所有Cookies是否正常',
+    trigger_method='管理员指令',
+    detail_des=(
+            '指令：'
+            '<ft color=(238,120,0)>校验全部Cookies</ft>\n'
+            '注意<ft color=(238,120,0)>Cookies</ft>的<ft color=(238,120,0)>C</ft>为大写\n'
+            ' \n'
+            '校验数据库内所有Cookies是否正常，不正常的会自动删除'
+    ),
+)
 async def send_check_cookie(
-    bot: Bot, matcher: Matcher, args: Message = CommandArg()
+        bot: Bot, matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         await matcher.finish()
@@ -51,8 +65,21 @@ async def send_check_cookie(
 # 群聊内 校验Stoken 是否正常的功能，不正常自动删掉
 @check_stoken.handle()
 @handle_exception('Stoken校验', 'Stoken校验错误')
+@register_menu(
+    '校验全部Stoken',
+    '校验全部Stoken',
+    '校验数据库内所有Stoken是否正常',
+    trigger_method='管理员指令',
+    detail_des=(
+            '指令：'
+            '<ft color=(238,120,0)>校验全部Stoken</ft>\n'
+            '注意<ft color=(238,120,0)>Stoken</ft>的<ft color=(238,120,0)>S</ft>为大写\n'
+            ' \n'
+            '校验数据库内所有Stoken是否正常，不正常的会自动删除'
+    ),
+)
 async def send_check_stoken(
-    bot: Bot, matcher: Matcher, args: Message = CommandArg()
+        bot: Bot, matcher: Matcher, args: Message = CommandArg()
 ):
     if args:
         await matcher.finish()

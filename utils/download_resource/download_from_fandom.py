@@ -1,16 +1,16 @@
 import re
 import random
 import asyncio
+from pathlib import Path
 
-import aiofiles  # type: ignore
+import aiofiles
 from bs4 import BeautifulSoup
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 
-MAX_TASKS = 4
-from .RESOURCE_PATH import *  # noqa: E501
-from ..alias.avatarId_and_name_covert import name_to_avatar_id
+from .RESOURCE_PATH import GACHA_IMG_PATH, CHAR_STAND_PATH, CHAR_NAMECARD_PATH
 
+MAX_TASKS = 4
 baseurl = 'https://genshin-impact.fandom.com/wiki/Genshin_Impact_Wiki'
 
 
@@ -72,7 +72,7 @@ async def download_by_fandom(char_list: dict):
     if len(list(CHAR_NAMECARD_PATH.iterdir())) < len(char_list) or len(
         list(CHAR_STAND_PATH.iterdir())
     ) < len(char_list):
-        logger.info(f'[fandom] 本次需要下载图片')
+        logger.info('[fandom] 本次需要下载图片')
         await get_namecard_and_gacha_pic(char_list)
     else:
         logger.info('[fandom] 无需下载名片和抽卡图片!')
@@ -91,7 +91,6 @@ async def get_namecard_and_gacha_pic(char_list: dict):
             char_info_data = await get_url(char_list[i][:-6], sess)
             info_bs = BeautifulSoup(char_info_data, 'lxml')
             chinese_name = info_bs.find_all("span", lang='zh-Hans')[0].text
-            avatar_id = await name_to_avatar_id(chinese_name)
             logger.info(f'{log_prefix}正在下载{chinese_name}的图片资源...')
             char_data_bs = BeautifulSoup(char_data, 'lxml')
 

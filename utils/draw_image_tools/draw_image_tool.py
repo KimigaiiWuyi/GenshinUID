@@ -2,7 +2,7 @@ import math
 import random
 from io import BytesIO
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import Tuple, Union
 
 from PIL import Image
 from httpx import get
@@ -82,7 +82,11 @@ class CustomizeImage:
         based_light = 195
         temp = 9999
         for i in range(0, color):
-            bg = tuple(q.getpalette()[i * 3 : (i * 3) + 3])  # type: ignore
+            bg = tuple(
+                q.getpalette()[  # type: ignore
+                    i * 3 : (i * 3) + 3  # noqa: E203
+                ]
+            )
             light_value = bg[0] * 0.3 + bg[1] * 0.6 + bg[2] * 0.1
             if abs(light_value - based_light) < temp:
                 bg_color = bg

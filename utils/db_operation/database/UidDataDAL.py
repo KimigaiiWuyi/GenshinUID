@@ -200,7 +200,10 @@ class UidDataDAL:
                         return f'该米游社通行证{data["MYSID"]}已经绑定过了噢~'
                     mysid_list.append(data['MYSID'])
                     data['MYSID'] = '_'.join(mysid_list)
-                    _bind += f'绑定米游社通行证{new_mysid}成功~\n当前绑定米游社通行证列表为{",".join(mysid_list)}'
+                    _bind += (
+                        f'绑定米游社通行证{new_mysid}成功~\n'
+                        f'当前绑定米游社通行证列表为{",".join(mysid_list)}'
+                    )
             await self.update_db(userid, data)
         else:
             new_data = UidData(USERID=userid, **data)
@@ -255,7 +258,10 @@ class UidDataDAL:
                         delete_mysid = mysid_list[0]
                         mysid_list.pop(0)
                         data['MYSID'] = '_'.join(mysid_list)
-                    _delete += f'删除米游社通行证{delete_mysid}成功~\n当前绑定米游社通行证列表为{",".join(mysid_list)}'
+                    _delete += (
+                        f'删除米游社通行证{delete_mysid}成功~'
+                        f'\n当前绑定米游社通行证列表为{",".join(mysid_list)}'
+                    )
             await self.update_db(userid, data)
         else:
             return '你还没有绑定过UID噢~'

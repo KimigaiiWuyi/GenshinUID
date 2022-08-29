@@ -6,12 +6,11 @@ from pathlib import Path
 from typing import Tuple, Union, Optional
 
 from httpx import get
-from nonebot.log import logger
 from PIL import Image, ImageDraw, ImageChops
 
-from .dmgCalc.dmg_calc import *
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from .dmgCalc.dmg_calc import draw_dmgCacl_img, avatarName2SkillAdd
 
 R_PATH = Path(__file__).parent
 RESOURCE_PATH = Path(__file__).parents[1] / 'resource'
@@ -195,9 +194,9 @@ async def get_char_percent(raw_data: dict) -> str:
     )
     healBouns = fight_prop['healBonus']
 
-    hp_green = fight_prop['addHp']
-    attack_green = fight_prop['addAtk']
-    defense_green = fight_prop['addDef']
+    # hp_green = fight_prop['addHp']
+    # attack_green = fight_prop['addAtk']
+    # defense_green = fight_prop['addDef']
 
     r = 0.9
     equipMain = ''
@@ -561,7 +560,7 @@ async def draw_char_img(
         new_overlay_h = img_h
         new_overlay_w = math.ceil(new_overlay_h * overlay_w / overlay_h)
         overlay = overlay.resize(
-            (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS  # type: ignore
+            (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS
         )
         overlay = overlay.crop((0, 0, img_w, img_h))
     color_img = Image.new(
@@ -602,11 +601,11 @@ async def draw_char_img(
 
     # 天赋处理
     skillList = raw_data['avatarSkill']
-    a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
+    # a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
     a_skill_level = skillList[0]['skillLevel']
-    e_skill_name = skillList[1]['skillName']
+    # e_skill_name = skillList[1]['skillName']
     e_skill_level = skillList[1]['skillLevel']
-    q_skill_name = skillList[-1]['skillName']
+    # q_skill_name = skillList[-1]['skillName']
     q_skill_level = skillList[-1]['skillLevel']
 
     skill_add = avatarName2SkillAdd[char_name]
@@ -745,7 +744,9 @@ async def draw_char_img(
             (75, 75), Image.Resampling.LANCZOS  # type: ignore
         ).convert("RGBA")
         # artifacts_piece_new_img.putalpha(
-        #    artifacts_piece_new_img.getchannel('A').point(lambda x: round(x * 0.5) if x > 0 else 0))
+        # artifacts_piece_new_img.getchannel('A').point(
+        #     lambda x: round(x * 0.5) if x > 0 else 0
+        # )
 
         artifacts_img.paste(
             artifacts_piece_new_img, (195, 35), artifacts_piece_new_img
@@ -891,7 +892,13 @@ async def draw_char_img(
     )
 
     # aeq
-    # img_text.text((110, 771), a_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
+    # img_text.text(
+    #     (110, 771),
+    #     a_skill_name,
+    #     (255, 255, 255),
+    #     genshin_font_origin(26),
+    #     anchor='lm',
+    # )
     img_text.text(
         (103, 812),
         f'{str(a_skill_level)}',
@@ -900,7 +907,13 @@ async def draw_char_img(
         anchor='mm',
     )
 
-    # img_text.text((110, 872), e_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
+    # img_text.text(
+    #     (110, 872),
+    #     e_skill_name,
+    #     (255, 255, 255),
+    #     genshin_font_origin(26),
+    #     anchor='lm',
+    # )
     img_text.text(
         (103, 915),
         f'{str(e_skill_level)}',
@@ -909,7 +922,13 @@ async def draw_char_img(
         anchor='mm',
     )
 
-    # img_text.text((110, 973), q_skill_name, (255, 255, 255), genshin_font_origin(26), anchor='lm')
+    # img_text.text(
+    #     (110, 973),
+    #     q_skill_name,
+    #     (255, 255, 255),
+    #     genshin_font_origin(26),
+    #     anchor='lm',
+    # )
     img_text.text(
         (103, 1016),
         f'{str(q_skill_level)}',

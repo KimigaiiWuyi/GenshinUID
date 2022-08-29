@@ -2,7 +2,7 @@ from typing import Optional
 
 from nonebot.log import logger
 
-from ..utils.message.error_reply import *  # noqa: F403,F401
+from ..utils.message.error_reply import CK_HINT
 from ..utils.db_operation.db_operation import (
     open_push,
     config_check,
@@ -48,7 +48,7 @@ async def set_push_value(func: str, uid: str, value: int):
     if await update_push_value(int(uid), status, int(value)):
         return f'设置成功!\n当前{func}推送阈值:{value}'
     else:
-        return f'设置失败!\n请检查参数是否正确!'
+        return '设置失败!\n请检查参数是否正确!'
 
 
 async def set_config_func(

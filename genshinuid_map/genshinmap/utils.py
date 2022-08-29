@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from io import BytesIO
 from typing import List, Union
-from asyncio import gather, create_task
 
 from PIL import Image
 from httpx import AsyncClient

@@ -59,5 +59,9 @@ async def save_gachalogs(uid: str):
     if all_add == 0:
         im = f'UID{uid}没有新增祈愿数据!'
     else:
-        im = f'UID{uid}数据更新成功！本次更新{all_add}个数据\n常驻祈愿{normal_add}个\n角色祈愿{char_add}个\n武器祈愿{weapon_add}个！'
+        im = (
+            f'UID{uid}数据更新成功！'
+            f'本次更新{all_add}个数据\n'
+            f'常驻祈愿{normal_add}个\n角色祈愿{char_add}个\n武器祈愿{weapon_add}个！'
+        )
     return im

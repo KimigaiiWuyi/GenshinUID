@@ -1,4 +1,4 @@
-from typing import List, Union, Optional
+from typing import Union
 
 from sqlalchemy import update
 from sqlalchemy.orm import Session

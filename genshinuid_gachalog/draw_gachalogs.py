@@ -1,13 +1,11 @@
 import json
-import time
 import asyncio
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
+from typing import Tuple, Union
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
 
-from ..utils.get_cookies.get_cookies import GetCookies
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin

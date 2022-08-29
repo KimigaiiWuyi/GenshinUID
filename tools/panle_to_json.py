@@ -4,7 +4,7 @@ from pathlib import Path
 
 import openpyxl
 
-from utils.minigg_api.get_minigg_data import get_misc_info
+from ..utils.minigg_api.get_minigg_data import get_misc_info
 
 version = '2.7.0'
 version_old = '2.6.0'
@@ -99,7 +99,11 @@ async def panle2Json() -> None:
 
             action = str(sheet.cell(row, 19).value)
             if sheet.cell(row, 20).value != 'any':
-                val = float('{:.2f}'.format(float(sheet.cell(row, 20).value)))  # type: ignore
+                val = float(
+                    '{:.2f}'.format(
+                        float(sheet.cell(row, 20).value)  # type: ignore
+                    )
+                )
             else:
                 val = 'any'
 

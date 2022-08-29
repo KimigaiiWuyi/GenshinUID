@@ -2,7 +2,7 @@ from typing import List
 from pathlib import Path
 
 from nonebot.log import logger
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg

@@ -23,7 +23,7 @@ class GetCookies:
             if isinstance(msg, str):
                 return msg
             else:
-                if msg == True:
+                if msg:
                     return None
 
     async def get_uid_data(self):

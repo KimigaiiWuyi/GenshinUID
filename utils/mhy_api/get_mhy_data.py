@@ -410,10 +410,6 @@ async def _mhy_request(
       * result (dict): json.loads()解析字段。
     '''
     is_temp_sess = False
-    if params is None:
-        params = {}
-    if data is None:
-        data = {}
     if sess is None:
         sess = ClientSession()
         is_temp_sess = True

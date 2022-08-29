@@ -6,11 +6,18 @@ from copy import deepcopy
 from httpx import AsyncClient
 from nonebot.log import logger
 
-from ..utils.mhy_api.mhy_api import *
 from ..utils.mhy_api.mhy_api_tools import (
     random_hex,
     get_ds_token,
     old_version_get_ds_token,
+)
+from ..utils.mhy_api.mhy_api import (
+    bbs_Likeurl,
+    bbs_Listurl,
+    bbs_Signurl,
+    bbs_Shareurl,
+    bbs_Detailurl,
+    bbs_Taskslist,
 )
 
 mihoyobbs_List = [

@@ -1,7 +1,16 @@
 import aiofiles
 from aiohttp.client import ClientSession
 
-from .RESOURCE_PATH import *  # noqa: E501
+from .RESOURCE_PATH import (
+    REL_PATH,
+    CHAR_PATH,
+    ICON_PATH,
+    WEAPON_PATH,
+    CHAR_SIDE_PATH,
+    GACHA_IMG_PATH,
+    CHAR_STAND_PATH,
+    CHAR_NAMECARD_PATH,
+)
 
 PATH_MAP = {
     1: CHAR_PATH,

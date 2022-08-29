@@ -122,7 +122,7 @@ async def refresh_char_data():
             logger.info(im)
             t += 1
             await asyncio.sleep(35 + random.randint(1, 20))
-        except:
+        except Exception:
             logger.exception(f'{uid}刷新失败！')
             logger.error(f'{uid}刷新失败！本次自动刷新结束！')
             return f'执行失败从{uid}！共刷新{str(t)}个角色！'
@@ -191,7 +191,9 @@ async def send_charcard_list(
         uid = await select_db(at, mode='uid')
         message = message.replace(str(at), '')
     else:
-        uid = await select_db(int(event.sender.user_id), mode='uid')  # type: ignore
+        uid = await select_db(
+            int(event.sender.user_id), mode='uid'  # type: ignore
+        )
     im = await draw_cahrcard_list(str(uid), limit)
 
     logger.info(f'UID{uid}获取角色数据成功！')

@@ -1,7 +1,5 @@
-import json
-from asyncio.log import logger
-
 from httpx import AsyncClient
+from nonebot.log import logger
 
 from .enka_api import ENKA_DATA_URL, MINIGG_DATA_URL, MICROGG_DATA_URL
 
@@ -32,10 +30,10 @@ async def get_enka_info(uid: str):
     """
     url = ENKA_API[0].format(uid)
     async with AsyncClient() as client:
-        req = await client.get(url=url, headers=HEADER)
-    try:
-        data = json.loads(req.text)
-    except:
-        logger.exception(req.text)
-        data = {}
-    return data
+        try:
+            req = await client.get(url=url, headers=HEADER)
+            data = req.json()
+        except Exception:
+            data = {}
+            logger.exception("访问 Enka 出现问题")
+        return data

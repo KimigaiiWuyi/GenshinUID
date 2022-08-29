@@ -67,7 +67,7 @@ async def notice_job():
                 user_id=qid,
                 message=result[0][qid],
             )
-        except:
+        except Exception:
             logger.warning(f'[推送检查] QQ {qid} 私聊推送失败!')
         await asyncio.sleep(0.5)
     logger.info('[推送检查]私聊推送完成')
@@ -79,7 +79,7 @@ async def notice_job():
                 group_id=group_id,
                 message=result[1][group_id],
             )
-        except:
+        except Exception:
             logger.warning(f'[推送检查] 群 {group_id} 群聊推送失败!')
         await asyncio.sleep(0.5)
     logger.info('[推送检查]群聊推送完成')

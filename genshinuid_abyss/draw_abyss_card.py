@@ -1,7 +1,7 @@
 import time
 import asyncio
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
@@ -56,9 +56,9 @@ async def get_rank_data(data: dict, path: Path):
             await download_file(data[0]['avatar_icon'], 3, f'{char_id}.png')
     char_pic = Image.open(path / f'{char_id}.png').convert('RGBA')
     if path == CHAR_STAND_PATH:
-        char_pic = char_pic.resize((862, 528), Image.Resampling.BICUBIC)  # type: ignore
+        char_pic = char_pic.resize((862, 528), Image.Resampling.BICUBIC)
     elif path == CHAR_SIDE_PATH:
-        char_pic = char_pic.resize((60, 60), Image.Resampling.BICUBIC)  # type: ignore
+        char_pic = char_pic.resize((60, 60), Image.Resampling.BICUBIC)
     rank_value = str(data[0]['value'])
     return char_pic, rank_value
 
@@ -293,7 +293,11 @@ async def draw_abyss_img(
                                 break
                     task.append(
                         _draw_abyss_card(
-                            char, talent_num, floor_pic, index_char, index_part  # type: ignore
+                            char,
+                            talent_num,  # type: ignore
+                            floor_pic,
+                            index_char,
+                            index_part,
                         )
                     )
             await asyncio.gather(*task)

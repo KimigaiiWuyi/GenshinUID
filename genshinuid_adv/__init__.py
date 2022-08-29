@@ -5,7 +5,6 @@ from nonebot.matcher import Matcher
 from nonebot.params import RegexGroup
 
 from ..config import priority
-
 from .get_adv import char_adv, weapon_adv
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.exception.handle_exception import handle_exception

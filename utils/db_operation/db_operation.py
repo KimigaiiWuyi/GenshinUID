@@ -1,7 +1,4 @@
-import re
 from typing import List, Union, Optional
-
-from sqlalchemy.orm import Session
 
 from .database.ConfigDAL import ConfigDAL
 from .database.CookiesDAL import CookiesDAL

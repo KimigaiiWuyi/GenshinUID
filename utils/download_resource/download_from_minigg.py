@@ -1,12 +1,12 @@
 import json
 import asyncio
 from typing import List
+from pathlib import Path
 
 import aiofiles  # type: ignore
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 
-from .RESOURCE_PATH import *  # noqa: E501
 from ..alias.alias_to_char_name import alias_to_char_name
 from ..alias.avatarId_and_name_covert import name_to_avatar_id
 from .resource_list import REL_ALL_LIST, CHAR_ALL_LIST, WEAPON_ALL_LIST
@@ -14,6 +14,13 @@ from ..minigg_api.get_minigg_data import (
     get_char_info,
     get_misc_info,
     get_weapon_info,
+)
+from .RESOURCE_PATH import (
+    REL_PATH,
+    CHAR_PATH,
+    WEAPON_PATH,
+    CHAR_SIDE_PATH,
+    CHAR_STAND_PATH,
 )
 
 MAX_TASKS = 5
@@ -48,7 +55,7 @@ async def download_by_minigg():
         char_id = await name_to_avatar_id(char)
         char_path = CHAR_PATH / f'{char_id}.png'
         char_side_path = CHAR_SIDE_PATH / f'{char_id}.png'
-        char_stand_path = CHAR_STAND_PATH / f'{char_id}.png'
+        # char_stand_path = CHAR_STAND_PATH / f'{char_id}.png'
         if not char_path.exists() or not char_side_path.exists():
             char_download_list.append(char)
     if char_download_list:

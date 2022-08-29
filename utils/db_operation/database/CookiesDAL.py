@@ -1,21 +1,23 @@
 from typing import List, Union, Optional
 
-from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from sqlalchemy import Column, update
 from sqlalchemy.sql.expression import func
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from .models import CookiesCache, NewCookiesTable
+from ..database.models import CookiesCache, NewCookiesTable
 
 
 class CookiesDAL:
-    def __init__(self, db_session: Session):
+    def __init__(self, db_session: AsyncSession):
         self.db_session = db_session
 
     async def get_user_data(self, uid: str) -> Optional[NewCookiesTable]:
         try:
-            await self.db_session.execute('ALTER TABLE NewCookiesTable ADD COLUMN Stoken TEXT')  # type: ignore
-        except:
+            await self.db_session.execute(
+                ('ALTER TABLE NewCookiesTable ' 'ADD COLUMN Stoken TEXT')
+            )
+        except Exception:
             pass
         sql = select(NewCookiesTable).where(NewCookiesTable.UID == uid)
         result = await self.db_session.execute(sql)  # type: ignore

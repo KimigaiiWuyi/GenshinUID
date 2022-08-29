@@ -9,7 +9,6 @@ from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 
 from ..config import priority
-
 from .sign import sign_in, daily_sign
 from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
@@ -18,6 +17,7 @@ sign_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
 get_sign = on_command('签到', priority=priority)
 all_recheck = on_command('全部重签', permission=SUPERUSER, priority=priority)
+
 
 # 每日零点半执行米游社原神签到
 @sign_scheduler.scheduled_job('cron', hour='0', minute='30')
@@ -70,7 +70,7 @@ async def send_daily_sign():
                 user_id=qid,
                 message=private_msg_list[qid],
             )
-        except:
+        except Exception:
             logger.warning(f'[每日全部签到] QQ {qid} 私聊推送失败!')
         await asyncio.sleep(0.5)
     logger.info('[每日全部签到]私聊推送完成')
@@ -98,7 +98,7 @@ async def send_daily_sign():
                 group_id=gid,
                 message=msg_title,
             )
-        except:
+        except Exception:
             logger.warning(f'[每日全部签到]群 {gid} 推送失败!')
         await asyncio.sleep(0.5 + random.randint(1, 3))
     logger.info('[每日全部签到]群聊推送完成')

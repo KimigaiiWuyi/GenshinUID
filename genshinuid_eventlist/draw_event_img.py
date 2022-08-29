@@ -1,18 +1,20 @@
 from io import BytesIO
 from re import findall
+from typing import List
 from pathlib import Path
 from datetime import datetime
-from typing import Any, List, Tuple, Union
 
 from httpx import get
 from bs4 import BeautifulSoup
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw
 
 from .get_event_data import get_genshin_events
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 IMG_PATH = Path(__file__).parent / 'event.jpg'
+
+PATTERN = r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>'
 
 
 async def get_month_and_time(time_data: str) -> List:
@@ -63,7 +65,7 @@ async def save_draw_event_img() -> None:
                         time_data = content_bs.find_all('p')[index + 1].text
                         if '<t class=' in time_data:
                             time_data = findall(
-                                r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                PATTERN,
                                 time_data,
                             )[0]
                         month_start, time_start = await get_month_and_time(
@@ -79,7 +81,7 @@ async def save_draw_event_img() -> None:
                                 if '<t class=' in s:
                                     time_datas.append(
                                         findall(
-                                            r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                            PATTERN,
                                             s,
                                         )[0]
                                     )
@@ -114,7 +116,7 @@ async def save_draw_event_img() -> None:
                                     ].text
                                     if '<t class=' in time_data_end:
                                         time_data_end = findall(
-                                            r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                            PATTERN,
                                             time_data_end,
                                         )[0]
                                         (
@@ -134,7 +136,7 @@ async def save_draw_event_img() -> None:
                                     break
                                 elif '<t class=' in time_data:
                                     time_data = findall(
-                                        r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                        PATTERN,
                                         time_data,
                                     )[0]
                                     (
@@ -147,7 +149,7 @@ async def save_draw_event_img() -> None:
                                     ].text
                                     if '<t class=' in time_data_end:
                                         time_data_end = findall(
-                                            r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                            PATTERN,
                                             time_data_end,
                                         )[0]
                                         (
@@ -179,18 +181,18 @@ async def save_draw_event_img() -> None:
                         )
                         if '<t class=' in start_time:
                             start_time = findall(
-                                r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                PATTERN,
                                 start_time,
                             )[0]
                         end_time = findall(
-                            r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                            PATTERN,
                             content_bs.find_all('tr')[1]
                             .td.find_all('p')[2]
                             .text,
                         )[0]
                         if '<t class=' in end_time:
                             end_time = findall(
-                                r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>',
+                                PATTERN,
                                 end_time,
                             )[0]
 

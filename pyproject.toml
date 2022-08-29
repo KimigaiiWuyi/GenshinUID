@@ -9,7 +9,6 @@ license = "GPL-3.0-or-later"
 python = "^3.8"
 nonebot2 = "^2.0.0-beta.4"
 nonebot-adapter-onebot = "^2.1.1"
-requests = "^2.28.1"
 httpx = "^0.23.0"
 wordcloud = "^1.8.2"
 numpy = "^1.23.1"
@@ -22,6 +21,8 @@ Pillow = "^9.2.0"
 scikit-learn = "^1.1.2"
 shapely = "^1.8.2"
 aiosqlite = "^0.17.0"
+nonebot-plugin-apscheduler = "^0.1.4"
+aiofiles = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
@@ -51,4 +52,4 @@ build-backend = "poetry.core.masonry.api"
 
 [[tool.poetry.source]]
 name = 'aliyun.mirrors'
-url = "http://mirrors.aliyun.com/pypi/simple/"
+url = "https://mirrors.aliyun.com/pypi/simple/"

@@ -9,7 +9,7 @@ from httpx import AsyncClient
 from nonebot.log import logger
 
 from ..mhy_api.mhy_api import bbs_Taskslist
-from .gsuid_db_pool import *  # noqa: F401,F403
+from ..db_operation.gsuid_db_pool import gsuid_pool
 from ..mhy_api.get_mhy_data import get_mihoyo_bbs_info
 from ..mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
 
@@ -37,7 +37,7 @@ async def check_db():
             )
             normal_num += 1
             logger.info(f'uid{row[0]}/mys{mihoyo_id}的Cookies是正常的！')
-        except:
+        except Exception:
             invalid_str = (
                 invalid_str + f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！\n'
             )
@@ -50,7 +50,7 @@ async def check_db():
                 c.execute(
                     'DELETE from CookiesCache where Cookies=?', (row[1],)
                 )
-            except:
+            except Exception:
                 pass
             logger.info(f'uid{row[0]}的Cookies是异常的！已删除该条Cookies！')
     if len(c_data) > 9:
@@ -62,7 +62,7 @@ async def check_db():
     conn.close()
     logger.info('已完成Cookies检查！')
     logger.info(f'正常Cookies数量：{str(normal_num)}')
-    logger.info(f'失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies')
+    logger.info('失效cookies:\n' + invalid_str if invalid_str else '无失效Cookies')
     return [return_str, invalid_list]
 
 
@@ -73,7 +73,7 @@ async def refresh_ck(uid, mysid):
         c.execute(
             'DELETE from CookiesCache where uid=? or mysid = ?', (uid, mysid)
         )
-    except:
+    except Exception:
         pass
 
 
@@ -137,7 +137,7 @@ async def check_stoken_db():
     conn.close()
     logger.info('已完成Stoken检查!')
     logger.info(f'正常Stoken数量：{normal_num}')
-    logger.info(f'失效Stoken:\n' + invalid_str if invalid_str else '无失效Stoken')
+    logger.info('失效Stoken:\n' + invalid_str if invalid_str else '无失效Stoken')
     return [return_str, invalid_list]
 
 
@@ -152,7 +152,7 @@ async def delete_cache():
             os.remove(f'ID_DATA_BAK_{endday_format}.db')
             logger.info(f'————已删除数据库备份{endday_format}————')
         logger.info('————数据库成功备份————')
-    except:
+    except Exception:
         logger.info('————数据库备份失败————')
 
     try:
@@ -172,7 +172,7 @@ async def delete_cache():
         conn.commit()
         conn.close()
         logger.info('————UID查询缓存已清空————')
-    except:
+    except Exception:
         logger.info('\nerror\n')
 
     try:
@@ -182,5 +182,5 @@ async def delete_cache():
         conn.commit()
         conn.close()
         logger.info('————御神签缓存已清空————')
-    except:
+    except Exception:
         logger.info('\nerror\n')

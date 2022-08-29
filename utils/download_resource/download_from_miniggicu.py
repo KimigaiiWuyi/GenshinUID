@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 
-from .RESOURCE_PATH import *
 from .download_url import PATH_MAP, download_file
 
 MINIGG_FILE = 'https://file.minigg.icu/genshin/KimigaiiWuyi/resource/'
@@ -75,7 +74,7 @@ async def download_all_file_from_miniggicu():
                     )
                     temp_num += 1
                     await download_file(url, FILE_TO_PATH[file], name)
-                    logger.info(f'[minigg.icu]下载完成!')
+                    logger.info('[minigg.icu]下载完成!')
             if temp_num == 0:
                 im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]无需下载!'
             else:

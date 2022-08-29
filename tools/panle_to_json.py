@@ -99,7 +99,11 @@ async def panle2Json() -> None:
 
             action = str(sheet.cell(row, 19).value)
             if sheet.cell(row, 20).value != 'any':
-                val = float('{:.2f}'.format(float(sheet.cell(row, 20).value)))  # type: ignore
+                val = float(
+                    '{:.2f}'.format(
+                        float(sheet.cell(row, 20).value)  # type: ignore
+                    )
+                )
             else:
                 val = 'any'
 

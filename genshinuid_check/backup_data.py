@@ -16,5 +16,5 @@ async def data_backup():
             os.remove(f'ID_DATA_BAK_{endday_format}.db')
             logger.info(f'————已删除数据库备份{endday_format}————')
         logger.info('————数据库成功备份————')
-    except:
+    except Exception:
         logger.info('————数据库备份失败————')

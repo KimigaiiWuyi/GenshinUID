@@ -8,14 +8,10 @@ from nonebot.permission import SUPERUSER
 from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 
-from .daily_mihoyo_bbs_coin import (
-    mihoyo_coin,
-    all_daily_mihoyo_bbs_coin,
-)
-
 from ..config import SUPERUSERS, priority
 from ..utils.db_operation.db_operation import config_check
 from ..utils.exception.handle_exception import handle_exception
+from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
 
 bbscoin_scheduler = require('nonebot_plugin_apscheduler').scheduler
 

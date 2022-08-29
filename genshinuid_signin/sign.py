@@ -15,6 +15,7 @@ private_msg_list = {}
 group_msg_list = {}
 already = 0
 
+
 # 签到函数
 async def sign_in(uid) -> str:
     logger.info(f'[签到] {uid} 开始执行签到')
@@ -50,7 +51,7 @@ async def sign_in(uid) -> str:
                     logger.info(f'[签到] {uid} 该用户无校验码! 重试 {index} 次成功!')
                 break
         else:
-            logger.warning(f'[签到] 超过请求阈值...')
+            logger.warning('[签到] 超过请求阈值...')
             return '签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到！'
     else:
         im = '签到失败!'
@@ -67,7 +68,7 @@ async def sign_in(uid) -> str:
     get_im = f'本次签到获得{getitem}x{getnum}'
     new_sign_info = await get_sign_info(uid)
     new_sign_info = new_sign_info['data']
-    if new_sign_info['is_sign'] == True:
+    if new_sign_info['is_sign']:
         mes_im = '签到成功'
     else:
         mes_im = f'签到失败, 状态为:{status}'
@@ -118,7 +119,9 @@ async def daily_sign():
       将数据库中全部Status不为`off`的用户进行签到,
       并返回签到信息private_msg_list, group_msg_list,
       private_msg_list = [{'qid': 'msg'}, ...],
-      group_msg_list = [{'gid': {'success': 0, 'failed': 0, 'push_message': ''}}, ...],
+      group_msg_list = [
+        {'gid': {'success': 0, 'failed': 0, 'push_message': ''}}, ...
+      ],
       如开启简洁签到,
       success = 签到成功数,
       failed = 签到失败数,

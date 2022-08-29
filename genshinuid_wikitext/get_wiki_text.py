@@ -6,7 +6,13 @@ from pathlib import Path
 
 from httpx import AsyncClient
 
-from .get_wiki_template import *  # noqa
+from .get_wiki_template import (
+    food_im,
+    weapon_im,
+    audio_json,
+    artifacts_im,
+    char_info_im,
+)
 from ..utils.minigg_api.get_minigg_data import (
     get_char_info,
     get_misc_info,
@@ -45,7 +51,7 @@ async def audio_wiki(name, message):
             audio = await get(audioid[0])
         except IndexError:
             return '请输入语音ID。'
-        except:
+        except Exception:
             return '语音获取失败'
         if audio:
             return audio.getvalue()

@@ -9,6 +9,13 @@ from ..version import Genshin_version
 R_PATH = Path(__file__).parents[0]
 MAP_PATH = Path(__file__).parents[1] / 'utils' / 'enka_api' / 'map'
 DATA_PATH = R_PATH / 'gs_data'
+WEAPON_TYPE = {
+    "WEAPON_POLE": "长柄武器",
+    "WEAPON_BOW": "弓",
+    "WEAPON_SWORD_ONE_HAND": "单手剑",
+    "WEAPON_CLAYMORE": "双手剑",
+    "WEAPON_CATALYST": "法器",
+}
 
 version = Genshin_version
 
@@ -57,14 +64,8 @@ async def avatarName2ElementJson() -> None:
         '雷': 'Electro',
     }
     for i in list(avatarId2Name.values()):
-        data = json.loads(
-            httpx.get(
-                'https://info.minigg.cn/characters?query={}'.format(i)
-            ).text
-        )
-        if 'errcode' in data:
-            pass
-        else:
+        data = httpx.get(f'https://info.minigg.cn/characters?query={i}').json()
+        if 'errcode' not in data:
             temp[i] = elementMap[data['element']]
 
     with open(
@@ -78,13 +79,11 @@ async def weaponHash2NameJson() -> None:
         DATA_PATH / 'WeaponExcelConfigData.json', "r", encoding='UTF-8'
     ) as f:
         weapon_data = json.load(f)
-
-    temp = {}
-    for i in weapon_data:
-        if str(i['nameTextMapHash']) in raw_data:
-            temp[str(i['nameTextMapHash'])] = raw_data[
-                str(i['nameTextMapHash'])
-            ]
+    temp = {
+        str(i['nameTextMapHash']): raw_data[str(i['nameTextMapHash'])]
+        for i in weapon_data
+        if str(i['nameTextMapHash']) in raw_data
+    }
 
     with open(
         MAP_PATH / weaponHash2Name_fileName, 'w', encoding='UTF-8'
@@ -97,22 +96,10 @@ async def weaponHash2TypeJson() -> None:
         DATA_PATH / 'WeaponExcelConfigData.json', "r", encoding='UTF-8'
     ) as f:
         weapon_data = json.load(f)
-
-    temp = {}
-    for i in weapon_data:
-        if i['weaponType'] == 'WEAPON_POLE':
-            weaponType = "长柄武器"
-        elif i['weaponType'] == 'WEAPON_BOW':
-            weaponType = "弓"
-        elif i['weaponType'] == 'WEAPON_SWORD_ONE_HAND':
-            weaponType = "单手剑"
-        elif i['weaponType'] == 'WEAPON_CLAYMORE':
-            weaponType = "双手剑"
-        elif i['weaponType'] == 'WEAPON_CATALYST':
-            weaponType = "法器"
-        else:
-            weaponType = ""
-        temp[str(i['nameTextMapHash'])] = weaponType
+    temp = {
+        str(i['nameTextMapHash']): WEAPON_TYPE.get(i['weaponType'], "")
+        for i in weapon_data
+    }
 
     with open(
         MAP_PATH / weaponHash2Type_fileName, 'w', encoding='UTF-8'

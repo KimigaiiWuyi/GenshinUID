@@ -282,9 +282,9 @@ for char_id in char_id_list:
     char_list.append(char_id_list[char_id])
 
 for char in char_list:
-    talent_data = json.loads(
-        httpx.get('https://info.minigg.cn/talents?query={}'.format(char)).text
-    )
+    talent_data = httpx.get(
+        f'https://info.minigg.cn/talents?query={char}'
+    ).json()
     if 'errcode' in talent_data:
         continue
     result = {}

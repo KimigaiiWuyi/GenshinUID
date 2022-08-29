@@ -2,7 +2,7 @@ import copy
 import time
 import random
 import asyncio
-from typing import Optional
+from typing import Any, Dict, Literal, Optional
 
 from nonebot.log import logger
 from aiohttp import ClientSession
@@ -71,7 +71,7 @@ async def get_gacha_log_by_authkey(
             for page in range(1, 999):
                 raw_data = await _mhy_request(
                     url=GET_GACHA_LOG_URL,
-                    method='get',
+                    method='GET',
                     header=_HEADER,
                     params={
                         'authkey_ver': '1',
@@ -133,7 +133,7 @@ async def get_authkey_by_cookie(uid: str) -> dict:
     HEADER['Host'] = 'api-takumi.mihoyo.com'
     authkey = await _mhy_request(
         url=GET_AUTHKEY_URL,
-        method='post',
+        method='POST',
         header=HEADER,
         data={
             'auth_appid': 'webview_gacha',
@@ -149,7 +149,7 @@ async def get_authkey_by_cookie(uid: str) -> dict:
 async def get_stoken_by_login_ticket(loginticket: str, mys_id: str) -> dict:
     data = await _mhy_request(
         url=GET_STOKEN_URL,
-        method='get',
+        method='GET',
         header=_HEADER,
         params={
             'login_ticket': loginticket,
@@ -165,7 +165,7 @@ async def get_cookie_token_by_stoken(stoken: str, mys_id: str) -> dict:
     HEADER['Cookie'] = f'stuid={mys_id};stoken={stoken}'
     data = await _mhy_request(
         url=GET_COOKIE_TOKEN_URL,
-        method='get',
+        method='GET',
         header=HEADER,
         params={
             'stoken': stoken,
@@ -183,7 +183,7 @@ async def get_daily_data(uid: str, server_id: str = 'cn_gf01') -> dict:
     HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
     data = await _mhy_request(
         url=DAILY_NOTE_URL,
-        method='get',
+        method='GET',
         header=HEADER,
         params={'server': server_id, 'role_id': uid},
     )
@@ -194,7 +194,7 @@ async def get_daily_data(uid: str, server_id: str = 'cn_gf01') -> dict:
 async def get_sign_list() -> dict:
     data = await _mhy_request(
         url=SIGN_LIST_URL,
-        method='get',
+        method='GET',
         header=_HEADER,
         params={'act_id': 'e202009291139501'},
     )
@@ -208,7 +208,7 @@ async def get_sign_info(uid, server_id='cn_gf01') -> dict:
     HEADER['Cookie'] = await owner_cookies(uid)
     data = await _mhy_request(
         url=SIGN_INFO_URL,
-        method='get',
+        method='GET',
         header=HEADER,
         params={'act_id': 'e202009291139501', 'region': server_id, 'uid': uid},
     )
@@ -244,7 +244,7 @@ async def mihoyo_bbs_sign(uid, ua=None, server_id='cn_gf01') -> dict:
     )
     data = await _mhy_request(
         url=SIGN_URL,
-        method='post',
+        method='POST',
         header=HEADER,
         data={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
     )
@@ -260,7 +260,7 @@ async def get_award(uid, server_id='cn_gf01') -> dict:
     HEADER['x-rpc-device_id'] = random_hex(32)
     data = await _mhy_request(
         url=MONTHLY_AWARD_URL,
-        method='get',
+        method='POST',
         header=HEADER,
         params={
             'act_id': 'e202009291139501',
@@ -285,7 +285,7 @@ async def get_info(uid, ck, server_id='cn_gf01') -> dict:
     HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
     data = await _mhy_request(
         url=PLAYER_INFO_URL,
-        method='get',
+        method='GET',
         header=HEADER,
         params={'server': server_id, 'role_id': uid},
     )
@@ -305,7 +305,7 @@ async def get_spiral_abyss_info(
     )
     data = await _mhy_request(
         url=PLAYER_ABYSS_INFO_URL,
-        method='get',
+        method='GET',
         header=HEADER,
         params={
             'server': server_id,
@@ -327,7 +327,7 @@ async def get_character(uid, character_ids, ck, server_id='cn_gf01') -> dict:
     )
     data = await _mhy_request(
         url=PLAYER_DETAIL_INFO_URL,
-        method='post',
+        method='POST',
         header=HEADER,
         data={
             'character_ids': character_ids,
@@ -381,7 +381,7 @@ async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
     HEADER['DS'] = get_ds_token(f'uid={mysid}')
     data = await _mhy_request(
         url=MIHOYO_BBS_PLAYER_INFO_URL,
-        method='get',
+        method='GET',
         header=HEADER,
         params={'uid': mysid},
     )
@@ -390,10 +390,10 @@ async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
 
 async def _mhy_request(
     url: str,
-    method: str = 'get',
-    header: dict = _HEADER,
-    params: dict = None,
-    data: dict = None,
+    method: Literal['GET', 'POST'] = 'GET',
+    header: Dict[str, Any] = _HEADER,
+    params: Optional[Dict[str, Any]] = None,
+    data: Optional[Dict[str, Any]] = None,
     sess: Optional[ClientSession] = None,
 ) -> dict:
     '''
@@ -401,38 +401,30 @@ async def _mhy_request(
       访问URL并进行json解析返回。
     :参数:
       * url (str): MihoyoAPI。
-      * method (str): `post` or `get`。
-      * header (str): 默认为_HEADER。
-      * params (dict): 参数。
-      * data (dict): 参数(`post`方法需要传)。
+      * method (Literal["GET", "POST"]): `POST` or `GET`。
+      * header (Dict[str, Any]): 默认为_HEADER。
+      * params (Dict[str, Any]): 参数。
+      * data (Dict[str, Any]): 参数(`post`方法需要传)。
       * sess (ClientSession): 可选, 指定client。
     :返回:
       * result (dict): json.loads()解析字段。
     '''
+    is_temp_sess = False
     if params is None:
         params = {}
     if data is None:
         data = {}
+    if sess is None:
+        sess = ClientSession()
+        is_temp_sess = True
     try:
-        if sess is None:
-            async with ClientSession() as sess:
-                if method == 'get':
-                    async with sess.get(
-                        url=url, headers=header, params=params
-                    ) as res:
-                        result = await res.json()
-                else:
-                    async with sess.post(
-                        url=url, headers=header, json=data
-                    ) as res:
-                        result = await res.json()
-        else:
-            if method == 'get':
-                req = await sess.get(url=url, headers=header, params=params)
-            else:
-                req = await sess.post(url=url, headers=header, json=data)
-            result = await req.json()
-        return result
+        req = await sess.request(
+            method, url=url, headers=header, params=params, json=data
+        )
+        return await req.json()
     except Exception:
         logger.exception(f'访问{url}失败！')
         return {}
+    finally:
+        if is_temp_sess:
+            await sess.close()

@@ -1,4 +1,5 @@
 {
-    "python.languageServer": "Pylance",
-    "python.analysis.typeCheckingMode": "basic"
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "cSpell.words": ["audioid", "enka", "genshin", "minigg", "weapontype"]
 }

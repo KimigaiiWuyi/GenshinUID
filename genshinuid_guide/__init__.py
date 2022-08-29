@@ -22,7 +22,7 @@ IMG_PATH = Path(__file__).parent / 'img'
 @handle_exception('建议')
 @register_menu(
     '角色攻略',
-    'xxx攻略',
+    'xx攻略',
     '发送一张对应角色的西风驿站攻略图',
     detail_des=(
             '指令：'

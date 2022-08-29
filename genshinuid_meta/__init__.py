@@ -9,7 +9,9 @@ __plugin_meta__ = PluginMetadata(
     usage=(
         '发送 gs帮助 可以获取帮助列表，也可以参考下面的表格\n'
         '可以使用 [菜单 gsuid 序号] 获取某功能详细介绍\n'
-        '示例指令括号中的内容为可选参数，可以省略'
+        ' \n'
+        '示例指令小括号中的内容为可选参数，可以省略；\n'
+        '中括号中的内容或者用“xx”代表的内容为必选参数，请将它们替换为对应的参数'
     ),
     extra={'menu_data': sub_menus, 'menu_template': 'default'},
 )

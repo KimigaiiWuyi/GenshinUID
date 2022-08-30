@@ -20,6 +20,7 @@ from nonebot.adapters.onebot.v11 import (
 
 from ..config import priority
 from ..genshinuid_meta import register_menu
+from ..utils.enka_api.get_enka_data import switch_api
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
@@ -29,6 +30,7 @@ from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, get_all_uid
 
 refresh = on_command('强制刷新')
+change_api = on_command('切换api')
 get_charcard_list = on_command('毕业度统计')
 get_char_info = on_command(
     '查询',
@@ -40,6 +42,21 @@ AUTO_REFRESH = False
 refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
 PLAYER_PATH = Path(__file__).parents[1] / 'player'
+
+
+@change_api.handle()
+@handle_exception('切换api')
+async def send_change_api_info(
+    bot: Bot,
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+    args: Message = CommandArg(),
+):
+    if args or not await SUPERUSER(bot, event):
+        return
+
+    im = await switch_api()
+    await matcher.finish(im)
 
 
 @get_char_info.handle()

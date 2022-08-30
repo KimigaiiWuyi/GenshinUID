@@ -1,17 +1,21 @@
 from typing import Any, Tuple, Union
 
-from nonebot import logger, on_regex
-from nonebot.adapters.onebot.v11 import (GroupMessageEvent, MessageSegment, PrivateMessageEvent)
 from nonebot.matcher import Matcher
+from nonebot import logger, on_regex
 from nonebot.params import Depends, RegexGroup
+from nonebot.adapters.onebot.v11 import (
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
 
-from .draw_abyss_card import draw_abyss_img
 from ..genshinuid_meta import register_menu
-from ..utils.db_operation.db_operation import select_db
-from ..utils.exception.handle_exception import handle_exception
+from .draw_abyss_card import draw_abyss_img
 from ..utils.message.error_reply import UID_HINT
+from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
+from ..utils.exception.handle_exception import handle_exception
 
 get_abyss_info = on_regex(
     r'^(\[CQ:at,qq=[0-9]+\])?( )?'
@@ -29,28 +33,29 @@ get_abyss_info = on_regex(
     '查询(@某人)(上期)深渊(xx层)',
     '查询你的或者指定人的深渊战绩',
     detail_des=(
-            '指令：'
-            '<ft color=(238,120,0)>[查询</ft>'
-            '<ft color=(125,125,125)>(@某人)</ft>'
-            '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
-            '<ft color=(125,125,125)>(上期)</ft>'
-            '<ft color=(238,120,0)>深渊</ft>'
-            '<ft color=(125,125,125)>(xx层)</ft>\n'
-            ' \n'  # 如果想要空行，请在换行符前面打个空格，不然会忽略换行符
-            '可以用来查看你的或者指定人的深渊战绩，可以指定层数，默认为最高层数\n'
-            '可以在命令文本后带一张图以自定义背景图\n'
-            ' \n'
-            '示例：\n'
-            '<ft color=(238,120,0)>查询深渊</ft>；\n'
-            '<ft color=(238,120,0)>uid123456789上期深渊</ft>；\n'
-            '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi</ft> <ft color=(238,120,0)>上期深渊12层</ft>'
+        '指令：'
+        '<ft color=(238,120,0)>[查询</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>'
+        '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
+        '<ft color=(125,125,125)>(上期)</ft>'
+        '<ft color=(238,120,0)>深渊</ft>'
+        '<ft color=(125,125,125)>(xx层)</ft>\n'
+        ' \n'  # 如果想要空行，请在换行符前面打个空格，不然会忽略换行符
+        '可以用来查看你的或者指定人的深渊战绩，可以指定层数，默认为最高层数\n'
+        '可以在命令文本后带一张图以自定义背景图\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>查询深渊</ft>；\n'
+        '<ft color=(238,120,0)>uid123456789上期深渊</ft>；\n'
+        '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi</ft> '
+        '<ft color=(238,120,0)>上期深渊12层</ft>'
     ),
 )
 async def send_abyss_info(
-        event: Union[GroupMessageEvent, PrivateMessageEvent],
-        matcher: Matcher,
-        args: Tuple[Any, ...] = RegexGroup(),
-        custom: ImageAndAt = Depends(),
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+    args: Tuple[Any, ...] = RegexGroup(),
+    custom: ImageAndAt = Depends(),
 ):
     logger.info('开始执行[查询深渊信息]')
     logger.info(f'[查询深渊信息]参数: {args}')
@@ -73,10 +78,10 @@ async def send_abyss_info(
     if args[6] in ['九', '十', '十一', '十二']:
         floor = (
             args[6]
-                .replace('九', '9')
-                .replace('十一', '11')
-                .replace('十二', '12')
-                .replace('十', '10')
+            .replace('九', '9')
+            .replace('十一', '11')
+            .replace('十二', '12')
+            .replace('十', '10')
         )
 
     else:

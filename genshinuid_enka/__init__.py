@@ -1,26 +1,32 @@
-import asyncio
+import re
 import json
 import random
-import re
+import asyncio
 from pathlib import Path
 from typing import Union
 
-from nonebot import on_command, require
-from nonebot.adapters.onebot.v11 import (Bot, GroupMessageEvent, Message, MessageSegment, PrivateMessageEvent)
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg, Depends
+from nonebot import require, on_command
 from nonebot.permission import SUPERUSER
+from nonebot.params import Depends, CommandArg
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    MessageSegment,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
 
-from .draw_char_card import draw_cahrcard_list, draw_char_img
 from ..config import priority
 from ..genshinuid_meta import register_menu
-from ..utils.alias.alias_to_char_name import alias_to_char_name
-from ..utils.db_operation.db_operation import get_all_uid, select_db
 from ..utils.enka_api.enka_to_data import enka_to_data
-from ..utils.exception.handle_exception import handle_exception
-from ..utils.message.error_reply import CHAR_HINT, UID_HINT
 from ..utils.message.get_image_and_at import ImageAndAt
+from ..utils.message.error_reply import UID_HINT, CHAR_HINT
+from .draw_char_card import draw_char_img, draw_cahrcard_list
+from ..utils.alias.alias_to_char_name import alias_to_char_name
+from ..utils.exception.handle_exception import handle_exception
+from ..utils.db_operation.db_operation import select_db, get_all_uid
 
 refresh = on_command('强制刷新')
 get_charcard_list = on_command('毕业度统计')
@@ -43,25 +49,26 @@ PLAYER_PATH = Path(__file__).parents[1] / 'player'
     '查询(@某人)角色名',
     '查询你的或者指定人的已缓存展柜角色的面板',
     detail_des=(
-            '指令：'
-            '<ft color=(238,120,0)>[查询</ft>'
-            '<ft color=(125,125,125)>(@某人)</ft>'
-            '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
-            '<ft color=(238,120,0)>角色名</ft>\n'
-            ' \n'
-            '可以用来查看你的或者指定人的已缓存展柜角色的面板\n'
-            '支持部分角色别名\n'
-            ' \n'
-            '示例：\n'
-            '<ft color=(238,120,0)>查询宵宫</ft>；\n'
-            '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi</ft> <ft color=(238,120,0)>公子</ft>'
+        '指令：'
+        '<ft color=(238,120,0)>[查询</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>'
+        '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
+        '<ft color=(238,120,0)>角色名</ft>\n'
+        ' \n'
+        '可以用来查看你的或者指定人的已缓存展柜角色的面板\n'
+        '支持部分角色别名\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>查询宵宫</ft>；\n'
+        '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi</ft>'
+        ' <ft color=(238,120,0)>公子</ft>'
     ),
 )
 async def send_char_info(
-        event: Union[GroupMessageEvent, PrivateMessageEvent],
-        matcher: Matcher,
-        args: Message = CommandArg(),
-        custom: ImageAndAt = Depends(),
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+    args: Message = CommandArg(),
+    custom: ImageAndAt = Depends(),
 ):
     if args is None:
         return
@@ -159,24 +166,24 @@ async def daily_refresh_charData():
     '强制刷新',
     '强制刷新你的或者指定人缓存的角色展柜数据',
     detail_des=(
-            '指令：'
-            '<ft color=(238,120,0)>强制刷新</ft>'
-            '<ft color=(125,125,125)>(uid/全部数据)</ft>\n'
-            ' \n'
-            '用于强制刷新你的或者指定人缓存的角色展柜数据\n'
-            '当刷新全部数据时需要机器人管理员权限\n'
-            ' \n'
-            '示例：\n'
-            '<ft color=(238,120,0)>强制刷新</ft>；\n'
-            '<ft color=(238,120,0)>强制刷新123456789</ft>；\n'
-            '<ft color=(238,120,0)>强制刷新全部数据</ft>'
+        '指令：'
+        '<ft color=(238,120,0)>强制刷新</ft>'
+        '<ft color=(125,125,125)>(uid/全部数据)</ft>\n'
+        ' \n'
+        '用于强制刷新你的或者指定人缓存的角色展柜数据\n'
+        '当刷新全部数据时需要机器人管理员权限\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>强制刷新</ft>；\n'
+        '<ft color=(238,120,0)>强制刷新123456789</ft>；\n'
+        '<ft color=(238,120,0)>强制刷新全部数据</ft>'
     ),
 )
 async def send_card_info(
-        bot: Bot,
-        matcher: Matcher,
-        event: Union[GroupMessageEvent, PrivateMessageEvent],
-        args: Message = CommandArg(),
+    bot: Bot,
+    matcher: Matcher,
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    args: Message = CommandArg(),
 ):
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
@@ -210,22 +217,22 @@ async def send_card_info(
     '毕业度统计',
     '查看你或指定人已缓存的展柜角色毕业度',
     detail_des=(
-            '指令：'
-            '<ft color=(238,120,0)>毕业度统计</ft>'
-            '<ft color=(125,125,125)>(@某人)</ft>\n'
-            ' \n'
-            '可以查看你或指定人已缓存的所有展柜角色毕业度\n'
-            ' \n'
-            '示例：\n'
-            '<ft color=(238,120,0)>毕业度统计</ft>；\n'
-            '<ft color=(238,120,0)>毕业度统计</ft><ft color=(0,148,200)>@无疑Wuyi</ft>'
+        '指令：'
+        '<ft color=(238,120,0)>毕业度统计</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>\n'
+        ' \n'
+        '可以查看你或指定人已缓存的所有展柜角色毕业度\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>毕业度统计</ft>；\n'
+        '<ft color=(238,120,0)>毕业度统计</ft><ft color=(0,148,200)>@无疑Wuyi</ft>'
     ),
 )
 async def send_charcard_list(
-        event: Union[GroupMessageEvent, PrivateMessageEvent],
-        matcher: Matcher,
-        args: Message = CommandArg(),
-        custom: ImageAndAt = Depends(),
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+    args: Message = CommandArg(),
+    custom: ImageAndAt = Depends(),
 ):
 
     message = args.extract_plain_text().strip().replace(' ', '')

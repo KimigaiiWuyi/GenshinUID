@@ -105,10 +105,13 @@ async def get_gacha_log_by_authkey(
                     for item in data:
                         if item not in full_data[gacha_name]:
                             temp.append(item)
-                    full_data[gacha_name].extend(temp)
+                    full_data[gacha_name][0:0] = temp
                     temp = []
                     break
-                full_data[gacha_name].extend(data)
+                if int(data[-1]['id']) <= int(full_data[gacha_name][0]['id']):
+                    full_data[gacha_name].extend(data)
+                else:
+                    full_data[gacha_name][0:0] = data
                 await asyncio.sleep(0.7)
     return full_data
 

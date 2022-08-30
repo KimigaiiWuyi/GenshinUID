@@ -43,6 +43,11 @@ async def save_gachalogs(uid: str):
     result['normal_gacha_num'] = len(raw_data['常驻祈愿'])
     result['char_gacha_num'] = len(raw_data['角色祈愿'])
     result['weapon_gacha_num'] = len(raw_data['武器祈愿'])
+    for i in raw_data['常驻祈愿', '角色祈愿', '武器祈愿']:
+        if int(raw_data[i][-1]['id']) >= int(raw_data[i][-2]['id']) or int(
+            raw_data[i][-1]['id']
+        ) >= int(raw_data[i][0]['id']):
+            raw_data[i].sort(key=lambda x: (-int(x['id'])), reverse=True)
     result['data'] = raw_data
 
     # 计算数据

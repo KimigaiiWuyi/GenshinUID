@@ -59,7 +59,7 @@ async def notice_job():
     logger.info('[推送检查]群聊推送完成')
 
 
-@sv.on_fullmatch(('每日', 'mr', '状态', '实时便笺', '便笺', '便签'))
+@sv.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
 async def send_daily_info_pic(bot: HoshinoBot, ev: CQEvent):
     logger.info('开始执行[每日信息]')
     at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))

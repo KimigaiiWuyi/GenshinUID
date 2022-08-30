@@ -938,11 +938,11 @@
     "5": "attack+15"
   },
   "猎人之径": {
-    "1": "dmgBonus+12,B:dmgBonus+160%em",
-    "2": "dmgBonus+15,B:dmgBonus+200%em",
-    "3": "dmgBonus+18,B:dmgBonus+240%em",
-    "4": "dmgBonus+21,B:dmgBonus+280%em",
-    "5": "dmgBonus+24,B:dmgBonus+320%em"
+    "1": "dmgBonus+12;B:dmgBonus+160%em",
+    "2": "dmgBonus+15;B:dmgBonus+200%em",
+    "3": "dmgBonus+18;B:dmgBonus+240%em",
+    "4": "dmgBonus+21;B:dmgBonus+280%em",
+    "5": "dmgBonus+24;B:dmgBonus+320%em"
   },
   "竭泽": {
     "1": "",

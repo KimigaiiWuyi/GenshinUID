@@ -118,15 +118,15 @@ async def get_char_info(name, mode='char', level=None):
     if url2:
         async with AsyncClient() as client:
             req = await client.get(url=url2)
-            data2 = req.json()(req.text)
+            data2 = req.json()
             if 'errcode' in data2:
                 async with AsyncClient() as client_:
                     req = await client_.get(url=url3)
-                    data2 = req.json()(req.text)
+                    data2 = req.json()
     async with AsyncClient() as client:
         req = await client.get(url=url)
         try:
-            data = req.json()(req.text)
+            data = req.json()
             if 'errcode' in data:
                 async with AsyncClient() as client_:
                     req = await client_.get(url=f'{url}&matchCategories=true')

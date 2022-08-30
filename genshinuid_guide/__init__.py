@@ -40,6 +40,8 @@ async def send_guide_pic(
     matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()
 ):
     name = await alias_to_char_name(str(args[0]))
+    if name.startswith('旅行者'):
+        name = f'{name[:3]}-{name[-1]}'
     url = 'https://img.genshin.minigg.cn/guide/{}.jpg'.format(name)
     if httpx.head(url).status_code == 200:
         logger.info('获得{}推荐图片成功！'.format(name))

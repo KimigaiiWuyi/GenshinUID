@@ -47,7 +47,8 @@ get_abyss_info = on_regex(
         '示例：\n'
         '<ft color=(238,120,0)>查询深渊</ft>；\n'
         '<ft color=(238,120,0)>uid123456789上期深渊</ft>；\n'
-        '<ft color=(238,120,0)>查询@无疑Wuyi 上期深渊12层</ft>'
+        '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi</ft> '
+        '<ft color=(238,120,0)>上期深渊12层</ft>'
     ),
 )
 async def send_abyss_info(

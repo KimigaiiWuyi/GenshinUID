@@ -8,6 +8,7 @@ from nonebot import on_regex, on_command
 from nonebot.params import CommandArg, RegexGroup
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 
+from ..genshinuid_meta import register_menu
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.exception.handle_exception import handle_exception
 
@@ -19,6 +20,22 @@ IMG_PATH = Path(__file__).parent / 'img'
 
 @get_guide_pic.handle()
 @handle_exception('建议')
+@register_menu(
+    '角色攻略',
+    'xx攻略',
+    '发送一张对应角色的西风驿站攻略图',
+    detail_des=(
+        '指令：'
+        '<ft color=(238,120,0)>角色名[推荐/攻略]</ft>\n'
+        ' \n'
+        '发送一张对应角色的米游社西风驿站攻略图\n'
+        '支持部分角色别名\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>钟离推荐</ft>；\n'
+        '<ft color=(238,120,0)>公子攻略</ft>'
+    ),
+)
 async def send_guide_pic(
     matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()
 ):
@@ -33,6 +50,22 @@ async def send_guide_pic(
 
 @get_bluekun_pic.handle()
 @handle_exception('参考面板')
+@register_menu(
+    '参考面板',
+    '参考面板[角色名/元素名]',
+    '发送一张对应角色/元素的参考面板图',
+    detail_des=(
+        '指令：'
+        '<ft color=(238,120,0)>参考面板[角色名/元素名]</ft>\n'
+        ' \n'
+        '发送一张对应角色/元素的参考面板图\n'
+        '支持部分角色别名\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>参考面板火</ft>；\n'
+        '<ft color=(238,120,0)>参考面板公子</ft>'
+    ),
+)
 async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
     if str(args[0]) in ['冰', '水', '火', '草', '雷', '风', '岩']:
         name = str(args[0])

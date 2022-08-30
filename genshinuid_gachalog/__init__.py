@@ -11,6 +11,7 @@ from nonebot.adapters.onebot.v11 import (
 )
 
 from .get_gachalogs import save_gachalogs
+from ..genshinuid_meta import register_menu
 from .draw_gachalogs import draw_gachalogs_img
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
@@ -22,6 +23,18 @@ get_gacha_log_card = on_command('抽卡记录')
 
 @get_gacha_log_card.handle()
 @handle_exception('抽卡记录')
+@register_menu(
+    '查询抽卡记录',
+    '抽卡记录',
+    '查询你的原神抽卡记录',
+    detail_des=(
+        '指令：'
+        '<ft color=(238,120,0)>抽卡记录</ft>\n'
+        ' \n'
+        '查询你的原神抽卡记录\n'
+        '需要<ft color=(238,120,0)>绑定Stoken</ft>'
+    ),
+)
 async def send_gacha_log_card_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
@@ -43,6 +56,18 @@ async def send_gacha_log_card_info(
 
 @get_gacha_log.handle()
 @handle_exception('刷新抽卡记录')
+@register_menu(
+    '刷新抽卡记录',
+    '刷新抽卡记录',
+    '刷新你的原神抽卡记录本地缓存',
+    detail_des=(
+        '指令：'
+        '<ft color=(238,120,0)>刷新抽卡记录</ft>\n'
+        ' \n'
+        '刷新你的原神抽卡记录本地缓存\n'
+        '需要<ft color=(238,120,0)>绑定Stoken</ft>'
+    ),
+)
 async def send_daily_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,

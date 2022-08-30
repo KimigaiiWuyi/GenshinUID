@@ -24,6 +24,13 @@ async def get_sign_func(bot: HoshinoBot, ev: CQEvent):
 
 @sv.on_fullmatch('全部重签')
 async def recheck(bot: HoshinoBot, ev: CQEvent):
+    if ev.sender:
+        qid = int(ev.sender['user_id'])
+    else:
+        return
+    if qid not in bot.config.SUPERUSERS:
+        return
+
     logger.info('开始执行[全部重签]')
     await bot.send(ev, '已开始执行')
     await send_daily_sign()

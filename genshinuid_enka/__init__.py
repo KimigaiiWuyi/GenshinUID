@@ -5,14 +5,28 @@ from pathlib import Path
 from .draw_char_card import *
 from .draw_char_card import draw_char_img
 from ..all_import import *  # noqa: F401,F403
+from ..utils.enka_api.get_enka_data import switch_api
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.db_operation.db_operation import get_all_uid
 from ..utils.message.error_reply import *  # noqa: F401,F403
-from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 
 AUTO_REFRESH = False
 PLAYER_PATH = Path(__file__).parents[1] / 'player'
+
+
+@sv.on_fullmatch('切换api')
+async def send_change_api_info(bot: HoshinoBot, ev: CQEvent):
+    if ev.sender:
+        qid = int(ev.sender['user_id'])
+    else:
+        return
+
+    if qid not in bot.config.SUPERUSERS:
+        return
+
+    im = await switch_api()
+    await bot.send(ev, im)
 
 
 @sv.on_rex(

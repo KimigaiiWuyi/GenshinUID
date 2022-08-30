@@ -11,7 +11,7 @@ async def sign_at_night():
 
 
 # 群聊内 签到 功能
-@sv.on_fullmatch('签到')
+@sv.on_rex(r'^(gs|米游社)(签到)$')
 async def get_sign_func(bot: HoshinoBot, ev: CQEvent):
     logger.info('开始执行[签到]')
     qid = int(ev.sender['user_id'])  # type: ignore

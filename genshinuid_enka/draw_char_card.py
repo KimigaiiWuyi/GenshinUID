@@ -504,9 +504,13 @@ async def draw_char_img(
     char_name = raw_data['avatarName']
     char_level = raw_data['avatarLevel']
     char_fetter = raw_data['avatarFetter']
-    
-    if await config_check('RandomPic'):
-        charUrl = f'http://img.genshin.cherishmoon.fun/{char_name}'
+
+    if await config_check('RandomPic') and charUrl is None:
+        if char_name == '旅行者':
+            char_name_url = '荧'
+        else:
+            char_name_url = char_name
+        charUrl = f'http://img.genshin.cherishmoon.fun/{char_name_url}'
 
     based_w, based_h = 600, 1200
     if charUrl:

@@ -30,7 +30,7 @@ max_data = {
 
 async def dataToDataStr(max: int, my: int) -> List:
     return [
-        str(100 * float('{:.2f}'.format(my / max)))
+        str('{:.2f}'.format(100 * (my / max)))
         + '% | '
         + str(my)
         + '/'

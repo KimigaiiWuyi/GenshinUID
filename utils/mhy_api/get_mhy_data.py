@@ -268,7 +268,7 @@ async def get_award(uid, server_id='cn_gf01') -> dict:
     HEADER['x-rpc-device_id'] = random_hex(32)
     data = await _mhy_request(
         url=MONTHLY_AWARD_URL,
-        method='POST',
+        method='GET',
         header=HEADER,
         params={
             'act_id': 'e202009291139501',

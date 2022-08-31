@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Optional
 from datetime import datetime
 
 from ..utils.mhy_api.get_mhy_data import get_gacha_log_by_authkey
@@ -7,9 +8,10 @@ from ..utils.mhy_api.get_mhy_data import get_gacha_log_by_authkey
 PLAYER_PATH = Path(__file__).parents[1] / 'player'
 
 
-async def save_gachalogs(uid: str):
+async def save_gachalogs(uid: str, raw_data: Optional[dict] = None):
     path = PLAYER_PATH / str(uid)
-    path.mkdir(parents=True, exist_ok=True)
+    if not path.exists():
+        path.mkdir(parents=True, exist_ok=True)
 
     # 获取当前时间
     now = datetime.now()
@@ -33,7 +35,17 @@ async def save_gachalogs(uid: str):
         old_weapon_gacha_num = len(gachalogs_history['武器祈愿'])
 
     # 获取新抽卡记录
-    raw_data = await get_gacha_log_by_authkey(uid, gachalogs_history)
+    if raw_data is None:
+        raw_data = await get_gacha_log_by_authkey(uid, gachalogs_history)
+    else:
+        new_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
+        if gachalogs_history:
+            for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+                for item in raw_data[i]:
+                    if item not in gachalogs_history[i]:
+                        new_data[i].append(item)
+            raw_data = new_data
+
     if raw_data == {}:
         return '你还没有绑定过Stoken噢~'
     if not raw_data:

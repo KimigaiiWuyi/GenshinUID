@@ -8,6 +8,7 @@ from typing import Tuple, Union, Optional
 from httpx import get
 from PIL import Image, ImageDraw, ImageChops
 
+from ..utils.db_operation.db_operation import config_check
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from .dmgCalc.dmg_calc import draw_dmgCacl_img, avatarName2SkillAdd
@@ -503,6 +504,9 @@ async def draw_char_img(
     char_name = raw_data['avatarName']
     char_level = raw_data['avatarLevel']
     char_fetter = raw_data['avatarFetter']
+    
+    if await config_check('RandomPic'):
+        charUrl = f'http://img.genshin.cherishmoon.fun/{char_name}'
 
     based_w, based_h = 600, 1200
     if charUrl:

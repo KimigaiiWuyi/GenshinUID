@@ -17,6 +17,7 @@ SWITCH_MAP = {
     '米游币推送': 'MhyBBSCoinReport',
     '简洁签到报告': 'SignReportSimple',
     '私聊报告': 'PrivateReport',
+    '随机图': 'RandomPic',
 }
 
 PUSH_MAP = {

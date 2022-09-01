@@ -6,20 +6,24 @@ from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union, Optional
 
 import httpx
+import hoshino
+from hoshino import Service
 from nonebot.log import logger
 from aiohttp import ClientConnectorError
 from aiocqhttp.exceptions import ActionFailed
 from nonebot import MessageSegment, get_bot  # type: ignore
-
-import hoshino
-from hoshino import Service
-from hoshino.typing import CQEvent, HoshinoBot, CommandSession  # type: ignore
 from hoshino.util import (
     FreqLimiter,
     pic2b64,
     silence,
     concat_pic,
     filt_message,
+)
+from hoshino.typing import (  # type: ignore
+    CQEvent,
+    HoshinoBot,
+    NoticeSession,
+    CommandSession,
 )
 
 from .utils.db_operation.db_operation import select_db

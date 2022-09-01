@@ -20,17 +20,17 @@ based_h = 750
 white_overlay = Image.new('RGBA', (based_w, based_h), (255, 255, 255, 222))
 
 max_data = {
-    '成就': 649,
-    '华丽的宝箱': 139,
-    '珍贵的宝箱': 368,
-    '精致的宝箱': 1303,
-    '普通的宝箱': 1774,
+    '成就': 748,
+    '华丽的宝箱': 142,
+    '珍贵的宝箱': 410,
+    '精致的宝箱': 1440,
+    '普通的宝箱': 2157,
 }
 
 
 async def dataToDataStr(max: int, my: int) -> List:
     return [
-        str(100 * float('{:.2f}'.format(my / max)))
+        str('{:.2f}'.format(100 * (my / max)))
         + '% | '
         + str(my)
         + '/'

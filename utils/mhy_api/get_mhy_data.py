@@ -105,10 +105,18 @@ async def get_gacha_log_by_authkey(
                     for item in data:
                         if item not in full_data[gacha_name]:
                             temp.append(item)
-                    full_data[gacha_name].extend(temp)
+                    full_data[gacha_name][0:0] = temp
                     temp = []
                     break
-                full_data[gacha_name].extend(data)
+                if len(full_data[gacha_name]) >= 1:
+                    if int(data[-1]['id']) <= int(
+                        full_data[gacha_name][0]['id']
+                    ):
+                        full_data[gacha_name].extend(data)
+                    else:
+                        full_data[gacha_name][0:0] = data
+                else:
+                    full_data[gacha_name].extend(data)
                 await asyncio.sleep(0.7)
     return full_data
 
@@ -260,7 +268,7 @@ async def get_award(uid, server_id='cn_gf01') -> dict:
     HEADER['x-rpc-device_id'] = random_hex(32)
     data = await _mhy_request(
         url=MONTHLY_AWARD_URL,
-        method='POST',
+        method='GET',
         header=HEADER,
         params={
             'act_id': 'e202009291139501',

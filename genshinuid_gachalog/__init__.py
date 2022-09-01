@@ -1,10 +1,11 @@
 from typing import Any, Tuple, Union
 
-from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
+from nonebot import get_bot, on_notice, on_command
 from nonebot.adapters.onebot.v11 import (
+    NoticeEvent,
     MessageSegment,
     GroupMessageEvent,
     PrivateMessageEvent,
@@ -16,9 +17,62 @@ from .draw_gachalogs import draw_gachalogs_img
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
+from .export_and_import import export_gachalogs, import_gachalogs
 
 get_gacha_log = on_command('刷新抽卡记录')
 get_gacha_log_card = on_command('抽卡记录')
+import_gacha_log = on_notice()
+export_gacha_log = on_command('导出抽卡记录')
+
+
+@export_gacha_log.handle()
+@handle_exception('导出抽卡记录')
+async def export_gacha_log_info(
+    event: GroupMessageEvent,
+    matcher: Matcher,
+    args: Tuple[Any, ...] = CommandArg(),
+):
+    if args:
+        return
+    logger.info('开始执行[导出抽卡记录]')
+    qid = event.user_id
+    gid = event.group_id
+    uid = await select_db(qid, mode='uid')
+    bot = get_bot()
+    if not isinstance(uid, str) or '未找到绑定的UID' in uid:
+        await matcher.finish(UID_HINT)
+    raw_data = await export_gachalogs(uid)
+    if raw_data['retcode'] == 'ok':
+        await bot.call_api(
+            'upload_group_file',
+            group_id=gid,
+            name=raw_data['name'],
+            file=raw_data['url'],
+        )
+        logger.info(f'[导出抽卡记录] UID{uid}成功!')
+        await matcher.finish('上传成功!')
+    else:
+        logger.warning(f'[导出抽卡记录] UID{uid}失败!')
+        await matcher.finish('导出抽卡记录失败!')
+
+
+@import_gacha_log.handle()
+@handle_exception('导入抽卡记录')
+async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
+    args = event.dict()
+    if args['notice_type'] != 'offline_file':
+        return
+    url = args['file']['url']
+    name: str = args['file']['name']
+    if not name.endswith('.json'):
+        return
+    qid = args['user_id']
+    uid = await select_db(qid, mode='uid')
+    if not isinstance(uid, str) or '未找到绑定的UID' in uid:
+        await matcher.finish(UID_HINT)
+    logger.info('开始执行[导入抽卡记录]')
+    im = await import_gachalogs(url, uid)
+    await matcher.finish(im)
 
 
 @get_gacha_log_card.handle()

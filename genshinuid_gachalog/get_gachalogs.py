@@ -57,7 +57,7 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None):
     temp_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
     for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
         for item in raw_data[i]:
-            if 'count' in temp_data:
+            if 'count' in item:
                 temp_data[i].append(item)
     raw_data = temp_data
 

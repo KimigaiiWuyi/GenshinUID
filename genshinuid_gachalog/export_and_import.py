@@ -24,6 +24,11 @@ async def import_gachalogs(history_url: str, uid: str) -> str:
     raw_data = history_data['list']
     result = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
     for item in raw_data:
+        item['uid'] = uid
+        item['item_id'] = ''
+        item['count'] = '1'
+        item['lang'] = 'zh-cn'
+        del item['uigf_gacha_type']
         result[INT_TO_TYPE[item['gacha_type']]].append(item)
     im = await save_gachalogs(uid, result)
     return im
@@ -56,7 +61,10 @@ async def export_gachalogs(uid: str) -> dict:
         }
         for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
             for item in raw_data['data'][i]:
-                item['uigf_gacha_type'] = item['gacha_type']
+                if item['gacha_type'] == '400':
+                    item['uigf_gacha_type'] = '301'
+                else:
+                    item['uigf_gacha_type'] = item['gacha_type']
                 result['list'].append(item)
         # 保存文件
         with open(path / f'UIGF_{uid}.json', 'w', encoding='UTF-8') as file:

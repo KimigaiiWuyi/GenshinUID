@@ -16,21 +16,21 @@ INT_TO_TYPE = {
 }
 
 
-async def import_gachalogs(history_url: str, uid: int) -> str:
+async def import_gachalogs(history_url: str, uid: str) -> str:
     history_data: dict = json.loads(get(history_url).text)
     data_uid = history_data['info']['uid']
-    if data_uid != str(uid):
+    if data_uid != uid:
         return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
     raw_data = history_data['list']
     result = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
     for item in raw_data:
         result[INT_TO_TYPE[item['gacha_type']]].append(item)
-    im = await save_gachalogs(str(uid), result)
+    im = await save_gachalogs(uid, result)
     return im
 
 
-async def export_gachalogs(uid: int) -> dict:
-    path = PLAYER_PATH / str(uid)
+async def export_gachalogs(uid: str) -> dict:
+    path = PLAYER_PATH / uid
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
 
@@ -45,7 +45,7 @@ async def export_gachalogs(uid: int) -> dict:
             raw_data = json.load(f)
         result = {
             'info': {
-                'uid': str(uid),
+                'uid': uid,
                 'lang': 'zh-cn',
                 'export_time': current_time,
                 'export_app': 'GenshinUID',
@@ -59,17 +59,19 @@ async def export_gachalogs(uid: int) -> dict:
                 item['uigf_gacha_type'] = item['gacha_type']
                 result['list'].append(item)
         # 保存文件
-        with open(path / f'UIGF_{str(uid)}', 'w', encoding='UTF-8') as file:
+        with open(path / f'UIGF_{uid}.json', 'w', encoding='UTF-8') as file:
             json.dump(result, file, ensure_ascii=False)
         im = {
             'retcode': 'ok',
             'data': '导出成功!',
-            'url': str(path / f'UIGF_{str(uid)}'),
+            'name': f'UIGF_{uid}.json',
+            'url': str(path / f'UIGF_{uid}.json'),
         }
     else:
         im = {
             'retcode': 'error',
             'data': '你还没有抽卡记录可以导出!',
+            'name': '',
             'url': '',
         }
 

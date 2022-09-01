@@ -52,6 +52,15 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None):
         return '你还没有绑定过Stoken噢~'
     if not raw_data:
         return '你还没有绑定过Stoken或者Stoken已失效~'
+
+    # 校验值 & 两个版本后删除这段
+    temp_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
+    for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+        for item in raw_data[i]:
+            if 'count' in temp_data:
+                temp_data[i].append(item)
+    raw_data = temp_data
+
     result['uid'] = uid
     result['data_time'] = current_time
     result['normal_gacha_num'] = len(raw_data['常驻祈愿'])

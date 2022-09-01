@@ -1,0 +1,54 @@
+name: Pre Commit
+on:
+  - pull_request
+jobs:
+  Pre-Commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+
+      - name: Setup pre-commit and actions-toolkit
+        run: "python3 -m pip install pre-commit actions-toolkit"
+
+      - name: Run pre-commit
+        run: python3 -c "import os;os.system('python3 -m pre_commit run --color never -a > result.txt')"
+
+      - name: Commit and push
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git add .
+          git diff-index --quiet HEAD || git commit -m ":rotating_light: auto fix by pre-commit"
+          git push
+
+      - name: Read result
+        id: rr
+        run: python3 -c "from pathlib import Path;from actions_toolkit.core import set_output;comment=Path('./result.txt').read_text();set_output('comment', comment)"
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "pre-commit"
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            pre-commit output:
+            ```
+            ${{ steps.rr.outputs.COMMENT }}
+            ```
+          edit-mode: replace

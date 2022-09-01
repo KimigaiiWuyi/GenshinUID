@@ -45,6 +45,8 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None):
                     if item not in gachalogs_history[i]:
                         new_data[i].append(item)
             raw_data = new_data
+            for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+                raw_data[i].extend(gachalogs_history[i])
 
     if raw_data == {}:
         return '你还没有绑定过Stoken噢~'

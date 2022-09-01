@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 from datetime import datetime
 
+from httpx import get
+
 from .get_gachalogs import save_gachalogs
 
 PLAYER_PATH = Path(__file__).parents[1] / 'player'
@@ -14,16 +16,20 @@ INT_TO_TYPE = {
 }
 
 
-async def import_gachalogs(history_data: dict, uid: int):
+async def import_gachalogs(history_url: str, uid: int) -> str:
+    history_data: dict = json.loads(get(history_url).text)
+    data_uid = history_data['info']['uid']
+    if data_uid != str(uid):
+        return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
     raw_data = history_data['list']
     result = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
     for item in raw_data:
-        result[INT_TO_TYPE['gacha_type']].append(item)
+        result[INT_TO_TYPE[item['gacha_type']]].append(item)
     im = await save_gachalogs(str(uid), result)
     return im
 
 
-async def export_gachalogs(uid: int):
+async def export_gachalogs(uid: int) -> dict:
     path = PLAYER_PATH / str(uid)
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
@@ -55,8 +61,16 @@ async def export_gachalogs(uid: int):
         # 保存文件
         with open(path / f'UIGF_{str(uid)}', 'w', encoding='UTF-8') as file:
             json.dump(result, file, ensure_ascii=False)
-        im = '导出成功!'
+        im = {
+            'retcode': 'ok',
+            'data': '导出成功!',
+            'url': str(path / f'UIGF_{str(uid)}'),
+        }
     else:
-        im = '你还没有抽卡记录可以导出!'
+        im = {
+            'retcode': 'error',
+            'data': '你还没有抽卡记录可以导出!',
+            'url': '',
+        }
 
     return im

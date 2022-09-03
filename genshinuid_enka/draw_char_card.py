@@ -67,10 +67,6 @@ VALUE_MAP = {
 with open(ETC_PATH / 'ValueAttrMap.json', 'r', encoding='UTF-8') as f:
     ATTR_MAP = json.load(f)
 
-# 引入dmgMap
-with open(ETC_PATH / 'dmgMap.json', 'r', encoding='UTF-8') as f:
-    dmgMap = json.load(f)
-
 # 引入offset
 with open(ETC_PATH / 'avatarOffsetMap.json', 'r', encoding='UTF-8') as f:
     avatarOffsetMap = json.load(f)

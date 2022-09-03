@@ -32,13 +32,109 @@ with open(DMG_PATH / 'char_talent_effect.json', "r", encoding='UTF-8') as f:
 with open(DMG_PATH / 'char_skill_effect.json', "r", encoding='UTF-8') as f:
     char_skill_effect_map = json.load(f)
 
+with open(DMG_PATH / 'dmgMap.json', "r", encoding='UTF-8') as f:
+    dmgMap = json.load(f)
+
 dmgBar_1 = Image.open(DMG_TEXT_PATH / 'dmgBar_1.png')
 dmgBar_2 = Image.open(DMG_TEXT_PATH / 'dmgBar_2.png')
 
 
-async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
-    with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
-        char_action = json.load(f)
+async def get_first_main(mainName: str) -> str:
+    if '伤害加成' in mainName:
+        equipMain = mainName[0]
+    elif '元素' in mainName:
+        equipMain = mainName[2]
+    elif '百分比' in mainName:
+        if '血量' in mainName:
+            equipMain = '生'
+        else:
+            equipMain = mainName[3]
+    else:
+        equipMain = mainName[0]
+    return equipMain
+
+
+async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
+    # print(prop)
+    percent = '0.0%'
+    weaponName = raw_data['weaponInfo']['weaponName']
+
+    equipMain = ''
+    for aritifact in raw_data['equipList']:
+        mainName = aritifact['reliquaryMainstat']['statName']
+        artifactsPos = aritifact['aritifactPieceName']
+        if artifactsPos == '时之沙':
+            equipMain += await get_first_main(mainName)
+        elif artifactsPos == '空之杯':
+            equipMain += await get_first_main(mainName)
+        elif artifactsPos == '理之冠':
+            equipMain += await get_first_main(mainName)
+
+    if 'equipSets' in raw_data:
+        equipSets = raw_data['equipSets']
+    else:
+        artifact_set_list = []
+        for i in raw_data['equipList']:
+            artifact_set_list.append(i['aritifactSetsName'])
+        equipSetList = set(artifact_set_list)
+        equipSets = {'type': '', 'set': ''}
+        for equip in equipSetList:
+            if artifact_set_list.count(equip) >= 4:
+                equipSets['type'] = '4'
+                equipSets['set'] = equip
+                break
+            elif artifact_set_list.count(equip) == 1:
+                pass
+            elif artifact_set_list.count(equip) >= 2:
+                equipSets['type'] += '2'
+                equipSets['set'] += equip
+
+    if equipSets['type'] in ['2', '']:
+        seq = ''
+    else:
+        seq = '{}|{}|{}'.format(
+            weaponName.replace('「', '').replace('」', ''),
+            equipSets['set'],
+            equipMain,
+        )
+    print(seq)
+    std_prop = dmgMap[char_name]
+    for std_seq in std_prop:
+        if std_seq['seq'] == seq:
+            std = std_seq
+            break
+    else:
+        std = dmgMap[char_name][0]
+    print(std)
+    f = []
+    c = 0.83
+    if std['critRate'] != 'any':
+        crate = (prop['critrate'] - std['critRate']) / 2
+        c = c * (crate + 1)
+    if char_name == '珊瑚宫心海':
+        c = 0.83
+    else:
+        if std['critDmg'] != 'any':
+            f.append(float(prop['critdmg'] / std['critDmg']))
+    if std['atk'] != 'any':
+        f.append(float(prop['attack'] / std['atk']))
+    for i in std['other']:
+        if '生命' in i:
+            f.append(float(prop['hp'] / std['other'][i]))
+        elif '充能' in i:
+            f.append(float(prop['ce'] / std['other'][i]))
+        elif '精通' in i:
+            f.append(float(prop['em'] / std['other'][i]))
+        elif '防御' in i:
+            f.append(float(prop['defense'] / std['other'][i]))
+        else:
+            f.append(1)
+    print(f)
+    percent = '{:.2f}'.format(c * (float(sum(f) / len(f)) * 100))
+    return percent
+
+
+async def calc_prop(raw_data: dict, power_list: dict) -> dict:
     # 获取值
     char_name = raw_data['avatarName']
     char_level = int(raw_data['avatarLevel'])
@@ -47,15 +143,11 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     weaponAffix = raw_data['weaponInfo']['weaponAffix']
 
     skillList = raw_data['avatarSkill']
-    # a_skill_name = skillList[0]['skillName'].replace('普通攻击·', '')
     prop = {}
     prop['A_skill_level'] = skillList[0]['skillLevel']
-    # e_skill_name = skillList[1]['skillName']
     prop['E_skill_level'] = skillList[1]['skillLevel']
-    # q_skill_name = skillList[-1]['skillName']
     prop['Q_skill_level'] = skillList[-1]['skillLevel']
 
-    enemy_level = char_level
     skill_add = avatarName2SkillAdd[char_name]
     for skillAdd_index in range(0, 2):
         if len(raw_data['talentList']) >= 3 + skillAdd_index * 2:
@@ -83,14 +175,6 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     prop['healBouns'] = fight_prop['healBonus']
     prop['shieldBouns'] = 0
 
-    # 无action情况兜底
-    if char_name not in char_action:
-        faild_img = Image.new('RGBA', (950, 1))
-        return faild_img, 0
-
-    # 拿到倍率表
-    power_list = char_action[char_name]
-
     # 给每个技能 分别添加上属性
     for prop_attr in [
         'attack',
@@ -108,6 +192,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         'ignoreDef',
         'shieldBouns',
         'physicalDmgBonus',
+        'healBouns',
     ]:
         if prop_attr in ['addDmg', 'd', 'r', 'ignoreDef']:
             prop['{}'.format(prop_attr)] = 0
@@ -121,6 +206,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                 'ce',
                 'hp',
                 'physicalDmgBonus',
+                'healBouns',
             ]:
                 prop[f'{prop_limit}_{prop_attr}'] = prop[prop_attr]
             else:
@@ -270,7 +356,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
         del power_list['effect']
 
     # 特殊效果,目前有雷神满愿力
-    extra_effect = {}
+    prop['extra_effect'] = {}
     if 'extra' in power_list:
         if char_name == '雷电将军':
             extra_value = (
@@ -293,7 +379,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                     f'Q高空下落伤害:attack+{60*extra_value2}'
                 )
             )
-            extra_effect = {'Q梦想一刀基础伤害(满愿力)': extra_value}
+            prop['extra_effect'] = {'Q梦想一刀基础伤害(满愿力)': extra_value}
         del power_list['extra']
 
     # 在计算buff前, 引入特殊效果
@@ -302,7 +388,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
     elif char_name == '钟离':
         all_effect.append('r+-20')
 
-    sp = []
+    prop['sp'] = []
     # 计算全部的buff，添加入属性
     print(all_effect)
     if all_effect:
@@ -393,7 +479,7 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
             if effect_limit:
                 # 如果限制条件为中文,则为特殊label才生效
                 if '\u4e00' <= effect_limit[-1] <= '\u9fff':
-                    sp.append(
+                    prop['sp'].append(
                         {
                             'effect_name': effect_limit,
                             'effect_attr': effect_attr,
@@ -415,6 +501,19 @@ async def draw_dmgCacl_img(raw_data: dict) -> Tuple[Image.Image, int]:
                     for attr in ['A', 'B', 'C', 'E', 'Q']:
                         prop[f'{attr}_{effect_attr}'] += effect_value
                 prop[f'{effect_attr}'] += effect_value
+    return prop
+
+
+async def draw_dmgCacl_img(
+    raw_data: dict, power_list: dict, prop: dict
+) -> Tuple[Image.Image, int]:
+    # 获取值
+    char_name = raw_data['avatarName']
+    char_level = int(raw_data['avatarLevel'])
+    enemy_level = char_level
+
+    extra_effect = prop['extra_effect']
+    sp = prop['sp']
 
     # 计算伤害计算部分图片长宽值
     w = 950

@@ -1,16 +1,19 @@
 from typing import Any, Tuple, Union
 
-from nonebot import on_regex
 from nonebot.log import logger
 from nonebot.matcher import Matcher
+from nonebot import on_regex, on_command
 from nonebot.permission import SUPERUSER
-from nonebot.params import Depends, RegexGroup
+from nonebot.params import Depends, CommandArg, RegexGroup
 from nonebot.adapters.onebot.v11 import (
     Bot,
+    Message,
+    MessageSegment,
     GroupMessageEvent,
     PrivateMessageEvent,
 )
 
+from .draw_config_card import draw_config_img
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
@@ -28,6 +31,23 @@ push_config = on_regex(
     r'(gs)(设置)([\u4e00-\u9fffa-zA-Z]*)([0-9]*)'
     r'(\[CQ:at,qq=[0-9]+\])?( )?$'
 )
+
+config_card = on_command('gs配置')
+
+
+@config_card.handle()
+@handle_exception('发送配置表')
+async def send_config_card(matcher: Matcher, args: Message = CommandArg()):
+    if args:
+        await send_config_card.finish()
+    logger.info('开始执行[gs配置]')
+    im = await draw_config_img()
+    if isinstance(im, str):
+        await matcher.finish(im)
+    elif isinstance(im, bytes):
+        await matcher.finish(MessageSegment.image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 
 
 @push_config.handle()

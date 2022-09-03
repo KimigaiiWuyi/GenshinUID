@@ -10,8 +10,8 @@ from nonebot.adapters.onebot.v11 import Message, MessageEvent
 
 from ..config import priority
 from .sign import sign_in, daily_sign
-from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
+from ..utils.db_operation.db_operation import select_db, config_check
 
 sign_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
@@ -22,7 +22,8 @@ all_recheck = on_command('全部重签', permission=SUPERUSER, priority=priority
 # 每日零点半执行米游社原神签到
 @sign_scheduler.scheduled_job('cron', hour='0', minute='30')
 async def sign_at_night():
-    await send_daily_sign()
+    if await config_check('SchedSignin'):
+        await send_daily_sign()
 
 
 # 群聊内 签到 功能

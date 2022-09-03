@@ -33,10 +33,7 @@ async def send_role_info(
     args: Tuple[Any, ...] = RegexGroup(),
     custom: ImageAndAt = Depends(),
 ):
-    logger.info('开始执行[查询角色信息]')
-    logger.info('[查询角色信息]参数: {}'.format(args))
     qid = event.user_id
-
     at = custom.get_first_at()
     if at:
         qid = at
@@ -45,8 +42,7 @@ async def send_role_info(
     if args[2] != 'mys':
         if args[3] is None:
             if args[2] is None:
-                logger.info('[查询角色信息]uid为空, 直接结束~')
-                return
+                await matcher.finish()
             uid = await select_db(qid, mode='uid')
             uid = str(uid)
         elif len(args[3]) != 9:
@@ -55,7 +51,8 @@ async def send_role_info(
             uid = args[3]
     else:
         uid = await convert_mysid(args[3])
-
+    logger.info('开始执行[查询角色信息]')
+    logger.info('[查询角色信息]参数: {}'.format(args))
     logger.info('[查询角色信息]uid: {}'.format(uid))
 
     if '未找到绑定的UID' in uid:

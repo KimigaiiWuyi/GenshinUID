@@ -57,7 +57,7 @@ async def get_gacha_log_by_authkey(
 ) -> Optional[dict]:
     server_id = 'cn_qd01' if uid[0] == '5' else 'cn_gf01'
     authkey_rawdata = await get_authkey_by_cookie(uid)
-    if authkey_rawdata == {}:
+    if authkey_rawdata == {} or authkey_rawdata is None:
         return None
     if 'data' in authkey_rawdata and 'authkey' in authkey_rawdata['data']:
         authkey = authkey_rawdata['data']['authkey']
@@ -125,7 +125,7 @@ async def get_authkey_by_cookie(uid: str) -> dict:
     server_id = 'cn_qd01' if uid[0] == '5' else 'cn_gf01'
     HEADER = copy.deepcopy(_HEADER)
     stoken = await get_stoken(uid)
-    if stoken == '该用户没有绑定过Stoken噢~':
+    if stoken == '该用户没有绑定过Stoken噢~' or stoken == '':
         return {}
     HEADER['Cookie'] = stoken
     HEADER['DS'] = old_version_get_ds_token(True)

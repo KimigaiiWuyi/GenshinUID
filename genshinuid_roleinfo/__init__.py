@@ -11,9 +11,6 @@ from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
 )
 async def send_role_info(bot: HoshinoBot, ev: CQEvent):
     args = ev['match'].groups()
-    logger.info('开始执行[查询角色信息]')
-    logger.info('[查询角色信息]参数: {}'.format(args))
-
     at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
 
     if at:
@@ -28,7 +25,6 @@ async def send_role_info(bot: HoshinoBot, ev: CQEvent):
     if args[2] != 'mys':
         if args[3] is None:
             if args[2] is None:
-                logger.info('[查询角色信息]uid为空, 直接结束~')
                 return
             uid = await select_db(qid, mode='uid')
             uid = str(uid)
@@ -39,6 +35,8 @@ async def send_role_info(bot: HoshinoBot, ev: CQEvent):
     else:
         uid = await convert_mysid(args[3])
 
+    logger.info('开始执行[查询角色信息]')
+    logger.info('[查询角色信息]参数: {}'.format(args))
     logger.info('[查询角色信息]uid: {}'.format(uid))
 
     if '未找到绑定的UID' in uid:

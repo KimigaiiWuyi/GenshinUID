@@ -27,7 +27,8 @@ async def bbs_recheck(bot: HoshinoBot, ev: CQEvent):
 # 每日一点十六分进行米游币获取
 @sv.scheduled_job('cron', hour='1', minute='16')
 async def sign_at_night():
-    await send_daily_mihoyo_bbs_sign()
+    if await config_check('SchedMhyBBSCoin'):
+        await send_daily_mihoyo_bbs_sign()
 
 
 async def send_daily_mihoyo_bbs_sign():

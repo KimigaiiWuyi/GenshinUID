@@ -1,8 +1,21 @@
+from .draw_config_card import draw_config_img
 from ..all_import import *  # noqa: F403, F401
 from ..utils.db_operation.db_operation import select_db
-from ..utils.message.get_image_and_at import ImageAndAt
 from .set_config import set_push_value, set_config_func
 from ..utils.message.error_reply import *  # noqa: F403,F401
+
+
+@sv.on_fullmatch('gs配置')
+async def send_config_card(bot: HoshinoBot, ev: CQEvent):
+    logger.info('开始执行[gs配置]')
+    im = await draw_config_img()
+    if isinstance(im, str):
+        await bot.send(ev, im)
+    elif isinstance(im, bytes):
+        im = await convert_img(im)
+        await bot.send(ev, im)
+    else:
+        await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
 
 
 @sv.on_rex(

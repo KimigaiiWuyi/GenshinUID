@@ -2,12 +2,14 @@ import random
 
 from .sign import sign_in, daily_sign
 from ..all_import import *  # noqa: F403,F401
+from ..utils.db_operation.db_operation import config_check
 
 
 # 每日零点半执行米游社原神签到
 @sv.scheduled_job('cron', hour='0', minute='30')
 async def sign_at_night():
-    await send_daily_sign()
+    if await config_check('SchedSignin'):
+        await send_daily_sign()
 
 
 # 群聊内 签到 功能

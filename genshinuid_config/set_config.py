@@ -18,6 +18,8 @@ SWITCH_MAP = {
     '简洁签到报告': 'SignReportSimple',
     '私聊报告': 'PrivateReport',
     '随机图': 'RandomPic',
+    '定时签到': 'SchedSignin',
+    '定时米游币': 'SchedMhyBBSCoin',
 }
 
 PUSH_MAP = {

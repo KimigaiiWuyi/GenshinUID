@@ -66,6 +66,22 @@ async def get_all_uid() -> List:
             return lst
 
 
+async def get_all_cookie() -> List:
+    async with async_session() as session:  # type: ignore
+        async with session.begin():
+            Cookies = CookiesDAL(session)
+            lst = await Cookies.get_all_cookie_list()
+            return lst
+
+
+async def get_all_stoken() -> List:
+    async with async_session() as session:  # type: ignore
+        async with session.begin():
+            Cookies = CookiesDAL(session)
+            lst = await Cookies.get_all_stoken_list()
+            return lst
+
+
 async def select_db(userid, mode='auto') -> Union[List, str, None]:
     """
     :说明:

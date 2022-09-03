@@ -2,16 +2,27 @@ import json
 import asyncio
 from pathlib import Path
 
+import httpx
 import openpyxl
-
-from ..utils.minigg_api.get_minigg_data import get_misc_info
-
-version = '2.7.0'
-version_old = '2.6.0'
 
 R_PATH = Path(__file__).parent
 DATA_PATH = R_PATH / 'blue_data'
-ETC_PATH = Path(__file__).parents[1] / 'genshinuid_enka' / 'etc'
+ETC_PATH = Path(__file__).parents[1] / 'genshinuid_enka' / 'dmgCalc'
+
+
+async def get_misc_info(mode: str, name: str):
+    """
+    :说明:
+      一些杂项信息。
+    :参数:
+      * name (str): 'enemies', 'foods', 'artifacts'。
+      * name (str): 参数。
+    :返回:
+      * data (str): 获取数据信息。
+    """
+    url = 'https://info.minigg.cn/{}'.format(mode)
+    req = httpx.get(url=url, params={'query': name})
+    return req.json()
 
 
 async def getEquipName(name: str) -> str:
@@ -26,13 +37,14 @@ async def panle2Json() -> None:
       访问DATA_PATH并转换数据为dmgMap.json。
     """
     wb = openpyxl.load_workbook(
-        str(DATA_PATH / '参考面板2.7（上）.xlsx'), data_only=True
+        str(DATA_PATH / '参考面板3.0.xlsx'), data_only=True
     )
     sheet = wb.active
 
     result = {}
     char_result = []
     char_temp = ''
+    title = 0
     for row in range(9, 300):
         temp = {}
         char_name = sheet.cell(row, 1).value
@@ -52,78 +64,26 @@ async def panle2Json() -> None:
 
             equip_main = str(sheet.cell(row, 4).value)
             g_atk = sheet.cell(row, 8).value
-            other = sheet.cell(row, 9).value
-            other2 = sheet.cell(row, 10).value
+            other = {}
+            for i in [9, 10]:
+                if sheet.cell(title, i).value is not None:
+                    n = str(sheet.cell(title, i).value)
+                    if '加成' in n:
+                        continue
+                    if sheet.cell(row, i).value is not None:
+                        v = float(str(sheet.cell(row, i).value))
+                        if v:
+                            other[sheet.cell(title, i).value] = v
             crit_rate = sheet.cell(row, 13).value
+            crit_dmg = sheet.cell(row, 14).value
 
-            if equip_main[1] in ['生']:
-                key = '血量'
-            elif equip_main[1] in ['精']:
-                key = '元素精通'
-            elif equip_main[1] in ['防']:
-                key = '防御力'
-            else:
-                key = '攻击力'
-
-            if char_name == '夜兰':
-                key = '血量'
-            elif char_name == '五郎':
-                key = '防御力'
-
-            dmgBouns = sheet.cell(row, 15).value
-            defArea = sheet.cell(row, 16).value
-            resArea = sheet.cell(row, 17).value
-            power = sheet.cell(row, 18).value
-
-            if char_name == '七七':
-                power = '153+1174'
-            elif power == '/' or power == 0:
-                if char_name == '托马':
-                    power = '14.40+4829'
-                elif char_name == '班尼特':
-                    power = '12.75+1587.82'
-                elif char_name == '芭芭拉':
-                    power = '35.2+4335'
-                elif char_name == '早柚':
-                    power = '159.74+1280'
-                elif char_name == '琴':
-                    power = '452.16+3389'
-                elif char_name == '申鹤':
-                    power = '攻击力'
-                elif char_name == '五郎':
-                    power = '防御力'
-                elif char_name == '云堇':
-                    power = '防御力'
-                else:
-                    power = 'any'
-
-            action = str(sheet.cell(row, 19).value)
-            if sheet.cell(row, 20).value != 'any':
-                val = float(
-                    '{:.2f}'.format(
-                        float(sheet.cell(row, 20).value)  # type: ignore
-                    )
-                )
-            else:
-                val = 'any'
-
-            if char_name == '辛焱' and '盾' in action:
-                power = '2.88 + 1773'
-
-            # temp['name'] = char_name
             weapon = weapon.replace('试做', '试作')
             temp['seq'] = '{}|{}|{}'.format(weapon, equip_set, equip_main)
-            temp['action'] = action
-            temp['crit_rate'] = crit_rate
+            temp['critRate'] = crit_rate
+            temp['critDmg'] = crit_dmg
             temp['atk'] = g_atk
-            temp['dmgBouns'] = dmgBouns
-            temp['defArea'] = defArea
-            temp['resArea'] = resArea
             temp['other'] = other
-            temp['other2'] = other2
-            temp['key'] = key
-            temp['power'] = power
-            temp['val'] = val
+
             if char_temp:
                 if char_name == char_temp:
                     pass
@@ -134,10 +94,21 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 263:
+            if row == 296:
                 print('ok!')
                 result[char_temp] = char_result
-    with open(DATA_PATH / 'dmgMap.json', 'w', encoding='UTF-8') as file:
+        else:
+            title = row
+    result['旅行者'] = [
+        {
+            "seq": "护摩之杖|无锋剑|生火暴",
+            "critRate": 0.65,
+            "critDmg": 1.55,
+            "atk": 2300,
+            "other": {"生命": 16000, "元素精通": 45},
+        }
+    ]
+    with open(ETC_PATH / 'dmgMap.json', 'w', encoding='UTF-8') as file:
         json.dump(result, file, ensure_ascii=False)
 
 

@@ -11,7 +11,13 @@ from PIL import Image, ImageDraw, ImageChops
 from ..utils.db_operation.db_operation import config_check
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
-from .dmgCalc.dmg_calc import draw_dmgCacl_img, avatarName2SkillAdd
+from .dmgCalc.dmg_calc import (
+    DMG_PATH,
+    calc_prop,
+    draw_dmgCacl_img,
+    get_char_percent,
+    avatarName2SkillAdd,
+)
 
 R_PATH = Path(__file__).parent
 RESOURCE_PATH = Path(__file__).parents[1] / 'resource'
@@ -159,345 +165,6 @@ async def get_all_artifacts_value(
     return artifactsValue
 
 
-async def get_first_main(mainName: str) -> str:
-    if '伤害加成' in mainName:
-        equipMain = mainName[0]
-    elif '元素' in mainName:
-        equipMain = mainName[2]
-    elif '百分比' in mainName:
-        if '血量' in mainName:
-            equipMain = '生'
-        else:
-            equipMain = mainName[3]
-    else:
-        equipMain = mainName[0]
-    return equipMain
-
-
-async def get_char_percent(raw_data: dict) -> str:
-    percent = '0.0'
-    char_name = raw_data['avatarName']
-    weaponName = raw_data['weaponInfo']['weaponName']
-    weaponType = raw_data['weaponInfo']['weaponType']
-
-    fight_prop = raw_data['avatarFightProp']
-    hp = fight_prop['hp']
-    attack = fight_prop['atk']
-    defense = fight_prop['def']
-    em = fight_prop['elementalMastery']
-    critrate = fight_prop['critRate']
-    critdmg = fight_prop['critDmg']
-    ce = fight_prop['energyRecharge']
-    dmgBonus = (
-        fight_prop['dmgBonus']
-        if fight_prop['physicalDmgBonus'] <= fight_prop['dmgBonus']
-        else fight_prop['physicalDmgBonus']
-    )
-    healBouns = fight_prop['healBonus']
-
-    # hp_green = fight_prop['addHp']
-    # attack_green = fight_prop['addAtk']
-    # defense_green = fight_prop['addDef']
-
-    r = 0.9
-    equipMain = ''
-    for aritifact in raw_data['equipList']:
-        mainName = aritifact['reliquaryMainstat']['statName']
-        artifactsPos = aritifact['aritifactPieceName']
-        if artifactsPos == '时之沙':
-            equipMain += await get_first_main(mainName)
-        elif artifactsPos == '空之杯':
-            equipMain += await get_first_main(mainName)
-        elif artifactsPos == '理之冠':
-            equipMain += await get_first_main(mainName)
-
-    if 'equipSets' in raw_data:
-        equipSets = raw_data['equipSets']
-    else:
-        artifact_set_list = []
-        for i in raw_data['equipList']:
-            artifact_set_list.append(i['aritifactSetsName'])
-        equipSetList = set(artifact_set_list)
-        equipSets = {'type': '', 'set': ''}
-        for equip in equipSetList:
-            if artifact_set_list.count(equip) >= 4:
-                equipSets['type'] = '4'
-                equipSets['set'] = equip
-                break
-            elif artifact_set_list.count(equip) == 1:
-                pass
-            elif artifact_set_list.count(equip) >= 2:
-                equipSets['type'] += '2'
-                equipSets['set'] += equip
-
-    if equipSets['type'] in ['2', '']:
-        seq = ''
-    else:
-        seq = '{}|{}|{}'.format(
-            weaponName.replace('「', '').replace('」', ''),
-            equipSets['set'],
-            equipMain,
-        )
-
-    if char_name in dmgMap:
-        for action in dmgMap[char_name]:
-            if action['seq'] == seq:
-                cal = action
-                break
-        else:
-            if '钟离' in char_name:
-                cal = dmgMap[char_name][-1]
-            else:
-                cal = dmgMap[char_name][0]
-
-        print(seq)
-        print(cal)
-        if cal['action'] == 'E刹那之花':
-            effect_prop = defense
-        elif cal['key'] == '攻击力':
-            effect_prop = attack
-        elif cal['key'] == '防御力':
-            effect_prop = defense
-        elif cal['key'] == '血量':
-            effect_prop = hp
-        else:
-            effect_prop = attack
-
-        dmgBonus_value_cal = 0
-        dmgBonus_cal = dmgBonus
-        em_cal = em
-
-        if '夜兰' in char_name:
-            effect_prop = hp
-        elif '胡桃' in char_name:
-            effect_prop += (
-                0.4 * hp
-                if 0.4 * hp <= fight_prop['baseAtk'] * 4
-                else fight_prop['baseAtk'] * 4
-            )
-        elif '一斗' in char_name:
-            effect_prop += 0.9792 * defense
-            dmgBonus_value_cal += 0.35 * defense
-        elif '诺艾尔' in char_name:
-            effect_prop = attack
-            effect_prop += 1.3 * defense
-        elif '烟绯' in char_name:
-            dmgBonus_value_cal += 0.6 + 0.2
-        elif '优菈' in char_name:
-            r = 1.065
-        elif '钟离' in char_name:
-            r = 1.05
-        elif '辛焱' in char_name:
-            r = 1.025
-
-        if '踩班' in cal['action']:
-            effect_prop += 1202
-            effect_prop += fight_prop['baseAtk'] * 0.25
-
-        if '雾切' in weaponName:
-            dmgBonus_cal += 0.28
-        elif '弓藏' in weaponName and (
-            '首' in cal['action']
-            or '击' in cal['action']
-            or '两段' in cal['action']
-        ):
-            dmgBonus_cal += 0.8
-        elif '飞雷' in weaponName and (
-            '首' in cal['action']
-            or '击' in cal['action']
-            or '两段' in cal['action']
-        ):
-            dmgBonus_cal += 0.4
-        elif '阿莫斯' in weaponName:
-            dmgBonus_cal += 0.52
-        elif '破魔' in weaponName:
-            dmgBonus_cal += 0.18 * 2
-        elif '赤角石溃杵' in weaponName and (
-            '首' in cal['action']
-            or '击' in cal['action']
-            or '两段' in cal['action']
-        ):
-            dmgBonus_value_cal += 0.4 * defense
-        elif '螭骨剑' in weaponName:
-            dmgBonus_cal += 0.4
-        elif '松籁响起之时' in weaponName:
-            effect_prop += fight_prop['baseAtk'] * 0.2
-        elif '试作澹月' in weaponName:
-            effect_prop += fight_prop['baseAtk'] * 0.72
-        elif '流浪乐章' in weaponName and '烟绯' in char_name:
-            em_cal += 480
-        elif '冬极' in weaponName:
-            effect_prop += fight_prop['baseAtk'] * 0.48
-            dmgBonus_cal += 0.12
-
-        if '蒸发' in cal['action'] or '融化' in cal['action']:
-            k = 0
-            if '蒸发' in cal['action']:
-                if raw_data['avatarElement'] == 'Pyro':
-                    k = 1.5
-                else:
-                    k = 2
-            elif '融化' in cal['action']:
-                if raw_data['avatarElement'] == 'Pyro':
-                    k = 2
-                else:
-                    k = 1.5
-
-            if equipSets['type'] in ['2', '']:
-                a = 0
-            else:
-                if '魔女' in equipSets['set']:
-                    a = 0.15
-                else:
-                    a = 0
-            add_dmg = k * (1 + (2.78 * em_cal) / (em_cal + 1400) + a)
-        else:
-            add_dmg = 1
-
-        if equipSets['type'] in ['2', '', '22']:
-            pass
-        else:
-            if '追忆' in equipSets['set']:
-                dmgBonus_cal += 0.5
-            elif '绝缘' in equipSets['set']:
-                Bouns = ce * 0.25 if ce * 0.25 <= 0.75 else 0.75
-                dmgBonus_cal += Bouns
-            elif '乐团' in equipSets['set']:
-                if weaponType in ['法器', '弓']:
-                    dmgBonus_cal += 0.35
-            elif '华馆' in equipSets['set']:
-                if raw_data['avatarElement'] == 'Geo':
-                    effect_prop += 0.24 * defense
-                    dmgBonus_cal += 0.24
-
-        critdmg_cal = critdmg
-        healBouns_cal = healBouns
-
-        if '魈' in char_name:
-            dmgBonus_cal += 0.906
-        elif '绫华' in char_name:
-            dmgBonus_cal += 0.18
-        elif '宵宫' in char_name:
-            dmgBonus_cal += 0.5
-        elif '九条' in char_name:
-            effect_prop += 0.9129 * fight_prop['baseAtk']
-            critdmg_cal += 0.6
-
-        if '治疗' in cal['action']:
-            if equipSets['type'] in ['2', '']:
-                healBouns_cal += 0
-            else:
-                if '少女' in equipSets['set']:
-                    healBouns_cal += 0.2
-
-        if cal['action'] == '扩散':
-            dmg = 868 * 1.15 * (1 + 0.6 + (16 * em_cal) / (em_cal + 2000))
-        elif '霄宫' in char_name:
-            dmg = (
-                effect_prop
-                * cal['power']
-                * (1 + critdmg_cal)
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-                * add_dmg
-                * 1.5879
-            )
-        elif '班尼特' in char_name and 'Q治疗' in cal['action']:
-            power = cal['power'].split('+')
-            dmg = (effect_prop * float(power[0]) / 100 + float(power[1])) * (
-                1 + healBouns_cal
-            )
-        elif '心海' in char_name and cal['action'] == '开Q普攻':
-            dmg = (
-                (attack * cal['power'] + hp * (0.0971 + 0.15 * healBouns_cal))
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-                * add_dmg
-            )
-        elif '心海' in char_name and cal['action'] == '水母回血':
-            dmg = (862 + 0.0748 * hp) * (1 + healBouns_cal)
-        elif char_name in ['芭芭拉', '早柚', '琴', '七七']:
-            power = cal['power'].split('+')
-            dmg = (effect_prop * float(power[0]) / 100 + float(power[1])) * (
-                1 + healBouns_cal
-            )
-        elif '绫人' in char_name:
-            dmg = (
-                (effect_prop * cal['power'] + 0.0222 * hp)
-                * (1 + critdmg_cal)
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-                * add_dmg
-                * 1.5879
-            )
-        elif char_name in ['荒泷一斗', '诺艾尔']:
-            dmg = (
-                (effect_prop * cal['power'] + dmgBonus_value_cal)
-                * (1 + critdmg_cal)
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-            )
-        elif '迪奥娜' in char_name:
-            dmg = (effect_prop * cal['power'] + 1905) * 1.9
-        elif '钟离' in char_name and 'E实际盾值' in cal['action']:
-            dmg = (2506 + hp * cal['power']) * 1.5 * 1.3
-        elif cal['action'] == 'Q开盾天星':
-            effect_prop = attack
-            dmg = (
-                (effect_prop * cal['power'] + 0.33 * hp)
-                * (1 + critdmg_cal)
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-                * add_dmg
-            )
-        elif '凝光' in char_name:
-            dmg = (
-                effect_prop
-                * cal['power']
-                * (1 + critdmg_cal * critrate)
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-                * add_dmg
-            )
-        elif isinstance(cal['power'], str):
-            if cal['power'] == '攻击力':
-                dmg = attack
-            elif cal['power'] == '防御力':
-                dmg = defense
-            else:
-                power = cal['power'].split('+')
-                dmg = effect_prop * float(power[0]) / 100 + float(power[1])
-        elif cal['val'] != 'any':
-            dmg = (
-                effect_prop
-                * cal['power']
-                * (1 + critdmg_cal)
-                * (1 + dmgBonus_cal)
-                * 0.5
-                * r
-                * add_dmg
-            )
-        else:
-            dmg = attack
-        print(dmg)
-
-        if cal['val'] != 'any':
-            percent = '{:.2f}'.format(dmg / cal['val'] * 100)
-        elif cal['power'] == '攻击力':
-            percent = '{:.2f}'.format(dmg / cal['atk'] * 100)
-        elif '云堇' in char_name:
-            percent = '{:.2f}'.format(dmg / cal['other2'] * 100)
-        elif cal['power'] == '防御力':
-            percent = '{:.2f}'.format(dmg / cal['other'] * 100)
-    return percent
-
-
 async def draw_char_img(
     raw_data: dict, charUrl: Optional[str] = None
 ) -> bytes:
@@ -560,7 +227,17 @@ async def draw_char_img(
             y2 = new_h / 2 + based_new_h / 2 - offset_y / 2
         char_img = bg_img2.crop((x1, y1, x2, y2))  # type: ignore
 
-    dmg_img, dmg_len = await draw_dmgCacl_img(raw_data)
+    with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
+        char_action = json.load(f)
+    # 拿到倍率表
+    power_list = char_action[char_name]
+    new_prop = await calc_prop(raw_data, power_list)
+    if char_name not in char_action:
+        dmg_img, dmg_len = Image.new('RGBA', (950, 1)), 0
+    else:
+        dmg_img, dmg_len = await draw_dmgCacl_img(
+            raw_data, power_list, new_prop
+        )
     img_w, img_h = 950, 1850 + dmg_len * 40
     overlay = Image.open(TEXT_PATH / 'overlay.png')
     overlay_w, overlay_h = overlay.size
@@ -1053,7 +730,7 @@ async def draw_char_img(
         genshin_font_origin(50),
         anchor='mm',
     )
-    percent = await get_char_percent(raw_data)
+    percent = await get_char_percent(raw_data, new_prop, char_name)
     img_text.text(
         (768, 1690),
         f'{str(percent)+"%"}',
@@ -1088,19 +765,18 @@ async def draw_single_card(
         'RGBA', overlay.size, COLOR_MAP[char['avatarElement']]
     )
     img_base = ImageChops.overlay(color_img, overlay)
-    '''
-    if char['char_name'] in avatarCardOffsetMap:
-        offset_x, offset_y = (
-            avatarCardOffsetMap[char['char_name']][0],
-            avatarCardOffsetMap[char['char_name']][1],
-        )
-    else:
-        offset_x, offset_y = 200, 0
-    '''
-    offset_x, offset_y = 0, 0
-    char_img = Image.open(GACHA_PATH / f'{char["char_name"]}.png')
+    char_img_raw = Image.open(STAND_PATH / f'{char["id"]}.png')
+    char_img = char_img_raw.resize(
+        (round(char_img_raw.size[0] * 0.5), round(char_img_raw.size[1] * 0.5))
+    ).convert('RGBA')
 
-    img_base.paste(char_img, (-760 + offset_x, 110 + offset_y), char_img)
+    offset_x, offset_y = 0, 0
+    if char['char_name'] == '八重神子':
+        offset_x = -100
+    elif char['char_name'] == '早柚':
+        offset_x = 50
+
+    img_base.paste(char_img, (-380 + offset_x, 200 + offset_y), char_img)
     img_card.paste(img_base, (-25, -260), char_card_mask)
     img_card = Image.alpha_composite(img_card, char_card_1)
     # img_card.paste(img_card, (0, 0), img_card)
@@ -1189,6 +865,8 @@ async def draw_cahrcard_list(uid: str, limit: int = 24) -> Union[str, bytes]:
         return '你还没有已缓存的角色！\n请先使用【强制刷新】进行刷新！'
 
     char_done_list = []
+    with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
+        char_action = json.load(f)
     for char_name in char_list:
         temp = {}
         with open(uid_fold / f'{char_name}.json', 'r', encoding='UTF-8') as f:
@@ -1198,9 +876,13 @@ async def draw_cahrcard_list(uid: str, limit: int = 24) -> Union[str, bytes]:
         skillList = raw_data['avatarSkill']
 
         temp['char_name'] = char_name
+        temp['id'] = raw_data['avatarId']
         temp['avatarEnName'] = raw_data['avatarEnName']
         temp['avatarElement'] = raw_data['avatarElement']
-        temp['percent'] = await get_char_percent(raw_data)
+        # 拿到倍率表
+        power_list = char_action[char_name]
+        new_prop = await calc_prop(raw_data, power_list)
+        temp['percent'] = await get_char_percent(raw_data, new_prop, char_name)
         temp['critrate'] = fight_prop['critRate']
         temp['critdmg'] = fight_prop['critDmg']
         baseHp = fight_prop['baseHp']

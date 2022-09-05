@@ -1,8 +1,7 @@
-from typing import Any, Tuple, Union
+from typing import Union
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
 from nonebot import get_bot, on_notice, on_command
 from nonebot.adapters.onebot.v11 import (
     NoticeEvent,
@@ -13,16 +12,17 @@ from nonebot.adapters.onebot.v11 import (
 
 from .get_gachalogs import save_gachalogs
 from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from .draw_gachalogs import draw_gachalogs_img
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
 from .export_and_import import export_gachalogs, import_gachalogs
 
-get_gacha_log = on_command('刷新抽卡记录')
-get_gacha_log_card = on_command('抽卡记录')
+get_gacha_log = on_command('刷新抽卡记录', rule=FullCommand())
+get_gacha_log_card = on_command('抽卡记录', rule=FullCommand())
 import_gacha_log = on_notice()
-export_gacha_log = on_command('导出抽卡记录')
+export_gacha_log = on_command('导出抽卡记录', rule=FullCommand())
 
 
 @export_gacha_log.handle()
@@ -30,10 +30,8 @@ export_gacha_log = on_command('导出抽卡记录')
 async def export_gacha_log_info(
     event: GroupMessageEvent,
     matcher: Matcher,
-    args: Tuple[Any, ...] = CommandArg(),
 ):
-    if args:
-        return
+
     logger.info('开始执行[导出抽卡记录]')
     qid = event.user_id
     gid = event.group_id
@@ -61,7 +59,7 @@ async def export_gacha_log_info(
 async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
     args = event.dict()
     if args['notice_type'] != 'offline_file':
-        return
+        await matcher.finish()
     url = args['file']['url']
     name: str = args['file']['name']
     if not name.endswith('.json'):
@@ -92,11 +90,9 @@ async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
 async def send_gacha_log_card_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    args: Tuple[Any, ...] = CommandArg(),
 ):
     logger.info('开始执行[抽卡记录]')
-    if args:
-        return
+
     uid = await select_db(event.user_id, mode='uid')
     if isinstance(uid, str):
         im = await draw_gachalogs_img(uid)
@@ -125,11 +121,8 @@ async def send_gacha_log_card_info(
 async def send_daily_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    args: Tuple[Any, ...] = CommandArg(),
 ):
     logger.info('开始执行[刷新抽卡记录]')
-    if args:
-        return
     uid = await select_db(event.user_id, mode='uid')
     if isinstance(uid, str):
         im = await save_gachalogs(uid)

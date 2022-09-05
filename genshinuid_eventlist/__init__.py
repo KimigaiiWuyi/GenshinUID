@@ -1,14 +1,14 @@
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
 from nonebot import require, on_command
-from nonebot.adapters.onebot.v11 import Message, MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 
 from ..config import priority
 from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from .draw_event_img import IMG_PATH, save_draw_event_img
 from ..utils.exception.handle_exception import handle_exception
 
-get_event = on_command('活动列表', priority=priority)
+get_event = on_command('活动列表', priority=priority, rule=FullCommand())
 scheduler = require('nonebot_plugin_apscheduler').scheduler
 
 
@@ -25,9 +25,7 @@ async def draw_event():
     '查询当前版本活动日程表',
     detail_des=('指令：' '<ft color=(238,120,0)>活动列表</ft>\n' ' \n' '查询当前版本活动日程表'),
 )
-async def send_events(matcher: Matcher, args: Message = CommandArg()):
-    if args:
-        return
+async def send_events(matcher: Matcher):
     while True:
         if IMG_PATH.exists():
             with open(IMG_PATH, 'rb') as f:

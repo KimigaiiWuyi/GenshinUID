@@ -1,9 +1,9 @@
 import asyncio
-from typing import Any, Tuple, Union
+from typing import Union
 
 from nonebot.log import logger
+from nonebot.params import Depends
 from nonebot.matcher import Matcher
-from nonebot.params import Depends, CommandArg
 from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import (
     MessageSegment,
@@ -14,6 +14,7 @@ from nonebot.adapters.onebot.v11 import (
 from .notice import get_notice_list
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
@@ -21,9 +22,12 @@ from ..utils.exception.handle_exception import handle_exception
 
 notice_scheduler = require('nonebot_plugin_apscheduler').scheduler
 get_resin_info = on_command(
-    '每日', aliases={'mr', '状态', '实时便笺', '便笺', '便签'}, block=True
+    '每日',
+    aliases={'mr', '状态', '实时便笺', '便笺', '便签'},
+    block=True,
+    rule=FullCommand(),
 )
-get_daily_info = on_command('当前状态')
+get_daily_info = on_command('当前状态', rule=FullCommand())
 
 
 @get_daily_info.handle()
@@ -32,11 +36,8 @@ async def send_daily_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
     custom: ImageAndAt = Depends(),
-    args: Tuple[Any, ...] = CommandArg(),
 ):
     logger.info('开始执行[每日信息文字版]')
-    if args:
-        return
 
     at = custom.get_first_at()
     qid = event.user_id
@@ -91,11 +92,8 @@ async def send_uid_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
     custom: ImageAndAt = Depends(),
-    args: Tuple[Any, ...] = CommandArg(),
 ):
     logger.info('开始执行[每日信息]')
-    if args:
-        return
 
     at = custom.get_first_at()
     qid = event.user_id

@@ -3,12 +3,11 @@ from typing import Any, Dict, Union
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
+from nonebot.params import RegexDict
 from nonebot import on_regex, on_command
 from nonebot.permission import SUPERUSER
-from nonebot.params import RegexDict, CommandArg
 from nonebot.adapters.onebot.v11 import (
     Bot,
-    Message,
     MessageSegment,
     GroupMessageEvent,
     PrivateMessageEvent,
@@ -16,12 +15,13 @@ from nonebot.adapters.onebot.v11 import (
 
 from ..config import priority
 from .genshinmap.models import MapID
+from ..utils.nonebot2.rule import FullCommand
 from .create_genshinmap import create_genshin_map
 from .draw_genshinmap_card import draw_genshin_map
 from ..utils.exception.handle_exception import handle_exception
 
-create_map = on_command('生成地图', block=True)
-change_map = on_command('切换地图', block=True)
+create_map = on_command('生成地图', block=True, rule=FullCommand())
+change_map = on_command('切换地图', block=True, rule=FullCommand())
 find_map = on_regex(
     r'^(?P<name>.*)(在哪里|在哪|哪里有|哪儿有|哪有|在哪儿)$', priority=priority
 )
@@ -42,16 +42,13 @@ MAP_CHN_NAME = {
 }
 
 
-@change_map.handle()
+@change_map.handle(parameterless=[FullCommand()])
 @handle_exception('切换地图')
 async def send_change_map_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    args: Message = CommandArg(),
 ):
-    if args:
-        return
     if not await SUPERUSER(bot, event):
         return
     logger.info('[切换地图]正在执行...')
@@ -63,16 +60,13 @@ async def send_change_map_msg(
     await matcher.finish(f'切换到{chn}地图')
 
 
-@create_map.handle()
+@create_map.handle(parameterless=[FullCommand()])
 @handle_exception('生成地图')
 async def send_create_map_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    args: Message = CommandArg(),
 ):
-    if args:
-        return
     if not await SUPERUSER(bot, event):
         return
     logger.info('[生成地图]正在执行...')
@@ -91,23 +85,23 @@ async def send_find_map_msg(
     logger.info('[查找资源点]参数: {}'.format(args))
 
     if args:
-        args = args.get('name')
+        name = args.get('name', '')
     else:
         return
 
-    resource_temp_path = MAP_DATA / f'{MAP_ID_LIST[0].name}_{args}.jpg'
+    resource_temp_path = MAP_DATA / f'{MAP_ID_LIST[0].name}_{name}.jpg'
     if resource_temp_path.exists():
-        logger.info(f'本地已有{MAP_ID_LIST[0].name}_{args}的资源点,直接发送...')
+        logger.info(f'本地已有{MAP_ID_LIST[0].name}_{name}的资源点,直接发送...')
         await matcher.finish(MessageSegment.image(resource_temp_path))
     else:
         await matcher.send(
             (
-                f'正在查找{args},可能需要比较久的时间...\n'
+                f'正在查找{name},可能需要比较久的时间...\n'
                 f'当前地图：{MAP_CHN_NAME.get(MAP_ID_LIST[0])}'
             )
         )
         logger.info('本地未缓存,正在渲染...')
-        im = await draw_genshin_map(MAP_ID_LIST[0], args)
+        im = await draw_genshin_map(MAP_ID_LIST[0], name)
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):

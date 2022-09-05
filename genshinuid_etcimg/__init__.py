@@ -43,7 +43,7 @@ async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
         if str(args) in version:
             img = f'{args}.png'
         else:
-            return
+            await matcher.finish()
     else:
         img = f'{version[0]}.png'
     primogems_img = PRIMOGEMS_DATA_PATH / img

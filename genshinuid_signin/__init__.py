@@ -3,20 +3,22 @@ import asyncio
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
 from nonebot.permission import SUPERUSER
 from nonebot import get_bot, require, on_command
-from nonebot.adapters.onebot.v11 import Message, MessageEvent
+from nonebot.adapters.onebot.v11 import MessageEvent
 
 from ..config import priority
 from .sign import sign_in, daily_sign
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, config_check
 
 sign_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
-get_sign = on_command('签到', priority=priority)
-all_recheck = on_command('全部重签', permission=SUPERUSER, priority=priority)
+get_sign = on_command('签到', priority=priority, rule=FullCommand())
+all_recheck = on_command(
+    '全部重签', permission=SUPERUSER, priority=priority, rule=FullCommand()
+)
 
 
 # 每日零点半执行米游社原神签到
@@ -30,10 +32,9 @@ async def sign_at_night():
 @get_sign.handle()
 @handle_exception('签到')
 async def get_sign_func(
-    event: MessageEvent, matcher: Matcher, args: Message = CommandArg()
+    event: MessageEvent,
+    matcher: Matcher,
 ):
-    if args:
-        await get_sign.finish()
     logger.info('开始执行[签到]')
     qid = int(event.sender.user_id)  # type: ignore
     logger.info('[签到]QQ号: {}'.format(qid))
@@ -45,9 +46,7 @@ async def get_sign_func(
 
 @all_recheck.handle()
 @handle_exception('全部重签')
-async def recheck(matcher: Matcher, args: Message = CommandArg()):
-    if args:
-        return
+async def recheck(matcher: Matcher):
     logger.info('开始执行[全部重签]')
     await matcher.send('已开始执行')
     await send_daily_sign()

@@ -14,11 +14,14 @@ from nonebot.adapters.onebot.v11 import (
 from .add_ck import deal_ck
 from ..config import priority
 from .draw_user_card import get_user_card
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
 
 add_cookie = on_command('添加', permission=PRIVATE_FRIEND)
-bind_info = on_command('绑定信息', priority=priority, block=True)
+bind_info = on_command(
+    '绑定信息', priority=priority, block=True, rule=FullCommand()
+)
 bind = on_regex(
     r'^(绑定|切换|解绑|删除)(uid|UID|mys|MYS)([0-9]+)?$', priority=priority
 )
@@ -26,10 +29,9 @@ bind = on_regex(
 
 @bind_info.handle()
 async def send_bind_card(
-    event: MessageEvent, matcher: Matcher, args: Message = CommandArg()
+    event: MessageEvent,
+    matcher: Matcher,
 ):
-    if args:
-        return
     logger.info('开始执行[查询用户绑定状态]')
     qid = event.sender.user_id
     if qid is None:

@@ -2,17 +2,17 @@ import random
 import asyncio
 
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
 from nonebot import require, on_command
-from nonebot.adapters.onebot.v11 import Bot, Message
+from nonebot.adapters.onebot.v11 import Bot
 
 from .backup_data import data_backup
 from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
 
-check = on_command('校验全部Cookies')
-check_stoken = on_command('校验全部Stoken')
+check = on_command('校验全部Cookies', rule=FullCommand())
+check_stoken = on_command('校验全部Stoken', rule=FullCommand())
 
 backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
@@ -39,11 +39,7 @@ async def daily_refresh_charData():
         '校验数据库内所有Cookies是否正常，不正常的会自动删除'
     ),
 )
-async def send_check_cookie(
-    bot: Bot, matcher: Matcher, args: Message = CommandArg()
-):
-    if args:
-        await matcher.finish()
+async def send_check_cookie(bot: Bot, matcher: Matcher):
     raw_mes = await check_db()
     im = raw_mes[0]
     await matcher.send(im)
@@ -79,11 +75,7 @@ async def send_check_cookie(
         '校验数据库内所有Stoken是否正常，不正常的会自动删除'
     ),
 )
-async def send_check_stoken(
-    bot: Bot, matcher: Matcher, args: Message = CommandArg()
-):
-    if args:
-        await matcher.finish()
+async def send_check_stoken(bot: Bot, matcher: Matcher):
     raw_mes = await check_stoken_db()
     im = raw_mes[0]
     await matcher.send(im)

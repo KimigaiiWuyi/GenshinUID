@@ -20,6 +20,7 @@ SWITCH_MAP = {
     '随机图': 'RandomPic',
     '定时签到': 'SchedSignin',
     '定时米游币': 'SchedMhyBBSCoin',
+    '催命模式': 'CrazyNotice',
 }
 
 PUSH_MAP = {

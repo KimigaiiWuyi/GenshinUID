@@ -4,6 +4,7 @@ from nonebot.log import logger
 
 from ..utils.mhy_api.get_mhy_data import get_daily_data
 from ..utils.db_operation.db_operation import (
+    config_check,
     get_push_data,
     update_is_pushed,
     get_all_push_list,
@@ -54,10 +55,13 @@ async def all_check(
     for mode in ['Coin', 'Resin', 'Go', 'Transform']:
         # 检查条件
         if push_data[f'{mode}IsPush'] == 'on':
-            if not await check(mode, raw_data, push_data[f'{mode}Value']):
-                await update_is_pushed(uid, mode, 'off')
-            continue
+            if not await config_check('CrazyNotice'):
+                if not await check(mode, raw_data, push_data[f'{mode}Value']):
+                    await update_is_pushed(uid, mode, 'off')
+                continue
+        # 准备推送
         if await check(mode, raw_data, push_data[f'{mode}Value']):
+            # on 推送到私聊
             if push_data[f'{mode}Push'] == 'on':
                 # 初始化
                 if qid not in private_msg_list:
@@ -65,8 +69,10 @@ async def all_check(
                 # 添加私聊信息
                 private_msg_list[qid] += NOTICE[mode]
                 await update_is_pushed(uid, mode, 'on')
+            # off不推送
             elif push_data[f'{mode}Push'] == 'off':
                 pass
+            # 群号推送到群聊
             else:
                 # 初始化
                 if push_data[f'{mode}Push'] not in group_msg_list:

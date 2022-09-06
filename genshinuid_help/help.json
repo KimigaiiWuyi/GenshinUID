@@ -1,0 +1,264 @@
+{
+  "私人服务": {
+    "desc": "需要加 [gs开启/设置] 前缀",
+    "data": [
+      {
+        "name": "推送",
+        "desc": "所有推送总开关",
+        "eg": "gs开启推送",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "自动签到",
+        "desc": "每晚0:30进行米游社签到",
+        "eg": "gs开启自动签到",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "自动米游币",
+        "desc": "每晚1:16进行米游币获取",
+        "eg": "gs开启自动米游币",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "体力/派遣/宝钱/质变仪",
+        "desc": "开启 体力/派遣/宝钱/质变仪 推送",
+        "eg": "gs开启体力、gs开启派遣",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "[推送项]阈值",
+        "desc": "设置推送的阈值, 质变仪单位为分钟",
+        "eg": "gs设置体力阈值140",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "查询服务": {
+    "desc": "可加 [查询]前缀",
+    "data": [
+      {
+        "name": "查询",
+        "desc": "查询角色信息一览,后可跟UID",
+        "eg": "查询100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "[上期]深渊/sy",
+        "desc": "查询深渊信息一览,后可跟UID",
+        "eg": "深渊100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "收集/sj",
+        "desc": "查询收集百分比,后可跟UID",
+        "eg": "收集100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "每日/mr",
+        "desc": "查询自己的游戏日常和树脂",
+        "eg": "便签",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "当前状态",
+        "desc": "查询游戏树脂和派遣状态",
+        "eg": "当前状态",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "每月统计",
+        "desc": "查询每月的原石获取情况",
+        "eg": "每月统计",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "活动列表",
+        "desc": "查询游戏当前的活动列表",
+        "eg": "活动列表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "面板服务": {
+    "desc": "数据源由Enka提供",
+    "data": [
+      {
+        "name": "强制刷新",
+        "desc": "刷新自己游戏内面板数据",
+        "eg": "强制刷新100740568",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查询xx",
+        "desc": "查询角色面板",
+        "eg": "查询100740568心海",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查询展柜角色",
+        "desc": "查询所有已缓存角色列表",
+        "eg": "查询展柜角色",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "毕业度统计",
+        "desc": "查询所有已缓存角色的毕业度",
+        "eg": "毕业度统计",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "游戏建议": {
+    "desc": "获取一些养成建议",
+    "data": [
+      {
+        "name": "xx用什么",
+        "desc": "查询特定角色养成信息",
+        "eg": "公子怎么养",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "xx给谁用",
+        "desc": "查询武器/圣遗物能给谁用",
+        "eg": "护摩谁能用",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "xx攻略/推荐",
+        "desc": "输出一张西风驿站攻略图",
+        "eg": "可莉推荐",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "参考面板xx",
+        "desc": "输出一张角色的小毕业参考面板",
+        "eg": "参考面板公子",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "数据模块": {
+    "desc": "有关插件的一些数据",
+    "data": [
+      {
+        "name": "校验全部Cookies",
+        "desc": "校验全部绑定ck的可用状态",
+        "eg": "校验全部Cookies",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "校验全部Stoken",
+        "desc": "校验全部绑定sk的可用状态",
+        "eg": "校验全部Stoken",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "gs配置",
+        "desc": "查看全局的插件配置",
+        "eg": "gs配置",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "全部重签",
+        "desc": "强制执行米游社签到任务",
+        "eg": "全部重签",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "全部重获取",
+        "desc": "强制执行米游币获取任务",
+        "eg": "全部重签",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      }
+    ]
+  },
+  "杂图": {
+    "desc": "可能会用得上",
+    "data": [
+      {
+        "name": "原石预估",
+        "desc": "查询当前版本奖励,后可跟版本",
+        "eg": "版本规划3.0",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "血量表",
+        "desc": "查询所有怪物的血量",
+        "eg": "血量表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抗性表",
+        "desc": "查询所有怪物的抗性",
+        "eg": "抗性表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "伤害乘区",
+        "desc": "查询伤害到底有几个乘区",
+        "eg": "伤害乘区",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  }
+}

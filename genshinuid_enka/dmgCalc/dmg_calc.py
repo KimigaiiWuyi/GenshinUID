@@ -495,7 +495,7 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
                         ] += effect_value
             # 如果没有限制条件,直接增加
             else:
-                if effect_attr in ['a', 'd', 'r', 'addDmg', 'ignoreDef']:
+                if effect_attr in ['a', 'r', 'addDmg', 'ignoreDef']:
                     pass
                 else:
                     for attr in ['A', 'B', 'C', 'E', 'Q']:

@@ -42,7 +42,7 @@ MAP_CHN_NAME = {
 }
 
 
-@change_map.handle(parameterless=[FullCommand()])
+@change_map.handle()
 @handle_exception('切换地图')
 async def send_change_map_msg(
     bot: Bot,
@@ -60,7 +60,7 @@ async def send_change_map_msg(
     await matcher.finish(f'切换到{chn}地图')
 
 
-@create_map.handle(parameterless=[FullCommand()])
+@create_map.handle()
 @handle_exception('生成地图')
 async def send_create_map_msg(
     bot: Bot,

@@ -27,8 +27,8 @@
         "need_admin": false
       },
       {
-        "name": "体力/派遣/宝钱/质变仪",
-        "desc": "开启 体力/派遣/宝钱/质变仪 推送",
+        "name": "[推送项]",
+        "desc": "体力/派遣/宝钱/质变仪推送",
         "eg": "gs开启体力、gs开启派遣",
         "need_ck": true,
         "need_sk": false,
@@ -36,7 +36,7 @@
       },
       {
         "name": "[推送项]阈值",
-        "desc": "设置推送的阈值, 质变仪单位为分钟",
+        "desc": "设置推送的阈值",
         "eg": "gs设置体力阈值140",
         "need_ck": true,
         "need_sk": false,
@@ -49,7 +49,7 @@
     "data": [
       {
         "name": "查询",
-        "desc": "查询角色信息一览,后可跟UID",
+        "desc": "角色信息一览,后可跟UID",
         "eg": "查询100740568",
         "need_ck": true,
         "need_sk": false,
@@ -57,7 +57,7 @@
       },
       {
         "name": "[上期]深渊/sy",
-        "desc": "查询深渊信息一览,后可跟UID",
+        "desc": "深渊信息一览,后可跟UID",
         "eg": "深渊100740568",
         "need_ck": true,
         "need_sk": false,
@@ -65,7 +65,7 @@
       },
       {
         "name": "收集/sj",
-        "desc": "查询收集百分比,后可跟UID",
+        "desc": "收集百分比,后可跟UID",
         "eg": "收集100740568",
         "need_ck": true,
         "need_sk": false,
@@ -73,7 +73,7 @@
       },
       {
         "name": "每日/mr",
-        "desc": "查询自己的游戏日常和树脂",
+        "desc": "自己的游戏日常和树脂",
         "eg": "便签",
         "need_ck": true,
         "need_sk": false,
@@ -81,7 +81,7 @@
       },
       {
         "name": "当前状态",
-        "desc": "查询游戏树脂和派遣状态",
+        "desc": "游戏树脂和派遣状态",
         "eg": "当前状态",
         "need_ck": true,
         "need_sk": false,
@@ -89,17 +89,9 @@
       },
       {
         "name": "每月统计",
-        "desc": "查询每月的原石获取情况",
+        "desc": "每月的原石获取情况",
         "eg": "每月统计",
         "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "活动列表",
-        "desc": "查询游戏当前的活动列表",
-        "eg": "活动列表",
-        "need_ck": false,
         "need_sk": false,
         "need_admin": false
       }
@@ -143,11 +135,11 @@
     ]
   },
   "游戏建议": {
-    "desc": "获取一些养成建议",
+    "desc": "获取一些没用的建议",
     "data": [
       {
         "name": "xx用什么",
-        "desc": "查询特定角色养成信息",
+        "desc": "角色该如何养成",
         "eg": "公子怎么养",
         "need_ck": false,
         "need_sk": false,
@@ -155,7 +147,7 @@
       },
       {
         "name": "xx给谁用",
-        "desc": "查询武器/圣遗物能给谁用",
+        "desc": "武器/圣遗物能给谁用",
         "eg": "护摩谁能用",
         "need_ck": false,
         "need_sk": false,
@@ -163,7 +155,7 @@
       },
       {
         "name": "xx攻略/推荐",
-        "desc": "输出一张西风驿站攻略图",
+        "desc": "西风驿站攻略图",
         "eg": "可莉推荐",
         "need_ck": false,
         "need_sk": false,
@@ -171,8 +163,101 @@
       },
       {
         "name": "参考面板xx",
-        "desc": "输出一张角色的小毕业参考面板",
+        "desc": "角色的小毕业面板",
         "eg": "参考面板公子",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "活动列表",
+        "desc": "游戏当前的活动列表",
+        "eg": "活动列表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "任务xx",
+        "desc": "某个任务的攻略",
+        "eg": "任务须弥",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "WIKI": {
+    "desc": "获取游戏信息",
+    "data": [
+      {
+        "name": "武器",
+        "desc": "武器信息，可后跟数字",
+        "eg": "武器天空、武器天空90",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色",
+        "desc": "角色信息，可后跟数字",
+        "eg": "角色七七90、角色真珠",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "命座、天赋",
+        "desc": "角色命座和技能",
+        "eg": "命座6可莉、天赋4北斗",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "圣遗物",
+        "desc": "查询圣遗物",
+        "eg": "圣遗物冰封",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "食物、原魔",
+        "desc": "查询食物和怪物信息",
+        "eg": "食物鸡、原魔公子",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "语音",
+        "desc": "查询角色语音",
+        "eg": "语音可莉357",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "生成地图",
+        "desc": "初始化地图模块",
+        "eg": "生成地图",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "切换地图",
+        "desc": "切换地图至其他区域",
+        "eg": "切换地图",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "xx在哪",
+        "desc": "查找地图资源点",
+        "eg": "甜甜花在哪",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -184,7 +269,7 @@
     "data": [
       {
         "name": "校验全部Cookies",
-        "desc": "校验全部绑定ck的可用状态",
+        "desc": "校验全部ck的状态",
         "eg": "校验全部Cookies",
         "need_ck": false,
         "need_sk": false,
@@ -192,7 +277,7 @@
       },
       {
         "name": "校验全部Stoken",
-        "desc": "校验全部绑定sk的可用状态",
+        "desc": "校验全部sk的状态",
         "eg": "校验全部Stoken",
         "need_ck": false,
         "need_sk": false,
@@ -208,7 +293,7 @@
       },
       {
         "name": "全部重签",
-        "desc": "强制执行米游社签到任务",
+        "desc": "强制执行签到任务",
         "eg": "全部重签",
         "need_ck": false,
         "need_sk": false,
@@ -216,8 +301,8 @@
       },
       {
         "name": "全部重获取",
-        "desc": "强制执行米游币获取任务",
-        "eg": "全部重签",
+        "desc": "强制执行米游币获取",
+        "eg": "全部重获取",
         "need_ck": false,
         "need_sk": false,
         "need_admin": true
@@ -229,31 +314,23 @@
     "data": [
       {
         "name": "原石预估",
-        "desc": "查询当前版本奖励,后可跟版本",
+        "desc": "当前版本奖励,后可跟版本",
         "eg": "版本规划3.0",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "血量表",
-        "desc": "查询所有怪物的血量",
+        "name": "血量表、抗性表",
+        "desc": "所有怪物的血量和抗性",
         "eg": "血量表",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "抗性表",
-        "desc": "查询所有怪物的抗性",
-        "eg": "抗性表",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
         "name": "伤害乘区",
-        "desc": "查询伤害到底有几个乘区",
+        "desc": "伤害到底有几个乘区",
         "eg": "伤害乘区",
         "need_ck": false,
         "need_sk": false,

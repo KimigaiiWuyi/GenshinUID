@@ -105,11 +105,11 @@
     "5": "dmgBonus+24"
   },
   "息灾": {
-    "1": "dmgBonus+12;attack+19.2",
-    "2": "dmgBonus+15;attack+24",
-    "3": "dmgBonus+18;attack+28.8",
-    "4": "dmgBonus+21;attack+33.6",
-    "5": "dmgBonus+24;attack+38.4"
+    "1": "attack+19.2",
+    "2": "attack+24",
+    "3": "attack+28.8",
+    "4": "attack+33.6",
+    "5": "attack+38.4"
   },
   "辰砂之纺锤": {
     "1": "E:addDmg+40%defense",
@@ -322,11 +322,11 @@
     "5": "A:dmgBonus+64;B:dmgBonus+48"
   },
   "波乱月白经津": {
-    "1": "dmgBonus+12;A:dmgBonus+40",
-    "2": "dmgBonus+15;A:dmgBonus+50",
-    "3": "dmgBonus+18;A:dmgBonus+60",
-    "4": "dmgBonus+21;A:dmgBonus+70",
-    "5": "dmgBonus+24;A:dmgBonus+80"
+    "1": "A:dmgBonus+40",
+    "2": "A:dmgBonus+50",
+    "3": "A:dmgBonus+60",
+    "4": "A:dmgBonus+70",
+    "5": "A:dmgBonus+80"
   },
   "黎明神剑": {
     "1": "",
@@ -441,11 +441,11 @@
     "5": ""
   },
   "雾切之回光": {
-    "1": "dmgBonus+40",
-    "2": "dmgBonus+50",
-    "3": "dmgBonus+60",
-    "4": "dmgBonus+70",
-    "5": "dmgBonus+80"
+    "1": "dmgBonus+28",
+    "2": "dmgBonus+35",
+    "3": "dmgBonus+42",
+    "4": "dmgBonus+49",
+    "5": "dmgBonus+56"
   },
   "幽夜华尔兹": {
     "1": "AE:dmgBonus+20",
@@ -938,11 +938,11 @@
     "5": "attack+15"
   },
   "猎人之径": {
-    "1": "dmgBonus+12;B:dmgBonus+160%em",
-    "2": "dmgBonus+15;B:dmgBonus+200%em",
-    "3": "dmgBonus+18;B:dmgBonus+240%em",
-    "4": "dmgBonus+21;B:dmgBonus+280%em",
-    "5": "dmgBonus+24;B:dmgBonus+320%em"
+    "1": "B:dmgBonus+160%em",
+    "2": "B:dmgBonus+200%em",
+    "3": "B:dmgBonus+240%em",
+    "4": "B:dmgBonus+280%em",
+    "5": "B:dmgBonus+320%em"
   },
   "竭泽": {
     "1": "",

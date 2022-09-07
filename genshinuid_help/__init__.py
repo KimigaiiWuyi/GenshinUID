@@ -1,3 +1,5 @@
+import asyncio
+import threading
 from pathlib import Path
 
 from nonebot import on_command
@@ -5,6 +7,7 @@ from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageSegment
 
+from .draw_help_card import draw_help_img
 from ..genshinuid_meta import register_menu
 from ..utils.exception.handle_exception import handle_exception
 
@@ -24,3 +27,8 @@ HELP_IMG = Path(__file__).parent / 'help.png'
 async def send_guide_pic(matcher: Matcher):
     logger.info('获得gs帮助图片成功！')
     await matcher.finish(MessageSegment.image(HELP_IMG))
+
+
+threading.Thread(
+    target=lambda: asyncio.run(draw_help_img()), daemon=True
+).start()

@@ -13,6 +13,16 @@ PLAYER_PATH = Path(__file__).parents[2] / 'player'
 
 version = Genshin_version
 
+PROP_ATTR_MAP = {
+    'Anemo': '44',
+    'Cryo': '46',
+    'Dendro': '43',
+    'Electro': '41',
+    'Geo': '45',
+    'Hydro': '42',
+    'Pyro': '40',
+}
+
 avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
 weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
 weaponHash2Type_fileName = f'weaponHash2Type_mapping_{version}.json'
@@ -225,12 +235,7 @@ async def enka_to_data(
         fight_prop['physicalDmgSub'] = char["fightPropMap"]["29"]
         fight_prop['physicalDmgBonus'] = char["fightPropMap"]["30"]
         # 伤害加成
-        for i in range(40, 47):
-            if char["fightPropMap"][str(i)] > 0:
-                fight_prop['dmgBonus'] = char["fightPropMap"][str(i)]
-                break
-        else:
-            fight_prop['dmgBonus'] = 0
+        fight_prop['dmgBonus'] = char["fightPropMap"][PROP_ATTR_MAP[char_data['avatarElement']]]
 
         char_data['avatarFightProp'] = fight_prop
 

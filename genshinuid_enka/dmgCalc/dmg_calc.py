@@ -107,8 +107,9 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
             std = std_seq
             break
         # 如果不完全相同, 但是杯子的主词条相同, 也可以使用这个
-        elif std_seq['seq'][-2] == seq[-2]:
-            seq_temp = std_seq
+        if len(seq) >= 2 and len(std_seq['seq']) >= 2:
+            if std_seq['seq'][-2] == seq[-2]:
+                seq_temp = std_seq
     else:
         # 如果存在备选那就用备选
         if seq_temp:

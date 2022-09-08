@@ -115,6 +115,8 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
         c = 0.83
     else:
         if std['critDmg'] != 'any':
+            if char_name == '香菱':
+                prop['attack'] += 0.25 * prop['baseattack']
             f.append(float(prop['critdmg'] / std['critDmg']))
     if std['atk'] != 'any':
         f.append(float(prop['attack'] / std['atk']))

@@ -29,6 +29,7 @@ async def send_add_ck_msg(ctx):
         im = await deal_ck(message, userid)  # type: ignore
     else:
         return
+    im = await convert_img(im)
     await hoshino_bot.send_msg(
         self_id=sid, user_id=userid, group_id=gid, message=im
     )

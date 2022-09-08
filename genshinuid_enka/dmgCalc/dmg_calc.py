@@ -98,14 +98,26 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
             equipMain,
         )
     print(seq)
+
     std_prop = dmgMap[char_name]
+    seq_temp = ''
     for std_seq in std_prop:
+        # 如果序列完全相同, 则直接使用这个序列
         if std_seq['seq'] == seq:
             std = std_seq
             break
+        # 如果不完全相同, 但是杯子的主词条相同, 也可以使用这个
+        elif std_seq['seq'][-2] == seq[-2]:
+            seq_temp = std_seq
     else:
-        std = dmgMap[char_name][0]
+        # 如果存在备选那就用备选
+        if seq_temp:
+            std = seq_temp
+        # 不存在则使用第一个
+        else:
+            std = dmgMap[char_name][0]
     print(std)
+
     f = []
     c = 0.83
     if std['critRate'] != 'any':
@@ -118,15 +130,34 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
             if char_name == '香菱':
                 prop['attack'] += 0.25 * prop['baseattack']
             f.append(float(prop['critdmg'] / std['critDmg']))
+
+    atk_val = 1
     if std['atk'] != 'any':
-        f.append(float(prop['attack'] / std['atk']))
+        atk_val = float(prop['attack'] / std['atk'])
+        f.append(atk_val)
+
     for i in std['other']:
         if '生命' in i:
             f.append(float(prop['hp'] / std['other'][i]))
         elif '充能' in i:
             f.append(float(prop['ce'] / std['other'][i]))
         elif '精通' in i:
-            f.append(float(prop['em'] / std['other'][i]))
+            em_val = float(prop['em'] / std['other'][i])
+            if atk_val <= 0.7:
+                em_val = 0.35 * em_val
+            elif atk_val <= 0.8:
+                em_val = 0.52 * em_val
+            elif atk_val <= 0.95:
+                em_val = 0.68 * em_val
+            elif atk_val <= 1.05:
+                em_val = 0.95 * em_val
+            elif atk_val <= 1.15:
+                em_val = 1.0 * em_val
+            elif atk_val <= 1.3:
+                em_val = 1.08 * em_val
+            else:
+                em_val = 1.15 * em_val
+            f.append(em_val)
         elif '防御' in i:
             f.append(float(prop['defense'] / std['other'][i]))
         else:

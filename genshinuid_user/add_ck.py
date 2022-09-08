@@ -1,3 +1,4 @@
+from pathlib import Path
 from http.cookies import SimpleCookie
 
 from ..utils.db_operation.db_cache_and_check import refresh_ck
@@ -7,6 +8,8 @@ from ..utils.mhy_api.get_mhy_data import (
     get_cookie_token_by_stoken,
     get_stoken_by_login_ticket,
 )
+
+pic_path = Path(__file__).parent / 'pic'
 
 
 async def deal_ck(mes, qid):
@@ -76,4 +79,14 @@ async def deal_ck(mes, qid):
         )
     )
     im_list.append('你可以使用命令【绑定信息】检查你的账号绑定情况！')
-    return '\n'.join(im_list)
+    im = '\n'.join(im_list)
+    ok_num = im.count('成功')
+    if ok_num < 1:
+        status_pic = pic_path / 'ck_no.png'
+    elif ok_num < 2:
+        status_pic = pic_path / 'ck_ok.png'
+    else:
+        status_pic = pic_path / 'all_ok.png'
+    with open(status_pic, 'rb') as f:
+        im = f.read()
+    return im

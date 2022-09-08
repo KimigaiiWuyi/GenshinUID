@@ -41,6 +41,38 @@
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "刷新抽卡记录",
+        "desc": "更新抽卡记录，需要SK",
+        "eg": "刷新抽卡记录",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡记录",
+        "desc": "查询你的抽卡记录",
+        "eg": "抽卡记录",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "导出抽卡记录",
+        "desc": "仅限群聊，导出UIGF",
+        "eg": "导出抽卡记录",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "导入抽卡记录",
+        "desc": "导入符合UIGF格式的文件",
+        "eg": "私聊直接发Json文件",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
       }
     ]
   },

@@ -1,6 +1,8 @@
+from nonebot.log import logger
 from nonebot import load_all_plugins, get_plugin_by_module_name
 
 if get_plugin_by_module_name("GenshinUID"):
+    logger.info("推荐直接加载 GenshinUID 仓库文件夹")
     load_all_plugins(
         [
             'GenshinUID.genshinuid_abyss',

@@ -2,7 +2,6 @@ import re
 import json
 import random
 import asyncio
-from pathlib import Path
 from typing import Union
 
 from nonebot.log import logger
@@ -26,6 +25,7 @@ from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
 from .draw_char_card import draw_char_img, draw_cahrcard_list
 from ..utils.alias.alias_to_char_name import alias_to_char_name
+from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, get_all_uid
 
@@ -38,10 +38,7 @@ get_char_info = on_command(
 )
 
 AUTO_REFRESH = False
-
 refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
-
-PLAYER_PATH = Path(__file__).parents[1] / 'player'
 
 
 @change_api.handle()

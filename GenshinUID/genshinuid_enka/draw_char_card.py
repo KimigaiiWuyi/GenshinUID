@@ -18,15 +18,16 @@ from .dmgCalc.dmg_calc import (
     get_char_percent,
     avatarName2SkillAdd,
 )
+from ..utils.download_resource.RESOURCE_PATH import (
+    REL_PATH,
+    ICON_PATH,
+    PLAYER_PATH,
+    GACHA_IMG_PATH,
+    CHAR_STAND_PATH,
+)
 
 R_PATH = Path(__file__).parent
-RESOURCE_PATH = Path(__file__).parents[1] / 'resource'
 TEXT_PATH = R_PATH / 'texture2D'
-ICON_PATH = RESOURCE_PATH / 'icon'
-GACHA_PATH = RESOURCE_PATH / 'gacha_img'
-STAND_PATH = RESOURCE_PATH / 'char_stand'
-PLAYER_PATH = Path(__file__).parents[1] / 'player'
-RELIC_PATH = RESOURCE_PATH / 'reliquaries'
 ETC_PATH = R_PATH / 'etc'
 
 
@@ -189,12 +190,12 @@ async def draw_char_img(
             offset_x, offset_y = 200, 0
         if char_name == '旅行者':
             char_img = (
-                Image.open(STAND_PATH / f'{raw_data["avatarId"]}.png')
+                Image.open(CHAR_STAND_PATH / f'{raw_data["avatarId"]}.png')
                 .convert('RGBA')
                 .resize((1421, 800))
             )
         else:
-            char_img = Image.open(GACHA_PATH / f'{char_name}.png')  # 角色图像
+            char_img = Image.open(GACHA_IMG_PATH / f'{char_name}.png')  # 角色图像
 
     # 确定图片的长宽
     w, h = char_img.size
@@ -419,7 +420,7 @@ async def draw_char_img(
     for aritifact in raw_data['equipList']:
         artifacts_img = Image.open(TEXT_PATH / 'char_info_artifacts.png')
         artifacts_piece_img = Image.open(
-            RELIC_PATH / '{}.png'.format(aritifact['aritifactName'])
+            REL_PATH / '{}.png'.format(aritifact['aritifactName'])
         )
         artifacts_piece_new_img = artifacts_piece_img.resize(
             (75, 75), Image.Resampling.LANCZOS  # type: ignore
@@ -761,7 +762,7 @@ async def draw_single_card(
         'RGBA', overlay.size, COLOR_MAP[char['avatarElement']]
     )
     img_base = ImageChops.overlay(color_img, overlay)
-    char_img_raw = Image.open(STAND_PATH / f'{char["id"]}.png')
+    char_img_raw = Image.open(CHAR_STAND_PATH / f'{char["id"]}.png')
     char_img = char_img_raw.resize(
         (round(char_img_raw.size[0] * 0.5), round(char_img_raw.size[1] * 0.5))
     ).convert('RGBA')

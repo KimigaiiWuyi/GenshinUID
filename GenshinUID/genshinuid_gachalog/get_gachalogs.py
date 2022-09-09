@@ -1,11 +1,9 @@
 import json
-from pathlib import Path
 from typing import Optional
 from datetime import datetime
 
+from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.mhy_api.get_mhy_data import get_gacha_log_by_authkey
-
-PLAYER_PATH = Path(__file__).parents[1] / 'player'
 
 
 async def save_gachalogs(uid: str, raw_data: Optional[dict] = None):

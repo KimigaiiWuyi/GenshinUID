@@ -13,9 +13,9 @@ from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.db_operation.db_operation import select_db, owner_cookies
+from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_PATH
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
-CHAR_SIDE_PATH = Path(__file__).parents[1] / 'resource' / 'char_side'
 
 resin_fg_pic = Image.open(TEXT_PATH / 'resin_fg.png')
 yes_pic = Image.open(TEXT_PATH / 'yes.png')
@@ -108,9 +108,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     # 获取数据
     daily_data = await get_daily_data(uid)
     daily_data = daily_data['data']
-    enta_data_path = (
-        Path(__file__).parents[1] / 'player' / uid / 'rawData.json'
-    )
+    enta_data_path = PLAYER_PATH / uid / 'rawData.json'
     if enta_data_path.exists():
         with open(enta_data_path, 'r', encoding='utf-8') as f:
             player_data = json.load(f)

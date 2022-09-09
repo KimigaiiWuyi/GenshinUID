@@ -10,13 +10,16 @@ from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.alias.avatarId_and_name_covert import name_to_avatar_id
+from ..utils.download_resource.RESOURCE_PATH import (
+    CHAR_SIDE_PATH as STAND_PATH,
+)
+from ..utils.download_resource.RESOURCE_PATH import (
+    CHAR_PATH,
+    PLAYER_PATH,
+    WEAPON_PATH,
+)
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
-PLAYER_PATH = Path(__file__).parents[1] / 'player'
-RESOURCE_PATH = Path(__file__).parents[1] / 'resource'
-CHAR_PATH = RESOURCE_PATH / 'chars'
-STAND_PATH = RESOURCE_PATH / 'char_stand'
-WEAPON_PATH = RESOURCE_PATH / 'weapon'
 
 title_mask = Image.open(TEXT_PATH / 'title_mask.png')
 

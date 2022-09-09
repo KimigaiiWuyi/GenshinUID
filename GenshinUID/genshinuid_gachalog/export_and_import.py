@@ -1,12 +1,11 @@
 import json
-from pathlib import Path
 from datetime import datetime
 
 from httpx import get
 
 from .get_gachalogs import save_gachalogs
+from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 
-PLAYER_PATH = Path(__file__).parents[1] / 'player'
 INT_TO_TYPE = {
     '100': '新手祈愿',
     '200': '常驻祈愿',

@@ -1,34 +1,39 @@
-[tool.poetry]
+[project]
 name = "GenshinUID"
-version = "0.1.0"
+version = "3.1.0"
+authors = [
+    { name="KimigaiiWuyi", emali="444835641@qq.com" },
+]
 description = "基于HoshinoBot/NoneBot2/QQ官方频道Bot(PythonSDK)的原神Uid查询/原神Wiki/米社签到/树脂提醒插件"
-authors = ["Your Name <you@example.com>"]
-license = "GPL-3.0-or-later"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+readme = "README.md"
+dependencies = [
+    'nonebot2>=2.0.0-beta.4',
+    'nonebot-adapter-onebot>=2.1.1',
+    'httpx>=0.23.0',
+    'wordcloud>=1.8.2',
+    'numpy>=1.23.1',
+    'beautifulsoup4>=4.11.1',
+    'lxml>=4.9.1',
+    'openpyxl>=3.0.10',
+    'aiohttp>=3.8.1',
+    'SQLAlchemy>=1.4.39',
+    'Pillow>=9.2.0',
+    'scikit-learn>=1.1.2',
+    'shapely>=1.8.2',
+    'aiosqlite>=0.17.0',
+    'nonebot-plugin-apscheduler>=0.1.4',
+    'aiofiles>=0.8.0'
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-nonebot2 = "^2.0.0-beta.4"
-nonebot-adapter-onebot = "^2.1.1"
-httpx = "^0.23.0"
-wordcloud = "^1.8.2"
-numpy = "^1.23.1"
-beautifulsoup4 = "^4.11.1"
-lxml = "^4.9.1"
-openpyxl = "^3.0.10"
-aiohttp = "^3.8.1"
-SQLAlchemy = "^1.4.39"
-Pillow = "^9.2.0"
-scikit-learn = "^1.1.2"
-shapely = "^1.8.2"
-aiosqlite = "^0.17.0"
-nonebot-plugin-apscheduler = "^0.1.4"
-aiofiles = "^0.8.0"
+[project.optional-dependencies]
+dev = ['flake8>=4.0.1', 'black>=22.6.0', 'isort>=5.10.1', 'pre-commit>=2.20.0']
 
-[tool.poetry.dev-dependencies]
-flake8 = "^4.0.1"
-black = "^22.6.0"
-isort = "^5.10.1"
-pre-commit = "^2.20.0"
+[project.urls]
+"Homepage" = "https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1"
+"Documentation" = "https://github.com/KimigaiiWuyi/GenshinUID/wiki"
+"Bug Tracker" = "https://github.com/KimigaiiWuyi/GenshinUID/issues"
 
 [tool.black]
 line-length = 79
@@ -47,9 +52,5 @@ force_sort_within_sections = true
 extra_standard_library = ["typing_extensions"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[[tool.poetry.source]]
-name = 'aliyun.mirrors'
-url = "https://mirrors.aliyun.com/pypi/simple/"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

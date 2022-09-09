@@ -235,7 +235,9 @@ async def enka_to_data(
         fight_prop['physicalDmgSub'] = char["fightPropMap"]["29"]
         fight_prop['physicalDmgBonus'] = char["fightPropMap"]["30"]
         # 伤害加成
-        fight_prop['dmgBonus'] = char["fightPropMap"][PROP_ATTR_MAP[char_data['avatarElement']]]
+        fight_prop['dmgBonus'] = char["fightPropMap"][
+            PROP_ATTR_MAP[char_data['avatarElement']]
+        ]
 
         char_data['avatarFightProp'] = fight_prop
 

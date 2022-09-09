@@ -2,6 +2,7 @@ import asyncio
 import threading
 from pathlib import Path
 
+import aiofiles
 from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
@@ -26,7 +27,8 @@ HELP_IMG = Path(__file__).parent / 'help.png'
 )
 async def send_guide_pic(matcher: Matcher):
     logger.info('获得gs帮助图片成功！')
-    await matcher.finish(MessageSegment.image(HELP_IMG))
+    async with aiofiles.open(str(HELP_IMG)) as f:
+        await matcher.finish(MessageSegment.image(await f.read()))
 
 
 threading.Thread(

@@ -1,7 +1,8 @@
 from typing import Any, Tuple, Union
 
+from nonebot import on_regex
+from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import logger, on_regex
 from nonebot.params import Depends, RegexGroup
 from nonebot.adapters.onebot.v11 import (
     MessageSegment,

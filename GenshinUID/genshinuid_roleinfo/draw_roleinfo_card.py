@@ -10,18 +10,21 @@ from ..utils.download_resource.download_url import download_file
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from ..utils.download_resource.RESOURCE_PATH import (
+    REL_PATH,
+    CHAR_PATH,
+    TEXT2D_PATH,
+    WEAPON_PATH,
+    CHAR_STAND_PATH,
+)
 
 # 确定路径
 TEXT_PATH = Path(__file__).parent / 'texture2d'
-RESOURCE_PATH = Path(__file__).parents[1] / 'resource'
-CHAR_PATH = RESOURCE_PATH / 'chars'
-WEAPON_PATH = RESOURCE_PATH / 'weapon'
-CHAR_STAND_PATH = RESOURCE_PATH / 'char_stand'
-REL_PATH = RESOURCE_PATH / 'reliquaries'
-FETTER_PATH = RESOURCE_PATH / 'texture2d' / 'fetter'
-TALENT_PATH = RESOURCE_PATH / 'texture2d' / 'talent'
-WEAPON_BG_PATH = RESOURCE_PATH / 'texture2d' / 'weapon'
-LEVEL_PATH = RESOURCE_PATH / 'texture2d' / 'level'
+
+FETTER_PATH = TEXT2D_PATH / 'fetter'
+TALENT_PATH = TEXT2D_PATH / 'talent'
+WEAPON_BG_PATH = TEXT2D_PATH / 'weapon'
+LEVEL_PATH = TEXT2D_PATH / 'level'
 
 # 打开图片
 char_card_bg4 = Image.open(TEXT_PATH / 'char_card_bg4.png')

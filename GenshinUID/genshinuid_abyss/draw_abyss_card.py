@@ -11,13 +11,15 @@ from ..utils.download_resource.download_url import download_file
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from ..utils.download_resource.RESOURCE_PATH import (
+    CHAR_PATH,
+    TEXT2D_PATH,
+    CHAR_SIDE_PATH,
+    CHAR_STAND_PATH,
+)
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
-RESOURCE_PATH = Path(__file__).parents[1] / 'resource'
-CHAR_PATH = RESOURCE_PATH / 'chars'
-CHAR_STAND_PATH = RESOURCE_PATH / 'char_stand'
-CHAR_SIDE_PATH = RESOURCE_PATH / 'char_side'
-TALENT_PATH = RESOURCE_PATH / 'texture2d' / 'talent'
+TALENT_PATH = TEXT2D_PATH / 'talent'
 
 abyss_title_pic = Image.open(TEXT_PATH / 'abyss_title.png')
 char_mask = Image.open(TEXT_PATH / 'char_mask.png')

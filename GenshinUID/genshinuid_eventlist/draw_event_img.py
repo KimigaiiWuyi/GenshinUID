@@ -251,7 +251,7 @@ async def save_draw_event_img() -> None:
             value['start_time'] = await get_month_and_time(value['start_time'])
         if isinstance(value['end_time'], str):
             value['end_time'] = await get_month_and_time(value['end_time'])
-        event_img_draw.rectangle([(0, 0), (950, 10)], fill=event_color)
+        event_img_draw.rectangle(((0, 0), (950, 10)), fill=event_color)
         event_img_draw.polygon(
             [(32, 150), (32, 176), (55, 163)], fill=(243, 110, 110)
         )
@@ -277,8 +277,8 @@ async def save_draw_event_img() -> None:
         event_img.paste(img, (205, 10))
         event_img_draw = ImageDraw.Draw(event_img)
 
-        event_img_draw.rectangle([(0, 0), (950, 10)], fill=gacha_color)
-        event_img_draw.rectangle([(8, 45), (58, 75)], fill=gacha_color)
+        event_img_draw.rectangle(((0, 0), (950, 10)), fill=gacha_color)
+        event_img_draw.rectangle(((8, 45), (58, 75)), fill=gacha_color)
         event_img_draw.text((65, 60), '祈愿', text_color, font_m, anchor='lm')
         event_img_draw.polygon(
             [(32, 250), (32, 276), (55, 263)], fill=(243, 110, 110)

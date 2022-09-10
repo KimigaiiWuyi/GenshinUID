@@ -52,7 +52,7 @@ async def send_create_map_msg(bot: HoshinoBot, ev: CQEvent):
 @sv.on_rex(r'^(?P<name>.*)(在哪里|在哪|哪里有|哪儿有|哪有|在哪儿)$')
 @sv.on_rex(r'^(哪里有|哪儿有|哪有)(?P<name>.*)$')
 async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
-    args = ev['match'].groups()
+    args = ev['match'].groupdict().get('name')
     logger.info(f'[查找资源点]正在执行...当前地图为{MAP_ID_LIST[0].name}')
     logger.info('[查找资源点]参数: {}'.format(args))
 

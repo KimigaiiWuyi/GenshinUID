@@ -1,5 +1,5 @@
-import os.path
+from pathlib import Path
 
 from nonebot import load_plugins
 
-load_plugins(os.path.dirname(__file__))
+load_plugins(str(Path(__file__).parent / "GenshinUID"))

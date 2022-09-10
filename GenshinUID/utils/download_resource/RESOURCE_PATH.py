@@ -30,7 +30,7 @@ def init_dir():
         TEXT2D_PATH,
         PLAYER_PATH,
     ]:
-        i.mkdir(parents=True)
+        i.mkdir(parents=True, exist_ok=True)
 
 
 init_dir()

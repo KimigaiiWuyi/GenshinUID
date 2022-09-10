@@ -1,3 +1,4 @@
+import asyncio
 from pathlib import Path
 
 from bs4 import BeautifulSoup
@@ -64,6 +65,7 @@ async def download_all_file_from_miniggicu():
                 f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]中存在{len(data_list)}个内容!'
             )
             temp_num = 0
+            TASKS = []
             for data in data_list:
                 url = f'{file}/{data["href"]}'
                 name = data.text
@@ -73,8 +75,17 @@ async def download_all_file_from_miniggicu():
                         f'[minigg.icu]开始下载[{FILE_TO_NAME[file]}]_[{name}]...'
                     )
                     temp_num += 1
-                    await download_file(url, FILE_TO_PATH[file], name)
-                    logger.info('[minigg.icu]下载完成!')
+                    TASKS.append(
+                        asyncio.wait_for(
+                            download_file(url, FILE_TO_PATH[file], name),
+                            timeout=30,
+                        )
+                    )
+                    # await download_file(url, FILE_TO_PATH[file], name)
+                    if len(TASKS) >= 20:
+                        await asyncio.gather(*TASKS)
+                        TASKS = []
+                        logger.info('[minigg.icu]下载完成!')
             if temp_num == 0:
                 im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]无需下载!'
             else:

@@ -26,7 +26,11 @@ HELP_IMG = Path(__file__).parent / 'help.png'
 )
 async def send_guide_pic(matcher: Matcher):
     logger.info('获得gs帮助图片成功！')
-    await matcher.finish(MessageSegment.image(HELP_IMG))
+    if HELP_IMG.exists():
+        with open(HELP_IMG, 'rb') as f:
+            await matcher.finish(MessageSegment.image(f.read()))
+    else:
+        await matcher.finish('帮助图不存在!')
 
 
 threading.Thread(

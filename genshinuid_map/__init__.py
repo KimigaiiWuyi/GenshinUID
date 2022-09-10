@@ -72,7 +72,7 @@ async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
         )
         logger.info(f'本地未缓存,正在渲染...')
         im = await draw_genshin_map(MAP_ID_LIST[0], args)
-    if isinstance(im, str):
+    if isinstance(im, str) and im:
         await bot.send(ev, im)
     elif isinstance(im, bytes):
         im = await convert_img(im)

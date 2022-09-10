@@ -86,6 +86,9 @@ async def download_all_file_from_miniggicu():
                         await asyncio.gather(*TASKS)
                         TASKS = []
                         logger.info('[minigg.icu]下载完成!')
+                    await asyncio.gather(*TASKS)
+                    TASKS = []
+                    logger.info('[minigg.icu]下载完成!')
             if temp_num == 0:
                 im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]无需下载!'
             else:

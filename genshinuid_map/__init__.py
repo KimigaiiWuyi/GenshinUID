@@ -52,13 +52,11 @@ async def send_create_map_msg(bot: HoshinoBot, ev: CQEvent):
 @sv.on_rex(r'^(?P<name>.*)(在哪里|在哪|哪里有|哪儿有|哪有|在哪儿)$')
 @sv.on_rex(r'^(哪里有|哪儿有|哪有)(?P<name>.*)$')
 async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
-    args = ev['match'].groups()
+    args = ev['match'].groupdict().get('name')
     logger.info(f'[查找资源点]正在执行...当前地图为{MAP_ID_LIST[0].name}')
     logger.info('[查找资源点]参数: {}'.format(args))
 
-    if args[0]:
-        args = args[0]
-    else:
+    if not args:
         return
 
     im = ''
@@ -74,10 +72,8 @@ async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
         )
         logger.info(f'本地未缓存,正在渲染...')
         im = await draw_genshin_map(MAP_ID_LIST[0], args)
-    if isinstance(im, str):
-        await bot.send(ev, im)
-    elif isinstance(im, bytes):
-        im = await convert_img(im)
-        await bot.send(ev, im)
-    else:
-        await bot.send(ev, im)
+        if isinstance(im, str):
+            await bot.send(ev, im)
+        elif isinstance(im, bytes):
+            im = await convert_img(im)
+            await bot.send(ev, im)

@@ -77,5 +77,5 @@ async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
     elif isinstance(im, bytes):
         im = await convert_img(im)
         await bot.send(ev, im)
-    else:
+    elif im:
         await bot.send(ev, im)

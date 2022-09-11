@@ -22,6 +22,7 @@ from ..utils.download_resource.RESOURCE_PATH import (
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
 title_mask = Image.open(TEXT_PATH / 'title_mask.png')
+up_tag = Image.open(TEXT_PATH / 'up.png')
 
 gs_font_16 = genshin_font_origin(16)
 gs_font_23 = genshin_font_origin(23)
@@ -52,10 +53,13 @@ async def _draw_card(
     card_img_draw = ImageDraw.Draw(card_img)
     point = (1, 0)
     text_point = (55, 124)
+    is_up = False
     if type == '角色':
-        name = await name_to_avatar_id(name)
+        if name not in ['莫娜', '迪卢克', '七七', '刻晴', '琴']:
+            is_up = True
+        _id = await name_to_avatar_id(name)
         item_pic = (
-            Image.open(CHAR_PATH / f'{name}.png')
+            Image.open(CHAR_PATH / f'{_id}.png')
             .convert('RGBA')
             .resize((108, 108))
         )
@@ -75,6 +79,8 @@ async def _draw_card(
     card_img_draw.text(
         text_point, f'{gacha_num}抽', text_color, gs_font_23, 'mm'
     )
+    if is_up:
+        card_img.paste(up_tag, (47, -2), up_tag)
     img.paste(card_img, xy_point, card_img)
 
 

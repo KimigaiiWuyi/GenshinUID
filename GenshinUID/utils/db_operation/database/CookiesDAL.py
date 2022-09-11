@@ -1,7 +1,7 @@
-from typing import List, Union, Optional
+from typing import List, Optional
 
 from sqlalchemy.future import select
-from sqlalchemy import Column, update
+from sqlalchemy import delete, update
 from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,7 +20,7 @@ class CookiesDAL:
         except Exception:
             pass
         sql = select(NewCookiesTable).where(NewCookiesTable.UID == uid)
-        result = await self.db_session.execute(sql)  # type: ignore
+        result = await self.db_session.execute(sql)
         data = result.scalars().all()
         if data:
             return data[0]
@@ -73,7 +73,7 @@ class CookiesDAL:
           * ck_list (List[str]): Cookie列表。
         """
         sql = select(NewCookiesTable).where(NewCookiesTable.Cookies != '')
-        result = await self.db_session.execute(sql)  # type: ignore
+        result = await self.db_session.execute(sql)
         data = result.scalars().all()
         ck_list = []
         for item in data:
@@ -88,7 +88,7 @@ class CookiesDAL:
           * sk_list (List[str]): stoken列表。
         """
         sql = select(NewCookiesTable).where(NewCookiesTable.Stoken != '')
-        result = await self.db_session.execute(sql)  # type: ignore
+        result = await self.db_session.execute(sql)
         data = result.scalars().all()
         sk_list = []
         for item in data:
@@ -105,7 +105,7 @@ class CookiesDAL:
           * cookies (str): Cookies。
         """
         sql = select(CookiesCache).where(CookiesCache.UID == uid)
-        result = await self.db_session.execute(sql)  # type: ignore
+        result = await self.db_session.execute(sql)
         data = result.scalars().all()
         if data:
             return data[0].Cookies
@@ -127,7 +127,7 @@ class CookiesDAL:
             return cache_data
         else:
             sql = select(NewCookiesTable).order_by(func.random())
-            a = await self.db_session.execute(sql)  # type: ignore
+            a = await self.db_session.execute(sql)
             random_data = a.scalars().all()
             if random_data:
                 return_ck = random_data[0].Cookies
@@ -146,7 +146,7 @@ class CookiesDAL:
         else:
             temp = NewCookiesTable.StatusA
         sql = select(NewCookiesTable).filter(temp != 'off')
-        a = await self.db_session.execute(sql)  # type: ignore
+        a = await self.db_session.execute(sql)
         data_list = a.scalars().all()
         uid_list = []
         for data in data_list:
@@ -181,7 +181,7 @@ class CookiesDAL:
             MYSID=mysid,
         )
         self.db_session.add(new_cache)
-        await self.db_session.flush()  # type: ignore
+        await self.db_session.flush()
         return True
 
     async def add_cookie_db(self, userid: int, uid: str, cookies: str) -> bool:
@@ -201,7 +201,7 @@ class CookiesDAL:
                 .where(NewCookiesTable.UID == uid)
                 .values(Cookies=cookies)
             )
-            await self.db_session.execute(sql)  # type: ignore
+            await self.db_session.execute(sql)
         else:
             new_data = NewCookiesTable(
                 UID=int(uid),
@@ -215,7 +215,7 @@ class CookiesDAL:
                 Stoken=None,
             )
             self.db_session.add(new_data)
-        await self.db_session.flush()  # type: ignore
+        await self.db_session.flush()
         return True
 
     async def add_stoken_db(self, uid: str, stoken: str) -> str:
@@ -234,12 +234,30 @@ class CookiesDAL:
                 .where(NewCookiesTable.UID == uid)
                 .values(Stoken=stoken)
             )
-            await self.db_session.execute(sql)  # type: ignore
+            await self.db_session.execute(sql)
             msg = f'UID{uid}账户的Stoken绑定成功!'
         else:
             msg = '请先绑定Cookies~'
-        await self.db_session.flush()  # type: ignore
+        await self.db_session.flush()
         return msg
+
+    async def delete_user(self, uid: str) -> bool:
+        """
+        :说明:
+          从NewCookiesTable中删除一行用户数据
+        :参数:
+          * uid (int): UID。
+        :返回:
+          * msg (str): 更新文字信息。
+        """
+        if await self.user_exists(uid):
+            sql = delete(NewCookiesTable).where(
+                NewCookiesTable.UID == int(uid)
+            )
+            await self.db_session.execute(sql)
+            return True
+        else:
+            return False
 
     async def update_user_status(self, uid: str, data: dict) -> str:
         """
@@ -258,11 +276,11 @@ class CookiesDAL:
                 .where(NewCookiesTable.UID == uid)
                 .values(**data)
             )
-            await self.db_session.execute(sql)  # type: ignore
+            await self.db_session.execute(sql)
             msg = f'UID{uid}的推送状态更新成功!'
         else:
             msg = '请先绑定Cookies~'
-        await self.db_session.flush()  # type: ignore
+        await self.db_session.flush()
         return msg
 
     async def add_error_db(self, cookies: str, err: str) -> bool:
@@ -281,6 +299,6 @@ class CookiesDAL:
             .where(NewCookiesTable.Cookies == cookies)
             .values(Extra=err)
         )
-        await self.db_session.execute(sql)  # type: ignore
-        await self.db_session.flush()  # type: ignore
+        await self.db_session.execute(sql)
+        await self.db_session.flush()
         return True

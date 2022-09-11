@@ -1,76 +1,60 @@
 import asyncio
 import threading
+from typing import Optional
 
-from sqlalchemy import Column, String, Integer
-
-from .db_config import Base, engine
-
-
-class PushData(Base):
-    __tablename__ = 'PushData'
-    __table_args__ = {'extend_existing': True}
-
-    UID = Column(Integer, primary_key=True)
-    CoinPush = Column(String, nullable=True)
-    CoinValue = Column(Integer, nullable=True)
-    CoinIsPush = Column(String, nullable=True)
-    ResinPush = Column(String, nullable=True)
-    ResinValue = Column(Integer, nullable=True)
-    ResinIsPush = Column(String, nullable=True)
-    GoPush = Column(String, nullable=True)
-    GoValue = Column(Integer, nullable=True)
-    GoIsPush = Column(String, nullable=True)
-    TransformPush = Column(String, nullable=True)
-    TransformValue = Column(Integer, nullable=True)
-    TransformIsPush = Column(String, nullable=True)
+from .db_config import Field, SQLModel, engine
 
 
-class UidData(Base):
-    __tablename__ = 'UIDDATA'
-    __table_args__ = {'extend_existing': True}
-
-    USERID = Column(Integer, primary_key=True)
-    UID = Column(String, nullable=True)
-    MYSID = Column(String, nullable=True)
-
-
-class NewCookiesTable(Base):
-    __tablename__ = 'NewCookiesTable'
-    __table_args__ = {'extend_existing': True}
-
-    UID = Column(Integer, primary_key=True)
-    Cookies = Column(String, nullable=False)
-    QID = Column(Integer, nullable=False)
-    StatusA = Column(String, nullable=False)
-    StatusB = Column(String, nullable=False)
-    StatusC = Column(String, nullable=False)
-    NUM = Column(Integer, nullable=True)
-    Extra = Column(String, nullable=True)
-    Stoken = Column(String, nullable=True)
+class PushData(SQLModel, table=True):
+    UID: int = Field(default=100000000, primary_key=True)
+    CoinPush: Optional[str]
+    CoinValue: Optional[int]
+    CoinIsPush: Optional[str]
+    ResinPush: Optional[str]
+    ResinValue: Optional[int]
+    ResinIsPush: Optional[str]
+    GoPush: Optional[str]
+    GoValue: Optional[int]
+    GoIsPush: Optional[str]
+    TransformPush: Optional[str]
+    TransformValue: Optional[int]
+    TransformIsPush: Optional[str]
 
 
-class CookiesCache(Base):
-    __tablename__ = 'CookiesCache'
-    __table_args__ = {'extend_existing': True}
-
-    UID = Column(String, primary_key=True, nullable=True)
-    MYSID = Column(String, nullable=True)
-    Cookies = Column(String, nullable=False)
+class UidData(SQLModel, table=True):
+    USERID: int = Field(default=100000000, primary_key=True)
+    UID: Optional[str]
+    MYSID: Optional[str]
 
 
-class Config(Base):
-    __tablename__ = 'Config'
-    __table_args__ = {'extend_existing': True}
+class NewCookiesTable(SQLModel, table=True):
+    UID: int = Field(default=100000000, primary_key=True)
+    Cookies: str
+    QID: int
+    StatusA: str
+    StatusB: str
+    StatusC: str
+    NUM: Optional[int]
+    Extra: Optional[str]
+    Stoken: Optional[str]
 
-    Name = Column(String, primary_key=True)
-    Status = Column(String, nullable=True)
-    GroupList = Column(String, nullable=True)
-    Extra = Column(String, nullable=True)
+
+class CookiesCache(SQLModel, table=True):
+    UID: Optional[str] = Field(default='100000000', primary_key=True)
+    MYSID: Optional[str]
+    Cookies: str
+
+
+class Config(SQLModel, table=True):
+    Name: str = Field(default='Config', primary_key=True)
+    Status: Optional[str]
+    GroupList: Optional[str]
+    Extra: Optional[str]
 
 
 async def create_all():
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(SQLModel.metadata.create_all)
 
 
 threading.Thread(target=lambda: asyncio.run(create_all()), daemon=True).start()

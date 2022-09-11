@@ -15,7 +15,7 @@ class CookiesDAL:
     async def get_user_data(self, uid: str) -> Optional[NewCookiesTable]:
         try:
             await self.db_session.execute(
-                ('ALTER TABLE NewCookiesTable ' 'ADD COLUMN Stoken TEXT')
+                ('ALTER TABLE NewCookiesTable ' 'ADD COLUMN Stoken TEXT')  # type: ignore
             )
         except Exception:
             pass
@@ -34,7 +34,7 @@ class CookiesDAL:
         else:
             return {}
 
-    async def get_user_ck(self, uid: str) -> Union[Column[str], str]:
+    async def get_user_ck(self, uid: str) -> str:
         """
         :说明:
           获取Cookies
@@ -49,7 +49,7 @@ class CookiesDAL:
         else:
             return '该用户没有绑定过Cookies噢~'
 
-    async def get_user_stoken(self, uid: str) -> Union[Column[str], str]:
+    async def get_user_stoken(self, uid: str) -> Optional[str]:
         """
         :说明:
           获取Stoken
@@ -60,6 +60,7 @@ class CookiesDAL:
         """
         data = await self.get_user_data(uid)
         if data:
+            # 有可能返回None
             return data.Stoken
         else:
             return '该用户没有绑定过Stoken噢~'
@@ -94,7 +95,7 @@ class CookiesDAL:
             sk_list.append(item.Stoken)
         return sk_list
 
-    async def get_cache_ck(self, uid: str) -> Union[Column[str], str, None]:
+    async def get_cache_ck(self, uid: str) -> Optional[str]:
         """
         :说明:
           获取缓存Cookies
@@ -110,7 +111,7 @@ class CookiesDAL:
             return data[0].Cookies
         return None
 
-    async def get_random_ck(self, uid: str) -> Union[Column[str], str]:
+    async def get_random_ck(self, uid: str) -> str:
         """
         :说明:
           获取随机Cookies并写入缓存
@@ -203,7 +204,7 @@ class CookiesDAL:
             await self.db_session.execute(sql)  # type: ignore
         else:
             new_data = NewCookiesTable(
-                UID=uid,
+                UID=int(uid),
                 Cookies=cookies,
                 QID=userid,
                 StatusA='off',

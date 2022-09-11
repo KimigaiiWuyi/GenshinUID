@@ -284,6 +284,7 @@ class UidDataDAL:
           无返回值。
         """
         q = update(UidData).where(UidData.USERID == userid)
-        q = q.values(**data)
-        q.execution_options(synchronize_session="fetch")
-        await self.db_session.execute(q)  # type: ignore
+        if data is not None:
+            q = q.values(**data)
+            q.execution_options(synchronize_session="fetch")
+            await self.db_session.execute(q)  # type: ignore

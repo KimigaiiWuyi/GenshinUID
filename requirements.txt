@@ -12,5 +12,6 @@ Pillow>=9.2.0
 scikit-learn>=1.1.2
 shapely>=1.8.2
 aiosqlite>=0.17.0
+sqlmodel>=0.0.8
 pydantic
 # nonebot~=1.6.0

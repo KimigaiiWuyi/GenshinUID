@@ -5,7 +5,7 @@ from io import BytesIO
 from pathlib import Path
 from typing import Tuple, Union, Optional
 
-from httpx import get
+from httpx import get, head
 from PIL import Image, ImageDraw, ImageChops
 
 from ..utils.db_operation.db_operation import config_check
@@ -169,17 +169,25 @@ async def draw_char_img(
     char_level = raw_data['avatarLevel']
     char_fetter = raw_data['avatarFetter']
 
+    char_bytes = None
     if await config_check('RandomPic') and charUrl is None:
         if char_name == '旅行者':
             char_name_url = '荧'
         else:
             char_name_url = char_name
         charUrl = f'http://img.genshin.cherishmoon.fun/{char_name_url}'
+        char_data = get(charUrl, follow_redirects=True)
+        if char_data.headers['Content-Type'] == 'application/json':
+            charUrl = None
+        else:
+            char_bytes = char_data.content
 
     based_w, based_h = 600, 1200
     if charUrl:
         offset_x, offset_y = 200, 0
-        char_img = Image.open(BytesIO(get(charUrl).content)).convert('RGBA')
+        if char_bytes is None:
+            char_bytes = get(charUrl).content
+        char_img = Image.open(BytesIO(char_bytes)).convert('RGBA')
     else:
         if char_name in avatarOffsetMap:
             offset_x, offset_y = (

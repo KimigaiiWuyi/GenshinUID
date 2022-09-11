@@ -56,7 +56,7 @@ async def get_first_main(mainName: str) -> str:
 
 async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
     # print(prop)
-    percent = '0.0%'
+    percent = '0.0'
     weaponName = raw_data['weaponInfo']['weaponName']
 
     equipMain = ''
@@ -99,6 +99,8 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
         )
     print(seq)
 
+    if char_name not in dmgMap:
+        return percent
     std_prop = dmgMap[char_name]
     seq_temp = ''
     for std_seq in std_prop:

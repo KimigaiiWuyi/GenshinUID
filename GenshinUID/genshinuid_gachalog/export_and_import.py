@@ -72,7 +72,7 @@ async def export_gachalogs(uid: str) -> dict:
             'retcode': 'ok',
             'data': '导出成功!',
             'name': f'UIGF_{uid}.json',
-            'url': str(path / f'UIGF_{uid}.json'),
+            'url': str((path / f'UIGF_{uid}.json').absolute()),
         }
     else:
         im = {

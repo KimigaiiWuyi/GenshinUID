@@ -175,6 +175,17 @@ async def owner_cookies(uid: str) -> str:
             return str(owner_ck)
 
 
+async def delete_cookies(uid: str) -> str:
+    async with async_session() as session:  # type: ignore
+        async with session.begin():
+            Cookies = CookiesDAL(session)
+            result = await Cookies.delete_user(uid)
+            if result:
+                return '删除CK完成!'
+            else:
+                return '删除CK失败!'
+
+
 async def get_stoken(uid: str) -> str:
     async with async_session() as session:  # type: ignore
         async with session.begin():

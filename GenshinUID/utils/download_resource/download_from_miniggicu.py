@@ -78,11 +78,11 @@ async def download_all_file_from_miniggicu():
                     TASKS.append(
                         asyncio.wait_for(
                             download_file(url, FILE_TO_PATH[file], name),
-                            timeout=40,
+                            timeout=60,
                         )
                     )
                     # await download_file(url, FILE_TO_PATH[file], name)
-                    if len(TASKS) >= 20:
+                    if len(TASKS) >= 10:
                         await asyncio.gather(*TASKS)
                         TASKS = []
                         logger.info('[minigg.icu]下载完成!')

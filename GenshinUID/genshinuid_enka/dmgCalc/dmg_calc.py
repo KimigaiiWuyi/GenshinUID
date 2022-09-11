@@ -738,24 +738,26 @@ async def draw_dmgCacl_img(
         elif '提升' in power_name or '提高' in power_name:
             continue
         else:
+            # 暴击伤害
             crit_dmg = (
                 effect_prop * (power_percent + sp_power_percent) + power_value
             ) * (1 + critdmg_cal) * (
                 1 + dmgBonus_cal
             ) * d_cal * r * reaction_add_dmg + add_dmg
-            avg_dmg = (
-                (crit_dmg - add_dmg) * critrate_cal
-                + (1 - critrate_cal)
-                * (
-                    effect_prop * (power_percent + sp_power_percent)
-                    + power_value
-                )
-                * (1 + dmgBonus_cal)
-                * d_cal
-                * r
-                * reaction_add_dmg
-                + add_dmg
-            )
+            # 不暴击伤害
+            normal_dmg = (
+                effect_prop * (power_percent + sp_power_percent) + power_value
+            ) * (1 + dmgBonus_cal) * d_cal * r * reaction_add_dmg + add_dmg
+            # 平均伤害
+            avg_dmg = (crit_dmg - add_dmg) * critrate_cal + (
+                1 - critrate_cal
+            ) * normal_dmg
+            # 如果平均伤害超过了暴击伤害,则直接使用暴击伤害(暴击率>100)
+            if avg_dmg >= crit_dmg:
+                avg_dmg = crit_dmg
+            # 如果暴击率为负数,则期望伤害直接使用普通伤害
+            if critrate_cal <= 0:
+                avg_dmg = normal_dmg
 
         result_draw.text(
             (45, 22 + (index + 1) * 40),

@@ -11,7 +11,7 @@ from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.alias.avatarId_and_name_covert import name_to_avatar_id
 from ..utils.download_resource.RESOURCE_PATH import (
-    CHAR_SIDE_PATH as STAND_PATH,
+    CHAR_STAND_PATH as STAND_PATH,
 )
 from ..utils.download_resource.RESOURCE_PATH import (
     CHAR_PATH,

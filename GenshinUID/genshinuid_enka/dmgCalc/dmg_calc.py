@@ -110,7 +110,7 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
             break
         # 如果不完全相同, 但是杯子的主词条相同, 也可以使用这个
         if len(seq) >= 2 and len(std_seq['seq']) >= 2:
-            if std_seq['seq'][-2] == seq[-2]:
+            if std_seq['seq'][-2] == seq[-2] and seq_temp == '':
                 seq_temp = std_seq
     else:
         # 如果存在备选那就用备选
@@ -137,6 +137,8 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
     atk_val = 1
     if std['atk'] != 'any':
         atk_val = float(prop['attack'] / std['atk'])
+        if '防御力' in std['other']:
+            atk_val = (atk_val - 0.9) * 0.2 + 0.9
         f.append(atk_val)
 
     for i in std['other']:

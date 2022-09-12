@@ -45,7 +45,7 @@ async def panle2Json() -> None:
     char_result = []
     char_temp = ''
     title = 0
-    for row in range(9, 300):
+    for row in range(9, 400):
         temp = {}
         char_name = sheet.cell(row, 1).value
         if char_name and char_name != '角色':
@@ -94,7 +94,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 296:
+            if row == 303:
                 print('ok!')
                 result[char_temp] = char_result
         else:

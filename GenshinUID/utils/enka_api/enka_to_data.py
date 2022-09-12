@@ -6,10 +6,10 @@ from typing import Union, Optional
 from ...version import Genshin_version
 from .get_enka_data import get_enka_info
 from ..minigg_api.get_minigg_data import get_weapon_info
+from ..download_resource.RESOURCE_PATH import PLAYER_PATH
 
 R_PATH = Path(__file__).parent
 MAP_PATH = R_PATH / 'map'
-PLAYER_PATH = Path(__file__).parents[2] / 'player'
 
 version = Genshin_version
 
@@ -235,7 +235,9 @@ async def enka_to_data(
         fight_prop['physicalDmgSub'] = char["fightPropMap"]["29"]
         fight_prop['physicalDmgBonus'] = char["fightPropMap"]["30"]
         # 伤害加成
-        fight_prop['dmgBonus'] = char["fightPropMap"][PROP_ATTR_MAP[char_data['avatarElement']]]
+        fight_prop['dmgBonus'] = char["fightPropMap"][
+            PROP_ATTR_MAP[char_data['avatarElement']]
+        ]
 
         char_data['avatarFightProp'] = fight_prop
 

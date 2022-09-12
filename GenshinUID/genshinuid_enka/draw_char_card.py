@@ -235,11 +235,24 @@ async def draw_char_img(
     with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
         char_action = json.load(f)
     # 拿到倍率表
-    power_list = char_action[char_name]
-    new_prop = await calc_prop(raw_data, power_list)
     if char_name not in char_action:
+        power_list = char_action[char_name]
+        new_prop = await calc_prop(raw_data, {})
         dmg_img, dmg_len = Image.new('RGBA', (950, 1)), 0
     else:
+        power_list = char_action[char_name]
+        # 额外增加钟离倍率
+        if char_name == '钟离':
+            power_list['E总护盾量'] = {
+                'name': 'E总护盾量',
+                'type': '生命值',
+                'plus': 1,
+                'value': [
+                    f'{power_list["E护盾附加吸收量"]["value"][index]}+{i}'
+                    for index, i in enumerate(power_list['E护盾基础吸收量']['value'])
+                ],
+            }
+        new_prop = await calc_prop(raw_data, power_list)
         dmg_img, dmg_len = await draw_dmgCacl_img(
             raw_data, power_list, new_prop
         )

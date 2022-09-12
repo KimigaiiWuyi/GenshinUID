@@ -232,8 +232,10 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
         'physicalDmgBonus',
         'healBouns',
     ]:
-        if prop_attr in ['addDmg', 'd', 'r', 'ignoreDef']:
+        if prop_attr in ['addDmg', 'd', 'ignoreDef']:
             prop['{}'.format(prop_attr)] = 0
+        elif prop_attr == 'r':
+            prop['{}'.format(prop_attr)] = 0.1
         for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
             if prop_attr in [
                 'attack',
@@ -533,7 +535,7 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
                         ] += effect_value
             # 如果没有限制条件,直接增加
             else:
-                if effect_attr in ['a', 'r', 'addDmg', 'ignoreDef']:
+                if effect_attr in ['a', 'addDmg']:
                     pass
                 else:
                     for attr in ['A', 'B', 'C', 'E', 'Q']:
@@ -658,12 +660,12 @@ async def draw_dmgCacl_img(
             * (enemy_level + 100)
         )
         # 计算抗性区
-        if prop['r'] > 0.75:
-            r = 1 / (1 + 4 * prop['r'])
-        elif prop['r'] > 0:
-            r = 1 - prop['r']
+        if prop['{}_r'.format(attack_type)] > 0.75:
+            r = 1 / (1 + 4 * prop['{}_r'.format(attack_type)])
+        elif prop['{}_r'.format(attack_type)] > 0:
+            r = 1 - prop['{}_r'.format(attack_type)]
         else:
-            r = 1 - prop['r'] / 2
+            r = 1 - prop['{}_r'.format(attack_type)] / 2
 
         # 计算元素反应 增幅
         for reaction in ['蒸发', '融化']:
@@ -739,6 +741,8 @@ async def draw_dmgCacl_img(
             crit_dmg = avg_dmg = (
                 effect_prop * power_percent + power_value
             ) * (1 + prop['shieldBouns'])
+            if char_name == '钟离' and '总护盾量' in power_name:
+                crit_dmg = avg_dmg = avg_dmg * 1.5
         elif '提升' in power_name or '提高' in power_name:
             continue
         else:

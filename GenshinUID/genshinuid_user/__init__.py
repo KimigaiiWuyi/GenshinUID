@@ -33,9 +33,7 @@ async def send_bind_card(
     matcher: Matcher,
 ):
     logger.info('开始执行[查询用户绑定状态]')
-    qid = event.sender.user_id
-    if qid is None:
-        await matcher.finish('QID为空，请重试！')
+    qid = event.user_id
     im = await get_user_card(qid)
     logger.info('[查询用户绑定状态]完成!等待图片发送中...')
     await matcher.finish(MessageSegment.image(im))
@@ -47,9 +45,7 @@ async def send_add_ck_msg(
     event: MessageEvent, matcher: Matcher, args: Message = CommandArg()
 ):
     mes = args.extract_plain_text().strip().replace(' ', '')
-    qid = event.sender.user_id
-    if qid is None:
-        await matcher.finish('QID为空，请重试！')
+    qid = event.user_id
     im = await deal_ck(mes, qid)
     if isinstance(im, str):
         await matcher.finish(im)
@@ -64,9 +60,7 @@ async def send_link_uid_msg(
 ):
     logger.info('开始执行[绑定/解绑用户信息]')
     logger.info('[绑定/解绑]参数: {}'.format(args))
-    qid = event.sender.user_id
-    if qid is None:
-        await matcher.finish('QID为空，请重试！')
+    qid = event.user_id
     logger.info('[绑定/解绑]UserID: {}'.format(qid))
 
     if args[0] in ('绑定'):

@@ -26,7 +26,7 @@ all_bbscoin_recheck = on_command(
 @handle_exception('获取米游币')
 async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
     await matcher.send('开始操作……', at_sender=True)
-    qid = int(event.sender.user_id)  # type: ignore
+    qid = event.user_id
     im = await mihoyo_coin(qid)
     await matcher.finish(im, at_sender=True)
 

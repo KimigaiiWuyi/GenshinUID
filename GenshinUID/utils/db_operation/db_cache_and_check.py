@@ -26,7 +26,9 @@ async def check_db():
     for row in c_data:
         try:
             aid = re.search(r'account_id=(\d*)', row[1])
-            mihoyo_id_data = aid.group(0).split('=')  # type: ignore
+            if not aid:
+                raise Exception('cannot match account_id')
+            mihoyo_id_data = aid.group(0).split('=')
             mihoyo_id = mihoyo_id_data[1]
             mys_data = await get_mihoyo_bbs_info(mihoyo_id, row[1])
             for i in mys_data['data']['list']:

@@ -36,7 +36,7 @@ async def get_sign_func(
     matcher: Matcher,
 ):
     logger.info('开始执行[签到]')
-    qid = int(event.sender.user_id)  # type: ignore
+    qid = event.user_id
     logger.info('[签到]QQ号: {}'.format(qid))
     uid = await select_db(qid, mode='uid')
     logger.info('[签到]UID: {}'.format(uid))

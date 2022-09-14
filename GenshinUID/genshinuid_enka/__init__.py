@@ -202,7 +202,7 @@ async def send_card_info(
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-    qid = int(event.sender.user_id)  # type: ignore
+    qid = event.user_id
 
     if len(uid) >= 1:
         uid = uid[0]
@@ -260,9 +260,7 @@ async def send_charcard_list(
         uid = await select_db(at, mode='uid')
         message = message.replace(str(at), '')
     else:
-        uid = await select_db(
-            int(event.sender.user_id), mode='uid'  # type: ignore
-        )
+        uid = await select_db(event.user_id, mode='uid')
     im = await draw_cahrcard_list(str(uid), limit)
 
     logger.info(f'UID{uid}获取角色数据成功！')

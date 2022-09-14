@@ -82,7 +82,7 @@ async def get_all_stoken() -> List:
             return lst
 
 
-async def select_db(userid, mode='auto') -> Union[List, str, None]:
+async def select_db(userid: int, mode: str = 'auto') -> Union[List[str], str, None]:
     """
     :说明:
       选择绑定uid/mys库

@@ -18,7 +18,10 @@ path = Path(__file__).parents[1] / 'genshinuid_adv'
 wb = load_workbook(str(path / 'Genshin All Char.xlsx'))
 ws = wb.active
 for char_i in range(2, 336, 5):  # 角色行
-    char_name = ws.cell(char_i, 1).value.replace('\n', '')  # type: ignore
+    char = ws.cell(char_i, 1).value
+    if not isinstance(char, str):
+        continue
+    char_name = char.replace('\n', '')
     char_sample = copy.deepcopy(sample)
     for i in range(5):
         row = i + char_i

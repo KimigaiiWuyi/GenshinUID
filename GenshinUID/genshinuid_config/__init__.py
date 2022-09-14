@@ -61,7 +61,7 @@ async def send_config_msg(
 ):
     logger.info('开始执行[设置阈值信息]')
     logger.info('[设置阈值信息]参数: {}'.format(args))
-    qid = event.sender.user_id
+    qid = event.user_id
     at = custom.get_first_at()
 
     if at and await SUPERUSER(bot, event):
@@ -97,9 +97,8 @@ async def open_switch_func(
     args: Tuple[Any, ...] = RegexGroup(),
     at: ImageAndAt = Depends(),
 ):
-    qid = event.sender.user_id
-    if at:
-        at = at.get_first_at()  # type: ignore
+    qid = event.user_id
+    atqq = at.get_first_at() if at else None
 
     config_name = args[4]
 
@@ -116,20 +115,20 @@ async def open_switch_func(
         query = 'CLOSED'
         gid = 'off'
     is_admin = await SUPERUSER(bot, event)
-    if at and is_admin:
-        qid = at
-    elif at and at != qid:
-        await matcher.finish('你没有权限操作别人的状态噢~', at_sender=True)
+    if atqq:
+        if is_admin:
+            qid = atqq
+        elif atqq != qid:
+            await matcher.finish('你没有权限操作别人的状态噢~', at_sender=True)
 
-    try:
-        uid = await select_db(qid, mode='uid')
-    except TypeError:
+    uid = await select_db(qid, mode='uid')
+    if uid is None or not isinstance(uid, str) or not uid.isdecimal():
         await matcher.finish(UID_HINT)
 
     im = await set_config_func(
         config_name=config_name,
-        uid=uid,  # type: ignore
-        qid=qid,  # type: ignore
+        uid=uid,
+        qid=str(qid),
         option=gid,
         query=query,
         is_admin=is_admin,

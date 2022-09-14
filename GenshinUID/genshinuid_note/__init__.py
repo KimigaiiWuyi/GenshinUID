@@ -20,7 +20,7 @@ async def send_monthly_data(
     event: MessageEvent,
     matcher: Matcher,
 ):
-    qid = event.sender.user_id
+    qid = event.user_id
     uid = await select_db(qid, mode='uid')
     if isinstance(uid, str):
         if '未找到绑定的UID' in uid:

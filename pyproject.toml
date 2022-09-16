@@ -25,7 +25,10 @@ dependencies = [
     'aiosqlite>=0.17.0',
     'nonebot-plugin-apscheduler>=0.1.4',
     'aiofiles>=0.8.0',
-    'sqlmodel>=0.0.8'
+    'sqlmodel>=0.0.8',
+    'GitPython>=3.1.27',
+    'fastapi_amis_admin>=0.2.1',
+    'fastapi_user_auth>=0.2.1'
 ]
 
 [project.optional-dependencies]

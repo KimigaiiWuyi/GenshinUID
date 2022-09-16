@@ -28,6 +28,7 @@ if get_plugin_by_module_name("GenshinUID"):
             'GenshinUID.genshinuid_user',
             'GenshinUID.genshinuid_wikitext',
             'GenshinUID.genshinuid_webconsole',
+            'GenshinUID.genshinuid_update',
         ],
         [],
     )

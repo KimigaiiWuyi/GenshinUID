@@ -22,6 +22,7 @@ SWITCH_MAP = {
     '定时米游币': 'SchedMhyBBSCoin',
     '催命模式': 'CrazyNotice',
     '网页控制台': 'OpenWeb',
+    '重启使用Poetry': 'UsePoetry',
 }
 
 PUSH_MAP = {

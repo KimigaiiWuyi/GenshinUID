@@ -19,6 +19,6 @@ async def send_update_msg(bot: HoshinoBot, ev: CQEvent):
     if args[2] is None:
         level -= 1
     logger.info(f'[gs更新] 更新等级为{level}')
-
+    await bot.send(ev, f'开始执行[gs更新], 执行等级为{level}')
     im = await update_genshinuid(level)
     await bot.send(ev, im)

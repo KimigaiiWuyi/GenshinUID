@@ -18,7 +18,10 @@ gs_update = on_regex(
 )
 
 
-@get_driver().on_bot_connect
+driver = get_driver()
+
+
+@driver.on_bot_connect
 async def _():
     logger.info('检查遗留信息...')
     bot = get_bot()

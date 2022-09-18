@@ -28,7 +28,7 @@ async def update_genshinuid(
         logger.info(f'[gs更新] {pull_log}')
         im = '更新成功!'
     except GitCommandError as e:
-        im = f'更新失败!错误信息为{e}!\n >> 可以尝试使用[gs强制更新]或者[gs强行强制更新](危险)!'
+        im = f'更新失败!错误信息为{e}!\n >> 可以尝试使用\n >> [gs强制更新](危险)\n >> [gs强行强制更新](超级危险)!'
 
     commits = list(repo.iter_commits(max_count=10))
     log_list = []

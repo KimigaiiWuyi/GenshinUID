@@ -46,14 +46,8 @@ async def restart_genshinuid(send_type: str, send_id: str) -> None:
     if platform.system() == 'Linux':
         os.execl(str(restart_sh_path), ' ')
     else:
-        args = sys.argv
-        for index, arg in enumerate(args):
-            if 'nb' in arg:
-                args[index] = 'nb'
-                break
-        else:
-            extra += sys.executable
-        subprocess.Popen(f'{extra} {" ".join(args)} ', shell=True)
+        extra += sys.executable
+        subprocess.Popen(f'{extra} {str(bot_start)} ', shell=True)
 
 
 async def restart_message() -> dict:

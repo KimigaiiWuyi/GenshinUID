@@ -30,7 +30,7 @@ async def update_genshinuid(
     except GitCommandError as e:
         im = f'更新失败!错误信息为{e}!\n >> 可以尝试使用\n >> [gs强制更新](危险)\n >> [gs强行强制更新](超级危险)!'
 
-    commits = list(repo.iter_commits(max_count=10))
+    commits = list(repo.iter_commits(max_count=16))
     log_list = []
     for commit in commits:
         if isinstance(commit.message, str):

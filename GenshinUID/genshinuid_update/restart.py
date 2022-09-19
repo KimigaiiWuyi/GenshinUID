@@ -8,7 +8,7 @@ from pathlib import Path
 
 from ..utils.db_operation.db_operation import config_check
 
-bot_start = Path().cwd() / 'bot.py'
+bot_start = Path().cwd() / 'run.py'
 restart_sh_path = Path().cwd() / 'gs_restart.sh'
 update_log_path = Path(__file__).parent / 'update_log.json'
 

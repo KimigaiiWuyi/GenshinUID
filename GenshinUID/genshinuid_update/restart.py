@@ -18,7 +18,7 @@ kill -9 {}
 
 
 async def get_restart_sh(extra: str) -> str:
-    args = f'{extra}python {str(bot_start.absolute())}'
+    args = f'{extra} {str(bot_start.absolute())}'
     return _restart_sh.format(str(bot_start.absolute()), args)
 
 
@@ -26,6 +26,7 @@ async def restart_genshinuid(send_type: str, send_id: str) -> None:
     extra = ''
     if await config_check('UsePoetry'):
         extra = 'poetry run '
+    extra += sys.executable
     restart_sh = await get_restart_sh(extra)
     if not restart_sh_path.exists():
         with open(restart_sh_path, "w", encoding="utf8") as f:
@@ -46,8 +47,11 @@ async def restart_genshinuid(send_type: str, send_id: str) -> None:
     if platform.system() == 'Linux':
         os.execl(str(restart_sh_path), ' ')
     else:
-        extra += sys.executable
-        subprocess.Popen(f'{extra} {str(bot_start)} ', shell=True)
+        pid = os.getpid()
+        subprocess.Popen(
+            f'taskkill /F /PID {pid} & {extra} {bot_start}',
+            shell=True,
+        )
 
 
 async def restart_message() -> dict:

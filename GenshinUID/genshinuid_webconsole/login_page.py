@@ -1,6 +1,6 @@
 from fastapi import Request
 import fastapi_amis_admin  # 不能删
-from nonebot.typing import overrides
+from .nb2 import overrides
 from fastapi_user_auth import admin as user_auth_admin
 from fastapi_amis_admin.admin import admin as amis_admin
 from fastapi_amis_admin.amis.components import App, Tpl, Grid, Html, Page

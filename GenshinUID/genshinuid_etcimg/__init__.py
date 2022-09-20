@@ -4,7 +4,7 @@ from ..all_import import *
 
 PRIMOGEMS_DATA_PATH = Path(__file__).parent / 'primogems_data'
 IMG_PATH = Path(__file__).parent / 'img_data'
-version = ['3.0', '2.8']
+version = ['3.0', '3.1']
 
 
 @sv.on_rex(r'(版本规划|原石预估)(\S+)?')

@@ -47,8 +47,12 @@ async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
     else:
         img = f'{version[0]}.png'
     primogems_img = PRIMOGEMS_DATA_PATH / img
-    logger.info('[图片][版本规划]访问图片: {}'.format(img))
-    await matcher.finish(MessageSegment.image(primogems_img))
+    if primogems_img.exists():
+        logger.info('[图片][版本规划]访问图片: {}'.format(img))
+        with open(primogems_img, 'rb') as f:
+            await matcher.finish(MessageSegment.image(f.read()))
+    else:
+        return
 
 
 @get_img_data.handle()
@@ -80,6 +84,7 @@ async def send_img_data(
     logger.info('[图片][杂图]参数: {}'.format(args))
     img = IMG_PATH / f'{args[1]}.jpg'
     if img.exists():
-        await matcher.finish(MessageSegment.image(img))
+        with open(img, 'rb') as f:
+            await matcher.finish(MessageSegment.image(f.read()))
     else:
         return

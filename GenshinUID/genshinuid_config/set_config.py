@@ -23,6 +23,7 @@ SWITCH_MAP = {
     '催命模式': 'CrazyNotice',
     '网页控制台': 'OpenWeb',
     '重启使用Poetry': 'UsePoetry',
+    '旧面板': 'OldPanle',
 }
 
 PUSH_MAP = {

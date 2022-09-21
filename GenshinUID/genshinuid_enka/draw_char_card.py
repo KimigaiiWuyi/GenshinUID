@@ -5,9 +5,10 @@ from io import BytesIO
 from pathlib import Path
 from typing import Tuple, Union, Optional
 
-from httpx import get, head
+from httpx import get
 from PIL import Image, ImageDraw, ImageChops
 
+from .propCalc.prop_calc import get_card_prop
 from ..utils.db_operation.db_operation import config_check
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
@@ -163,8 +164,10 @@ async def get_all_artifacts_value(
 
 
 async def draw_char_img(
-    raw_data: dict, charUrl: Optional[str] = None
+    raw_data: dict, weapon: Optional[str] = None, charUrl: Optional[str] = None
 ) -> bytes:
+    if not await config_check('OldPanle'):
+        raw_data = await get_card_prop(raw_data, weapon)
     char_name = raw_data['avatarName']
     char_level = raw_data['avatarLevel']
     char_fetter = raw_data['avatarFetter']

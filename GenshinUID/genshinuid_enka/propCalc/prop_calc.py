@@ -119,7 +119,7 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
         weapon_info['weaponStats'][0]['statValue'] = round(
             weapon_level_data['attack']
         )
-        weapon_info['weaponStats'][1]['statNmae'] = weapon_raw_data['substat']
+        weapon_info['weaponStats'][1]['statName'] = weapon_raw_data['substat']
         if weapon_raw_data['substat'] == '元素精通':
             fake_value = round(weapon_level_data['specialized'])
         else:
@@ -127,6 +127,12 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
                 '{:.2f}'.format(weapon_level_data['specialized'] * 100)
             )
         weapon_info['weaponStats'][1]['statValue'] = fake_value
+        if 'effect' in weapon_raw_data:
+            weapon_info['weaponEffect'] = weapon_raw_data['effect'].format(
+                *weapon_raw_data['r{}'.format(str(weapon_info['weaponAffix']))]
+            )
+        else:
+            weapon_info['weaponEffect'] = '无特效。'
         raw_data['weaponInfo'] = weapon_info
 
     # 武器基本属性
@@ -262,14 +268,18 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
             if effect_base == 'hp':
                 for i in MIN_MAP:
                     if effect_attr == i:
-                        fight_prop[MIN_MAP[i]] += effect_value * tempHp
+                        if effect_attr == 'attack':
+                            effect_now = 'exAtk'
+                        else:
+                            effect_now = MIN_MAP[i]
+                        fight_prop[effect_now] += effect_value * tempHp
                         break
             elif effect_base == 'ce':
                 for i in MIN_MAP:
                     if effect_attr == i:
-                        fight_prop[MIN_MAP[i]] += (
-                            effect_value - 1
-                        ) * fight_prop['energyRecharge']
+                        fight_prop[MIN_MAP[i]] += effect_value * (
+                            fight_prop['energyRecharge'] - 1
+                        )
                         break
             elif effect_base == 'attack':
                 for i in MIN_MAP:

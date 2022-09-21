@@ -165,9 +165,11 @@ async def get_all_artifacts_value(
 
 async def draw_char_img(
     raw_data: dict, weapon: Optional[str] = None, charUrl: Optional[str] = None
-) -> bytes:
+) -> Union[bytes, str]:
     if not await config_check('OldPanle'):
         raw_data = await get_card_prop(raw_data, weapon)
+        if raw_data == {}:
+            return '要替换的武器不正确或发生了未知错误~'
     char_name = raw_data['avatarName']
     char_level = raw_data['avatarLevel']
     char_fetter = raw_data['avatarFetter']

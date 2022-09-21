@@ -110,7 +110,12 @@ async def send_char_info(
         await matcher.finish(UID_HINT)
 
     # 获取角色名
-    char_name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    msg = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    msg_list = msg.split('换')
+    char_name = msg_list[0]
+    weapon = None
+    if len(msg_list) > 1:
+        weapon = msg_list[1]
 
     player_path = PLAYER_PATH / str(uid)
     if char_name == '展柜角色':
@@ -134,7 +139,7 @@ async def send_char_info(
         else:
             await matcher.finish(CHAR_HINT.format(char_name), at_sender=True)
 
-    im = await draw_char_img(char_data, img)
+    im = await draw_char_img(char_data, weapon, img)
 
     if isinstance(im, str):
         await matcher.finish(im)

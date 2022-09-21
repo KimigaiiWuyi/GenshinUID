@@ -40,7 +40,13 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
     if args[4] is None:
         return
     else:
-        char_name = args[4]
+        # 获取角色名
+        msg = ''.join(re.findall('[\u4e00-\u9fa5]', args[4]))
+        msg_list = msg.split('换')
+        char_name = msg_list[0]
+        weapon = None
+        if len(msg_list) > 1:
+            weapon = msg_list[1]
     logger.info('开始执行[查询角色面板]')
     logger.info('[查询角色面板]参数: {}'.format(args))
     # 获取角色名
@@ -94,7 +100,7 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
             await bot.send(ev, CHAR_HINT.format(char_name), at_sender=True)
             return
 
-    im = await draw_char_img(char_data, img)
+    im = await draw_char_img(char_data, weapon, img)
 
     if isinstance(im, str):
         await bot.send(ev, im)

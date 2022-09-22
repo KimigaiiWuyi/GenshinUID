@@ -129,7 +129,10 @@ async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
                     g[k['name']] += 1
                 else:
                     g[k['name']] = 1
-            total_data[i]['item'] = max(g, key=lambda x: g[x])
+            if len(g) >= 1:
+                total_data[i]['item'] = max(g, key=lambda x: g[x])
+            else:
+                total_data[i]['item'] = '早柚'
 
         total_data[i]['item'] = await name_to_avatar_id(total_data[i]['item'])
         total_data[i]['remain'] = num - 1

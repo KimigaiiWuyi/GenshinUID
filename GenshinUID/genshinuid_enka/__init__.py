@@ -12,6 +12,13 @@ from ..utils.message.error_reply import *  # noqa: F401,F403
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 
+CONVERT_TO_INT = {
+    '一': 1,
+    '二': 2,
+    '三': 3,
+    '四': 4,
+    '五': 5,
+}
 AUTO_REFRESH = False
 
 
@@ -45,8 +52,13 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
         msg_list = msg.split('换')
         char_name = msg_list[0]
         weapon = None
+        weapon_affix = None
         if len(msg_list) > 1:
-            weapon = msg_list[1]
+            if '精' in msg_list[1] and msg_list[1][1] in CONVERT_TO_INT:
+                weapon_affix = CONVERT_TO_INT[msg_list[1][1]]
+                weapon = msg_list[1][2:]
+            else:
+                weapon = msg_list[1]
     logger.info('开始执行[查询角色面板]')
     logger.info('[查询角色面板]参数: {}'.format(args))
     # 获取角色名
@@ -100,7 +112,7 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
             await bot.send(ev, CHAR_HINT.format(char_name), at_sender=True)
             return
 
-    im = await draw_char_img(char_data, weapon, img)
+    im = await draw_char_img(char_data, weapon, weapon_affix, img)
 
     if isinstance(im, str):
         await bot.send(ev, im)

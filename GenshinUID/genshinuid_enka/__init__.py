@@ -37,6 +37,13 @@ get_char_info = on_command(
     priority=priority,
 )
 
+CONVERT_TO_INT = {
+    '一': 1,
+    '二': 2,
+    '三': 3,
+    '四': 4,
+    '五': 5,
+}
 AUTO_REFRESH = False
 refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
@@ -114,8 +121,13 @@ async def send_char_info(
     msg_list = msg.split('换')
     char_name = msg_list[0]
     weapon = None
+    weapon_affix = None
     if len(msg_list) > 1:
-        weapon = msg_list[1]
+        if '精' in msg_list[1] and msg_list[1][1] in CONVERT_TO_INT:
+            weapon_affix = CONVERT_TO_INT[msg_list[1][1]]
+            weapon = msg_list[1][2:]
+        else:
+            weapon = msg_list[1]
 
     player_path = PLAYER_PATH / str(uid)
     if char_name == '展柜角色':
@@ -139,7 +151,7 @@ async def send_char_info(
         else:
             await matcher.finish(CHAR_HINT.format(char_name), at_sender=True)
 
-    im = await draw_char_img(char_data, weapon, img)
+    im = await draw_char_img(char_data, weapon, weapon_affix, img)
 
     if isinstance(im, str):
         await matcher.finish(im)

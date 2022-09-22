@@ -112,13 +112,18 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
     if weapon:
         weapon_info = deepcopy(baseWeaponInfo)
         weapon_raw_data = await get_weapon_info(weapon)
+        weapon_info['weaponStar'] = int(weapon_raw_data['rarity'])
         if 'errcode' in weapon_raw_data:
             return {}
-        weapon_level_data = await get_weapon_info(weapon, '90')
+        if weapon_info['weaponStar'] >= 3:
+            weapon_level_data = await get_weapon_info(weapon, '90')
+            weapon_info['weaponLevel'] = 90
+            weapon_info['promoteLevel'] = 6
+        else:
+            weapon_level_data = await get_weapon_info(weapon, '70')
+            weapon_info['weaponLevel'] = 70
+            weapon_info['promoteLevel'] = 4
         weapon_info['weaponName'] = weapon_raw_data['name']
-        weapon_info['weaponStar'] = int(weapon_raw_data['rarity'])
-        weapon_info['promoteLevel'] = 6
-        weapon_info['weaponLevel'] = 90
         if weapon_info['weaponStar'] >= 5:
             weapon_info['weaponAffix'] = 1
         else:

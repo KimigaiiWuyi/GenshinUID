@@ -14,6 +14,9 @@ with open(PATH / 'base_weapons.json', 'r', encoding='UTF-8') as f:
 with open(PATH / 'base_artifacts.json', 'r', encoding='UTF-8') as f:
     base_artifacts = json.load(f)
 
+with open(PATH / 'base_skills.json', 'r', encoding='UTF-8') as f:
+    base_skills = json.load(f)
+
 ELEMENT_MAP = {
     '风': 'Anemo',
     '冰': 'Cryo',
@@ -82,6 +85,7 @@ ATTR_MAP = {
     '暴击率': 'critRate',
     '攻击力': 'addAtk',
     '防御力': 'addDef',
+    '生命值': 'addHp',
 }
 
 MIN_MAP = {
@@ -102,7 +106,7 @@ MIN_MAP = {
 
 async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
     char_name = raw_data['avatarName']
-    char_level = raw_data['avatarLevel']
+    char_level = int(raw_data['avatarLevel'])
     char_element = raw_data['avatarElement']
 
     if weapon:
@@ -115,18 +119,24 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
         weapon_info['weaponStar'] = int(weapon_raw_data['rarity'])
         weapon_info['promoteLevel'] = 6
         weapon_info['weaponLevel'] = 90
-        weapon_info['weaponAffix'] = 1
+        if weapon_info['weaponStar'] >= 5:
+            weapon_info['weaponAffix'] = 1
+        else:
+            weapon_info['weaponAffix'] = 5
         weapon_info['weaponStats'][0]['statValue'] = round(
             weapon_level_data['attack']
         )
-        weapon_info['weaponStats'][1]['statName'] = weapon_raw_data['substat']
-        if weapon_raw_data['substat'] == '元素精通':
-            fake_value = round(weapon_level_data['specialized'])
-        else:
-            fake_value = float(
-                '{:.2f}'.format(weapon_level_data['specialized'] * 100)
-            )
-        weapon_info['weaponStats'][1]['statValue'] = fake_value
+        if weapon_raw_data['substat'] != '':
+            weapon_info['weaponStats'][1]['statName'] = weapon_raw_data[
+                'substat'
+            ]
+            if weapon_raw_data['substat'] == '元素精通':
+                fake_value = round(weapon_level_data['specialized'])
+            else:
+                fake_value = float(
+                    '{:.2f}'.format(weapon_level_data['specialized'] * 100)
+                )
+            weapon_info['weaponStats'][1]['statValue'] = fake_value
         if 'effect' in weapon_raw_data:
             weapon_info['weaponEffect'] = weapon_raw_data['effect'].format(
                 *weapon_raw_data['r{}'.format(str(weapon_info['weaponAffix']))]
@@ -146,7 +156,7 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
 
     char_raw = await get_char_info(name=char_name, mode='char')
     char_data = await get_char_info(
-        name=char_name, mode='char', level=char_level
+        name=char_name, mode='char', level=str(char_level)
     )
     if char_data is None or isinstance(char_data, List):
         return {}
@@ -230,6 +240,10 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
             sub_value = sub['statValue']
             all_effects.append(await text_to_effect(sub_name, sub_value))
 
+    for skill in base_skills[char_name]:
+        if char_level >= int(skill):
+            all_effects.append(base_skills[char_name][skill])
+
     add_effects: List[str] = []
     print(all_effects)
     for effect in all_effects:
@@ -277,6 +291,8 @@ async def get_card_prop(raw_data: dict, weapon: Optional[str] = None) -> dict:
             elif effect_base == 'ce':
                 for i in MIN_MAP:
                     if effect_attr == i:
+                        if effect_attr == 'dmgBonus':
+                            effect_value *= 100
                         fight_prop[MIN_MAP[i]] += effect_value * (
                             fight_prop['energyRecharge'] - 1
                         )

@@ -1,0 +1,989 @@
+{
+  "恶王丸": {
+    "1": "Q:dmgBonus+40",
+    "2": "Q:dmgBonus+50",
+    "3": "Q:dmgBonus+60",
+    "4": "Q:dmgBonus+70",
+    "5": "Q:dmgBonus+80"
+  },
+  "暗巷猎手": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "天目影打刀": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "阿莫斯之弓": {
+    "1": "AB:dmgBonus+52",
+    "2": "AB:dmgBonus+65",
+    "3": "AB:dmgBonus+78",
+    "4": "AB:dmgBonus+91",
+    "5": "AB:dmgBonus+104"
+  },
+  "学徒笔记": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "若水": {
+    "1": "dmgBonus+20",
+    "2": "dmgBonus+25",
+    "3": "dmgBonus+30",
+    "4": "dmgBonus+35",
+    "5": "dmgBonus+40"
+  },
+  "风鹰剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "新手长枪": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "黑岩绯玉": {
+    "1": "attack+36",
+    "2": "attack+45",
+    "3": "attack+54",
+    "4": "attack+63",
+    "5": "attack+72"
+  },
+  "黑岩长剑": {
+    "1": "attack+36",
+    "2": "attack+45",
+    "3": "attack+54",
+    "4": "attack+63",
+    "5": "attack+72"
+  },
+  "黑岩刺枪": {
+    "1": "attack+36",
+    "2": "attack+45",
+    "3": "attack+54",
+    "4": "attack+63",
+    "5": "attack+72"
+  },
+  "黑岩斩刀": {
+    "1": "attack+36",
+    "2": "attack+45",
+    "3": "attack+54",
+    "4": "attack+63",
+    "5": "attack+72"
+  },
+  "黑岩战弓": {
+    "1": "attack+36",
+    "2": "attack+45",
+    "3": "attack+54",
+    "4": "attack+63",
+    "5": "attack+72"
+  },
+  "黑缨枪": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "沐浴龙血的剑": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "息灾": {
+    "1": "attack+19.2",
+    "2": "attack+24",
+    "3": "attack+28.8",
+    "4": "attack+33.6",
+    "5": "attack+38.4"
+  },
+  "辰砂之纺锤": {
+    "1": "E:addDmg+40%defense",
+    "2": "E:addDmg+50%defense",
+    "3": "E:addDmg+60%defense",
+    "4": "E:addDmg+70%defense",
+    "5": "E:addDmg+80%defense"
+  },
+  "钢轮弓": {
+    "1": "attack+16",
+    "2": "attack+20",
+    "3": "attack+24",
+    "4": "attack+28",
+    "5": "attack+32"
+  },
+  "冷刃": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "流月针": {
+    "1": "AB:addDmg+20%attack",
+    "2": "AB:addDmg+25%attack",
+    "3": "AB:addDmg+30%attack",
+    "4": "AB:addDmg+35%attack",
+    "5": "AB:addDmg+40%attack"
+  },
+  "暗铁剑": {
+    "1": "attack+20",
+    "2": "attack+25",
+    "3": "attack+30",
+    "4": "attack+35",
+    "5": "attack+40"
+  },
+  "决斗之枪": {
+    "1": "attack+24",
+    "2": "attack+30",
+    "3": "attack+36",
+    "4": "attack+42",
+    "5": "attack+48"
+  },
+  "以理服人": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "嘟嘟可故事集": {
+    "1": "B:dmgBonus+16;attack+8",
+    "2": "B:dmgBonus+20;attack+10",
+    "3": "B:dmgBonus+24;attack+12",
+    "4": "B:dmgBonus+28;attack+14",
+    "5": "B:dmgBonus+32;attack+16"
+  },
+  "匣里灭辰": {
+    "1": "dmgBonus+20",
+    "2": "dmgBonus+24",
+    "3": "dmgBonus+28",
+    "4": "dmgBonus+32",
+    "5": "dmgBonus+36"
+  },
+  "龙脊长枪": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "无锋剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "终末嗟叹之诗": {
+    "1": "em+100;attack+20",
+    "2": "em+125;attack+25",
+    "3": "em+150;attack+30",
+    "4": "em+175;attack+35",
+    "5": "em+200;attack+40"
+  },
+  "翡玉法球": {
+    "1": "attack+20",
+    "2": "attack+25",
+    "3": "attack+30",
+    "4": "attack+35",
+    "5": "attack+40"
+  },
+  "薙草之稻光": {
+    "1": "ce+30",
+    "2": "ce+35",
+    "3": "ce+40",
+    "4": "ce+45",
+    "5": "ce+50"
+  },
+  "不灭月华": {
+    "1": "A:addDmg+1%hp",
+    "2": "A:addDmg+1.5%hp",
+    "3": "A:addDmg+2%hp",
+    "4": "A:addDmg+2.5%hp",
+    "5": "A:addDmg+3%hp"
+  },
+  "昭心": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "落霞": {
+    "1": "dmgBonus+10",
+    "2": "dmgBonus+12.5",
+    "3": "dmgBonus+15",
+    "4": "dmgBonus+17.5",
+    "5": "dmgBonus+20"
+  },
+  "西风秘典": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "西风大剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "西风长枪": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "西风剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "西风猎弓": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "铁影阔剑": {
+    "1": "B:dmgBonus+30",
+    "2": "B:dmgBonus+35",
+    "3": "B:dmgBonus+40",
+    "4": "B:dmgBonus+45",
+    "5": "B:dmgBonus+50"
+  },
+  "腐殖之剑": {
+    "1": "E:dmgBonus+16;E:critrate+6",
+    "2": "E:dmgBonus+20;E:critrate+7.5",
+    "3": "E:dmgBonus+24;E:critrate+9",
+    "4": "E:dmgBonus+28;E:critrate+10.5",
+    "5": "E:dmgBonus+32;E:critrate+12"
+  },
+  "吃虎鱼刀": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "苍古自由之誓": {
+    "1": "dmgBonus+10;ABC:dmgBonus+16;attack+20",
+    "2": "dmgBonus+12.5;ABC:dmgBonus+20;attack+25",
+    "3": "dmgBonus+15;ABC:dmgBonus+24;attack+30",
+    "4": "dmgBonus+17.5;ABC:dmgBonus+28;attack+35",
+    "5": "dmgBonus+20;ABC:dmgBonus+32;attack+40"
+  },
+  "忍冬之果": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "白辰之环": {
+    "1": "dmgBonus+10",
+    "2": "dmgBonus+12.5",
+    "3": "dmgBonus+15",
+    "4": "dmgBonus+17.5",
+    "5": "dmgBonus+20"
+  },
+  "钺矛": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "破魔之弓": {
+    "1": "A:dmgBonus+32;B:dmgBonus+24",
+    "2": "A:dmgBonus+40;B:dmgBonus+30",
+    "3": "A:dmgBonus+48;B:dmgBonus+36",
+    "4": "A:dmgBonus+56;B:dmgBonus+42",
+    "5": "A:dmgBonus+64;B:dmgBonus+48"
+  },
+  "波乱月白经津": {
+    "1": "A:dmgBonus+40",
+    "2": "A:dmgBonus+50",
+    "3": "A:dmgBonus+60",
+    "4": "A:dmgBonus+70",
+    "5": "A:dmgBonus+80"
+  },
+  "黎明神剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "猎弓": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "铁尖枪": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "铁蜂刺": {
+    "1": "dmgBonus+6",
+    "2": "dmgBonus+7.5",
+    "3": "dmgBonus+9",
+    "4": "dmgBonus+10.5",
+    "5": "dmgBonus+12"
+  },
+  "神乐之真意": {
+    "1": "E:dmgBonus+36;dmgBonus+12",
+    "2": "E:dmgBonus+45;dmgBonus+15",
+    "3": "E:dmgBonus+54;dmgBonus+18",
+    "4": "E:dmgBonus+63;dmgBonus+21",
+    "5": "E:dmgBonus+72;dmgBonus+24"
+  },
+  "桂木斩长正": {
+    "1": "E:dmgBonus+6",
+    "2": "E:dmgBonus+7.5",
+    "3": "E:dmgBonus+9",
+    "4": "E:dmgBonus+10.5",
+    "5": "E:dmgBonus+12"
+  },
+  "喜多院十文字": {
+    "1": "E:dmgBonus+6",
+    "2": "E:dmgBonus+7.5",
+    "3": "E:dmgBonus+9",
+    "4": "E:dmgBonus+10.5",
+    "5": "E:dmgBonus+12"
+  },
+  "匣里龙吟": {
+    "1": "dmgBonus+20",
+    "2": "dmgBonus+24",
+    "3": "dmgBonus+28",
+    "4": "dmgBonus+32",
+    "5": "dmgBonus+36"
+  },
+  " 千岩古剑": {
+    "1": "attack+21;critrate+9",
+    "2": "attack+24;critrate+12",
+    "3": "attack+27;critrate+15",
+    "4": "attack+30;critrate+18",
+    "5": "attack+33;critrate+21"
+  },
+  "千岩长枪": {
+    "1": "attack+21;critrate+9",
+    "2": "attack+24;critrate+12",
+    "3": "attack+27;critrate+15",
+    "4": "attack+30;critrate+18",
+    "5": "attack+33;critrate+21"
+  },
+  "四风原典": {
+    "1": "dmgBonus+32",
+    "2": "dmgBonus+40",
+    "3": "dmgBonus+48",
+    "4": "dmgBonus+56",
+    "5": "dmgBonus+64"
+  },
+  "衔珠海皇": {
+    "1": "Q:dmgBonus+12",
+    "2": "Q:dmgBonus+15",
+    "3": "Q:dmgBonus+18",
+    "4": "Q:dmgBonus+21",
+    "5": "Q:dmgBonus+24"
+  },
+  "魔导绪论": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "万国诸海图谱": {
+    "1": "dmgBonus+16",
+    "2": "dmgBonus+20",
+    "3": "dmgBonus+24",
+    "4": "dmgBonus+28",
+    "5": "dmgBonus+32"
+  },
+  "尘世之锁": {
+    "1": "shieldBouns+20;attack+20",
+    "2": "shieldBouns+25;attack+25",
+    "3": "shieldBouns+30;attack+30",
+    "4": "shieldBouns+35;attack+35",
+    "5": "shieldBouns+40;attack+40"
+  },
+  "信使": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "雾切之回光": {
+    "1": "dmgBonus+28",
+    "2": "dmgBonus+35",
+    "3": "dmgBonus+42",
+    "4": "dmgBonus+49",
+    "5": "dmgBonus+56"
+  },
+  "幽夜华尔兹": {
+    "1": "AE:dmgBonus+20",
+    "2": "AE:dmgBonus+25",
+    "3": "AE:dmgBonus+30",
+    "4": "AE:dmgBonus+35",
+    "5": "AE:dmgBonus+40"
+  },
+  "曚云之月": {
+    "1": "Q:dmgBonus+40",
+    "2": "Q:dmgBonus+50",
+    "3": "Q:dmgBonus+60",
+    "4": "Q:dmgBonus+70",
+    "5": "Q:dmgBonus+80"
+  },
+  "证誓之明瞳": {
+    "1": "ce+24",
+    "2": "ce+30",
+    "3": "ce+36",
+    "4": "ce+42",
+    "5": "ce+48"
+  },
+  "佣兵重剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "异世界行记": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "口袋魔导书": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "冬极白星": {
+    "1": "EQ:dmgBonus+12;attack+48",
+    "2": "EQ:dmgBonus+15;attack+60",
+    "3": "EQ:dmgBonus+18;attack+72",
+    "4": "EQ:dmgBonus+21;attack+84",
+    "5": "EQ:dmgBonus+24;attack+96"
+  },
+  "掠食者": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "磐岩结绿": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "和璞鸢": {
+    "1": "attack+22.4;dmgBonus+12",
+    "2": "attack+27.3;dmgBonus+15",
+    "3": "attack+32.2;dmgBonus+18",
+    "4": "attack+37.1;dmgBonus+21",
+    "5": "attack+42;dmgBonus+24"
+  },
+  "试作金珀": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "试作古华": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "试作澹月": {
+    "1": "attack+36",
+    "2": "attack+45",
+    "3": "attack+54",
+    "4": "attack+63",
+    "5": "attack+72"
+  },
+  "试作斩岩": {
+    "1": "attack+16;defense+16",
+    "2": "attack+20;defense+20",
+    "3": "attack+24;defense+24",
+    "4": "attack+28;defense+28",
+    "5": "attack+32;defense+32"
+  },
+  "试作星镰": {
+    "1": "AB:dmgBonus+16",
+    "2": "AB:dmgBonus+20",
+    "3": "AB:dmgBonus+24",
+    "4": "AB:dmgBonus+28",
+    "5": "AB:dmgBonus+32"
+  },
+  "雨裁": {
+    "1": "dmgBonus+20",
+    "2": "dmgBonus+24",
+    "3": "dmgBonus+28",
+    "4": "dmgBonus+32",
+    "5": "dmgBonus+36"
+  },
+  "鸦羽弓": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "反曲弓": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "赤角石溃杵": {
+    "1": "AB:addDmg+40%defense",
+    "2": "AB:addDmg+50%defense",
+    "3": "AB:addDmg+60%defense",
+    "4": "AB:addDmg+70%defense",
+    "5": "AB:addDmg+80%defense"
+  },
+  "宗室长弓": {
+    "1": "critrate+14",
+    "2": "critrate+16",
+    "3": "critrate+18",
+    "4": "critrate+22",
+    "5": "critrate+24"
+  },
+  "宗室大剑": {
+    "1": "critrate+14",
+    "2": "critrate+16",
+    "3": "critrate+18",
+    "4": "critrate+22",
+    "5": "critrate+24"
+  },
+  "宗室秘法录": {
+    "1": "critrate+14",
+    "2": "critrate+16",
+    "3": "critrate+18",
+    "4": "critrate+22",
+    "5": "critrate+24"
+  },
+  "宗室长剑": {
+    "1": "critrate+14",
+    "2": "critrate+16",
+    "3": "critrate+18",
+    "4": "critrate+22",
+    "5": "critrate+24"
+  },
+  "宗室猎枪": {
+    "1": "critrate+14",
+    "2": "critrate+16",
+    "3": "critrate+18",
+    "4": "critrate+22",
+    "5": "critrate+24"
+  },
+  "弓藏": {
+    "1": "A:dmgBonus+40",
+    "2": "A:dmgBonus+50",
+    "3": "A:dmgBonus+60",
+    "4": "A:dmgBonus+70",
+    "5": "A:dmgBonus+80"
+  },
+  "祭礼弓": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "祭礼残章": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "祭礼大剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "祭礼剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "历练的猎弓": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "螭骨剑": {
+    "1": "dmgBonus+30",
+    "2": "dmgBonus+35",
+    "3": "dmgBonus+40",
+    "4": "dmgBonus+45",
+    "5": "dmgBonus+50"
+  },
+  "神射手之誓": {
+    "1": "B:dmgBonus+24",
+    "2": "B:dmgBonus+30",
+    "3": "B:dmgBonus+36",
+    "4": "B:dmgBonus+42",
+    "5": "B:dmgBonus+48"
+  },
+  "银剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "飞天大御剑": {
+    "1": "attack+24",
+    "2": "attack+28",
+    "3": "attack+32",
+    "4": "attack+36",
+    "5": "attack+40"
+  },
+  "飞天御剑": {
+    "1": "attack+12",
+    "2": "attack+15",
+    "3": "attack+18",
+    "4": "attack+21",
+    "5": "attack+24"
+  },
+  "天空之卷": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "天空之刃": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "天空之翼": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "天空之傲": {
+    "1": "dmgBonus+8",
+    "2": "dmgBonus+10",
+    "3": "dmgBonus+12",
+    "4": "dmgBonus+14",
+    "5": "dmgBonus+16"
+  },
+  "天空之脊": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "弹弓": {
+    "1": "AB:dmgBonus+36",
+    "2": "AB:dmgBonus+42",
+    "3": "AB:dmgBonus+48",
+    "4": "AB:dmgBonus+54",
+    "5": "AB:dmgBonus+60"
+  },
+  "雪葬的星银": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "匣里日月": {
+    "1": "AEQ:dmgBonus+20",
+    "2": "AEQ:dmgBonus+25",
+    "3": "AEQ:dmgBonus+30",
+    "4": "AEQ:dmgBonus+35",
+    "5": "AEQ:dmgBonus+40"
+  },
+  "松籁响起之时": {
+    "1": "attack+20",
+    "2": "attack+25",
+    "3": "attack+30",
+    "4": "attack+35",
+    "5": "attack+40"
+  },
+  "护摩之杖": {
+    "1": "attack+1%hp",
+    "2": "attack+1.2%hp",
+    "3": "attack+1.4%hp",
+    "4": "attack+1.6%hp",
+    "5": "attack+1.8%hp"
+  },
+  "斫峰之刃": {
+    "1": "shieldBouns+20;attack+20",
+    "2": "shieldBouns+25;attack+25",
+    "3": "shieldBouns+30;attack+30",
+    "4": "shieldBouns+35;attack+35",
+    "5": "shieldBouns+40;attack+40"
+  },
+  "降临之剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "暗巷闪光": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "钟剑": {
+    "1": "dmgBonus+12",
+    "2": "dmgBonus+15",
+    "3": "dmgBonus+18",
+    "4": "dmgBonus+21",
+    "5": "dmgBonus+24"
+  },
+  "黑剑": {
+    "1": "AB:dmgBonus+20",
+    "2": "AB:dmgBonus+25",
+    "3": "AB:dmgBonus+30",
+    "4": "AB:dmgBonus+35",
+    "5": "AB:dmgBonus+40"
+  },
+  "「渔获」": {
+    "1": "Q:dmgBonus+16;Q:critrate+6",
+    "2": "Q:dmgBonus+20;Q:critrate+7.5",
+    "3": "Q:dmgBonus+24;Q:critrate+9",
+    "4": "Q:dmgBonus+28;Q:critrate+10.5",
+    "5": "Q:dmgBonus+32;Q:critrate+12"
+  },
+  "笛剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "绝弦": {
+    "1": "EQ:dmgBonus+24",
+    "2": "EQ:dmgBonus+30",
+    "3": "EQ:dmgBonus+36",
+    "4": "EQ:dmgBonus+42",
+    "5": "EQ:dmgBonus+48"
+  },
+  "无工之剑": {
+    "1": "shieldBouns+20;attack+20",
+    "2": "shieldBouns+25;attack+25",
+    "3": "shieldBouns+30;attack+30",
+    "4": "shieldBouns+35;attack+35",
+    "5": "shieldBouns+40;attack+40"
+  },
+  "苍翠猎弓": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "流浪乐章": {
+    "1": "dmgBonus+48",
+    "2": "dmgBonus+60",
+    "3": "dmgBonus+72",
+    "4": "dmgBonus+84",
+    "5": "dmgBonus+96"
+  },
+  "讨龙英杰谭": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "飞雷之弦振": {
+    "1": "A:dmgBonus+40",
+    "2": "A:dmgBonus+50",
+    "3": "A:dmgBonus+60",
+    "4": "A:dmgBonus+70",
+    "5": "A:dmgBonus+80"
+  },
+  "旅行剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "甲级宝珏": {
+    "1": "attack+12",
+    "2": "attack+14",
+    "3": "attack+16",
+    "4": "attack+18",
+    "5": "attack+20"
+  },
+  "贯虹之槊": {
+    "1": "shieldBouns+20;attack+20",
+    "2": "shieldBouns+25;attack+25",
+    "3": "shieldBouns+30;attack+30",
+    "4": "shieldBouns+35;attack+35",
+    "5": "shieldBouns+40;attack+40"
+  },
+  "训练大剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "断浪长鳍": {
+    "1": "Q:dmgBonus+40",
+    "2": "Q:dmgBonus+50",
+    "3": "Q:dmgBonus+60",
+    "4": "Q:dmgBonus+70",
+    "5": "Q:dmgBonus+80"
+  },
+  "白影剑": {
+    "1": "attack+24;defense+24",
+    "2": "attack+30;defense+30",
+    "3": "attack+36;defense+36",
+    "4": "attack+42;defense+42",
+    "5": "attack+46;defense+46"
+  },
+  "白铁大剑": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "白缨枪": {
+    "1": "A:dmgBonus+24",
+    "2": "A:dmgBonus+30",
+    "3": "A:dmgBonus+36",
+    "4": "A:dmgBonus+42",
+    "5": "A:dmgBonus+48"
+  },
+  "风花之颂": {
+    "1": "attack+16",
+    "2": "attack+20",
+    "3": "attack+24",
+    "4": "attack+28",
+    "5": "attack+32"
+  },
+  "暗巷的酒与诗": {
+    "1": "attack+20",
+    "2": "attack+25",
+    "3": "attack+30",
+    "4": "attack+35",
+    "5": "attack+40"
+  },
+  "狼的末路": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "笼钓瓶一心": {
+    "1": "attack+15",
+    "2": "attack+15",
+    "3": "attack+15",
+    "4": "attack+15",
+    "5": "attack+15"
+  },
+  "猎人之径": {
+    "1": "B:dmgBonus+160%em",
+    "2": "B:dmgBonus+200%em",
+    "3": "B:dmgBonus+240%em",
+    "4": "B:dmgBonus+280%em",
+    "5": "B:dmgBonus+320%em"
+  },
+  "竭泽": {
+    "1": "",
+    "2": "",
+    "3": "",
+    "4": "",
+    "5": ""
+  },
+  "王下近侍": {
+    "1": "em+60",
+    "2": "em+80",
+    "3": "em+100",
+    "4": "em+120",
+    "5": "em+140"
+  },
+  "森林王器": {
+    "1": "em+60",
+    "2": "em+75",
+    "3": "em+90",
+    "4": "em+105",
+    "5": "em+120"
+  },
+  "原木刀": {
+    "1": "em+60",
+    "2": "em+75",
+    "3": "em+90",
+    "4": "em+105",
+    "5": "em+120"
+  },
+  "盈满之实": {
+    "1": "em+120;attack+-25",
+    "2": "em+135;attack+-25",
+    "3": "em+150;attack+-25",
+    "4": "em+165;attack+-25",
+    "5": "em+180;attack+-25"
+  },
+  "贯月矢": {
+    "1": "attack+16",
+    "2": "attack+20",
+    "3": "attack+24",
+    "4": "attack+28",
+    "5": "attack+32"
+  }
+}

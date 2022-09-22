@@ -1,0 +1,21 @@
+ci:
+  autofix_commit_msg: ":rotating_light: auto fix by pre-commit-ci"
+  autofix_prs: true
+  autoupdate_branch: master
+  autoupdate_schedule: monthly
+  autoupdate_commit_msg: ":arrow_up: auto update by pre-commit-ci"
+repos:
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 5.0.4
+    hooks:
+      - id: flake8

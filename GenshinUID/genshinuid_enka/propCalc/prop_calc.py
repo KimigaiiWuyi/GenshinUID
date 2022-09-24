@@ -176,17 +176,26 @@ async def get_card_prop(
     weapon_name = raw_data['weaponInfo']['weaponName']
     weapon_affix = raw_data['weaponInfo']['weaponAffix']
     weapon_atk = raw_data['weaponInfo']['weaponStats'][0]['statValue']
-    weapon_sub = raw_data['weaponInfo']['weaponStats'][1]['statName']
-    weapon_sub_val = raw_data['weaponInfo']['weaponStats'][1]['statValue']
+    if len(raw_data['weaponInfo']['weaponStats']) > 1:
+        weapon_sub = raw_data['weaponInfo']['weaponStats'][1]['statName']
+        weapon_sub_val = raw_data['weaponInfo']['weaponStats'][1]['statValue']
+    else:
+        weapon_sub = ''
+        weapon_sub_val = 0
 
     fight_prop = deepcopy(baseFightProp)
     if '珊瑚宫心海' == char_name:
         fight_prop['critRate'] -= 1.0
         fight_prop['healBonus'] += 0.25
 
-    char_raw = await get_char_info(name=char_name, mode='char')
+    if char_name == '旅行者':
+        char_name_covert = '荧'
+    else:
+        char_name_covert = char_name
+
+    char_raw = await get_char_info(name=char_name_covert, mode='char')
     char_data = await get_char_info(
-        name=char_name, mode='char', level=str(char_level)
+        name=char_name_covert, mode='char', level=str(char_level)
     )
     if char_data is None or isinstance(char_data, List):
         return {}

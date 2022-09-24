@@ -34,11 +34,14 @@ get_char_info = on_command(
 )
 
 CONVERT_TO_INT = {
+    '零': 0,
     '一': 1,
     '二': 2,
     '三': 3,
     '四': 4,
     '五': 5,
+    '六': 6,
+    '满': 6,
 }
 AUTO_REFRESH = False
 refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
@@ -115,10 +118,19 @@ async def send_char_info(
     msg = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
     msg_list = msg.split('换')
     char_name = msg_list[0]
+    talent_num = None
     weapon = None
     weapon_affix = None
+    if '命' in char_name and char_name[0] in CONVERT_TO_INT:
+        talent_num = CONVERT_TO_INT[char_name[0]]
+        char_name = char_name[2:]
     if len(msg_list) > 1:
-        if '精' in msg_list[1] and msg_list[1][1] in CONVERT_TO_INT:
+        if (
+            '精' in msg_list[1]
+            and msg_list[1][1] != '六'
+            and msg_list[1][1] != '零'
+            and msg_list[1][1] in CONVERT_TO_INT
+        ):
             weapon_affix = CONVERT_TO_INT[msg_list[1][1]]
             weapon = msg_list[1][2:]
         else:
@@ -146,7 +158,7 @@ async def send_char_info(
         else:
             await matcher.finish(CHAR_HINT.format(char_name), at_sender=True)
 
-    im = await draw_char_img(char_data, weapon, weapon_affix, img)
+    im = await draw_char_img(char_data, weapon, weapon_affix, talent_num, img)
 
     if isinstance(im, str):
         await matcher.finish(im)

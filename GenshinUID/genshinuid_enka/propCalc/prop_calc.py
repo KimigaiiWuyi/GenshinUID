@@ -108,11 +108,13 @@ async def get_card_prop(
     raw_data: dict,
     weapon: Optional[str] = None,
     weapon_affix: Optional[int] = None,
+    talent_num: Optional[int] = None,
 ) -> dict:
     char_name = raw_data['avatarName']
     char_level = int(raw_data['avatarLevel'])
     char_element = raw_data['avatarElement']
 
+    # 创造一个假武器
     if weapon:
         weapon_info = deepcopy(baseWeaponInfo)
         weapon_raw_data = await get_weapon_info(weapon)
@@ -157,6 +159,19 @@ async def get_card_prop(
             weapon_info['weaponEffect'] = '无特效。'
         raw_data['weaponInfo'] = weapon_info
 
+    # 修改假命座:
+    if talent_num:
+        talent_list = []
+        for i in range(1, talent_num + 1):
+            talent_list.append(
+                {
+                    'talentId': 300 + i,
+                    'talentName': f'FakeTalent{i}',
+                    'talentIcon': f'UI_Talent_S_{raw_data["avatarEnName"]}_0{i}',
+                }
+            )
+        raw_data['talentList'] = talent_list
+
     # 武器基本属性
     weapon_name = raw_data['weaponInfo']['weaponName']
     weapon_affix = raw_data['weaponInfo']['weaponAffix']
@@ -165,6 +180,9 @@ async def get_card_prop(
     weapon_sub_val = raw_data['weaponInfo']['weaponStats'][1]['statValue']
 
     fight_prop = deepcopy(baseFightProp)
+    if '珊瑚宫心海' == char_name:
+        fight_prop['critRate'] -= 1.0
+        fight_prop['healBonus'] += 0.25
 
     char_raw = await get_char_info(name=char_name, mode='char')
     char_data = await get_char_info(

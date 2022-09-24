@@ -167,10 +167,13 @@ async def draw_char_img(
     raw_data: dict,
     weapon: Optional[str] = None,
     weapon_affix: Optional[int] = None,
+    talent_num: Optional[int] = None,
     charUrl: Optional[str] = None,
 ) -> Union[bytes, str]:
     if not await config_check('OldPanle'):
-        raw_data = await get_card_prop(raw_data, weapon, weapon_affix)
+        raw_data = await get_card_prop(
+            raw_data, weapon, weapon_affix, talent_num
+        )
         if raw_data == {}:
             return '要替换的武器不正确或发生了未知错误~'
     char_name = raw_data['avatarName']

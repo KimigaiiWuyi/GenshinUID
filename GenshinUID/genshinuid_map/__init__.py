@@ -84,10 +84,9 @@ async def send_find_map_msg(
     logger.info(f'[查找资源点]正在执行...当前地图为{MAP_ID_LIST[0].name}')
     logger.info('[查找资源点]参数: {}'.format(args))
 
-    if args:
-        name = args.get('name', '')
-    else:
+    if not (args and (name := args.get('name'))):
         return
+
 
     resource_temp_path = MAP_DATA / f'{MAP_ID_LIST[0].name}_{name}.jpg'
     if resource_temp_path.exists():

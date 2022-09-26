@@ -6,6 +6,7 @@ from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from .set_config import SWITCH_MAP
+from ..utils.download_resource.RESOURCE_PATH import TEXT2D_PATH
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import CustomizeImage
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
@@ -51,7 +52,7 @@ async def draw_config_img() -> Union[bytes, str]:
     img = CI_img.bg_img
     color = CI_img.bg_color
     color_mask = Image.new('RGBA', (based_w, based_h), color)
-    config_mask = Image.open(TEXT_PATH / 'config_mask.png').resize(
+    config_mask = Image.open(TEXT2D_PATH / 'mask.png').resize(
         (based_w, based_h)
     )
     img.paste(color_mask, (0, 0), config_mask)

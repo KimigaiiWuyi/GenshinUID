@@ -1,10 +1,12 @@
+import sys
 import json
 import asyncio
 from pathlib import Path
 
 import httpx
 
-from ..version import Genshin_version
+sys.path.append(str(Path(__file__).parents[1]))
+from version import Genshin_version
 
 R_PATH = Path(__file__).parents[0]
 MAP_PATH = Path(__file__).parents[1] / 'utils' / 'enka_api' / 'map'

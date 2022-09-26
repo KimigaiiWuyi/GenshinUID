@@ -7810,5 +7810,416 @@
             0.0,
             0.0
         ]
+    },
+    {
+        "talentId": 701,
+        "nameTextMapHash": 3475888113,
+        "descTextMapHash": 2661312839,
+        "icon": "UI_Talent_S_Nilou_01",
+        "mainCostItemId": 1170,
+        "mainCostItemCount": 1,
+        "openConfig": "Nilou_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.6499999761581421,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 702,
+        "nameTextMapHash": 318992601,
+        "descTextMapHash": 3919673783,
+        "icon": "UI_Talent_S_Nilou_02",
+        "prevTalent": 701,
+        "mainCostItemId": 1170,
+        "mainCostItemCount": 1,
+        "openConfig": "Nilou_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.3499999940395355,
+            0.3499999940395355,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 703,
+        "nameTextMapHash": 4083203921,
+        "descTextMapHash": 3288808887,
+        "icon": "UI_Talent_U_Nilou_01",
+        "prevTalent": 702,
+        "mainCostItemId": 1170,
+        "mainCostItemCount": 1,
+        "openConfig": "Nilou_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 704,
+        "nameTextMapHash": 3019515057,
+        "descTextMapHash": 888080927,
+        "icon": "UI_Talent_S_Nilou_03",
+        "prevTalent": 703,
+        "mainCostItemId": 1170,
+        "mainCostItemCount": 1,
+        "openConfig": "Nilou_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            15.0,
+            0.5,
+            8.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 705,
+        "nameTextMapHash": 4211988457,
+        "descTextMapHash": 4076971143,
+        "icon": "UI_Talent_U_Nilou_02",
+        "prevTalent": 704,
+        "mainCostItemId": 1170,
+        "mainCostItemCount": 1,
+        "openConfig": "Nilou_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 706,
+        "nameTextMapHash": 684061273,
+        "descTextMapHash": 3861878943,
+        "icon": "UI_Talent_S_Nilou_04",
+        "prevTalent": 705,
+        "mainCostItemId": 1170,
+        "mainCostItemCount": 1,
+        "openConfig": "Nilou_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.006000000052154064,
+            0.012000000104308128,
+            0.30000001192092896,
+            0.6000000238418579,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 711,
+        "nameTextMapHash": 748102489,
+        "descTextMapHash": 2323427151,
+        "icon": "UI_Talent_S_Cyno_01",
+        "mainCostItemId": 1171,
+        "mainCostItemCount": 1,
+        "openConfig": "Cyno_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 712,
+        "nameTextMapHash": 3035895129,
+        "descTextMapHash": 1790987583,
+        "icon": "UI_Talent_S_Cyno_02",
+        "prevTalent": 711,
+        "mainCostItemId": 1171,
+        "mainCostItemCount": 1,
+        "openConfig": "Cyno_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            4.0,
+            5.0,
+            0.10000000149011612,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 713,
+        "nameTextMapHash": 3680254705,
+        "descTextMapHash": 1482911911,
+        "icon": "UI_Talent_U_Cyno_01",
+        "prevTalent": 712,
+        "mainCostItemId": 1171,
+        "mainCostItemCount": 1,
+        "openConfig": "Cyno_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 714,
+        "nameTextMapHash": 1630701449,
+        "descTextMapHash": 1262681015,
+        "icon": "UI_Talent_S_Cyno_03",
+        "prevTalent": 713,
+        "mainCostItemId": 1171,
+        "mainCostItemCount": 1,
+        "openConfig": "Cyno_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 715,
+        "nameTextMapHash": 1368859857,
+        "descTextMapHash": 3824690295,
+        "icon": "UI_Talent_U_Cyno_02",
+        "prevTalent": 714,
+        "mainCostItemId": 1171,
+        "mainCostItemCount": 1,
+        "openConfig": "Cyno_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 716,
+        "nameTextMapHash": 2479658985,
+        "descTextMapHash": 306126727,
+        "icon": "UI_Talent_S_Cyno_04",
+        "prevTalent": 715,
+        "mainCostItemId": 1171,
+        "mainCostItemCount": 1,
+        "openConfig": "Cyno_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            4.0,
+            8.0,
+            8.0,
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 721,
+        "nameTextMapHash": 449508113,
+        "descTextMapHash": 1938462311,
+        "icon": "UI_Talent_S_Candace_01",
+        "mainCostItemId": 1172,
+        "mainCostItemCount": 1,
+        "openConfig": "Candace_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 722,
+        "nameTextMapHash": 3442281625,
+        "descTextMapHash": 1981457807,
+        "icon": "UI_Talent_S_Candace_02",
+        "prevTalent": 721,
+        "mainCostItemId": 1172,
+        "mainCostItemCount": 1,
+        "openConfig": "Candace_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            15.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 723,
+        "nameTextMapHash": 3256412025,
+        "descTextMapHash": 3763148479,
+        "icon": "UI_Talent_U_Candace_01",
+        "prevTalent": 722,
+        "mainCostItemId": 1172,
+        "mainCostItemCount": 1,
+        "openConfig": "Candace_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 724,
+        "nameTextMapHash": 984253913,
+        "descTextMapHash": 33452751,
+        "icon": "UI_Talent_S_Candace_03",
+        "prevTalent": 723,
+        "mainCostItemId": 1172,
+        "mainCostItemCount": 1,
+        "openConfig": "Candace_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 725,
+        "nameTextMapHash": 2382311049,
+        "descTextMapHash": 1048738031,
+        "icon": "UI_Talent_U_Candace_02",
+        "prevTalent": 724,
+        "mainCostItemId": 1172,
+        "mainCostItemCount": 1,
+        "openConfig": "Candace_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 726,
+        "nameTextMapHash": 955051961,
+        "descTextMapHash": 2921686415,
+        "icon": "UI_Talent_S_Candace_04",
+        "prevTalent": 725,
+        "mainCostItemId": 1172,
+        "mainCostItemCount": 1,
+        "openConfig": "Candace_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.15000000596046448,
+            2.299999952316284,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
     }
 ]

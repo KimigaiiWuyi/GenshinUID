@@ -938,11 +938,11 @@
     "5": "attack+15"
   },
   "猎人之径": {
-    "1": "B:dmgBonus+160%em",
-    "2": "B:dmgBonus+200%em",
-    "3": "B:dmgBonus+240%em",
-    "4": "B:dmgBonus+280%em",
-    "5": "B:dmgBonus+320%em"
+    "1": "B:addDmg+160%em",
+    "2": "B:addDmg+200%em",
+    "3": "B:addDmg+240%em",
+    "4": "B:addDmg+280%em",
+    "5": "B:addDmg+320%em"
   },
   "竭泽": {
     "1": "",

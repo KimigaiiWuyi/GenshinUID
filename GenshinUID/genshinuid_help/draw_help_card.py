@@ -3,6 +3,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from ..utils.download_resource.RESOURCE_PATH import TEXT2D_PATH
 from ..utils.draw_image_tools.draw_image_tool import CustomizeImage
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
@@ -40,9 +41,7 @@ async def draw_help_img():
     img = CI_img.bg_img
     color = CI_img.bg_color
     color_mask = Image.new('RGBA', (based_w, based_h), color)
-    help_mask = Image.open(TEXT_PATH / 'help_mask.png').resize(
-        (based_w, based_h)
-    )
+    help_mask = Image.open(TEXT2D_PATH / 'mask.png').resize((based_w, based_h))
     img.paste(color_mask, (0, 0), help_mask)
 
     module_temp = 0

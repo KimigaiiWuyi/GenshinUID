@@ -5866,6 +5866,313 @@
         "globalValueKey": ""
     },
     {
+        "id": 10701,
+        "nameTextMapHash": 1390577909,
+        "abilityName": "Avatar_Nilou_ExtraAttack",
+        "descTextMapHash": 1185988448,
+        "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7031,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10702,
+        "nameTextMapHash": 2640547533,
+        "abilityName": "",
+        "descTextMapHash": 3630489128,
+        "skillIcon": "Skill_S_Nilou_01",
+        "cdTime": 18.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7032,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10703,
+        "nameTextMapHash": 509298485,
+        "abilityName": "",
+        "descTextMapHash": 78067936,
+        "skillIcon": "Skill_S_Nilou_01",
+        "maxChargeNum": 1,
+        "triggerID": 3,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10704,
+        "nameTextMapHash": 3085221333,
+        "abilityName": "",
+        "descTextMapHash": 1388836152,
+        "skillIcon": "Skill_S_Nilou_01",
+        "maxChargeNum": 1,
+        "triggerID": 4,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10706,
+        "nameTextMapHash": 2642188701,
+        "abilityName": "",
+        "descTextMapHash": 386448928,
+        "skillIcon": "Skill_S_Nilou_04",
+        "maxChargeNum": 1,
+        "triggerID": 21,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10707,
+        "nameTextMapHash": 2011484461,
+        "abilityName": "",
+        "descTextMapHash": 4010550688,
+        "skillIcon": "Skill_S_Nilou_02",
+        "maxChargeNum": 1,
+        "triggerID": 22,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10705,
+        "nameTextMapHash": 1967463157,
+        "abilityName": "",
+        "descTextMapHash": 3122656376,
+        "skillIcon": "Skill_E_Nilou_01",
+        "cdTime": 18.0,
+        "costElemType": "Water",
+        "costElemVal": 70.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7039,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10708,
+        "nameTextMapHash": 3729293421,
+        "abilityName": "",
+        "descTextMapHash": 2702693072,
+        "skillIcon": "Skill_S_Nilou_01",
+        "maxChargeNum": 1,
+        "triggerID": 23,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10711,
+        "nameTextMapHash": 2262721981,
+        "abilityName": "Avatar_Cyno_ExtraAttack",
+        "descTextMapHash": 1651662752,
+        "skillIcon": "Skill_A_03",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7131,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10712,
+        "nameTextMapHash": 584952661,
+        "abilityName": "",
+        "descTextMapHash": 431532312,
+        "skillIcon": "Skill_S_Cyno_01",
+        "cdTime": 7.5,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7132,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10713,
+        "nameTextMapHash": 1069392805,
+        "abilityName": "",
+        "descTextMapHash": 2550266576,
+        "skillIcon": "Skill_S_Cyno_02",
+        "cdTime": 3.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": "",
+        "cdSlot": 2
+    },
+    {
+        "id": 10715,
+        "nameTextMapHash": 2604847405,
+        "abilityName": "",
+        "descTextMapHash": 2282154672,
+        "skillIcon": "Skill_E_Cyno_01",
+        "cdTime": 20.0,
+        "costElemType": "Electric",
+        "costElemVal": 80.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7139,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10721,
+        "nameTextMapHash": 2594921261,
+        "abilityName": "Avatar_Candace_ExtraAttack",
+        "descTextMapHash": 3352315424,
+        "skillIcon": "Skill_A_03",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7231,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10722,
+        "nameTextMapHash": 2160740245,
+        "abilityName": "\u00b7",
+        "descTextMapHash": 2763201128,
+        "skillIcon": "Skill_S_Candace_01",
+        "cdTime": 6.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "dragType": "DRAG_ROTATE_CHARACTER",
+        "showIconArrow": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7232,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10725,
+        "nameTextMapHash": 2669120029,
+        "abilityName": "",
+        "descTextMapHash": 2300903224,
+        "skillIcon": "Skill_E_Candace_01",
+        "cdTime": 15.0,
+        "costElemType": "Water",
+        "costElemVal": 60.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7239,
+        "globalValueKey": ""
+    },
+    {
         "id": 20001,
         "nameTextMapHash": 1936482797,
         "abilityName": "Dvalin_S01_AirGun",
@@ -6361,7 +6668,7 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": "",
-        "OOKJFEOLHMF": 3
+        "OMECNFGPGHM": 3
     },
     {
         "id": 20043,
@@ -6392,6 +6699,27 @@
         "ignoreCDMinusRatio": true,
         "maxChargeNum": 1,
         "triggerID": 201,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20045,
+        "nameTextMapHash": 1562204677,
+        "abilityName": "ActivityAbility_CatchAnimal_Throw",
+        "descTextMapHash": 3847710280,
+        "skillIcon": "Btn_CatchAnimal_Shoot",
+        "cdTime": 1.5,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "triggerID": 17,
         "lockShape": "CircleLockEnemyR10",
         "lockWeightParams": [
             1.0,
@@ -8866,6 +9194,63 @@
         "abilityName": "",
         "descTextMapHash": 2231084184,
         "skillIcon": "Skill_A_02",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5070010,
+        "nameTextMapHash": 280269733,
+        "abilityName": "",
+        "descTextMapHash": 2915228120,
+        "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5071010,
+        "nameTextMapHash": 2022718829,
+        "abilityName": "",
+        "descTextMapHash": 3826469000,
+        "skillIcon": "Skill_A_03",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5072010,
+        "nameTextMapHash": 3497260069,
+        "abilityName": "",
+        "descTextMapHash": 1144797664,
+        "skillIcon": "Skill_A_03",
         "maxChargeNum": 1,
         "triggerID": 30,
         "lockShape": "CircleLockEnemyR5H6HC",

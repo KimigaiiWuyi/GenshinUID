@@ -119,11 +119,8 @@ async def draw_resin_img(uid: str) -> Image.Image:
             player_data = {}
 
     # 处理数据
-    if player_data:
-        if (
-            'playerInfo' in player_data
-            and 'signature' in player_data['playerInfo']
-        ):
+    if player_data and 'playerInfo' in player_data:
+        if 'signature' in player_data['playerInfo']:
             signature = player_data['playerInfo']['signature']
         else:
             signature = '该旅行者还没有签名噢~'

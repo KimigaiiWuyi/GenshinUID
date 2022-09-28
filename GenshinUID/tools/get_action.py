@@ -1,4 +1,5 @@
 import re
+import sys
 import json
 from typing import List
 from pathlib import Path
@@ -6,7 +7,8 @@ from copy import deepcopy
 
 import httpx
 
-Genshin_version = '3.0.0'
+sys.path.append(str(Path(__file__).parents[1]))
+from version import Genshin_version
 
 path = (
     Path(__file__).parents[1]

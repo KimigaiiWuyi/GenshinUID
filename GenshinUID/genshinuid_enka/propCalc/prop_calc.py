@@ -349,9 +349,13 @@ async def get_card_prop(
             else:
                 for j in MIN_MAP:
                     for i in MIN_MAP:
-                        if effect_attr == i:
-                            fight_prop[MIN_MAP[i]] += (
-                                effect_value * fight_prop[j]
+                        if effect_attr == i and effect_base == j:
+                            if effect_attr == 'attack':
+                                effect_now = 'exAtk'
+                            else:
+                                effect_now = MIN_MAP[i]
+                            fight_prop[effect_now] += (
+                                effect_value * fight_prop[MIN_MAP[j]]
                             )
                             break
 

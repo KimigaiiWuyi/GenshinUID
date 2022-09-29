@@ -279,9 +279,10 @@ async def get_card_prop(
             sub_value = sub['statValue']
             all_effects.append(await text_to_effect(sub_name, sub_value))
 
-    for skill in base_skills[char_name]:
-        if char_level >= int(skill):
-            all_effects.append(base_skills[char_name][skill])
+    if char_name in base_skills:
+        for skill in base_skills[char_name]:
+            if char_level >= int(skill):
+                all_effects.append(base_skills[char_name][skill])
 
     add_effects: List[str] = []
     print(all_effects)

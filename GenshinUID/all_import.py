@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Tuple, Union, Optional
 import httpx
 import hoshino
 from hoshino import Service
+
 # from nonebot.log import logger
 from aiohttp import ClientConnectorError
 from aiocqhttp.exceptions import ActionFailed
@@ -35,5 +36,5 @@ from .utils.draw_image_tools.send_image_tool import convert_img
 from .utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
 sv = Service('genshinuid', bundle='genshin', help_='发送"原神帮助"查看详情')
-hoshino_bot = get_bot()
+hoshino_bot = hoshino.get_bot()
 logger = sv.logger

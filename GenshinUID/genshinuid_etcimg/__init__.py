@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from ..all_import import *
+from ..version import Genshin_version
 
 PRIMOGEMS_DATA_PATH = Path(__file__).parent / 'primogems_data'
 IMG_PATH = Path(__file__).parent / 'img_data'
@@ -18,7 +19,7 @@ async def send_primogems_data(bot: HoshinoBot, ev: CQEvent):
         else:
             return
     else:
-        img = f'{version[0]}.png'
+        img = f'{Genshin_version[:3]}.png'
     primogems_img = PRIMOGEMS_DATA_PATH / img
     logger.info('[图片][版本规划]访问图片: {}'.format(img))
     primogems_img = await convert_img(primogems_img)

@@ -2,23 +2,20 @@ from .update import update_genshinuid
 from ..all_import import *  # noqa: F403,F401
 from .restart import restart_message, restart_genshinuid
 
-bot = get_bot()
 
-
-@bot.on_startup
-async def _():
+@hoshino_bot.on_startup
+async def check_msg():
     logger.info('检查遗留信息...')
-    bot = get_bot()
     update_log = await restart_message()
     if update_log == {}:
         return
     if update_log['send_type'] == 'group':
-        await bot.send_group_msg(
+        await hoshino_bot.send_group_msg(
             group_id=update_log['send_to'],
             message=update_log['msg'],
         )
     else:
-        await bot.send_private_msg(
+        await hoshino_bot.send_private_msg(
             user_id=update_log['send_to'],
             message=update_log['msg'],
         )

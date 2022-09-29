@@ -27,12 +27,16 @@ weaponHash2Type_fileName = f'weaponHash2Type_mapping_{version}.json'
 skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
 talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
 avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
+enName2Id_fileName = f'enName2AvatarID_mapping_{version}.json'
 
 artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
 icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 
-with open(DATA_PATH / 'textMap.json', "r", encoding='UTF-8') as f:
-    raw_data = json.load(f)
+try:
+    with open(DATA_PATH / 'textMap.json', "r", encoding='UTF-8') as f:
+        raw_data = json.load(f)
+except FileNotFoundError:
+    pass
 
 
 async def avatarId2NameJson() -> None:
@@ -56,6 +60,7 @@ async def avatarName2ElementJson() -> None:
         avatarId2Name = json.load(f)
 
     temp = {}
+    enName2Id_result = {}
     elementMap = {
         '风': 'Anemo',
         '岩': 'Geo',
@@ -65,10 +70,18 @@ async def avatarName2ElementJson() -> None:
         '冰': 'Cryo',
         '雷': 'Electro',
     }
-    for i in list(avatarId2Name.values()):
-        data = httpx.get(f'https://info.minigg.cn/characters?query={i}').json()
+    for _id in avatarId2Name:
+        name = avatarId2Name[_id]
+        data = httpx.get(
+            f'https://info.minigg.cn/characters?query={name}'
+        ).json()
         if 'errcode' not in data:
-            temp[i] = elementMap[data['element']]
+            temp[name] = elementMap[data['element']]
+            enName = data['images']['namesideicon'].split('_')[-1]
+            enName2Id_result[enName] = _id
+
+    with open(MAP_PATH / enName2Id_fileName, 'w', encoding='UTF-8') as file:
+        json.dump(enName2Id_result, file, ensure_ascii=False)
 
     with open(
         MAP_PATH / avatarName2Element_fileName, 'w', encoding='UTF-8'
@@ -180,13 +193,13 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
-    await avatarId2NameJson()
+    # await avatarId2NameJson()
     await avatarName2ElementJson()
-    await weaponHash2NameJson()
-    await skillId2NameJson()
-    await talentId2NameJson()
-    await weaponHash2TypeJson()
-    await artifact2attrJson()
+    # await weaponHash2NameJson()
+    # await skillId2NameJson()
+    # await talentId2NameJson()
+    # await weaponHash2TypeJson()
+    # await artifact2attrJson()
 
 
 asyncio.run(main())

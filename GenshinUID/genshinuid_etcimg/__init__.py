@@ -7,6 +7,7 @@ from nonebot import on_regex, on_command
 from nonebot.adapters.qqguild import Message
 from nonebot.params import CommandArg, RegexGroup
 
+from ..version import Genshin_version
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.send import local_image
 from ..utils.exception.handle_exception import handle_exception
@@ -46,7 +47,7 @@ async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
         else:
             await matcher.finish()
     else:
-        img = f'{version[0]}.png'
+        img = f'{Genshin_version[:3]}.png'
     primogems_img = PRIMOGEMS_DATA_PATH / img
     logger.info('[图片][版本规划]访问图片: {}'.format(img))
     await matcher.finish(local_image(primogems_img))

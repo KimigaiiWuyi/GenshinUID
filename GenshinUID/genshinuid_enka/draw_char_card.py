@@ -263,6 +263,14 @@ async def draw_char_img(
                     for index, i in enumerate(power_list['E护盾基础吸收量']['value'])
                 ],
             }
+        elif char_name == '赛诺':
+            for power_name in ['E渡荒之雷', 'E渡荒之雷(超激化)']:
+                power_list[power_name] = {
+                    'name': power_name,
+                    'type': '攻击力',
+                    'plus': 1,
+                    'value': ['100%'] * 10,
+                }
         new_prop = await calc_prop(raw_data, power_list)
         dmg_img, dmg_len = await draw_dmgCacl_img(
             raw_data, power_list, new_prop

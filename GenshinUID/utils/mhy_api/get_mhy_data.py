@@ -92,7 +92,7 @@ async def get_gacha_log_by_authkey(
                         'end_id': end_id,
                     },
                 )
-
+                await asyncio.sleep(0.9)
                 if 'data' in raw_data and 'list' in raw_data['data']:
                     data = raw_data['data']['list']
                 else:
@@ -117,7 +117,7 @@ async def get_gacha_log_by_authkey(
                         full_data[gacha_name][0:0] = data
                 else:
                     full_data[gacha_name].extend(data)
-                await asyncio.sleep(0.7)
+                await asyncio.sleep(0.5)
     return full_data
 
 

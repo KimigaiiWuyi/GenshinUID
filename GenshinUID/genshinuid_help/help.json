@@ -112,6 +112,14 @@
         "need_admin": false
       },
       {
+        "name": "签到",
+        "desc": "进行一次米游社签到",
+        "eg": "签到",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "当前状态",
         "desc": "游戏树脂和派遣状态",
         "eg": "当前状态",
@@ -123,6 +131,14 @@
         "name": "每月统计",
         "desc": "每月的原石获取情况",
         "eg": "每月统计",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "札记/yszj",
+        "desc": "原石获取状态图片版",
+        "eg": "当前信息",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -213,6 +229,22 @@
         "name": "任务xx",
         "desc": "某个任务的攻略",
         "eg": "任务须弥",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抽表情",
+        "desc": "随机抽一个表情",
+        "eg": "抽表情",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "御神签",
+        "desc": "随机抽一签,当天内签文固定",
+        "eg": "御神签",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

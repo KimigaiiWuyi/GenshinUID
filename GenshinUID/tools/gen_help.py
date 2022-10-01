@@ -33,7 +33,11 @@ for row in range(2, 999):
 
     # 将第一列读取为模块名
     if ws.cell(row, 1):
-        module_name_str = ws.cell(row, 1).value
+        if ws.cell(row, 1).value is not None:
+            module_name_str = ws.cell(row, 1).value
+
+    # if module_name_str is None and not isinstance(module_name_str, str):
+    #    continue
 
     # 第二列为功能名
     _sample['name'] = ws.cell(row, 2).value
@@ -51,15 +55,13 @@ for row in range(2, 999):
     if ws.cell(row, 7).value == '是':
         _sample['need_admin'] = True
 
-    if module_name_str is None:
-        pass
-    else:
-        module_name = module_name_str.split(' | ')[0]  # type: ignore
-        module_desc = module_name_str.split(' | ')[1]  # type: ignore
+    if isinstance(module_name_str, str):
+        module_name = module_name_str.split(' | ')[0]
+        module_desc = module_name_str.split(' | ')[1]
         if module_name not in result:
             result[module_name] = {'desc': module_desc, 'data': []}
 
-    result[module_name]['data'].append(_sample)  # type: ignore
+        result[module_name]['data'].append(_sample)
 
 with open(str(HELP_PATH / 'help.json'), 'w', encoding='utf-8') as f:
     json.dump(result, f, indent=2, ensure_ascii=False)

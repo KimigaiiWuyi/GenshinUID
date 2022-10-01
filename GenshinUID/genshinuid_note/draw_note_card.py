@@ -58,18 +58,22 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
 
     # 处理数据
     # 今日比昨日 原石
-    day_stone_percent = day_stone / lastday_stone
+    day_stone_percent = day_stone / lastday_stone if lastday_stone != 0 else 0
     day_stone_percent = day_stone_percent if day_stone_percent <= 1 else 1
     # 今日比昨日 摩拉
-    day_mora_percent = day_mora / lastday_mora
+    day_mora_percent = day_mora / lastday_mora if lastday_mora != 0 else 0
     day_mora_percent = day_mora_percent if day_mora_percent <= 1 else 1
     # 本月比上月 原石
-    month_stone_percent = month_stone / lastmonth_stone
+    month_stone_percent = (
+        month_stone / lastmonth_stone if lastmonth_stone != 0 else 0
+    )
     month_stone_percent = (
         month_stone_percent if month_stone_percent <= 1 else 1
     )
     # 本月比上月 摩拉
-    month_mora_percent = month_mora / lastmonth_mora
+    month_mora_percent = (
+        month_mora / lastmonth_mora if lastmonth_mora != 0 else 0
+    )
     month_mora_percent = month_mora_percent if month_mora_percent <= 1 else 1
 
     # 获取背景图片各项参数

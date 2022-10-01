@@ -1,6 +1,7 @@
 import asyncio
 
 from ..all_import import *
+from .get_lots_data import get_lots_msg
 from .get_meme_card import get_meme_img
 from .get_mys_data import get_region_task, get_task_detail
 
@@ -27,3 +28,11 @@ async def send_meme_card(bot: HoshinoBot, ev: CQEvent):
     img = await get_meme_img()
     img = await convert_img(img)
     await bot.send(ev, img)
+
+
+@sv.on_fullmatch('御神签')
+async def send_lots_data(bot: HoshinoBot, ev: CQEvent):
+    qid = int(ev.sender['user_id'])
+    logger.info('开始执行[御神签]')
+    im = await get_lots_msg(qid)
+    await bot.send(ev, im)

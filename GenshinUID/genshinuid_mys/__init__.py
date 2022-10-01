@@ -61,5 +61,4 @@ async def send_lots_data(matcher: Matcher, event: MessageEvent):
     qid = event.user_id
     logger.info('开始执行[御神签]')
     im = await get_lots_msg(qid)
-    print(im)
     await matcher.finish(im)

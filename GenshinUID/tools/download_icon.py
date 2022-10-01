@@ -22,19 +22,22 @@ icon_list = [
     'UI_Talent_C_{}_02.png',
     'UI_Gacha_AvatarImg_{}.png',
 ]
+is_download = False
 
 for char in char_list:
     for icon in icon_list:
         icon_name = icon.format(char)
         url = title.format(icon_name)
-        print(f'正在下载{icon_name}')
-        char_data = httpx.get(url, follow_redirects=True, timeout=80)
-        if char_data.headers['Content-Type'] == 'image/png':
-            char_bytes = char_data.content
-        else:
-            print(f'{icon_name}不存在，跳过！')
-            continue
-        img_data = httpx.get(url).content
-        with open(Path(__file__).parent / icon_name, '+wb') as handler:
-            handler.write(char_bytes)
-            print('下载成功！')
+        print(url)
+        if is_download:
+            print(f'正在下载{icon_name}')
+            char_data = httpx.get(url, follow_redirects=True, timeout=80)
+            if char_data.headers['Content-Type'] == 'image/png':
+                char_bytes = char_data.content
+            else:
+                print(f'{icon_name}不存在，跳过！')
+                continue
+            img_data = httpx.get(url).content
+            with open(Path(__file__).parent / icon_name, '+wb') as handler:
+                handler.write(char_bytes)
+                print('下载成功！')

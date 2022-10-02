@@ -8,7 +8,7 @@ IMG_PATH = Path(__file__).parent / 'img_data'
 version = ['3.0', '3.1']
 
 
-@sv.on_rex(r'(版本规划|原石预估)(\S+)?')
+@sv.on_rex(r'^(版本规划|原石预估)(\S+)?$')
 async def send_primogems_data(bot: HoshinoBot, ev: CQEvent):
     args = ev['match'].groups()
     logger.info('开始执行[图片][版本规划]')
@@ -26,7 +26,7 @@ async def send_primogems_data(bot: HoshinoBot, ev: CQEvent):
     await bot.send(ev, primogems_img)
 
 
-@sv.on_rex(r'(查询)?(伤害乘区|血量表|抗性表|血量排行)')
+@sv.on_rex(r'^(查询)?(伤害乘区|血量表|抗性表|血量排行)$')
 async def send_img_data(bot: HoshinoBot, ev: CQEvent):
     args = ev['match'].groups()
     logger.info('开始执行[图片][杂图]')

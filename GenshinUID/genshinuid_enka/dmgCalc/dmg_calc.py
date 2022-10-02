@@ -501,6 +501,11 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
                     )
                     if effect_attr in ['dmgBonus', 'critDmg', 'critrate']:
                         effect_value = float(effect_value / 100)
+                    if (
+                        effect_value_base_on_attr in ['hp']
+                        and effect_attr == 'em'
+                    ):
+                        effect_value = effect_value / 100
                 base_check = False
 
             # 如果要增加的属性不是em元素精通,那么都要除于100

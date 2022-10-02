@@ -269,7 +269,7 @@ async def draw_char_img(
                     'name': power_name,
                     'type': '攻击力',
                     'plus': 1,
-                    'value': ['100%'] * 10,
+                    'value': ['100%'] * 15,
                 }
         new_prop = await calc_prop(raw_data, power_list)
         dmg_img, dmg_len = await draw_dmgCacl_img(

@@ -4,7 +4,6 @@ from typing import Any, Set, Dict, Callable
 
 from quart import Quart
 from nonebot import get_bot
-from nonebot.log import logger
 from fastapi import FastAPI, Request
 import fastapi_amis_admin  # noqa: F401
 from fastapi_amis_admin import amis, admin
@@ -77,7 +76,7 @@ app = FastAPI()
 settings = Settings(  # type: ignore
     database_url_async=DATABASE_URL,
     root_path="/genshinuid",
-    logger=logger,
+    # logger=logger,
     site_title="GenshinUID - FastAPI Amis Admin",
 )
 quart = get_bot().server_app

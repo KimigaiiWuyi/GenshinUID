@@ -13,7 +13,7 @@ from ..utils.nonebot2.send import local_image
 from ..utils.exception.handle_exception import handle_exception
 
 get_primogems_data = on_command('版本规划', aliases={'原石预估'})
-get_img_data = on_regex(r'(查询)?(伤害乘区|血量表|抗性表|血量排行)')
+get_img_data = on_regex(r'^(查询)?(伤害乘区|血量表|抗性表|血量排行)$')
 
 PRIMOGEMS_DATA_PATH = Path(__file__).parent / 'primogems_data'
 IMG_PATH = Path(__file__).parent / 'img_data'

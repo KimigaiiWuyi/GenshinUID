@@ -17,7 +17,7 @@ from .get_mys_data import get_region_task, get_task_detail
 from ..utils.exception.handle_exception import handle_exception
 
 get_task_adv = on_regex(
-    '(原神任务|任务|任务详情|任务攻略)( )?([\u4e00-\u9fa5]+)( )?', priority=priority
+    r'^(原神任务|任务|任务详情|任务攻略)( )?([\u4e00-\u9fa5]+)( )?$', priority=priority
 )
 get_meme = on_command('抽表情', priority=priority, rule=FullCommand())
 get_lots = on_command('御神签', priority=priority, rule=FullCommand())

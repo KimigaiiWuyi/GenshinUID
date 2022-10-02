@@ -1,13 +1,15 @@
 import platform
 from pathlib import Path
+from typing import Any, Set, Dict, Callable
 
-import uvicorn
-import fastapi_amis_admin
+from quart import Quart
+from nonebot import get_bot
+from nonebot.log import logger
 from fastapi import FastAPI, Request
+import fastapi_amis_admin  # noqa: F401
 from fastapi_amis_admin import amis, admin
 from sqlalchemy.ext.asyncio import AsyncEngine
 from fastapi_user_auth.site import AuthAdminSite
-from starlette.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_amis_admin.admin.settings import Settings
 from fastapi_user_auth.auth.models import UserRoleLink
@@ -20,8 +22,8 @@ from fastapi_amis_admin.amis.components import (
     PageSchema,
 )
 
+from . import login_page  # noqa: F401
 from ..version import GenshinUID_version
-from .login_page import amis_admin, user_auth_admin  # 不能删
 from ..utils.db_operation.database.db_config import DATABASE_URL
 from ..utils.db_operation.database.models import (
     Config,
@@ -30,6 +32,22 @@ from ..utils.db_operation.database.models import (
     CookiesCache,
     NewCookiesTable,
 )
+
+
+class FastApiMiddleware:
+    def __init__(self, app: Quart, fastapi: FastAPI, routes: Set[str]) -> None:
+        self.fastapi = fastapi
+        self.app = app.asgi_app
+        self.routes = routes
+
+    async def __call__(
+        self, scope: Dict[str, Any], receive: Callable, send: Callable
+    ) -> None:
+        if scope["type"] in ("http", "websocket"):
+            for path in self.routes:
+                if scope["path"].startswith(path):
+                    return await self.fastapi(scope, receive, send)
+            return await self.app(scope, receive, send)
 
 
 # 自定义后台管理站点
@@ -56,23 +74,23 @@ class GenshinUIDAdminSite(AuthAdminSite):
 
 # 创建FastAPI应用
 app = FastAPI()
-settings = Settings(database_url_async=DATABASE_URL)  # type: ignore
-
+settings = Settings(  # type: ignore
+    database_url_async=DATABASE_URL,
+    root_path="/genshinuid",
+    logger=logger,
+    site_title="GenshinUID - FastAPI Amis Admin",
+)
+quart = get_bot().server_app
+quart.asgi_app = FastApiMiddleware(quart, app, {"/genshinuid"})
 
 # 创建AdminSite实例
 site = GenshinUIDAdminSite(settings)
 auth = site.auth
-
-
-# 注册首页路由
-@app.get('/')
-async def index():
-    return RedirectResponse(url=site.router_path)
-
+config = get_bot().config
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://0.0.0.0:5000'],
+    allow_origins=[f'http://{config.HOST}:{config:PORT}/genshinuid'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
@@ -155,7 +173,9 @@ class bindadmin(admin.ModelAdmin):
 @site.register_admin
 class GitHubIframeAdmin(admin.IframeAdmin):
     # 设置页面菜单信息
-    page_schema = PageSchema(label='安装Wiki', icon='fa fa-github')  # type: ignore
+    page_schema = PageSchema(  # type: ignore
+        label='安装Wiki', icon='fa fa-github'
+    )
     # 设置跳转链接
     src = 'https://github.com/KimigaiiWuyi/GenshinUID/wiki'
 
@@ -199,8 +219,3 @@ class MyHomeAdmin(admin.HomeAdmin):
 
 # 挂载后台管理系统
 site.mount_app(app)
-
-# 进行设置
-fast_config = uvicorn.Config(
-    app, loop="none", lifespan="off", debug=True, port=5000, host='0.0.0.0'
-)

@@ -15,7 +15,7 @@ class MapID(IntEnum):
     """渊下宫"""
     chasm = 9
     """层岩巨渊·地下矿区"""
-    golden_apple_archipelago = 12
+    # golden_apple_archipelago = 12
     """金苹果群岛"""
 
 

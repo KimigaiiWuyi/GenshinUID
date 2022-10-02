@@ -42,15 +42,13 @@ async def make_map(map: Maps) -> Image.Image:
     img = Image.new("RGBA", tuple(map.total_size))
     x = 0
     y = 0
-    maps: List[Image.Image] = await gather(
-        *[create_task(get_img(url)) for url in map.slices]
-    )
-    for m in maps:
-        img.paste(m, (x, y))
-        x += 4096
-        if x >= map.total_size[0]:
-            x = 0
-            y += 4096
+    for y_index in map.slices:
+        x = 0
+        for url in y_index:
+            m = await get_img(url)
+            img.paste(m, (x, y))
+            x += 4096
+        y += 4096
     return img
 
 

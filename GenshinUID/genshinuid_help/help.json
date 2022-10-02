@@ -136,7 +136,7 @@
         "need_admin": false
       },
       {
-        "name": "札记/yszj",
+        "name": "原石札记/zj",
         "desc": "原石获取状态图片版",
         "eg": "当前信息",
         "need_ck": true,
@@ -393,9 +393,25 @@
         "need_admin": false
       },
       {
-        "name": "血量表、抗性表",
-        "desc": "所有怪物的血量和抗性",
+        "name": "血量排行",
+        "desc": "常见怪物的血量排行",
+        "eg": "血量排行",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "血量表",
+        "desc": "所有怪物的血量",
         "eg": "血量表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "抗性表",
+        "desc": "所有怪物的抗性",
+        "eg": "抗性表",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

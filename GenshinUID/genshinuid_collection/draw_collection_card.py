@@ -20,11 +20,11 @@ based_h = 750
 white_overlay = Image.new('RGBA', (based_w, based_h), (255, 255, 255, 222))
 
 max_data = {
-    '成就': 797,
-    '华丽的宝箱': 161,
-    '珍贵的宝箱': 451,
+    '成就': 815,
+    '华丽的宝箱': 173,
+    '珍贵的宝箱': 454,
     '精致的宝箱': 1516,
-    '普通的宝箱': 2364,
+    '普通的宝箱': 2365,
 }
 
 
@@ -86,7 +86,7 @@ async def draw_collection_img(uid: str) -> Union[bytes, str]:
                         + chest3Str[1]
                         + chest4Str[1]
                     )
-                    / 24.5
+                    / 22.5
                 )
             )
         )

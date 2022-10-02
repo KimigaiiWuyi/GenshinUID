@@ -3,7 +3,7 @@ name: Unittest
 on:
   push:
     branches:
-      - master
+      - nonebot2-beta1
   pull_request:
 
 

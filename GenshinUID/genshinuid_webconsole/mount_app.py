@@ -1,9 +1,10 @@
+import logging
 import platform
 import contextlib
 from pathlib import Path
 from typing import TYPE_CHECKING, Set, Union, Callable, Optional, cast
 
-from nonebot.log import logger
+from nonebot.log import LoguruHandler
 from fastapi import FastAPI, Request
 from nonebot import get_app, get_driver
 from fastapi_amis_admin import amis, admin
@@ -102,13 +103,16 @@ with contextlib.suppress(ImportError):
         app.asgi_app = FastApiMiddleware(app, fastapi, {"/genshinuid"})
         app = fastapi
 
-app = cast(FastAPI, app)
 
+app = cast(FastAPI, app)
+logger = logging.getLogger("GenshinUID-WebConsole")
+logger.handlers.clear()
+logger.addHandler(LoguruHandler())
+logger.setLevel(20)
 settings = Settings(  # type: ignore
     database_url_async=DATABASE_URL, root_path="/genshinuid", logger=logger,
     site_title="GenshinUID - FastAPI Amis Admin"
 )
-
 
 # 创建AdminSite实例
 site = GenshinUIDAdminSite(settings)
@@ -117,7 +121,7 @@ auth = site.auth
 config = get_driver().config
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://{config.host}:{config.port}'],
+    allow_origins=[f'http://{config.host}:{config.port}'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],

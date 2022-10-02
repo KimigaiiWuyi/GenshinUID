@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from enum import IntEnum
-from typing import List, Optional, NamedTuple
+from typing import List, Tuple, Optional, NamedTuple
 
 from pydantic import HttpUrl, BaseModel, validator
 
@@ -15,7 +15,7 @@ class MapID(IntEnum):
     """渊下宫"""
     chasm = 9
     """层岩巨渊·地下矿区"""
-    # golden_apple_archipelago = 12
+    golden_apple_archipelago = 12
     """金苹果群岛"""
 
 
@@ -66,14 +66,17 @@ class Slice(BaseModel):
 
 
 class Maps(BaseModel):
-    slices: List[List[HttpUrl]]
+    slices: List[HttpUrl]
     origin: List[int]
     total_size: List[int]
     padding: List[int]
 
     @validator("slices", pre=True)
     def slices_to_list(cls, v):
-        return [[i["url"] for i in y] for y in v]
+        urls: List[str] = []
+        for i in v:
+            urls.extend(j["url"] for j in i)
+        return urls
 
 
 class MapInfo(BaseModel):
@@ -122,3 +125,63 @@ class Spot(BaseModel):
     nick_name: str
     avatar_url: HttpUrl
     status: int
+
+
+class SubAnchor(BaseModel):
+    id: int
+    name: str
+    l_x: int
+    l_y: int
+    r_x: int
+    r_y: int
+    app_sn: str
+    parent_id: str
+    map_id: str
+    sort: int
+
+
+class Anchor(BaseModel):
+    id: int
+    name: str
+    l_x: int
+    l_y: int
+    r_x: int
+    r_y: int
+    app_sn: str
+    parent_id: str
+    map_id: str
+    children: List[SubAnchor]
+    sort: int
+
+    def get_children_all_left_point(self) -> List[XYPoint]:
+        """获取所有子锚点偏左的 `XYPoint` 坐标"""
+        return [XYPoint(x=i.l_x, y=i.l_y) for i in self.children]
+
+    def get_children_all_right_point(self) -> List[XYPoint]:
+        """获取所有子锚点偏右的 `XYPoint` 坐标"""
+        return [XYPoint(x=i.r_x, y=i.r_y) for i in self.children]
+
+
+class PageLabel(BaseModel):
+    id: int
+    name: str
+    type: int
+    pc_icon_url: str
+    mobile_icon_url: str
+    sort: int
+    pc_icon_url2: str
+    map_id: int
+    jump_url: str
+    jump_type: str
+    center: Optional[Tuple[float, float]]
+    zoom: Optional[float]
+
+    @validator("center", pre=True)
+    def center_str_to_tuple(cls, v: str) -> Optional[Tuple[float, float]]:
+        if v and (splitted := v.split(",")):
+            return tuple(map(float, splitted))
+
+    @validator("zoom", pre=True)
+    def zoom_str_to_float(cls, v: str):
+        if v:
+            return float(v)

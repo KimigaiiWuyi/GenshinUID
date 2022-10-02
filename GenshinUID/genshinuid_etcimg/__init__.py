@@ -26,7 +26,7 @@ async def send_primogems_data(bot: HoshinoBot, ev: CQEvent):
     await bot.send(ev, primogems_img)
 
 
-@sv.on_rex(r'(查询)?(伤害乘区|血量表|抗性表)')
+@sv.on_rex(r'(查询)?(伤害乘区|血量表|抗性表|血量排行)')
 async def send_img_data(bot: HoshinoBot, ev: CQEvent):
     args = ev['match'].groups()
     logger.info('开始执行[图片][杂图]')

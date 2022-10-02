@@ -5,18 +5,29 @@ from typing import Any, Dict, List, Tuple
 from httpx import Response, AsyncClient
 
 from .exc import StatusError
-from .models import Spot, Tree, MapID, Point, MapInfo, SpotKinds
+from .models import (
+    Spot,
+    Tree,
+    MapID,
+    Point,
+    Anchor,
+    MapInfo,
+    PageLabel,
+    SpotKinds,
+)
 
-CLIENT = AsyncClient(
-    base_url="https://api-static.mihoyo.com/common/blackboard/ys_obc/v1/map"
+API_CLIENT = AsyncClient(
+    base_url="https://api-takumi.mihoyo.com/common/map_user/ys_obc/v1/map"
 )
 Spots = Dict[int, List[Spot]]
 
 
-async def _request(endpoint: str) -> Dict[str, Any]:
-    resp = await CLIENT.get(endpoint)
+async def _request(
+    endpoint: str, client: AsyncClient = API_CLIENT
+) -> Dict[str, Any]:
+    resp = await client.get(endpoint)
     resp.raise_for_status()
-    data: dict[str, Any] = resp.json()
+    data: Dict[str, Any] = resp.json()
     if data["retcode"] != 0:
         raise StatusError(data["retcode"], data["message"])
     return data["data"]
@@ -93,43 +104,73 @@ async def get_spot_from_game(
             raise StatusError(data["retcode"], data["message"])
         return data["data"]
 
-    async with AsyncClient(
-        base_url="https://api-takumi.mihoyo.com/common/map_user/ys_obc/v1/map",
+    # 1. 申请刷新
+    resp = await API_CLIENT.post(
+        "/spot_kind/sync_game_spot",
+        json={
+            "map_id": str(map_id.value),
+            "app_sn": "ys_obc",
+            "lang": "zh-cn",
+        },
         headers={"Cookie": cookie},
-    ) as client:
-        # 1. 申请刷新
-        resp = await client.post(
-            "/spot_kind/sync_game_spot",
-            json={
-                "map_id": str(map_id.value),
-                "app_sn": "ys_obc",
-                "lang": "zh-cn",
-            },
-            headers={"Cookie": cookie},
-        )
-        _raise_for_retcode(resp)
+    )
+    _raise_for_retcode(resp)
 
-        # 2. 获取类别
-        resp = await client.get(
-            "/spot_kind/get_spot_kinds?map_id=2&app_sn=ys_obc&lang=zh-cn",
-            headers={"Cookie": cookie},
-        )
-        data = _raise_for_retcode(resp)
-        spot_kinds_data = SpotKinds.parse_obj(data)
-        ids = [kind.id for kind in spot_kinds_data.list]
+    # 2. 获取类别
+    resp = await API_CLIENT.get(
+        "/spot_kind/get_spot_kinds?map_id=2&app_sn=ys_obc&lang=zh-cn",
+        headers={"Cookie": cookie},
+    )
+    data = _raise_for_retcode(resp)
+    spot_kinds_data = SpotKinds.parse_obj(data)
+    ids = [kind.id for kind in spot_kinds_data.list]
 
-        # 3.获取坐标
-        resp = await client.post(
-            "/spot/get_map_spots_by_kinds",
-            json={
-                "map_id": str(map_id.value),
-                "app_sn": "ys_obc",
-                "lang": "zh-cn",
-                "kind_ids": ids,
-            },
-        )
-        data = _raise_for_retcode(resp)
-        spots: Spots = {}
-        for k, v in data["spots"].items():
-            spots[int(k)] = [Spot.parse_obj(i) for i in v["list"]]
-        return spots, spot_kinds_data
+    # 3.获取坐标
+    resp = await API_CLIENT.post(
+        "/spot/get_map_spots_by_kinds",
+        json={
+            "map_id": str(map_id.value),
+            "app_sn": "ys_obc",
+            "lang": "zh-cn",
+            "kind_ids": ids,
+        },
+    )
+    data = _raise_for_retcode(resp)
+    spots: Spots = {}
+    for k, v in data["spots"].items():
+        spots[int(k)] = [Spot.parse_obj(i) for i in v["list"]]
+    return spots, spot_kinds_data
+
+
+async def get_page_label(map_id: MapID) -> List[PageLabel]:
+    """
+    获取米游社大地图标签（例如蒙德，龙脊雪山等）
+
+    参数：
+        map_id: `MapID`
+            地图 ID
+
+    返回：
+        `list[PageLabel]`
+    """
+    data = await _request(
+        f"/get_map_pageLabel?map_id={map_id}&app_sn=ys_obc&lang=zh-cn",
+    )
+    return [PageLabel.parse_obj(i) for i in data["list"]]
+
+
+async def get_anchors(map_id: MapID) -> List[Anchor]:
+    """
+    获取米游社地图锚点，含子锚点（例如珉林-庆云顶等）
+
+    参数：
+        map_id: `MapID`
+            地图 ID
+
+    返回：
+        `list[Anchor]`
+    """
+    data = await _request(
+        f"/map_anchor/list?map_id={map_id}&app_sn=ys_obc&lang=zh-cn",
+    )
+    return [Anchor.parse_obj(i) for i in data["list"]]

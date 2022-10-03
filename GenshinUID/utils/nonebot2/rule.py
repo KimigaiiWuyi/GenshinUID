@@ -1,10 +1,15 @@
 from nonebot.rule import Rule
-from nonebot.params import CommandArg
-from nonebot.adapters.qqguild import Message
+from nonebot.params import Depends, CommandArg
+from nonebot.adapters.onebot.v11 import Message
+
+
+async def full_command(arg: Message = CommandArg()) -> bool:
+    return not bool(str(arg))
 
 
 def FullCommand() -> Rule:
-    async def dependency(arg: Message = CommandArg()) -> bool:
-        return not bool(str(arg))
+    return Rule(full_command)
 
-    return Rule(dependency)
+
+def FullCommandDepend():
+    return Depends(full_command)

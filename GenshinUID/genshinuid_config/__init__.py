@@ -39,7 +39,7 @@ config_card = on_command('gs配置')
 @handle_exception('发送配置表')
 async def send_config_card(matcher: Matcher, args: Message = CommandArg()):
     if args:
-        await send_config_card.finish()
+        await matcher.finish()
     logger.info('开始执行[gs配置]')
     im = await draw_config_img()
     if isinstance(im, str):

@@ -1,0 +1,16 @@
+# .git
+.vscode
+.env
+.venv
+env
+venv
+.pytest_cache
+*.pyc
+*.pyo
+*.pyd
+.Python
+tests
+GenshinUID.egg-info
+build
+__pycache__
+.pytest_cache

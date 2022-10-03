@@ -24,7 +24,6 @@ async def run_webconsole():
         return
 
     logger.info('尝试挂载WebConsole')
-
     await site.db.async_run_sync(
         SQLModel.metadata.create_all, is_session=False  # type: ignore
     )

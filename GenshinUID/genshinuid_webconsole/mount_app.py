@@ -8,19 +8,24 @@ from nonebot import get_app, get_driver
 from fastapi_amis_admin import amis, admin
 from sqlalchemy.ext.asyncio import AsyncEngine
 from fastapi_user_auth.site import AuthAdminSite
+from fastapi_amis_admin.amis.types import AmisAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_amis_admin.crud.schema import CrudEnum
 from fastapi_amis_admin.admin.settings import Settings
 from fastapi_user_auth.auth.models import UserRoleLink
+from fastapi_amis_admin.amis.constants import DisplayModeEnum
 from fastapi_amis_admin.admin.site import DocsAdmin, ReDocsAdmin
 from fastapi_amis_admin.amis.components import (
     App,
+    Form,
     Page,
     Alert,
     Property,
+    InputExcel,
+    InputTable,
     PageSchema,
 )
 
-from . import login_page  # noqa: F401
 from ..version import GenshinUID_version
 from ..utils.db_operation.database.db_config import DATABASE_URL
 from ..utils.db_operation.database.models import (
@@ -108,10 +113,58 @@ app = cast(FastAPI, app)
 # logger.addHandler(LoguruHandler())
 # logger.setLevel(20)
 settings = Settings(  # type: ignore
-    database_url_async=DATABASE_URL, root_path="/genshinuid", 
-    site_title="GenshinUID - FastAPI Amis Admin", 
+    database_url_async=DATABASE_URL,
+    root_path="/genshinuid",
+    site_title="GenshinUID - FastAPI Amis Admin",
     # logger=logger
 )
+
+
+# 显示主键
+async def patched_get_create_form(
+    self, request: Request, bulk: bool = False
+) -> Form:
+    fields = list(self.schema_create.__fields__.values())
+    if not bulk:
+        return Form(
+            api=f"post:{self.router_path}/item",
+            name=CrudEnum.create,
+            body=await self._conv_modelfields_to_formitems(
+                request, fields, CrudEnum.create
+            ),
+        )
+    columns, keys = [], {}
+    for field in fields:
+        column = await self.get_list_column(
+            request, self.parser.get_modelfield(field, deepcopy=True)
+        )
+        keys[column.name] = "${" + column.label + "}"
+        column.name = column.label
+        columns.append(column)
+    return Form(
+        api=AmisAPI(
+            method="post",
+            url=f"{self.router_path}/item",
+            data={"&": {"$excel": keys}},
+        ),
+        mode=DisplayModeEnum.normal,
+        body=[
+            InputExcel(name="excel"),
+            InputTable(
+                name="excel",
+                showIndex=True,
+                columns=columns,
+                addable=True,
+                copyable=True,
+                editable=True,
+                removable=True,
+            ),
+        ],
+    )
+
+
+admin.BaseModelAdmin.get_create_form = patched_get_create_form
+
 
 # 创建AdminSite实例
 site = GenshinUIDAdminSite(settings)

@@ -54,7 +54,9 @@ async def get_first_main(mainName: str) -> str:
     return equipMain
 
 
-async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
+async def get_char_percent(
+    raw_data: dict, prop: dict, char_name: str
+) -> Tuple[str, str]:
     # print(prop)
     percent = '0.0'
     weaponName = raw_data['weaponInfo']['weaponName']
@@ -100,7 +102,7 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
     print(seq)
 
     if char_name not in dmgMap:
-        return percent
+        return percent, ''
     std_prop = dmgMap[char_name]
     seq_temp = ''
     for std_seq in std_prop:
@@ -169,7 +171,7 @@ async def get_char_percent(raw_data: dict, prop: dict, char_name: str) -> str:
             f.append(1)
     print(f)
     percent = '{:.2f}'.format(c * (float(sum(f) / len(f)) * 100))
-    return percent
+    return percent, seq
 
 
 async def calc_prop(raw_data: dict, power_list: dict) -> dict:
@@ -245,6 +247,7 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
                 'critdmg',
                 'ce',
                 'hp',
+                'r',
                 'physicalDmgBonus',
                 'healBouns',
             ]:
@@ -282,7 +285,6 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
     prop['attack_green'] = fight_prop['addAtk']
     prop['defense_green'] = fight_prop['addDef']
 
-    prop['r'] = 0.1
     prop['a'] = 0
     prop['g'] = 0
     prop['k'] = 1

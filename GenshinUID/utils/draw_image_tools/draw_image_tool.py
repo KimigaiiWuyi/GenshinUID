@@ -74,19 +74,23 @@ class CustomizeImage:
         return bg_img
 
     @staticmethod
+    def get_dominant_color(pil_img: Image.Image) -> Tuple[int, int, int]:
+        img = pil_img.copy()
+        img = img.convert("RGBA")
+        img = img.resize((1, 1), resample=0)
+        dominant_color = img.getpixel((0, 0))
+        return dominant_color
+
+    @staticmethod
     def get_bg_color(edit_bg: Image.Image) -> Tuple[int, int, int]:
         # 获取背景主色
         color = 8
         q = edit_bg.quantize(colors=color, method=2)
         bg_color = (0, 0, 0)
-        based_light = 195
+        based_light = 120
         temp = 9999
         for i in range(0, color):
-            bg = tuple(
-                q.getpalette()[  # type: ignore
-                    i * 3 : (i * 3) + 3  # noqa: E203
-                ]
-            )
+            bg = tuple(q.getpalette()[i * 3 : (i * 3) + 3])  # type: ignore
             light_value = bg[0] * 0.3 + bg[1] * 0.6 + bg[2] * 0.1
             if abs(light_value - based_light) < temp:
                 bg_color = bg

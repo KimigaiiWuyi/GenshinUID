@@ -24,6 +24,7 @@ SWITCH_MAP = {
     '网页控制台': 'OpenWeb',
     '重启使用Poetry': 'UsePoetry',
     '旧面板': 'OldPanle',
+    '多彩面板': 'ColorBG',
 }
 
 PUSH_MAP = {

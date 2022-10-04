@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import itertools
 from math import ceil
 from io import BytesIO
 from typing import List, Tuple, Union
-from asyncio import gather, create_task
 
 from PIL import Image
 from httpx import AsyncClient
@@ -40,15 +40,10 @@ async def make_map(map: Maps) -> Image.Image:
         `get_map_by_pos`
     """
     img = Image.new("RGBA", tuple(map.total_size))
-    x = 0
-    y = 0
-    for y_index in map.slices:
-        x = 0
-        for url in y_index:
-            m = await get_img(url)
-            img.paste(m, (x, y))
-            x += 4096
-        y += 4096
+    x_max, y_max = map.total_size
+    for y, x in itertools.product(range(y_max // 4096), range(x_max // 4096)):
+        m = await get_img(map.slices[x + y * 4])
+        img.paste(m, (x * 4096, y * 4096))
     return img
 
 

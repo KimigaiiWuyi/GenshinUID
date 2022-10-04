@@ -140,7 +140,7 @@ config = get_bot().config
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f'http://{config.HOST}:{config:PORT}/genshinuid'],
+    allow_origins=[f'http://{config.HOST}:{config.PORT}/genshinuid'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],

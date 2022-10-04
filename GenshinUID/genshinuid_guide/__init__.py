@@ -48,6 +48,7 @@ async def send_guide_pic(
         await matcher.finish(MessageSegment.image(url))
     else:
         logger.warning('未获得{}推荐图片。'.format(name))
+        await matcher.finish()
 
 
 @get_bluekun_pic.handle()

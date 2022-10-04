@@ -53,7 +53,7 @@ async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
         with open(primogems_img, 'rb') as f:
             await matcher.finish(MessageSegment.image(f.read()))
     else:
-        return
+        await matcher.finish()
 
 
 @get_img_data.handle()
@@ -95,5 +95,3 @@ async def send_img_data(
     if img.exists():
         with open(img, 'rb') as f:
             await matcher.finish(MessageSegment.image(f.read()))
-    else:
-        return

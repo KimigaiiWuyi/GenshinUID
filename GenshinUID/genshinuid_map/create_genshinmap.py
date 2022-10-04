@@ -5,6 +5,7 @@ from PIL import Image
 from .genshinmap import utils, models, request
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
+MAP = Path(__file__).parent / 'map_data'
 
 
 async def create_genshin_map():
@@ -36,4 +37,6 @@ async def create_genshin_map():
                 (int(mark_trans_point.x) - 32, int(mark_trans_point.y) - 64),
                 mark_trans_pic,
             )
-        map_img.save(Path(__file__).parent / 'map_data' / f'{map_id.name}.png')
+        if not MAP.exists():
+            MAP.mkdir()
+        map_img.save(MAP / f'{map_id.name}.png')

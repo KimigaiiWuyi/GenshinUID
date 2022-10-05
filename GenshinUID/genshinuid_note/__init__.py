@@ -21,7 +21,6 @@ async def send_monthly_data(bot: HoshinoBot, ev: CQEvent):
 async def send_monthly_pic(bot: HoshinoBot, ev: CQEvent):
     logger.info('开始执行[每日信息]')
     at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
-
     if at:
         qid = int(at.group(1))
     else:
@@ -29,10 +28,10 @@ async def send_monthly_pic(bot: HoshinoBot, ev: CQEvent):
             qid = int(ev.sender['user_id'])
         else:
             return
-
     logger.info('[每日信息]QQ号: {}'.format(qid))
-
-    im = await draw_note_img(str(qid))
+    uid = await select_db(qid, mode='uid')
+    logger.info('[每日信息]UID: {}'.format(uid))
+    im = await draw_note_img(str(uid))
     if isinstance(im, str):
         await bot.send(ev, im)
     elif isinstance(im, bytes):

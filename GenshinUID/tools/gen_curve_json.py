@@ -12,7 +12,7 @@ wb = load_workbook(str(DATA_PATH / '曲线素材.xlsx'), data_only=True)
 ws: Worksheet = wb['曲线素材']  # type: ignore
 
 result = {}
-for col in range(1, 30):
+for col in range(1, 45):
     if not ws.cell(1, col).value:
         continue
     else:

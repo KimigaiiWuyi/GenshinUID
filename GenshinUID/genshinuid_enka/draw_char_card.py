@@ -9,6 +9,7 @@ from httpx import get
 from PIL import Image, ImageDraw, ImageChops
 
 from .propCalc.prop_calc import get_card_prop
+from .curveCalc.curve_calc import draw_char_curve_data
 from ..utils.db_operation.db_operation import config_check
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.draw_image_tools.draw_image_tool import CustomizeImage
@@ -189,6 +190,9 @@ class CharCard:
         self.char_bytes = None
         self.char_url = char_url
         self.artifacts_all_score = 0
+        self.percent = ''
+        self.seq_str = ''
+        self.power_list = {}
 
     async def new(
         self,
@@ -282,14 +286,21 @@ class CharCard:
         return char_img
 
     async def get_bg_card(
-        self, dmg_len: int, char_img: Image.Image
+        self, ex_len: int, char_img: Image.Image
     ) -> Image.Image:
-        img_w, img_h = 950, 1850 + dmg_len * 40
+        img_w, img_h = 950, 1085 + ex_len
         overlay = Image.open(TEXT_PATH / 'overlay.png')
         overlay_w, overlay_h = overlay.size
         if overlay_h < img_h:
             new_overlay_h = img_h
             new_overlay_w = math.ceil(new_overlay_h * overlay_w / overlay_h)
+            overlay = overlay.resize(
+                (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS
+            )
+            overlay = overlay.crop((0, 0, img_w, img_h))
+        elif overlay_h > img_h:
+            new_overlay_w = img_w
+            new_overlay_h = math.ceil(overlay_w / new_overlay_w * overlay_h)
             overlay = overlay.resize(
                 (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS
             )
@@ -301,40 +312,45 @@ class CharCard:
         color_img = Image.new('RGBA', overlay.size, bg_color)
         return ImageChops.overlay(color_img, overlay)
 
-    async def get_dmg_card(self) -> Tuple[Image.Image, int]:
+    async def get_new_prop(self):
         with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
             char_action = json.load(f)
         # 拿到倍率表
         if self.char_name not in char_action:
-            power_list = char_action[self.char_name]
-            self.new_prop = await calc_prop(self.raw_data, {})
-            dmg_img, dmg_len = Image.new('RGBA', (950, 1)), 0
+            self.power_list = {}
         else:
-            power_list = char_action[self.char_name]
+            self.power_list = char_action[self.char_name]
             # 额外增加钟离倍率
             if self.char_name == '钟离':
-                power_list['E总护盾量'] = {
+                self.power_list['E总护盾量'] = {
                     'name': 'E总护盾量',
                     'type': '生命值',
                     'plus': 1,
                     'value': [
-                        f'{power_list["E护盾附加吸收量"]["value"][index]}+{i}'
+                        f'{self.power_list["E护盾附加吸收量"]["value"][index]}+{i}'
                         for index, i in enumerate(
-                            power_list['E护盾基础吸收量']['value']
+                            self.power_list['E护盾基础吸收量']['value']
                         )
                     ],
                 }
             elif self.char_name == '赛诺':
                 for power_name in ['E渡荒之雷', 'E渡荒之雷(超激化)']:
-                    power_list[power_name] = {
+                    self.power_list[power_name] = {
                         'name': power_name,
                         'type': '攻击力',
                         'plus': 1,
                         'value': ['100%'] * 15,
                     }
-            self.new_prop = await calc_prop(self.raw_data, power_list)
+        self.new_prop = await calc_prop(self.raw_data, self.power_list)
+
+    async def get_dmg_card(self) -> Tuple[Image.Image, int]:
+        await self.get_new_prop()
+        # 拿到倍率表
+        if self.power_list == {}:
+            dmg_img, dmg_len = Image.new('RGBA', (950, 1)), 0
+        else:
             dmg_img, dmg_len = await draw_dmgCacl_img(
-                self.raw_data, power_list, self.new_prop
+                self.raw_data, self.power_list, self.new_prop
             )
         return dmg_img, dmg_len
 
@@ -432,10 +448,10 @@ class CharCard:
                 subNameStr = subName.replace('百分比', '').replace('元素', '')
                 if value_temp == 0:
                     artifacts_color = (160, 160, 160)
+                elif value_temp >= 5.1:
+                    artifacts_color = (247, 50, 50)
                 elif value_temp >= 3.7:
                     artifacts_color = (255, 255, 100)
-                elif value_temp >= 4.9:
-                    artifacts_color = (247, 50, 50)
                 else:
                     artifacts_color = (250, 250, 250)
                 artifacts_text.text(
@@ -809,10 +825,80 @@ class CharCard:
         )
         return char_info_1
 
+    async def get_adv_card(self) -> Image.Image:
+        adv_img = Image.open(TEXT_PATH / 'adv.png')
+        return adv_img
+
+    async def get_seq(self):
+        self.percent, seq = await get_char_percent(
+            self.raw_data, self.new_prop, self.char_name
+        )
+        self.seq_str = '·'.join([s[:2] for s in seq.split('|')]) + seq[-1:]
+        if self.seq_str == '':
+            self.seq_str = '无匹配'
+
+    async def draw_char_curve_card(self) -> bytes:
+        await self.get_new_prop()
+        await self.get_seq()
+        await self.get_artifacts_card(Image.new('RGB', (1, 1)))
+        curve_img, curve_len = await draw_char_curve_data(
+            self.char_name, self.raw_data
+        )
+        curve2_img, curve2_len = await draw_char_curve_data(
+            self.char_name, self.new_prop
+        )
+        char_img = await self.get_char_img()
+        adv_img = await self.get_adv_card()
+        img = await self.get_bg_card(curve_len + curve2_len + 460, char_img)
+        img.paste(char_img, (0, 0), char_img)
+        char_info_1 = await self.get_char_card_1()
+        img.paste(char_info_1, (0, 0), char_info_1)
+        img.paste(curve_img, (0, 1085), curve_img)
+        img.paste(curve2_img, (0, 1085 + curve_len), curve2_img)
+        img.paste(adv_img, (0, 1085 + curve_len + curve2_len), adv_img)
+        img_text = ImageDraw.Draw(img)
+        # 顶栏
+        img_text.text(
+            (475, 2240),
+            f'曲线(上)为正常面板,曲线(下)为触发各种战斗buff后面板',
+            (255, 255, 255),
+            genshin_font_origin(32),
+            anchor='mm',
+        )
+        # 角色评分
+        img_text.text(
+            (785, 2380),
+            f'{round(self.artifacts_all_score, 1)}',
+            (255, 255, 255),
+            genshin_font_origin(50),
+            anchor='mm',
+        )
+        img_text.text(
+            (785, 2542),
+            f'{str(self.percent)+"%"}',
+            (255, 255, 255),
+            genshin_font_origin(50),
+            anchor='mm',
+        )
+        img_text.text(
+            (785, 2490),
+            f'{self.seq_str}',
+            (255, 255, 255),
+            genshin_font_origin(18),
+            anchor='mm',
+        )
+
+        img = img.convert('RGB')
+        result_buffer = BytesIO()
+        img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
+        res = result_buffer.getvalue()
+        return res
+
     async def draw_char_card(self) -> bytes:
         dmg_img, dmg_len = await self.get_dmg_card()
         char_img = await self.get_char_img()
-        img = await self.get_bg_card(dmg_len, char_img)
+        ex_len = dmg_len * 40 + 765
+        img = await self.get_bg_card(ex_len, char_img)
         img.paste(char_img, (0, 0), char_img)
         char_info_1 = await self.get_char_card_1()
         char_info_2 = Image.open(TEXT_PATH / 'char_info_2.png')
@@ -821,6 +907,7 @@ class CharCard:
         img.paste(dmg_img, (0, 1850), dmg_img)
         await self.get_artifacts_card(img)
         img_text = ImageDraw.Draw(img)
+        await self.get_seq()
         # 角色评分
         img_text.text(
             (768, 1564),
@@ -829,22 +916,16 @@ class CharCard:
             genshin_font_origin(50),
             anchor='mm',
         )
-        percent, seq = await get_char_percent(
-            self.raw_data, self.new_prop, self.char_name
-        )
-        seq_str = '·'.join([s[:2] for s in seq.split('|')]) + seq[-1:]
-        if seq_str == '':
-            seq_str = '无匹配'
         img_text.text(
             (768, 1726),
-            f'{str(percent)+"%"}',
+            f'{str(self.percent)+"%"}',
             (255, 255, 255),
             genshin_font_origin(50),
             anchor='mm',
         )
         img_text.text(
             (768, 1673),
-            f'{seq_str}',
+            f'{self.seq_str}',
             (255, 255, 255),
             genshin_font_origin(18),
             anchor='mm',
@@ -863,6 +944,7 @@ async def draw_char_img(
     weapon_affix: Optional[int] = None,
     talent_num: Optional[int] = None,
     charUrl: Optional[str] = None,
+    is_curve: bool = False,
 ) -> Union[bytes, str]:
     card = CharCard(raw_data=raw_data, char_url=charUrl)
     err = await card.new(
@@ -870,7 +952,10 @@ async def draw_char_img(
     )
     if isinstance(err, str):
         return err
-    res = await card.draw_char_card()
+    if is_curve:
+        res = await card.draw_char_curve_card()
+    else:
+        res = await card.draw_char_card()
     return res
 
 

@@ -86,6 +86,7 @@ ATTR_MAP = {
     '攻击力': 'addAtk',
     '防御力': 'addDef',
     '生命值': 'addHp',
+    '百分比血量': 'addHp',
 }
 
 MIN_MAP = {

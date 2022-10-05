@@ -2,8 +2,9 @@ from pathlib import Path
 
 import httpx
 
-char_list = ['Nahida', 'Layla']
+char_list = ['Dori']
 title = 'https://api.ambr.top/assets/UI/{}'
+# title = 'https://enka.network/ui/{}'
 icon_list = [
     'Skill_E_{}_01.png',
     'Skill_E_{}_02.png',
@@ -22,7 +23,7 @@ icon_list = [
     'UI_Talent_C_{}_02.png',
     'UI_Gacha_AvatarImg_{}.png',
 ]
-is_download = False
+is_download = True
 
 for char in char_list:
     for icon in icon_list:

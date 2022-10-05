@@ -104,7 +104,8 @@ async def get_char_percent(
     if char_name not in dmgMap:
         return percent, ''
     std_prop = dmgMap[char_name]
-    seq_temp = ''
+    seq_temp_a = ''
+    seq_temp_w = ''
     for std_seq in std_prop:
         # 如果序列完全相同, 则直接使用这个序列
         if std_seq['seq'] == seq:
@@ -112,12 +113,16 @@ async def get_char_percent(
             break
         # 如果不完全相同, 但是杯子的主词条相同, 也可以使用这个
         if len(seq) >= 2 and len(std_seq['seq']) >= 2:
-            if std_seq['seq'][-2] == seq[-2] and seq_temp == '':
-                seq_temp = std_seq
+            if std_seq['seq'][:2] == seq[:2] and seq_temp_w == '':
+                seq_temp_w = std_seq
+            if std_seq['seq'][-2] == seq[-2] and seq_temp_a == '':
+                seq_temp_a = std_seq
     else:
         # 如果存在备选那就用备选
-        if seq_temp:
-            std = seq_temp
+        if seq_temp_w:
+            std = seq_temp_w
+        elif seq_temp_a:
+            std = seq_temp_a
         # 不存在则使用第一个
         else:
             std = dmgMap[char_name][0]
@@ -171,7 +176,7 @@ async def get_char_percent(
             f.append(1)
     print(f)
     percent = '{:.2f}'.format(c * (float(sum(f) / len(f)) * 100))
-    return percent, seq
+    return percent, std['seq']
 
 
 async def calc_prop(raw_data: dict, power_list: dict) -> dict:

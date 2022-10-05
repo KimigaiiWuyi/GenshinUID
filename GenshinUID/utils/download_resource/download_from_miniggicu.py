@@ -1,5 +1,7 @@
+import os
 import asyncio
 from pathlib import Path
+from typing import List, Tuple
 
 from bs4 import BeautifulSoup
 from nonebot.log import logger
@@ -46,6 +48,15 @@ async def _get_url(url: str, sess: ClientSession):
 
 
 async def download_all_file_from_miniggicu():
+    async def _download(tasks: List[asyncio.Task]):
+        failed_list.extend(
+            list(filter(lambda x: x is not None, await asyncio.gather(*tasks)))
+        )
+        tasks.clear()
+        logger.info('[minigg.icu]下载完成!')
+
+    failed_list: List[Tuple[str, int, str]] = []
+    TASKS = []
     async with ClientSession() as sess:
         for file in [
             NAMECARD_FILE,
@@ -65,34 +76,44 @@ async def download_all_file_from_miniggicu():
                 f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]中存在{len(data_list)}个内容!'
             )
             temp_num = 0
-            TASKS = []
             for data in data_list:
                 url = f'{file}/{data["href"]}'
                 name = data.text
                 path = Path(PATH_MAP[FILE_TO_PATH[file]] / name)
-                if not path.exists():
+                if not path.exists() or not os.stat(path).st_size:
                     logger.info(
                         f'[minigg.icu]开始下载[{FILE_TO_NAME[file]}]_[{name}]...'
                     )
                     temp_num += 1
                     TASKS.append(
                         asyncio.wait_for(
-                            download_file(url, FILE_TO_PATH[file], name),
+                            download_file(sess, url, FILE_TO_PATH[file], name),
                             timeout=60,
                         )
                     )
                     # await download_file(url, FILE_TO_PATH[file], name)
                     if len(TASKS) >= 10:
-                        await asyncio.gather(*TASKS)
-                        TASKS = []
-                        logger.info('[minigg.icu]下载完成!')
+                        await _download(TASKS)
             else:
-                await asyncio.gather(*TASKS)
-                TASKS = []
-                logger.info('[minigg.icu]下载完成!')
+                await _download(TASKS)
             if temp_num == 0:
                 im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]无需下载!'
             else:
                 im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]已下载{temp_num}个内容!'
             temp_num = 0
             logger.info(im)
+    if failed_list:
+        logger.info(f"[minigg.icu]开始重新下载失败的{len(failed_list)}个文件...")
+        for url, file, name in failed_list:
+            TASKS.append(
+                asyncio.wait_for(
+                    download_file(sess, url, file, name),
+                    timeout=60,
+                )
+            )
+            if len(TASKS) >= 10:
+                await _download(TASKS)
+        else:
+            await _download(TASKS)
+        if count := len(failed_list):
+            logger.error(f"[minigg.icu]仍有{count}个文件未下载，请使用命令 `下载全部资源` 重新下载")

@@ -52,6 +52,10 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
     else:
         # 获取角色名
         msg = ''.join(re.findall('[\u4e00-\u9fa5]', args[4]))
+        is_curve = False
+        if '成长曲线' in msg or '曲线' in msg:
+            is_curve = True
+            msg = msg.replace('成长曲线', '').replace('曲线', '')
         msg_list = msg.split('换')
         char_name = msg_list[0]
         talent_num = None
@@ -124,7 +128,9 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
             await bot.send(ev, CHAR_HINT.format(char_name), at_sender=True)
             return
 
-    im = await draw_char_img(char_data, weapon, weapon_affix, talent_num, img)
+    im = await draw_char_img(
+        char_data, weapon, weapon_affix, talent_num, img, is_curve
+    )
 
     if isinstance(im, str):
         await bot.send(ev, im)

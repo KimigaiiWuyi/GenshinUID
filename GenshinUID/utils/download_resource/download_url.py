@@ -1,5 +1,9 @@
+from typing import Tuple, Optional
+
 import aiofiles
+from nonebot.log import logger
 from aiohttp.client import ClientSession
+from aiohttp.client_exceptions import ClientConnectorError
 
 from .RESOURCE_PATH import (
     REL_PATH,
@@ -24,7 +28,9 @@ PATH_MAP = {
 }
 
 
-async def download_file(url: str, path: int, name: str):
+async def download_file(
+    sess: ClientSession, url: str, path: int, name: str
+) -> Optional[Tuple[str, int, str]]:
     """
     :说明:
       下载URL保存入目录
@@ -41,9 +47,14 @@ async def download_file(url: str, path: int, name: str):
         7: REL_PATH
         '''
       * name (str): 资源保存名称
+    :返回:
+        url (str) path (int) name (str)
     """
-    async with ClientSession() as sess:
+    try:
         async with sess.get(url) as res:
             content = await res.read()
-    async with aiofiles.open(PATH_MAP[path] / name, "+wb") as f:
+    except ClientConnectorError:
+        logger.warning(f"[minigg.icu]{name}下载失败")
+        return url, path, name
+    async with aiofiles.open(PATH_MAP[path] / name, "wb") as f:
         await f.write(content)

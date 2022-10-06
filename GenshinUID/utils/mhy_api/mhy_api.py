@@ -5,6 +5,10 @@ HK4_URL = 'https://hk4e-api.mihoyo.com'
 
 BBS_TASKLIST = BBS_URL + '/apihub/sapi/getUserMissionsState'
 
+'''GT'''
+# AJAX 无感验证
+GT_TEST_URL = 'https://api.geetest.com/ajax.php?gt={}&challenge={}&lang=zh-cn&pt=3&client_type=web_mobile'
+
 '''账号相关'''
 # 通过LoginTicket获取Stoken
 GET_STOKEN_URL = OLD_URL + '/auth/api/getMultiTokenByLoginTicket'

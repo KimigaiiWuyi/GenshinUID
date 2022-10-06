@@ -267,9 +267,7 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
         '?bbs_auth_required=true&act_id=e202009291139501&utm_source=bbs'
         '&utm_medium=mys&utm_campaign=icon'
     )
-    print(Header)
     HEADER.update(Header)
-    print(HEADER)
     data = await _mhy_request(
         url=SIGN_URL,
         method='POST',

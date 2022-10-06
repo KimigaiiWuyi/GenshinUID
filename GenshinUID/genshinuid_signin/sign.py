@@ -57,16 +57,17 @@ async def sign_in(uid) -> str:
                     gt = sign_data['data']['gt']
                     challenge = sign_data['data']['challenge']
                     validate = await get_validate(gt, challenge)
-                    delay = 50 + random.randint(1, 50)
                     if validate:
+                        delay = 50 + random.randint(1, 50)
                         Header['x-rpc-challenge'] = challenge
                         Header['x-rpc-validate'] = validate
                         Header['x-rpc-seccode'] = f'{validate}|jordan'
                         logger.info(f'[签到] {uid} 已获取验证码, 等待时间{delay}秒')
                         await asyncio.sleep(delay)
                     else:
-                        logger.info(f'[签到] {uid} 未获取验证码,等待五分钟后重试...')
-                        await asyncio.sleep(301)
+                        delay = 605 + random.randint(1, 120)
+                        logger.info(f'[签到] {uid} 未获取验证码,等待{delay}秒后重试...')
+                        await asyncio.sleep(delay)
                     continue
                 else:
                     logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')

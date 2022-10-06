@@ -27,7 +27,7 @@ async def run_webconsole():
     await auth.create_role_user()
 
     logger.info(
-        ('WebConsole挂载成功：' f'http://{config.HOST}:{config:PORT}/genshinuid')
+        ('WebConsole挂载成功：' f'http://{config.HOST}:{config.PORT}/genshinuid')
     )
 
 

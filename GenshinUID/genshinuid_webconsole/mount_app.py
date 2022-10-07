@@ -79,15 +79,16 @@ class GenshinUIDAdminSite(AuthAdminSite):
 
 # 创建FastAPI应用
 app = FastAPI()
-settings = Settings(  # type: ignore
+settings = Settings(
     database_url_async=DATABASE_URL,
+    database_url='',
     root_path='/genshinuid',
     site_icon='https://s2.loli.net/2022/01/31/kwCIl3cF1Z2GxnR.png',
     site_title='GenshinUID网页控制台',
-    # logger=logger,
+    language='zh_CN',
 )
 quart = get_bot().server_app
-quart.asgi_app = FastApiMiddleware(quart, app, {"/genshinuid"})
+quart.asgi_app = FastApiMiddleware(quart, app, {"/genshinuid"})  # type: ignore
 
 
 # 显示主键

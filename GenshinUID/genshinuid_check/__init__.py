@@ -1,18 +1,31 @@
 import random
 import asyncio
+from typing import Union
 
+from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import require, on_command
-from nonebot.adapters.onebot.v11 import Bot
+from nonebot.permission import SUPERUSER
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    GroupMessageEvent,
+    PrivateMessageEvent,
+)
 
 from .backup_data import data_backup
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
+from ..utils.db_operation.db_operation import delete_cookies, get_all_push_list
+from ..utils.message.get_cqhttp_data import (
+    get_all_friend_list,
+    get_group_member_list,
+)
 
 check = on_command('校验全部Cookies', rule=FullCommand())
 check_stoken = on_command('校验全部Stoken', rule=FullCommand())
+remove_invalid_user = on_command('清除无效用户', rule=FullCommand())
 
 backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
 
@@ -20,6 +33,38 @@ backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
 @backup_scheduler.scheduled_job('cron', hour=0)
 async def daily_refresh_charData():
     await data_backup()
+
+
+@remove_invalid_user.handle()
+@handle_exception('清除无效用户', '清除无效用户错误')
+async def send_remove_invalid_user_msg(
+    bot: Bot,
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+):
+    if not await SUPERUSER(bot, event):
+        return
+    im_list = []
+    invalid_user = {}
+    invalid_uid_list = []
+    user_list = await get_all_push_list()
+    friend_list = await get_all_friend_list(bot)
+    for user in user_list:
+        if user['StatusA'] == 'on':
+            if user['QID'] not in friend_list:
+                invalid_user['qid'] = user['UID']
+                invalid_uid_list.append(user['UID'])
+        else:
+            group_member_list = await get_group_member_list(
+                bot, int(user['StatusA'])
+            )
+            if user['QID'] not in group_member_list:
+                invalid_user['qid'] = user['UID']
+                invalid_uid_list.append(user['UID'])
+    for uid in invalid_uid_list:
+        im_list.append(await delete_cookies(str(uid)))
+        logger.warning(f'无效UID已被删除: {uid}')
+    await matcher.finish(f'已清理失效用户{len(im_list)}个!')
 
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉

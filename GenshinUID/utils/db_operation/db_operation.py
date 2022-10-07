@@ -8,7 +8,7 @@ from .database.db_config import async_session
 
 
 async def get_push_status(uid, func) -> List:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             PushData = PushDataDAL(session)
             push_dict = await PushData.get_user_data(uid)
@@ -22,7 +22,7 @@ async def get_push_status(uid, func) -> List:
 
 
 async def update_push_status(uid: int, func: str, status: str) -> bool:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             PushData = PushDataDAL(session)
             return await PushData.update_user_data(
@@ -31,7 +31,7 @@ async def update_push_status(uid: int, func: str, status: str) -> bool:
 
 
 async def update_push_value(uid: int, func: str, value: int) -> bool:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             PushData = PushDataDAL(session)
             return await PushData.update_user_data(
@@ -42,7 +42,7 @@ async def update_push_value(uid: int, func: str, value: int) -> bool:
 async def update_is_pushed(
     uid: int, func: str, is_pushed: str = 'off'
 ) -> bool:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             PushData = PushDataDAL(session)
             return await PushData.update_user_data(
@@ -51,7 +51,7 @@ async def update_is_pushed(
 
 
 async def bind_db(userid, uid=None, mys=None):
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             UidData = UidDataDAL(session)
             im = await UidData.bind_db(userid, {'UID': uid, 'MYSID': mys})
@@ -59,7 +59,7 @@ async def bind_db(userid, uid=None, mys=None):
 
 
 async def get_all_uid() -> List:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             UidData = UidDataDAL(session)
             lst = await UidData.get_all_uid_list()
@@ -67,7 +67,7 @@ async def get_all_uid() -> List:
 
 
 async def get_all_cookie() -> List:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             lst = await Cookies.get_all_cookie_list()
@@ -75,14 +75,16 @@ async def get_all_cookie() -> List:
 
 
 async def get_all_stoken() -> List:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             lst = await Cookies.get_all_stoken_list()
             return lst
 
 
-async def select_db(userid: int, mode: str = 'auto') -> Union[List[str], str, None]:
+async def select_db(
+    userid: int, mode: str = 'auto'
+) -> Union[List[str], str, None]:
     """
     :说明:
       选择绑定uid/mys库
@@ -99,7 +101,7 @@ async def select_db(userid: int, mode: str = 'auto') -> Union[List[str], str, No
       其他情况下data[0]为需要的uid/mysid
       data[1]表示data[0]是`uid` or `mysid`
     """
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             UidData = UidDataDAL(session)
             if mode == 'auto':
@@ -126,7 +128,7 @@ async def switch_db(userid: int, uid: Optional[str] = None) -> str:
     :返回:
       * im (str): 回调信息。
     """
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             UidData = UidDataDAL(session)
             im = await UidData.switch_uid(userid, uid)
@@ -144,7 +146,7 @@ async def delete_db(userid: int, data: dict) -> str:
     :返回:
       * im (str): 回调信息。
     """
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             UidData = UidDataDAL(session)
             im = await UidData.delete_db(userid, data)
@@ -152,7 +154,7 @@ async def delete_db(userid: int, data: dict) -> str:
 
 
 async def cookies_db(uid: str, cookies: str, qid: int):
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.add_cookie_db(qid, uid, cookies)
@@ -160,7 +162,7 @@ async def cookies_db(uid: str, cookies: str, qid: int):
 
 
 async def error_db(cookies: str, error: str):
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.add_error_db(cookies, error)
@@ -168,7 +170,7 @@ async def error_db(cookies: str, error: str):
 
 
 async def owner_cookies(uid: str) -> str:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             owner_ck = await Cookies.get_user_ck(uid)
@@ -176,7 +178,7 @@ async def owner_cookies(uid: str) -> str:
 
 
 async def delete_cookies(uid: str) -> str:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             result = await Cookies.delete_user(uid)
@@ -187,7 +189,7 @@ async def delete_cookies(uid: str) -> str:
 
 
 async def get_stoken(uid: str) -> str:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             stoken = await Cookies.get_user_stoken(uid)
@@ -195,7 +197,7 @@ async def get_stoken(uid: str) -> str:
 
 
 async def get_user_bind_data(uid: str) -> dict:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             lst = await Cookies.get_user_data_dict(uid)
@@ -203,7 +205,7 @@ async def get_user_bind_data(uid: str) -> dict:
 
 
 async def stoken_db(s_cookies: str, uid: str) -> str:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.add_stoken_db(uid, s_cookies)
@@ -211,7 +213,7 @@ async def stoken_db(s_cookies: str, uid: str) -> str:
 
 
 async def open_push(uid, qid, status, func):
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.update_user_status(
@@ -221,7 +223,7 @@ async def open_push(uid, qid, status, func):
 
 
 async def config_check(func, mode='CHECK') -> bool:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Config = ConfigDAL(session)
             im = False
@@ -235,7 +237,7 @@ async def config_check(func, mode='CHECK') -> bool:
 
 
 async def get_all_signin_list() -> List:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.get_status_list('StatusB')
@@ -243,7 +245,7 @@ async def get_all_signin_list() -> List:
 
 
 async def get_all_push_list() -> List:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.get_status_list('StatusA')
@@ -251,7 +253,7 @@ async def get_all_push_list() -> List:
 
 
 async def get_push_data(uid: int) -> dict:
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             PushData = PushDataDAL(session)
             push_data = await PushData.get_user_data(uid)
@@ -259,7 +261,7 @@ async def get_push_data(uid: int) -> dict:
 
 
 async def cache_db(uid):
-    async with async_session() as session:  # type: ignore
+    async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)
             im = await Cookies.get_random_ck(uid)

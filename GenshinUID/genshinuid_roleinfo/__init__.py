@@ -3,10 +3,10 @@ from ..all_import import *  # noqa: F403,F401
 from ..utils.db_operation.db_operation import select_db
 from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
 
-
+@sv.on_rex(r'^()?()?()?([1256][0-9]{8})()?()?$')
 @sv.on_rex(
     r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|查询|mys)?([0-9]+)?'
+    r'(uid|查询|mys)([0-9]+)?'
     r'(\[CQ:at,qq=[0-9]+\])?( )?$',
 )
 async def send_role_info(bot: HoshinoBot, ev: CQEvent):

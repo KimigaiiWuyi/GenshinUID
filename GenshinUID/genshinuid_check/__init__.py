@@ -1,14 +1,52 @@
 import random
 import asyncio
 
+from nonebot.log import logger
+
 from .backup_data import data_backup
 from ..all_import import *  # noqa: F403, F401
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
+from ..utils.db_operation.db_operation import delete_cookies, get_all_push_list
+from ..utils.message.get_cqhttp_data import (
+    get_all_friend_list,
+    get_group_member_list,
+)
 
 
 @sv.scheduled_job('cron', hour=0)
 async def daily_refresh_charData():
     await data_backup()
+
+
+@sv.on_fullmatch('清除无效用户')
+async def send_remove_invalid_user_msg(bot: HoshinoBot, ev: CQEvent):
+    if ev.sender:
+        qid = int(ev.sender['user_id'])
+    else:
+        return
+    if qid not in bot.config.SUPERUSERS:
+        return
+    im_list = []
+    invalid_user = {}
+    invalid_uid_list = []
+    user_list = await get_all_push_list()
+    friend_list = await get_all_friend_list(bot)
+    for user in user_list:
+        if user['StatusA'] == 'on':
+            if user['QID'] not in friend_list:
+                invalid_user['qid'] = user['UID']
+                invalid_uid_list.append(user['UID'])
+        else:
+            group_member_list = await get_group_member_list(
+                bot, int(user['StatusA'])
+            )
+            if user['QID'] not in group_member_list:
+                invalid_user['qid'] = user['UID']
+                invalid_uid_list.append(user['UID'])
+    for uid in invalid_uid_list:
+        im_list.append(await delete_cookies(str(uid)))
+        logger.warning(f'无效UID已被删除: {uid}')
+    await bot.send(ev, f'已清理失效用户{len(im_list)}个!')
 
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉

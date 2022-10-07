@@ -27,6 +27,7 @@ from fastapi_amis_admin.amis.components import (
 )
 
 from ..version import GenshinUID_version
+from .login_page import amis_admin, user_auth_admin  # 不要删!!
 from ..utils.db_operation.database.db_config import DATABASE_URL
 from ..utils.db_operation.database.models import (
     Config,
@@ -114,8 +115,9 @@ app = cast(FastAPI, app)
 # logger.setLevel(20)
 settings = Settings(  # type: ignore
     database_url_async=DATABASE_URL,
-    root_path="/genshinuid",
-    site_title="GenshinUID - FastAPI Amis Admin",
+    root_path='/genshinuid',
+    site_icon='https://s2.loli.net/2022/01/31/kwCIl3cF1Z2GxnR.png'
+    site_title='GenshinUID网页控制台',
     # logger=logger
 )
 

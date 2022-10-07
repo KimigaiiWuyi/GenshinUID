@@ -116,7 +116,7 @@ app = cast(FastAPI, app)
 settings = Settings(  # type: ignore
     database_url_async=DATABASE_URL,
     root_path='/genshinuid',
-    site_icon='https://s2.loli.net/2022/01/31/kwCIl3cF1Z2GxnR.png'
+    site_icon='https://s2.loli.net/2022/01/31/kwCIl3cF1Z2GxnR.png',
     site_title='GenshinUID网页控制台',
     # logger=logger
 )

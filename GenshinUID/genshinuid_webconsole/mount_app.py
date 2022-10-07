@@ -104,7 +104,7 @@ with contextlib.suppress(ImportError):
 
     if isinstance(app, Quart):
         fastapi = FastAPI()
-        app.asgi_app = FastApiMiddleware(app, fastapi, {"/genshinuid"})
+        app.asgi_app = FastApiMiddleware(app, fastapi, {"/genshinuid"})  # type: ignore
         app = fastapi
 
 
@@ -113,12 +113,13 @@ app = cast(FastAPI, app)
 # logger.handlers.clear()
 # logger.addHandler(LoguruHandler())
 # logger.setLevel(20)
-settings = Settings(  # type: ignore
+settings = Settings(
     database_url_async=DATABASE_URL,
+    database_url='',
     root_path='/genshinuid',
     site_icon='https://s2.loli.net/2022/01/31/kwCIl3cF1Z2GxnR.png',
     site_title='GenshinUID网页控制台',
-    # logger=logger
+    language='zh_CN',
 )
 
 

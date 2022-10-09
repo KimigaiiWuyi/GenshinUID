@@ -2,12 +2,31 @@ import math
 import random
 from io import BytesIO
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 
 from PIL import Image
 from httpx import get
 
+from ..download_resource.RESOURCE_PATH import TEXT2D_PATH
+
 BG_PATH = Path(__file__).parent / 'bg'
+
+
+async def get_color_bg(
+    based_w: int, based_h: int, bg: Optional[str] = None
+) -> Image.Image:
+    image = ''
+    if bg:
+        path = BG_PATH / f'{bg}.jpg'
+        if path.exists():
+            image = Image.open(path)
+    CI_img = CustomizeImage(image, based_w, based_h)
+    img = CI_img.bg_img
+    color = CI_img.bg_color
+    color_mask = Image.new('RGBA', (based_w, based_h), color)
+    enka_mask = Image.open(TEXT2D_PATH / 'mask.png').resize((based_w, based_h))
+    img.paste(color_mask, (0, 0), enka_mask)
+    return img
 
 
 async def get_simple_bg(
@@ -39,7 +58,9 @@ async def get_simple_bg(
 
 
 class CustomizeImage:
-    def __init__(self, image: str, based_w: int, based_h: int) -> None:
+    def __init__(
+        self, image: Union[str, Image.Image], based_w: int, based_h: int
+    ) -> None:
 
         self.bg_img = self.get_image(image, based_w, based_h)
         self.bg_color = self.get_bg_color(self.bg_img)
@@ -50,9 +71,13 @@ class CustomizeImage:
         self.char_high_color = self.get_char_high_color(self.bg_color)
 
     @staticmethod
-    def get_image(image: str, based_w: int, based_h: int) -> Image.Image:
+    def get_image(
+        image: Union[str, Image.Image], based_w: int, based_h: int
+    ) -> Image.Image:
         # 获取背景图片
-        if image:
+        if isinstance(image, Image.Image):
+            edit_bg = image
+        elif image:
             edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
         else:
             bg_path = random.choice(list(BG_PATH.iterdir()))

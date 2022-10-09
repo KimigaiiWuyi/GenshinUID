@@ -20,6 +20,7 @@ from nonebot.adapters.onebot.v11 import (
 from ..config import priority
 from ..genshinuid_meta import register_menu
 from ..utils.enka_api.get_enka_data import switch_api
+from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
@@ -254,9 +255,14 @@ async def send_card_info(
             uid = str(uid)
             if not uid:
                 await matcher.finish(UID_HINT)
-    im = await enka_to_data(uid)
+    im = await enka_to_card(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
-    await matcher.finish(str(im))
+    if isinstance(im, str):
+        await matcher.finish(im)
+    elif isinstance(im, bytes):
+        await matcher.finish(MessageSegment.image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 
 
 @get_charcard_list.handle()

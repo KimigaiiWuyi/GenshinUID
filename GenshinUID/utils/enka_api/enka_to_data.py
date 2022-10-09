@@ -1,7 +1,7 @@
 import json
 import time
 from pathlib import Path
-from typing import Union, Optional
+from typing import List, Union, Optional
 
 from ...version import Genshin_version
 from .get_enka_data import get_enka_info
@@ -66,9 +66,9 @@ with open(MAP_PATH / avatarName2Element_fileName, 'r', encoding='UTF-8') as f:
     avatarName2Element = json.load(f)
 
 
-async def enka_to_data(
+async def enka_to_dict(
     uid: str, enka_data: Optional[dict] = None
-) -> Union[dict, str]:
+) -> Union[List[dict], str]:
     """
     :说明:
       访问enkaAPI并转换为genshinUID的数据Json。
@@ -83,7 +83,7 @@ async def enka_to_data(
     else:
         enka_data = await get_enka_info(uid)
     if isinstance(enka_data, str):
-        return enka_data
+        return []
     if isinstance(enka_data, dict):
         if 'playerInfo' not in enka_data:
             im = (
@@ -93,7 +93,7 @@ async def enka_to_data(
             )
             return im
     elif enka_data is None:
-        return {}
+        return []
 
     now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     playerInfo = enka_data['playerInfo']
@@ -109,7 +109,7 @@ async def enka_to_data(
     if 'avatarInfoList' not in enka_data:
         return f'UID{uid}刷新失败！未打开角色展柜!'
 
-    char_name_list = []
+    char_dict_list = []
     for char in enka_data['avatarInfoList']:
         # 处理基本信息
         char_data = {}
@@ -119,7 +119,6 @@ async def enka_to_data(
         char_data['avatarId'] = avatarId
         avatarName = avatarId2Name[str(char['avatarId'])]
         char_data['avatarName'] = avatarId2Name[str(char['avatarId'])]
-        char_name_list.append(char_data['avatarName'])
         char_data['avatarFetter'] = char['fetterInfo']['expLevel']
         char_data['avatarLevel'] = char['propMap']['4001']['val']
 
@@ -342,9 +341,23 @@ async def enka_to_data(
                 char_data['equipSets']['type'] += '2'
                 char_data['equipSets']['set'] += equip
 
+        char_dict_list.append(char_data)
         with open(
             path / '{}.json'.format(avatarName), 'w', encoding='UTF-8'
         ) as file:
             json.dump(char_data, file, ensure_ascii=False)
+    return char_dict_list
+
+
+async def enka_to_data(
+    uid: str, enka_data: Optional[dict] = None
+) -> Union[dict, str]:
+    raw_data = await enka_to_dict(uid, enka_data)
+    if isinstance(raw_data, str):
+        return raw_data
+    char_name_list = []
+    char_name_list_str = ''
+    for char_data in raw_data:
+        char_name_list.append(char_data['avatarName'])
     char_name_list_str = ','.join(char_name_list)
     return f'UID{uid}刷新完成！\n本次缓存：{char_name_list_str}'

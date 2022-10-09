@@ -5,9 +5,8 @@ from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.mhy_api.get_mhy_data import get_award
-from ..utils.download_resource.RESOURCE_PATH import TEXT2D_PATH
 from ..utils.draw_image_tools.send_image_tool import convert_img
-from ..utils.draw_image_tools.draw_image_tool import CustomizeImage
+from ..utils.draw_image_tools.draw_image_tool import get_color_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
@@ -80,12 +79,7 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
     based_w = 850
     based_h = 1900
 
-    CI_img = CustomizeImage('', based_w, based_h)
-    img = CI_img.bg_img
-    color = CI_img.bg_color
-    color_mask = Image.new('RGBA', (based_w, based_h), color)
-    note_mask = Image.open(TEXT2D_PATH / 'mask.png').resize((based_w, based_h))
-    img.paste(color_mask, (0, 0), note_mask)
+    img = await get_color_bg(based_w, based_h)
     img.paste(note_pic, (0, 0), note_pic)
 
     ring_pic = Image.open(TEXT_PATH / 'ring.apng')

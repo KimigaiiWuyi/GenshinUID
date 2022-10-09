@@ -28,6 +28,7 @@ skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
 talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
 avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
 enName2Id_fileName = f'enName2AvatarID_mapping_{version}.json'
+avatarId2Star_fileName = f'avatarId2Star_mapping_{version}.json'
 
 artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
 icon2Name_fileName = f'icon2Name_mapping_{version}.json'
@@ -61,6 +62,7 @@ async def avatarName2ElementJson() -> None:
 
     temp = {}
     enName2Id_result = {}
+    avatarId2Star_result = {}
     elementMap = {
         '风': 'Anemo',
         '岩': 'Geo',
@@ -79,9 +81,15 @@ async def avatarName2ElementJson() -> None:
             temp[name] = elementMap[data['element']]
             enName = data['images']['namesideicon'].split('_')[-1]
             enName2Id_result[enName] = _id
+            avatarId2Star_result[int(_id)] = data['rarity']
 
     with open(MAP_PATH / enName2Id_fileName, 'w', encoding='UTF-8') as file:
         json.dump(enName2Id_result, file, ensure_ascii=False)
+
+    with open(
+        MAP_PATH / avatarId2Star_fileName, 'w', encoding='UTF-8'
+    ) as file:
+        json.dump(avatarId2Star_result, file, ensure_ascii=False)
 
     with open(
         MAP_PATH / avatarName2Element_fileName, 'w', encoding='UTF-8'

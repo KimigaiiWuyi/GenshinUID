@@ -16,6 +16,7 @@ from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.send import local_image
 from ..utils.message.cast_type import cast_to_int
 from ..utils.enka_api.get_enka_data import switch_api
+from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
@@ -249,9 +250,9 @@ async def send_card_info(
             uid = str(uid)
             if not uid:
                 await matcher.finish(UID_HINT)
-    im = await enka_to_data(uid)
+    im = await enka_to_card(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
-    await matcher.finish(str(im))
+    await matcher.finish(local_image(im))
 
 
 @get_charcard_list.handle()

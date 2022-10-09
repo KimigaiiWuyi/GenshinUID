@@ -6,6 +6,7 @@ from .draw_char_card import *
 from .draw_char_card import draw_char_img
 from ..all_import import *  # noqa: F401,F403
 from ..utils.enka_api.get_enka_data import switch_api
+from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.db_operation.db_operation import get_all_uid
 from ..utils.message.error_reply import *  # noqa: F401,F403
@@ -202,9 +203,15 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
             if '未找到绑定的UID' in uid:
                 await bot.send(ev, UID_HINT)
                 return
-    im = await enka_to_data(uid)
+    im = await enka_to_card(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
-    await bot.send(ev, str(im))
+    if isinstance(im, str):
+        await bot.send(ev, im)
+    elif isinstance(im, bytes):
+        im = await convert_img(im)
+        await bot.send(ev, im)
+    else:
+        await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
 
 
 @sv.on_prefix('毕业度统计')

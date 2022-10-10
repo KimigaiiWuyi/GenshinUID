@@ -16,7 +16,6 @@ from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.send import local_image
 from ..utils.message.cast_type import cast_to_int
 from ..utils.enka_api.get_enka_data import switch_api
-from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
@@ -25,6 +24,7 @@ from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, get_all_uid
+from ..utils.enka_api.enka_to_card import enka_to_card, draw_enka_card
 
 refresh = on_command('强制刷新')
 change_api = on_command('切换api')
@@ -149,8 +149,8 @@ async def send_char_info(
             file_name = i.name
             if '\u4e00' <= file_name[0] <= '\u9fff':
                 char_list.append(file_name.split('.')[0])
-        char_list_str = ','.join(char_list)
-        await matcher.finish(f'UID{uid}当前缓存角色:{char_list_str}', at_sender=True)
+        img = await draw_enka_card(uid=uid, char_list=char_list)
+        await matcher.finish(local_image(img))
     else:
         if '旅行者' in char_name:
             char_name = '旅行者'

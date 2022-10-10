@@ -83,8 +83,8 @@ async def avatarName2ElementJson() -> None:
             enName2Id_result[enName] = _id
             avatarId2Star_result[int(_id)] = data['rarity']
 
-    avatarId2Star_result['1000005'] = '5'
-    avatarId2Star_result['1000007'] = '5'
+    avatarId2Star_result['10000005'] = '5'
+    avatarId2Star_result['10000007'] = '5'
 
     with open(MAP_PATH / enName2Id_fileName, 'w', encoding='UTF-8') as file:
         json.dump(enName2Id_result, file, ensure_ascii=False)

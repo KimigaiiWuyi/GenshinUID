@@ -11,6 +11,7 @@ from ..download_resource.RESOURCE_PATH import CHAR_PATH
 from ..draw_image_tools.send_image_tool import convert_img
 from ..draw_image_tools.draw_image_tool import get_color_bg
 from ..genshin_fonts.genshin_fonts import genshin_font_origin
+from ..alias.avatarId_and_name_covert import name_to_avatar_id
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -46,6 +47,31 @@ async def enka_to_card(
         if char_data_list == []:
             return await convert_img(pic_500)
 
+    img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
+    return img
+
+
+async def draw_enka_card(
+    uid: str,
+    char_data_list: Optional[List] = None,
+    char_list: Optional[List] = None,
+):
+    if char_list:
+        char_data_list = []
+        for char in char_list:
+            char_data_list.append(
+                {'avatarName': char, 'avatarId': await name_to_avatar_id(char)}
+            )
+        ex = '展柜内有'
+    else:
+        if char_data_list is None:
+            return await convert_img(
+                Image.new('RGBA', (0, 1), (255, 255, 255))
+            )
+        else:
+            ex = '刷新'
+
+    line_str = f'UID {uid} {ex} {len(char_data_list)} 个角色! 使用 查询{char_data_list[0]["avatarName"]} 命令进行查询!'
     based_w, based_h = 950, ((len(char_data_list) + 3) // 4) * 220 + 200
     img = await get_color_bg(based_w, based_h, 'shin-w')
     img_rect = Image.new('RGBA', (based_w, based_h))
@@ -66,7 +92,7 @@ async def enka_to_card(
     img.paste(img_rect, (0, 0), img_rect)
     img_draw.text(
         (476, 82),
-        f'UID {uid} 刷新 {len(char_data_list)} 个角色! 使用 查询{char_data_list[0]["avatarName"]} 命令进行查询!',
+        line_str,
         white_color,
         gs_font_28,
         'mm',

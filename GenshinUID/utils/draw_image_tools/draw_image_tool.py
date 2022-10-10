@@ -10,6 +10,8 @@ from httpx import get
 from ..download_resource.RESOURCE_PATH import TEXT2D_PATH
 
 BG_PATH = Path(__file__).parent / 'bg'
+NM_BG_PATH = BG_PATH / 'nm_bg'
+SP_BG_PATH = BG_PATH / 'sp_bg'
 
 
 async def get_color_bg(
@@ -17,7 +19,7 @@ async def get_color_bg(
 ) -> Image.Image:
     image = ''
     if bg:
-        path = BG_PATH / f'{bg}.jpg'
+        path = SP_BG_PATH / f'{bg}.jpg'
         if path.exists():
             image = Image.open(path)
     CI_img = CustomizeImage(image, based_w, based_h)
@@ -63,7 +65,7 @@ class CustomizeImage:
     ) -> None:
 
         self.bg_img = self.get_image(image, based_w, based_h)
-        self.bg_color = self.get_bg_color(self.bg_img)
+        self.bg_color = self.get_bg_color(self.bg_img, is_light=True)
         self.text_color = self.get_text_color(self.bg_color)
         self.highlight_color = self.get_highlight_color(self.bg_color)
         self.char_color = self.get_char_color(self.bg_color)
@@ -80,7 +82,7 @@ class CustomizeImage:
         elif image:
             edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
         else:
-            bg_path = random.choice(list(BG_PATH.iterdir()))
+            bg_path = random.choice(list(NM_BG_PATH.iterdir()))
             edit_bg = Image.open(bg_path).convert('RGBA')
 
         # 确定图片的长宽
@@ -92,9 +94,17 @@ class CustomizeImage:
         new_h = math.ceil(based_w / float(scale_f))
         if scale_f > based_scale:
             bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
+            x1 = int(new_w / 2 - based_w / 2)
+            y1 = 0
+            x2 = int(new_w / 2 + based_w / 2)
+            y2 = based_h
         else:
             bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
-        bg_img = bg_img2.crop((0, 0, based_w, based_h))
+            x1 = 0
+            y1 = int(new_h / 2 - based_h / 2)
+            x2 = based_w
+            y2 = int(new_h / 2 + based_h / 2)
+        bg_img = bg_img2.crop((x1, y1, x2, y2))
 
         return bg_img
 
@@ -107,12 +117,17 @@ class CustomizeImage:
         return dominant_color
 
     @staticmethod
-    def get_bg_color(edit_bg: Image.Image) -> Tuple[int, int, int]:
+    def get_bg_color(
+        edit_bg: Image.Image, is_light: Optional[bool] = False
+    ) -> Tuple[int, int, int]:
         # 获取背景主色
         color = 8
         q = edit_bg.quantize(colors=color, method=2)
         bg_color = (0, 0, 0)
-        based_light = 120
+        if is_light:
+            based_light = 195
+        else:
+            based_light = 120
         temp = 9999
         for i in range(0, color):
             bg = tuple(q.getpalette()[i * 3 : (i * 3) + 3])  # type: ignore

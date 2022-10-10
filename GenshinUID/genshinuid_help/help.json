@@ -165,6 +165,22 @@
         "need_admin": false
       },
       {
+        "name": "查询xx换xx",
+        "desc": "查询角色面板更换武器",
+        "eg": "查询六命心海换护摩",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查询xx成长曲线",
+        "desc": "输出当前角色成长表",
+        "eg": "查询刻晴曲线",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "查询展柜角色",
         "desc": "查询所有已缓存角色列表",
         "eg": "查询展柜角色",
@@ -348,6 +364,14 @@
         "need_admin": false
       },
       {
+        "name": "清除无效用户",
+        "desc": "清理失效的用户",
+        "eg": "清除无效用户",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
         "name": "gs配置",
         "desc": "查看全局的插件配置",
         "eg": "gs配置",
@@ -356,9 +380,17 @@
         "need_admin": false
       },
       {
-        "name": "全部重签/重获取",
-        "desc": "全部签到/米游币获取",
-        "eg": "全部重签、全部重获取",
+        "name": "全部重签",
+        "desc": "重新进行全部签到",
+        "eg": "全部重签",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "全部重获取",
+        "desc": "重新进行全部米游币获取",
+        "eg": "全部重获取",
         "need_ck": true,
         "need_sk": true,
         "need_admin": true

@@ -40,7 +40,7 @@ async def get_simple_bg(
         elif isinstance(image, Image.Image):
             edit_bg = image.convert('RGBA')
     else:
-        bg_path = random.choice(list(BG_PATH.iterdir()))
+        bg_path = random.choice(list(NM_BG_PATH.iterdir()))
         edit_bg = Image.open(bg_path).convert('RGBA')
 
     # 确定图片的长宽

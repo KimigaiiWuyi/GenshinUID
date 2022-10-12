@@ -3,28 +3,30 @@ from pathlib import Path
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
+from aiohttp.client import ClientSession
 
 from ..utils.get_cookies.get_cookies import GetCookies
 from ..utils.mhy_api.get_mhy_data import get_character
 from ..utils.download_resource.download_url import download_file
 from ..utils.draw_image_tools.send_image_tool import convert_img
-from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.download_resource.RESOURCE_PATH import (
     REL_PATH,
     CHAR_PATH,
-    TEXT2D_PATH,
     WEAPON_PATH,
     CHAR_STAND_PATH,
+)
+from ..utils.draw_image_tools.draw_image_tool import (
+    get_level_pic,
+    get_simple_bg,
+    get_fetter_pic,
+    get_talent_pic,
+    get_weapon_pic,
 )
 
 # 确定路径
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
-FETTER_PATH = TEXT2D_PATH / 'fetter'
-TALENT_PATH = TEXT2D_PATH / 'talent'
-WEAPON_BG_PATH = TEXT2D_PATH / 'weapon'
-LEVEL_PATH = TEXT2D_PATH / 'level'
 
 # 打开图片
 char_card_bg4 = Image.open(TEXT_PATH / 'char_card_bg4.png')
@@ -49,22 +51,6 @@ gs_font_40 = genshin_font_origin(40)
 text_color = (68, 66, 64)
 
 
-async def get_fetter_pic(fetter: int) -> Image.Image:
-    return Image.open(FETTER_PATH / f'fetter_{fetter}.png')
-
-
-async def get_talent_pic(talent: int) -> Image.Image:
-    return Image.open(TALENT_PATH / f'talent_{talent}.png')
-
-
-async def get_weapon_pic(weapon_rarity: int) -> Image.Image:
-    return Image.open(WEAPON_BG_PATH / f'weapon_bg{weapon_rarity}.png')
-
-
-async def get_level_pic(level: int) -> Image.Image:
-    return Image.open(LEVEL_PATH / f'level_{level}.png')
-
-
 async def _draw_char_full_pic(img: Image.Image, char_data: dict, index: int):
     result = Image.new('RGBA', (250, 150), (0, 0, 0, 0))
     char_card_img = Image.new('RGBA', (250, 150), (0, 0, 0, 0))
@@ -76,11 +62,13 @@ async def _draw_char_full_pic(img: Image.Image, char_data: dict, index: int):
     weapon_pic_path = WEAPON_PATH / f'{char_data["weapon"]["name"]}.png'
     # 不存在自动下载
     if not weapon_pic_path.exists():
-        await download_file(
-            char_data['weapon']['icon'],
-            5,
-            f'{char_data["weapon"]["name"]}.png',
-        )
+        async with ClientSession() as sess:
+            await download_file(
+                sess,
+                char_data['weapon']['icon'],
+                5,
+                f'{char_data["weapon"]["name"]}.png',
+            )
     # 粘贴武器图片
     weapon_pic = Image.open(weapon_pic_path).convert('RGBA')
     weapon_pic_scale = weapon_pic.resize((50, 50))
@@ -88,7 +76,10 @@ async def _draw_char_full_pic(img: Image.Image, char_data: dict, index: int):
     char_pic_path = CHAR_PATH / f'{char_data["id"]}.png'
     # 不存在自动下载
     if not char_pic_path.exists():
-        await download_file(char_data['icon'], 1, f'{char_data["id"]}.png')
+        async with ClientSession() as sess:
+            await download_file(
+                sess, char_data['icon'], 1, f'{char_data["id"]}.png'
+            )
     # 粘贴角色头像
     char_img = Image.open(CHAR_PATH / f'{char_data["id"]}.png').convert('RGBA')
     # 缩放至合适大小
@@ -368,11 +359,13 @@ async def _draw_char_8_pic(img: Image.Image, char_data: dict, index: int):
     weapon_pic_path = WEAPON_PATH / f'{char_data["weapon"]["name"]}.png'
     # 不存在自动下载
     if not weapon_pic_path.exists():
-        await download_file(
-            char_data['weapon']['icon'],
-            5,
-            f'{char_data["weapon"]["name"]}.png',
-        )
+        async with ClientSession() as sess:
+            await download_file(
+                sess,
+                char_data['weapon']['icon'],
+                5,
+                f'{char_data["weapon"]["name"]}.png',
+            )
     # 粘贴武器图片
     weapon_pic = Image.open(weapon_pic_path).convert('RGBA')
     weapon_pic_scale = weapon_pic.resize((50, 50))
@@ -380,7 +373,10 @@ async def _draw_char_8_pic(img: Image.Image, char_data: dict, index: int):
     char_pic_path = CHAR_PATH / f'{char_data["id"]}.png'
     # 不存在自动下载
     if not char_pic_path.exists():
-        await download_file(char_data['icon'], 1, f'{char_data["id"]}.png')
+        async with ClientSession() as sess:
+            await download_file(
+                sess, char_data['icon'], 1, f'{char_data["id"]}.png'
+            )
     # 粘贴角色图片
     char_img = Image.open(CHAR_PATH / f'{char_data["id"]}.png').convert('RGBA')
 

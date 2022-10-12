@@ -1,17 +1,16 @@
-import json
 import asyncio
 from pathlib import Path
 from typing import List, Union, Optional
 
 from PIL import Image, ImageDraw
 
-from ...version import Genshin_version
 from .enka_to_data import enka_to_dict
 from ..download_resource.RESOURCE_PATH import CHAR_PATH
 from ..draw_image_tools.send_image_tool import convert_img
 from ..draw_image_tools.draw_image_tool import get_color_bg
 from ..genshin_fonts.genshin_fonts import genshin_font_origin
 from ..alias.avatarId_and_name_covert import name_to_avatar_id
+from ..alias.avatarId_to_char_star import avatar_id_to_char_star
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
@@ -26,10 +25,6 @@ char_mask = Image.open(TEXT_PATH / 'char_mask.png')
 char_cover = Image.open(TEXT_PATH / 'char_cover.png')
 pic_500 = Image.open(TEXT_PATH / '500.png')
 pic_204 = Image.open(TEXT_PATH / '204.png')
-avatarId2Star_fileName = f'avatarId2Star_mapping_{Genshin_version}.json'
-
-with open(MAP_PATH / avatarId2Star_fileName, "r", encoding='UTF-8') as f:
-    avatarId2Star_data = json.load(f)
 
 
 async def enka_to_card(
@@ -108,7 +103,7 @@ async def draw_enka_card(
 async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
     char_name = char_data['avatarName']
     char_id = char_data['avatarId']
-    char_star = avatarId2Star_data[str(char_id)]
+    char_star = await avatar_id_to_char_star(str(char_id))
     char_card = Image.open(TEXT_PATH / f'char_card_{char_star}.png')
     char_img = (
         Image.open(CHAR_PATH / f'{char_id}.png')

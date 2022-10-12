@@ -1,10 +1,10 @@
 import re
 import random
-from pathlib import Path
 
 from .draw_char_card import *
 from .draw_char_card import draw_char_img
 from ..all_import import *  # noqa: F401,F403
+from .draw_char_rank import draw_cahrcard_list
 from ..utils.enka_api.get_enka_data import switch_api
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.db_operation.db_operation import get_all_uid
@@ -221,11 +221,6 @@ async def send_charcard_list(bot: HoshinoBot, ev: CQEvent):
         message = ev.message.extract_plain_text().replace(' ', '')
     else:
         return
-    limit = re.findall(r'\d+', message)  # str
-    if len(limit) >= 1:
-        limit = int(limit[0])
-    else:
-        limit = 24
 
     at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
 
@@ -238,9 +233,14 @@ async def send_charcard_list(bot: HoshinoBot, ev: CQEvent):
         else:
             return
 
-    uid = await select_db(qid, mode='uid')
+    # 获取uid
+    uid = re.findall(r'\d+', message)
+    if uid:
+        uid = uid[0]
+    else:
+        uid = await select_db(qid, mode='uid')
 
-    im = await draw_cahrcard_list(str(uid), limit)
+    im = await draw_cahrcard_list(str(uid), qid)
 
     logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, bytes):

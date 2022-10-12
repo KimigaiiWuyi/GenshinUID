@@ -9,9 +9,88 @@ from httpx import get
 
 from ..download_resource.RESOURCE_PATH import TEXT2D_PATH
 
+FETTER_PATH = TEXT2D_PATH / 'fetter'
+TALENT_PATH = TEXT2D_PATH / 'talent'
+WEAPON_BG_PATH = TEXT2D_PATH / 'weapon'
+WEAPON_AFFIX_PATH = TEXT2D_PATH / 'weapon_affix'
+LEVEL_PATH = TEXT2D_PATH / 'level'
+
 BG_PATH = Path(__file__).parent / 'bg'
+TEXT_PATH = Path(__file__).parent / 'texture2d'
+ring_pic = Image.open(TEXT_PATH / 'ring.png')
+mask_pic = Image.open(TEXT_PATH / 'mask.png')
 NM_BG_PATH = BG_PATH / 'nm_bg'
 SP_BG_PATH = BG_PATH / 'sp_bg'
+
+
+async def get_weapon_affix_pic(affix: int) -> Image.Image:
+    return Image.open(WEAPON_AFFIX_PATH / f'weapon_affix_{affix}.png')
+
+
+async def get_fetter_pic(fetter: int) -> Image.Image:
+    return Image.open(FETTER_PATH / f'fetter_{fetter}.png')
+
+
+async def get_talent_pic(talent: int) -> Image.Image:
+    return Image.open(TALENT_PATH / f'talent_{talent}.png')
+
+
+async def get_weapon_pic(weapon_rarity: int) -> Image.Image:
+    return Image.open(WEAPON_BG_PATH / f'weapon_bg{weapon_rarity}.png')
+
+
+async def get_level_pic(level: int) -> Image.Image:
+    return Image.open(LEVEL_PATH / f'level_{level}.png')
+
+
+async def get_qq_avatar(qid: Union[int, str]) -> Image.Image:
+    avatar_url = f'http://q1.qlogo.cn/g?b=qq&nk={qid}&s=640'
+    char_pic = Image.open(BytesIO(get(avatar_url).content)).convert('RGBA')
+    return char_pic
+
+
+async def draw_pic_with_ring(
+    pic: Image.Image,
+    size: int,
+    bg_color: Optional[Tuple[int, int, int]] = None,
+):
+    img = Image.new('RGBA', (size, size))
+    mask = mask_pic.resize((size, size))
+    ring = ring_pic.resize((size, size))
+    resize_pic = crop_center_img(pic, size, size)
+    if bg_color:
+        img_color = Image.new('RGBA', (size, size), bg_color)
+        img_color.paste(resize_pic, (0, 0), resize_pic)
+        img.paste(img_color, (0, 0), mask)
+    else:
+        img.paste(resize_pic, (0, 0), mask)
+    img.paste(ring, (0, 0), ring)
+    return img
+
+
+def crop_center_img(
+    img: Image.Image, based_w: int, based_h: int
+) -> Image.Image:
+    # 确定图片的长宽
+    based_scale = '%.3f' % (based_w / based_h)
+    w, h = img.size
+    scale_f = '%.3f' % (w / h)
+    new_w = math.ceil(based_h * float(scale_f))
+    new_h = math.ceil(based_w / float(scale_f))
+    if scale_f > based_scale:
+        resize_img = img.resize((new_w, based_h), Image.ANTIALIAS)
+        x1 = int(new_w / 2 - based_w / 2)
+        y1 = 0
+        x2 = int(new_w / 2 + based_w / 2)
+        y2 = based_h
+    else:
+        resize_img = img.resize((based_w, new_h), Image.ANTIALIAS)
+        x1 = 0
+        y1 = int(new_h / 2 - based_h / 2)
+        x2 = based_w
+        y2 = int(new_h / 2 + based_h / 2)
+    crop_img = resize_img.crop((x1, y1, x2, y2))
+    return crop_img
 
 
 async def get_color_bg(
@@ -44,18 +123,7 @@ async def get_simple_bg(
         edit_bg = Image.open(bg_path).convert('RGBA')
 
     # 确定图片的长宽
-    based_scale = '%.3f' % (based_w / based_h)
-
-    w, h = edit_bg.size
-    scale_f = '%.3f' % (w / h)
-    new_w = math.ceil(based_h * float(scale_f))
-    new_h = math.ceil(based_w / float(scale_f))
-    if scale_f > based_scale:
-        bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
-    else:
-        bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
-    bg_img = bg_img2.crop((0, 0, based_w, based_h))
-
+    bg_img = crop_center_img(edit_bg, based_w, based_h)
     return bg_img
 
 
@@ -86,26 +154,7 @@ class CustomizeImage:
             edit_bg = Image.open(bg_path).convert('RGBA')
 
         # 确定图片的长宽
-        based_scale = '%.3f' % (based_w / based_h)
-
-        w, h = edit_bg.size
-        scale_f = '%.3f' % (w / h)
-        new_w = math.ceil(based_h * float(scale_f))
-        new_h = math.ceil(based_w / float(scale_f))
-        if scale_f > based_scale:
-            bg_img2 = edit_bg.resize((new_w, based_h), Image.ANTIALIAS)
-            x1 = int(new_w / 2 - based_w / 2)
-            y1 = 0
-            x2 = int(new_w / 2 + based_w / 2)
-            y2 = based_h
-        else:
-            bg_img2 = edit_bg.resize((based_w, new_h), Image.ANTIALIAS)
-            x1 = 0
-            y1 = int(new_h / 2 - based_h / 2)
-            x2 = based_w
-            y2 = int(new_h / 2 + based_h / 2)
-        bg_img = bg_img2.crop((x1, y1, x2, y2))
-
+        bg_img = crop_center_img(edit_bg, based_w, based_h)
         return bg_img
 
     @staticmethod

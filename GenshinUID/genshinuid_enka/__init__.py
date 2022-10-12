@@ -18,12 +18,13 @@ from nonebot.adapters.onebot.v11 import (
 )
 
 from ..config import priority
+from .draw_char_card import draw_char_img
 from ..genshinuid_meta import register_menu
+from .draw_char_rank import draw_cahrcard_list
 from ..utils.enka_api.get_enka_data import switch_api
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
-from .draw_char_card import draw_char_img, draw_cahrcard_list
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.exception.handle_exception import handle_exception
@@ -289,20 +290,21 @@ async def send_charcard_list(
     args: Message = CommandArg(),
     custom: ImageAndAt = Depends(),
 ):
-
-    message = args.extract_plain_text().strip().replace(' ', '')
-    limit = re.findall(r'\d+', message)  # str
-    if len(limit) >= 1:
-        limit = int(limit[0])
-    else:
-        limit = 24
+    raw_mes = args.extract_plain_text().strip()
+    qid = event.user_id
     at = custom.get_first_at()
     if at:
-        uid = await select_db(at, mode='uid')
-        message = message.replace(str(at), '')
+        qid = at
+
+    # 获取uid
+    uid = re.findall(r'\d+', raw_mes)
+    if uid:
+        uid = uid[0]
     else:
-        uid = await select_db(event.user_id, mode='uid')
-    im = await draw_cahrcard_list(str(uid), limit)
+        uid = await select_db(qid, mode='uid')
+        uid = str(uid)
+
+    im = await draw_cahrcard_list(str(uid), qid)
 
     logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, bytes):

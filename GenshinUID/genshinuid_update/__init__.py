@@ -4,15 +4,14 @@ from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import RegexGroup
 from nonebot.permission import SUPERUSER
+from nonebot import get_bot, on_regex, get_driver
 from nonebot.adapters.qqguild import Bot, MessageEvent
-from nonebot import get_bot, on_regex, get_driver, on_command
 
 from .update import update_genshinuid
-from ..utils.nonebot2.rule import FullCommand
 from ..utils.message.cast_type import cast_to_int
 from .restart import restart_message, restart_genshinuid
 
-gs_restart = on_command('gs重启', rule=FullCommand())
+gs_restart = on_regex(r'^(gs)(重启)$')
 gs_update = on_regex(
     r'^(gs)(强行)?(强制)?(更新)$',
     block=True,

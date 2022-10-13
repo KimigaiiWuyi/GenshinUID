@@ -293,7 +293,12 @@ async def send_charcard_list(
         uid = await select_db(qid, mode='uid')
         uid = str(uid)
 
-    im = await draw_cahrcard_list(str(uid), qid)
+    if event.author and event.author.avatar:
+        avatar = event.author.avatar
+    else:
+        avatar = '3399214199'
+
+    im = await draw_cahrcard_list(str(uid), avatar)
 
     logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, bytes):

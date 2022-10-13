@@ -50,13 +50,8 @@ async def send_restart_msg(
     if not await SUPERUSER(bot, event):
         return
     logger.warning('开始执行[重启]')
-    qid = cast_to_int(event.author)
-    if len(event.get_session_id().split('_')) == 3:
-        send_id = event.get_session_id().split('_')[1]
-        send_type = 'group'
-    else:
-        send_id = qid
-        send_type = 'private'
+    send_id = cast_to_int(event.author)
+    send_type = 'group'
     await matcher.send('正在执行[gs重启]...')
     await restart_genshinuid(send_type, str(send_id))
 

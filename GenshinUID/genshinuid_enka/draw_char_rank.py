@@ -119,7 +119,11 @@ async def draw_cahrcard_list(
 
     # 排序
     char_done_list.sort(key=lambda x: (-x['percent']))
-    char_pic = await get_qq_avatar(qid)
+    qid = str(qid)
+    if qid.startswith('http'):
+        char_pic = await get_qq_avatar(avatar_url=qid)
+    else:
+        char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 320)
 
     img = await get_color_bg(950, 540 + 100 * len(char_done_list))

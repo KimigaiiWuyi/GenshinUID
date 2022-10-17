@@ -242,6 +242,14 @@
         "need_admin": false
       },
       {
+        "name": "卡池列表",
+        "desc": "游戏当前的卡池列表",
+        "eg": "卡池列表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "任务xx",
         "desc": "某个任务的攻略",
         "eg": "任务须弥",
@@ -317,14 +325,6 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
-      },
-      {
-        "name": "生成地图",
-        "desc": "初始化地图模块",
-        "eg": "生成地图",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
       },
       {
         "name": "切换地图",

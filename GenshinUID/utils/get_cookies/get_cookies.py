@@ -10,7 +10,7 @@ class GetCookies:
         self.uid: Optional[str] = None
         self.raw_data: Optional[dict] = None
 
-    async def get_useable_cookies(self, uid: str):
+    async def get_useable_cookies(self, uid: str) -> str:
         self.uid = uid
         while True:
             self.useable_cookies = str(await cache_db(uid))
@@ -24,7 +24,7 @@ class GetCookies:
                 return msg
             else:
                 if msg:
-                    return None
+                    return ''
 
     async def get_uid_data(self):
         self.raw_data = await get_info(self.uid, self.useable_cookies)

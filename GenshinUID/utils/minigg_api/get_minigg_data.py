@@ -1,11 +1,42 @@
+from typing import Union
+
 from httpx import AsyncClient
 
 from .minigg_api import (
+    MINIGG_MAP_URL,
     MINIGG_ENKA_URL,
     MINIGG_MISC_URL,
     MINIGG_AUDIO_URL,
     MINIGG_WEAPON_URL,
 )
+
+
+async def get_minigg_map_data(
+    resource_name: str, map_id: str, is_cluster: bool = False
+) -> Union[dict, bytes]:
+    """
+    :说明:
+      返回地图信息。
+    :参数:
+      * resource_name (str): 资源点名称。
+      * map_id (str): 地图ID。
+      * is_cluster(bool): 是否使用聚类算法
+    :返回:
+      * json或者bytes: 图片。
+    """
+    async with AsyncClient() as client:
+        req = await client.get(
+            url=MINIGG_MAP_URL,
+            params={
+                'resource_name': resource_name,
+                'map_id': map_id,
+                'is_cluster': is_cluster,
+            },
+        )
+    if req.status_code == 200:
+        return req.json()
+    else:
+        return req.content
 
 
 async def get_minigg_enka_info(uid: str):

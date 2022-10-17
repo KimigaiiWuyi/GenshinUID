@@ -49,6 +49,15 @@ class CookiesDAL:
         else:
             return '该用户没有绑定过Cookies噢~'
 
+    async def get_user_ck_valid(self, uid: str) -> bool:
+        data = await self.get_user_data(uid)
+        if data and data.Extra:
+            return False
+        elif data is None:
+            return False
+        else:
+            return True
+
     async def get_user_stoken(self, uid: str) -> Optional[str]:
         """
         :说明:
@@ -121,20 +130,26 @@ class CookiesDAL:
           * cookies (str): Cookies。
         """
         cache_data = await self.get_cache_ck(uid)
-        if await self.user_exists(uid):
+        if await self.user_exists(uid) and await self.get_user_ck_valid(uid):
             return await self.get_user_ck(uid)
         elif cache_data:
             return cache_data
         else:
             sql = select(NewCookiesTable).order_by(func.random())
             a = await self.db_session.execute(sql)
-            random_data = a.scalars().all()
+            random_data: List[NewCookiesTable] = a.scalars().all()
             if random_data:
-                return_ck = random_data[0].Cookies
-                await self.add_cache_db(return_ck, uid, None)
-                return return_ck
+                for data in random_data:
+                    if data.Extra:
+                        continue
+                    else:
+                        return_ck = data.Cookies
+                        await self.add_cache_db(return_ck, uid, None)
+                        return return_ck
+                else:
+                    return '没有可以使用的Cookies！'
             else:
-                return '没有可以使用的数据~,请先用'
+                return '没有可以使用的Cookies！'
 
     async def get_status_list(self, status) -> List:
         if status == 'StatusA':
@@ -199,7 +214,7 @@ class CookiesDAL:
             sql = (
                 update(NewCookiesTable)
                 .where(NewCookiesTable.UID == uid)
-                .values(Cookies=cookies)
+                .values(Cookies=cookies, Extra=None)
             )
             await self.db_session.execute(sql)
         else:

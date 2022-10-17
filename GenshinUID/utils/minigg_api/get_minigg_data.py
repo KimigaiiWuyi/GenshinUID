@@ -33,10 +33,12 @@ async def get_minigg_map_data(
                 'is_cluster': is_cluster,
             },
         )
-    if req.status_code == 200:
+    if req.headers['content-type'] == 'image/jpeg':
+        return req.content
+    elif req.headers['content-type'] == 'application/json':
         return req.json()
     else:
-        return req.content
+        return {'message': req.text}
 
 
 async def get_minigg_enka_info(uid: str):

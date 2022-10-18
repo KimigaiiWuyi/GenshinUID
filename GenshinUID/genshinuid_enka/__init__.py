@@ -1,5 +1,6 @@
 import re
 import random
+from typing import Tuple
 
 from .draw_char_card import *
 from .draw_char_card import draw_char_img
@@ -10,8 +11,8 @@ from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.db_operation.db_operation import get_all_uid
 from ..utils.message.error_reply import *  # noqa: F401,F403
 from ..utils.alias.alias_to_char_name import alias_to_char_name
-from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.enka_api.enka_to_card import enka_to_card, draw_enka_card
+from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
 
 CONVERT_TO_INT = {
     '零': 0,
@@ -38,6 +39,18 @@ async def send_change_api_info(bot: HoshinoBot, ev: CQEvent):
 
     im = await switch_api()
     await bot.send(ev, im)
+
+
+@sv.on_fullmatch('原图')
+async def send_original_pic(bot: HoshinoBot, ev: CQEvent):
+    if ev.reply:
+        msg_id = ev.reply.message_id
+        path = TEMP_PATH / f'{msg_id}.jpg'
+        if path.exists():
+            logger.info('[原图]访问图片: {}'.format(path))
+            with open(path, 'rb') as f:
+                im = await convert_img(f.read())
+                await bot.send(ev, im)
 
 
 @sv.on_rex(
@@ -136,9 +149,13 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
 
     if isinstance(im, str):
         await bot.send(ev, im)
-    elif isinstance(im, bytes):
-        im = await convert_img(im)
-        await bot.send(ev, im)
+    elif isinstance(im, Tuple):
+        img = await convert_img(im[0])
+        req = await bot.send(ev, img)
+        msg_id = req['message_id']
+        if im[1]:
+            with open(TEMP_PATH / f'{msg_id}.jpg', 'wb') as f:
+                f.write(im[1])
     else:
         await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
 

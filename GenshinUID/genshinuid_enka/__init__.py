@@ -29,6 +29,7 @@ AUTO_REFRESH = False
 
 @sv.on_fullmatch('切换api')
 async def send_change_api_info(bot: HoshinoBot, ev: CQEvent):
+    print(ev)
     if ev.sender:
         qid = int(ev.sender['user_id'])
     else:
@@ -41,16 +42,17 @@ async def send_change_api_info(bot: HoshinoBot, ev: CQEvent):
     await bot.send(ev, im)
 
 
-@sv.on_fullmatch('原图')
+@sv.on_rex(r'^(\[CQ:reply,id=[0-9]+\])?( )?(\[CQ:at,qq=[0-9]+\])?( )?原图')
 async def send_original_pic(bot: HoshinoBot, ev: CQEvent):
-    if ev.reply:
-        msg_id = ev.reply.message_id
-        path = TEMP_PATH / f'{msg_id}.jpg'
-        if path.exists():
-            logger.info('[原图]访问图片: {}'.format(path))
-            with open(path, 'rb') as f:
-                im = await convert_img(f.read())
-                await bot.send(ev, im)
+    for msg in ev.message:
+        if msg['type'] == 'reply':
+            msg_id = msg['data']['id']
+            path = TEMP_PATH / f'{msg_id}.jpg'
+            if path.exists():
+                logger.info('[原图]访问图片: {}'.format(path))
+                with open(path, 'rb') as f:
+                    im = await convert_img(f.read())
+                    await bot.send(ev, im)
 
 
 @sv.on_rex(

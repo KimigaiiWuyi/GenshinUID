@@ -5,21 +5,25 @@ from .restart import restart_message, restart_genshinuid
 
 @hoshino_bot.on_startup
 async def check_msg():
-    logger.info('检查遗留信息...')
-    update_log = await restart_message()
-    if update_log == {}:
-        return
-    if update_log['send_type'] == 'group':
-        await hoshino_bot.send_group_msg(
-            group_id=update_log['send_to'],
-            message=update_log['msg'],
-        )
-    else:
-        await hoshino_bot.send_private_msg(
-            user_id=update_log['send_to'],
-            message=update_log['msg'],
-        )
-    logger.info('遗留信息检查完毕!')
+    try:
+        logger.info('检查遗留信息...')
+        update_log = await restart_message()
+        if update_log == {}:
+            return
+
+        if update_log['send_type'] == 'group':
+            await hoshino_bot.send_group_msg(
+                group_id=update_log['send_to'],
+                message=update_log['msg'],
+            )
+        else:
+            await hoshino_bot.send_private_msg(
+                user_id=update_log['send_to'],
+                message=update_log['msg'],
+            )
+        logger.info('遗留信息检查完毕!')
+    except:
+        logger.warning('遗留信息检查失败!')
 
 
 @sv.on_fullmatch('gs重启')

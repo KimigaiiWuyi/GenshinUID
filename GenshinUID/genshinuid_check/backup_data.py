@@ -4,6 +4,8 @@ from shutil import copyfile
 
 from nonebot.log import logger
 
+from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
+
 
 async def data_backup():
     try:
@@ -16,5 +18,11 @@ async def data_backup():
             os.remove(f'ID_DATA_BAK_{endday_format}.db')
             logger.info(f'————已删除数据库备份{endday_format}————')
         logger.info('————数据库成功备份————')
+        for f in TEMP_PATH.glob('*.jpg'):
+            try:
+                f.unlink()
+            except OSError as e:
+                print("Error: %s : %s" % (f, e.strerror))
+        logger.info('————缓存成功清除————')
     except Exception:
         logger.info('————数据库备份失败————')

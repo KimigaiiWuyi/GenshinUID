@@ -12,19 +12,18 @@ from .curveCalc.curve_calc import draw_char_curve_data
 from ..utils.db_operation.db_operation import config_check
 from ..utils.draw_image_tools.draw_image_tool import CustomizeImage
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from ..utils.download_resource.RESOURCE_PATH import (
+    REL_PATH,
+    ICON_PATH,
+    GACHA_IMG_PATH,
+    CHAR_STAND_PATH,
+)
 from .dmgCalc.dmg_calc import (
     DMG_PATH,
     calc_prop,
     draw_dmgCacl_img,
     get_char_percent,
     avatarName2SkillAdd,
-)
-from ..utils.download_resource.RESOURCE_PATH import (
-    REL_PATH,
-    ICON_PATH,
-    PLAYER_PATH,
-    GACHA_IMG_PATH,
-    CHAR_STAND_PATH,
 )
 
 R_PATH = Path(__file__).parent
@@ -943,10 +942,12 @@ async def draw_char_img(
     talent_num: Optional[int] = None,
     charUrl: Optional[str] = None,
     is_curve: bool = False,
-) -> Union[bytes, str]:
+) -> Union[str, Tuple[bytes, Optional[bytes]]]:
     card = CharCard(raw_data=raw_data, char_url=charUrl)
     err = await card.new(
-        weapon=weapon, weapon_affix=weapon_affix, talent_num=talent_num
+        weapon=weapon,
+        weapon_affix=weapon_affix,
+        talent_num=talent_num,
     )
     if isinstance(err, str):
         return err
@@ -954,4 +955,4 @@ async def draw_char_img(
         res = await card.draw_char_curve_card()
     else:
         res = await card.draw_char_card()
-    return res
+    return res, card.char_bytes

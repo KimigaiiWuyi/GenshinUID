@@ -2,6 +2,7 @@ import re
 import json
 import random
 import asyncio
+from typing import Tuple
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
@@ -21,12 +22,13 @@ from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.message.error_reply import UID_HINT, CHAR_HINT
 from ..utils.alias.alias_to_char_name import alias_to_char_name
-from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, get_all_uid
 from ..utils.enka_api.enka_to_card import enka_to_card, draw_enka_card
+from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
 
 refresh = on_command('强制刷新')
+original_pic = on_command('原图')
 change_api = on_command('切换api')
 get_charcard_list = on_command('毕业度统计')
 get_char_info = on_command(
@@ -61,6 +63,22 @@ async def send_change_api_info(
 
     im = await switch_api()
     await matcher.finish(im)
+
+
+@original_pic.handle()
+@handle_exception('原图')
+async def send_original_pic(
+    event: MessageEvent,
+    matcher: Matcher,
+):
+    ev = event.__dict__
+    if 'reply' in ev:
+        msg_id = ev['reply'].__dict__['message_id']
+        path = TEMP_PATH / f'{msg_id}.jpg'
+        if path.exists():
+            logger.info('[原图]访问图片: {}'.format(path))
+            with open(path, 'rb') as f:
+                await matcher.finish(local_image(f.read()))
 
 
 @get_char_info.handle()
@@ -169,8 +187,12 @@ async def send_char_info(
 
     if isinstance(im, str):
         await matcher.finish(im)
-    elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+    elif isinstance(im, Tuple):
+        req = await matcher.send(local_image(im[0]))
+        msg_id = req['message_id']
+        if im[1]:
+            with open(TEMP_PATH / f'{msg_id}.jpg', 'wb') as f:
+                f.write(im[1])
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 

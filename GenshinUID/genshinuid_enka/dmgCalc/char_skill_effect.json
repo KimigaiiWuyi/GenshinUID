@@ -93,7 +93,7 @@
   },
   "甘雨": {
     "50": "B:critrate+20",
-    "70": "dmgBonus+20"
+    "70": "BE:dmgBonus+20"
   },
   "阿贝多": {
     "50": "E:dmgBonus+12",

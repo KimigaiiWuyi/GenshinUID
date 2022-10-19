@@ -23,17 +23,17 @@ async def get_restart_sh(extra: str) -> str:
 
 
 async def restart_genshinuid(send_type: str, send_id: str) -> None:
+    pid = os.getpid()
     extra = ''
     if await config_check('UsePoetry'):
         extra = 'poetry run '
     extra += sys.executable
     restart_sh = await get_restart_sh(extra)
-    if not restart_sh_path.exists():
-        with open(restart_sh_path, "w", encoding="utf8") as f:
-            f.write(restart_sh)
-        if platform.system() == 'Linux':
-            os.system(f'chmod +x {str(restart_sh_path)}')
-            os.system(f'chmod +x {str(bot_start)}')
+    with open(restart_sh_path, "w", encoding="utf8") as f:
+        f.write(restart_sh)
+    if platform.system() == 'Linux':
+        os.system(f'chmod +x {str(restart_sh_path)}')
+        os.system(f'chmod +x {str(bot_start)}')
     now_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     update_log = {
         'type': 'restart',
@@ -45,9 +45,11 @@ async def restart_genshinuid(send_type: str, send_id: str) -> None:
     with open(str(update_log_path), 'w', encoding='utf-8') as f:
         json.dump(update_log, f)
     if platform.system() == 'Linux':
-        os.execl(str(restart_sh_path), ' ')
+        subprocess.Popen(
+            f'kill -9 {pid} & {extra} {bot_start}',
+            shell=True,
+        )
     else:
-        pid = os.getpid()
         subprocess.Popen(
             f'taskkill /F /PID {pid} & {extra} {bot_start}',
             shell=True,

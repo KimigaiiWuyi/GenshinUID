@@ -220,6 +220,13 @@ async def open_push(uid, qid, status, func):
             return im
 
 
+async def empty_cache():
+    async with async_session() as session:
+        async with session.begin():
+            Cookies = CookiesDAL(session)
+            await Cookies.delete_cache()
+
+
 async def config_check(func, mode='CHECK') -> bool:
     async with async_session() as session:  # type: ignore
         async with session.begin():

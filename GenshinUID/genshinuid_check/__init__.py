@@ -18,6 +18,22 @@ async def daily_refresh_charData():
     await data_backup()
 
 
+@sv.on_fullmatch('gs清除缓存')
+async def send_backup_msg(
+    bot: HoshinoBot,
+    ev: CQEvent,
+):
+    if ev.sender:
+        qid = int(ev.sender['user_id'])
+    else:
+        return
+    if qid not in bot.config.SUPERUSERS:
+        return
+
+    await data_backup()
+    await bot.send(ev, f'操作成功完成!')
+
+
 @sv.on_fullmatch('清除无效用户')
 async def send_remove_invalid_user_msg(bot: HoshinoBot, ev: CQEvent):
     if ev.sender:

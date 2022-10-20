@@ -23,6 +23,7 @@ from ..utils.message.get_cqhttp_data import (
     get_group_member_list,
 )
 
+backup = on_command('gs清除缓存', rule=FullCommand())
 check = on_command('校验全部Cookies', rule=FullCommand())
 check_stoken = on_command('校验全部Stoken', rule=FullCommand())
 remove_invalid_user = on_command('清除无效用户', rule=FullCommand())
@@ -33,6 +34,19 @@ backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
 @backup_scheduler.scheduled_job('cron', hour=0)
 async def daily_refresh_charData():
     await data_backup()
+
+
+@backup.handle()
+@handle_exception('清除缓存', '清除缓存错误')
+async def send_backup_msg(
+    bot: Bot,
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+):
+    if not await SUPERUSER(bot, event):
+        return
+    await data_backup()
+    await matcher.finish(f'操作成功完成!')
 
 
 @remove_invalid_user.handle()

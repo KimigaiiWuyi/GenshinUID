@@ -4,6 +4,7 @@ from shutil import copyfile
 
 from nonebot.log import logger
 
+from ..utils.db_operation.db_operation import empty_cache
 from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
 
 
@@ -23,6 +24,7 @@ async def data_backup():
                 f.unlink()
             except OSError as e:
                 print("Error: %s : %s" % (f, e.strerror))
+        await empty_cache()
         logger.info('————缓存成功清除————')
     except Exception:
         logger.info('————数据库备份失败————')

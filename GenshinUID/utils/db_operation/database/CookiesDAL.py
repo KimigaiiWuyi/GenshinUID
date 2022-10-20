@@ -274,6 +274,16 @@ class CookiesDAL:
         else:
             return False
 
+    async def delete_cache(self):
+        sql = (
+            update(NewCookiesTable)
+            .where(NewCookiesTable.Extra == 'limit30')
+            .values(Extra=None)
+        )
+        empty_sql = delete(CookiesCache)
+        await self.db_session.execute(sql)
+        await self.db_session.execute(empty_sql)
+
     async def update_user_status(self, uid: str, data: dict) -> str:
         """
         :说明:

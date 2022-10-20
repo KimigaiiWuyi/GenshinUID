@@ -434,10 +434,14 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
         all_effect.append('Q:dmgBonus+27')
     elif char_name == '钟离':
         all_effect.append('r+-20')
+    elif char_name == '妮露':
+        all_effect.append('hp+25')
+        all_effect.append('em+80')
 
     prop['sp'] = []
-    # 计算全部的buff，添加入属性
-    print(all_effect)
+    # 把带百分比的放到后面
+    first_effect = []
+    second_effect = []
     if all_effect:
         # 把所有的效果都用;链接
         all_effect = ';'.join(all_effect)
@@ -445,6 +449,18 @@ async def calc_prop(raw_data: dict, power_list: dict) -> dict:
         all_effect_list = all_effect.split(';')
         # 遍历每个效果
         for effect in all_effect_list:
+            if '%' in effect:
+                second_effect.append(effect)
+            else:
+                first_effect.append(effect)
+
+    all_effect = first_effect + second_effect
+
+    # 计算全部的buff，添加入属性
+    print(all_effect)
+    if all_effect:
+        # 遍历每个效果
+        for effect in all_effect:
             # 空效果跳过
             if effect == '':
                 continue
@@ -744,6 +760,19 @@ async def draw_dmgCacl_img(
                 * 1.2
                 * (1 + (16.0 * em_cal) / (em_cal + 2000) + prop['a'])
                 * (1 + prop['g'] / 100)
+                * r
+            )
+            power_list[power_name]['name'] = power_list[power_name]['name'][1:]
+        elif '绽放' in power_name:
+            if '丰穰之核' in power_name:
+                ex_add = ((prop['hp'] - 30000) / 1000) * 0.09
+                if ex_add >= 4:
+                    ex_add = 4
+                prop['a'] += ex_add
+            crit_dmg = avg_dmg = (
+                base_value_list[char_level - 1]
+                * 4
+                * (1 + (16.0 * em_cal) / (em_cal + 2000) + prop['a'])
                 * r
             )
             power_list[power_name]['name'] = power_list[power_name]['name'][1:]

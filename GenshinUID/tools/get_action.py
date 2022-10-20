@@ -111,6 +111,14 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
                         'plus': 0,
                         'value': [str(i) for i in range(1, 11)],
                     }
+        if char == '妮露':
+            if 'A丰穰之核(绽放)' not in result:
+                result['A丰穰之核(绽放)'] = {
+                    'name': 'A丰穰之核(绽放)',
+                    'type': '绽放',
+                    'plus': 0,
+                    'value': [str(i) for i in range(1, 11)],
+                }
         # 拿到形如{param1:F1P}的字典
         label_split = label.split('|')[-1]
         # 拿到单个标签的名称，形如一段伤害

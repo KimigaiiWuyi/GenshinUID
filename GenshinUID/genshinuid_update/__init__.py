@@ -7,11 +7,13 @@ from nonebot.permission import SUPERUSER
 from nonebot import get_bot, on_regex, get_driver
 from nonebot.adapters.qqguild import Bot, MessageEvent
 
-from .update import update_genshinuid
+from ..utils.nonebot2.send import local_image
+from .draw_update_log import draw_update_log_img
 from ..utils.message.cast_type import cast_to_int
 from .restart import restart_message, restart_genshinuid
 
 gs_restart = on_regex(r'^(gs)(重启)$')
+get_update_log = on_regex(r'更新记录')
 gs_update = on_regex(
     r'^(gs)(强行)?(强制)?(更新)$',
     block=True,
@@ -55,6 +57,20 @@ async def send_restart_msg(
     await restart_genshinuid(send_type, str(send_id))
 
 
+@get_update_log.handle()
+async def send_updatelog_msg(
+    matcher: Matcher,
+):
+    im = await draw_update_log_img(is_update=False)
+    logger.info('正在执行[更新记录]...')
+    if isinstance(im, str):
+        await matcher.finish(im)
+    elif isinstance(im, bytes):
+        await matcher.finish(local_image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
+
+
 @gs_update.handle()
 async def send_update_msg(
     bot: Bot,
@@ -73,5 +89,10 @@ async def send_update_msg(
         level -= 1
     logger.info(f'[gs更新] 更新等级为{level}')
     await matcher.send(f'开始执行[gs更新], 执行等级为{level}')
-    im = await update_genshinuid(level)
-    await matcher.finish(im)
+    im = await draw_update_log_img(level)
+    if isinstance(im, str):
+        await matcher.finish(im)
+    elif isinstance(im, bytes):
+        await matcher.finish(local_image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

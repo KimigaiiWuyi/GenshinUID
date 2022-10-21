@@ -158,6 +158,7 @@ async def get_card_prop(
             )
         else:
             weapon_info['weaponEffect'] = '无特效。'
+        weapon_info['weaponType'] = weapon_raw_data['weapontype']
         raw_data['weaponInfo'] = weapon_info
 
     # 修改假命座:

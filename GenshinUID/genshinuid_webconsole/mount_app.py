@@ -16,16 +16,17 @@ from typing import (
 from quart import Quart
 from nonebot import get_bot
 from pydantic import BaseModel
+from sqlmodel import Relationship
 from sqlalchemy.orm import backref
 from fastapi import FastAPI, Request
 import fastapi_amis_admin  # noqa: F401
-from sqlmodel import Field, Relationship
 from fastapi_amis_admin import amis, admin
 from fastapi_amis_admin.crud import BaseApiOut
 from sqlalchemy.ext.asyncio import AsyncEngine
 from fastapi_user_auth.site import AuthAdminSite
 from fastapi_amis_admin.amis.types import AmisAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi_amis_admin.models.fields import Field
 from fastapi_amis_admin.crud.schema import CrudEnum
 from fastapi_amis_admin.admin.settings import Settings
 from fastapi_amis_admin.utils.translation import i18n as _
@@ -159,22 +160,24 @@ async def patched_get_create_form(
 admin.BaseModelAdmin.get_create_form = patched_get_create_form
 
 
-class MyUser(User, table=True):
-    point: float = Field(default=0, title=_('Point'))
-    phone: str = Field(None, title=_('Tel'), max_length=15)  # type: ignore
-    parent_id: int = Field(None, title=_('Parent'), foreign_key='auth_user.id')  # type: ignore
-    children: List['User'] = Relationship(
-        sa_relationship_kwargs=dict(
-            backref=backref('parent', remote_side='User.id'),
-        ),
-    )
-
-
 # 创建AdminSite实例
 site = GenshinUIDAdminSite(settings)
 auth = site.auth
 config = get_bot().config
-auth.user_model = MyUser
+
+if float(fastapi_amis_admin.__version__[:3]) >= 0.3:
+
+    class MyUser(User, table=True):
+        point: float = Field(default=0, title=_('Point'))  # type: ignore
+        phone: str = Field(None, title=_('Tel'), max_length=15)  # type: ignore
+        parent_id: int = Field(None, title=_('Parent'), foreign_key='auth_user.id')  # type: ignore
+        children: List['User'] = Relationship(
+            sa_relationship_kwargs=dict(
+                backref=backref('parent', remote_side='User.id'),
+            ),
+        )
+
+    auth.user_model = MyUser
 
 app.add_middleware(
     CORSMiddleware,
@@ -304,8 +307,8 @@ class UserBindFormAdmin(admin.FormAdmin):
 
     # 创建表单数据模型
     class schema(BaseModel):
-        QQ: str = Field(..., title='QQ号', min_length=3, max_length=30)
-        Cookies: str = Field(..., title='Cookies或者Login_ticket')
+        QQ: str = Field(..., title='QQ号', min_length=3, max_length=30)  # type: ignore
+        Cookies: str = Field(..., title='Cookies或者Login_ticket')  # type: ignore
 
     # 处理表单提交数据
     async def handle(

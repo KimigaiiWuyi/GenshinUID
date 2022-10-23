@@ -6,50 +6,50 @@ from .db_config import Field, SQLModel, engine
 
 
 class PushData(SQLModel, table=True):
-    UID: int = Field(default=100000000, primary_key=True)
-    CoinPush: Optional[str]
-    CoinValue: Optional[int]
-    CoinIsPush: Optional[str]
-    ResinPush: Optional[str]
-    ResinValue: Optional[int]
-    ResinIsPush: Optional[str]
-    GoPush: Optional[str]
-    GoValue: Optional[int]
-    GoIsPush: Optional[str]
-    TransformPush: Optional[str]
-    TransformValue: Optional[int]
-    TransformIsPush: Optional[str]
+    UID: int = Field(default=100000000, primary_key=True, title='UID')
+    CoinPush: Optional[str] = Field(title='洞天宝钱推送')
+    CoinValue: Optional[int] = Field(title='洞天宝钱阈值')
+    CoinIsPush: Optional[str] = Field(title='洞天宝钱是否已推送')
+    ResinPush: Optional[str] = Field(title='体力推送')
+    ResinValue: Optional[int] = Field(title='体力阈值')
+    ResinIsPush: Optional[str] = Field(title='体力是否已推送')
+    GoPush: Optional[str] = Field(title='派遣推送')
+    GoValue: Optional[int] = Field(title='派遣阈值')
+    GoIsPush: Optional[str] = Field(title='派遣是否已推送')
+    TransformPush: Optional[str] = Field(title='质变仪推送')
+    TransformValue: Optional[int] = Field(title='质变仪阈值')
+    TransformIsPush: Optional[str] = Field(title='质变仪是否已推送')
 
 
 class UidData(SQLModel, table=True):
-    USERID: int = Field(default=100000000, primary_key=True)
-    UID: Optional[str]
-    MYSID: Optional[str]
+    USERID: int = Field(default=100000000, primary_key=True, title='QQ号')
+    UID: Optional[str] = Field(title='UID')
+    MYSID: Optional[str] = Field(title='米游社通行证(废弃)')
 
 
 class NewCookiesTable(SQLModel, table=True):
-    UID: int = Field(default=100000000, primary_key=True)
-    Cookies: str
-    QID: int
-    StatusA: str
-    StatusB: str
-    StatusC: str
-    NUM: Optional[int]
-    Extra: Optional[str]
-    Stoken: Optional[str]
+    UID: int = Field(default=100000000, primary_key=True, title='UID')
+    Cookies: str = Field(title='CK')
+    QID: int = Field(title='QQ号')
+    StatusA: str = Field(title='全局推送开关')
+    StatusB: str = Field(title='自动签到')
+    StatusC: str = Field(title='自动米游币')
+    NUM: Optional[int] = Field(title='废弃值')
+    Extra: Optional[str] = Field(title='备注')
+    Stoken: Optional[str] = Field(title='SK')
 
 
 class CookiesCache(SQLModel, table=True):
     UID: Optional[str] = Field(default='100000000', primary_key=True)
-    MYSID: Optional[str]
-    Cookies: str
+    MYSID: Optional[str] = Field(title='米游社通行证')
+    Cookies: str = Field(title='CK')
 
 
 class Config(SQLModel, table=True):
-    Name: str = Field(default='Config', primary_key=True)
-    Status: Optional[str]
-    GroupList: Optional[str]
-    Extra: Optional[str]
+    Name: str = Field(default='Config', primary_key=True, title='设置项')
+    Status: Optional[str] = Field(title='开启状态')
+    GroupList: Optional[str] = Field(title='群组')
+    Extra: Optional[str] = Field(title='额外选项')
 
 
 async def create_all():

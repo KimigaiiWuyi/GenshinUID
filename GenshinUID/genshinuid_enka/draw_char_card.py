@@ -157,7 +157,7 @@ async def get_artifacts_value(
 
 async def get_all_artifacts_value(
     raw_data: dict, baseHp: int, baseAtk: int, baseDef: int, char_name: str
-) -> int:
+) -> float:
     artifactsValue = 0
     for aritifact in raw_data:
         for i in aritifact['reliquarySubstats']:

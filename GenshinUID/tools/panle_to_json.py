@@ -37,7 +37,7 @@ async def panle2Json() -> None:
       访问DATA_PATH并转换数据为dmgMap.json。
     """
     wb = openpyxl.load_workbook(
-        str(DATA_PATH / '参考面板3.1（上）.xlsx'), data_only=True
+        str(DATA_PATH / '参考面板3.1（下）.xlsx'), data_only=True
     )
     sheet = wb.active
 
@@ -94,7 +94,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 315:
+            if row == 321:
                 print('ok!')
                 result[char_temp] = char_result
         else:

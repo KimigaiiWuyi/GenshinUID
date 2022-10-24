@@ -763,7 +763,7 @@ async def draw_dmgCacl_img(
                 * r
             )
             power_list[power_name]['name'] = power_list[power_name]['name'][1:]
-        elif '绽放' in power_name:
+        elif '(绽放)' in power_name:
             if '丰穰之核' in power_name:
                 ex_add = ((prop['hp'] - 30000) / 1000) * 0.09
                 if ex_add >= 4:

@@ -226,25 +226,13 @@ Admin账户可以通过左侧的选项进入不同的数据库直接修改,**首
 
 未来还会加入更多功能!
 
-## 获取CK通则
-
-**如果获取到的Cookies字段不全，无法通过校验**
-**推荐重新登陆米游社再进行获取**
-
-## 网页端 #92 [@RemKeeper](https://github.com/RemKeeper)
-[通过网页控制台简易获取Cookies](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)
-## 安卓 [@shirokurakana](https://github.com/shirokurakana)
-[通过额外APP获取Cookies](https://github.com/KimigaiiWuyi/GenshinUID/issues/203)
-## IOS [@741807012](https://github.com/741807012)
-[通过快捷指令获取Cookies](https://github.com/KimigaiiWuyi/GenshinUID/issues/201)
-
 ## 丨我该如何获取Cookies？[#92](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)（[@RemKeeper](https://github.com/RemKeeper)）
 
 ```js
 var cookie = document.cookie;
 var Str_Num = cookie.indexOf('_MHYUUID=');
-cookie = '添加 ' + cookie.substring(Str_Num);
-var ask = confirm('Cookie:' + cookie + '\n\n按确认，然后粘贴发送给机器人');
+cookie = cookie.substring(Str_Num);
+var ask = confirm('Cookie:' + cookie + '按确认，然后粘贴至Cookies或者Login_ticket选框内');
 if (ask == true) {
   copy(cookie);
   msg = cookie
@@ -264,9 +252,9 @@ if (ask == true) {
 
 ```js
 var cookie = document.cookie;
-var ask = confirm('Cookie:' + cookie + '\n\nDo you want to copy the cookie to the clipboard?');
+var ask = confirm('Cookie:' + cookie + '按确认，然后粘贴至Cookies或者Login_ticket选框内');
 if (ask == true) {
-  copy('添加 stoken' + cookie);
+  copy(cookie);
   msg = cookie
 } else {
   msg = 'Cancel'
@@ -279,6 +267,18 @@ if (ask == true) {
 4. 然后在和机器人的私聊窗口，粘贴发送即可
 
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
+
+## 获取CK通则
+
+**如果获取到的Cookies字段不全，无法通过校验**
+**推荐重新登陆米游社再进行获取**
+
+## 网页端 #92 [@RemKeeper](https://github.com/RemKeeper)
+[通过网页控制台简易获取Cookies](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)
+## 安卓 [@shirokurakana](https://github.com/shirokurakana)
+[通过额外APP获取Cookies](https://github.com/KimigaiiWuyi/GenshinUID/issues/203)
+## IOS [@741807012](https://github.com/741807012)
+[通过快捷指令获取Cookies](https://github.com/KimigaiiWuyi/GenshinUID/issues/201)
 '''
 
 
@@ -357,7 +357,10 @@ class UserBindFormAdmin(admin.FormAdmin):
     async def handle(
         self, request: Request, data: schema, **kwargs
     ) -> BaseApiOut[Any]:
-        im = await _deal_ck(data.Cookies, data.QQ)
+        try:
+            im = await _deal_ck(data.Cookies, data.QQ)
+        except:
+            return BaseApiOut(status=-1, msg='你输入的CK可能已经失效,请按照[入门使用]进行操作!')
         ok_num = im.count('成功')
         if ok_num < 1:
             return BaseApiOut(status=-1, msg=im)

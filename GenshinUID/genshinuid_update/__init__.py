@@ -7,6 +7,7 @@ from nonebot.permission import SUPERUSER
 from nonebot import get_bot, on_regex, get_driver, on_command
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent, MessageSegment
 
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from .draw_update_log import draw_update_log_img
 from .restart import restart_message, restart_genshinuid
@@ -45,6 +46,18 @@ async def _():
 
 
 @get_update_log.handle()
+@register_menu(
+    '更新记录',
+    '更新记录',
+    '查看插件最近的更新记录',
+    detail_des=(
+        '介绍：\n'
+        '查看插件最近的有效Git更新记录\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>更新记录</ft>'
+    ),
+)
 async def send_updatelog_msg(
     matcher: Matcher,
 ):
@@ -59,6 +72,19 @@ async def send_updatelog_msg(
 
 
 @gs_restart.handle()
+@register_menu(
+    '重启Bot',
+    'gs重启',
+    '重启Bot框架',
+    trigger_method='超级用户指令',
+    detail_des=(
+        '介绍：\n'
+        '重启Bot框架\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>gs重启</ft>'
+    ),
+)
 async def send_restart_msg(
     bot: Bot,
     event: MessageEvent,
@@ -79,6 +105,22 @@ async def send_restart_msg(
 
 
 @gs_update.handle()
+@register_menu(
+    '更新插件',
+    'gs更新',
+    '手动更新插件',
+    detail_des=(
+        '介绍：\n'
+        '手动更新插件（执行 git pull）\n'
+        '每加上一个可选参数，执行等级加1\n'
+        '当执行等级≥1时会还原上次更改，等级≥2时会清空暂存\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>gs</ft>'
+        '<ft color=(125,125,125)>(强行)(强制)</ft>'
+        '<ft color=(238,120,0)>更新</ft>'
+    ),
+)
 async def send_update_msg(
     bot: Bot,
     event: MessageEvent,

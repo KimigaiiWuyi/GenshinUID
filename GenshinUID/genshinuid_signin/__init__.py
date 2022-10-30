@@ -9,11 +9,15 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 
 from ..config import priority
 from .sign import sign_in, daily_sign
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, config_check
 
-sign_scheduler = require('nonebot_plugin_apscheduler').scheduler
+require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
+
+sign_scheduler = scheduler
 
 get_sign = on_command('签到', priority=priority, rule=FullCommand())
 all_recheck = on_command(
@@ -31,6 +35,18 @@ async def sign_at_night():
 # 群聊内 签到 功能
 @get_sign.handle()
 @handle_exception('签到')
+@register_menu(
+    '手动米游社原神签到',
+    '签到',
+    '手动触发米游社原神签到任务',
+    detail_des=(
+        '介绍：\n'
+        '手动触发米游社原神签到任务\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>签到</ft>'
+    ),
+)
 async def get_sign_func(
     event: MessageEvent,
     matcher: Matcher,
@@ -46,6 +62,18 @@ async def get_sign_func(
 
 @all_recheck.handle()
 @handle_exception('全部重签')
+@register_menu(
+    '米游社原神重签到',
+    '全部重签',
+    '重新运行所有自动米游社原神签到任务',
+    detail_des=(
+        '介绍：\n'
+        '重新运行所有自动米游社原神签到任务\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>全部重签</ft>'
+    ),
+)
 async def recheck(matcher: Matcher):
     logger.info('开始执行[全部重签]')
     await matcher.send('已开始执行')

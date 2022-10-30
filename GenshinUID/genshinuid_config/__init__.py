@@ -14,6 +14,7 @@ from nonebot.adapters.onebot.v11 import (
 )
 
 from .draw_config_card import draw_config_img
+from ..genshinuid_meta import register_menu
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
@@ -37,6 +38,18 @@ config_card = on_command('gs配置')
 
 @config_card.handle()
 @handle_exception('发送配置表')
+@register_menu(
+    '发送配置表',
+    'gs配置',
+    '查看插件当前配置项开关情况',
+    detail_des=(
+        '介绍：\n'
+        '查看插件当前配置项开关情况\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>gs配置</ft>'
+    ),
+)
 async def send_config_card(matcher: Matcher, args: Message = CommandArg()):
     if args:
         await matcher.finish()
@@ -52,6 +65,24 @@ async def send_config_card(matcher: Matcher, args: Message = CommandArg()):
 
 @push_config.handle()
 @handle_exception('设置推送服务')
+@register_menu(
+    '设置推送阈值',
+    'gs设置xx(@某人)',
+    '设置自己或指定人的推送服务阈值',
+    detail_des=(
+        '介绍：\n'
+        '设置某人的推送服务阈值\n'
+        '超级用户可以设置他人的推送服务阈值\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>gs设置</ft>'
+        '<ft color=(0,148,200)>[服务名称][阈值]</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>gs设置推送140</ft>'
+    ),
+)
 async def send_config_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
@@ -90,6 +121,24 @@ async def send_config_msg(
 
 # 开启 自动签到 和 推送树脂提醒 功能
 @open_and_close_switch.handle()
+@register_menu(
+    '开关推送服务',
+    'gs{开启|关闭}xx(@某人)',
+    '开关自己或指定人的推送服务状态',
+    detail_des=(
+        '介绍：\n'
+        '设置某人的推送服务开关状态\n'
+        '超级用户可以设置他人的推送服务状态\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>gs{开启|关闭}</ft>'
+        '<ft color=(0,148,200)>[服务名称]</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>gs开启推送</ft>'
+    ),
+)
 async def open_switch_func(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],

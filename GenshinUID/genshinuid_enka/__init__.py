@@ -32,6 +32,9 @@ from ..utils.db_operation.db_operation import select_db, get_all_uid
 from ..utils.enka_api.enka_to_card import enka_to_card, draw_enka_card
 from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
 
+require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
+
 refresh = on_command('强制刷新')
 original_pic = on_command('原图', rule=FullCommand())
 change_api = on_command('切换api')
@@ -52,11 +55,23 @@ CONVERT_TO_INT = {
     '满': 6,
 }
 AUTO_REFRESH = False
-refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
+refresh_scheduler = scheduler
 
 
 @change_api.handle()
 @handle_exception('切换api')
+@register_menu(
+    '切换API',
+    '切换api',
+    '切换获取角色面板时使用的API',
+    detail_des=(
+        '介绍：\n'
+        '切换获取角色面板时使用的Enka Network API\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>切换api</ft>'
+    ),
+)
 async def send_change_api_info(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
@@ -72,6 +87,19 @@ async def send_change_api_info(
 
 @original_pic.handle()
 @handle_exception('原图')
+@register_menu(
+    '查看面板原图',
+    '原图',
+    '查看角色面板中原随机图',
+    trigger_method='回复+指令',
+    detail_des=(
+        '介绍：\n'
+        '查看开启随机图功能时角色面板中角色位置的原图，需要回复要查看原图的面板图片消息\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>原图</ft>'
+    ),
+)
 async def send_original_pic(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
@@ -92,19 +120,44 @@ async def send_original_pic(
     '查询(@某人)角色名',
     '查询你的或者指定人的已缓存展柜角色的面板',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>[查询</ft>'
-        '<ft color=(125,125,125)>(@某人)</ft>'
-        '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
-        '<ft color=(238,120,0)>角色名</ft>\n'
-        ' \n'
+        '介绍：\n'
         '可以用来查看你的或者指定人的已缓存展柜角色的面板\n'
         '支持部分角色别名\n'
         ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>{查询</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>'
+        '<ft color=(238,120,0)>|uid</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+        '<ft color=(0,148,200)>[角色名]</ft>\n'
+        '后面可以跟 '
+        '<ft color=(238,120,0)>换</ft>'
+        '<ft color=(125,125,125)>(精{一|二|三|四|五})</ft>'
+        '<ft color=(0,148,200)>[武器名]</ft> '
+        '来更换展示的武器\n'
+        '可以跟 '
+        '<ft color=(125,125,125)>(成长)</ft><ft color=(238,120,0)>曲线</ft> '
+        '来查询该角色成长曲线\n'
+        ' \n'
         '示例：\n'
-        '<ft color=(238,120,0)>查询宵宫</ft>；\n'
-        '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi</ft>'
+        '- <ft color=(238,120,0)>查询宵宫</ft>\n'
+        '- <ft color=(238,120,0)>查询绫华换精五雾切</ft>\n'
+        '- <ft color=(238,120,0)>查询一斗成长曲线</ft>\n'
+        '- <ft color=(238,120,0)>查询</ft><ft color=(0,123,67)>@无疑Wuyi</ft>'
         ' <ft color=(238,120,0)>公子</ft>'
+    ),
+)
+@register_menu(
+    '查询展柜角色',
+    '查询展柜角色',
+    '查询插件已缓存的展柜角色列表',
+    detail_des=(
+        '介绍：\n'
+        '查询插件当前已缓存的展柜角色列表\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>查询展柜角色</ft>'
     ),
 )
 async def send_char_info(

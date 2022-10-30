@@ -11,6 +11,7 @@ from nonebot.adapters.onebot.v11 import (
 )
 
 from .draw_roleinfo_card import draw_pic
+from ..genshinuid_meta import register_menu
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
@@ -27,6 +28,29 @@ get_role_info = on_regex(
 
 @get_role_info.handle()
 @handle_exception('查询角色信息')
+@register_menu(
+    '查询帐号信息',
+    '查询',
+    '帐号基础数据与角色信息总览',
+    detail_des=(
+        '介绍：\n'
+        '查询帐号探索度、声望、宝箱收集、角色总览等等基础数据\n'
+        '未绑定CK时最多只能查询8个角色信息\n'
+        ' \n' 
+        '指令：\n'
+        '- <ft color=(238,120,0)>{查询|uid}</ft>'
+        '<ft color=(125,125,125)>({@某人|[UID]})</ft>\n'
+        '- <ft color=(238,120,0)>mys</ft>'
+        '<ft color=(125,125,125)>({@某人|[米游社ID]})</ft>\n'
+        '- <ft color=(238,120,0)>直接发送九位数UID</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>查询</ft>\n'
+        '- <ft color=(238,120,0)>查询</ft><ft color=(0,123,67)>@无疑Wuyi</ft>\n'
+        '- <ft color=(238,120,0)>uid123456789</ft>\n'
+        '- <ft color=(238,120,0)>123456789</ft>'
+    ),
+)
 async def send_role_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,

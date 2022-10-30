@@ -2,7 +2,7 @@
 name = "GenshinUID"
 version = "3.1.0"
 authors = [
-    { name="KimigaiiWuyi", emali="444835641@qq.com" },
+    { name="KimigaiiWuyi", email="444835641@qq.com" },
 ]
 description = "基于HoshinoBot/NoneBot2/QQ官方频道Bot(PythonSDK)的原神Uid查询/原神Wiki/米社签到/树脂提醒插件"
 license = { file="LICENSE" }

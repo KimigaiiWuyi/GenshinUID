@@ -8,12 +8,16 @@ from nonebot import get_bot, require, on_command
 from nonebot.adapters.onebot.v11 import MessageEvent
 
 from ..config import SUPERUSERS, priority
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.db_operation.db_operation import config_check
 from ..utils.exception.handle_exception import handle_exception
 from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
 
-bbscoin_scheduler = require('nonebot_plugin_apscheduler').scheduler
+require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
+
+bbscoin_scheduler = scheduler
 
 get_mihoyo_coin = on_command('开始获取米游币', priority=priority, rule=FullCommand())
 all_bbscoin_recheck = on_command(
@@ -24,6 +28,18 @@ all_bbscoin_recheck = on_command(
 # 获取米游币
 @get_mihoyo_coin.handle()
 @handle_exception('获取米游币')
+@register_menu(
+    '手动获取米游币',
+    '开始获取米游币',
+    '手动触发米游社米游币任务',
+    detail_des=(
+        '介绍：\n'
+        '手动触发米游社获取米游币的任务\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>开始获取米游币</ft>'
+    ),
+)
 async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
     await matcher.send('开始操作……', at_sender=True)
     qid = event.user_id
@@ -33,6 +49,18 @@ async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
 
 @all_bbscoin_recheck.handle()
 @handle_exception('米游币全部重获取')
+@register_menu(
+    '重新获取米游币',
+    '全部重获取',
+    '重新运行所有自动获取米游币的任务',
+    detail_des=(
+        '介绍：\n'
+        '重新运行所有自动获取米游币的任务\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>全部重获取</ft>'
+    ),
+)
 async def bbs_recheck(
     matcher: Matcher,
 ):

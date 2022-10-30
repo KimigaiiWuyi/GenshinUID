@@ -6,6 +6,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent, MessageSegment
 from .note_text import award
 from ..config import priority
 from .draw_note_card import draw_note_img
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.error_reply import CK_HINT, UID_HINT
@@ -20,6 +21,18 @@ get_genshin_info = on_command(
 # 群聊内 每月统计 功能
 @monthly_data.handle()
 @handle_exception('每月统计', '获取/发送每月统计失败', '@未找到绑定信息\n' + CK_HINT)
+@register_menu(
+    '文字札记',
+    '每月统计',
+    '文字形式米游社札记',
+    detail_des=(
+        '介绍：\n'
+        '文字形式米游社札记\n'
+        ' \n' 
+        '指令：\n'
+        '- <ft color=(238,120,0)>每月统计</ft>'
+    ),
+)
 async def send_monthly_data(
     event: MessageEvent,
     matcher: Matcher,
@@ -38,6 +51,20 @@ async def send_monthly_data(
 # 群聊内 每月统计 功能
 @get_genshin_info.handle()
 @handle_exception('每月统计', '获取/发送每月统计失败', '@未找到绑定信息\n' + CK_HINT)
+@register_menu(
+    '图片札记',
+    '当前信息',
+    '图片形式米游社札记',
+    detail_des=(
+        '介绍：\n'
+        '图片形式米游社札记\n'
+        ' \n' 
+        '指令：\n'
+        '- <ft color=(238,120,0)>当前信息</ft>\n'
+        '- <ft color=(125,125,125)>(原石)</ft><ft color=(238,120,0)>札记</ft>\n'
+        '- <ft color=(238,120,0)>zj</ft>'
+    ),
+)
 async def send_monthly_pic(
     event: MessageEvent,
     matcher: Matcher,

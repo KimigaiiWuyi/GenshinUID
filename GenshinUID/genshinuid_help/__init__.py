@@ -22,7 +22,9 @@ HELP_IMG = Path(__file__).parent / 'help.png'
     '插件帮助',
     'gs帮助',
     '查看插件功能帮助图',
-    detail_des=('指令：' '<ft color=(238,120,0)>gs帮助</ft>\n' ' \n' '查看插件功能帮助图'),
+    detail_des=(
+        '介绍：\n' '查看插件功能帮助图\n' ' \n' '指令：\n' '- <ft color=(238,120,0)>gs帮助</ft>'
+    ),
 )
 async def send_guide_pic(matcher: Matcher):
     logger.info('获得gs帮助图片成功！')

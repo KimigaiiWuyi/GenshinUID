@@ -26,15 +26,16 @@ version = ['3.0', '3.1']
     '版本规划(版本号)',
     '发送一张指定版本的原石规划图',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>版本规划</ft>'
-        '<ft color=(125,125,125)>(版本号)</ft>\n'
-        ' \n'
+        '介绍：\n'
         '发送一张指定版本的原石规划图\n'
         ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>版本规划</ft><ft color=(125,125,125)>(版本号)</ft>\n'
+        '- <ft color=(238,120,0)>原石预估</ft><ft color=(125,125,125)>(版本号)</ft>\n'
+        ' \n'
         '示例：\n'
-        '<ft color=(238,120,0)>版本规划</ft>；\n'
-        '<ft color=(238,120,0)>版本规划3.0</ft>'
+        '- <ft color=(238,120,0)>版本规划</ft>\n'
+        '- <ft color=(238,120,0)>版本规划3.0</ft>'
     ),
 )
 async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
@@ -60,30 +61,50 @@ async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
 @handle_exception('杂图')
 @register_menu(
     '伤害乘区图',
-    '伤害乘区',
+    '(查询)伤害乘区',
     '发送一张理论伤害计算公式图',
     detail_des=(
-        '指令：' '<ft color=(238,120,0)>伤害乘区</ft>\n' ' \n' '发送一张理论伤害计算公式图'
+        '介绍：\n'
+        '发送一张理论伤害计算公式图\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(125,125,125)>(查询)</ft><ft color=(238,120,0)>伤害乘区</ft>'
     ),
 )
 @register_menu(
     '怪物血量表',
-    '血量表',
+    '(查询)血量表',
     '发送一张原神怪物血量表图',
-    detail_des=('指令：' '<ft color=(238,120,0)>血量表</ft>\n' ' \n' '发送一张原神怪物血量表图'),
+    detail_des=(
+        '介绍：\n'
+        '发送一张原神怪物血量表图\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(125,125,125)>(查询)</ft><ft color=(238,120,0)>血量表</ft>'
+    ),
 )
 @register_menu(
     '怪物抗性表',
-    '抗性表',
+    '(查询)抗性表',
     '发送一张原神怪物抗性表图',
-    detail_des=('指令：' '<ft color=(238,120,0)>抗性表</ft>\n' ' \n' '发送一张原神怪物抗性表图'),
+    detail_des=(
+        '介绍：\n'
+        '发送一张原神怪物抗性表图\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(125,125,125)>(查询)</ft><ft color=(238,120,0)>抗性表</ft>'
+    ),
 )
 @register_menu(
     '怪物血量排行',
-    '血量排行',
+    '(查询)血量排行',
     '发送一张原神怪物血量排行图',
     detail_des=(
-        '指令：' '<ft color=(238,120,0)>血量排行</ft>\n' ' \n' '发送一张原神怪物血量排行图'
+        '介绍：\n'
+        '发送一张原神怪物血量排行图\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(125,125,125)>(查询)</ft><ft color=(238,120,0)>血量排行</ft>'
     ),
 )
 async def send_img_data(

@@ -14,6 +14,7 @@ from nonebot.adapters.onebot.v11 import (
 from .add_ck import deal_ck
 from ..config import priority
 from .draw_user_card import get_user_card
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
@@ -28,6 +29,18 @@ bind = on_regex(
 
 
 @bind_info.handle()
+@register_menu(
+    '绑定状态',
+    '绑定信息',
+    '查询你绑定UID的绑定和推送状态',
+    detail_des=(
+        '介绍：\n'
+        '查询你绑定的UID列表以及它们的CK、SK绑定状态和推送设置\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>绑定信息</ft>'
+    ),
+)
 async def send_bind_card(
     event: MessageEvent,
     matcher: Matcher,
@@ -41,6 +54,20 @@ async def send_bind_card(
 
 @add_cookie.handle()
 @handle_exception('Cookie', '校验失败！请输入正确的Cookies！')
+@register_menu(
+    '绑定CK、SK',
+    '添加[CK或SK]',
+    '绑定你的Cookies以及Stoken',
+    trigger_method='好友私聊指令',
+    detail_des=(
+        '介绍：\n'
+        '绑定你的Cookies以及Stoken\n'
+        'Cookies (CK)：米游社Cookies；Stoken (SK)：米哈游通行证Cookies\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>添加</ft><ft color=(0,148,200)>[CK或SK]</ft>'
+    ),
+)
 async def send_add_ck_msg(
     event: MessageEvent, matcher: Matcher, args: Message = CommandArg()
 ):
@@ -55,6 +82,52 @@ async def send_add_ck_msg(
 # 群聊内 绑定uid或者mysid 的命令，会绑定至当前qq号上
 @bind.handle()
 @handle_exception('绑定ID', '绑定ID异常')
+@register_menu(
+    '绑定UID',
+    '绑定xx',
+    '绑定原神UID或米游社UID',
+    detail_des=(
+        '介绍：\n'
+        '绑定原神UID或米游社UID\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>绑定'
+        '{uid</ft><ft color=(0,148,200)>[原神UID]</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>[米游社UID]</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+    ),
+)
+@register_menu(
+    '解绑UID',
+    '解绑xx',
+    '解绑原神UID或米游社UID',
+    detail_des=(
+        '介绍：\n'
+        '解绑原神UID或米游社UID\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>{解绑|删除}'
+        '{uid</ft><ft color=(0,148,200)>[原神UID]</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>[米游社UID]</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+    ),
+)
+@register_menu(
+    '切换UID',
+    '切换xx',
+    '切换当前原神UID或米游社UID',
+    detail_des=(
+        '介绍：\n'
+        '切换当前原神UID或米游社UID\n'
+        '绑定一个UID的情况下无法切换\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>切换'
+        '{uid</ft><ft color=(0,148,200)>[原神UID]</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>[米游社UID]</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+    ),
+)
 async def send_link_uid_msg(
     event: MessageEvent, matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()
 ):

@@ -12,6 +12,7 @@ from nonebot.adapters.onebot.v11 import (
     PrivateMessageEvent,
 )
 
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.download_resource.download_all_resource import (
@@ -23,6 +24,19 @@ download_resource = on_command('下载全部资源', rule=FullCommand())
 
 @download_resource.handle()
 @handle_exception('下载全部资源', '资源下载错误')
+@register_menu(
+    '下载全部资源',
+    '下载全部资源',
+    '手动下载插件运行所需的资源',
+    trigger_method='管理员指令',
+    detail_des=(
+        '介绍：\n'
+        '手动下载插件正常运行所需的资源（一般每次启动会自动检查并下载）\n'
+        ' \n' 
+        '指令：\n'
+        '- <ft color=(238,120,0)>下载全部资源</ft>'
+    ),
+)
 async def send_download_resource_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],

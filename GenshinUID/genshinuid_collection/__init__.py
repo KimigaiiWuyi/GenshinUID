@@ -34,19 +34,22 @@ get_collection_info = on_regex(
     '查询(@某人)收集',
     '查询你的或者指定人的宝箱收集度',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>[查询</ft>'
-        '<ft color=(125,125,125)>(@某人)</ft>'
-        '<ft color=(238,120,0)>/uidxxx/mysxxx]</ft>'
-        '<ft color=(238,120,0)>[收集/宝箱/sj/bx]</ft>\n'
-        ' \n'
+        '介绍：\n'
         '可以用来查看你的或者指定人的宝箱收集度\n'
         '可以在命令文本后带一张图以自定义背景图\n'
         ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>{查询</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>'
+        '<ft color=(238,120,0)>|uid</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+        '<ft color=(238,120,0)>{收集|宝箱|sj|bx}</ft>\n'
+        ' \n'
         '示例：\n'
-        '<ft color=(238,120,0)>查询收集</ft>；\n'
-        '<ft color=(238,120,0)>uid123456789宝箱</ft>；\n'
-        '<ft color=(238,120,0)>查询</ft><ft color=(0,148,200)>@无疑Wuyi'
+        '- <ft color=(238,120,0)>查询收集</ft>\n'
+        '- <ft color=(238,120,0)>uid123456789宝箱</ft>\n'
+        '- <ft color=(238,120,0)>查询</ft><ft color=(0,123,67)>@无疑Wuyi'
         '</ft> <ft color=(238,120,0)>bx</ft>'
     ),
 )

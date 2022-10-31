@@ -25,15 +25,17 @@ IMG_PATH = Path(__file__).parent / 'img'
     'xx攻略',
     '发送一张对应角色的西风驿站攻略图',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>角色名[推荐/攻略]</ft>\n'
-        ' \n'
+        '介绍：\n'
         '发送一张对应角色的米游社西风驿站攻略图\n'
         '支持部分角色别名\n'
         ' \n'
+        '指令：\n'
+        '- <ft color=(0,148,200)>[角色名]</ft>'
+        '<ft color=(238,120,0)>{推荐|攻略}</ft>\n'
+        ' \n'
         '示例：\n'
-        '<ft color=(238,120,0)>钟离推荐</ft>；\n'
-        '<ft color=(238,120,0)>公子攻略</ft>'
+        '- <ft color=(238,120,0)>钟离推荐</ft>\n'
+        '- <ft color=(238,120,0)>公子攻略</ft>'
     ),
 )
 async def send_guide_pic(
@@ -58,15 +60,17 @@ async def send_guide_pic(
     '参考面板[角色名/元素名]',
     '发送一张对应角色/元素的参考面板图',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>参考面板[角色名/元素名]</ft>\n'
-        ' \n'
+        '介绍：\n'
         '发送一张对应角色/元素的参考面板图\n'
         '支持部分角色别名\n'
         ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>参考面板</ft>'
+        '<ft color=(0,148,200)>[角色名/元素名]</ft>\n'
+        ' \n'
         '示例：\n'
-        '<ft color=(238,120,0)>参考面板火</ft>；\n'
-        '<ft color=(238,120,0)>参考面板公子</ft>'
+        '- <ft color=(238,120,0)>参考面板火</ft>\n'
+        '- <ft color=(238,120,0)>参考面板公子</ft>'
     ),
 )
 async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):

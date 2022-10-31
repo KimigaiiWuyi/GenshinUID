@@ -13,6 +13,7 @@ from nonebot.adapters.onebot.v11 import (
 )
 
 from ..config import priority
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from .draw_genshinmap_card import MAP_DATA, draw_genshin_map
 from ..utils.exception.handle_exception import handle_exception
@@ -40,6 +41,21 @@ MAP_CHN_NAME = {
 
 @change_map.handle()
 @handle_exception('切换地图')
+@register_menu(
+    '切换地图',
+    '切换地图',
+    '切换查找资源点功能所使用的地图',
+    detail_des=(
+        '介绍：\n'
+        '切换查找资源点功能所使用的地图\n'
+        '指令按列表顺序轮流切换地图\n'
+        f'目前可用地图：'
+        f'{"；".join([f"<ft color=(238,120,0)>{x}</ft>" for x in MAP_CHN_NAME.values()])}\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>切换地图</ft>'
+    ),
+)
 async def send_change_map_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
@@ -59,6 +75,26 @@ async def send_change_map_msg(
 @find_map.handle()
 @find_map2.handle()
 @handle_exception('查找资源点')
+@register_menu(
+    '查找资源点',
+    'xx在哪',
+    '查找指定资源在地图上的位置',
+    detail_des=(
+        '介绍：\n'
+        '在米游社大地图上查询某资源的位置\n'
+        '使用 <ft color=(238,120,0)>切换地图</ft> 指令来切换目标地图'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(0,148,200)>[资源名称]</ft>'
+        '<ft color=(238,120,0)>{在哪里|在哪|哪里有|哪儿有|哪有|在哪儿}</ft>\n'
+        '- <ft color=(238,120,0)>{哪里有|哪儿有|哪有}</ft>'
+        '<ft color=(0,148,200)>[资源名称]</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>甜甜花在哪</ft>\n'
+        '- <ft color=(238,120,0)>哪有清心</ft>'
+    ),
+)
 async def send_find_map_msg(
     matcher: Matcher, args: Dict[str, Any] = RegexDict()
 ):

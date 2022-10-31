@@ -27,11 +27,23 @@ export_gacha_log = on_command('导出抽卡记录', rule=FullCommand())
 
 @export_gacha_log.handle()
 @handle_exception('导出抽卡记录')
+@register_menu(
+    '导出抽卡记录',
+    '导出抽卡记录',
+    '导出符合UIGF规范的抽卡记录',
+    trigger_method='群聊指令',
+    detail_des=(
+        '介绍：\n'
+        '导出UIGF格式规范的json格式抽卡记录上传到群文件\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>导出抽卡记录</ft>'
+    ),
+)
 async def export_gacha_log_info(
     event: GroupMessageEvent,
     matcher: Matcher,
 ):
-
     logger.info('开始执行[导出抽卡记录]')
     qid = event.user_id
     gid = event.group_id
@@ -56,6 +68,19 @@ async def export_gacha_log_info(
 
 @import_gacha_log.handle()
 @handle_exception('导入抽卡记录')
+@register_menu(
+    '导入抽卡记录',
+    'json格式文件',
+    '导入符合UIGF规范的抽卡记录',
+    trigger_method='私聊离线文件',
+    detail_des=(
+        '介绍：\n'
+        '导入UIGF格式规范的json格式抽卡记录到插件本地缓存\n'
+        ' \n'
+        '触发方式：\n'
+        '- <ft color=(238,120,0)>私聊发送json格式的离线文件</ft>'
+    ),
+)
 async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
     args = event.dict()
     if args['notice_type'] != 'offline_file':
@@ -80,11 +105,12 @@ async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
     '抽卡记录',
     '查询你的原神抽卡记录',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>抽卡记录</ft>\n'
-        ' \n'
+        '介绍：\n'
         '查询你的原神抽卡记录\n'
-        '需要<ft color=(238,120,0)>绑定Stoken</ft>'
+        '需要<ft color=(238,120,0)>绑定Stoken</ft>\n'
+        ' \n'
+        '指令：\n'
+        '<ft color=(238,120,0)>抽卡记录</ft>'
     ),
 )
 async def send_gacha_log_card_info(
@@ -111,11 +137,12 @@ async def send_gacha_log_card_info(
     '刷新抽卡记录',
     '刷新你的原神抽卡记录本地缓存',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>刷新抽卡记录</ft>\n'
-        ' \n'
+        '介绍：\n'
         '刷新你的原神抽卡记录本地缓存\n'
-        '需要<ft color=(238,120,0)>绑定Stoken</ft>'
+        '需要<ft color=(238,120,0)>绑定Stoken</ft>\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>刷新抽卡记录</ft>'
     ),
 )
 async def send_daily_info(

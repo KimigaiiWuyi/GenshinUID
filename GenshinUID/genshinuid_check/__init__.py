@@ -23,12 +23,15 @@ from ..utils.message.get_cqhttp_data import (
     get_group_member_list,
 )
 
+require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
+
 backup = on_command('gs清除缓存', rule=FullCommand())
 check = on_command('校验全部Cookies', rule=FullCommand())
 check_stoken = on_command('校验全部Stoken', rule=FullCommand())
 remove_invalid_user = on_command('清除无效用户', rule=FullCommand())
 
-backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
+backup_scheduler = scheduler
 
 
 @backup_scheduler.scheduled_job('cron', hour=0)
@@ -38,6 +41,19 @@ async def daily_refresh_charData():
 
 @backup.handle()
 @handle_exception('清除缓存', '清除缓存错误')
+@register_menu(
+    '清除缓存',
+    '清除缓存',
+    '清除插件产生的缓存数据',
+    trigger_method='超级用户指令',
+    detail_des=(
+        '介绍：\n'
+        '备份一份插件数据库后清除插件产生的文件与数据库缓存\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>清除缓存</ft>'
+    ),
+)
 async def send_backup_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
@@ -51,6 +67,20 @@ async def send_backup_msg(
 
 @remove_invalid_user.handle()
 @handle_exception('清除无效用户', '清除无效用户错误')
+@register_menu(
+    '清除无效用户',
+    '清除无效用户',
+    '清除非好友或非推送群成员的数据',
+    trigger_method='超级用户指令',
+    detail_des=(
+        '介绍：\n'
+        '从数据库中删除掉 开启了私聊推送但不是Bot好友的用户 '
+        '以及 开启了群聊推送但不在推送目标群的用户 的数据\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>清除无效用户</ft>'
+    ),
+)
 async def send_remove_invalid_user_msg(
     bot: Bot,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
@@ -88,14 +118,14 @@ async def send_remove_invalid_user_msg(
     '校验全部Cookies',
     '校验全部Cookies',
     '校验数据库内所有Cookies是否正常',
-    trigger_method='管理员指令',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>校验全部Cookies</ft>\n'
-        '注意<ft color=(238,120,0)>Cookies</ft>的'
-        '<ft color=(238,120,0)>C</ft>为大写\n'
+        '介绍：\n'
+        '校验数据库内所有Cookies是否正常，不正常的会自动删除\n'
         ' \n'
-        '校验数据库内所有Cookies是否正常，不正常的会自动删除'
+        '指令：\n'
+        '- <ft color=(238,120,0)>校验全部Cookies</ft>\n'
+        '注意<ft color=(238,120,0)>Cookies</ft>的'
+        '<ft color=(238,120,0)>C</ft>为大写'
     ),
 )
 async def send_check_cookie(bot: Bot, matcher: Matcher):
@@ -125,13 +155,13 @@ async def send_check_cookie(bot: Bot, matcher: Matcher):
     '校验全部Stoken',
     '校验全部Stoken',
     '校验数据库内所有Stoken是否正常',
-    trigger_method='管理员指令',
     detail_des=(
-        '指令：'
-        '<ft color=(238,120,0)>校验全部Stoken</ft>\n'
-        '注意<ft color=(238,120,0)>Stoken</ft>的<ft color=(238,120,0)>S</ft>为大写\n'
+        '介绍：\n'
+        '校验数据库内所有Stoken是否正常，不正常的会自动删除\n'
         ' \n'
-        '校验数据库内所有Stoken是否正常，不正常的会自动删除'
+        '指令：\n'
+        '- <ft color=(238,120,0)>校验全部Stoken</ft>\n'
+        '注意<ft color=(238,120,0)>Stoken</ft>的<ft color=(238,120,0)>S</ft>为大写'
     ),
 )
 async def send_check_stoken(bot: Bot, matcher: Matcher):

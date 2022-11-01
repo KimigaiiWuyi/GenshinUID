@@ -3,27 +3,17 @@ import random
 from typing import Tuple
 
 from .draw_char_card import *
+from .get_enka_img import draw_enka_img
 from .draw_char_card import draw_char_img
 from ..all_import import *  # noqa: F401,F403
 from .draw_char_rank import draw_cahrcard_list
 from ..utils.enka_api.get_enka_data import switch_api
+from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.db_operation.db_operation import get_all_uid
 from ..utils.message.error_reply import *  # noqa: F401,F403
-from ..utils.alias.alias_to_char_name import alias_to_char_name
-from ..utils.enka_api.enka_to_card import enka_to_card, draw_enka_card
-from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
+from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
 
-CONVERT_TO_INT = {
-    '零': 0,
-    '一': 1,
-    '二': 2,
-    '三': 3,
-    '四': 4,
-    '五': 5,
-    '六': 6,
-    '满': 6,
-}
 AUTO_REFRESH = False
 
 
@@ -65,32 +55,8 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
     args = ev['match'].groups()
     if args[4] is None:
         return
-    else:
-        # 获取角色名
-        msg = ''.join(re.findall('[\u4e00-\u9fa5]', args[4]))
-        is_curve = False
-        if '成长曲线' in msg or '曲线' in msg:
-            is_curve = True
-            msg = msg.replace('成长曲线', '').replace('曲线', '')
-        msg_list = msg.split('换')
-        char_name = msg_list[0]
-        talent_num = None
-        weapon = None
-        weapon_affix = None
-        if '命' in char_name and char_name[0] in CONVERT_TO_INT:
-            talent_num = CONVERT_TO_INT[char_name[0]]
-            char_name = char_name[2:]
-        if len(msg_list) > 1:
-            if (
-                '精' in msg_list[1]
-                and msg_list[1][1] != '六'
-                and msg_list[1][1] != '零'
-                and msg_list[1][1] in CONVERT_TO_INT
-            ):
-                weapon_affix = CONVERT_TO_INT[msg_list[1][1]]
-                weapon = msg_list[1][2:]
-            else:
-                weapon = msg_list[1]
+    # 获取角色名
+    msg = ''.join(re.findall('[\u4e00-\u9fa5]', args[4]))
     logger.info('开始执行[查询角色面板]')
     logger.info('[查询角色面板]参数: {}'.format(args))
     # 获取角色名
@@ -120,34 +86,7 @@ async def send_char_info(bot: HoshinoBot, ev: CQEvent):
     if '未找到绑定的UID' in uid:
         await bot.send(ev, UID_HINT)
 
-    player_path = PLAYER_PATH / str(uid)
-    if char_name == '展柜角色':
-        char_file_list = player_path.glob('*')
-        char_list = []
-        for i in char_file_list:
-            file_name = i.name
-            if '\u4e00' <= file_name[0] <= '\u9fff':
-                char_list.append(file_name.split('.')[0])
-        img = await draw_enka_card(uid=uid, char_list=char_list)
-        img = await convert_img(img)
-        await bot.send(ev, img)
-        return
-    else:
-        if '旅行者' in char_name:
-            char_name = '旅行者'
-        else:
-            char_name = await alias_to_char_name(char_name)
-        char_path = player_path / f'{char_name}.json'
-        if char_path.exists():
-            with open(char_path, 'r', encoding='utf8') as fp:
-                char_data = json.load(fp)
-        else:
-            await bot.send(ev, CHAR_HINT.format(char_name), at_sender=True)
-            return
-
-    im = await draw_char_img(
-        char_data, weapon, weapon_affix, talent_num, img, is_curve
-    )
+    im = await draw_enka_img(msg, uid, img)
 
     if isinstance(im, str):
         await bot.send(ev, im)

@@ -30,6 +30,13 @@ COLOR_MAP = {
     '冒险奖励': (220, 99, 96),
     '任务奖励': (107, 182, 181),
     '其他': (118, 168, 196),
+    'Mail': (127, 115, 173),
+    'Daily Activity': (190, 158, 97),
+    'Events': (89, 126, 162),
+    'Spiral Abyss': (113, 152, 113),
+    'Adventure': (220, 99, 96),
+    'Quests': (107, 182, 181),
+    'Other': (118, 168, 196),
 }
 
 
@@ -39,8 +46,11 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
     nickname = data['data']['nickname']
     day_stone = data['data']['day_data']['current_primogems']
     day_mora = data['data']['day_data']['current_mora']
-    lastday_stone = data['data']['day_data']['last_primogems']
-    lastday_mora = data['data']['day_data']['last_mora']
+    lastday_stone = 0
+    lastday_mora = 0
+    if int(uid[0]) < 6:
+        lastday_stone = data['data']['day_data']['last_primogems']
+        lastday_mora = data['data']['day_data']['last_mora']
     month_stone = data['data']['month_data']['current_primogems']
     month_mora = data['data']['month_data']['current_mora']
     lastmonth_stone = data['data']['month_data']['last_primogems']

@@ -46,3 +46,14 @@ def get_ds_token(q='', b=None, salt=None):
     r = str(random.randint(100000, 200000))
     c = md5('salt=' + s + '&t=' + t + '&r=' + r + '&b=' + br + '&q=' + q)
     return t + ',' + r + ',' + c
+
+def generate_dynamic_secret(salt=None) -> str:
+    """Create a new overseas dynamic secret."""
+    if salt:
+        s = salt
+    else:
+        s = '6cqshh5dhw73bzxn20oexa9k516chk7s'
+    t = int(time.time())
+    r = "".join(random.choices(string.ascii_letters, k=6))
+    h = hashlib.md5(f"salt={s}&t={t}&r={r}".encode()).hexdigest()
+    return f"{t},{r},{h}"

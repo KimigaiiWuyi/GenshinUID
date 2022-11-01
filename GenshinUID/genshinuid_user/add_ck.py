@@ -34,8 +34,8 @@ async def _deal_ck_to_pic(im) -> bytes:
 
 async def _deal_ck(mes, qid) -> str:
     simp_dict = SimpleCookie(mes)
-    '''
     uid = await select_db(qid, 'uid')
+    '''
     if isinstance(uid, str):
         pass
     else:
@@ -75,14 +75,22 @@ async def _deal_ck(mes, qid) -> str:
             '\n可以尝试退出米游社登陆重新登陆获取！'
         )
     account_cookie = f'account_id={account_id};cookie_token={cookie_token}'
-    mys_data = await get_mihoyo_bbs_info(account_id, account_cookie)
-    # 剔除除了原神之外的其他游戏
-    for i in mys_data['data']['list']:
-        if i['game_id'] == 2:
-            uid = i['game_role_id']
-            break
-    else:
+
+    try:
+        mys_data = await get_mihoyo_bbs_info(account_id, account_cookie)
+        # 剔除除了原神之外的其他游戏
+        for i in mys_data['data']['list']:
+            if i['game_id'] == 2:
+                uid = i['game_role_id']
+                break
+        #else:
+        #    return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+    except:
+        print('Null mys_data')
+
+    if not uid:
         return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+
     await refresh_ck(uid, account_id)
     await cookies_db(uid, account_cookie, qid)
     if is_add_stoken:

@@ -1,17 +1,22 @@
 import json
 import time
-from pathlib import Path
 from typing import List, Union, Optional
 
-from ...version import Genshin_version
 from .get_enka_data import get_enka_info
 from ..minigg_api.get_minigg_data import get_weapon_info
 from ..download_resource.RESOURCE_PATH import PLAYER_PATH
-
-R_PATH = Path(__file__).parent
-MAP_PATH = R_PATH / 'map'
-
-version = Genshin_version
+from .map.GS_MAP_PATH import (
+    icon2Name,
+    propId2Name,
+    skillId2Name,
+    artifact2attr,
+    avatarId2Name,
+    talentId2Name,
+    weaponHash2Name,
+    weaponHash2Type,
+    artifactId2Piece,
+    avatarName2Element,
+)
 
 PROP_ATTR_MAP = {
     'Anemo': '44',
@@ -22,48 +27,6 @@ PROP_ATTR_MAP = {
     'Hydro': '42',
     'Pyro': '40',
 }
-
-avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
-weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
-weaponHash2Type_fileName = f'weaponHash2Type_mapping_{version}.json'
-skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
-talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
-avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
-
-artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
-icon2Name_fileName = f'icon2Name_mapping_{version}.json'
-
-with open(MAP_PATH / avatarId2Name_fileName, "r", encoding='UTF-8') as f:
-    avatarId2Name = json.load(f)
-
-with open(MAP_PATH / icon2Name_fileName, "r", encoding='UTF-8') as f:
-    icon2Name = json.load(f)
-
-with open(MAP_PATH / artifact2attr_fileName, "r", encoding='UTF-8') as f:
-    artifact2attr = json.load(f)
-
-with open(MAP_PATH / 'propId2Name_mapping.json', "r", encoding='UTF-8') as f:
-    propId2Name = json.load(f)
-
-with open(MAP_PATH / weaponHash2Name_fileName, "r", encoding='UTF-8') as f:
-    weaponHash2Name = json.load(f)
-
-with open(MAP_PATH / weaponHash2Type_fileName, "r", encoding='UTF-8') as f:
-    weaponHash2Type = json.load(f)
-
-with open(
-    MAP_PATH / 'artifactId2Piece_mapping.json', "r", encoding='UTF-8'
-) as f:
-    artifactId2Piece = json.load(f)
-
-with open(MAP_PATH / skillId2Name_fileName, "r", encoding='UTF-8') as f:
-    skillId2Name = json.load(f)
-
-with open(MAP_PATH / talentId2Name_fileName, "r", encoding='UTF-8') as f:
-    talentId2Name = json.load(f)
-
-with open(MAP_PATH / avatarName2Element_fileName, 'r', encoding='UTF-8') as f:
-    avatarName2Element = json.load(f)
 
 
 async def enka_to_dict(

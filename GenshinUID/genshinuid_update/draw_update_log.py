@@ -15,7 +15,7 @@ gs_font_30 = genshin_font_origin(30)
 black_color = (24, 24, 24)
 
 log_config = {
-    'key': '✨🐛🎨⚡🍱',
+    'key': '✨🐛🎨⚡🍱♻️',
     'num': 18,
 }
 
@@ -49,6 +49,8 @@ async def draw_update_log_img(
             log_img = Image.open(TEXT_PATH / 'other.png')
 
         log_img_text = ImageDraw.Draw(log_img)
+        if ')' in log:
+            log = log.split(')')[0] + ')'
         log = log.replace('`', '')
         log_img_text.text((120, 40), log[2:], black_color, gs_font_30, 'lm')
 

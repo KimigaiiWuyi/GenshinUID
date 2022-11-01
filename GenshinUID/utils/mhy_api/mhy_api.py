@@ -3,6 +3,11 @@ NEW_URL = 'https://api-takumi-record.mihoyo.com'
 BBS_URL = 'https://bbs-api.mihoyo.com'
 HK4_URL = 'https://hk4e-api.mihoyo.com'
 
+OLD_URL_OS = 'https://api-os-takumi.mihoyo.com'
+NEW_URL_OS = 'https://bbs-api-os.hoyolab.com'
+BBS_URL_OS = 'https://bbs-api-os.hoyolab.com'
+HK4_URL_OS = 'https://hk4e-api-os.hoyoverse.com'
+
 BBS_TASKLIST = BBS_URL + '/apihub/sapi/getUserMissionsState'
 
 '''GT'''
@@ -18,29 +23,41 @@ GET_COOKIE_TOKEN_URL = OLD_URL + '/auth/api/getCookieAccountInfoBySToken'
 GET_AUTHKEY_URL = OLD_URL + '/binding/api/genAuthKey'
 # 通过AuthKey获取gachalogs
 GET_GACHA_LOG_URL = HK4_URL + '/event/gacha_info/api/getGachaLog'
+GET_GACHA_LOG_URL_OS = HK4_URL_OS + '/event/gacha_info/api/getGachaLog'
 
 '''米游社相关'''
 # 获取签到列表
 SIGN_LIST_URL = OLD_URL + '/event/bbs_sign_reward/home'
+SIGN_LIST_URL_OS = HK4_URL_OS + '/event/sol/home'
 # 获取签到信息
 SIGN_INFO_URL = OLD_URL + '/event/bbs_sign_reward/info'
+SIGN_INFO_URL_OS = HK4_URL_OS + '/event/sol/info'
 # 执行签到
 SIGN_URL = OLD_URL + '/event/bbs_sign_reward/sign'
+SIGN_URL_OS = HK4_URL_OS + '/event/sol/sign'
 
 '''原神相关'''
 # 每日信息 树脂 派遣等
 DAILY_NOTE_URL = NEW_URL + '/game_record/app/genshin/api/dailyNote'
+DAILY_NOTE_URL_OS = NEW_URL_OS + '/game_record/genshin/api/dailyNote'
 # 每月札记
 MONTHLY_AWARD_URL = HK4_URL + '/event/ys_ledger/monthInfo'
+MONTHLY_AWARD_URL_OS = HK4_URL_OS + '/event/ysledgeros/month_info'
 # 获取角色基本信息
 PLAYER_INFO_URL = NEW_URL + '/game_record/app/genshin/api/index'
+PLAYER_INFO_URL_OS = NEW_URL_OS + '/game_record/genshin/api/index'
 # 获取深渊信息
 PLAYER_ABYSS_INFO_URL = NEW_URL + '/game_record/app/genshin/api/spiralAbyss'
+PLAYER_ABYSS_INFO_URL_OS = NEW_URL_OS + '/game_record/genshin/api/spiralAbyss'
 # 获取详细角色信息
 PLAYER_DETAIL_INFO_URL = NEW_URL + '/game_record/app/genshin/api/character'
+PLAYER_DETAIL_INFO_URL_OS = NEW_URL_OS + '/game_record/genshin/api/character'
 # 天赋计算器API 获取天赋等级信息
 CALCULATE_INFO_URL = (
     OLD_URL + '/event/e20200928calculate/v1/sync/avatar/detail'
+)
+CALCULATE_INFO_URL_OS = (
+    'https://sg-public-api.hoyoverse.com/event/calculateos/sync/avatar/detail'
 )
 # 获取米游社内的角色信息 mysid -> uid
 MIHOYO_BBS_PLAYER_INFO_URL = (

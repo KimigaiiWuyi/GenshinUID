@@ -14,22 +14,33 @@ from ..mhy_api.mhy_api_tools import (
     random_text,
     get_ds_token,
     old_version_get_ds_token,
+    generate_dynamic_secret,
 )
 from ..mhy_api.mhy_api import (
     SIGN_URL,
+    SIGN_URL_OS,
     GT_TEST_URL,
     SIGN_INFO_URL,
+    SIGN_INFO_URL_OS,
     SIGN_LIST_URL,
+    SIGN_LIST_URL_OS,
     DAILY_NOTE_URL,
+    DAILY_NOTE_URL_OS,
     GET_STOKEN_URL,
     GET_AUTHKEY_URL,
     PLAYER_INFO_URL,
+    PLAYER_INFO_URL_OS,
     GET_GACHA_LOG_URL,
+    GET_GACHA_LOG_URL_OS,
     MONTHLY_AWARD_URL,
+    MONTHLY_AWARD_URL_OS,
     CALCULATE_INFO_URL,
+    CALCULATE_INFO_URL_OS,
     GET_COOKIE_TOKEN_URL,
     PLAYER_ABYSS_INFO_URL,
+    PLAYER_ABYSS_INFO_URL_OS,
     PLAYER_DETAIL_INFO_URL,
+    PLAYER_DETAIL_INFO_URL_OS,
     MIHOYO_BBS_PLAYER_INFO_URL,
 )
 
@@ -53,6 +64,23 @@ _HEADER = {
     'Origin': 'https://webstatic.mihoyo.com',
 }
 
+_HEADER_OS = {
+    "Referer": "https://webstatic-sea.mihoyo.com/",
+    "x-rpc-app_version": "1.5.0",
+    "x-rpc-client_type": "4",
+    "x-rpc-language": "zh-cn",
+    "ds": generate_dynamic_secret(),
+}
+
+RECOGNIZE_SERVER = {
+    "1": "cn_gf01",
+    "2": "cn_gf01",
+    "5": "cn_qd01",
+    "6": "os_usa",
+    "7": "os_euro",
+    "8": "os_asia",
+    "9": "os_cht",
+}
 
 async def get_gacha_log_by_authkey(
     uid: str, old_data: Optional[dict] = None
@@ -185,19 +213,27 @@ async def get_cookie_token_by_stoken(stoken: str, mys_id: str) -> dict:
     return data
 
 
-async def get_daily_data(uid: str, server_id: str = 'cn_gf01') -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = await owner_cookies(uid)
-    HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
-    data = await _mhy_request(
-        url=DAILY_NOTE_URL,
-        method='GET',
-        header=HEADER,
-        params={'server': server_id, 'role_id': uid},
-    )
-
+async def get_daily_data(uid: str) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
+        data = await _mhy_request(
+            url=DAILY_NOTE_URL,
+            method='GET',
+            header=HEADER,
+            params={'server': server_id, 'role_id': uid},
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        data = await _mhy_request(
+            url=DAILY_NOTE_URL_OS,
+            method='GET',
+            header=HEADER,
+            params={'server': server_id, 'role_id': uid},
+        )
     return data
 
 
@@ -233,156 +269,235 @@ async def get_sign_list() -> dict:
     return data
 
 
-async def get_sign_info(uid, server_id='cn_gf01') -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = await owner_cookies(uid)
-    data = await _mhy_request(
-        url=SIGN_INFO_URL,
-        method='GET',
-        header=HEADER,
-        params={'act_id': 'e202009291139501', 'region': server_id, 'uid': uid},
-    )
+async def get_sign_info(uid) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        data = await _mhy_request(
+            url=SIGN_INFO_URL,
+            method='GET',
+            header=HEADER,
+            params={'act_id': 'e202009291139501', 'region': server_id, 'uid': uid},
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        data = await _mhy_request(
+            url=SIGN_INFO_URL_OS,
+            method='GET',
+            header=HEADER,
+            params={'region': server_id, 'uid': uid},
+        )
     return data
 
 
 async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['User_Agent'] = (
-        'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) '
-        'AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 '
-        'Chrome/83.0.4103.101 Mobile Safari/537.36 miHoYoBBS/2.35.2'
-    )
-    HEADER['Cookie'] = await owner_cookies(uid)
-    HEADER['x-rpc-device_id'] = random_hex(32)
-    HEADER['x-rpc-app_version'] = '2.35.2'
-    HEADER['x-rpc-client_type'] = '5'
-    HEADER['X_Requested_With'] = 'com.mihoyo.hyperion'
-    HEADER['DS'] = old_version_get_ds_token(True)
-    HEADER['Referer'] = (
-        'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html'
-        '?bbs_auth_required=true&act_id=e202009291139501&utm_source=bbs'
-        '&utm_medium=mys&utm_campaign=icon'
-    )
-    HEADER.update(Header)
-    data = await _mhy_request(
-        url=SIGN_URL,
-        method='POST',
-        header=HEADER,
-        data={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
-    )
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['User_Agent'] = (
+            'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) '
+            'AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 '
+            'Chrome/83.0.4103.101 Mobile Safari/537.36 miHoYoBBS/2.35.2'
+        )
+        HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['x-rpc-device_id'] = random_hex(32)
+        HEADER['x-rpc-app_version'] = '2.35.2'
+        HEADER['x-rpc-client_type'] = '5'
+        HEADER['X_Requested_With'] = 'com.mihoyo.hyperion'
+        HEADER['DS'] = old_version_get_ds_token(True)
+        HEADER['Referer'] = (
+            'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html'
+            '?bbs_auth_required=true&act_id=e202009291139501&utm_source=bbs'
+            '&utm_medium=mys&utm_campaign=icon'
+        )
+        HEADER.update(Header)
+        data = await _mhy_request(
+            url=SIGN_URL,
+            method='POST',
+            header=HEADER,
+            data={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER.update(Header)
+        data = await _mhy_request(
+            url=SIGN_URL_OS,
+            method='POST',
+            header=HEADER,
+            data={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
+        )
     return data
 
 
-async def get_award(uid, server_id='cn_gf01') -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = await owner_cookies(uid)
-    HEADER['DS'] = old_version_get_ds_token()
-    HEADER['x-rpc-device_id'] = random_hex(32)
-    data = await _mhy_request(
-        url=MONTHLY_AWARD_URL,
-        method='GET',
-        header=HEADER,
-        params={
-            'act_id': 'e202009291139501',
-            'bind_region': server_id,
-            'bind_uid': uid,
-            'month': '0',
-            'bbs_presentation_style': 'fullscreen',
-            'bbs_auth_required': 'true',
-            'utm_source': 'bbs',
-            'utm_medium': 'mys',
-            'utm_campaign': 'icon',
-        },
-    )
+async def get_award(uid) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['DS'] = old_version_get_ds_token()
+        HEADER['x-rpc-device_id'] = random_hex(32)
+        data = await _mhy_request(
+            url=MONTHLY_AWARD_URL,
+            method='GET',
+            header=HEADER,
+            params={
+                'act_id': 'e202009291139501',
+                'bind_region': server_id,
+                'bind_uid': uid,
+                'month': '0',
+                'bbs_presentation_style': 'fullscreen',
+                'bbs_auth_required': 'true',
+                'utm_source': 'bbs',
+                'utm_medium': 'mys',
+                'utm_campaign': 'icon',
+            },
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['x-rpc-device_id'] = random_hex(32)
+        data = await _mhy_request(
+            url=MONTHLY_AWARD_URL_OS,
+            method='GET',
+            header=HEADER,
+            params={
+                'act_id': 'e202009291139501',
+                'region': server_id,
+                'uid': uid,
+                'month': '0',
+            },
+        )
     return data
 
 
-async def get_info(uid, ck, server_id='cn_gf01') -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
-    data = await _mhy_request(
-        url=PLAYER_INFO_URL,
-        method='GET',
-        header=HEADER,
-        params={'server': server_id, 'role_id': uid},
-    )
+async def get_info(uid, ck, ) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = ck
+        HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
+        data = await _mhy_request(
+            url=PLAYER_INFO_URL,
+            method='GET',
+            header=HEADER,
+            params={'server': server_id, 'role_id': uid},
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = ck
+        data = await _mhy_request(
+            url=PLAYER_INFO_URL_OS,
+            method='GET',
+            header=HEADER,
+            params={'server': server_id, 'role_id': uid},
+        )
 
     return data
 
 
 async def get_spiral_abyss_info(
-    uid, ck, schedule_type='1', server_id='cn_gf01'
+    uid, ck, schedule_type='1'
 ) -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token(
-        f'role_id={uid}&schedule_type={schedule_type}&server={server_id}'
-    )
-    data = await _mhy_request(
-        url=PLAYER_ABYSS_INFO_URL,
-        method='GET',
-        header=HEADER,
-        params={
-            'server': server_id,
-            'role_id': uid,
-            'schedule_type': schedule_type,
-        },
-    )
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = ck
+        HEADER['DS'] = get_ds_token(
+            f'role_id={uid}&schedule_type={schedule_type}&server={server_id}'
+        )
+        data = await _mhy_request(
+            url=PLAYER_ABYSS_INFO_URL,
+            method='GET',
+            header=HEADER,
+            params={
+                'server': server_id,
+                'role_id': uid,
+                'schedule_type': schedule_type,
+            },
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = ck
+        data = await _mhy_request(
+            url=PLAYER_ABYSS_INFO_URL_OS,
+            method='GET',
+            header=HEADER,
+            params={
+                'server': server_id,
+                'role_id': uid,
+                'schedule_type': schedule_type,
+            },
+        )
     return data
 
 
-async def get_character(uid, character_ids, ck, server_id='cn_gf01') -> dict:
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token(
-        '',
-        {'character_ids': character_ids, 'role_id': uid, 'server': server_id},
-    )
-    data = await _mhy_request(
-        url=PLAYER_DETAIL_INFO_URL,
-        method='POST',
-        header=HEADER,
-        data={
-            'character_ids': character_ids,
-            'role_id': uid,
-            'server': server_id,
-        },
-    )
+async def get_character(uid, character_ids, ck) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = ck
+        HEADER['DS'] = get_ds_token(
+            '',
+            {'character_ids': character_ids, 'role_id': uid, 'server': server_id},
+        )
+        data = await _mhy_request(
+            url=PLAYER_DETAIL_INFO_URL,
+            method='POST',
+            header=HEADER,
+            data={
+                'character_ids': character_ids,
+                'role_id': uid,
+                'server': server_id,
+            },
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = ck
+        data = await _mhy_request(
+            url=PLAYER_DETAIL_INFO_URL_OS,
+            method='POST',
+            header=HEADER,
+            data={
+                'character_ids': character_ids,
+                'role_id': uid,
+                'server': server_id,
+            },
+        )
     return data
 
 
 async def get_calculate_info(
-    client: ClientSession, uid, char_id, ck, name, server_id='cn_gf01'
+    client: ClientSession, uid, char_id, ck, name
 ):
-    if uid[0] == '5':
-        server_id = 'cn_qd01'
-    HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token(
-        f'uid={uid}&avatar_id={char_id}&region={server_id}'
-    )
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(uid[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = ck
+        HEADER['DS'] = get_ds_token(
+            f'uid={uid}&avatar_id={char_id}&region={server_id}'
+        )
 
-    req = await client.get(
-        url=CALCULATE_INFO_URL,
-        headers=HEADER,
-        params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
-    )
+        req = await client.get(
+            url=CALCULATE_INFO_URL,
+            headers=HEADER,
+            params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
+        )
 
-    data = await req.json()
-    data.update({'name': name})
+        data = await req.json()
+        data.update({'name': name})
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = ck
+        req = await client.get(
+            url=CALCULATE_INFO_URL_OS,
+            headers=HEADER,
+            params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
+        )
+        data = await req.json()
+        data.update({'name': name})
     return data
 
 

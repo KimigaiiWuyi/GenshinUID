@@ -1,12 +1,8 @@
 import json
-import math
-import asyncio
-from io import BytesIO
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
+from typing import List, Tuple
 
-from httpx import get
-from PIL import Image, ImageDraw, ImageChops
+from PIL import Image, ImageDraw
 
 from ...utils.genshin_fonts.genshin_fonts import genshin_font_origin
 
@@ -51,15 +47,15 @@ async def get_weight_temp(prop: dict, attr: str) -> List[float]:
     weight = []
     if '攻击' in attr:
         weight.append(
-            (prop['addAtk'] / prop['baseAtk']) * 100 / WEIGHT_MAP['百分比攻击力']
+            (prop['atk_green'] / prop['baseAtk']) * 100 / WEIGHT_MAP['百分比攻击力']
         )
     elif '生命' in attr:
         weight.append(
-            (prop['addHp'] / prop['baseHp']) * 100 / WEIGHT_MAP['百分比血量']
+            (prop['hp_green'] / prop['baseHp']) * 100 / WEIGHT_MAP['百分比血量']
         )
     elif '防御' in attr:
         weight.append(
-            (prop['addDef'] / prop['baseDef']) * 100 / WEIGHT_MAP['百分比防御力']
+            (prop['def_green'] / prop['baseDef']) * 100 / WEIGHT_MAP['百分比防御力']
         )
     elif '精通' in attr:
         weight.append(prop['elementalMastery'] / WEIGHT_MAP['元素精通'])
@@ -98,17 +94,6 @@ gs_font_22 = genshin_font_origin(22)
 frame_img = Image.open(TEXT_PATH / 'frame.png')
 point_img = Image.open(TEXT_PATH / 'point.png')
 
-FIGHT_MAP = {
-    'baseAtk': 'baseattack',
-    'baseHp': 'basehp',
-    'baseDef': 'basedefense',
-    'energyRecharge': 'ce',
-    'elementalMastery': 'em',
-    'critRate': 'critrate',
-    'critDmg': 'critdmg',
-    'healBonus': 'healBouns',
-}
-
 
 async def draw_char_curve_data(
     char_name: str, raw_data: dict
@@ -122,11 +107,9 @@ async def draw_char_curve_data(
         fight_prop = raw_data['avatarFightProp']
     else:
         fight_prop = raw_data
-        for f in FIGHT_MAP:
-            raw_data[f] = raw_data[FIGHT_MAP[f]]
-        raw_data['addAtk'] = raw_data['attack'] - raw_data['baseAtk']
-        raw_data['addDef'] = raw_data['defense'] - raw_data['basedefense']
-        raw_data['addHp'] = raw_data['hp'] - raw_data['basehp']
+    fight_prop['atk_green'] = fight_prop['atk'] - fight_prop['baseAtk']
+    fight_prop['def_green'] = fight_prop['def'] - fight_prop['baseDef']
+    fight_prop['hp_green'] = fight_prop['hp'] - fight_prop['baseHp']
 
     img = Image.open(TEXT_PATH / 'curve_bg.png')
     img_draw = ImageDraw.Draw(img)

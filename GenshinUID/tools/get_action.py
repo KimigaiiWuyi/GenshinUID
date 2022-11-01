@@ -191,16 +191,6 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
         # 提高指提高固定值 例如  Q:addDmg+40%defense
 
         label_keyword_hurt_list = ['一段', '壹阶', '贰阶', '叁阶', '肆阶']
-        label_keyword_up_list = {
-            '普通攻击': 'A:addDmg',
-            '重击': 'B:addDmg',
-            '攻击': 'attack',
-            '生命值': 'hp',
-            '防御': 'defense',
-            '暴击率': 'critrate',
-            '充能效率': 'ce',
-            '元素精通': 'em',
-        }
 
         if '持续时间' in label_name:
             continue
@@ -209,57 +199,8 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             if '伤害值提升' in label_name:
                 parameter_list['name'] = fill_label(label_name, index)
                 result[fill_label(label_name, index)] = parameter_list
-            elif '伤害提升' in label_name:
-                add_type = ''
-                # 寻找有没有合适的加成eg
-                target = 0
-                for attack_type in attack_type_list:
-                    if attack_type in label_name:
-                        add_type += attack_type_list[attack_type]
-                        target += 1
-                # 没有就对E进行加成
-                else:
-                    if target > 0:
-                        if '变格' in label_name:
-                            parameter_list['plus'] = 4
-                    else:
-                        add_type += 'E'
-                # 格式化加:
-                if add_type:
-                    add_type = add_type + ':'
-                    add_attr = '{}dmgBonus+'.format(add_type) + '{' + '}'
-                    parameter_list['effect'] = add_attr
-                parameter_list['name'] = fill_label(label_name, index)
-                if 'effect' not in result:
-                    result['effect'] = []
-                result['effect'].append(parameter_list)
             else:
                 continue
-        elif '提高' in label_name:
-            # 阻止雷电将军E
-            if '元素爆发伤害提高' in label_name:
-                continue
-            if '攻击速度' in label_name:
-                continue
-            for attack_type in label_type_list:
-                if attack_type in label_name:
-                    add_prop = label_keyword_up_list[attack_type]
-                    break
-            else:
-                add_prop = 'E:addDmg'
-
-            for attack_type in label_type_list:
-                if attack_type in label_kanji:
-                    base_prop = label_keyword_up_list[attack_type]
-                    break
-            else:
-                base_prop = 'attack'
-            add_attr = add_prop + '+{' + '}' + base_prop
-            parameter_list['effect'] = add_attr
-            parameter_list['name'] = fill_label(label_name, index)
-            if 'effect' not in result:
-                result['effect'] = []
-            result['effect'].append(parameter_list)
         elif '伤害' in label_name:
             if '段' in label_name or '阶' in label_name:
                 for label_keyword in label_keyword_hurt_list:
@@ -282,9 +223,6 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
         elif '满蓄力瞄准射击' in label_name:
             parameter_list['name'] = fill_label(label_name, index)
             result[fill_label(label_name, index)] = parameter_list
-        elif '愿力加成' in label_name:
-            parameter_list['name'] = fill_label(label_name, index)
-            result['extra'] = parameter_list
 
         if char in extra:
             for extra_name in extra[char]:
@@ -324,7 +262,7 @@ with open(
     str(
         Path(__file__).parents[1]
         / 'genshinuid_enka'
-        / 'dmgCalc'
+        / 'effect'
         / 'char_action.json'
     ),
     'w',

@@ -4,11 +4,12 @@ from typing import Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
 
-from .draw_char_card import TEXT_PATH, get_all_artifacts_value
+from .mono.Character import Character
+from .dmg_calc.dmg_calc import get_fight_prop
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
-from .dmgCalc.dmg_calc import DMG_PATH, calc_prop, get_char_percent
 from ..utils.alias.avatarId_to_char_star import avatar_id_to_char_star
+from .etc.etc import TEXT_PATH, get_char_percent, get_all_artifacts_value
 from ..utils.download_resource.RESOURCE_PATH import (
     CHAR_PATH,
     PLAYER_PATH,
@@ -79,30 +80,29 @@ async def draw_cahrcard_list(
         return '你还没有已缓存的角色！\n请先使用【强制刷新】进行刷新！'
 
     char_done_list = []
-    with open(DMG_PATH / 'char_action.json', "r", encoding='UTF-8') as f:
-        char_action = json.load(f)
     for char_name in char_list:
         temp = {}
         with open(uid_fold / f'{char_name}.json', 'r', encoding='UTF-8') as f:
             raw_data = json.load(f)
 
-        fight_prop = raw_data['avatarFightProp']
         skill_list = raw_data['avatarSkill']
 
         temp['char_name'] = char_name
         temp['fetter'] = raw_data['avatarFetter']
         temp['id'] = raw_data['avatarId']
-        temp['avatarElement'] = raw_data['avatarElement']
-        # 拿到倍率表
-        power_list = char_action[char_name]
-        new_prop = await calc_prop(raw_data, power_list)
-        temp['percent'] = await get_char_percent(raw_data, new_prop, char_name)
+        char = Character(raw_data)
+        await char.new()
+        await char.get_fight_prop()
+        temp['percent'] = await get_char_percent(
+            raw_data, char.fight_prop, char_name
+        )
         temp['percent'] = float(temp['percent'][0])
-        baseHp = fight_prop['baseHp']
-        baseAtk = fight_prop['baseAtk']
-        baseDef = fight_prop['baseDef']
         temp['value'] = await get_all_artifacts_value(
-            raw_data['equipList'], baseHp, baseAtk, baseDef, char_name
+            raw_data,
+            char.baseHp,
+            char.baseAtk,
+            char.baseDef,
+            char_name,
         )
         temp['value'] = float('{:.2f}'.format(temp['value']))
         temp['avatarElement'] = raw_data['avatarElement']

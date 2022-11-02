@@ -3,6 +3,9 @@ on: [pull_request, pull_request_target]
 jobs:
   Pre-Commit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -25,8 +28,8 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
-          git add .
-          git diff-index --quiet HEAD || (git commit -m ":rotating_light: auto fix by pre-commit" --no-verify && git push)
+          git status
+          git diff-index --quiet HEAD || (git commit -m ":rotating_light: auto fix by pre-commit" -a --no-verify && git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}.git" HEAD:${{ github.event.pull_request.head.ref }})
 
       - name: Read result
         id: rr

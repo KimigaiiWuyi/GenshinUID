@@ -1,5 +1,6 @@
 import json
 import asyncio
+import datetime
 from pathlib import Path
 from typing import Tuple, Union
 
@@ -48,15 +49,24 @@ async def _draw_card(
     type: str,
     name: str,
     gacha_num: int,
+    date_time: str,
 ):
     card_img = Image.open(TEXT_PATH / 'item_bg.png')
     card_img_draw = ImageDraw.Draw(card_img)
     point = (1, 0)
     text_point = (55, 124)
-    is_up = False
+    is_up = True
     if type == '角色':
-        if name not in ['莫娜', '迪卢克', '七七', '刻晴', '琴']:
-            is_up = True
+        if name in ['莫娜', '迪卢克', '七七', '刻晴', '琴']:
+            is_up = False
+        elif name == '提纳里':
+            s_time = datetime.datetime(2022, 8, 24, 11, 0, 0)
+            e_time = datetime.datetime(2022, 9, 9, 17, 59, 59)
+            gacha_time = datetime.datetime.strptime(
+                date_time, '%Y-%m-%d %H:%M:%S'
+            )
+            if gacha_time < s_time or gacha_time > e_time:
+                is_up = False
         _id = await name_to_avatar_id(name)
         item_pic = (
             Image.open(CHAR_PATH / f'{_id}.png')
@@ -265,6 +275,7 @@ async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
                     item['item_type'],
                     item['name'],
                     item['gacha_num'],
+                    item['time'],
                 )
             )
         await asyncio.gather(*tasks)

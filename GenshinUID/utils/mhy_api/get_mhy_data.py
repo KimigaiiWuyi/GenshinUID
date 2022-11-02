@@ -65,7 +65,6 @@ _HEADER = {
 }
 
 _HEADER_OS = {
-    "Referer": "https://webstatic-sea.mihoyo.com/",
     "x-rpc-app_version": "1.5.0",
     "x-rpc-client_type": "4",
     "x-rpc-language": "zh-cn",

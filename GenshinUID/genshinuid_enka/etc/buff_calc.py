@@ -133,8 +133,15 @@ async def get_effect_prop(
                 else:
                     effect_base_value = (prop[effect_base] - 1) / 100
 
+                # 针对莫娜的
                 if char_name == '莫娜':
                     effect_base_value += 1
+            elif effect_base == 'elementalMastery':
+                # 针对草神的
+                if char_name == '纳西妲' and effect_attr == 'dmgBonus':
+                    effect_base_value = (prop[effect_base] - 200) / 100
+                else:
+                    effect_base_value = prop[effect_base]
             else:
                 effect_base_value = prop[effect_base]
             effect_value = effect_value * effect_base_value

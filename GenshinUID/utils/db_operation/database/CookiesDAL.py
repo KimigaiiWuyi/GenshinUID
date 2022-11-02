@@ -1,9 +1,11 @@
 from typing import List, Optional
 
 from sqlalchemy.future import select
+from sqlalchemy.sql import text
 from sqlalchemy import delete, update
 from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.asyncio import AsyncSession
+from nonebot.log import logger
 
 from ..database.models import CookiesCache, NewCookiesTable
 
@@ -135,7 +137,20 @@ class CookiesDAL:
         elif cache_data:
             return cache_data
         else:
-            sql = select(NewCookiesTable).order_by(func.random())
+            regioncode = 0
+            try:
+                regioncode = int(uid[0])
+            except:
+                logger.info('[随机Cookie]uid不合法！')
+                return 'uid不正确，请检查uid格式！'
+
+            if regioncode < 6:
+                # cn server
+                sql = select(NewCookiesTable).where(text("cast(substr(newcookiestable.uid,1,1) as int) < 6")).order_by(func.random())
+            else:
+                # os server
+                sql = select(NewCookiesTable).where(text("cast(substr(newcookiestable.uid,1,1) as int) >= 6")).order_by(func.random())
+            
             a = await self.db_session.execute(sql)
             random_data: List[NewCookiesTable] = a.scalars().all()
             if random_data:

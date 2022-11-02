@@ -50,6 +50,9 @@ async def get_buff_list(
     # 计算圣遗物buff
     if equipSets['type'] == '4':
         all_effect.append(
+            artifact_effect_map[equipSets['set']][f'{type}_effect']['2']
+        )
+        all_effect.append(
             artifact_effect_map[equipSets['set']][f'{type}_effect']['4']
         )
     elif equipSets['type'] == '2':

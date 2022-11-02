@@ -8221,5 +8221,279 @@
             0.0,
             0.0
         ]
+    },
+    {
+        "talentId": 731,
+        "nameTextMapHash": 552761193,
+        "descTextMapHash": 869558663,
+        "icon": "UI_Talent_S_Nahida_01",
+        "mainCostItemId": 1173,
+        "mainCostItemCount": 1,
+        "openConfig": "Nahida_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 732,
+        "nameTextMapHash": 3200237953,
+        "descTextMapHash": 493826087,
+        "icon": "UI_Talent_S_Nahida_02",
+        "prevTalent": 731,
+        "mainCostItemId": 1173,
+        "mainCostItemCount": 1,
+        "openConfig": "Nahida_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.30000001192092896,
+            8.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 733,
+        "nameTextMapHash": 2629291377,
+        "descTextMapHash": 1677220719,
+        "icon": "UI_Talent_U_Nahida_01",
+        "prevTalent": 732,
+        "mainCostItemId": 1173,
+        "mainCostItemCount": 1,
+        "openConfig": "Nahida_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 734,
+        "nameTextMapHash": 2649754961,
+        "descTextMapHash": 1969605439,
+        "icon": "UI_Talent_S_Nahida_03",
+        "prevTalent": 733,
+        "mainCostItemId": 1173,
+        "mainCostItemCount": 1,
+        "openConfig": "Nahida_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            100.0,
+            120.0,
+            140.0,
+            160.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 735,
+        "nameTextMapHash": 762504897,
+        "descTextMapHash": 1943180071,
+        "icon": "UI_Talent_U_Nahida_02",
+        "prevTalent": 734,
+        "mainCostItemId": 1173,
+        "mainCostItemCount": 1,
+        "openConfig": "Nahida_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 736,
+        "nameTextMapHash": 2904102233,
+        "descTextMapHash": 1986384751,
+        "icon": "UI_Talent_S_Nahida_04",
+        "prevTalent": 735,
+        "mainCostItemId": 1173,
+        "mainCostItemCount": 1,
+        "openConfig": "Nahida_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            4.0,
+            6.0,
+            10.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 741,
+        "nameTextMapHash": 624034681,
+        "descTextMapHash": 1381519175,
+        "icon": "UI_Talent_S_Layla_01",
+        "mainCostItemId": 1174,
+        "mainCostItemCount": 1,
+        "openConfig": "Layla_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.3499999940395355,
+            12.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 742,
+        "nameTextMapHash": 1108627585,
+        "descTextMapHash": 1073517111,
+        "icon": "UI_Talent_S_Layla_02",
+        "prevTalent": 741,
+        "mainCostItemId": 1174,
+        "mainCostItemCount": 1,
+        "openConfig": "Layla_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 743,
+        "nameTextMapHash": 1578144217,
+        "descTextMapHash": 670134735,
+        "icon": "UI_Talent_U_Layla_01",
+        "prevTalent": 742,
+        "mainCostItemId": 1174,
+        "mainCostItemCount": 1,
+        "openConfig": "Layla_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 744,
+        "nameTextMapHash": 886256817,
+        "descTextMapHash": 3376385767,
+        "icon": "UI_Talent_S_Layla_03",
+        "prevTalent": 743,
+        "mainCostItemId": 1174,
+        "mainCostItemCount": 1,
+        "openConfig": "Layla_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.05000000074505806,
+            3.0,
+            0.05000000074505806,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 745,
+        "nameTextMapHash": 1129381953,
+        "descTextMapHash": 2999141175,
+        "icon": "UI_Talent_U_Layla_02",
+        "prevTalent": 744,
+        "mainCostItemId": 1174,
+        "mainCostItemCount": 1,
+        "openConfig": "Layla_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 746,
+        "nameTextMapHash": 1961053441,
+        "descTextMapHash": 114201887,
+        "icon": "UI_Talent_S_Layla_04",
+        "prevTalent": 745,
+        "mainCostItemId": 1174,
+        "mainCostItemCount": 1,
+        "openConfig": "Layla_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.4000000059604645,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
     }
 ]

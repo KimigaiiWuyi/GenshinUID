@@ -18,6 +18,13 @@ async def get_effect_prop(
         prop['r'] = 0.1
         prop['k'] = 1
         prop['sp'] = []
+        if prop['baseHp'] + prop['addHp'] == prop['hp']:
+            prop['exHp'] = prop['addHp']
+            prop['exAtk'] = prop['addAtk']
+            prop['exDef'] = prop['addDef']
+            prop['addHp'] = 0
+            prop['addAtk'] = 0
+            prop['addDef'] = 0
 
         # 给每个技能 分别添加上属性
         for prop_attr in deepcopy(prop):
@@ -113,7 +120,7 @@ async def get_effect_prop(
             effect_value = float(effect_value) / 100
         # 元素精通则为正常值
         else:
-            if effect_base in ['hp']:
+            if effect_base in ['hp', 'elementalMastery']:
                 effect_value = float(effect_value) / 100
             else:
                 effect_value = float(effect_value)

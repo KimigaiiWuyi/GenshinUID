@@ -120,7 +120,7 @@ async def get_effect_prop(
             effect_value = float(effect_value) / 100
         # 元素精通则为正常值
         else:
-            if effect_base in ['hp', 'elementalMastery']:
+            if effect_base in ['hp', 'elementalMastery', 'def']:
                 effect_value = float(effect_value) / 100
             else:
                 effect_value = float(effect_value)

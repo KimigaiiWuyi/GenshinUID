@@ -7,6 +7,7 @@ from .mono.Fight import Character
 from .dmg_calc.dmg_calc import draw_dmg_img
 from .draw_char_curve import draw_char_curve_card
 from .etc.etc import TEXT_PATH, get_all_artifacts_value
+from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from .draw_normal import (
     get_bg_card,
@@ -96,9 +97,7 @@ async def draw_char_card(char: Character, char_url: Optional[str]) -> bytes:
         genshin_font_origin(18),
         anchor='mm',
     )
-
-    img = img.convert('RGB')
-    result_buffer = BytesIO()
-    img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
-    res = result_buffer.getvalue()
+    res = await convert_img(img)
+    if isinstance(res, str):
+        res = b''
     return res

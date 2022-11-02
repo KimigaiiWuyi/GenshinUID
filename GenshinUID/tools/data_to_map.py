@@ -213,13 +213,13 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
-    # await avatarId2NameJson()
+    await avatarId2NameJson()
     await avatarName2ElementJson()
-    # await weaponHash2NameJson()
-    # await skillId2NameJson()
-    # await talentId2NameJson()
-    # await weaponHash2TypeJson()
-    # await artifact2attrJson()
+    await weaponHash2NameJson()
+    await skillId2NameJson()
+    await talentId2NameJson()
+    await weaponHash2TypeJson()
+    await artifact2attrJson()
 
 
 asyncio.run(main())

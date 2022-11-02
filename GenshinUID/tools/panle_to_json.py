@@ -7,7 +7,7 @@ import openpyxl
 
 R_PATH = Path(__file__).parent
 DATA_PATH = R_PATH / 'blue_data'
-ETC_PATH = Path(__file__).parents[1] / 'genshinuid_enka' / 'dmgCalc'
+ETC_PATH = Path(__file__).parents[1] / 'genshinuid_enka' / 'effect'
 
 
 async def get_misc_info(mode: str, name: str):
@@ -108,7 +108,7 @@ async def panle2Json() -> None:
             "other": {"生命": 16000, "元素精通": 45},
         }
     ]
-    with open(ETC_PATH / 'dmgMap.json', 'w', encoding='UTF-8') as file:
+    with open(ETC_PATH / 'dmg_map.json', 'w', encoding='UTF-8') as file:
         json.dump(result, file, ensure_ascii=False)
 
 

@@ -6129,7 +6129,7 @@
     {
         "id": 10722,
         "nameTextMapHash": 2160740245,
-        "abilityName": "\u00b7",
+        "abilityName": "",
         "descTextMapHash": 2763201128,
         "skillIcon": "Skill_S_Candace_01",
         "cdTime": 6.0,
@@ -6170,6 +6170,132 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "proudSkillGroupId": 7239,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10731,
+        "nameTextMapHash": 48372133,
+        "abilityName": "Avatar_Nahida_ExtraAttack",
+        "descTextMapHash": 1280328928,
+        "skillIcon": "Skill_A_Catalyst_MD",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7331,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10732,
+        "nameTextMapHash": 3592193965,
+        "abilityName": "",
+        "descTextMapHash": 2457010104,
+        "skillIcon": "Skill_S_Nahida_01",
+        "cdTime": 5.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7332,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10735,
+        "nameTextMapHash": 3862968797,
+        "abilityName": "",
+        "descTextMapHash": 3393154248,
+        "skillIcon": "Skill_E_Nahida_01",
+        "cdTime": 13.5,
+        "costElemType": "Grass",
+        "costElemVal": 50.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7339,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10741,
+        "nameTextMapHash": 1078955685,
+        "abilityName": "Avatar_Layla_ExtraAttack",
+        "descTextMapHash": 471350016,
+        "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7431,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10742,
+        "nameTextMapHash": 3200711933,
+        "abilityName": "",
+        "descTextMapHash": 3269652328,
+        "skillIcon": "Skill_S_Layla_01",
+        "cdTime": 12.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7432,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10745,
+        "nameTextMapHash": 64091533,
+        "abilityName": "",
+        "descTextMapHash": 3978333320,
+        "skillIcon": "Skill_E_Layla_01",
+        "cdTime": 12.0,
+        "costElemType": "Ice",
+        "costElemVal": 40.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7439,
         "globalValueKey": ""
     },
     {
@@ -6668,7 +6794,7 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": "",
-        "OMECNFGPGHM": 3
+        "CFDOPPHDKLH": 3
     },
     {
         "id": 20043,
@@ -6720,6 +6846,106 @@
         "ignoreCDMinusRatio": true,
         "maxChargeNum": 1,
         "triggerID": 17,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20049,
+        "nameTextMapHash": 1068626397,
+        "abilityName": "ActivityAbility_CatchMushroomMonster_Shoot",
+        "descTextMapHash": 1901694648,
+        "skillIcon": "Btn_CatchAnimal_Shoot",
+        "cdTime": 2.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20051,
+        "nameTextMapHash": 1486834421,
+        "abilityName": "ActivityAbility_CatchMushroomMonster_ForceFire",
+        "descTextMapHash": 2440280760,
+        "skillIcon": "Btn_FungusFighter_Aim",
+        "cdTime": 2.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20054,
+        "nameTextMapHash": 4262868373,
+        "abilityName": "Gagana_AvatarAimShoot",
+        "descTextMapHash": 1192286744,
+        "skillIcon": "Skill_E_Gagana_AimShoot",
+        "cdTime": 2.5,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20055,
+        "nameTextMapHash": 225082741,
+        "abilityName": "",
+        "descTextMapHash": 4165296792,
+        "skillIcon": "",
+        "ignoreCDMinusRatio": true,
+        "costStamina": 999999.0,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20056,
+        "nameTextMapHash": 2159547973,
+        "abilityName": "",
+        "descTextMapHash": 358587752,
+        "skillIcon": "",
+        "ignoreCDMinusRatio": true,
+        "costStamina": 999999.0,
+        "maxChargeNum": 1,
         "lockShape": "CircleLockEnemyR10",
         "lockWeightParams": [
             1.0,
@@ -9251,6 +9477,63 @@
         "abilityName": "",
         "descTextMapHash": 1144797664,
         "skillIcon": "Skill_A_03",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5073010,
+        "nameTextMapHash": 286439061,
+        "abilityName": "",
+        "descTextMapHash": 1433550360,
+        "skillIcon": "Skill_A_Catalyst_MD",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5074010,
+        "nameTextMapHash": 1942178429,
+        "abilityName": "",
+        "descTextMapHash": 1190506424,
+        "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5076010,
+        "nameTextMapHash": 405719917,
+        "abilityName": "",
+        "descTextMapHash": 1174950896,
+        "skillIcon": "Skill_A_02",
         "maxChargeNum": 1,
         "triggerID": 30,
         "lockShape": "CircleLockEnemyR5H6HC",

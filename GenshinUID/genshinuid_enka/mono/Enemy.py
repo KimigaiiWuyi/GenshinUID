@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 
 from .Element import Element, reactable_elements_dict
 
@@ -13,7 +13,7 @@ class Enemy:
 
         self.defense_resist: float = 0
         self.ignore_defense: float = 0
-        self.element: dict[Element, float] = {}
+        self.element: Dict[Element, float] = {}
 
         self.physical_resist: float = 0.1
         self.anemo_resist: float = 0.1
@@ -68,7 +68,7 @@ class Enemy:
                         self.debuff.append(reaction_name)
 
             # 结算怪物的元素
-            result_element: dict[Element, float] = {}
+            result_element: Dict[Element, float] = {}
             for element in new_element_list:
                 if new_element_list[element] > 0:
                     result_element[element] = new_element_list[element]
@@ -91,7 +91,9 @@ class Enemy:
         # 计算防御
         d = (self.char_level + 100) / (
             (self.char_level + 100)
-            + (1 - self.defense_resist) * (1 - self.ignore_defense) * (self.level + 100)
+            + (1 - self.defense_resist)
+            * (1 - self.ignore_defense)
+            * (self.level + 100)
         )
         proof = r * d
 

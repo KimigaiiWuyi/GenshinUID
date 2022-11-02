@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 from .Enemy import Enemy
 from .Element import Element
@@ -6,15 +6,17 @@ from .Character import Character
 
 
 class Fight:
-    def __init__(self, Character_list: dict[str, Character], Enemy: Enemy, SEQ: List):
+    def __init__(
+        self, Character_list: Dict[str, Character], Enemy: Enemy, SEQ: List
+    ):
         self.time = 0
         self.total_crit_dmg: float = 0
         self.total_normal_dmg: float = 0
         self.total_avg_dmg: float = 0
 
         self.SEQ: List = SEQ
-        self.seq_history: dict = {}
-        self.char_list: dict[str, Character] = Character_list
+        self.seq_history: Dict = {}
+        self.char_list: Dict[str, Character] = Character_list
         self.enemy = Enemy
 
     async def update_dmg(self):
@@ -43,11 +45,13 @@ class Fight:
             )
 
     async def get_dmg_type(
-        self, char_name: str, attack_type: str, seq: dict
+        self, char_name: str, attack_type: str, seq: Dict
     ) -> Element:
         # TODO 获取本次攻击的元素
         dmg_type: Element = Element.Physical
-        char_element_dmg_type = getattr(Element, self.char_list[char_name].char_element)
+        char_element_dmg_type = getattr(
+            Element, self.char_list[char_name].char_element
+        )
 
         # 对重复的计数
         if seq['action'] == self.seq_history:
@@ -105,7 +109,9 @@ class Fight:
         self.char_list[char_name].attack_type = attack_type
         return attack_type
 
-    async def get_power(self, char_name: str, attack_type: str) -> Tuple[float, float]:
+    async def get_power(
+        self, char_name: str, attack_type: str
+    ) -> Tuple[float, float]:
         power: str = ''
         power_plus: int = 0
 
@@ -113,7 +119,9 @@ class Fight:
         power = self.char_list[char_name].power_list[
             self.char_list[char_name].power_name
         ]['value'][
-            self.char_list[char_name].fight_prop['{}_skill_level'.format(attack_type)]
+            self.char_list[char_name].fight_prop[
+                '{}_skill_level'.format(attack_type)
+            ]
             - 1
         ]
         # 计算是否多次伤害
@@ -134,23 +142,31 @@ class Fight:
                 self.char_list[char_name].power_name
             ]['type']
         ):
-            effect_prop = self.char_list[char_name].fight_prop[f'{attack_type}_attack']
+            effect_prop = self.char_list[char_name].fight_prop[
+                f'{attack_type}_attack'
+            ]
         elif (
             '生命值'
             in self.char_list[char_name].power_list[
                 self.char_list[char_name].power_name
             ]['type']
         ):
-            effect_prop = self.char_list[char_name].fight_prop[f'{attack_type}_hp']
+            effect_prop = self.char_list[char_name].fight_prop[
+                f'{attack_type}_hp'
+            ]
         elif (
             '防御'
             in self.char_list[char_name].power_list[
                 self.char_list[char_name].power_name
             ]['type']
         ):
-            effect_prop = self.char_list[char_name].fight_prop[f'{attack_type}_defense']
+            effect_prop = self.char_list[char_name].fight_prop[
+                f'{attack_type}_defense'
+            ]
         else:
-            effect_prop = self.char_list[char_name].fight_prop[f'{attack_type}_attack']
+            effect_prop = self.char_list[char_name].fight_prop[
+                f'{attack_type}_attack'
+            ]
 
         return effect_prop
 
@@ -158,13 +174,21 @@ class Fight:
         self, char_name: str, dmg_type: Element, attack_type: str
     ) -> Tuple[float, float, float]:
         effect_prop = await self.get_effect_prop(char_name, attack_type)
-        power_percent, power_value = await self.get_power(char_name, attack_type)
+        power_percent, power_value = await self.get_power(
+            char_name, attack_type
+        )
         proof = await self.enemy.get_dmg_proof(dmg_type)
         reactio = await self.enemy.get_dmg_reaction(dmg_type)
 
-        critrate_cal = self.char_list[char_name].fight_prop[f'{attack_type}_critrate']
-        critdmg_cal = self.char_list[char_name].fight_prop[f'{attack_type}_critdmg']
-        dmgBonus_cal = self.char_list[char_name].fight_prop[f'{attack_type}_dmgBonus']
+        critrate_cal = self.char_list[char_name].fight_prop[
+            f'{attack_type}_critrate'
+        ]
+        critdmg_cal = self.char_list[char_name].fight_prop[
+            f'{attack_type}_critdmg'
+        ]
+        dmgBonus_cal = self.char_list[char_name].fight_prop[
+            f'{attack_type}_dmgBonus'
+        ]
 
         normal_dmg = (
             (effect_prop * power_percent + power_value)
@@ -189,10 +213,14 @@ async def power_to_value(power: str, power_plus: int) -> Tuple[float, float]:
     将power转换为value
     """
     if '+' in power:
-        power_percent = (float(power.split('+')[0].replace('%', '')) / 100) * power_plus
+        power_percent = (
+            float(power.split('+')[0].replace('%', '')) / 100
+        ) * power_plus
         power_value = power.split('+')[1]
         if '%' in power_value:
-            power_percent += float(power_value.replace('%', '')) / 100 * power_plus
+            power_percent += (
+                float(power_value.replace('%', '')) / 100 * power_plus
+            )
             power_value = 0
         else:
             power_value = float(power_value)

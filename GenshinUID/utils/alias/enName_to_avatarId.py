@@ -17,3 +17,11 @@ with open(
 async def enName_to_avatarId(en_name: str) -> str:
     avatar_id = enName_to_avatarId_data[en_name]
     return avatar_id
+
+
+async def avatarId_to_enName(avatarId: str) -> str:
+    for name in enName_to_avatarId_data:
+        if enName_to_avatarId_data[name] == avatarId:
+            return name
+    else:
+        return 'Ayaka'

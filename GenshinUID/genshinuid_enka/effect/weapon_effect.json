@@ -4466,11 +4466,11 @@
   "西福斯的月光": {
     "normal": {
       "normal_effect": {
-        "1": "energyRecharge+3.6%elementalMastery",
-        "2": "energyRecharge+4.5%elementalMastery",
-        "3": "energyRecharge+5.4%elementalMastery",
-        "4": "energyRecharge+6.3%elementalMastery",
-        "5": "energyRecharge+7.2%elementalMastery"
+        "1": "energyRecharge+0.036%elementalMastery",
+        "2": "energyRecharge+0.045%elementalMastery",
+        "3": "energyRecharge+0.054%elementalMastery",
+        "4": "energyRecharge+0.063%elementalMastery",
+        "5": "energyRecharge+0.072%elementalMastery"
       }
     },
     "fight": {
@@ -4482,11 +4482,11 @@
         "5": ""
       },
       "group_effect": {
-        "1": "energyRecharge+1.08%elementalMastery",
-        "2": "energyRecharge+1.35%elementalMastery",
-        "3": "energyRecharge+1.62%elementalMastery",
-        "4": "energyRecharge+1.89%elementalMastery",
-        "5": "energyRecharge+2.16%elementalMastery"
+        "1": "energyRecharge+0.0108%elementalMastery",
+        "2": "energyRecharge+0.0135%elementalMastery",
+        "3": "energyRecharge+0.0162%elementalMastery",
+        "4": "energyRecharge+0.0189%elementalMastery",
+        "5": "energyRecharge+0.0216%elementalMastery"
       },
       "time": 0,
       "extra": {

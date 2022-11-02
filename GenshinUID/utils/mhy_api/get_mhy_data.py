@@ -68,7 +68,6 @@ _HEADER_OS = {
     "x-rpc-app_version": "1.5.0",
     "x-rpc-client_type": "4",
     "x-rpc-language": "zh-cn",
-    "ds": generate_dynamic_secret(),
 }
 
 RECOGNIZE_SERVER = {
@@ -227,6 +226,7 @@ async def get_daily_data(uid: str) -> dict:
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['DS'] = generate_dynamic_secret()
         data = await _mhy_request(
             url=DAILY_NOTE_URL_OS,
             method='GET',
@@ -282,6 +282,7 @@ async def get_sign_info(uid) -> dict:
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['DS'] = generate_dynamic_secret()
         data = await _mhy_request(
             url=SIGN_INFO_URL_OS,
             method='GET',
@@ -321,6 +322,7 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['DS'] = generate_dynamic_secret()
         HEADER.update(Header)
         data = await _mhy_request(
             url=SIGN_URL_OS,
@@ -358,6 +360,7 @@ async def get_award(uid) -> dict:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = await owner_cookies(uid)
         HEADER['x-rpc-device_id'] = random_hex(32)
+        HEADER['DS'] = generate_dynamic_secret()
         data = await _mhy_request(
             url=MONTHLY_AWARD_URL_OS,
             method='GET',
@@ -387,6 +390,7 @@ async def get_info(uid, ck, ) -> dict:
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = ck
+        HEADER['DS'] = generate_dynamic_secret()
         data = await _mhy_request(
             url=PLAYER_INFO_URL_OS,
             method='GET',
@@ -420,6 +424,7 @@ async def get_spiral_abyss_info(
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = ck
+        HEADER['DS'] = generate_dynamic_secret()
         data = await _mhy_request(
             url=PLAYER_ABYSS_INFO_URL_OS,
             method='GET',
@@ -455,6 +460,7 @@ async def get_character(uid, character_ids, ck) -> dict:
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = ck
+        HEADER['DS'] = generate_dynamic_secret()
         data = await _mhy_request(
             url=PLAYER_DETAIL_INFO_URL_OS,
             method='POST',
@@ -490,6 +496,7 @@ async def get_calculate_info(
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = ck
+        HEADER['DS'] = generate_dynamic_secret()
         req = await client.get(
             url=CALCULATE_INFO_URL_OS,
             headers=HEADER,

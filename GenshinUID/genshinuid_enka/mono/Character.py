@@ -1,4 +1,4 @@
-from typing import List, Tuple, Union, Optional
+from typing import List, Tuple, Union, Optional, Dict
 
 from ..etc.etc import get_char_percent
 from ..etc.prop_calc import get_card_prop
@@ -8,11 +8,11 @@ from ..etc.MAP_PATH import char_action, avatarName2SkillAdd
 
 
 class Character:
-    def __init__(self, card_prop: dict):
+    def __init__(self, card_prop: Dict):
         # 面板数据
-        self.card_prop: dict = card_prop
+        self.card_prop: Dict = card_prop
         # 战斗数据
-        self.fight_prop: dict = {}
+        self.fight_prop: Dict = {}
 
         # 角色等级,名称,元素,武器类型
         self.char_level: int = card_prop['avatarLevel']
@@ -32,7 +32,7 @@ class Character:
 
         self.time: float = 0
         self.buff: List = []
-        self.power_list: dict = {}
+        self.power_list: Dict = {}
 
     async def new(
         self,

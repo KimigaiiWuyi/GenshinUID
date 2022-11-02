@@ -59,7 +59,10 @@ async def get_char_card_base(char: Character) -> Image.Image:
     e_skill_level = skillList[1]['skillLevel']
     q_skill_level = skillList[-1]['skillLevel']
 
-    skill_add = avatarName2SkillAdd[char.char_name]
+    if char.char_name in avatarName2SkillAdd:
+        skill_add = avatarName2SkillAdd[char.char_name]
+    else:
+        skill_add = ['E', 'Q']
     for skillAdd_index in range(0, 2):
         if len(card_prop['talentList']) >= 3 + skillAdd_index * 2:
             if skill_add[skillAdd_index] == 'E':

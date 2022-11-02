@@ -25,7 +25,10 @@ async def get_fight_prop(raw_data: dict) -> dict:
     prop['E_skill_level'] = skillList[1]['skillLevel']
     prop['Q_skill_level'] = skillList[-1]['skillLevel']
 
-    skill_add = avatarName2SkillAdd[char_name]
+    if char_name in avatarName2SkillAdd:
+        skill_add = avatarName2SkillAdd[char_name]
+    else:
+        skill_add = ['E', 'Q']
     for skillAdd_index in range(0, 2):
         if len(raw_data['talentList']) >= 3 + skillAdd_index * 2:
             if skill_add[skillAdd_index] == 'E':

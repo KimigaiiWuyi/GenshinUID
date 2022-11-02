@@ -4373,20 +4373,20 @@
   "赤沙之杖": {
     "normal": {
       "normal_effect": {
-        "1": "addAtk+52%elementalMastery",
-        "2": "addAtk+65%elementalMastery",
-        "3": "addAtk+78%elementalMastery",
-        "4": "addAtk+91%elementalMastery",
-        "5": "addAtk+104%elementalMastery"
+        "1": "exAtk+52%elementalMastery",
+        "2": "exAtk+65%elementalMastery",
+        "3": "exAtk+78%elementalMastery",
+        "4": "exAtk+91%elementalMastery",
+        "5": "exAtk+104%elementalMastery"
       }
     },
     "fight": {
       "fight_effect": {
-        "1": "addAtk+84%elementalMastery",
-        "2": "addAtk+105%elementalMastery",
-        "3": "addAtk+126%elementalMastery",
-        "4": "addAtk+147%elementalMastery",
-        "5": "addAtk+168%elementalMastery"
+        "1": "exAtk+84%elementalMastery",
+        "2": "exAtk+105%elementalMastery",
+        "3": "exAtk+126%elementalMastery",
+        "4": "exAtk+147%elementalMastery",
+        "5": "exAtk+168%elementalMastery"
       },
       "group_effect": {
         "1": "",
@@ -4435,11 +4435,11 @@
   "玛海菈的水色": {
     "normal": {
       "normal_effect": {
-        "1": "addAtk+24%elementalMastery",
-        "2": "addAtk+30%elementalMastery",
-        "3": "addAtk+36%elementalMastery",
-        "4": "addAtk+42%elementalMastery",
-        "5": "addAtk+48%elementalMastery"
+        "1": "exAtk+24%elementalMastery",
+        "2": "exAtk+30%elementalMastery",
+        "3": "exAtk+36%elementalMastery",
+        "4": "exAtk+42%elementalMastery",
+        "5": "exAtk+48%elementalMastery"
       }
     },
     "fight": {
@@ -4451,11 +4451,11 @@
         "5": ""
       },
       "group_effect": {
-        "1": "addAtk+7.2%elementalMastery",
-        "2": "addAtk+9%elementalMastery",
-        "3": "addAtk+10.8%elementalMastery",
-        "4": "addAtk+12.6%elementalMastery",
-        "5": "addAtk+14.4%elementalMastery"
+        "1": "exAtk+7.2%elementalMastery",
+        "2": "exAtk+9%elementalMastery",
+        "3": "exAtk+10.8%elementalMastery",
+        "4": "exAtk+12.6%elementalMastery",
+        "5": "exAtk+14.4%elementalMastery"
       },
       "time": 0,
       "extra": {
@@ -4466,11 +4466,11 @@
   "西福斯的月光": {
     "normal": {
       "normal_effect": {
-        "1": "energyRecharge+0.036%elementalMastery",
-        "2": "energyRecharge+0.045%elementalMastery",
-        "3": "energyRecharge+0.054%elementalMastery",
-        "4": "energyRecharge+0.063%elementalMastery",
-        "5": "energyRecharge+0.072%elementalMastery"
+        "1": "energyRecharge+3.6%elementalMastery",
+        "2": "energyRecharge+4.5%elementalMastery",
+        "3": "energyRecharge+5.4%elementalMastery",
+        "4": "energyRecharge+6.3%elementalMastery",
+        "5": "energyRecharge+7.2%elementalMastery"
       }
     },
     "fight": {
@@ -4482,11 +4482,11 @@
         "5": ""
       },
       "group_effect": {
-        "1": "energyRecharge+0.0108%elementalMastery",
-        "2": "energyRecharge+0.0135%elementalMastery",
-        "3": "energyRecharge+0.0162%elementalMastery",
-        "4": "energyRecharge+0.0189%elementalMastery",
-        "5": "energyRecharge+0.0216%elementalMastery"
+        "1": "energyRecharge+1.08%elementalMastery",
+        "2": "energyRecharge+1.35%elementalMastery",
+        "3": "energyRecharge+1.62%elementalMastery",
+        "4": "energyRecharge+1.89%elementalMastery",
+        "5": "energyRecharge+2.16%elementalMastery"
       },
       "time": 0,
       "extra": {
@@ -4497,11 +4497,11 @@
   "流浪的晚星": {
     "normal": {
       "normal_effect": {
-        "1": "addAtk+24%elementalMastery",
-        "2": "addAtk+30%elementalMastery",
-        "3": "addAtk+36%elementalMastery",
-        "4": "addAtk+42%elementalMastery",
-        "5": "addAtk+48%elementalMastery"
+        "1": "exAtk+24%elementalMastery",
+        "2": "exAtk+30%elementalMastery",
+        "3": "exAtk+36%elementalMastery",
+        "4": "exAtk+42%elementalMastery",
+        "5": "exAtk+48%elementalMastery"
       }
     },
     "fight": {
@@ -4513,11 +4513,11 @@
         "5": ""
       },
       "group_effect": {
-        "1": "addAtk+7.2%elementalMastery",
-        "2": "addAtk+9%elementalMastery",
-        "3": "addAtk+10.8%elementalMastery",
-        "4": "addAtk+12.6%elementalMastery",
-        "5": "addAtk+14.4%elementalMastery"
+        "1": "exAtk+7.2%elementalMastery",
+        "2": "exAtk+9%elementalMastery",
+        "3": "exAtk+10.8%elementalMastery",
+        "4": "exAtk+12.6%elementalMastery",
+        "5": "exAtk+14.4%elementalMastery"
       },
       "time": 0,
       "extra": {

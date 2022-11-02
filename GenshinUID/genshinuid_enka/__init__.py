@@ -60,8 +60,8 @@ async def send_original_pic(
     matcher: Matcher,
 ):
     ev = event.__dict__
-    if 'reply' in ev:
-        msg_id = ev['reply'].__dict__['message_id']
+    if 'message_reference' in ev:
+        msg_id = ev['message_reference'].__dict__['message_id']
         path = TEMP_PATH / f'{msg_id}.jpg'
         if path.exists():
             logger.info('[原图]访问图片: {}'.format(path))
@@ -129,7 +129,7 @@ async def send_char_info(
         await matcher.finish(im)
     elif isinstance(im, Tuple):
         req = await matcher.send(local_image(im[0]))
-        msg_id = req['message_id']
+        msg_id = req.id
         if im[1]:
             with open(TEMP_PATH / f'{msg_id}.jpg', 'wb') as f:
                 f.write(im[1])

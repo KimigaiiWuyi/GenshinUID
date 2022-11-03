@@ -190,7 +190,7 @@ async def get_effect_prop(
 
     prop['hp'] = (prop['addHp'] + 1) * prop['baseHp'] + prop['exHp']
     prop['atk'] = (prop['addAtk'] + 1) * prop['baseAtk'] + prop['exAtk']
-    prop['def'] = (prop['addDef'] + 1) + prop['baseDef'] + prop['exDef']
+    prop['def'] = (prop['addDef'] + 1) * prop['baseDef'] + prop['exDef']
     for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
         for attr in ['hp', 'atk', 'def']:
             attr_up = attr[0].upper() + attr[1:]

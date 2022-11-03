@@ -48,7 +48,7 @@ async def draw_enka_img(
 
     # 以 带 作为分割
     fake_char_name = ''
-    if '带' in msg:
+    if '带' in msg and '换' in msg:
         # 公子带天空之卷换可莉圣遗物
         msg_list = msg.split('带')
         fake_char_name, talent_num = await get_fake_char_str(msg_list[0])
@@ -57,6 +57,7 @@ async def draw_enka_img(
         char_name, _ = await get_fake_char_str(msg_list[1].replace('圣遗物', ''))
     else:
         # 以 换 作为分割
+        msg = msg.replace('带', '换')
         msg_list = msg.split('换')
         char_name, talent_num = await get_fake_char_str(msg_list[0])
         if len(msg_list) > 1:
@@ -97,6 +98,7 @@ async def draw_enka_img(
 
 
 async def get_fake_char_data(char_data: Dict, fake_name: str) -> Dict:
+    fake_name = await alias_to_char_name(fake_name)
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
     en_name = await avatarId_to_enName(char_data['avatarId'])

@@ -1,5 +1,14 @@
 name: Pre Commit
-on: [pull_request, pull_request_target]
+
+on:
+  pull_request:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+
 jobs:
   Pre-Commit:
     runs-on: ubuntu-latest
@@ -29,7 +38,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
           git status
-          git diff-index --quiet HEAD || (git commit -m ":rotating_light: auto fix by pre-commit" -a --no-verify && git push "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.event.pull_request.head.repo.full_name }}.git" HEAD:${{ github.event.pull_request.head.ref }})
+          git diff-index --quiet HEAD || (git commit -m ":rotating_light: auto fix by pre-commit" -a --no-verify && git push)
 
       - name: Read result
         id: rr

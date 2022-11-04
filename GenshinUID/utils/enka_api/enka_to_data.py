@@ -283,9 +283,12 @@ async def enka_to_dict(
                 artifact_temp['reliquaryMainstat']['mainPropId']
             ]
 
-            artifact_temp['reliquarySubstats'] = artifact['flat'][
-                'reliquarySubstats'
-            ]
+            if 'reliquarySubstats' in artifact['flat']:
+                artifact_temp['reliquarySubstats'] = artifact['flat'][
+                    'reliquarySubstats'
+                ]
+            else:
+                artifact_temp['reliquarySubstats'] = []
             for sub in artifact_temp['reliquarySubstats']:
                 sub['statName'] = propId2Name[sub['appendPropId']]
             artifacts_info.append(artifact_temp)
@@ -302,7 +305,10 @@ async def enka_to_dict(
                 pass
             elif artifact_set_list.count(equip) >= 2:
                 char_data['equipSets']['type'] += '2'
-                char_data['equipSets']['set'] += equip
+                char_data['equipSets']['set'] += '|' + equip
+
+        if char_data['equipSets']['set'].startswith('|'):
+            char_data['equipSets']['set'] = char_data['equipSets']['set'][1:]
 
         char_dict_list.append(char_data)
         with open(

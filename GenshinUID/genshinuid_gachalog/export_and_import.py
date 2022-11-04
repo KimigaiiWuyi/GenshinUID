@@ -27,6 +27,7 @@ async def import_gachalogs(history_url: str, uid: str) -> str:
         item['item_id'] = ''
         item['count'] = '1'
         item['lang'] = 'zh-cn'
+        item['id'] = str(item['id'])
         del item['uigf_gacha_type']
         result[INT_TO_TYPE[item['gacha_type']]].append(item)
     im = await save_gachalogs(uid, result)

@@ -1,5 +1,19 @@
 {
   "python.languageServer": "Pylance",
   "python.analysis.typeCheckingMode": "basic",
-  "cSpell.words": ["audioid", "enka", "genshin", "minigg", "weapontype"]
+  "cSpell.words": [
+    "audioid",
+    "enka",
+    "genshin",
+    "genshinuid",
+    "minigg",
+    "nonebot",
+    "nonebug",
+    "weapontype"
+  ],
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
 }

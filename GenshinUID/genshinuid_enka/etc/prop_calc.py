@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from .buff_calc import get_effect_prop
 from ..etc.get_buff_list import get_buff_list
@@ -125,7 +125,7 @@ async def get_card_prop(
         raw_data['weaponInfo'] = weapon_info
 
     # 修改假命座:
-    if talent_num:
+    if talent_num or talent_num == 0:
         talent_list = []
         for i in range(1, talent_num + 1):
             talent_list.append(
@@ -137,8 +137,43 @@ async def get_card_prop(
             )
         raw_data['talentList'] = talent_list
 
+    fight_prop = await get_base_prop(raw_data, char_name, char_level)
+    raw_data['avatarFightProp'] = fight_prop
+    all_effects = await get_buff_list(raw_data, 'normal')
+
+    # 计算圣遗物效果
+    all_effects.extend(await get_artifacts_value(raw_data))
+
+    fight_prop = await get_effect_prop(fight_prop, all_effects, char_name)
+    raw_data['avatarFightProp'] = fight_prop
+    return raw_data
+
+
+ELEMENT_MAP = {
+    '风': 'Anemo',
+    '冰': 'Cryo',
+    '草': 'Dendro',
+    '雷': 'Electro',
+    '岩': 'Geo',
+    '水': 'Hydro',
+    '火': 'Pyro',
+}
+
+
+async def get_simple_card_prop(raw_data: Dict, base_prop: Dict):
+    char_name = raw_data['avatarName']
+    raw_data['avatarFightProp'] = base_prop
+    all_effects = await get_buff_list(raw_data, 'normal')
+    all_effects.extend(await get_artifacts_value(raw_data))
+    fight_prop = await get_effect_prop(base_prop, all_effects, char_name)
+    raw_data['avatarFightProp'] = fight_prop
+    return raw_data
+
+
+async def get_base_prop(
+    raw_data: Dict, char_name: str, char_level: int
+) -> Dict:
     # 武器基本属
-    weapon_affix = raw_data['weaponInfo']['weaponAffix']
     weapon_atk = raw_data['weaponInfo']['weaponStats'][0]['statValue']
     if len(raw_data['weaponInfo']['weaponStats']) > 1:
         weapon_sub = raw_data['weaponInfo']['weaponStats'][1]['statName']
@@ -187,10 +222,12 @@ async def get_card_prop(
     else:
         return {}
 
-    raw_data['avatarFightProp'] = fight_prop
-    all_effects = await get_buff_list(raw_data, 'normal')
+    return fight_prop
 
+
+async def get_artifacts_value(raw_data: Dict) -> List[str]:
     # 计算圣遗物效果
+    all_effects = []
     for equip in raw_data['equipList']:
         statNmae = equip['reliquaryMainstat']['statName']
         statValue = equip['reliquaryMainstat']['statValue']
@@ -199,21 +236,7 @@ async def get_card_prop(
             sub_name = sub['statName']
             sub_value = sub['statValue']
             all_effects.append(await text_to_effect(sub_name, sub_value))
-
-    fight_prop = await get_effect_prop(fight_prop, all_effects, char_name)
-    raw_data['avatarFightProp'] = fight_prop
-    return raw_data
-
-
-ELEMENT_MAP = {
-    '风': 'Anemo',
-    '冰': 'Cryo',
-    '草': 'Dendro',
-    '雷': 'Electro',
-    '岩': 'Geo',
-    '水': 'Hydro',
-    '火': 'Pyro',
-}
+    return all_effects
 
 
 async def text_to_effect(name: str, value: float) -> str:

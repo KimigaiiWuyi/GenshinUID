@@ -1,12 +1,16 @@
 import re
 import json
-from typing import Dict, Tuple, Union, Optional
+import asyncio
+from copy import deepcopy
+from typing import Dict, List, Tuple, Union, Optional
 
 from nonebot.log import logger
 
+from .mono.Character import Character
 from .draw_char_card import draw_char_img
 from ..utils.message.error_reply import CHAR_HINT
 from ..utils.enka_api.enka_to_card import draw_enka_card
+from .etc.prop_calc import get_base_prop, get_simple_card_prop
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.alias.enName_to_avatarId import avatarId_to_enName
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
@@ -40,11 +44,15 @@ async def draw_enka_img(
     # 获取角色名
     msg = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
 
-    # 判断是否开启去成长曲线, 并且去除
+    # 判断是否开启成长曲线或最佳, 并且去除
     is_curve = False
+    is_best = False
     if '成长曲线' in msg or '曲线' in msg:
         is_curve = True
         msg = msg.replace('成长曲线', '').replace('曲线', '')
+    elif '最佳' in msg:
+        is_best = True
+        msg = msg.replace('最佳', '')
 
     # 以 带 作为分割
     fake_char_name = ''
@@ -90,11 +98,95 @@ async def draw_enka_img(
     if fake_char_name:
         char_data = await get_fake_char_data(char_data, fake_char_name)
 
+    '''
+    if is_best:
+        char_data = await get_best_char(char_data, uid)
+    '''
+
     im = await draw_char_img(
         char_data, weapon, weapon_affix, talent_num, url, is_curve
     )
     logger.info('[查询角色] 绘图完成,等待发送...')
     return im
+
+
+async def get_best_char(char_data: Dict, uid: str) -> Dict:
+    # 设定初始值
+    char_level = int(char_data['avatarLevel'])
+    char_name = char_data['avatarName']
+    fight_prop = await get_base_prop(char_data, char_name, char_level)
+
+    # 开始
+    logger.info(f'[查找最佳圣遗物] UID:{uid}开始进行迭代...')
+    best = []
+    artifacts_repo = await get_artifacts_repo(uid)
+    num = 0
+    TASKS = []
+    for flower in artifacts_repo['flower']:
+        for plume in artifacts_repo['plume']:
+            for sands in artifacts_repo['sands']:
+                for goblet in artifacts_repo['goblet']:
+                    for circlet in artifacts_repo['circlet']:
+                        char_data['equipList'] = [
+                            flower,
+                            plume,
+                            sands,
+                            goblet,
+                            circlet,
+                        ]
+                        char_data = await get_simple_card_prop(
+                            char_data, fight_prop
+                        )
+                        num += 1
+                        TASKS.append(
+                            await get_single_percent(
+                                deepcopy(char_data), uid, num, best
+                            )
+                        )
+                        break
+                        # await get_single_percent(char, uid, num, best)
+    asyncio.gather(*TASKS)
+    best.sort(key=lambda x: (-x['percent']))
+    logger.info(f'[查找最佳圣遗物] UID:{uid}完成!毕业度为{best[0]["percent"]}')
+    return char_data
+
+
+async def get_single_percent(char_data: Dict, uid: str, num: int, best: List):
+    char = Character(char_data)
+    await char.init_prop()
+    percent = float(char.percent.replace('%', ''))
+    logger.info(f'[查找最佳圣遗物] UID:{uid}第{num}次迭代...毕业度为{percent}!')
+    best.append({'percent': percent, 'char_data': char.card_prop})
+
+
+async def get_artifacts_repo(uid: str) -> Dict[str, List[Dict]]:
+    artifacts_repo = {
+        'flower': [],
+        'plume': [],
+        'sands': [],
+        'goblet': [],
+        'circlet': [],
+    }
+    logger.info(f'[建立圣遗物仓库] UID:{uid}开始...')
+    # 开始查找全部角色
+    uid_fold = PLAYER_PATH / str(uid)
+    char_file_list = uid_fold.glob('*')
+    for i in char_file_list:
+        if '\u4e00' <= i.name[0] <= '\u9fff':
+            with open(uid_fold / f'{i.name}', 'r', encoding='UTF-8') as f:
+                raw_data = json.load(f)
+            for equip in raw_data['equipList']:
+                if equip not in artifacts_repo[equip['aritifactSetPiece']]:
+                    artifacts_repo[equip['aritifactSetPiece']].append(equip)
+    logger.info(
+        f'[建立圣遗物仓库] UID:{uid}完成!共计\
+          {len(artifacts_repo["flower"])},\
+          {len(artifacts_repo["plume"])},\
+          {len(artifacts_repo["sands"])},\
+          {len(artifacts_repo["goblet"])},\
+          {len(artifacts_repo["circlet"])}个圣遗物!'
+    )
+    return artifacts_repo
 
 
 async def get_fake_char_data(char_data: Dict, fake_name: str) -> Dict:

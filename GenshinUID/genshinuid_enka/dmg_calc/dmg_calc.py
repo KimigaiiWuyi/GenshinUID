@@ -160,7 +160,7 @@ async def draw_dmg_img(
             effect_prop = prop[f'{power_name[0]}_atk']
 
         # 按照ABCEQ等级查找倍率
-        power = power_list[power_name]['value'][
+        power: str = power_list[power_name]['value'][
             prop['{}_skill_level'.format(power_name[0])] - 1
         ]
         # 计算是否多次伤害
@@ -260,6 +260,21 @@ async def draw_dmg_img(
                 / 100
             ) * 13
 
+        if '灭净三业' in power_name:
+            power_sp = power.replace('%', '').split('+')
+            base_calc = (
+                float(power_sp[0]) * prop['atk'] / 100
+                + float(power_sp[1]) * prop['elementalMastery'] / 100
+                + reaction_power
+                + add_dmg
+            )
+        else:
+            base_calc = (
+                effect_prop * (power_percent + sp_power_percent)
+                + power_value
+                + add_dmg
+            )
+
         # 根据label_name 计算数值
         if '治疗' in power_name:
             crit_dmg = avg_dmg = (
@@ -273,20 +288,32 @@ async def draw_dmg_img(
                 * (1 + prop['g'] / 100)
                 * r
             )
-            power_list[power_name]['name'] = power_list[power_name]['name'][1:]
+            if power_list[power_name]['name'][0] == 'A':
+                power_list[power_name]['name'] = power_list[power_name][
+                    'name'
+                ][1:]
         elif '(绽放)' in power_name:
             if '丰穰之核' in power_name:
                 ex_add = ((prop['hp'] - 30000) / 1000) * 0.09
                 if ex_add >= 4:
                     ex_add = 4
-                prop['a'] += ex_add
+                if '(暴击)' not in power_name:
+                    prop['a'] += ex_add
+            if '(暴击)' in power_name:
+                critdmg_cal = 2
+            else:
+                critdmg_cal = 1
             crit_dmg = avg_dmg = (
                 base_value_list[char_level - 1]
                 * 4
                 * (1 + (16.0 * em_cal) / (em_cal + 2000) + prop['a'])
                 * r
+                * critdmg_cal
             )
-            power_list[power_name]['name'] = power_list[power_name]['name'][1:]
+            if power_list[power_name]['name'][0] == 'A':
+                power_list[power_name]['name'] = power_list[power_name][
+                    'name'
+                ][1:]
         elif '伤害值提升' in power_name:
             crit_dmg = avg_dmg = effect_prop * power_percent + power_value
         elif '护盾' in power_name:
@@ -300,15 +327,7 @@ async def draw_dmg_img(
         else:
             # 不暴击伤害
             normal_dmg = (
-                (
-                    effect_prop * (power_percent + sp_power_percent)
-                    + power_value
-                    + add_dmg
-                )
-                * (1 + dmgBonus_cal)
-                * d_cal
-                * r
-                * reaction_add_dmg
+                base_calc * (1 + dmgBonus_cal) * d_cal * r * reaction_add_dmg
             )
             # 暴击伤害
             crit_dmg = normal_dmg * (1 + critdmg_cal)
@@ -350,6 +369,7 @@ async def power_to_value(power: str, power_plus: int) -> Tuple[float, float]:
     """
     将power转换为value
     """
+    # 如果存在123%+123%形式的
     if '+' in power:
         power_percent = (
             float(power.split('+')[0].replace('%', '')) / 100

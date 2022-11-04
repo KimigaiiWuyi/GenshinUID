@@ -10,5 +10,10 @@
     "nonebot",
     "nonebug",
     "weapontype"
-  ]
+  ],
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
 }

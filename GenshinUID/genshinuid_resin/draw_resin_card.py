@@ -211,7 +211,10 @@ async def draw_resin_img(uid: str) -> Image.Image:
 
     # 绘制树脂圆环
     ring_pic = Image.open(TEXT_PATH / 'ring.apng')
-    ring_pic.seek(round(resin_percent * 49))
+    percent = (
+        round(resin_percent * 49) if round(resin_percent * 49) <= 49 else 49
+    )
+    ring_pic.seek(percent)
     img.paste(ring_pic, (0, 0), ring_pic)
 
     # 写树脂剩余时间

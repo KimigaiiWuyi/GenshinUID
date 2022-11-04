@@ -1,4 +1,4 @@
-from typing import List, Tuple, Union, Optional, Dict
+from typing import Dict, List, Tuple, Union, Optional
 
 from ..etc.etc import get_char_percent
 from ..etc.prop_calc import get_card_prop
@@ -88,6 +88,14 @@ class Character:
                         'type': '攻击力',
                         'plus': 1,
                         'value': ['100%'] * 15,
+                    }
+            elif self.char_name == '纳西妲':
+                for power_name in ['E灭净三业·业障除', 'E灭净三业·业障除(蔓激化)']:
+                    self.power_list[power_name] = {
+                        'name': power_name,
+                        'type': '攻击力',
+                        'plus': 1,
+                        'value': ['200%+400%'] * 15,
                     }
         self.fight_prop = await get_fight_prop(self.card_prop)
 

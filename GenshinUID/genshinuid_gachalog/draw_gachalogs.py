@@ -74,6 +74,7 @@ async def _draw_card(
             .resize((108, 108))
         )
     else:
+        is_up = False
         item_pic = (
             Image.open(WEAPON_PATH / f'{name}.png')
             .convert('RGBA')

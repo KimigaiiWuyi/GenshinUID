@@ -8,5 +8,10 @@
     "genshinuid",
     "minigg",
     "weapontype"
-  ]
+  ],
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
 }

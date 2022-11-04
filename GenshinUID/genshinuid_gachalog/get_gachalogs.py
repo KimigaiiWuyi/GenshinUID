@@ -6,7 +6,7 @@ from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.mhy_api.get_mhy_data import get_gacha_log_by_authkey
 
 
-async def save_gachalogs(uid: str, raw_data: Optional[dict] = None):
+async def save_gachalogs(uid: str, raw_data: Optional[dict] = None) -> str:
     path = PLAYER_PATH / str(uid)
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)

@@ -121,7 +121,7 @@ async def send_gacha_log_card_info(
 
     uid = await select_db(event.user_id, mode='uid')
     if isinstance(uid, str):
-        im = await draw_gachalogs_img(uid)
+        im = await draw_gachalogs_img(uid, event.user_id)
         if isinstance(im, bytes):
             await matcher.finish(MessageSegment.image(im))
         else:

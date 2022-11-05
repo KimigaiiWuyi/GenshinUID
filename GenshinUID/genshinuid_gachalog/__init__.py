@@ -3,18 +3,15 @@ from typing import Union
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import get_bot, on_notice, on_command
-from nonebot.adapters.onebot.v11 import (
-    NoticeEvent,
-    MessageSegment,
-    GroupMessageEvent,
-    PrivateMessageEvent,
-)
+from nonebot.adapters.qqguild import Bot, Message, MessageEvent
 
 from .get_gachalogs import save_gachalogs
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
+from ..utils.nonebot2.send import local_image
 from .draw_gachalogs import draw_gachalogs_img
 from ..utils.message.error_reply import UID_HINT
+from ..utils.message.cast_type import cast_to_int
 from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
 from .export_and_import import export_gachalogs, import_gachalogs
@@ -28,13 +25,13 @@ export_gacha_log = on_command('导出抽卡记录', rule=FullCommand())
 @export_gacha_log.handle()
 @handle_exception('导出抽卡记录')
 async def export_gacha_log_info(
-    event: GroupMessageEvent,
+    event: MessageEvent,
     matcher: Matcher,
 ):
 
     logger.info('开始执行[导出抽卡记录]')
-    qid = event.user_id
-    gid = event.group_id
+    qid = str(str(cast_to_int(event.author)))
+    gid = event.channel_id
     uid = await select_db(qid, mode='uid')
     bot = get_bot()
     if not isinstance(uid, str) or '未找到绑定的UID' in uid:
@@ -56,7 +53,7 @@ async def export_gacha_log_info(
 
 @import_gacha_log.handle()
 @handle_exception('导入抽卡记录')
-async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
+async def import_gacha_log_info(event: MessageEvent, matcher: Matcher):
     args = event.dict()
     if args['notice_type'] != 'offline_file':
         await matcher.finish()
@@ -88,16 +85,20 @@ async def import_gacha_log_info(event: NoticeEvent, matcher: Matcher):
     ),
 )
 async def send_gacha_log_card_info(
-    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    event: MessageEvent,
     matcher: Matcher,
 ):
     logger.info('开始执行[抽卡记录]')
 
-    uid = await select_db(event.user_id, mode='uid')
+    uid = await select_db(str(cast_to_int(event.author)), mode='uid')
+    if event.author and event.author.avatar:
+        avatar = event.author.avatar
+    else:
+        avatar = '3399214199'
     if isinstance(uid, str):
-        im = await draw_gachalogs_img(uid)
+        im = await draw_gachalogs_img(uid, avatar)  # type: ignore
         if isinstance(im, bytes):
-            await matcher.finish(MessageSegment.image(im))
+            await matcher.finish(local_image(im))
         else:
             await matcher.finish(im)
     else:
@@ -119,11 +120,11 @@ async def send_gacha_log_card_info(
     ),
 )
 async def send_daily_info(
-    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    event: MessageEvent,
     matcher: Matcher,
 ):
     logger.info('开始执行[刷新抽卡记录]')
-    uid = await select_db(event.user_id, mode='uid')
+    uid = await select_db(str(cast_to_int(event.author)), mode='uid')
     if isinstance(uid, str):
         im = await save_gachalogs(uid)
         await matcher.finish(im)

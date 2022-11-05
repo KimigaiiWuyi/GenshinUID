@@ -1,4 +1,4 @@
-from .notice import get_notice_list
+from .notice import get_noic_list
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
 from ..all_import import *  # noqa: F403,F401
@@ -37,27 +37,49 @@ async def notice_job():
     result = await get_notice_list()
     logger.info('[推送检查]完成!等待消息推送中...')
     # 执行私聊推送
+    bot_ids = bot._wsr_api_clients.keys()
     for qid in result[0]:
-        try:
-            await bot.send_private_msg(
-                user_id=qid,
-                message=result[0][qid],
-            )
-        except:
+        send_success = False
+        for sid in bot_ids:
+            try:
+                await bot.send_private_msg(
+                    self_id=sid,
+                    user_id=qid,
+                    message=result[0][qid],
+                )
+                send_success = True
+                break
+            except:
+                logger.info(f'[推送检查(轮推)] BOT {sid} 没有 {qid} 好友，已跳过')
+        if not send_success:
             logger.warning(f'[推送检查] QQ {qid} 私聊推送失败!')
         await asyncio.sleep(0.5)
     logger.info('[推送检查]私聊推送完成')
     # 执行群聊推送
     for group_id in result[1]:
-        try:
-            await bot.send_group_msg(
-                group_id=group_id, message=result[1][group_id]
-            )
-        except:
-            logger.warning(f'[推送检查] 群 {group_id} 群聊推送失败!')
+        send_success = False
+        for sid in bot_ids:
+            try:
+                await bot.send_group_msg(
+                    self_id=sid,
+                    group_id=group_id,
+                    message=result[1][group_id],
+                )
+                send_success = True
+                break
+            except:
+                logger.info(f'[推送检查(轮推)] BOT {sid} 没有 {group_id}群，已跳过')
+        if not send_success:
+            logger.warning(f'[推送检查] 群 {group_id} 推送失败!')
         await asyncio.sleep(0.5)
     logger.info('[推送检查]群聊推送完成')
 
+# @sv.on_fullmatch(('人工开启推送检查任务'))
+# async def  manual_notice_job(bot: HoshinoBot, ev: CQEvent):
+#     if ev.user_id != 1102566608:
+#         return
+#     await notice_job()
+#     await bot.send(ev, '推送检查任务已执行')
 
 @sv.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
 async def send_daily_info_pic(bot: HoshinoBot, ev: CQEvent):

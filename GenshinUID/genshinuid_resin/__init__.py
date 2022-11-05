@@ -54,7 +54,7 @@ async def notice_job():
         if not send_success:
             logger.warning(f'[推送检查] QQ {qid} 私聊推送失败!')
         await asyncio.sleep(0.5)
-    logger.info('[推送检查]私聊推送完成')
+    logger.info('[推送检查] 私聊推送完成')
     # 执行群聊推送
     for group_id in result[1]:
         send_success = False
@@ -68,18 +68,22 @@ async def notice_job():
                 send_success = True
                 break
             except:
-                logger.info(f'[推送检查(轮推)] BOT {sid} 没有 {group_id}群，已跳过')
+                logger.info(f'[推送检查(轮推)] BOT {sid} 没有 {group_id} 群，已跳过')
         if not send_success:
             logger.warning(f'[推送检查] 群 {group_id} 推送失败!')
         await asyncio.sleep(0.5)
-    logger.info('[推送检查]群聊推送完成')
+    logger.info('[推送检查] 群聊推送完成')
 
-# @sv.on_fullmatch(('人工开启推送检查任务'))
-# async def  manual_notice_job(bot: HoshinoBot, ev: CQEvent):
-#     if ev.user_id != 1102566608:
-#         return
-#     await notice_job()
-#     await bot.send(ev, '推送检查任务已执行')
+@sv.on_fullmatch(('执行推送检查任务'))
+async def  manual_notice_job(bot: HoshinoBot, ev: CQEvent):
+    if ev.sender:
+        qid = int(ev.sender['user_id'])
+    else:
+        return
+    if qid not in bot.config.SUPERUSERS:
+        return
+    await notice_job()
+    await bot.send(ev, '推送检查任务已执行')
 
 @sv.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
 async def send_daily_info_pic(bot: HoshinoBot, ev: CQEvent):

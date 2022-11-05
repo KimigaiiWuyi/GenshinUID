@@ -119,7 +119,7 @@ async def get_level_from_list(ast: int, lst: List) -> int:
             level = 5 - num_index
             break
     else:
-        level = 3
+        level = 1
     return level
 
 
@@ -326,13 +326,12 @@ async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
             level = await get_level_from_list(
                 total_data[i]['avg'], [54, 61, 67, 73, 80]
             )
-
         else:
             if i == '武器祈愿':
                 level = await get_level_from_list(
                     total_data[i]['avg_up'], [62, 75, 88, 99, 111]
                 )
-            elif i == '角色祈愿':
+            else:
                 level = await get_level_from_list(
                     total_data[i]['avg_up'], [74, 87, 99, 105, 120]
                 )

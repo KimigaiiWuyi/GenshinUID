@@ -1,14 +1,14 @@
 import json
+import random
 import asyncio
 import datetime
 from pathlib import Path
-from typing import Tuple, Union
+from typing import List, Tuple, Union
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.draw_image_tools.send_image_tool import convert_img
-from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.alias.avatarId_and_name_covert import name_to_avatar_id
 from ..utils.download_resource.RESOURCE_PATH import (
@@ -19,17 +19,25 @@ from ..utils.download_resource.RESOURCE_PATH import (
     PLAYER_PATH,
     WEAPON_PATH,
 )
+from ..utils.draw_image_tools.draw_image_tool import (
+    get_color_bg,
+    get_qq_avatar,
+    get_simple_bg,
+    get_fetter_pic,
+    get_talent_pic,
+    draw_pic_with_ring,
+    get_weapon_affix_pic,
+)
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
-title_mask = Image.open(TEXT_PATH / 'title_mask.png')
 up_tag = Image.open(TEXT_PATH / 'up.png')
 
-gs_font_16 = genshin_font_origin(16)
 gs_font_23 = genshin_font_origin(23)
-gs_font_26 = genshin_font_origin(26)
 gs_font_28 = genshin_font_origin(28)
+gs_font_36 = genshin_font_origin(36)
 gs_font_40 = genshin_font_origin(40)
+gs_font_62 = genshin_font_origin(62)
 
 first_color = (29, 29, 29)
 brown_color = (41, 25, 0)
@@ -37,10 +45,24 @@ red_color = (255, 66, 66)
 green_color = (74, 189, 119)
 
 CHANGE_MAP = {'常驻祈愿': 'normal', '角色祈愿': 'char', '武器祈愿': 'weapon'}
-
-
-async def _get_tag(level: int) -> Image.Image:
-    return Image.open(TEXT_PATH / f'tag_{level}.png')
+HOMO_TAG = ['非到极致', '运气不好', '平稳保底', '小欧一把', '欧狗在此']
+NORMAL_LIST = [
+    '莫娜',
+    '迪卢克',
+    '七七',
+    '刻晴',
+    '琴',
+    '阿莫斯之弓',
+    '天空之翼',
+    '四风原典',
+    '天空之卷',
+    '和璞鸢',
+    '天空之脊',
+    '狼的末路',
+    '天空之傲',
+    '风鹰剑',
+    '天空之刃',
+]
 
 
 async def _draw_card(
@@ -49,24 +71,13 @@ async def _draw_card(
     type: str,
     name: str,
     gacha_num: int,
-    date_time: str,
+    is_up: bool,
 ):
     card_img = Image.open(TEXT_PATH / 'item_bg.png')
     card_img_draw = ImageDraw.Draw(card_img)
     point = (1, 0)
     text_point = (55, 124)
-    is_up = True
     if type == '角色':
-        if name in ['莫娜', '迪卢克', '七七', '刻晴', '琴']:
-            is_up = False
-        elif name == '提纳里':
-            s_time = datetime.datetime(2022, 8, 24, 11, 0, 0)
-            e_time = datetime.datetime(2022, 9, 9, 17, 59, 59)
-            gacha_time = datetime.datetime.strptime(
-                date_time, '%Y-%m-%d %H:%M:%S'
-            )
-            if gacha_time < s_time or gacha_time > e_time:
-                is_up = False
         _id = await name_to_avatar_id(name)
         item_pic = (
             Image.open(CHAR_PATH / f'{_id}.png')
@@ -74,7 +85,6 @@ async def _draw_card(
             .resize((108, 108))
         )
     else:
-        is_up = False
         item_pic = (
             Image.open(WEAPON_PATH / f'{name}.png')
             .convert('RGBA')
@@ -95,7 +105,25 @@ async def _draw_card(
     img.paste(card_img, xy_point, card_img)
 
 
-async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
+async def random_emo_pic(level: int) -> Image.Image:
+    emo_fold = TEXT_PATH / str(level)
+    return Image.open(random.choice(list(emo_fold.iterdir())))
+
+
+async def get_level_from_list(ast: int, lst: List) -> int:
+    if ast == 0:
+        return 3
+
+    for num_index, num in enumerate(lst):
+        if ast <= num:
+            level = 5 - num_index
+            break
+    else:
+        level = 3
+    return level
+
+
+async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
         return '你还没有祈愿数据噢~\n请添加Stoken后使用命令`刷新抽卡记录`更新祈愿数据~'
@@ -106,152 +134,260 @@ async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
     total_data = {}
     for i in ['常驻祈愿', '角色祈愿', '武器祈愿']:
         total_data[i] = {
-            'total': 0,
-            'avg': 0,
-            'remain': 0,
-            'item': '',
-            'list': [],
+            'total': 0,  # 五星总数
+            'avg': 0,  # 抽卡平均数
+            'avg_up': 0,  # up平均数
+            'remain': 0,  # 已xx抽未出金
+            'r_num': [],  # 不包含首位的抽卡数量
+            'up_list': [],  # 抽到的UP列表(不包含首位)
+            'normal_list': [],  # 抽到的五星列表(不包含首位)
+            'list': [],  # 抽到的五星列表
+            'time_range': '',  # 抽卡时间
+            'all_time': 0,  # 抽卡总计秒数
+            'type': '一般型',  # 抽卡类型: 随缘型, 氪金型, 规划型, 仓鼠型, 佛系型
+            'short_gacha_data': {'time': 0, 'num': 0},
+            'long_gacha_data': {'time': 0, 'num': 0},
         }
+        # 拿到数据列表
         data_list = gacha_data['data'][i]
+        # 初始化开关
         is_not_first = False
-        num_temp = []
+        # 开始初始化抽卡数
         num = 1
-        for data in data_list[::-1]:
+        # 从后面开始循环
+        temp_time = datetime.datetime(2020, 9, 15, 18, 0, 0)
+        for index, data in enumerate(data_list[::-1]):
+            # 计算抽卡时间跨度
+            if index == 0:
+                total_data[i]['time_range'] = data['time']
+            if index == len(data_list) - 1:
+                total_data[i]['all_time'] = (
+                    datetime.datetime.strptime(
+                        data['time'], '%Y-%m-%d %H:%M:%S'
+                    )
+                    - datetime.datetime.strptime(
+                        total_data[i]['time_range'], '%Y-%m-%d %H:%M:%S'
+                    )
+                ).total_seconds()
+                total_data[i]['time_range'] += '~' + data['time']
+
+            # 计算时间间隔
+            if index != 0:
+                now_time = datetime.datetime.strptime(
+                    data['time'], '%Y-%m-%d %H:%M:%S'
+                )
+                dis = (now_time - temp_time).total_seconds()
+                temp_time = now_time
+                if dis <= 5000:
+                    total_data[i]['short_gacha_data']['num'] += 1
+                    total_data[i]['short_gacha_data']['time'] += dis
+                elif dis >= 86400:
+                    total_data[i]['long_gacha_data']['num'] += 1
+                    total_data[i]['long_gacha_data']['time'] += dis
+            else:
+                temp_time = datetime.datetime.strptime(
+                    data['time'], '%Y-%m-%d %H:%M:%S'
+                )
+
+            # 如果这是个五星
             if data['rank_type'] == '5':
+                # 抽到这个五星花了多少抽
                 data['gacha_num'] = num
-                # 排除第一个
+
+                # 判断是否是UP
+                if data['name'] in NORMAL_LIST:
+                    data['is_up'] = False
+                # 判断提哪里时间
+                elif data['name'] == '提纳里':
+                    s_time = datetime.datetime(2022, 8, 24, 11, 0, 0)
+                    e_time = datetime.datetime(2022, 9, 9, 17, 59, 59)
+                    gacha_time = datetime.datetime.strptime(
+                        data['time'], '%Y-%m-%d %H:%M:%S'
+                    )
+                    if gacha_time < s_time or gacha_time > e_time:
+                        data['is_up'] = False
+                    else:
+                        data['is_up'] = True
+                else:
+                    data['is_up'] = True
+
+                # 往里加东西
                 if is_not_first:
-                    num_temp.append(num)
-                if num_temp == []:
-                    is_not_first = True
+                    total_data[i]['r_num'].append(num)
+                    if data['is_up']:
+                        total_data[i]['up_list'].append(data)
+                    else:
+                        total_data[i]['normal_list'].append(data)
+
+                # 把这个数据扔到抽到的五星列表内
                 total_data[i]['list'].append(data)
+
+                # 判断经过了第一个
+                if total_data[i]['list']:
+                    is_not_first = True
+
                 num = 1
+                # 五星总数增加1
                 total_data[i]['total'] += 1
             else:
                 num += 1
-        if i == '武器祈愿':
-            total_data[i]['item'] = '班尼特'
-        elif i == '常驻祈愿':
-            total_data[i]['item'] = '刻晴'
-        else:
-            g = {}
-            for k in total_data[i]['list']:
-                if k['name'] in g:
-                    g[k['name']] += 1
-                else:
-                    g[k['name']] = 1
-            if len(g) >= 1:
-                total_data[i]['item'] = max(g, key=lambda x: g[x])
-            else:
-                total_data[i]['item'] = '早柚'
 
-        total_data[i]['item'] = await name_to_avatar_id(total_data[i]['item'])
+        # 计算已多少抽
         total_data[i]['remain'] = num - 1
-        if len(num_temp) == 0:
+
+        # 计算平均抽卡数
+        if len(total_data[i]['normal_list']) == 0:
             total_data[i]['avg'] = 0
         else:
             total_data[i]['avg'] = float(
-                '{:.2f}'.format(sum(num_temp) / len(num_temp))
+                '{:.2f}'.format(
+                    sum(total_data[i]['r_num']) / len(total_data[i]['r_num'])
+                )
             )
+        # 计算平均up数量
+        if len(total_data[i]['up_list']) == 0:
+            total_data[i]['avg_up'] = 0
+        else:
+            total_data[i]['avg_up'] = float(
+                '{:.2f}'.format(
+                    sum(total_data[i]['r_num']) / len(total_data[i]['up_list'])
+                )
+            )
+
+        # 计算抽卡类型
+        # 如果抽卡总数小于40
+        if gacha_data[f'{CHANGE_MAP[i]}_gacha_num'] <= 40:
+            total_data[i]['type'] = '佛系型'
+        # 如果长时抽卡总数占据了总抽卡数的70%
+        elif (
+            total_data[i]['long_gacha_data']['num']
+            / gacha_data[f'{CHANGE_MAP[i]}_gacha_num']
+            >= 0.7
+        ):
+            total_data[i]['type'] = '随缘型'
+        # 如果短时抽卡总数占据了总抽卡数的70%
+        elif (
+            total_data[i]['short_gacha_data']['num']
+            / gacha_data[f'{CHANGE_MAP[i]}_gacha_num']
+            >= 0.7
+        ):
+            total_data[i]['type'] = '规划型'
+        # 如果抽卡数量远远大于标称抽卡数量
+        elif (
+            total_data[i]['all_time'] / 30000
+            <= gacha_data[f'{CHANGE_MAP[i]}_gacha_num']
+        ):
+            # 如果长时抽卡数量大于短时抽卡数量
+            if (
+                total_data[i]['long_gacha_data']['num']
+                >= total_data[i]['short_gacha_data']['num']
+            ):
+                total_data[i]['type'] = '规划型'
+            else:
+                total_data[i]['type'] = '氪金型'
+        # 如果抽卡数量远远小于标称抽卡数量
+        elif (
+            total_data[i]['all_time'] / 32000
+            >= gacha_data[f'{CHANGE_MAP[i]}_gacha_num'] * 2
+        ):
+            total_data[i]['type'] = '仓鼠型'
 
     # 常量偏移数据
     single_y = 150
-    title_y = 300
 
     # 计算图片尺寸
-    normal_y = (
-        1 + ((total_data['常驻祈愿']['total'] - 1) // 6)
-    ) * single_y + title_y
-    char_y = (
-        1 + ((total_data['角色祈愿']['total'] - 1) // 6)
-    ) * single_y + title_y
-    weapon_y = (
-        1 + ((total_data['武器祈愿']['total'] - 1) // 6)
-    ) * single_y + title_y
+    normal_y = (1 + ((total_data['常驻祈愿']['total'] - 1) // 6)) * single_y
+    char_y = (1 + ((total_data['角色祈愿']['total'] - 1) // 6)) * single_y
+    weapon_y = (1 + ((total_data['武器祈愿']['total'] - 1) // 6)) * single_y
 
     # 获取背景图片各项参数
-    based_w = 800
-    based_h = normal_y + char_y + weapon_y + 200
-    white_overlay = Image.new('RGBA', (based_w, based_h), (255, 255, 255, 220))
-    bg_img = await get_simple_bg(based_w, based_h)
-    bg_img.paste(white_overlay, (0, 0), white_overlay)
+    _id = str(qid)
+    if _id.startswith('http'):
+        char_pic = await get_qq_avatar(avatar_url=_id)
+    else:
+        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await draw_pic_with_ring(char_pic, 320)
 
-    # 总标题
-    all_title = Image.open(TEXT_PATH / 'all_title.png')
-    all_title_draw = ImageDraw.Draw(all_title)
-    # 写UID
-    all_title_draw.text((47, 181), f'{uid}', first_color, gs_font_26, 'lm')
-    bg_img.paste(all_title, (0, 0), all_title)
+    avatar_title = Image.open(TEXT_PATH / 'avatar_title.png')
+    img = await get_color_bg(950, 530 + 900 + normal_y + char_y + weapon_y)
+    img.paste(avatar_title, (0, 0), avatar_title)
+    img.paste(char_pic, (318, 83), char_pic)
+    img_draw = ImageDraw.Draw(img)
+    img_draw.text((475, 454), f'UID {uid}', first_color, gs_font_36, 'mm')
 
     # 处理title
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
     type_list = ['常驻祈愿', '角色祈愿', '武器祈愿']
     y_extend = 0
+    level = 3
     for index, i in enumerate(type_list):
         title = Image.open(TEXT_PATH / 'gahca_title.png')
-        title_pic = (
-            Image.open(STAND_PATH / f'{total_data[i]["item"]}.png')
-            .convert('RGBA')
-            .resize((1292, 792))
-        )
-        temp_pic = Image.new('RGBA', (800, 300), (0, 0, 0, 0))
-        temp_pic.paste(title_pic, (-70, -56), title_pic)
-        temp_mask = Image.new('RGBA', (800, 300), (0, 0, 0, 0))
-        temp_mask.paste(temp_pic, (0, 0), title_mask)
-        temp_mask.putalpha(
-            temp_mask.getchannel('A').point(
-                lambda x: round(x * 0.6) if x > 0 else 0
+        if i == '常驻祈愿':
+            level = await get_level_from_list(
+                total_data[i]['avg'], [54, 61, 67, 73, 80]
             )
-        )
-        title = Image.alpha_composite(title, temp_mask)
 
-        if total_data[i]['avg'] == 0:
-            level = 3
         else:
-            # 非酋 <= 90
-            # 小非 <= 80
-            # 稳定 <= 72
-            # 小欧 <= 60
-            # 欧皇 <= 43
-            # 武器统一减10
-            for num_index, num in enumerate([42, 58, 68, 75, 90]):
-                if i == '武器祈愿':
-                    num -= 10
-                if total_data[i]['avg'] <= num:
-                    level = 5 - num_index
-                    break
-            else:
-                level = 3
+            if i == '武器祈愿':
+                level = await get_level_from_list(
+                    total_data[i]['avg_up'], [62, 75, 88, 99, 111]
+                )
+            elif i == '角色祈愿':
+                level = await get_level_from_list(
+                    total_data[i]['avg_up'], [74, 87, 99, 105, 120]
+                )
 
-        tag_pic = await _get_tag(level)
-        tag_pic = tag_pic.resize((208, 88))
-        title.paste(tag_pic, (35, 54), tag_pic)
+        emo_pic = await random_emo_pic(level)
+        emo_pic = emo_pic.resize((154, 154))
+        title.paste(emo_pic, (703, 28), emo_pic)
         title_draw = ImageDraw.Draw(title)
+        # 欧非描述
+        title_draw.text(
+            (778, 207), HOMO_TAG[level - 1], first_color, gs_font_36, 'mm'
+        )
         # 卡池
-        title_draw.text((245, 86), i, first_color, gs_font_40, 'lm')
+        title_draw.text((69, 72), i, first_color, gs_font_62, 'lm')
         # 抽卡时间
-        if gacha_data['data'][i]:
-            first_time = gacha_data['data'][i][0]['time'].split(' ')[0]
+        if total_data[i]['time_range']:
+            time_range = total_data[i]['time_range']
         else:
-            first_time = '暂未抽过卡!'
-        title_draw.text((245, 123), first_time, first_color, gs_font_28, 'lm')
+            time_range = '暂未抽过卡!'
+        title_draw.text((68, 122), time_range, brown_color, gs_font_28, 'lm')
         # 平均抽卡数量
         title_draw.text(
-            (108, 209),
+            (123, 176),
             str(total_data[i]['avg']),
             first_color,
             gs_font_40,
             'mm',
         )
+        # 平均up
         title_draw.text(
-            (261, 209),
+            (272, 176),
+            str(total_data[i]['avg_up']),
+            first_color,
+            gs_font_40,
+            'mm',
+        )
+        # 抽卡总数
+        title_draw.text(
+            (424, 176),
             str(gacha_data[f'{CHANGE_MAP[i]}_gacha_num']),
             first_color,
             gs_font_40,
             'mm',
         )
+        # 抽卡类型
         title_draw.text(
-            (104, 160),
+            (585, 176),
+            str(total_data[i]['type']),
+            first_color,
+            gs_font_40,
+            'mm',
+        )
+        # 已抽数
+        title_draw.text(
+            (383, 85),
             str(total_data[i]['remain']),
             red_color,
             gs_font_28,
@@ -262,27 +398,27 @@ async def draw_gachalogs_img(uid: str) -> Union[bytes, str]:
             if index != 0
             else 0
         )
-        y = index * title_y + y_extend + 200
-        bg_img.paste(title, (0, y), title)
+        y = 540 + index * 300 + y_extend
+        img.paste(title, (0, y), title)
         tasks = []
         for item_index, item in enumerate(total_data[i]['list']):
-            item_x = (item_index % 6) * 129 + 20
-            item_y = (item_index // 6) * 150 + y + title_y
+            item_x = (item_index % 6) * 138 + 60
+            item_y = (item_index // 6) * 150 + y + 275
             xy_point = (item_x, item_y)
             tasks.append(
                 _draw_card(
-                    bg_img,
+                    img,
                     xy_point,
                     item['item_type'],
                     item['name'],
                     item['gacha_num'],
-                    item['time'],
+                    item['is_up'],
                 )
             )
         await asyncio.gather(*tasks)
         tasks.clear()
 
     # 发送图片
-    res = await convert_img(bg_img)
+    res = await convert_img(img)
     logger.info('[查询抽卡]绘图已完成,等待发送!')
     return res

@@ -61,7 +61,7 @@ async def send_gacha_log_card_info(bot: HoshinoBot, ev: CQEvent):
     uid = await select_db(qid, mode='uid')
 
     if isinstance(uid, str):
-        im = await draw_gachalogs_img(uid)
+        im = await draw_gachalogs_img(uid, qid)
         if isinstance(im, bytes):
             im = await convert_img(im)
             await bot.send(ev, im)

@@ -50,7 +50,6 @@ NORMAL_LIST = [
     '莫娜',
     '迪卢克',
     '七七',
-    '刻晴',
     '琴',
     '阿莫斯之弓',
     '天空之翼',
@@ -197,6 +196,17 @@ async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
                 # 判断是否是UP
                 if data['name'] in NORMAL_LIST:
                     data['is_up'] = False
+                # 判断刻晴时间
+                elif data['name'] == '刻晴':
+                    s_time = datetime.datetime(2021, 2, 17, 18, 0, 0)
+                    e_time = datetime.datetime(2021, 3, 2, 15, 59, 59)
+                    gacha_time = datetime.datetime.strptime(
+                        data['time'], '%Y-%m-%d %H:%M:%S'
+                    )
+                    if gacha_time < s_time or gacha_time > e_time:
+                        data['is_up'] = False
+                    else:
+                        data['is_up'] = True
                 # 判断提哪里时间
                 elif data['name'] == '提纳里':
                     s_time = datetime.datetime(2022, 8, 24, 11, 0, 0)

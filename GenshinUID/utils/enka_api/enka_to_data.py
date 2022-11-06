@@ -42,7 +42,7 @@ async def enka_to_dict(
     :返回:
       * ``刷新完成提示语: str``: 包含刷新成功的角色列表。
     """
-    if '' in uid:
+    if '未找到绑定的UID' in uid:
         return UID_HINT
     if enka_data:
         pass

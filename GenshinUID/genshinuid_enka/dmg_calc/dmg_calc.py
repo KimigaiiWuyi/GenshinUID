@@ -206,6 +206,11 @@ async def draw_dmg_img(
         else:
             r = 1 - prop['{}_r'.format(attack_type)] / 2
 
+        # 特殊buff计算
+        if '前台' in power_list[power_name]['name']:
+            if char_name == '纳西妲':
+                em_cal += 0.25 * em_cal if 0.25 * em_cal <= 250 else 250
+
         # 计算元素反应 增幅
         for reaction in ['蒸发', '融化']:
             if reaction in power_list[power_name]['name']:
@@ -235,11 +240,20 @@ async def draw_dmg_img(
                     k = 2.3
                 else:
                     k = 2.5
+                power_times = 1
+                if '*' in power_list[power_name]['name']:
+                    power_times = float(
+                        (
+                            power_list[power_name]['name']
+                            .split('*')[-1]
+                            .replace(')', '')
+                        )
+                    )
                 reaction_power = (
                     k
                     * base_value_list[char_level - 1]
                     * (1 + (5 * em_cal) / (em_cal + 1200))
-                )
+                ) * power_times
                 break
 
         # 草系反应增加到倍率区
@@ -247,6 +261,7 @@ async def draw_dmg_img(
 
         # 计算直接增加的伤害
         add_dmg = prop['{}_addDmg'.format(attack_type)] + sp_addDmg
+        add_heal = prop['{}_addHeal'.format(attack_type)]
 
         # 特殊伤害提高
         sp_power_percent = 0
@@ -278,7 +293,7 @@ async def draw_dmg_img(
         # 根据label_name 计算数值
         if '治疗' in power_name:
             crit_dmg = avg_dmg = (
-                effect_prop * power_percent + power_value
+                effect_prop * power_percent + power_value + add_heal
             ) * (1 + prop['healBonus'])
         elif '扩散伤害' in power_name:
             crit_dmg = avg_dmg = (
@@ -292,7 +307,7 @@ async def draw_dmg_img(
                 power_list[power_name]['name'] = power_list[power_name][
                     'name'
                 ][1:]
-        elif '(绽放)' in power_name:
+        elif '绽放)' in power_name:
             if '丰穰之核' in power_name:
                 ex_add = ((prop['hp'] - 30000) / 1000) * 0.09
                 if ex_add >= 4:
@@ -303,9 +318,14 @@ async def draw_dmg_img(
                 critdmg_cal = 2
             else:
                 critdmg_cal = 1
+
+            if '烈绽放' in power_name or '超绽放' in power_name:
+                base_time = 6
+            else:
+                base_time = 4
             crit_dmg = avg_dmg = (
                 base_value_list[char_level - 1]
-                * 4
+                * base_time
                 * (1 + (16.0 * em_cal) / (em_cal + 2000) + prop['a'])
                 * r
                 * critdmg_cal

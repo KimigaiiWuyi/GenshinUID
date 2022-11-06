@@ -6,6 +6,8 @@ from ...utils.enka_api.map.GS_MAP_PATH import (
     avatarName2Element,
 )
 
+PERCENT_ATTR = ['dmgBonus', 'addAtk', 'addDef', 'addHp']
+
 
 async def get_effect_prop(
     prop: dict,
@@ -13,7 +15,15 @@ async def get_effect_prop(
     char_name: str,
 ) -> dict:
     if 'A_d' not in prop:
-        for attr in ['shieldBonus', 'addDmg', 'ignoreDef', 'd', 'g', 'a']:
+        for attr in [
+            'shieldBonus',
+            'addDmg',
+            'addHeal',
+            'ignoreDef',
+            'd',
+            'g',
+            'a',
+        ]:
             prop[attr] = 0
         prop['r'] = 0.1
         prop['k'] = 1
@@ -128,7 +138,7 @@ async def get_effect_prop(
         # 如果属性是血量,攻击,防御值,并且是按照%增加的,那么增加值应为百分比乘上基础值
         if base_check:
             if effect_base == 'energyRecharge':
-                if effect_attr == 'dmgBonus':
+                if effect_attr in PERCENT_ATTR:
                     effect_base_value = prop[effect_base] - 1
                 else:
                     effect_base_value = (prop[effect_base] - 1) / 100

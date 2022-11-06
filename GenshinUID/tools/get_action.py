@@ -66,15 +66,27 @@ extra = {
     '迪卢克': {'Q斩击伤害': '蒸发'},
     '芭芭拉': {'A重击伤害': '蒸发'},
     '七七': {'Q技能伤害': '融化'},
-    '八重神子': {'Q天狐霆雷伤害': '超激化', 'E杀生樱伤害·叁阶': '超激化', 'E杀生樱伤害·肆阶': '超激化'},
+    '八重神子': {
+        'Q伤害': '超激化',
+        'Q天狐霆雷伤害': '超激化',
+        'E杀生樱伤害·叁阶': '超激化',
+        'E杀生樱伤害·肆阶': '超激化',
+    },
     '菲谢尔': {'E奥兹攻击伤害': '超激化'},
     '久岐忍': {'Q单次伤害': '超激化'},
     '柯莱': {'Q跃动伤害': '蔓激化', 'E技能伤害': '蔓激化'},
     '提纳里': {'E技能伤害': '蔓激化', 'Q缠藤箭伤害': '蔓激化', 'Q次级缠藤箭伤害': '蔓激化'},
-    '刻晴': {'A重击伤害': '超激化', 'Q技能伤害': '超激化', 'Q连斩伤害': '超激化', 'Q最后一击伤害': '超激化'},
+    '刻晴': {
+        'A重击伤害': '超激化',
+        'E雷楔伤害': '超激化',
+        'E斩击伤害': '超激化',
+        'Q技能伤害': '超激化',
+        'Q连斩伤害': '超激化*2',
+        'Q最后一击伤害': '超激化',
+    },
     '北斗': {'Q闪雷伤害': '超激化'},
     '赛诺': {'E冥祭伤害': '超激化', 'Q一段伤害': '超激化', 'Q重击伤害': '超激化'},
-    '纳西妲': {'E长按伤害': '蔓激化', 'E灭净三业伤害': '蔓激化'},
+    '纳西妲': {'E长按伤害': '蔓激化', 'E灭净三业伤害': ['蔓激化', '蔓激化·前台']},
 }
 template = {'A重击伤害': {'name': 'A重击伤害', 'type': '', 'plus': 1, 'value': []}}
 
@@ -127,6 +139,22 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
                     'plus': 0,
                     'value': [str(i) for i in range(1, 11)],
                 }
+        if char == '久岐忍':
+            if 'A元素反应(超绽放)' not in result:
+                result['A元素反应(超绽放)'] = {
+                    'name': 'A元素反应(超绽放)',
+                    'type': '扩散',
+                    'plus': 0,
+                    'value': [str(i) for i in range(1, 11)],
+                }
+        if char == '托马':
+            if 'A元素反应(烈绽放)' not in result:
+                result['A元素反应(烈绽放)'] = {
+                    'name': 'A元素反应(烈绽放)',
+                    'type': '扩散',
+                    'plus': 0,
+                    'value': [str(i) for i in range(1, 11)],
+                }
         # 拿到形如{param1:F1P}的字典
         label_split = label.split('|')[-1]
         # 拿到单个标签的名称，形如一段伤害
@@ -168,7 +196,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             elif indexA == 1 and '低空/高空坠地' in label:
                 temp_value = temp
             # 阿忍仅计算50%血量以下伤害
-            elif indexA == 1 and char == '久岐忍':
+            elif indexA == 1 and char == '久岐忍' and label_name == '总伤害':
                 temp_value = temp
             # 埃洛伊特殊值
             elif indexA == 2 and char == '埃洛伊':
@@ -236,15 +264,27 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             for extra_name in extra[char]:
                 temp_name = extra_name.replace('技能', '')
                 if fill_label(label_name, index) == temp_name:
-                    new_parameter_list = deepcopy(parameter_list)
-                    new_parameter_list['name'] = (
-                        fill_label(label_name, index)
-                        + f'({extra[char][extra_name]})'
-                    )
-                    result[
-                        fill_label(label_name, index)
-                        + f'({extra[char][extra_name]})'
-                    ] = new_parameter_list
+                    if isinstance(extra[char][extra_name], List):
+                        for extra_tag in extra[char][extra_name]:
+                            new_parameter_list = deepcopy(parameter_list)
+                            new_parameter_list['name'] = (
+                                fill_label(label_name, index)
+                                + f'({extra_tag})'
+                            )
+                            result[
+                                fill_label(label_name, index)
+                                + f'({extra_tag})'
+                            ] = new_parameter_list
+                    else:
+                        new_parameter_list = deepcopy(parameter_list)
+                        new_parameter_list['name'] = (
+                            fill_label(label_name, index)
+                            + f'({extra[char][extra_name]})'
+                        )
+                        result[
+                            fill_label(label_name, index)
+                            + f'({extra[char][extra_name]})'
+                        ] = new_parameter_list
 
     return result
 

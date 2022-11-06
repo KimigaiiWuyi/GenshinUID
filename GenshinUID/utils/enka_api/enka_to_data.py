@@ -3,6 +3,7 @@ import time
 from typing import List, Union, Optional
 
 from .get_enka_data import get_enka_info
+from ...utils.message.error_reply import UID_HINT
 from ..minigg_api.get_minigg_data import get_weapon_info
 from ..download_resource.RESOURCE_PATH import PLAYER_PATH
 from .map.GS_MAP_PATH import (
@@ -41,6 +42,8 @@ async def enka_to_dict(
     :返回:
       * ``刷新完成提示语: str``: 包含刷新成功的角色列表。
     """
+    if '' in uid:
+        return UID_HINT
     if enka_data:
         pass
     else:

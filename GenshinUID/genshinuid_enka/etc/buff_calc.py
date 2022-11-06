@@ -172,7 +172,6 @@ async def get_effect_prop(
             else:
                 continue
 
-        prop['sp'] = []
         # 如果效果有限制条件
         if effect_limit:
             # 如果限制条件为中文,则为特殊label才生效

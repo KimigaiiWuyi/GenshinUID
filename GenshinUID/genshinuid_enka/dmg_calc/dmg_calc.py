@@ -123,7 +123,12 @@ async def draw_dmg_img(
             if '重击' in power_name or '瞄准射击' in power_name:
                 attack_type = 'B'
             # 特殊重击类型,例如甘雨和夜兰
-            elif '破局矢' in power_name or '霜华矢' in power_name:
+            elif (
+                '破局矢' in power_name
+                or '霜华矢' in power_name
+                or '藏蕴花矢' in power_name
+                or '花筥箭' in power_name
+            ):
                 attack_type = 'B'
             # 下落伤害类型,例如魈
             elif '高空下落' in power_name:
@@ -275,11 +280,11 @@ async def draw_dmg_img(
                 / 100
             ) * 13
 
-        if '灭净三业' in power_name:
+        if '灭净三业' in power_name or '业障除' in power_name:
             power_sp = power.replace('%', '').split('+')
             base_calc = (
-                float(power_sp[0]) * prop['atk'] / 100
-                + float(power_sp[1]) * prop['elementalMastery'] / 100
+                float(power_sp[0]) * prop['E_atk'] / 100
+                + float(power_sp[1]) * em_cal / 100
                 + reaction_power
                 + add_dmg
             )

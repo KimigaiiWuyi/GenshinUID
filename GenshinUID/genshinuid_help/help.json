@@ -165,9 +165,25 @@
         "need_admin": false
       },
       {
+        "name": "查询x命xx",
+        "desc": "为自己的面板增加虚构数据",
+        "eg": "查询六命公子",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "查询xx换xx",
         "desc": "查询角色面板更换武器",
         "eg": "查询六命心海换护摩",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查询xx带xx换xx",
+        "desc": "查询不存在的角色",
+        "eg": "查询莱依拉带月光换公子",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

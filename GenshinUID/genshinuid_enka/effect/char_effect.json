@@ -2033,7 +2033,7 @@
     "fight": {
       "fight_skill": {
         "50": "",
-        "70": "dmgBonus+25%elementalMastery"
+        "70": "E:addDmg+25%elementalMastery;E:addHeal+75%elementalMastery"
       },
       "fight_talent": {
         "1": "",
@@ -2405,7 +2405,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "critRate+30%0.06%hp;critDmg+60%0.12%hp"
       }
     },
     "fight": {
@@ -2419,7 +2419,7 @@
         "3": "",
         "4": "Q:dmgBonus+50",
         "5": "",
-        "6": "critRate+30%0.06%hp;critDmg+60%0.12%hp"
+        "6": ""
       },
       "group_skill": {
         "50": "elementalMastery+100",

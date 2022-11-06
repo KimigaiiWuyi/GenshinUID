@@ -91,8 +91,8 @@ class Character:
                     }
             elif self.char_name == '纳西妲':
                 for power_name in [
-                    'E三业·业障除(前台)',
-                    'E三业·业障除(蔓激化·前台)',
+                    'E业障除(前台)',
+                    'E业障除(蔓激化·前台)',
                 ]:
                     self.power_list[power_name] = {
                         'name': power_name,

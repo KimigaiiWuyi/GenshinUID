@@ -2495,7 +2495,7 @@
     "fight": {
       "fight_skill": {
         "50": "",
-        "70": "灭净三业:dmgBonus+80%10%elementalMastery"
+        "70": "灭净三业:dmgBonus+80%10%elementalMastery;业障除:dmgBonus+80%10%elementalMastery"
       },
       "fight_talent": {
         "1": "",

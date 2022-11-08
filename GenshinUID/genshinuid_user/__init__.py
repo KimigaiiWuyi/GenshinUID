@@ -13,7 +13,6 @@ async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
         return
     im = await get_user_card(qid)
     im = await convert_img(im)
-    print(im)
     logger.info('[查询用户绑定状态]完成!等待图片发送中...')
     await bot.send(ev, im)
 

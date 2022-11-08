@@ -213,7 +213,7 @@ async def get_cookie_token_by_stoken(stoken: str, mys_id: str) -> dict:
 
 async def get_daily_data(uid: str) -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = await owner_cookies(uid)
         HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
@@ -270,7 +270,7 @@ async def get_sign_list() -> dict:
 
 async def get_sign_info(uid) -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = await owner_cookies(uid)
         data = await _mhy_request(
@@ -294,7 +294,7 @@ async def get_sign_info(uid) -> dict:
 
 async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['User_Agent'] = (
             'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) '
@@ -335,7 +335,7 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
 
 async def get_award(uid) -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = await owner_cookies(uid)
         HEADER['DS'] = old_version_get_ds_token()
@@ -375,9 +375,9 @@ async def get_award(uid) -> dict:
     return data
 
 
-async def get_info(uid, ck, ) -> dict:
+async def get_info(uid, ck) -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = ck
         HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
@@ -405,7 +405,7 @@ async def get_spiral_abyss_info(
     uid, ck, schedule_type='1'
 ) -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = ck
         HEADER['DS'] = get_ds_token(
@@ -440,7 +440,7 @@ async def get_spiral_abyss_info(
 
 async def get_character(uid, character_ids, ck) -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = ck
         HEADER['DS'] = get_ds_token(
@@ -478,7 +478,7 @@ async def get_calculate_info(
     client: ClientSession, uid, char_id, ck, name
 ):
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(uid[0]) < 6:
+    if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = ck
         HEADER['DS'] = get_ds_token(

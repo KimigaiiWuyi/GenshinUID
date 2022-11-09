@@ -7,6 +7,10 @@ import httpx
 
 sys.path.append(str(Path(__file__).parents[1]))
 from version import Genshin_version
+from utils.ambr_api.convert_ambr_data import (
+    ELEMENT_MAP,
+    convert_ambr_to_minigg,
+)
 
 R_PATH = Path(__file__).parents[0]
 MAP_PATH = Path(__file__).parents[1] / 'utils' / 'enka_api' / 'map'
@@ -75,11 +79,16 @@ async def avatarName2ElementJson() -> None:
         '雷': 'Electro',
     }
     for _id in avatarId2Name:
+        print(_id)
+        if _id in ['10000005', '10000007'] or int(_id) >= 11000000:
+            continue
         name = avatarId2Name[_id]
         data = httpx.get(
             f'https://info.minigg.cn/characters?query={name}'
         ).json()
-        if 'errcode' not in data:
+        if 'errcode' in data:
+            data = await convert_ambr_to_minigg(_id)
+        if data is not None and 'code' not in data:
             temp[name] = elementMap[data['element']]
             enName = data['images']['namesideicon'].split('_')[-1]
             enName2Id_result[enName] = _id
@@ -213,13 +222,13 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
-    await avatarId2NameJson()
+    # await avatarId2NameJson()
     await avatarName2ElementJson()
-    await weaponHash2NameJson()
-    await skillId2NameJson()
-    await talentId2NameJson()
-    await weaponHash2TypeJson()
-    await artifact2attrJson()
+    # await weaponHash2NameJson()
+    # await skillId2NameJson()
+    # await talentId2NameJson()
+    # await weaponHash2TypeJson()
+    # await artifact2attrJson()
 
 
 asyncio.run(main())

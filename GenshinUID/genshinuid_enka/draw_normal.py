@@ -350,7 +350,7 @@ async def get_bg_card(
             (new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS
         )
         overlay = overlay.crop((0, 0, img_w, img_h))
-    if await config_check('ColorBG'):
+    if await config_check('ColorBG') and await config_check('RandomPic'):
         bg_color = CustomizeImage.get_bg_color(char_img)
     else:
         bg_color = COLOR_MAP[char_element]

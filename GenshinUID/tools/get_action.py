@@ -1,6 +1,7 @@
 import re
 import sys
 import json
+import asyncio
 from typing import List
 from pathlib import Path
 from copy import deepcopy
@@ -9,6 +10,7 @@ import httpx
 
 sys.path.append(str(Path(__file__).parents[1]))
 from version import Genshin_version
+from utils.ambr_api.convert_ambr_data import convert_ambr_to_talent
 
 path = (
     Path(__file__).parents[1]
@@ -30,7 +32,7 @@ with open(path, 'r', encoding='utf-8') as f:
 with open(element_path, 'r', encoding='utf-8') as f:
     char_element_list = json.load(f)
 
-char_list = []
+char_list: List[str] = []
 char_action = {}
 INDEX_MAP = ['', 'A', 'E', 'Q']
 attack_type_list = {'普通攻击': 'A', '重击': 'B', '下落攻击': 'C', '战技': 'E', '爆发': 'Q'}
@@ -289,31 +291,46 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
     return result
 
 
-for char_id in char_id_list:
-    char_list.append(char_id_list[char_id])
+async def main():
+    for char_id in char_id_list:
+        char_list.append(char_id_list[char_id])
 
-for char in char_list:
-    talent_data = httpx.get(
-        f'https://info.minigg.cn/talents?query={char}'
-    ).json()
-    if 'errcode' in talent_data:
-        continue
-    result = {}
-    for i in range(1, 4):
-        skill = talent_data['combat{}'.format(str(i))]
-        labels = skill['attributes']['labels']
-        parameters = skill['attributes']['parameters']
-        result = dict(result, **find_tag(labels, i, char, parameters))
-    char_action[char] = result
+    for char in char_list:
+        print(char)
+        talent_data = httpx.get(
+            f'https://info.minigg.cn/talents?query={char}'
+        ).json()
+        if 'errcode' in talent_data:
+            for _id in char_id_list:
+                if char_id_list[_id] == char:
+                    char_id = _id
+                    break
+            else:
+                continue
+            if int(char_id) >= 11000000:
+                continue
+            talent_data = await convert_ambr_to_talent(char_id)
+            if talent_data is None:
+                continue
+        result = {}
+        for i in range(1, 4):
+            skill = talent_data['combat{}'.format(str(i))]
+            labels = skill['attributes']['labels']
+            parameters = skill['attributes']['parameters']
+            result = dict(result, **find_tag(labels, i, char, parameters))
+        char_action[char] = result
 
-with open(
-    str(
-        Path(__file__).parents[1]
-        / 'genshinuid_enka'
-        / 'effect'
-        / 'char_action.json'
-    ),
-    'w',
-    encoding='UTF-8',
-) as file:
-    json.dump(char_action, file, ensure_ascii=False)
+    with open(
+        str(
+            Path(__file__).parents[1]
+            / 'genshinuid_enka'
+            / 'effect'
+            / 'char_action.json'
+        ),
+        'w',
+        encoding='UTF-8',
+    ) as file:
+        json.dump(char_action, file, ensure_ascii=False)
+
+
+asyncio.run(main())

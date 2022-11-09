@@ -1,15 +1,23 @@
-from typing import Any, Dict, Literal, Optional
+import sys
+from pathlib import Path
+from typing import Any, Dict, Union, Literal, Optional
 
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-from .ambr_api import AMBR_EVENT_URL
+# sys.path.append(str(Path(__file__).parents[1]))
+from ...utils.ambr_api.ambr_api import AMBR_CHAR_URL, AMBR_EVENT_URL
 
 _HEADER = {}
 
 
 async def get_event_data():
     data = await _ambr_request(url=AMBR_EVENT_URL, method='GET')
+    return data
+
+
+async def get_char_data(char_id: Union[int, str]):
+    data = await _ambr_request(url=AMBR_CHAR_URL.format(char_id), method='GET')
     return data
 
 

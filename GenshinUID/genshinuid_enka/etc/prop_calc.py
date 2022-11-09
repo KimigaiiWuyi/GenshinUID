@@ -3,6 +3,8 @@ from typing import Dict, List, Optional
 
 from .buff_calc import get_effect_prop
 from ..etc.get_buff_list import get_buff_list
+from ...utils.alias.avatarId_and_name_covert import name_to_avatar_id
+from ...utils.ambr_api.convert_ambr_data import convert_ambr_to_minigg
 from .MAP_PATH import char_effect_map, weapon_effect_map, artifact_effect_map
 from ...utils.minigg_api.get_minigg_data import get_char_info, get_weapon_info
 
@@ -192,9 +194,14 @@ async def get_base_prop(
         char_name_covert = '荧'
 
     char_raw = await get_char_info(name=char_name_covert, mode='char')
-    char_data = await get_char_info(
-        name=char_name_covert, mode='char', level=str(char_level)
-    )
+    if char_raw is not None and 'errcode' in char_raw:
+        char_id = await name_to_avatar_id(char_name_covert)
+        char_raw = char_data = await convert_ambr_to_minigg(char_id)
+    else:
+        char_data = await get_char_info(
+            name=char_name_covert, mode='char', level=str(char_level)
+        )
+
     if char_data is None or isinstance(char_data, List):
         return {}
 

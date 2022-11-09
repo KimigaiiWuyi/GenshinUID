@@ -102,6 +102,9 @@ async def draw_enka_img(
     if is_best:
         char_data = await get_best_char(char_data, uid)
     '''
+    if isinstance(char_data, str):
+        logger.info('[查询角色] 绘图失败,发送错误原因...')
+        return char_data
 
     im = await draw_char_img(
         char_data, weapon, weapon_affix, talent_num, url, is_curve
@@ -189,12 +192,17 @@ async def get_artifacts_repo(uid: str) -> Dict[str, List[Dict]]:
     return artifacts_repo
 
 
-async def get_fake_char_data(char_data: Dict, fake_name: str) -> Dict:
+async def get_fake_char_data(
+    char_data: Dict, fake_name: str
+) -> Union[Dict, str]:
     fake_name = await alias_to_char_name(fake_name)
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
     en_name = await avatarId_to_enName(char_data['avatarId'])
-    char_data['avatarElement'] = avatarName2Element[fake_name]
+    if fake_name in avatarName2Element:
+        char_data['avatarElement'] = avatarName2Element[fake_name]
+    else:
+        return '要查询的角色不存在...'
     char_data['avatarLevel'] = '90'
     char_data['avatarSkill'] = [
         {'skillLevel': 10, 'skillIcon': 'Skill_A_02'},

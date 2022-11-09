@@ -1,14 +1,18 @@
 import json
-from typing import List, Dict
 from pathlib import Path
+from typing import Dict, List
 
 EFFECT_PATH = Path(__file__).parents[1] / 'effect'
 
 with open(EFFECT_PATH / 'weapon_effect.json', "r", encoding='UTF-8') as f:
-    weapon_effect_map: Dict[str, Dict[str, Dict[str, Dict[str, str]]]] = json.load(f)
+    weapon_effect_map: Dict[
+        str, Dict[str, Dict[str, Dict[str, str]]]
+    ] = json.load(f)
 
 with open(EFFECT_PATH / 'char_effect.json', "r", encoding='UTF-8') as f:
-    char_effect_map: Dict[str, Dict[str, Dict[str, Dict[str, str]]]] = json.load(f)
+    char_effect_map: Dict[
+        str, Dict[str, Dict[str, Dict[str, str]]]
+    ] = json.load(f)
 
 with open(EFFECT_PATH / 'artifact_effect.json', "r", encoding='UTF-8') as f:
     artifact_effect_map: Dict[str, Dict[str, Dict[str, str]]] = json.load(f)
@@ -26,11 +30,11 @@ with open(EFFECT_PATH / 'skill_add.json', 'r', encoding='UTF-8') as f:
     avatarName2SkillAdd: Dict[str, List[str]] = json.load(f)
 
 COLOR_MAP = {
-    'Anemo': (43, 170, 163),
-    'Cryo': (97, 168, 202),
-    'Dendro': (84, 169, 62),
-    'Electro': (150, 62, 169),
-    'Geo': (169, 143, 62),
-    'Hydro': (66, 98, 182),
-    'Pyro': (169, 62, 67),
+    'Anemo': (0, 145, 137),
+    'Cryo': (4, 126, 152),
+    'Dendro': (28, 145, 0),
+    'Electro': (133, 12, 159),
+    'Geo': (147, 112, 3),
+    'Hydro': (51, 73, 162),
+    'Pyro': (119, 12, 17),
 }

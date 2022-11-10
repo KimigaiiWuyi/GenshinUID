@@ -1,104 +1,190 @@
 import re
 import random
+import asyncio
 from typing import Tuple
 
-from .draw_char_card import *
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.params import CommandArg
+from nonebot import require, on_command
+from nonebot.permission import SUPERUSER
+from nonebot.adapters.ntchat.message import Message
+from nonebot.adapters.ntchat import (
+    Bot,
+    MessageEvent,
+    MessageSegment,
+    TextMessageEvent,
+    QuoteMessageEvent,
+)
+
+from ..config import priority
 from .get_enka_img import draw_enka_img
-from .draw_char_card import draw_char_img
-from ..all_import import *  # noqa: F401,F403
+from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from .draw_char_rank import draw_cahrcard_list
+from ..utils.message.error_reply import UID_HINT
 from ..utils.enka_api.get_enka_data import switch_api
 from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
-from ..utils.db_operation.db_operation import get_all_uid
-from ..utils.message.error_reply import *  # noqa: F401,F403
 from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
+from ..utils.exception.handle_exception import handle_exception
+from ..utils.db_operation.db_operation import select_db, get_all_uid
+
+require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
+
+refresh = on_command('强制刷新')
+original_pic = on_command('原图', rule=FullCommand())
+change_api = on_command('切换api', rule=FullCommand())
+get_charcard_list = on_command('毕业度统计')
+get_char_info = on_command(
+    '查询',
+    priority=priority,
+)
 
 AUTO_REFRESH = False
+refresh_scheduler = scheduler
 
 
-@sv.on_fullmatch('切换api')
-async def send_change_api_info(bot: HoshinoBot, ev: CQEvent):
-    print(ev)
-    if ev.sender:
-        qid = int(ev.sender['user_id'])
-    else:
-        return
-
-    if qid not in bot.config.SUPERUSERS:
+@change_api.handle()
+@handle_exception('切换api')
+@register_menu(
+    '切换API',
+    '切换api',
+    '切换获取角色面板时使用的API',
+    detail_des=(
+        '介绍：\n'
+        '切换获取角色面板时使用的Enka Network API\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>切换api</ft>'
+    ),
+)
+async def send_change_api_info(
+    bot: Bot,
+    event: MessageEvent,
+    matcher: Matcher,
+):
+    if await SUPERUSER(bot, event):
         return
 
     im = await switch_api()
-    await bot.send(ev, im)
+    await matcher.finish(im)
 
 
-@sv.on_rex(r'^(\[CQ:reply,id=[0-9]+\])?( )?(\[CQ:at,qq=[0-9]+\])?( )?原图')
-async def send_original_pic(bot: HoshinoBot, ev: CQEvent):
-    for msg in ev.message:
-        if msg['type'] == 'reply':
-            msg_id = msg['data']['id']
-            path = TEMP_PATH / f'{msg_id}.jpg'
-            if path.exists():
-                logger.info('[原图]访问图片: {}'.format(path))
-                with open(path, 'rb') as f:
-                    im = await convert_img(f.read())
-                    await bot.send(ev, im)
-
-
-@sv.on_rex(
-    r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|查询|mys)([0-9]+)?'
-    r'([\u4e00-\u9fa5]+)'
-    r'(\[CQ:at,qq=[0-9]+\])?( )?',
+@original_pic.handle()
+@handle_exception('原图')
+@register_menu(
+    '查看面板原图',
+    '原图',
+    '查看角色面板中原随机图',
+    trigger_method='回复+指令',
+    detail_des=(
+        '介绍：\n'
+        '查看开启随机图功能时角色面板中角色位置的原图，需要回复要查看原图的面板图片消息\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>原图</ft>'
+    ),
 )
-async def send_char_info(bot: HoshinoBot, ev: CQEvent):
-    args = ev['match'].groups()
-    if args[4] is None:
-        return
-    # 获取角色名
-    msg = ''.join(re.findall('[\u4e00-\u9fa5]', args[4]))
-    logger.info('开始执行[查询角色面板]')
-    logger.info('[查询角色面板]参数: {}'.format(args))
-    # 获取角色名
-    at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
-    image = re.search(r'\[CQ:image,file=(.*),url=(.*)]', str(ev.message))
+async def send_original_pic(
+    event: QuoteMessageEvent,
+    matcher: Matcher,
+):
+    msg_id = event.quote_message_id
+    path = TEMP_PATH / f'{msg_id}.jpg'
+    if path.exists():
+        logger.info('[原图]访问图片: {}'.format(path))
+        with open(path, 'rb') as f:
+            await matcher.finish(MessageSegment.image(f.read()))
 
-    img = None
-    if image:
-        img = image.group(2)
-    if at:
-        qid = int(at.group(1))
+
+@get_char_info.handle()
+@handle_exception('查询角色面板')
+@register_menu(
+    '查询角色面板',
+    '查询(@某人)角色名',
+    '查询你的或者指定人的已缓存展柜角色的面板',
+    detail_des=(
+        '介绍：\n'
+        '可以用来查看你的或者指定人的已缓存展柜角色的面板\n'
+        '支持部分角色别名\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>{查询</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>'
+        '<ft color=(238,120,0)>|uid</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+        '<ft color=(0,148,200)>[角色名]</ft>\n'
+        '后面可以跟 '
+        '<ft color=(238,120,0)>换</ft>'
+        '<ft color=(125,125,125)>(精{一|二|三|四|五})</ft>'
+        '<ft color=(0,148,200)>[武器名]</ft> '
+        '来更换展示的武器\n'
+        '可以跟 '
+        '<ft color=(125,125,125)>(成长)</ft><ft color=(238,120,0)>曲线</ft> '
+        '来查询该角色成长曲线\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>查询宵宫</ft>\n'
+        '- <ft color=(238,120,0)>查询绫华换精五雾切</ft>\n'
+        '- <ft color=(238,120,0)>查询一斗成长曲线</ft>\n'
+        '- <ft color=(238,120,0)>查询</ft><ft color=(0,123,67)>@无疑Wuyi</ft>'
+        ' <ft color=(238,120,0)>公子</ft>'
+    ),
+)
+@register_menu(
+    '查询展柜角色',
+    '查询展柜角色',
+    '查询插件已缓存的展柜角色列表',
+    detail_des=(
+        '介绍：\n'
+        '查询插件当前已缓存的展柜角色列表\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>查询展柜角色</ft>'
+    ),
+)
+async def send_char_info(
+    event: TextMessageEvent,
+    matcher: Matcher,
+    args: Message = CommandArg(),
+):
+    if args is None:
+        return
+    logger.info('开始执行[查询角色面板]')
+    raw_mes = args.extract_plain_text().strip()
+    if event.at_user_list:
+        qid = event.at_user_list[0]
     else:
-        if ev.sender:
-            qid = int(ev.sender['user_id'])
-        else:
-            return
-    logger.info('[查询角色面板]QQ: {}'.format(qid))
+        qid = event.from_wxid
+    logger.info('[查询角色面板]WXID: {}'.format(qid))
 
     # 获取uid
-    if args[3] is None:
+    uid = re.findall(r'\d+', raw_mes)
+    if uid:
+        uid = uid[0]
+    else:
         uid = await select_db(qid, mode='uid')
         uid = str(uid)
-    else:
-        uid = args[3]
     logger.info('[查询角色面板]uid: {}'.format(uid))
 
     if '未找到绑定的UID' in uid:
-        await bot.send(ev, UID_HINT)
+        await matcher.finish(UID_HINT)
 
-    im = await draw_enka_img(msg, uid, img)
+    im = await draw_enka_img(raw_mes, uid, None)
 
     if isinstance(im, str):
-        await bot.send(ev, im)
+        await matcher.finish(im)
     elif isinstance(im, Tuple):
-        img = await convert_img(im[0])
-        req = await bot.send(ev, img)
+        req = await matcher.send(MessageSegment.image(im[0]))
         msg_id = req['message_id']
         if im[1]:
             with open(TEMP_PATH / f'{msg_id}.jpg', 'wb') as f:
                 f.write(im[1])
     else:
-        await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 
 
 async def refresh_char_data():
@@ -114,7 +200,7 @@ async def refresh_char_data():
             logger.info(im)
             t += 1
             await asyncio.sleep(35 + random.randint(1, 20))
-        except:
+        except Exception:
             logger.exception(f'{uid}刷新失败！')
             logger.error(f'{uid}刷新失败！本次自动刷新结束！')
             return f'执行失败从{uid}！共刷新{str(t)}个角色！'
@@ -123,86 +209,110 @@ async def refresh_char_data():
         return f'执行成功！共刷新{str(t)}个角色！'
 
 
-@sv.scheduled_job('cron', hour='4')
+@refresh_scheduler.scheduled_job('cron', hour='4')
 async def daily_refresh_charData():
     global AUTO_REFRESH
     if AUTO_REFRESH:
         await refresh_char_data()
 
 
-@sv.on_prefix('强制刷新')
-async def send_card_info(bot: HoshinoBot, ev: CQEvent):
-    if ev.message:
-        message = ev.message.extract_plain_text().replace(' ', '')
-    else:
-        return
-
+@refresh.handle()
+@handle_exception('强制刷新')
+@register_menu(
+    '刷新展柜缓存',
+    '强制刷新',
+    '强制刷新你的或者指定人缓存的角色展柜数据',
+    detail_des=(
+        '指令：'
+        '<ft color=(238,120,0)>强制刷新</ft>'
+        '<ft color=(125,125,125)>(uid/全部数据)</ft>\n'
+        ' \n'
+        '用于强制刷新你的或者指定人缓存的角色展柜数据\n'
+        '当刷新全部数据时需要机器人管理员权限\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>强制刷新</ft>；\n'
+        '<ft color=(238,120,0)>强制刷新123456789</ft>；\n'
+        '<ft color=(238,120,0)>强制刷新全部数据</ft>'
+    ),
+)
+async def send_card_info(
+    bot: Bot,
+    matcher: Matcher,
+    event: TextMessageEvent,
+    args: Message = CommandArg(),
+):
+    message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-
-    if ev.sender:
-        qid = int(ev.sender['user_id'])
-    else:
-        return
+    qid = event.from_wxid
 
     if len(uid) >= 1:
         uid = uid[0]
     else:
         if m == '全部数据':
-            if qid in bot.config.SUPERUSERS:
-                await bot.send(ev, '开始刷新全部数据，这可能需要相当长的一段时间！！')
+            if await SUPERUSER(bot, event):
+                await matcher.send('开始刷新全部数据，这可能需要相当长的一段时间！！')
                 im = await refresh_char_data()
-                await bot.send(ev, str(im))
-                return
+                await matcher.finish(str(im))
             else:
                 return
         else:
             uid = await select_db(qid, mode='uid')
             uid = str(uid)
-            if '未找到绑定的UID' in uid:
-                await bot.send(ev, UID_HINT)
-                return
+            if not uid:
+                await matcher.finish(UID_HINT)
     im = await enka_to_card(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, str):
-        await bot.send(ev, im)
+        await matcher.finish(im)
     elif isinstance(im, bytes):
-        im = await convert_img(im)
-        await bot.send(ev, im)
+        await matcher.finish(MessageSegment.image(im))
     else:
-        await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 
 
-@sv.on_prefix('毕业度统计')
-async def send_charcard_list(bot: HoshinoBot, ev: CQEvent):
-    if ev.message:
-        message = ev.message.extract_plain_text().replace(' ', '')
+@get_charcard_list.handle()
+@handle_exception('毕业度统计')
+@register_menu(
+    '毕业度统计',
+    '毕业度统计',
+    '查看你或指定人已缓存的展柜角色毕业度',
+    detail_des=(
+        '指令：'
+        '<ft color=(238,120,0)>毕业度统计</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>\n'
+        ' \n'
+        '可以查看你或指定人已缓存的所有展柜角色毕业度\n'
+        ' \n'
+        '示例：\n'
+        '<ft color=(238,120,0)>毕业度统计</ft>；\n'
+        '<ft color=(238,120,0)>毕业度统计</ft><ft color=(0,148,200)>@无疑Wuyi</ft>'
+    ),
+)
+async def send_charcard_list(
+    event: TextMessageEvent,
+    matcher: Matcher,
+    args: Message = CommandArg(),
+):
+    raw_mes = args.extract_plain_text().strip()
+    if event.at_user_list:
+        qid = event.at_user_list[0]
     else:
-        return
-
-    at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
-
-    if at:
-        qid = int(at.group(1))
-        message = message.replace(str(at), '')
-    else:
-        if ev.sender:
-            qid = int(ev.sender['user_id'])
-        else:
-            return
+        qid = event.from_wxid
 
     # 获取uid
-    uid = re.findall(r'\d+', message)
+    uid = re.findall(r'\d+', raw_mes)
     if uid:
         uid = uid[0]
     else:
         uid = await select_db(qid, mode='uid')
+        uid = str(uid)
 
     im = await draw_cahrcard_list(str(uid), qid)
 
     logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, bytes):
-        im = await convert_img(im)
-        await bot.send(ev, im)
+        await matcher.finish(MessageSegment.image(im))
     else:
-        await bot.send(ev, str(im))
+        await matcher.finish(str(im))

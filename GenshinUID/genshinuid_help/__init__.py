@@ -1,17 +1,38 @@
 import asyncio
 import threading
+from pathlib import Path
+
+from nonebot import on_command
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.adapters.ntchat import MessageSegment
 
 from .draw_help_card import draw_help_img
-from ..all_import import *  # noqa: F403,F401
+from ..genshinuid_meta import register_menu
+from ..utils.exception.handle_exception import handle_exception
+
+get_help = on_command('gs帮助')
 
 HELP_IMG = Path(__file__).parent / 'help.png'
 
 
-@sv.on_fullmatch(('gs帮助', 'genshin帮助', 'ys帮助', '原神帮助'))
-async def send_guide_pic(bot, ev):
-    img = await convert_img(HELP_IMG)
+@get_help.handle()
+@handle_exception('建议')
+@register_menu(
+    '插件帮助',
+    'gs帮助',
+    '查看插件功能帮助图',
+    detail_des=(
+        '介绍：\n' '查看插件功能帮助图\n' ' \n' '指令：\n' '- <ft color=(238,120,0)>gs帮助</ft>'
+    ),
+)
+async def send_guide_pic(matcher: Matcher):
     logger.info('获得gs帮助图片成功！')
-    await bot.send(ev, img)
+    if HELP_IMG.exists():
+        with open(HELP_IMG, 'rb') as f:
+            await matcher.finish(MessageSegment.image(f.read()))
+    else:
+        await matcher.finish('帮助图不存在!')
 
 
 threading.Thread(

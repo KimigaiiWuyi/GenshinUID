@@ -10,7 +10,7 @@ from nonebot.log import logger
 
 from ..mhy_api.mhy_api import bbs_Taskslist
 from ..db_operation.gsuid_db_pool import gsuid_pool
-from ..mhy_api.get_mhy_data import get_mihoyo_bbs_info, get_info
+from ..mhy_api.get_mhy_data import get_info, get_mihoyo_bbs_info
 from ..mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
 
 
@@ -27,7 +27,9 @@ async def check_db():
         try:
             if int(str(row[0])[0]) < 6:
                 aid = re.search(r'account_id=(\d*)', row[1])
-                mihoyo_id_data = aid.group(0).split('=')  # type: ignore
+                if not aid:
+                    raise Exception('cannot match account_id')
+                mihoyo_id_data = aid.group(0).split('=')
                 mihoyo_id = mihoyo_id_data[1]
                 mys_data = await get_mihoyo_bbs_info(mihoyo_id, row[1])
                 for i in mys_data['data']['list']:
@@ -41,9 +43,7 @@ async def check_db():
             else:
                 info_data = await get_info(str(row[0]), row[1])
                 if info_data['retcode'] == 0:
-                    return_str = (
-                        return_str + f'uid{row[0]}的Cookies是正常的！\n'
-                    )
+                    return_str = return_str + f'uid{row[0]}的Cookies是正常的！\n'
                     normal_num += 1
                     logger.info(f'uid{row[0]}的Cookies是正常的！')
                 else:

@@ -1,4 +1,5 @@
 from fastapi import Request
+from nonebot.typing import overrides
 import fastapi_amis_admin  # noqa: F401
 from starlette.requests import Request
 from fastapi_amis_admin.models.fields import Field
@@ -19,7 +20,6 @@ from fastapi_amis_admin.amis.components import (
     ButtonToolbar,
 )
 
-from .nb2 import overrides
 from ..version import GenshinUID_version
 
 login_html = '''
@@ -108,7 +108,7 @@ def attach_page_head(page: Page) -> Page:
         Html(html=login_html),
         Grid(
             columns=[
-                {'body': [page.body], 'lg': 2, 'md': 4, 'valign': 'middle'}
+                {'body': [page.body], 'lg': 3, 'md': 4, 'valign': 'middle'}
             ],
             align='center',
             valign='middle',

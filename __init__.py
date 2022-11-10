@@ -3,7 +3,6 @@ import shutil
 from typing import List
 from pathlib import Path
 
-import hoshino
 from nonebot.log import logger
 from nonebot import load_plugins
 
@@ -27,7 +26,7 @@ def copy_and_delete_files():
         elif path.name in {"resource", "player"}:
             dst = Path().joinpath(
                 (
-                    hoshino.config.RES_DIR + "/GenshinUID/"
+                    "data/GenshinUID/"
                     f"{'players' if path.name == 'player' else path.name}"
                 )
             )
@@ -37,7 +36,7 @@ def copy_and_delete_files():
                     dst,
                     dirs_exist_ok=True,
                 )
-                logger.info(f"复制文件夹 {path} -> {dst} 成功")
+                logger.success(f"复制文件夹 {path} -> {dst} 成功")
             except shutil.Error as e:
                 failed_src: List[Path] = []
                 exc: str
@@ -56,12 +55,10 @@ def copy_and_delete_files():
             else:
                 try:
                     shutil.rmtree(path)
-                    logger.info(f"删除文件夹 {path} 成功")
+                    logger.success(f"删除文件夹 {path} 成功")
                 except OSError as e:
                     logger.warning(f"删除文件夹 {path} 失败：{e.strerror}")
 
 
 copy_and_delete_files()
-load_plugins(
-    str(dir_ / 'GenshinUID'), f'hoshino.modules.GenshinUID.GenshinUID'
-)
+load_plugins(str(dir_ / "GenshinUID"))

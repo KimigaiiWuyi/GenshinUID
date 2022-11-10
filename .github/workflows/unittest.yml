@@ -1,0 +1,37 @@
+name: Unittest
+
+on:
+  push:
+    branches:
+      - nonebot2-beta1
+  pull_request:
+
+
+jobs:
+  test:
+    name: Test
+    strategy:
+      matrix:
+        version: ["3.8", "3.9", "3.10"]
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON_VERSION: ${{ matrix.python-version }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.version }}
+          architecture: "x64"
+
+      - name: Install dependencies
+        run: pip3 install ".[dev]"
+        shell: bash
+
+      - name: Run Pytest
+        run: |
+          cd tests
+          pytest

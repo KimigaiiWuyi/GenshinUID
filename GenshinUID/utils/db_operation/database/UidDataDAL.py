@@ -11,7 +11,7 @@ class UidDataDAL:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    async def get_user_data(self, userid: int) -> Optional[UidData]:
+    async def get_user_data(self, userid: str) -> Optional[UidData]:
         """
         :说明:
           获取用户的绑定信息
@@ -28,7 +28,7 @@ class UidDataDAL:
         else:
             return None
 
-    async def user_exists(self, userid: int) -> bool:
+    async def user_exists(self, userid: str) -> bool:
         """
         :说明:
           是否存在用户的绑定信息
@@ -58,7 +58,7 @@ class UidDataDAL:
             uid_list.extend(item.UID.split("_"))
         return uid_list
 
-    async def get_uid_list(self, userid: int) -> List[str]:
+    async def get_uid_list(self, userid: str) -> List[str]:
         """
         :说明:
           获得用户的绑定UID列表
@@ -74,7 +74,7 @@ class UidDataDAL:
                 return uid_list
         return []
 
-    async def get_uid(self, userid: int) -> str:
+    async def get_uid(self, userid: str) -> str:
         """
         :说明:
           获得用户绑定的UID
@@ -89,14 +89,14 @@ class UidDataDAL:
         else:
             return '未找到绑定的UID~'
 
-    async def switch_uid(self, userid: int, uid: Optional[str] = None) -> str:
+    async def switch_uid(self, userid: str, uid: Optional[str] = None) -> str:
         """
         :说明:
           切换绑定的UID列表,绑定一个UID的情况下返回无法切换
           切换前 -> 12_13_14
           切换后 -> 13_12_14
         :参数:
-          * userid (int): QQ号。
+          * userid (int): WX号。
           * uid (str): 切换的UID, 可选, 不传入的话自动切换下一个。
         :返回:
           * msg (str): 回调信息。
@@ -117,7 +117,7 @@ class UidDataDAL:
         else:
             return '你还没有绑定过UID噢~'
 
-    async def get_mysid_list(self, userid: int) -> List[str]:
+    async def get_mysid_list(self, userid: str) -> List[str]:
         """
         :说明:
           获得用户的绑定MYSID列表
@@ -133,7 +133,7 @@ class UidDataDAL:
                 return mys_list
         return []
 
-    async def get_mysid(self, userid: int) -> str:
+    async def get_mysid(self, userid: str) -> str:
         """
         :说明:
           获得用户绑定的MYSID
@@ -148,7 +148,7 @@ class UidDataDAL:
         else:
             return "未找到绑定的MYSID~"
 
-    async def get_anyid(self, userid: int) -> str:
+    async def get_anyid(self, userid: str) -> str:
         """
         :说明:
           获得用户绑定的ID信息
@@ -167,7 +167,7 @@ class UidDataDAL:
         else:
             return '未找到绑定的ID信息~'
 
-    async def bind_db(self, userid: int, data: dict) -> str:
+    async def bind_db(self, userid: str, data: dict) -> str:
         """
         :说明:
           绑定UID或者MYSID
@@ -215,7 +215,7 @@ class UidDataDAL:
         await self.db_session.flush()  # type: ignore
         return _bind
 
-    async def delete_db(self, userid: int, data: Optional[dict]) -> str:
+    async def delete_db(self, userid: str, data: Optional[dict]) -> str:
         """
         :说明:
           删除用户的绑定UID或者MYSID
@@ -270,7 +270,7 @@ class UidDataDAL:
 
     async def update_db(
         self,
-        userid: int,
+        userid: str,
         data: Optional[dict],
     ):
         """

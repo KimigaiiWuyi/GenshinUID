@@ -1,52 +1,82 @@
+from typing import Any, Tuple, Union
+
+from nonebot import on_regex
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.params import RegexGroup
+from nonebot.adapters.ntchat import MessageSegment, TextMessageEvent
+
+from ..genshinuid_meta import register_menu
 from .draw_abyss_card import draw_abyss_img
-from ..all_import import *  # noqa: F403,F401
+from ..utils.message.error_reply import UID_HINT
+from ..utils.db_operation.db_operation import select_db
 from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
+from ..utils.exception.handle_exception import handle_exception
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
-
-@sv.on_rex(
+get_abyss_info = on_regex(
     r'^(\[CQ:at,qq=[0-9]+\])?( )?'
     r'(uid|查询|mys)?([0-9]+)?(上期)?(深渊|sy)'
     r'(9|10|11|12|九|十|十一|十二)?(层)?'
     r'(\[CQ:at,qq=[0-9]+\])?( )?$',
+    block=True,
 )
-async def send_abyss_info(bot: HoshinoBot, ev: CQEvent):
-    args = ev['match'].groups()
+
+
+@get_abyss_info.handle()
+@handle_exception('查询深渊信息')
+@register_menu(
+    '查询深渊信息',
+    '查询(@某人)(上期)深渊(xx层)',
+    '查询你的或者指定人的深渊战绩',
+    detail_des=(
+        '介绍：\n'
+        '可以用来查看你的或者指定人的深渊战绩，可以指定层数，默认为最高层数\n'
+        '可以在命令文本后带一张图以自定义背景图\n'
+        ' \n'  # 如果想要空行，请在换行符前面打个空格，不然会忽略换行符
+        '指令：\n'
+        '- <ft color=(238,120,0)>{查询</ft>'
+        '<ft color=(125,125,125)>(@某人)</ft>'
+        '<ft color=(238,120,0)>|uid</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>|mys</ft><ft color=(0,148,200)>xx</ft>'
+        '<ft color=(238,120,0)>}</ft>'
+        '<ft color=(125,125,125)>(上期)</ft>'
+        '<ft color=(238,120,0)>深渊</ft>'
+        '<ft color=(125,125,125)>(xx层)</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>查询深渊</ft>\n'
+        '- <ft color=(238,120,0)>uid123456789上期深渊</ft>\n'
+        '- <ft color=(238,120,0)>查询</ft><ft color=(0,123,67)>@无疑Wuyi</ft> '
+        '<ft color=(238,120,0)>上期深渊12层</ft>'
+    ),
+)
+async def send_abyss_info(
+    event: TextMessageEvent,
+    matcher: Matcher,
+    args: Tuple[Any, ...] = RegexGroup(),
+):
     logger.info('开始执行[查询深渊信息]')
-    logger.info('[查询深渊信息]参数: {}'.format(args))
-    at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
-
-    if at:
-        qid = int(at.group(1))
+    logger.info(f'[查询深渊信息]参数: {args}')
+    if event.at_user_list:
+        qid = event.at_user_list[0]
     else:
-        if ev.sender:
-            qid = int(ev.sender['user_id'])
-        else:
-            return
+        qid = event.from_wxid
 
-    # 判断uid
-    if args[2] != 'mys':
-        if args[3] is None:
-            uid = await select_db(qid, mode='uid')
-            uid = str(uid)
-        elif len(args[3]) != 9:
-            return
-        else:
-            uid = args[3]
-    else:
+    if args[2] == 'mys':
         uid = await convert_mysid(args[3])
-
-    logger.info('[查询深渊信息]uid: {}'.format(uid))
-
-    if '未找到绑定的UID' in uid:
-        await bot.send(ev, UID_HINT)
-
-    # 判断深渊期数
-    if args[4] is None:
-        schedule_type = '1'
+    elif args[3] is None:
+        uid = await select_db(qid, mode='uid')
+        uid = str(uid)
+    elif len(args[3]) != 9:
+        return
     else:
-        schedule_type = '2'
-    logger.info('[查询深渊信息]深渊期数: {}'.format(schedule_type))
-
+        uid = args[3]
+    logger.info(f'[查询深渊信息]uid: {uid}')
+    if '未找到绑定的UID' in uid:
+        await matcher.finish(UID_HINT)
+    schedule_type = '1' if args[4] is None else '2'
+    logger.info(f'[查询深渊信息]深渊期数: {schedule_type}')
     if args[6] in ['九', '十', '十一', '十二']:
         floor = (
             args[6]
@@ -55,17 +85,17 @@ async def send_abyss_info(bot: HoshinoBot, ev: CQEvent):
             .replace('十二', '12')
             .replace('十', '10')
         )
+
     else:
         floor = args[6]
     if floor is not None:
         floor = int(floor)
-    logger.info('[查询深渊信息]深渊层数: {}'.format(floor))
-
+    logger.info(f'[查询深渊信息]深渊层数: {floor}')
     im = await draw_abyss_img(uid, floor, schedule_type)
     if isinstance(im, str):
-        await bot.send(ev, im)
+        await matcher.finish(im)
     elif isinstance(im, bytes):
         im = await convert_img(im)
-        await bot.send(ev, im)
+        await matcher.finish(MessageSegment.image(im))
     else:
-        await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

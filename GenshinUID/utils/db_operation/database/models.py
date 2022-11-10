@@ -22,7 +22,7 @@ class PushData(SQLModel, table=True):
 
 
 class UidData(SQLModel, table=True):
-    USERID: int = Field(default=100000000, primary_key=True, title='QQ号')
+    USERID: str = Field(default='WX_100001', primary_key=True, title='WX号')
     UID: Optional[str] = Field(title='UID')
     MYSID: Optional[str] = Field(title='米游社通行证(废弃)')
 
@@ -30,7 +30,7 @@ class UidData(SQLModel, table=True):
 class NewCookiesTable(SQLModel, table=True):
     UID: int = Field(default=100000000, primary_key=True, title='UID')
     Cookies: str = Field(title='CK')
-    QID: int = Field(title='QQ号')
+    QID: str = Field(title='QQ号')
     StatusA: str = Field(title='全局推送开关')
     StatusB: str = Field(title='自动签到')
     StatusC: str = Field(title='自动米游币')

@@ -1,9 +1,11 @@
 from typing import Union
 
+from nonebot.adapters.onebot.v11 import MessageEvent
+
 
 # https://v2.nonebot.dev/docs/advanced/di/dependency-injection#class-%E4%BD%9C%E4%B8%BA%E4%BE%9D%E8%B5%96
 class ImageAndAt:
-    def __init__(self, event):
+    def __init__(self, event: MessageEvent):
         self.images = []
         self.at = []
         for i in event.message:

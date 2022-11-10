@@ -1,22 +1,48 @@
+import asyncio
 import threading
+from typing import Union
 
-from ..all_import import *  # noqa: F403, F401
+from nonebot import on_command
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.permission import SUPERUSER
+from nonebot.adapters.ntchat import Bot, TextMessageEvent
+
+from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
+from ..utils.exception.handle_exception import handle_exception
 from ..utils.download_resource.download_all_resource import (
     download_all_resource,
 )
 
+download_resource = on_command('下载全部资源', rule=FullCommand())
 
-@sv.on_fullmatch('下载全部资源')
-async def send_download_resource_msg(bot: HoshinoBot, ev: CQEvent):
-    if ev.sender:
-        qid = ev.sender['user_id']
-    else:
+
+@download_resource.handle()
+@handle_exception('下载全部资源', '资源下载错误')
+@register_menu(
+    '下载全部资源',
+    '下载全部资源',
+    '手动下载插件运行所需的资源',
+    trigger_method='管理员指令',
+    detail_des=(
+        '介绍：\n'
+        '手动下载插件正常运行所需的资源（一般每次启动会自动检查并下载）\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>下载全部资源</ft>'
+    ),
+)
+async def send_download_resource_msg(
+    bot: Bot,
+    event: TextMessageEvent,
+    matcher: Matcher,
+):
+    if not await SUPERUSER(bot, event):
         return
-    if qid not in bot.config.SUPERUSERS:
-        return
-    await bot.send(ev, '正在开始下载~可能需要较久的时间!')
+    await matcher.send('正在开始下载~可能需要较久的时间!')
     im = await download_all_resource()
-    await bot.send(ev, im)
+    await matcher.finish(im)
 
 
 async def startup():

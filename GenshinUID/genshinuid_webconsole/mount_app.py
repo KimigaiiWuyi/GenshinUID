@@ -1,10 +1,10 @@
 import platform
+import contextlib
 from pathlib import Path
 from typing import (
     TYPE_CHECKING,
     Any,
     Set,
-    Dict,
     List,
     Type,
     Union,
@@ -13,13 +13,12 @@ from typing import (
     cast,
 )
 
-from quart import Quart
-from nonebot import get_bot
+import fastapi_amis_admin
 from pydantic import BaseModel
 from sqlmodel import Relationship
 from sqlalchemy.orm import backref
 from fastapi import FastAPI, Request
-import fastapi_amis_admin  # noqa: F401
+from nonebot import get_app, get_driver
 from fastapi_amis_admin import amis, admin
 from fastapi_amis_admin.crud import BaseApiOut
 from sqlalchemy.ext.asyncio import AsyncEngine
@@ -61,21 +60,32 @@ from ..utils.db_operation.database.models import (
     NewCookiesTable,
 )
 
+if TYPE_CHECKING:
+    from quart import Quart
+    from asgiref.typing import Scope, HTTPScope, WebSocketScope
+
+AppType = Union[FastAPI, 'Quart']
+
 
 class FastApiMiddleware:
-    def __init__(self, app: Quart, fastapi: FastAPI, routes: Set[str]) -> None:
+    def __init__(
+        self, app: 'Quart', fastapi: FastAPI, routes: Set[str]
+    ) -> None:
         self.fastapi = fastapi
         self.app = app.asgi_app
         self.routes = routes
 
     async def __call__(
-        self, scope: Dict[str, Any], receive: Callable, send: Callable
+        self, scope: 'Scope', receive: Callable, send: Callable
     ) -> None:
         if scope['type'] in ('http', 'websocket'):
+            scope = cast(Union['HTTPScope', 'WebSocketScope'], scope)
             for path in self.routes:
                 if scope['path'].startswith(path):
-                    return await self.fastapi(scope, receive, send)
-            return await self.app(scope, receive, send)
+                    return await self.fastapi(
+                        scope, receive, send  # type: ignore
+                    )
+            return await self.app(scope, receive, send)  # type: ignore
 
 
 # 自定义后台管理站点
@@ -100,8 +110,28 @@ class GenshinUIDAdminSite(AuthAdminSite):
         return app
 
 
-# 创建FastAPI应用
-app = FastAPI()
+def get_asgi() -> Optional[AppType]:
+    try:
+        return get_app()
+    except AssertionError:
+        return None
+
+
+# 从 nb 获取 FastAPI
+app = get_asgi()
+if app is None:
+    raise RuntimeError('App is not ReverseDriver')
+
+with contextlib.suppress(ImportError):
+    from quart import Quart  # noqa: F811
+
+    if isinstance(app, Quart):
+        fastapi = FastAPI()
+        app.asgi_app = FastApiMiddleware(app, fastapi, {'/genshinuid'})  # type: ignore
+        app = fastapi
+
+
+app = cast(FastAPI, app)
 settings = Settings(
     database_url_async=DATABASE_URL,
     database_url='',
@@ -110,8 +140,6 @@ settings = Settings(
     site_title='GenshinUID网页控制台',
     language='zh_CN',
 )
-quart = get_bot().server_app
-quart.asgi_app = FastApiMiddleware(quart, app, {'/genshinuid'})  # type: ignore
 
 
 # 显示主键
@@ -163,7 +191,6 @@ admin.BaseModelAdmin.get_create_form = patched_get_create_form
 # 创建AdminSite实例
 site = GenshinUIDAdminSite(settings)
 auth = site.auth
-config = get_bot().config
 
 if float(fastapi_amis_admin.__version__[:3]) >= 0.3:
 
@@ -179,9 +206,10 @@ if float(fastapi_amis_admin.__version__[:3]) >= 0.3:
 
     auth.user_model = MyUser
 
+config = get_driver().config
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[f'http://{config.HOST}:{config.PORT}/genshinuid'],
+    allow_origins=[f'http://{config.host}:{config.port}'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
@@ -189,12 +217,17 @@ app.add_middleware(
 
 gsuid_webconsole_help = '''
 ## 初次使用
+
 欢迎进入网页控制台!
+
 Admin账户可以通过左侧的选项进入不同的数据库直接修改,**首次登陆的Admin账户别忘了修改你的密码!**
+
 普通账户可以通过左侧的选项进行绑定CK或者SK
+
 未来还会加入更多功能!
 
 ## 丨我该如何获取Cookies？[#92](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)（[@RemKeeper](https://github.com/RemKeeper)）
+
 ```js
 var cookie = document.cookie;
 var Str_Num = cookie.indexOf('_MHYUUID=');
@@ -207,12 +240,16 @@ if (ask == true) {
   msg = 'Cancel'
 }
 ```
+
 1. 复制上面全部代码，然后打开[米游社BBS](https://bbs.mihoyo.com/ys/)
 2. 在页面上右键检查或者Ctrl+Shift+i
 3. 选择控制台（Console），粘贴，回车，在弹出的窗口点确认（点完自动复制）
 4. 然后在和机器人的私聊窗口，粘贴发送即可
+
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
+
 ## 丨获取米游社Stoken([AutoMihoyoBBS](https://github.com/Womsxd/AutoMihoyoBBS#%E8%8E%B7%E5%8F%96%E7%B1%B3%E6%B8%B8%E7%A4%BECookie))
+
 ```js
 var cookie = document.cookie;
 var ask = confirm('Cookie:' + cookie + '按确认，然后粘贴至Cookies或者Login_ticket选框内');
@@ -223,10 +260,12 @@ if (ask == true) {
   msg = 'Cancel'
 }
 ```
+
 1. 复制上面全部代码，然后打开[米游社账户登录界面](http://user.mihoyo.com/)
 2. 在页面上右键检查或者Ctrl+Shift+i
 3. 选择控制台（Console），粘贴，回车，在弹出的窗口点确认（点完自动复制）
 4. 然后在和机器人的私聊窗口，粘贴发送即可
+
 **警告：Cookies属于个人隐私，其效用相当于账号密码，请勿随意公开！**
 
 ## 获取CK通则

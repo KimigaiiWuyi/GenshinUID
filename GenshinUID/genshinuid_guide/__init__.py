@@ -1,47 +1,90 @@
 from pathlib import Path
+from typing import Any, Tuple
 
 import httpx
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot import on_regex, on_command
+from nonebot.params import CommandArg, RegexGroup
+from nonebot.adapters.ntchat import MessageSegment
+from nonebot.adapters.ntchat.message import Message
 
-from ..all_import import *
+from ..genshinuid_meta import register_menu
 from ..utils.alias.alias_to_char_name import alias_to_char_name
+from ..utils.exception.handle_exception import handle_exception
+
+get_guide_pic = on_regex('([\u4e00-\u9fa5]+)(推荐|攻略)')
+get_bluekun_pic = on_command('参考面板')
 
 IMG_PATH = Path(__file__).parent / 'img'
 
 
-@sv.on_rex('([\u4e00-\u9fa5]+)(推荐|攻略)')
-async def send_guide_pic(bot: HoshinoBot, ev: CQEvent):
-    name = str(ev['match'].group(1))
-    if not name:
-        return
-    name = await alias_to_char_name(name)
+@get_guide_pic.handle()
+@handle_exception('建议')
+@register_menu(
+    '角色攻略',
+    'xx攻略',
+    '发送一张对应角色的西风驿站攻略图',
+    detail_des=(
+        '介绍：\n'
+        '发送一张对应角色的米游社西风驿站攻略图\n'
+        '支持部分角色别名\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(0,148,200)>[角色名]</ft>'
+        '<ft color=(238,120,0)>{推荐|攻略}</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>钟离推荐</ft>\n'
+        '- <ft color=(238,120,0)>公子攻略</ft>'
+    ),
+)
+async def send_guide_pic(
+    matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()
+):
+    name = await alias_to_char_name(str(args[0]))
     if name.startswith('旅行者'):
         name = f'{name[:3]}-{name[-1]}'
     url = 'https://file.microgg.cn/MiniGG/guide/{}.jpg'.format(name)
     if httpx.head(url).status_code == 200:
         logger.info('获得{}推荐图片成功！'.format(name))
-        await bot.send(ev, MessageSegment.image(url))
+        await matcher.finish(MessageSegment.image(url))
     else:
         logger.warning('未获得{}推荐图片。'.format(name))
+        await matcher.finish()
 
 
-@sv.on_prefix('参考面板')
-async def send_bluekun_pic(bot: HoshinoBot, ev: CQEvent):
-    if ev.message:
-        message = ev.message.extract_plain_text().replace(' ', '')
+@get_bluekun_pic.handle()
+@handle_exception('参考面板')
+@register_menu(
+    '参考面板',
+    '参考面板[角色名/元素名]',
+    '发送一张对应角色/元素的参考面板图',
+    detail_des=(
+        '介绍：\n'
+        '发送一张对应角色/元素的参考面板图\n'
+        '支持部分角色别名\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>参考面板</ft>'
+        '<ft color=(0,148,200)>[角色名/元素名]</ft>\n'
+        ' \n'
+        '示例：\n'
+        '- <ft color=(238,120,0)>参考面板火</ft>\n'
+        '- <ft color=(238,120,0)>参考面板公子</ft>'
+    ),
+)
+async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
+    print(args)
+    if str(args[0]) in ['冰', '水', '火', '草', '雷', '风', '岩']:
+        name = str(args[0])
     else:
-        return
-
-    if message == '':
-        return
-
-    if str(message) in ['冰', '水', '火', '草', '雷', '风', '岩']:
-        name = str(message)
-    else:
-        name = await alias_to_char_name(str(message))
+        name = await alias_to_char_name(str(args[0]))
     img = IMG_PATH / '{}.jpg'.format(name)
     if img.exists():
-        img = await convert_img(img)
+        with open(img, 'rb') as f:
+            im = MessageSegment.image(f.read())
         logger.info('获得{}参考面板图片成功！'.format(name))
-        await bot.send(ev, img)
+        await matcher.finish(im)
     else:
         logger.warning('未找到{}参考面板图片'.format(name))

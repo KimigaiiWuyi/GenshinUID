@@ -1,8 +1,6 @@
 from pathlib import Path
 
-import hoshino
-
-MAIN_PATH = Path(hoshino.config.RES_DIR) / 'GenshinUID'
+MAIN_PATH = Path() / 'data' / 'GenshinUID'
 RESOURCE_PATH = MAIN_PATH / 'resource'
 WEAPON_PATH = RESOURCE_PATH / 'weapon'
 GACHA_IMG_PATH = RESOURCE_PATH / 'gacha_img'

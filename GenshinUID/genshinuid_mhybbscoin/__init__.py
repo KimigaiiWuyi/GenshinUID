@@ -1,31 +1,76 @@
 import random
+import asyncio
 
-from ..all_import import *  # noqa: F403,F401
+from nonebot.log import logger
+from nonebot.matcher import Matcher
+from nonebot.permission import SUPERUSER
+from nonebot import get_bot, require, on_command
+from nonebot.adapters.ntchat import Bot, MessageEvent
+
+from ..config import SUPERUSERS, priority
+from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.db_operation.db_operation import config_check
+from ..utils.exception.handle_exception import handle_exception
 from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
+
+require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
+
+bbscoin_scheduler = scheduler
+
+get_mihoyo_coin = on_command('开始获取米游币', priority=priority, rule=FullCommand())
+all_bbscoin_recheck = on_command(
+    '全部重获取', priority=priority, rule=FullCommand()
+)
 
 
 # 获取米游币
-@sv.on_fullmatch('开始获取米游币')
-async def send_mihoyo_coin(bot: HoshinoBot, ev: CQEvent):
-    await bot.send(ev, '开始操作……', at_sender=True)
-    qid = int(ev.sender['user_id'])  # type: ignore
+@get_mihoyo_coin.handle()
+@handle_exception('获取米游币')
+@register_menu(
+    '手动获取米游币',
+    '开始获取米游币',
+    '手动触发米游社米游币任务',
+    detail_des=(
+        '介绍：\n'
+        '手动触发米游社获取米游币的任务\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>开始获取米游币</ft>'
+    ),
+)
+async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
+    await matcher.send('开始操作……', at_sender=True)
+    qid = event.from_wxid
     im = await mihoyo_coin(qid)
-    await bot.send(ev, im, at_sender=True)
+    await matcher.finish(im, at_sender=True)
 
 
-@sv.on_fullmatch('全部重获取')
-async def bbs_recheck(bot: HoshinoBot, ev: CQEvent):
-    qid = int(ev.sender['user_id'])  # type: ignore
-    if qid not in bot.config.SUPERUSERS:
+@all_bbscoin_recheck.handle()
+@handle_exception('米游币全部重获取')
+@register_menu(
+    '重新获取米游币',
+    '全部重获取',
+    '重新运行所有自动获取米游币的任务',
+    detail_des=(
+        '介绍：\n'
+        '重新运行所有自动获取米游币的任务\n'
+        ' \n'
+        '指令：\n'
+        '- <ft color=(238,120,0)>全部重获取</ft>'
+    ),
+)
+async def bbs_recheck(bot: Bot, event: MessageEvent, matcher: Matcher):
+    if await SUPERUSER(bot, event):
         return
-    await bot.send(ev, '已开始执行!可能需要较久时间!')
+    await matcher.send('已开始执行!可能需要较久时间!')
     await send_daily_mihoyo_bbs_sign()
-    await bot.send(ev, '执行完成!')
+    await matcher.finish('执行完成!')
 
 
 # 每日一点十六分进行米游币获取
-@sv.scheduled_job('cron', hour='1', minute='16')
+@bbscoin_scheduler.scheduled_job('cron', hour='1', minute='16')
 async def sign_at_night():
     if await config_check('SchedMhyBBSCoin'):
         await send_daily_mihoyo_bbs_sign()
@@ -36,12 +81,12 @@ async def send_daily_mihoyo_bbs_sign():
     im, im_private = await all_daily_mihoyo_bbs_coin()
     if im_private:
         for user_id in im_private:
-            await bot.send_private_msg(
-                user_id=user_id, message=im_private[user_id]
+            await bot.call_api(
+                'send_text', to_wxid=user_id, content=im_private[user_id]
             )
             await asyncio.sleep(5 + random.randint(1, 3))
     if await config_check('PrivateReport'):
-        for qid in bot.config.SUPERUSERS:
-            await bot.send_private_msg(user_id=qid, message=im)
+        for qid in SUPERUSERS:
+            await bot.call_api(api='send_text', to_wxid=qid, content=im)
             await asyncio.sleep(5 + random.randint(1, 3))
     logger.info('米游币获取已结束。')

@@ -29,7 +29,7 @@ gs_font_15 = genshin_font_origin(15)
 gs_font_26 = genshin_font_origin(26)
 
 
-async def get_user_card(qid: int) -> bytes:
+async def get_user_card(qid: str) -> bytes:
     uid_list: List = await select_db(qid, 'list')  # type: ignore
     w, h = 500, len(uid_list) * 210 + 330
     img = await get_simple_bg(w, h)

@@ -1,36 +1,38 @@
-import re
 from functools import wraps
+from typing import Optional
 
 from nonebot.log import logger
-from aiocqhttp.exceptions import ActionFailed
-
-from hoshino.typing import List, CQEvent, Iterable
-
-from ..message.error_reply import *  # noqa: F403,F401
+from nonebot.matcher import Matcher
+from nonebot.exception import FinishedException
+from nonebot.adapters.onebot.v11 import ActionFailed
 
 
-def handle_exception(name: str, log_msg: str = None, fail_msg: str = None):  # type: ignore
+def handle_exception(
+    name: str, log_msg: Optional[str] = None, fail_msg: Optional[str] = None
+):
     """
     :说明:
       捕获命令执行过程中发生的异常并回报。
     :参数:
       * ``name: str``: 项目的名称。
       * ``log_msg: str = None``: 自定义捕获异常后在日志中留存的信息。留空则使用默认信息。
-      * ``fail_msg: str = None``: 自定义捕获异常后向用户回报的信息，仅在提供自定义日志信息时有效。开头带@则艾特用户。留空则与日志信息相同。
+      * ``fail_msg: str = None``: 自定义捕获异常后向用户回报的信息，仅在提供自定义日志信息时有效。
+                                  开头带@则艾特用户。留空则与日志信息相同。
     """
 
     def wrapper(func):
         @wraps(func)
         async def inner(
-            log_msg: str = log_msg, fail_msg: str = fail_msg, **kwargs
+            log_msg: Optional[str] = log_msg,
+            fail_msg: Optional[str] = fail_msg,
+            **kwargs,
         ):
-            print(kwargs)
-            matcher: CQEvent = kwargs['matcher']
+            matcher: Matcher = kwargs['matcher']
             try:
                 await func(**kwargs)
             except ActionFailed as e:
                 # 此为bot本身由于风控或网络问题发不出消息，并非代码本身出问题
-                await matcher.send(f'发送消息失败{e.info["wording"]}')  # type: ignore
+                await matcher.send(f'发送消息失败{e.info["wording"]}')
                 logger.exception(f'发送{name}消息失败')
             except FinishedException:
                 # `finish` 会抛出此异常，应予以抛出而不处理

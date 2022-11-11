@@ -3,7 +3,7 @@ from nonebot.log import logger
 
 from .enka_api import ENKA_DATA_URL, MINIGG_DATA_URL, MICROGG_DATA_URL
 
-ENKA_API = [MINIGG_DATA_URL, ENKA_DATA_URL, MICROGG_DATA_URL]
+ENKA_API = [ENKA_DATA_URL, MINIGG_DATA_URL, MICROGG_DATA_URL]
 HEADER = {'User-Agent': 'GenshinUID/3.1'}
 
 

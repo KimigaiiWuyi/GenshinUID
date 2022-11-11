@@ -5,8 +5,11 @@ from typing import Any, Dict, Union, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-# sys.path.append(str(Path(__file__).parents[1]))
-from ...utils.ambr_api.ambr_api import AMBR_CHAR_URL, AMBR_EVENT_URL
+sys.path.append(str(Path(__file__).parents[1]))
+try:
+    from ...utils.ambr_api.ambr_api import AMBR_CHAR_URL, AMBR_EVENT_URL
+except ImportError:
+    from utils.ambr_api.ambr_api import AMBR_CHAR_URL, AMBR_EVENT_URL
 
 _HEADER = {}
 

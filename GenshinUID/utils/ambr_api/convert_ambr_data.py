@@ -1,13 +1,17 @@
 import re
 import sys
-import asyncio
 from pathlib import Path
 from typing import Dict, Union, Optional
 
-# sys.path.append(str(Path(__file__).parents[1]))
-from ...utils.ambr_api.prop_map import PROP_MAP
-from ...utils.ambr_api.grow_curve import GROW_CURVE_LIST
-from ...utils.ambr_api.get_ambr_data import get_char_data
+sys.path.append(str(Path(__file__).parents[1]))
+try:
+    from ...utils.ambr_api.prop_map import PROP_MAP
+    from ...utils.ambr_api.grow_curve import GROW_CURVE_LIST
+    from ...utils.ambr_api.get_ambr_data import get_char_data
+except ImportError:
+    from utils.ambr_api.prop_map import PROP_MAP
+    from utils.ambr_api.grow_curve import GROW_CURVE_LIST
+    from utils.ambr_api.get_ambr_data import get_char_data
 
 ELEMENT_MAP = {
     'Wind': '风',

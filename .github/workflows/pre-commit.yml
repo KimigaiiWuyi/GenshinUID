@@ -1,7 +1,6 @@
 name: Pre Commit
 
 on:
-  pull_request:
   pull_request_target:
     types:
       - opened

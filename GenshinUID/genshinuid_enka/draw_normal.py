@@ -8,9 +8,12 @@ from PIL import Image, ImageDraw, ImageChops
 from .mono.Character import Character
 from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
 from ..utils.db_operation.db_operation import config_check
-from ..utils.draw_image_tools.draw_image_tool import CustomizeImage
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from .etc.etc import TEXT_PATH, strLenth, get_star_png, get_artifacts_value
+from ..utils.draw_image_tools.draw_image_tool import (
+    CustomizeImage,
+    get_weapon_affix_pic,
+)
 from ..utils.download_resource.RESOURCE_PATH import (
     REL_PATH,
     ICON_PATH,
@@ -30,7 +33,6 @@ ARTIFACTS_POS = {
 async def get_char_card_base(char: Character) -> Image.Image:
     card_prop = char.card_prop
     char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
-    holo_temp = Image.new('RGBA', char_info_1.size, (0, 0, 0, 0))
     # 命座处理
     lock_img = Image.open(TEXT_PATH / 'icon_lock.png')
     holo_img = Image.open(TEXT_PATH / 'holo.png')
@@ -43,15 +45,14 @@ async def get_char_card_base(char: Character) -> Image.Image:
             talent_img_new = talent_img.resize(
                 (50, 50), Image.Resampling.LANCZOS
             ).convert("RGBA")
-            holo_temp.paste(holo_img, (775, 300 + talent_num * 81), holo_img)
-            holo_temp.paste(
-                talent_img_new,
-                (850, 375 + talent_num * 81),
-                talent_img_new,
-            )
+            for _ in range(2):
+                char_info_1.paste(
+                    talent_img_new,
+                    (850, 375 + talent_num * 81),
+                    talent_img_new,
+                )
         else:
-            holo_temp.paste(lock_img, (850, 375 + talent_num * 81), lock_img)
-    char_info_1 = Image.alpha_composite(char_info_1, holo_temp)
+            char_info_1.paste(lock_img, (850, 375 + talent_num * 81), lock_img)
 
     # 天赋处理
     skillList = card_prop['avatarSkill']
@@ -153,6 +154,9 @@ async def get_char_card_base(char: Character) -> Image.Image:
         genshin_font_origin(28),
         anchor='mm',
     )
+    affix_pic = await get_weapon_affix_pic(weaponAffix)
+    char_info_1.paste(affix_pic, (420 + len(weaponName) * 50, 660), affix_pic)
+    '''
     char_info_text.text(
         (517, 895),
         f'精炼{str(weaponAffix)}阶',
@@ -160,6 +164,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
         genshin_font_origin(28),
         anchor='lm',
     )
+    '''
 
     weaponEffect = strLenth(weaponEffect, 25, 455)
     weaponEffect = '\n'.join(weaponEffect.split('\n')[:5])

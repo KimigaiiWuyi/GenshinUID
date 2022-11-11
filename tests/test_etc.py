@@ -45,7 +45,9 @@ async def test_primogems_version(app: App, load_etc: None):
     from GenshinUID.genshinuid_etcimg import get_primogems_data
 
     with open(
-        Path(f"../GenshinUID/genshinuid_etcimg/primogems_data/{Genshin_version[:3]}.png"),
+        Path(
+            f"../GenshinUID/genshinuid_etcimg/primogems_data/{Genshin_version[:3]}.png"
+        ),
         "rb",
     ) as f:
         data = f.read()

@@ -32,7 +32,7 @@ download_resource = on_command('下载全部资源', rule=FullCommand())
     detail_des=(
         '介绍：\n'
         '手动下载插件正常运行所需的资源（一般每次启动会自动检查并下载）\n'
-        ' \n' 
+        ' \n'
         '指令：\n'
         '- <ft color=(238,120,0)>下载全部资源</ft>'
     ),

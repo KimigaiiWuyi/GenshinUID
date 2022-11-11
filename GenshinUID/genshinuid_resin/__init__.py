@@ -43,7 +43,7 @@ get_daily_info = on_command('当前状态', rule=FullCommand())
     detail_des=(
         '介绍：\n'
         '米游社实时便笺文字版\n'
-        ' \n' 
+        ' \n'
         '指令：\n'
         '- <ft color=(238,120,0)>当前状态</ft>'
     ),
@@ -111,7 +111,7 @@ async def notice_job():
     detail_des=(
         '介绍：\n'
         '图片形式米游社实时便笺\n'
-        ' \n' 
+        ' \n'
         '指令：\n'
         '- <ft color=(238,120,0)>每日</ft>\n'
         '- <ft color=(238,120,0)>mr</ft>\n'

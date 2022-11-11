@@ -400,7 +400,7 @@ async def get_char_img(
         new_h = math.ceil(based_new_w / float(scale_f))
         if scale_f > based_scale:
             bg_img2 = char_img.resize(
-                (new_w, based_new_h), Image.Resampling.LANCZOS  # type: ignore
+                (new_w, based_new_h), Image.Resampling.LANCZOS
             )
             x1 = new_w / 2 - based_new_w / 2 + offset_x
             y1 = 0 + offset_y / 2
@@ -408,7 +408,7 @@ async def get_char_img(
             y2 = based_new_h - offset_y / 2
         else:
             bg_img2 = char_img.resize(
-                (based_new_w, new_h), Image.Resampling.LANCZOS  # type: ignore
+                (based_new_w, new_h), Image.Resampling.LANCZOS
             )
             x1 = 0 + offset_x
             y1 = new_h / 2 - based_new_h / 2 + offset_y / 2
@@ -431,24 +431,45 @@ async def get_artifacts_card(char: Character, img: Image.Image):
             REL_PATH / '{}.png'.format(aritifact['aritifactName'])
         )
         artifacts_piece_new_img = artifacts_piece_img.resize(
-            (75, 75), Image.Resampling.LANCZOS
+            (120, 120), Image.Resampling.LANCZOS
         ).convert("RGBA")
 
+        # alpha化
+        '''
+        artifacts_piece_new_img.putalpha(
+            artifacts_piece_new_img.getchannel('A').point(
+                lambda x: round(x * 0.9) if x > 0 else 0
+            )
+        )
+        '''
+        # equip_mask = Image.open(TEXT_PATH / 'equip_mask.png')
+        # a_img = Image.new('RGBA', (300, 100))
+        # a_img.paste(artifacts_piece_new_img, (140, -20))
+
+        # artifacts_img.paste(a_img, (0, 14), equip_mask)
         artifacts_img.paste(
-            artifacts_piece_new_img, (195, 35), artifacts_piece_new_img
+            artifacts_piece_new_img, (165, 22), artifacts_piece_new_img
         )
         aritifactStar_img = get_star_png(aritifact['aritifactStar'])
         artifactsPos = aritifact['aritifactPieceName']
 
-        artifacts_img.paste(aritifactStar_img, (20, 165), aritifactStar_img)
+        # 圣遗物星星和名称&位置
+        artifacts_img.paste(aritifactStar_img, (16, 115), aritifactStar_img)
         artifacts_text = ImageDraw.Draw(artifacts_img)
+        if len(aritifact['aritifactName']) <= 5:
+            main_name = aritifact['aritifactName']
+        else:
+            main_name = (
+                aritifact['aritifactName'][:2] + aritifact['aritifactName'][4:]
+            )
         artifacts_text.text(
-            (30, 66),
-            aritifact['aritifactName'][:4],
+            (22, 100),
+            main_name,
             (255, 255, 255),
-            genshin_font_origin(34),
+            genshin_font_origin(28),
             anchor='lm',
         )
+        '''
         artifacts_text.text(
             (30, 102),
             artifactsPos,
@@ -456,10 +477,11 @@ async def get_artifacts_card(char: Character, img: Image.Image):
             genshin_font_origin(20),
             anchor='lm',
         )
+        '''
 
-        mainValue = aritifact['reliquaryMainstat']['statValue']
-        mainName = aritifact['reliquaryMainstat']['statName']
-        mainLevel = aritifact['aritifactLevel']
+        mainValue: float = aritifact['reliquaryMainstat']['statValue']
+        mainName: str = aritifact['reliquaryMainstat']['statName']
+        mainLevel: int = aritifact['aritifactLevel']
 
         if mainName in ['攻击力', '血量', '防御力', '元素精通']:
             mainValueStr = str(mainValue)
@@ -474,31 +496,31 @@ async def get_artifacts_card(char: Character, img: Image.Image):
         )
 
         artifacts_text.text(
-            (30, 141),
+            (34, 174),
             mainNameNew,
             (255, 255, 255),
             genshin_font_origin(28),
             anchor='lm',
         )
         artifacts_text.text(
-            (263, 141),
+            (266, 174),
             mainValueStr,
             (255, 255, 255),
             genshin_font_origin(28),
             anchor='rm',
         )
         artifacts_text.text(
-            (55, 219),
+            (246, 132),
             '+{}'.format(str(mainLevel)),
             (255, 255, 255),
-            genshin_font_origin(24),
+            genshin_font_origin(23),
             anchor='mm',
         )
 
         artifactsScore = 0
         for index, i in enumerate(aritifact['reliquarySubstats']):
-            subName = i['statName']
-            subValue = i['statValue']
+            subName: str = i['statName']
+            subValue: float = i['statValue']
             if subName in ['攻击力', '血量', '防御力', '元素精通']:
                 subValueStr = str(subValue)
             else:
@@ -513,38 +535,54 @@ async def get_artifacts_card(char: Character, img: Image.Image):
             )
             artifactsScore += value_temp
             subNameStr = subName.replace('百分比', '').replace('元素', '')
+            # 副词条文字颜色
             if value_temp == 0:
                 artifacts_color = (160, 160, 160)
-            elif value_temp >= 5.1:
-                artifacts_color = (247, 50, 50)
-            elif value_temp >= 3.7:
-                artifacts_color = (255, 255, 100)
             else:
-                artifacts_color = (250, 250, 250)
+                artifacts_color = (255, 255, 255)
+
+            # 副词条底色
+            if value_temp >= 3.4:
+                artifacts_bg = (205, 135, 76)
+                if value_temp >= 4.5:
+                    artifacts_bg = (158, 39, 39)
+                artifacts_text.rounded_rectangle(
+                    (22, 210 + index * 35, 274, 239 + index * 35),
+                    fill=artifacts_bg,
+                    radius=8,
+                )
+
             artifacts_text.text(
-                (20, 256 + index * 33),
+                (22, 225 + index * 35),
                 '·{}'.format(subNameStr),
                 artifacts_color,
                 genshin_font_origin(25),
                 anchor='lm',
             )
             artifacts_text.text(
-                (268, 256 + index * 33),
+                (266, 225 + index * 35),
                 '{}'.format(subValueStr),
                 artifacts_color,
                 genshin_font_origin(25),
                 anchor='rm',
             )
-        if artifactsScore >= 6:
-            artifactsScore_color = (247, 26, 26)
+        if artifactsScore >= 8.4:
+            artifactsScore_color = (158, 39, 39)
+        elif artifactsScore >= 6.5:
+            artifactsScore_color = (205, 135, 76)
+        elif artifactsScore >= 5.2:
+            artifactsScore_color = (143, 123, 174)
         else:
-            artifactsScore_color = (255, 255, 255)
+            artifactsScore_color = (94, 96, 95)
         char.artifacts_all_score += artifactsScore
+        artifacts_text.rounded_rectangle(
+            (21, 45, 104, 75), fill=artifactsScore_color, radius=8
+        )
         artifacts_text.text(
-            (268, 190),
+            (26, 60),
             '{:.2f}'.format(artifactsScore) + '条',
-            artifactsScore_color,
+            (255, 255, 255),
             genshin_font_origin(23),
-            anchor='rm',
+            anchor='lm',
         )
         img.paste(artifacts_img, ARTIFACTS_POS[artifactsPos], artifacts_img)

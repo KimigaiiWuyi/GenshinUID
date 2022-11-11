@@ -67,7 +67,7 @@ async def get_artifacts_score(subName: str, subValue: int) -> int:
 
 async def get_artifacts_value(
     subName: str,
-    subValue: int,
+    subValue: float,
     baseAtk: int,
     baseHp: int,
     baseDef: int,

@@ -20,6 +20,7 @@ TEXT_PATH = Path(__file__).parent / 'texture2D'
 resin_fg_pic = Image.open(TEXT_PATH / 'resin_fg.png')
 yes_pic = Image.open(TEXT_PATH / 'yes.png')
 no_pic = Image.open(TEXT_PATH / 'no.png')
+warn_pic = Image.open(TEXT_PATH / 'warn.png')
 
 based_w = 500
 based_h = 900
@@ -107,6 +108,31 @@ async def seconds2hours(seconds: int) -> str:
 async def draw_resin_img(uid: str) -> Image.Image:
     # 获取数据
     daily_data = await get_daily_data(uid)
+
+    # 获取背景图片各项参数
+    img = await get_simple_bg(based_w, based_h)
+    img.paste(white_overlay, (0, 0), white_overlay)
+
+    if daily_data['retcode'] == 1034:
+        img_draw = ImageDraw.Draw(img)
+        img.paste(warn_pic, (0, 0), warn_pic)
+        # 写UID
+        img_draw.text(
+            (250, 553),
+            f'UID{uid}',
+            font=gs_font_26,
+            fill=first_color,
+            anchor='mm',
+        )
+        img_draw.text(
+            (250, 518),
+            f'错误码 {daily_data["retcode"]}',
+            font=gs_font_26,
+            fill=red_color,
+            anchor='mm',
+        )
+        return img
+
     daily_data = daily_data['data']
     enta_data_path = PLAYER_PATH / uid / 'rawData.json'
     if enta_data_path.exists():
@@ -129,10 +155,6 @@ async def draw_resin_img(uid: str) -> Image.Image:
     else:
         signature = '暂无获取数据'
         world_level_str = '暂无数据'
-
-    # 获取背景图片各项参数
-    img = await get_simple_bg(based_w, based_h)
-    img.paste(white_overlay, (0, 0), white_overlay)
 
     img.paste(resin_fg_pic, (0, 0), resin_fg_pic)
 

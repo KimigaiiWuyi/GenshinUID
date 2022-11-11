@@ -113,7 +113,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     img = await get_simple_bg(based_w, based_h)
     img.paste(white_overlay, (0, 0), white_overlay)
 
-    if daily_data['retcode'] == 1034:
+    if daily_data['retcode'] != 0:
         img_draw = ImageDraw.Draw(img)
         img.paste(warn_pic, (0, 0), warn_pic)
         # 写UID

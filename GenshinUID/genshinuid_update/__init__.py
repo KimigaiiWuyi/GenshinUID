@@ -78,11 +78,7 @@ async def send_updatelog_msg(
     '重启Bot框架',
     trigger_method='超级用户指令',
     detail_des=(
-        '介绍：\n'
-        '重启Bot框架\n'
-        ' \n'
-        '指令：\n'
-        '- <ft color=(238,120,0)>gs重启</ft>'
+        '介绍：\n' '重启Bot框架\n' ' \n' '指令：\n' '- <ft color=(238,120,0)>gs重启</ft>'
     ),
 )
 async def send_restart_msg(

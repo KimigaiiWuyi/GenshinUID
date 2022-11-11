@@ -13,33 +13,33 @@ from ..mhy_api.mhy_api_tools import (
     random_hex,
     random_text,
     get_ds_token,
-    old_version_get_ds_token,
     generate_dynamic_secret,
+    old_version_get_ds_token,
 )
 from ..mhy_api.mhy_api import (
     SIGN_URL,
-    SIGN_URL_OS,
     GT_TEST_URL,
+    SIGN_URL_OS,
     SIGN_INFO_URL,
-    SIGN_INFO_URL_OS,
     SIGN_LIST_URL,
-    SIGN_LIST_URL_OS,
     DAILY_NOTE_URL,
-    DAILY_NOTE_URL_OS,
     GET_STOKEN_URL,
     GET_AUTHKEY_URL,
     PLAYER_INFO_URL,
-    PLAYER_INFO_URL_OS,
+    SIGN_INFO_URL_OS,
+    SIGN_LIST_URL_OS,
+    DAILY_NOTE_URL_OS,
     GET_GACHA_LOG_URL,
-    GET_GACHA_LOG_URL_OS,
     MONTHLY_AWARD_URL,
-    MONTHLY_AWARD_URL_OS,
     CALCULATE_INFO_URL,
-    CALCULATE_INFO_URL_OS,
+    PLAYER_INFO_URL_OS,
     GET_COOKIE_TOKEN_URL,
+    GET_GACHA_LOG_URL_OS,
+    MONTHLY_AWARD_URL_OS,
+    CALCULATE_INFO_URL_OS,
     PLAYER_ABYSS_INFO_URL,
-    PLAYER_ABYSS_INFO_URL_OS,
     PLAYER_DETAIL_INFO_URL,
+    PLAYER_ABYSS_INFO_URL_OS,
     PLAYER_DETAIL_INFO_URL_OS,
     MIHOYO_BBS_PLAYER_INFO_URL,
 )
@@ -79,6 +79,7 @@ RECOGNIZE_SERVER = {
     "8": "os_asia",
     "9": "os_cht",
 }
+
 
 async def get_gacha_log_by_authkey(
     uid: str, old_data: Optional[dict] = None
@@ -277,7 +278,11 @@ async def get_sign_info(uid) -> dict:
             url=SIGN_INFO_URL,
             method='GET',
             header=HEADER,
-            params={'act_id': 'e202009291139501', 'region': server_id, 'uid': uid},
+            params={
+                'act_id': 'e202009291139501',
+                'region': server_id,
+                'uid': uid,
+            },
         )
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
@@ -317,7 +322,11 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
             url=SIGN_URL,
             method='POST',
             header=HEADER,
-            data={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
+            data={
+                'act_id': 'e202009291139501',
+                'uid': uid,
+                'region': server_id,
+            },
         )
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
@@ -328,7 +337,11 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
             url=SIGN_URL_OS,
             method='POST',
             header=HEADER,
-            data={'act_id': 'e202009291139501', 'uid': uid, 'region': server_id},
+            data={
+                'act_id': 'e202009291139501',
+                'uid': uid,
+                'region': server_id,
+            },
         )
     return data
 
@@ -401,9 +414,7 @@ async def get_info(uid, ck) -> dict:
     return data
 
 
-async def get_spiral_abyss_info(
-    uid, ck, schedule_type='1'
-) -> dict:
+async def get_spiral_abyss_info(uid, ck, schedule_type='1') -> dict:
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
     if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
@@ -445,7 +456,11 @@ async def get_character(uid, character_ids, ck) -> dict:
         HEADER['Cookie'] = ck
         HEADER['DS'] = get_ds_token(
             '',
-            {'character_ids': character_ids, 'role_id': uid, 'server': server_id},
+            {
+                'character_ids': character_ids,
+                'role_id': uid,
+                'server': server_id,
+            },
         )
         data = await _mhy_request(
             url=PLAYER_DETAIL_INFO_URL,
@@ -474,9 +489,7 @@ async def get_character(uid, character_ids, ck) -> dict:
     return data
 
 
-async def get_calculate_info(
-    client: ClientSession, uid, char_id, ck, name
-):
+async def get_calculate_info(client: ClientSession, uid, char_id, ck, name):
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
     if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)

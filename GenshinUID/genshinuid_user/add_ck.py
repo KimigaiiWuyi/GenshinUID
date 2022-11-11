@@ -83,7 +83,7 @@ async def _deal_ck(mes, qid) -> str:
             if i['game_id'] == 2:
                 uid = i['game_role_id']
                 break
-        #else:
+        # else:
         #    return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
     except:
         print('Null mys_data')

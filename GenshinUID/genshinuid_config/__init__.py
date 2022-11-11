@@ -13,8 +13,8 @@ from nonebot.adapters.onebot.v11 import (
     PrivateMessageEvent,
 )
 
-from .draw_config_card import draw_config_img
 from ..genshinuid_meta import register_menu
+from .draw_config_card import draw_config_img
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt

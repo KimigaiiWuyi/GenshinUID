@@ -36,7 +36,7 @@ get_lots = on_command('御神签', priority=priority, rule=FullCommand())
     detail_des=(
         '介绍：\n'
         '查询指定任务或指定地区的攻略\n'
-        ' \n' 
+        ' \n'
         '指令：\n'
         '- <ft color=(238,120,0)>{原神任务|任务|任务详情|任务攻略}</ft>'
         '<ft color=(238,120,0)>{</ft>'
@@ -76,7 +76,7 @@ async def send_task_adv(
     detail_des=(
         '介绍：\n'
         '随机发送一张札记角色表情\n'
-        ' \n' 
+        ' \n'
         '指令：\n'
         '- <ft color=(238,120,0)>抽表情</ft>'
     ),
@@ -94,11 +94,7 @@ async def send_meme_card(matcher: Matcher):
     '御神签',
     '鸣神大社御神签',
     detail_des=(
-        '介绍：\n'
-        '抽一签鸣神大社御神签\n'
-        ' \n' 
-        '指令：\n'
-        '- <ft color=(238,120,0)>御神签</ft>'
+        '介绍：\n' '抽一签鸣神大社御神签\n' ' \n' '指令：\n' '- <ft color=(238,120,0)>御神签</ft>'
     ),
 )
 async def send_lots_data(matcher: Matcher, event: MessageEvent):

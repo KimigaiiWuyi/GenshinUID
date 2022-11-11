@@ -26,11 +26,7 @@ get_genshin_info = on_command(
     '每月统计',
     '文字形式米游社札记',
     detail_des=(
-        '介绍：\n'
-        '文字形式米游社札记\n'
-        ' \n' 
-        '指令：\n'
-        '- <ft color=(238,120,0)>每月统计</ft>'
+        '介绍：\n' '文字形式米游社札记\n' ' \n' '指令：\n' '- <ft color=(238,120,0)>每月统计</ft>'
     ),
 )
 async def send_monthly_data(
@@ -58,7 +54,7 @@ async def send_monthly_data(
     detail_des=(
         '介绍：\n'
         '图片形式米游社札记\n'
-        ' \n' 
+        ' \n'
         '指令：\n'
         '- <ft color=(238,120,0)>当前信息</ft>\n'
         '- <ft color=(125,125,125)>(原石)</ft><ft color=(238,120,0)>札记</ft>\n'

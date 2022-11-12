@@ -42,6 +42,7 @@ from ..mhy_api.mhy_api import (
     PLAYER_ABYSS_INFO_URL_OS,
     PLAYER_DETAIL_INFO_URL_OS,
     MIHOYO_BBS_PLAYER_INFO_URL,
+    MIHOYO_BBS_PLAYER_INFO_URL_OS,
 )
 
 gacha_type_meta_data = {
@@ -520,7 +521,9 @@ async def get_calculate_info(client: ClientSession, uid, char_id, ck, name):
     return data
 
 
-async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
+async def get_mihoyo_bbs_info(
+    mysid: str, ck: Optional[str] = None, is_os: Optional[bool] = False
+) -> dict:
     '''
     :说明:
       返回米游社账号对应的游戏角色信息。
@@ -538,9 +541,14 @@ async def get_mihoyo_bbs_info(mysid: str, ck: Optional[str] = None) -> dict:
         ck = str(await cache_db(mysid))
     HEADER = copy.deepcopy(_HEADER)
     HEADER['Cookie'] = ck
-    HEADER['DS'] = get_ds_token(f'uid={mysid}')
+    if is_os:
+        HEADER['DS'] = generate_dynamic_secret()
+        URL = MIHOYO_BBS_PLAYER_INFO_URL_OS
+    else:
+        HEADER['DS'] = get_ds_token(f'uid={mysid}')
+        URL = MIHOYO_BBS_PLAYER_INFO_URL
     data = await _mhy_request(
-        url=MIHOYO_BBS_PLAYER_INFO_URL,
+        url=URL,
         method='GET',
         header=HEADER,
         params={'uid': mysid},

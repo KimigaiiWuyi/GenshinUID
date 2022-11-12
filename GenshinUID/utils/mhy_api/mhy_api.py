@@ -63,6 +63,9 @@ CALCULATE_INFO_URL_OS = (
 MIHOYO_BBS_PLAYER_INFO_URL = (
     NEW_URL + '/game_record/card/wapi/getGameRecordCard'
 )
+MIHOYO_BBS_PLAYER_INFO_URL_OS = (
+    NEW_URL_OS + '/game_record/card/wapi/getGameRecordCard'
+)
 
 # 米游社的API列表
 bbs_Taskslist = BBS_URL + '/apihub/sapi/getUserMissionsState'  # 获取任务列表

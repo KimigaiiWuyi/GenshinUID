@@ -2,7 +2,7 @@ from pathlib import Path
 from http.cookies import SimpleCookie
 
 from ..utils.db_operation.db_cache_and_check import refresh_ck
-from ..utils.db_operation.db_operation import select_db, stoken_db, cookies_db
+from ..utils.db_operation.db_operation import stoken_db, cookies_db
 from ..utils.mhy_api.get_mhy_data import (
     get_mihoyo_bbs_info,
     get_cookie_token_by_stoken,
@@ -10,6 +10,24 @@ from ..utils.mhy_api.get_mhy_data import (
 )
 
 pic_path = Path(__file__).parent / 'pic'
+id_list = [
+    'login_uid',
+    'login_uid_v2',
+    'account_mid_v2',
+    'account_mid',
+    'account_id',
+    'stuid',
+    'ltuid',
+    'ltmid',
+    'stmid',
+    'stmid_v2',
+    'ltmid_v2',
+    'stuid_v2',
+    'ltuid_v2',
+]
+sk_list = ['stoken', 'stoken_v2']
+ck_list = ['cookie_token', 'cookie_token_v2']
+lt_list = ['login_ticket', 'login_ticket_v2']
 
 
 async def deal_ck(mes, qid, mode: str = 'PIC'):
@@ -19,7 +37,7 @@ async def deal_ck(mes, qid, mode: str = 'PIC'):
     return im
 
 
-async def _deal_ck_to_pic(im) -> bytes:
+async def _deal_ck_to_pic(im: str) -> bytes:
     ok_num = im.count('成功')
     if ok_num < 1:
         status_pic = pic_path / 'ck_no.png'
@@ -28,52 +46,88 @@ async def _deal_ck_to_pic(im) -> bytes:
     else:
         status_pic = pic_path / 'all_ok.png'
     with open(status_pic, 'rb') as f:
-        im = f.read()
-    return im
+        img = f.read()
+    return img
+
+
+async def get_account_id(simp_dict: SimpleCookie) -> str:
+    for _id in id_list:
+        if _id in simp_dict:
+            account_id = simp_dict[_id].value
+            break
+    else:
+        account_id = ''
+    return account_id
 
 
 async def _deal_ck(mes, qid) -> str:
     simp_dict = SimpleCookie(mes)
-    uid = await select_db(qid, 'uid')
-    '''
-    if isinstance(uid, str):
-        pass
-    else:
-        return '该用户没有绑定过UID噢~'
-    '''
+    uid: str = ''
     im_list = []
     is_add_stoken = False
+    status = True
     app_cookie, stoken = '', ''
-    if 'login_ticket' in simp_dict:
-        # 寻找stoken
-        login_ticket = simp_dict['login_ticket'].value
-        if 'login_uid' in simp_dict:
-            account_id = simp_dict['login_uid'].value
-        elif 'stuid' in simp_dict:
-            account_id = simp_dict['stuid'].value
-        elif 'ltuid' in simp_dict:
-            account_id = simp_dict['ltuid'].value
-        else:
-            return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
-        stoken_data = await get_stoken_by_login_ticket(
-            login_ticket, account_id
-        )
-        stoken = stoken_data['data']['list'][0]['token']
-        app_cookie = f'stuid={account_id};stoken={stoken}'
-        cookie_token_data = await get_cookie_token_by_stoken(
-            stoken, account_id
-        )
-        cookie_token = cookie_token_data['data']['cookie_token']
-        is_add_stoken = True
-    elif 'cookie_token' in simp_dict:
-        # 寻找uid
-        account_id = simp_dict['account_id'].value
-        cookie_token = simp_dict['cookie_token'].value
-    else:
+    account_id, cookie_token = '', ''
+    if status:
+        for lt in lt_list:
+            if lt in simp_dict:
+                # 寻找stoken
+                login_ticket = simp_dict[lt].value
+                account_id = await get_account_id(simp_dict)
+                if not account_id:
+                    return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
+                stoken_data = await get_stoken_by_login_ticket(
+                    login_ticket, account_id
+                )
+                stoken = stoken_data['data']['list'][0]['token']
+                app_cookie = f'stuid={account_id};stoken={stoken}'
+                cookie_token_data = await get_cookie_token_by_stoken(
+                    stoken, account_id
+                )
+                cookie_token = cookie_token_data['data']['cookie_token']
+                is_add_stoken = True
+                status = False
+                break
+    if status:
+        for sk in sk_list:
+            if sk in simp_dict:
+                account_id = await get_account_id(simp_dict)
+                if not account_id:
+                    return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
+                stoken = simp_dict[sk].value
+                if stoken.startswith('v2_'):
+                    if 'mid' in simp_dict:
+                        mid = simp_dict['mid'].value
+                        app_cookie = (
+                            f'stuid={account_id};stoken={stoken};mid={mid}'
+                        )
+                    else:
+                        return 'v2类型SK必须携带mid...'
+                else:
+                    app_cookie = f'stuid={account_id};stoken={stoken}'
+                cookie_token_data = await get_cookie_token_by_stoken(
+                    stoken, account_id
+                )
+                cookie_token = cookie_token_data['data']['cookie_token']
+                is_add_stoken = True
+                status = False
+                break
+    if status:
+        for ck in ck_list:
+            if ck in simp_dict:
+                # 寻找uid
+                account_id = await get_account_id(simp_dict)
+                if not account_id:
+                    return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
+                cookie_token = simp_dict['cookie_token'].value
+                status = False
+                break
+    if status:
         return (
             '添加Cookies失败!Cookies中应该包含cookie_token或者login_ticket相关信息！'
             '\n可以尝试退出米游社登陆重新登陆获取！'
         )
+
     account_cookie = f'account_id={account_id};cookie_token={cookie_token}'
 
     try:
@@ -83,8 +137,8 @@ async def _deal_ck(mes, qid) -> str:
             if i['game_id'] == 2:
                 uid = i['game_role_id']
                 break
-        # else:
-        #    return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+        else:
+            return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
     except:
         print('Null mys_data')
 

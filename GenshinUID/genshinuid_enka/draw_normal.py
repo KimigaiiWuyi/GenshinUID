@@ -439,19 +439,6 @@ async def get_artifacts_card(char: Character, img: Image.Image):
             (120, 120), Image.Resampling.LANCZOS
         ).convert("RGBA")
 
-        # alpha化
-        '''
-        artifacts_piece_new_img.putalpha(
-            artifacts_piece_new_img.getchannel('A').point(
-                lambda x: round(x * 0.9) if x > 0 else 0
-            )
-        )
-        '''
-        # equip_mask = Image.open(TEXT_PATH / 'equip_mask.png')
-        # a_img = Image.new('RGBA', (300, 100))
-        # a_img.paste(artifacts_piece_new_img, (140, -20))
-
-        # artifacts_img.paste(a_img, (0, 14), equip_mask)
         artifacts_img.paste(
             artifacts_piece_new_img, (165, 22), artifacts_piece_new_img
         )
@@ -552,7 +539,7 @@ async def get_artifacts_card(char: Character, img: Image.Image):
                 if value_temp >= 4.5:
                     artifacts_bg = (158, 39, 39)
                 artifacts_text.rounded_rectangle(
-                    (22, 210 + index * 35, 274, 239 + index * 35),
+                    (22, 209 + index * 35, 274, 238 + index * 35),
                     fill=artifacts_bg,
                     radius=8,
                 )

@@ -1,8 +1,11 @@
 from pathlib import Path
 from http.cookies import SimpleCookie
 
+from nonebot.log import logger
+
+from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_cache_and_check import refresh_ck
-from ..utils.db_operation.db_operation import stoken_db, cookies_db
+from ..utils.db_operation.db_operation import select_db, stoken_db, cookies_db
 from ..utils.mhy_api.get_mhy_data import (
     get_mihoyo_bbs_info,
     get_cookie_token_by_stoken,
@@ -62,7 +65,12 @@ async def get_account_id(simp_dict: SimpleCookie) -> str:
 
 async def _deal_ck(mes, qid) -> str:
     simp_dict = SimpleCookie(mes)
-    uid: str = ''
+    uid = await select_db(qid, mode='uid')
+    if isinstance(uid, str):
+        if '未找到绑定的UID' in uid:
+            return UID_HINT
+    else:
+        return UID_HINT
     im_list = []
     is_add_stoken = False
     status = True
@@ -131,14 +139,22 @@ async def _deal_ck(mes, qid) -> str:
     account_cookie = f'account_id={account_id};cookie_token={cookie_token}'
 
     try:
-        mys_data = await get_mihoyo_bbs_info(account_id, account_cookie)
-        # 剔除除了原神之外的其他游戏
-        for i in mys_data['data']['list']:
-            if i['game_id'] == 2:
-                uid = i['game_role_id']
-                break
+        if int(uid[0]) < 6:
+            mys_data = await get_mihoyo_bbs_info(account_id, account_cookie)
         else:
-            return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+            mys_data = await get_mihoyo_bbs_info(
+                account_id, account_cookie, True
+            )
+        # 剔除除了原神之外的其他游戏
+        if mys_data:
+            for i in mys_data['data']['list']:
+                if i['game_id'] == 2:
+                    uid = i['game_role_id']
+                    break
+            else:
+                return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+        else:
+            logger.warning('该CK似乎未通过校验, 这并不影响正常使用...但可能会造成奇怪的问题...')
     except:
         print('Null mys_data')
 

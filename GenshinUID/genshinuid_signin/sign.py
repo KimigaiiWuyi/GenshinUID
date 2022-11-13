@@ -3,7 +3,7 @@ import asyncio
 from copy import deepcopy
 
 from nonebot.log import logger
-
+from .captchaVerifier import captchaVerifier
 from ..utils.db_operation.db_operation import config_check, get_all_signin_list
 from ..utils.mhy_api.get_mhy_data import (
     get_validate,
@@ -54,11 +54,12 @@ async def sign_in(uid) -> str:
                     logger.info(
                         f'[签到] {uid} 该用户出现校验码，开始尝试进行无感验证...，开始重试第 {index + 1} 次'
                     )
-                    gt = sign_data['data']['gt']
-                    challenge = sign_data['data']['challenge']
-                    validate = await get_validate(gt, challenge)
+                    cap = await captchaVerifier()
+                    challenge = cap["challenge"]
+                    validate = cap['validate']
+                    #logger.info(validate)
                     if validate:
-                        delay = 50 + random.randint(1, 50)
+                        delay = 1
                         Header['x-rpc-challenge'] = challenge
                         Header['x-rpc-validate'] = validate
                         Header['x-rpc-seccode'] = f'{validate}|jordan'

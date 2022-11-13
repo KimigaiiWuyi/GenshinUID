@@ -6,8 +6,7 @@ from nonebot.log import logger
 
 from .captchaVerifier import captchaVerifier
 from ..utils.db_operation.db_operation import config_check, get_all_signin_list
-from ..utils.mhy_api.get_mhy_data import (
-    get_validate,
+from ..utils.mhy_api.get_mhy_data import (  # get_validate,
     get_sign_info,
     get_sign_list,
     mihoyo_bbs_sign,
@@ -53,9 +52,12 @@ async def sign_in(uid) -> str:
             if sign_data['data']['risk_code'] == 375:
                 if await config_check('CaptchaPass'):
                     logger.info(
-                        f'[签到] {uid} 该用户出现校验码，开始尝试进行无感验证...，开始重试第 {index + 1} 次'
+                        f'[签到] {uid} 该用户出现校验码，开始尝试进行无感验证...，'
+                        f'开始重试第 {index + 1} 次'
                     )
                     cap = await captchaVerifier()
+                    if cap is None:
+                        break
                     challenge = cap["challenge"]
                     validate = cap['validate']
                     # logger.info(validate)

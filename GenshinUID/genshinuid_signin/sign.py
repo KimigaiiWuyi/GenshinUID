@@ -3,6 +3,7 @@ import asyncio
 from copy import deepcopy
 
 from nonebot.log import logger
+
 from .captchaVerifier import captchaVerifier
 from ..utils.db_operation.db_operation import config_check, get_all_signin_list
 from ..utils.mhy_api.get_mhy_data import (
@@ -57,7 +58,7 @@ async def sign_in(uid) -> str:
                     cap = await captchaVerifier()
                     challenge = cap["challenge"]
                     validate = cap['validate']
-                    #logger.info(validate)
+                    # logger.info(validate)
                     if validate:
                         delay = 1
                         Header['x-rpc-challenge'] = challenge

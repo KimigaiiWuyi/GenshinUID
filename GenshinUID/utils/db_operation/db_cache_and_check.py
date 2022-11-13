@@ -10,7 +10,7 @@ from nonebot.log import logger
 
 from ..mhy_api.mhy_api import bbs_Taskslist
 from ..db_operation.gsuid_db_pool import gsuid_pool
-from ..mhy_api.get_mhy_data import get_mihoyo_bbs_info, get_info
+from ..mhy_api.get_mhy_data import get_info, get_mihoyo_bbs_info
 from ..mhy_api.mhy_api_tools import random_hex, old_version_get_ds_token
 
 
@@ -41,9 +41,7 @@ async def check_db():
             else:
                 info_data = await get_info(str(row[0]), row[1])
                 if info_data['retcode'] == 0:
-                    return_str = (
-                        return_str + f'uid{row[0]}的Cookies是正常的！\n'
-                    )
+                    return_str = return_str + f'uid{row[0]}的Cookies是正常的！\n'
                     normal_num += 1
                     logger.info(f'uid{row[0]}的Cookies是正常的！')
                 else:

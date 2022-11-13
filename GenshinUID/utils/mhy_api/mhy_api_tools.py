@@ -47,6 +47,7 @@ def get_ds_token(q='', b=None, salt=None):
     c = md5('salt=' + s + '&t=' + t + '&r=' + r + '&b=' + br + '&q=' + q)
     return t + ',' + r + ',' + c
 
+
 def generate_dynamic_secret(salt=None) -> str:
     """Create a new overseas dynamic secret."""
     if salt:

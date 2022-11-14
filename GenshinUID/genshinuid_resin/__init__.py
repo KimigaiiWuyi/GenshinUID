@@ -74,8 +74,9 @@ async def notice_job():
         await asyncio.sleep(0.5)
     logger.info('[推送检查] 群聊推送完成')
 
+
 @sv.on_fullmatch(('执行推送检查任务'))
-async def  manual_notice_job(bot: HoshinoBot, ev: CQEvent):
+async def manual_notice_job(bot: HoshinoBot, ev: CQEvent):
     if ev.sender:
         qid = int(ev.sender['user_id'])
     else:
@@ -84,6 +85,7 @@ async def  manual_notice_job(bot: HoshinoBot, ev: CQEvent):
         return
     await notice_job()
     await bot.send(ev, '推送检查任务已执行')
+
 
 @sv.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
 async def send_daily_info_pic(bot: HoshinoBot, ev: CQEvent):

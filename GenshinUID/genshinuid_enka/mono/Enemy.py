@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict, List
 
 from .Element import Element, reactable_elements_dict
 

@@ -6,7 +6,7 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "r+-30"
+      "4": "DendroResist+-30"
     },
     "group_effect": {
       "2": "",
@@ -328,7 +328,7 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "g+60;r+-40"
+      "4": "g+60;Resist+-40"
     },
     "group_effect": {
       "2": "",

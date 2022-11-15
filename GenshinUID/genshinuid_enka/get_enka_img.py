@@ -10,7 +10,6 @@ from .mono.Character import Character
 from .draw_char_card import draw_char_img
 from ..utils.message.error_reply import CHAR_HINT
 from ..utils.enka_api.enka_to_card import draw_enka_card
-from .etc.prop_calc import get_base_prop, get_simple_card_prop
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.alias.enName_to_avatarId import avatarId_to_enName
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
@@ -56,16 +55,16 @@ async def draw_enka_img(
 
     # 以 带 作为分割
     fake_char_name = ''
-    if '带' in msg and '换' in msg:
+    msg = msg.replace('带', '换')
+    count = msg.count('换')
+    if count >= 2:
         # 公子带天空之卷换可莉圣遗物
-        msg_list = msg.split('带')
+        msg_list = msg.split('换')
         fake_char_name, talent_num = await get_fake_char_str(msg_list[0])
-        msg_list = msg_list[1].split('换')
-        weapon, weapon_affix = await get_fake_weapon_str(msg_list[0])
-        char_name, _ = await get_fake_char_str(msg_list[1].replace('圣遗物', ''))
+        weapon, weapon_affix = await get_fake_weapon_str(msg_list[1])
+        char_name, _ = await get_fake_char_str(msg_list[2].replace('圣遗物', ''))
     else:
         # 以 换 作为分割
-        msg = msg.replace('带', '换')
         msg_list = msg.split('换')
         char_name, talent_num = await get_fake_char_str(msg_list[0])
         if len(msg_list) > 1:
@@ -111,47 +110,6 @@ async def draw_enka_img(
     )
     logger.info('[查询角色] 绘图完成,等待发送...')
     return im
-
-
-async def get_best_char(char_data: Dict, uid: str) -> Dict:
-    # 设定初始值
-    char_level = int(char_data['avatarLevel'])
-    char_name = char_data['avatarName']
-    fight_prop = await get_base_prop(char_data, char_name, char_level)
-
-    # 开始
-    logger.info(f'[查找最佳圣遗物] UID:{uid}开始进行迭代...')
-    best = []
-    artifacts_repo = await get_artifacts_repo(uid)
-    num = 0
-    TASKS = []
-    for flower in artifacts_repo['flower']:
-        for plume in artifacts_repo['plume']:
-            for sands in artifacts_repo['sands']:
-                for goblet in artifacts_repo['goblet']:
-                    for circlet in artifacts_repo['circlet']:
-                        char_data['equipList'] = [
-                            flower,
-                            plume,
-                            sands,
-                            goblet,
-                            circlet,
-                        ]
-                        char_data = await get_simple_card_prop(
-                            char_data, fight_prop
-                        )
-                        num += 1
-                        TASKS.append(
-                            await get_single_percent(
-                                deepcopy(char_data), uid, num, best
-                            )
-                        )
-                        break
-                        # await get_single_percent(char, uid, num, best)
-    asyncio.gather(*TASKS)
-    best.sort(key=lambda x: (-x['percent']))
-    logger.info(f'[查找最佳圣遗物] UID:{uid}完成!毕业度为{best[0]["percent"]}')
-    return char_data
 
 
 async def get_single_percent(char_data: Dict, uid: str, num: int, best: List):

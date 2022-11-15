@@ -7,6 +7,7 @@ OLD_URL_OS = 'https://api-os-takumi.mihoyo.com'
 NEW_URL_OS = 'https://bbs-api-os.hoyolab.com'
 BBS_URL_OS = 'https://bbs-api-os.hoyolab.com'
 HK4_URL_OS = 'https://hk4e-api-os.hoyoverse.com'
+SIGN_URL_OS = 'https://sg-hk4e-api.hoyolab.com'
 
 BBS_TASKLIST = BBS_URL + '/apihub/sapi/getUserMissionsState'
 
@@ -28,13 +29,13 @@ GET_GACHA_LOG_URL_OS = HK4_URL_OS + '/event/gacha_info/api/getGachaLog'
 '''米游社相关'''
 # 获取签到列表
 SIGN_LIST_URL = OLD_URL + '/event/bbs_sign_reward/home'
-SIGN_LIST_URL_OS = HK4_URL_OS + '/event/sol/home'
+SIGN_LIST_URL_OS = SIGN_URL_OS + '/event/sol/home'
 # 获取签到信息
 SIGN_INFO_URL = OLD_URL + '/event/bbs_sign_reward/info'
-SIGN_INFO_URL_OS = HK4_URL_OS + '/event/sol/info'
+SIGN_INFO_URL_OS = SIGN_URL_OS + '/event/sol/info'
 # 执行签到
 SIGN_URL = OLD_URL + '/event/bbs_sign_reward/sign'
-SIGN_URL_OS = HK4_URL_OS + '/event/sol/sign'
+SIGN_URL_OS = SIGN_URL_OS + '/event/sol/sign'
 
 '''原神相关'''
 # 每日信息 树脂 派遣等

@@ -6,7 +6,7 @@ from PIL import Image
 from .MAP_PATH import ATTR_MAP, dmgMap
 
 R_PATH = Path(__file__).parents[1]
-TEXT_PATH = R_PATH / 'texture2D'
+TEXT_PATH = R_PATH / 'texture2d'
 
 SCORE_MAP = {
     '暴击率': 2,

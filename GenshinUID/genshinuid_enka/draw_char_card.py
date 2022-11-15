@@ -1,4 +1,3 @@
-from io import BytesIO
 from typing import Tuple, Union, Optional
 
 from PIL import Image, ImageDraw
@@ -8,7 +7,7 @@ from .dmg_calc.dmg_calc import draw_dmg_img
 from .draw_char_curve import draw_char_curve_card
 from .etc.etc import TEXT_PATH, get_all_artifacts_value
 from ..utils.draw_image_tools.send_image_tool import convert_img
-from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from ..utils.genshin_fonts.genshin_fonts import gs_font_18, gs_font_50
 from .draw_normal import (
     get_bg_card,
     get_char_img,
@@ -44,23 +43,8 @@ async def draw_char_img(
     return res, char.char_bytes
 
 
-async def get_dmg_card(
-    card_prop: dict, fight_prop: dict, power_list: dict
-) -> Tuple[Image.Image, int]:
-    # 拿到倍率表
-    if power_list == {}:
-        dmg_img, dmg_len = Image.new('RGBA', (950, 1)), 0
-    else:
-        dmg_img, dmg_len = await draw_dmg_img(
-            card_prop, power_list, fight_prop
-        )
-    return dmg_img, dmg_len
-
-
 async def draw_char_card(char: Character, char_url: Optional[str]) -> bytes:
-    dmg_img, dmg_len = await get_dmg_card(
-        char.card_prop, char.fight_prop, char.power_list
-    )
+    dmg_img, dmg_len = await draw_dmg_img(char)
     char_img = await get_char_img(char, char_url)
     ex_len = dmg_len * 40 + 765
     img = await get_bg_card(char.char_element, ex_len, char_img)
@@ -80,21 +64,21 @@ async def draw_char_card(char: Character, char_url: Optional[str]) -> bytes:
         (768, 1564),
         f'{round(artifacts_all_score, 1)}',
         (255, 255, 255),
-        genshin_font_origin(50),
+        gs_font_50,
         anchor='mm',
     )
     img_text.text(
         (768, 1726),
         f'{str(char.percent)+"%"}',
         (255, 255, 255),
-        genshin_font_origin(50),
+        gs_font_50,
         anchor='mm',
     )
     img_text.text(
         (768, 1673),
         f'{char.seq_str}',
         (255, 255, 255),
-        genshin_font_origin(18),
+        gs_font_18,
         anchor='mm',
     )
     res = await convert_img(img)

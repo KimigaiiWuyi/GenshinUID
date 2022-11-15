@@ -136,12 +136,6 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
                     'plus': 0,
                     'value': [str(i) for i in range(1, 11)],
                 }
-                result['A丰穰之核(绽放)(暴击)'] = {
-                    'name': 'A丰穰之核(绽放)(暴击)',
-                    'type': '绽放',
-                    'plus': 0,
-                    'value': [str(i) for i in range(1, 11)],
-                }
         if char == '久岐忍':
             if 'A元素反应(超绽放)' not in result:
                 result['A元素反应(超绽放)'] = {

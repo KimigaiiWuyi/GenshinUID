@@ -586,6 +586,8 @@ async def _mhy_request(
             method, url=url, headers=header, params=params, json=data
         )
         text_data = await req.text()
+        # DEBUG 日志
+        logger.debug(f'【mhy_request】请求如下:\n{text_data}\n')
         if text_data.startswith('('):
             text_data = json.loads(text_data.replace("(", "").replace(")", ""))
             return text_data

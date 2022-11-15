@@ -40,7 +40,7 @@ async def sign_in(uid) -> str:
     for index in range(4):
         # 进行一次签到
         sign_data = await mihoyo_bbs_sign(uid=uid, Header=Header)
-        logger.debug(sign_data)
+        logger.info(sign_data)
         # 检测数据
         if (
             sign_data
@@ -93,7 +93,7 @@ async def sign_in(uid) -> str:
         logger.warning(f'[签到] {uid} 签到失败, 结果: {im}')
         return im
     # 获取签到列表
-    sign_list = await get_sign_list()
+    sign_list = await get_sign_list(uid)
     status = sign_data['message']
     getitem = sign_list['data']['awards'][
         int(sign_info['total_sign_day']) - 1

@@ -260,13 +260,25 @@ async def get_validate(gt: str, challenge: str) -> str:
     return validate
 
 
-async def get_sign_list() -> dict:
-    data = await _mhy_request(
-        url=SIGN_LIST_URL,
-        method='GET',
-        header=_HEADER,
-        params={'act_id': 'e202009291139501'},
-    )
+async def get_sign_list(uid) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(str(uid)[0]) < 6:
+        data = await _mhy_request(
+            url=SIGN_LIST_URL,
+            method='GET',
+            header=_HEADER,
+            params={'act_id': 'e202009291139501'},
+        )
+    else:
+        data = await _mhy_request(
+            url=SIGN_LIST_URL_OS,
+            method='GET',
+            header=_HEADER_OS,
+            params={
+                'act_id': 'e202102251931481',
+                'lang': 'zh-cn',
+            },
+        )
     return data
 
 
@@ -293,7 +305,12 @@ async def get_sign_info(uid) -> dict:
             url=SIGN_INFO_URL_OS,
             method='GET',
             header=HEADER,
-            params={'region': server_id, 'uid': uid},
+            params={
+                'act_id': 'e202102251931481',
+                'lang': 'zh-cn',
+                'region': server_id,
+                'uid': uid,
+            },
         )
     return data
 
@@ -339,7 +356,8 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
             method='POST',
             header=HEADER,
             data={
-                'act_id': 'e202009291139501',
+                'act_id': 'e202102251931481',
+                'lang': 'zh-cn',
                 'uid': uid,
                 'region': server_id,
             },

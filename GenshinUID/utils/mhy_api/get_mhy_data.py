@@ -616,7 +616,12 @@ async def _mhy_request(
         is_temp_sess = True
     try:
         req = await sess.request(
-            method, url=url, headers=header, params=params, json=data, proxy=PROXY_URL if use_proxy else None
+            method,
+            url=url,
+            headers=header,
+            params=params,
+            json=data,
+            proxy=PROXY_URL if use_proxy else None,
         )
         text_data = await req.text()
         # DEBUG 日志

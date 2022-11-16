@@ -5,6 +5,7 @@ import random
 import asyncio
 from typing import Any, Dict, Literal, Optional
 
+from nonebot import get_driver
 from nonebot.log import logger
 from aiohttp import ClientSession
 
@@ -44,6 +45,8 @@ from ..mhy_api.mhy_api import (
     MIHOYO_BBS_PLAYER_INFO_URL,
     MIHOYO_BBS_PLAYER_INFO_URL_OS,
 )
+
+PROXY_URL = getattr(get_driver().config, 'proxy', None)
 
 gacha_type_meta_data = {
     '新手祈愿': ['100'],
@@ -234,6 +237,7 @@ async def get_daily_data(uid: str) -> dict:
             method='GET',
             header=HEADER,
             params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
         )
     return data
 
@@ -278,6 +282,7 @@ async def get_sign_list(uid) -> dict:
                 'act_id': 'e202102251931481',
                 'lang': 'zh-cn',
             },
+            use_proxy=True,
         )
     return data
 
@@ -311,6 +316,7 @@ async def get_sign_info(uid) -> dict:
                 'region': server_id,
                 'uid': uid,
             },
+            use_proxy=True,
         )
     return data
 
@@ -361,6 +367,7 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
                 'uid': uid,
                 'region': server_id,
             },
+            use_proxy=True,
         )
     return data
 
@@ -403,6 +410,7 @@ async def get_award(uid) -> dict:
                 'uid': uid,
                 'month': '0',
             },
+            use_proxy=True,
         )
     return data
 
@@ -428,6 +436,7 @@ async def get_info(uid, ck) -> dict:
             method='GET',
             header=HEADER,
             params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
         )
 
     return data
@@ -464,6 +473,7 @@ async def get_spiral_abyss_info(uid, ck, schedule_type='1') -> dict:
                 'role_id': uid,
                 'schedule_type': schedule_type,
             },
+            use_proxy=True,
         )
     return data
 
@@ -504,6 +514,7 @@ async def get_character(uid, character_ids, ck) -> dict:
                 'role_id': uid,
                 'server': server_id,
             },
+            use_proxy=True,
         )
     return data
 
@@ -533,6 +544,7 @@ async def get_calculate_info(client: ClientSession, uid, char_id, ck, name):
             url=CALCULATE_INFO_URL_OS,
             headers=HEADER,
             params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
+            proxy=PROXY_URL,
         )
         data = await req.json()
         data.update({'name': name})
@@ -570,6 +582,7 @@ async def get_mihoyo_bbs_info(
         method='GET',
         header=HEADER,
         params={'uid': mysid},
+        use_proxy=is_os,
     )
     return data
 
@@ -581,6 +594,7 @@ async def _mhy_request(
     params: Optional[Dict[str, Any]] = None,
     data: Optional[Dict[str, Any]] = None,
     sess: Optional[ClientSession] = None,
+    use_proxy: bool = False,
 ) -> dict:
     '''
     :说明:
@@ -592,6 +606,7 @@ async def _mhy_request(
       * params (Dict[str, Any]): 参数。
       * data (Dict[str, Any]): 参数(`post`方法需要传)。
       * sess (ClientSession): 可选, 指定client。
+      * use_proxy (bool): 是否使用proxy
     :返回:
       * result (dict): json.loads()解析字段。
     '''
@@ -601,7 +616,7 @@ async def _mhy_request(
         is_temp_sess = True
     try:
         req = await sess.request(
-            method, url=url, headers=header, params=params, json=data
+            method, url=url, headers=header, params=params, json=data, proxy=PROXY_URL if use_proxy else None
         )
         text_data = await req.text()
         # DEBUG 日志

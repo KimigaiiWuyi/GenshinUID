@@ -8,7 +8,12 @@ from typing import Any, Dict, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
+from ..db_operation.db_operation import (
+    cache_db,
+    get_stoken,
+    config_check,
+    owner_cookies,
+)
 from ..mhy_api.mhy_api_tools import (
     random_hex,
     random_text,
@@ -18,16 +23,20 @@ from ..mhy_api.mhy_api_tools import (
 )
 from ..mhy_api.mhy_api import (
     SIGN_URL,
+    VERIFY_URL,
     GT_TEST_URL,
+    GT_TPYE_URL,
     SIGN_URL_OS,
     SIGN_INFO_URL,
     SIGN_LIST_URL,
     DAILY_NOTE_URL,
     GET_STOKEN_URL,
+    GT_TEST_URL_V6,
     GET_AUTHKEY_URL,
     PLAYER_INFO_URL,
     SIGN_INFO_URL_OS,
     SIGN_LIST_URL_OS,
+    VERIFICATION_URL,
     DAILY_NOTE_URL_OS,
     GET_GACHA_LOG_URL,
     MONTHLY_AWARD_URL,
@@ -44,6 +53,8 @@ from ..mhy_api.mhy_api import (
     MIHOYO_BBS_PLAYER_INFO_URL,
     MIHOYO_BBS_PLAYER_INFO_URL_OS,
 )
+
+PROXY_URL = ''
 
 gacha_type_meta_data = {
     '新手祈愿': ['100'],
@@ -234,6 +245,7 @@ async def get_daily_data(uid: str) -> dict:
             method='GET',
             header=HEADER,
             params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
         )
     return data
 
@@ -250,7 +262,9 @@ async def get_validate(gt: str, challenge: str) -> str:
     HEADER['Referer'] = 'https://webstatic.mihoyo.com/'
     HEADER['X-Requested-With'] = 'com.mihoyo.hyperion'
     validate = ''
-    data = await _mhy_request(GT_TEST_URL.format(gt, challenge), 'GET', HEADER)
+    data = await _mhy_request(
+        GT_TEST_URL_V6.format(gt, challenge), 'GET', HEADER
+    )
     if (
         data
         and 'success' in data['status']
@@ -278,6 +292,7 @@ async def get_sign_list(uid) -> dict:
                 'act_id': 'e202102251931481',
                 'lang': 'zh-cn',
             },
+            use_proxy=True,
         )
     return data
 
@@ -311,6 +326,7 @@ async def get_sign_info(uid) -> dict:
                 'region': server_id,
                 'uid': uid,
             },
+            use_proxy=True,
         )
     return data
 
@@ -361,6 +377,7 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
                 'uid': uid,
                 'region': server_id,
             },
+            use_proxy=True,
         )
     return data
 
@@ -403,6 +420,7 @@ async def get_award(uid) -> dict:
                 'uid': uid,
                 'month': '0',
             },
+            use_proxy=True,
         )
     return data
 
@@ -428,6 +446,7 @@ async def get_info(uid, ck) -> dict:
             method='GET',
             header=HEADER,
             params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
         )
 
     return data
@@ -464,6 +483,7 @@ async def get_spiral_abyss_info(uid, ck, schedule_type='1') -> dict:
                 'role_id': uid,
                 'schedule_type': schedule_type,
             },
+            use_proxy=True,
         )
     return data
 
@@ -504,6 +524,7 @@ async def get_character(uid, character_ids, ck) -> dict:
                 'role_id': uid,
                 'server': server_id,
             },
+            use_proxy=True,
         )
     return data
 
@@ -533,6 +554,7 @@ async def get_calculate_info(client: ClientSession, uid, char_id, ck, name):
             url=CALCULATE_INFO_URL_OS,
             headers=HEADER,
             params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
+            proxy=PROXY_URL,
         )
         data = await req.json()
         data.update({'name': name})
@@ -570,8 +592,51 @@ async def get_mihoyo_bbs_info(
         method='GET',
         header=HEADER,
         params={'uid': mysid},
+        use_proxy=is_os,
     )
     return data
+
+
+async def mhy_pass(header: Dict):
+    header['DS'] = get_ds_token(f'is_high=false')
+    raw_data = await _mhy_request(
+        url=VERIFICATION_URL,
+        method='GET',
+        header=header,
+    )
+    gt = raw_data['data']['gt']
+    ch = raw_data['data']['challenge']
+    header['DS'] = get_ds_token(f'gt={gt}')
+    _ = await _mhy_request(
+        url=GT_TPYE_URL.format(gt),
+        method='GET',
+        header=header,
+    )
+    header['DS'] = get_ds_token(f'gt={gt}&challenge={ch}')
+    data = await _mhy_request(
+        url=GT_TEST_URL_V6.format(gt, ch),
+        method='GET',
+        header=header,
+    )
+    validate = data['data']['validate']
+    header['DS'] = get_ds_token(
+        '',
+        {
+            'geetest_challenge': ch,
+            'geetest_validate': validate,
+            'geetest_seccode': f'{validate}|jordan',
+        },
+    )
+    _ = await _mhy_request(
+        url=VERIFY_URL,
+        method='POST',
+        header=header,
+        data={
+            'geetest_challenge': ch,
+            'geetest_validate': validate,
+            'geetest_seccode': f'{validate}|jordan',
+        },
+    )
 
 
 async def _mhy_request(
@@ -581,6 +646,7 @@ async def _mhy_request(
     params: Optional[Dict[str, Any]] = None,
     data: Optional[Dict[str, Any]] = None,
     sess: Optional[ClientSession] = None,
+    use_proxy: Optional[bool] = False,
 ) -> dict:
     '''
     :说明:
@@ -592,6 +658,7 @@ async def _mhy_request(
       * params (Dict[str, Any]): 参数。
       * data (Dict[str, Any]): 参数(`post`方法需要传)。
       * sess (ClientSession): 可选, 指定client。
+      * use_proxy (bool): 是否使用proxy
     :返回:
       * result (dict): json.loads()解析字段。
     '''
@@ -601,7 +668,12 @@ async def _mhy_request(
         is_temp_sess = True
     try:
         req = await sess.request(
-            method, url=url, headers=header, params=params, json=data
+            method,
+            url=url,
+            headers=header,
+            params=params,
+            json=data,
+            proxy=PROXY_URL if use_proxy else None,
         )
         text_data = await req.text()
         # DEBUG 日志
@@ -609,10 +681,24 @@ async def _mhy_request(
         if text_data.startswith('('):
             text_data = json.loads(text_data.replace("(", "").replace(")", ""))
             return text_data
-        return await req.json()
+        raw_data = await req.json()
+        if raw_data['retcode'] == 1034:
+            if await config_check('MhyPass'):
+                logger.warning('触发验证码...尝试绕过...')
+                await mhy_pass(header)
+                req = await sess.request(
+                    method,
+                    url=url,
+                    headers=header,
+                    params=params,
+                    json=data,
+                    proxy=PROXY_URL if use_proxy else None,
+                )
+                raw_data = await req.json()
+        return raw_data
     except Exception:
         logger.exception(f'访问{url}失败！')
-        return {}
+        return {'retcode': -1}
     finally:
         if is_temp_sess:
             await sess.close()

@@ -13,7 +13,18 @@ BBS_TASKLIST = BBS_URL + '/apihub/sapi/getUserMissionsState'
 
 '''GT'''
 # AJAX 无感验证
-GT_TEST_URL = 'https://api.geetest.com/ajax.php?gt={}&challenge={}&lang=zh-cn&pt=3&client_type=web_mobile'
+GT_TEST = 'https://api.geetest.com/ajax.php?'
+GT_TEST_V6 = 'https://apiv6.geetest.com/ajax.php?'
+GT_QUERY = 'gt={}&challenge={}&lang=zh-cn&pt=3&client_type=web_mobile'
+
+GT_TEST_URL = GT_TEST + GT_QUERY
+GT_TEST_URL_V6 = GT_TEST_V6 + GT_QUERY
+
+GT_TPYE_URL = 'https://api.geetest.com/gettype.php?gt={}'
+VERIFICATION_URL = (
+    NEW_URL + '/game_record/app/card/wapi/createVerification?is_high=false'
+)
+VERIFY_URL = NEW_URL + '/game_record/app/card/wapi/verifyVerification'
 
 '''账号相关'''
 # 通过LoginTicket获取Stoken

@@ -45,12 +45,8 @@ async def sign_in(uid) -> str:
         sign_data = await mihoyo_bbs_sign(uid=uid, Header=Header)
         logger.info(sign_data)
         # 检测数据
-        if (
-            sign_data
-            and 'data' in sign_data
-            and sign_data['data']
-        ):
-            if ('risk_code' in sign_data['data']):
+        if sign_data and 'data' in sign_data and sign_data['data']:
+            if 'risk_code' in sign_data['data']:
                 # 出现校验码
                 if sign_data['data']['risk_code'] == 375:
                     if await config_check('CaptchaPass'):
@@ -86,7 +82,9 @@ async def sign_in(uid) -> str:
                     else:
                         logger.info(f'[签到] [无感验证] {uid} 该用户重试 {index} 次验证成功!')
                     break
-            elif (int(str(uid)[0]) > 5) and (sign_data['data']['code'] == 'ok'):
+            elif (int(str(uid)[0]) > 5) and (
+                sign_data['data']['code'] == 'ok'
+            ):
                 # 国际服签到无risk_code字段
                 logger.info(f'[国际服签到] {uid} 签到成功!')
                 break

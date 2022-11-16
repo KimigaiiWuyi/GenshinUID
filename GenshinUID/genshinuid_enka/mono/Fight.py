@@ -7,7 +7,6 @@ from .Enemy import Enemy
 from .Power import Power
 from .Element import Element
 from .Character import Character
-from ..effect.power_add import get_extra_value
 from ..dmg_calc.base_value import base_value_list
 
 
@@ -149,12 +148,8 @@ class Fight:
 
         # 拿到百分比和固定值,百分比为float,形如2.2 也就是202%
         power_percent, power_value = await p2v(power, power_plus)
-        if '13层' in power_name:
-            power_percent += await get_extra_value(
-                char.char_name, 'Q每层能量伤害', power_level
-            )
 
-        # 额外加成,目前只有雷神
+        # 额外加成,目前有雷神和优菈
         if char.extra_effect and power_name in char.extra_effect:
             power_percent += char.extra_effect[power_name]
 

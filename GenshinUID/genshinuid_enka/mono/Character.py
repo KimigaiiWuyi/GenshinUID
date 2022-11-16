@@ -550,11 +550,10 @@ class Character:
 
         # 特殊效果,目前有雷神满愿力
         if self.char_name in EXTRA_CHAR_LIST:
+            skill_effect = EXTRA_CHAR_LIST[self.char_name]
+            attack_type = skill_effect["name"][0]
+            skill_level = prop[f'{attack_type}_skill_level'] - 1
             if self.char_name == '雷电将军':
-                skill_effect = EXTRA_CHAR_LIST[self.char_name]
-                skill_level = (
-                    prop[f'{skill_effect["name"][0]}_skill_level'] - 1
-                )
                 value_1 = float(
                     skill_effect['value'][skill_level].split('+')[0]
                 )
@@ -570,6 +569,9 @@ class Character:
                     )
                 )
                 self.extra_effect = {'Q梦想一刀基础伤害(满愿力)': value_1}
+            elif self.char_name == '优菈':
+                value = 13 * float(skill_effect['value'][skill_level])
+                self.extra_effect = {'Q光降之剑基础伤害(13层)': value}
 
         # 在计算buff前, 引入特殊效果
         if self.char_name == '雷电将军':
@@ -578,7 +580,7 @@ class Character:
             all_effect.append('AnemoResist+-20;PhysicalResist+-20')
             all_effect.append('CryoResist+-20;DendroResist+-20')
             all_effect.append('ElectroResist+-20;HydroResist+-20')
-            all_effect.append('PyroResist+-20;ToxicResist+-20')
+            all_effect.append('PyroResist+-20;GeoResist+-20')
         elif self.char_name == '妮露':
             all_effect.append('addHp+25')
             all_effect.append('elementalMastery+80')

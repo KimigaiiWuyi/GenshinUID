@@ -63,3 +63,23 @@ async def send_link_uid_msg(bot: HoshinoBot, ev: CQEvent):
         else:
             im = await delete_db(qid, {'MYSID': args[2]})
     await bot.send(ev, im, at_sender=True)
+
+
+@sv.on_fullmatch('绑定ck说明')
+async def send_ck_msg(bot: HoshinoBot, ev: CQEvent):
+    msg_list = []
+    msg_list.append('请先添加bot为好友')
+    msg_list.append("var cookie = document.cookie;\nvar Str_Num = cookie.indexOf('_MHYUUID=');\ncookie = '添加 ' + cookie.substring(Str_Num);\nvar ask = confirm('Cookie:' + cookie + '\\n\\n按确认，然后粘贴发送给机器人');\nif (ask == true) {\n  copy(cookie);\n  msg = cookie\n} else {\n  msg = 'Cancel'\n}")
+    msg_list.append("1.复制上面全部代码，然后打开https://bbs.mihoyo.com/ys（国服）或者https://www.hoyolab.com/home（国际服）\n2.在页面上右键检查或者Ctrl+Shift+i\n3.选择控制台（Console），粘贴，回车，在弹出的窗口点确认（点完自动复制）\n4.然后在和机器人的私聊窗口，粘贴发送即可")
+
+    forward_msg = []
+    for msg in msg_list:
+        forward_msg.append({
+            "type": "node",
+            "data": {
+                "name": "小冰",
+                "uin": "2854196306",
+                "content": msg
+            }
+        })
+    await bot.send_group_forward_msg(group_id=ev.group_id, messages=forward_msg)

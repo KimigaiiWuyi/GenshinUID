@@ -33,7 +33,10 @@ async def sign_in(uid) -> str:
         logger.info(f'[签到] {uid} 该用户今日已签到,跳过...')
         global already
         already += 1
-        return '今日已签到!'
+        day_of_month = int(sign_info['today'].split('-')[-1])
+        signed_count = int(sign_info['total_sign_day'])
+        sign_missed = day_of_month - signed_count
+        return f'今日已签到！本月漏签次数：{sign_missed}'
 
     # 实际进行签到
     Header = {}
@@ -46,47 +49,51 @@ async def sign_in(uid) -> str:
             sign_data
             and 'data' in sign_data
             and sign_data['data']
-            and 'risk_code' in sign_data['data']
         ):
-            # 出现校验码
-            if sign_data['data']['risk_code'] == 375:
-                if await config_check('CaptchaPass'):
-                    logger.info(
-                        f'[签到] {uid} 该用户出现校验码，开始尝试进行无感验证...，'
-                        f'开始重试第 {index + 1} 次'
-                    )
-                    cap = await captchaVerifier()
-                    if cap is None:
-                        break
-                    challenge = cap["challenge"]
-                    validate = cap['validate']
-                    # logger.info(validate)
-                    if validate:
-                        delay = 1
-                        Header['x-rpc-challenge'] = challenge
-                        Header['x-rpc-validate'] = validate
-                        Header['x-rpc-seccode'] = f'{validate}|jordan'
-                        logger.info(f'[签到] {uid} 已获取验证码, 等待时间{delay}秒')
-                        await asyncio.sleep(delay)
+            if ('risk_code' in sign_data['data']):
+                # 出现校验码
+                if sign_data['data']['risk_code'] == 375:
+                    if await config_check('CaptchaPass'):
+                        logger.info(
+                            f'[签到] {uid} 该用户出现校验码，开始尝试进行无感验证...，'
+                            f'开始重试第 {index + 1} 次'
+                        )
+                        cap = await captchaVerifier()
+                        if cap is None:
+                            break
+                        challenge = cap["challenge"]
+                        validate = cap['validate']
+                        # logger.info(validate)
+                        if validate:
+                            delay = 1
+                            Header['x-rpc-challenge'] = challenge
+                            Header['x-rpc-validate'] = validate
+                            Header['x-rpc-seccode'] = f'{validate}|jordan'
+                            logger.info(f'[签到] {uid} 已获取验证码, 等待时间{delay}秒')
+                            await asyncio.sleep(delay)
+                        else:
+                            delay = 605 + random.randint(1, 120)
+                            logger.info(f'[签到] {uid} 未获取验证码,等待{delay}秒后重试...')
+                            await asyncio.sleep(delay)
+                        continue
                     else:
-                        delay = 605 + random.randint(1, 120)
-                        logger.info(f'[签到] {uid} 未获取验证码,等待{delay}秒后重试...')
-                        await asyncio.sleep(delay)
-                    continue
+                        logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')
+                        return '签到失败...出现验证码!当前配置暂未开启[跳过无感验证],结束签到!'
+                # 成功签到!
                 else:
-                    logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')
-                    return '签到失败...出现验证码!当前配置暂未开启[跳过无感验证],结束签到!'
-            # 成功签到!
-            else:
-                if index == 0:
-                    logger.info(f'[签到] {uid} 该用户无校验码!')
-                else:
-                    logger.info(f'[签到] [无感验证] {uid} 该用户重试 {index} 次验证成功!')
+                    if index == 0:
+                        logger.info(f'[签到] {uid} 该用户无校验码!')
+                    else:
+                        logger.info(f'[签到] [无感验证] {uid} 该用户重试 {index} 次验证成功!')
+                    break
+            elif (int(str(uid)[0]) > 5) and (sign_data['data']['code'] == 'ok'):
+                # 国际服签到无risk_code字段
+                logger.info(f'[国际服签到] {uid} 签到成功!')
                 break
-        # 重试超过阈值
-        else:
-            logger.warning('[签到] 超过请求阈值...')
-            return '签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到！'
+            else:
+                # 重试超过阈值
+                logger.warning('[签到] 超过请求阈值...')
+                return '签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到！'
     # 签到失败
     else:
         im = '签到失败!'
@@ -104,11 +111,19 @@ async def sign_in(uid) -> str:
     get_im = f'本次签到获得{getitem}x{getnum}'
     new_sign_info = await get_sign_info(uid)
     new_sign_info = new_sign_info['data']
+    day_of_month = int(new_sign_info['today'].split('-')[-1])
+    signed_count = int(new_sign_info['total_sign_day'])
+    sign_missed = day_of_month - signed_count
     if new_sign_info['is_sign']:
         mes_im = '签到成功'
     else:
         mes_im = f'签到失败, 状态为:{status}'
-    sign_missed = sign_info['sign_cnt_missed']
+        sign_missed -= 1
+    try:
+        sign_missed = sign_info['sign_cnt_missed']
+    except:
+        # 国际服无sign_missed字段
+        pass
     im = mes_im + '!' + '\n' + get_im + '\n' + f'本月漏签次数：{sign_missed}'
     logger.info(f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
     return im

@@ -405,7 +405,7 @@ class Fight:
         # 暴击伤害 = 普通伤害 * 暴击区
         crit_dmg = normal_dmg * (1 + critdmg)
         # 平均伤害
-        if (critrate < 1):
+        if critrate < 1:
             avg_dmg = crit_dmg * critrate + (1 - critrate) * normal_dmg
         else:
             # 暴击率超过100%后不再计算期望

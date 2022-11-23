@@ -1,6 +1,6 @@
 from nonebot.rule import Rule
+from nonebot.adapters.qqguild import Message
 from nonebot.params import Depends, CommandArg
-from nonebot.adapters.onebot.v11 import Message
 
 
 async def full_command(arg: Message = CommandArg()) -> bool:

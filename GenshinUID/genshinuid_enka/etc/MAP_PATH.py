@@ -1,8 +1,16 @@
 import json
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, TypedDict
 
 EFFECT_PATH = Path(__file__).parents[1] / 'effect'
+
+
+class ActionMAP(TypedDict):
+    name: str
+    type: str
+    plus: int
+    value: List[str]
+
 
 with open(EFFECT_PATH / 'weapon_effect.json', "r", encoding='UTF-8') as f:
     weapon_effect_map: Dict[
@@ -21,7 +29,7 @@ with open(EFFECT_PATH / 'value_attr.json', 'r', encoding='UTF-8') as f:
     ATTR_MAP: Dict[str, List[str]] = json.load(f)
 
 with open(EFFECT_PATH / 'char_action.json', 'r', encoding='UTF-8') as f:
-    char_action = json.load(f)
+    char_action: Dict[str, Dict[str, ActionMAP]] = json.load(f)
 
 with open(EFFECT_PATH / 'dmg_map.json', 'r', encoding='UTF-8') as f:
     dmgMap = json.load(f)

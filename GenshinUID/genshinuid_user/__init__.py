@@ -1,3 +1,4 @@
+import asyncio
 from typing import Any, Tuple
 
 from nonebot.log import logger
@@ -10,6 +11,7 @@ from nonebot.adapters.ntchat import Bot, MessageEvent, MessageSegment
 
 from .add_ck import deal_ck
 from ..config import priority
+from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
@@ -17,6 +19,12 @@ from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
 
 add_cookie = on_command('添加', permission=PRIVATE)
+get_ck_msg = on_command(
+    '绑定ck说明',
+    aliases={'ck帮助', '绑定ck'},
+    block=True,
+    rule=FullCommand(),
+)
 bind_info = on_command(
     '绑定信息', priority=priority, block=True, rule=FullCommand()
 )
@@ -149,3 +157,11 @@ async def send_link_uid_msg(
         else:
             im = await delete_db(qid, {'MYSID': args[2]})
     await matcher.finish(im, at_sender=True)
+
+
+@get_ck_msg.handle()
+async def send_ck_help(matcher: Matcher):
+    msg_list = await get_ck_help()
+    for msg in msg_list:
+        await matcher.send(msg)
+        await asyncio.sleep(0.5)

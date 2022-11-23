@@ -6,12 +6,12 @@ from typing import Dict, Union, Optional
 sys.path.append(str(Path(__file__).parents[1]))
 try:
     from ...utils.ambr_api.prop_map import PROP_MAP
-    from ...utils.ambr_api.grow_curve import GROW_CURVE_LIST
-    from ...utils.ambr_api.get_ambr_data import get_char_data
+    from ...utils.ambr_api.get_ambr_data import get_char_data, get_weapon_data
+    from ...utils.ambr_api.grow_curve import GROW_CURVE_LIST, WEAPON_GROW_CURVE
 except ImportError:
     from utils.ambr_api.prop_map import PROP_MAP
-    from utils.ambr_api.grow_curve import GROW_CURVE_LIST
-    from utils.ambr_api.get_ambr_data import get_char_data
+    from utils.ambr_api.get_ambr_data import get_char_data, get_weapon_data
+    from utils.ambr_api.grow_curve import GROW_CURVE_LIST, WEAPON_GROW_CURVE
 
 ELEMENT_MAP = {
     'Wind': '风',
@@ -37,6 +37,52 @@ WEAPON_TYPE = {
     'WEAPON_BOW': '弓',
     'WEAPON_POLE': '长柄武器',
 }
+
+
+async def convert_ambr_to_weapon(weapon_id: Union[int, str]):
+    raw_data = await get_weapon_data(weapon_id)
+    if 'code' in raw_data:
+        return None
+    raw_data = raw_data['data']
+    effect = list(raw_data['affix'].values())[0]
+    effect_name = effect['name']
+    effect_up = effect['upgrade']
+    upgrade = raw_data['upgrade']
+    baseatk = upgrade['prop'][0]['initValue']
+    basesp = upgrade['prop'][-1]['initValue']
+    result = {
+        'name': raw_data['name'],
+        'weapontype': raw_data['type'],
+        'rarity': str(raw_data['rank']),
+        'baseatk': baseatk,
+        'substat': PROP_MAP[upgrade['prop'][1]['propType']],
+        'effectname': effect_name,
+        'level': 90,
+        'ascension': 6,
+    }
+    for index, affix in enumerate(effect_up):
+        effect_value = re.findall(
+            r'<c[^\u4e00-\u9fa5]+>\d+?.?\d+[^\u4e00-\u9fa5]+r>',
+            effect_up[affix],
+        )
+        attr_list = []
+        if index == 0:
+            result['effect'] = effect_up[affix]
+        for i, v in enumerate(effect_value):
+            if index == 0:
+                result['effect'] = result['effect'].replace(v, f'{{{i}}}')
+            r = re.search(r'>([0-9/.%]+)', v)
+            if r:
+                attr_list.append(r.group(1))
+        result[f'r{index+1}'] = attr_list
+    atk_curve_type = upgrade['prop'][0]['type']
+    sp_curve_type = upgrade['prop'][1]['type']
+    atk_curve = WEAPON_GROW_CURVE['90']['curveInfos'][atk_curve_type]
+    sp_curve = WEAPON_GROW_CURVE['90']['curveInfos'][sp_curve_type]
+    atk_promoto = upgrade['promote'][-1]['addProps']['FIGHT_PROP_BASE_ATTACK']
+    result['attack'] = atk_curve * baseatk + atk_promoto
+    result['specialized'] = sp_curve * basesp
+    return result
 
 
 async def convert_ambr_to_minigg(char_id: Union[str, int]) -> Optional[Dict]:

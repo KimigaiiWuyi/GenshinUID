@@ -399,11 +399,11 @@
       },
       "fight_talent": {
         "1": "",
-        "2": "r+-12",
+        "2": "AnemoResist+-12;PhysicalResist+-12",
         "3": "",
         "4": "dmgBonus+25",
         "5": "",
-        "6": "r+-20"
+        "6": "Resist+-20"
       },
       "group_skill": {
         "50": "",
@@ -440,7 +440,7 @@
         "70": "addAtk+10"
       },
       "fight_talent": {
-        "1": "r+-15",
+        "1": "PyroResist+-15",
         "2": "",
         "3": "",
         "4": "",
@@ -487,7 +487,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": "r+-15"
+        "6": "ElectroResist+-15"
       },
       "group_skill": {
         "50": "",
@@ -525,7 +525,7 @@
       },
       "fight_talent": {
         "1": "",
-        "2": "r+-15",
+        "2": "HydroResist+-15",
         "3": "",
         "4": "E:dmgBonus+50",
         "5": "",
@@ -941,7 +941,7 @@
     "fight": {
       "fight_skill": {
         "50": "",
-        "70": "r+-10"
+        "70": "CryoResist+-10"
       },
       "fight_talent": {
         "1": "",
@@ -986,7 +986,7 @@
         "70": "BE:dmgBonus+20"
       },
       "fight_talent": {
-        "1": "r+-15",
+        "1": "CryoResist+-15",
         "2": "",
         "3": "",
         "4": "dmgBonus+15",
@@ -1109,7 +1109,7 @@
     "fight": {
       "fight_skill": {
         "50": "",
-        "70": "dmgBonus+20%energyRecharge"
+        "70": "dmgBonus+20%energyrecharge"
       },
       "fight_talent": {
         "1": "",
@@ -1241,7 +1241,7 @@
         "1": "",
         "2": "Q:critRate+100",
         "3": "",
-        "4": "r+-15",
+        "4": "PhysicalResist+-15",
         "5": "",
         "6": "B:addAtk+50%def"
       },
@@ -1285,7 +1285,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": "r+-20"
+        "6": "PhysicalResist+-20"
       },
       "group_skill": {
         "50": "",
@@ -1571,7 +1571,7 @@
     "fight": {
       "fight_skill": {
         "50": "",
-        "70": ""
+        "70": "Q:dmgBonus+12%energyRecharge"
       },
       "fight_talent": {
         "1": "",
@@ -2405,7 +2405,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": "critRate+30%0.06%hp;critDmg+60%0.12%hp"
+        "6": "critRate+30%0.0006%hp;critDmg+60%0.0012%hp"
       }
     },
     "fight": {
@@ -2415,7 +2415,7 @@
       },
       "fight_talent": {
         "1": "水月:dmgBonus+65",
-        "2": "r+-35",
+        "2": "HydroResist+-35;DendroResist+-35",
         "3": "",
         "4": "Q:dmgBonus+50",
         "5": "",
@@ -2642,6 +2642,174 @@
         "4": "",
         "5": "",
         "6": ""
+      }
+    }
+  },
+  "旅行者(风)": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "energyRecharge+16",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "Resist+-20"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "旅行者(岩)": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "critRate+10",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "旅行者(雷)": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "ElectroResist+-15",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "旅行者(草)": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "elementalMastery+60",
+        "70": "E:dmgBonus+0.15%elementalMastery;Q:dmgBonus+0.1%elementalMastery"
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "dmgBonus+12"
+      },
+      "group_skill": {
+        "50": "elementalMastery+60",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "dmgBonus+12"
       }
     }
   }

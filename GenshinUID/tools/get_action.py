@@ -119,7 +119,7 @@ def from_type_to_value(value_type: str, para):
 def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
     result = {}
     for label in labels:
-        if char != '旅行者':
+        if '旅行者' not in char:
             if char_element_list[char] == 'Anemo':
                 if 'A扩散伤害' not in result:
                     result['A扩散伤害'] = {
@@ -132,12 +132,6 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             if 'A丰穰之核(绽放)' not in result:
                 result['A丰穰之核(绽放)'] = {
                     'name': 'A丰穰之核(绽放)',
-                    'type': '绽放',
-                    'plus': 0,
-                    'value': [str(i) for i in range(1, 11)],
-                }
-                result['A丰穰之核(绽放)(暴击)'] = {
-                    'name': 'A丰穰之核(绽放)(暴击)',
                     'type': '绽放',
                     'plus': 0,
                     'value': [str(i) for i in range(1, 11)],
@@ -295,7 +289,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
 async def main():
     for char_id in char_id_list:
         char_list.append(char_id_list[char_id])
-
+    char_list.extend(['旅行者(风)', '旅行者(雷)', '旅行者(岩)', '旅行者(草)'])
     for char in char_list:
         print(char)
         talent_data = httpx.get(

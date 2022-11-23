@@ -62,18 +62,14 @@ async def draw_enka_img(
     msg_list = msg.split(' ')
     char_list = []
     for msg in msg_list:
-        (
-            char_name,
-            weapon,
-            weapon_affix,
-            talent_num,
-            fake_char_name,
-        ) = await get_char_args(msg)
+        _args = await get_char_args(msg, uid)
+        if isinstance(_args, str):
+            return _args
+        else:
+            if isinstance(_args[0], str):
+                return _args[0]
         if is_group:
-            char_data = await get_char_data(uid, char_name)
-            if isinstance(char_data, str):
-                return char_data
-            char = await get_char(char_data, weapon, weapon_affix, talent_num)
+            char = await get_char(*_args)
             char_list.append(char)
         else:
             break
@@ -83,16 +79,7 @@ async def draw_enka_img(
             return im
         return im, None
 
-    char_data = await get_char_data(uid, char_name)
-    if isinstance(char_data, str):
-        return char_data
-
-    if fake_char_name:
-        char_data = await get_fake_char_data(char_data, fake_char_name)
-        if isinstance(char_data, str):
-            return char_data
-
-    char = await get_char(char_data, weapon, weapon_affix, talent_num)
+    char = await get_char(*_args)
 
     if isinstance(char, str):
         logger.info('[查询角色] 绘图失败, 替换的武器不正确!')
@@ -132,30 +119,63 @@ async def get_showcase(uid: str) -> Union[bytes, str]:
     return img
 
 
-async def get_char_args(msg: str):
+async def change_equip(
+    uid: str, char_data: Dict, part: str, s: str, i: int
+) -> Dict:
+    char_name = part.replace(part[-1], '')
+    fake_data = await get_char_data(uid, char_name)
+    if isinstance(fake_data, str):
+        return {}
+    for equip in fake_data['equipList']:
+        if equip['aritifactPieceName'] == s:
+            char_data['equipList'][i] = equip
+            break
+    return char_data
+
+
+async def get_char_args(
+    msg: str, uid: str
+) -> Union[Tuple[Dict, Optional[str], Optional[int], Optional[int]], str]:
     # 可能进来的值
     # 六命公子带天空之卷换可莉圣遗物换刻晴羽换可莉花
     # 六命公子带天空之卷换刻晴羽
     # 公子换刻晴羽
     fake_char_name = ''
-    msg = msg.replace('带', '换').replace('拿', '换')
-    count = msg.count('换')
-    if count >= 2:
-        # 公子带天空之卷换可莉圣遗物
-        msg_list = msg.split('换')
-        fake_char_name, talent_num = await get_fake_char_str(msg_list[0])
-        weapon, weapon_affix = await get_fake_weapon_str(msg_list[1])
-        char_name, _ = await get_fake_char_str(msg_list[2].replace('圣遗物', ''))
-    else:
-        # 以 换 作为分割
-        msg_list = msg.split('换')
-        char_name, talent_num = await get_fake_char_str(msg_list[0])
-        if len(msg_list) > 1:
-            weapon, weapon_affix = await get_fake_weapon_str(msg_list[1])
-        else:
-            weapon, weapon_affix = None, None
+    talent_num = None
+    char_data = {}
+    weapon, weapon_affix = None, None
 
-    return char_name, weapon, weapon_affix, talent_num, fake_char_name
+    msg = msg.replace('带', '换').replace('拿', '换')
+    # 公子带天空之卷换可莉圣遗物
+    msg_list = msg.split('换')
+    for index, part in enumerate(msg_list):
+        if index == 0:
+            fake_char_name, talent_num = await get_fake_char_str(part)
+            char_data = await get_char_data(uid, fake_char_name)
+            if isinstance(char_data, str):
+                return char_data
+            continue
+
+        if '圣遗物' in part:
+            fake_data = await get_char_data(uid, part.replace('圣遗物', ''))
+            if isinstance(fake_data, str):
+                return fake_data
+            char_data = await get_fake_char_data(fake_data, fake_char_name)
+            if isinstance(char_data, str):
+                return char_data
+        else:
+            for i, s in enumerate(['生之花', '死之羽', '时之沙', '空之杯', '理之冠']):
+                if s[-1] in part:
+                    if isinstance(char_data, str):
+                        return char_data
+                    char_data = await change_equip(uid, char_data, part, s, i)
+                    if not char_data:
+                        return '要替换的部件不存在噢~'
+                    break
+            else:
+                weapon, weapon_affix = await get_fake_weapon_str(part)
+
+    return char_data, weapon, weapon_affix, talent_num
 
 
 async def get_single_percent(char_data: Dict, uid: str, num: int, best: List):

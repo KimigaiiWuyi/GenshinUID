@@ -1,16 +1,14 @@
 import re
 import json
-import asyncio
-from copy import deepcopy
 from typing import Dict, List, Tuple, Union, Optional
 
 from nonebot.log import logger
 
-from .mono.Character import Character
 from .draw_char_card import draw_char_img
+from .draw_group_dmg import draw_group_dmg_img
+from .mono.Character import Character, get_char
 from ..utils.message.error_reply import CHAR_HINT
 from ..utils.enka_api.enka_to_card import draw_enka_card
-from .etc.prop_calc import get_base_prop, get_simple_card_prop
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.alias.enName_to_avatarId import avatarId_to_enName
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
@@ -42,30 +40,114 @@ async def draw_enka_img(
     raw_mes: str, uid: str, url: Optional[str]
 ) -> Union[str, Tuple[Union[bytes, str], Optional[bytes]]]:
     # 获取角色名
-    msg = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
+    # msg = raw_mes.strip()
 
     # 判断是否开启成长曲线或最佳, 并且去除
     is_curve = False
-    is_best = False
+    is_group = False
     if '成长曲线' in msg or '曲线' in msg:
         is_curve = True
         msg = msg.replace('成长曲线', '').replace('曲线', '')
-    elif '最佳' in msg:
-        is_best = True
-        msg = msg.replace('最佳', '')
+    if '队伍' in msg or '队伍伤害' in msg:
+        is_group = True
+        msg = msg.replace('队伍', '').replace('伤害', '').strip()
 
-    # 以 带 作为分割
+    if '展柜角色' in msg:
+        sc = await get_showcase(uid)
+        if isinstance(sc, str):
+            return sc
+        return sc, None
+
+    msg_list = msg.split(' ')
+    char_list = []
+    for msg in msg_list:
+        (
+            char_name,
+            weapon,
+            weapon_affix,
+            talent_num,
+            fake_char_name,
+        ) = await get_char_args(msg)
+        if is_group:
+            char_data = await get_char_data(uid, char_name)
+            if isinstance(char_data, str):
+                return char_data
+            char = await get_char(char_data, weapon, weapon_affix, talent_num)
+            char_list.append(char)
+        else:
+            break
+    else:
+        im = await draw_group_dmg_img(char_list)
+        if isinstance(im, str):
+            return im
+        return im, None
+
+    char_data = await get_char_data(uid, char_name)
+    if isinstance(char_data, str):
+        return char_data
+
+    if fake_char_name:
+        char_data = await get_fake_char_data(char_data, fake_char_name)
+        if isinstance(char_data, str):
+            return char_data
+
+    char = await get_char(char_data, weapon, weapon_affix, talent_num)
+
+    if isinstance(char, str):
+        logger.info('[查询角色] 绘图失败, 替换的武器不正确!')
+        return char
+
+    im = await draw_char_img(char, url, is_curve)
+    logger.info('[查询角色] 绘图完成,等待发送...')
+    return im
+
+
+async def get_char_data(uid: str, char_name: str) -> Union[Dict, str]:
+    player_path = PLAYER_PATH / str(uid)
+    if '旅行者' in char_name:
+        char_name = '旅行者'
+    else:
+        char_name = await alias_to_char_name(char_name)
+    char_path = player_path / f'{char_name}.json'
+    if char_path.exists():
+        with open(char_path, 'r', encoding='utf8') as fp:
+            char_data = json.load(fp)
+    else:
+        return CHAR_HINT.format(char_name)
+    return char_data
+
+
+async def get_showcase(uid: str) -> Union[bytes, str]:
+    player_path = PLAYER_PATH / str(uid)
+    char_file_list = player_path.glob('*')
+    char_list = []
+    for i in char_file_list:
+        file_name = i.name
+        if '\u4e00' <= file_name[0] <= '\u9fff':
+            char_list.append(file_name.split('.')[0])
+    if char_list == []:
+        return '您还没有已缓存的角色噢~\n请先使用[强制刷新]命令缓存~'
+    img = await draw_enka_card(uid=uid, char_list=char_list)
+    return img
+
+
+async def get_char_args(msg: str):
+    # 可能进来的值
+    # 六命公子带天空之卷换可莉圣遗物换刻晴羽换可莉花
+    # 六命公子带天空之卷换刻晴羽
+    # 公子换刻晴羽
     fake_char_name = ''
-    if '带' in msg and '换' in msg:
+    msg = msg.replace('带', '换').replace('拿', '换')
+    count = msg.count('换')
+    if count >= 2:
         # 公子带天空之卷换可莉圣遗物
-        msg_list = msg.split('带')
+        msg_list = msg.split('换')
         fake_char_name, talent_num = await get_fake_char_str(msg_list[0])
-        msg_list = msg_list[1].split('换')
-        weapon, weapon_affix = await get_fake_weapon_str(msg_list[0])
-        char_name, _ = await get_fake_char_str(msg_list[1].replace('圣遗物', ''))
+        weapon, weapon_affix = await get_fake_weapon_str(msg_list[1])
+        char_name, _ = await get_fake_char_str(msg_list[2].replace('圣遗物', ''))
     else:
         # 以 换 作为分割
-        msg = msg.replace('带', '换')
         msg_list = msg.split('换')
         char_name, talent_num = await get_fake_char_str(msg_list[0])
         if len(msg_list) > 1:
@@ -73,85 +155,7 @@ async def draw_enka_img(
         else:
             weapon, weapon_affix = None, None
 
-    player_path = PLAYER_PATH / str(uid)
-    if char_name == '展柜角色':
-        char_file_list = player_path.glob('*')
-        char_list = []
-        for i in char_file_list:
-            file_name = i.name
-            if '\u4e00' <= file_name[0] <= '\u9fff':
-                char_list.append(file_name.split('.')[0])
-        img = await draw_enka_card(uid=uid, char_list=char_list)
-        return img, None
-    else:
-        if '旅行者' in char_name:
-            char_name = '旅行者'
-        else:
-            char_name = await alias_to_char_name(char_name)
-        char_path = player_path / f'{char_name}.json'
-        if char_path.exists():
-            with open(char_path, 'r', encoding='utf8') as fp:
-                char_data = json.load(fp)
-        else:
-            return CHAR_HINT.format(char_name)
-
-    if fake_char_name:
-        char_data = await get_fake_char_data(char_data, fake_char_name)
-
-    '''
-    if is_best:
-        char_data = await get_best_char(char_data, uid)
-    '''
-    if isinstance(char_data, str):
-        logger.info('[查询角色] 绘图失败,发送错误原因...')
-        return char_data
-
-    im = await draw_char_img(
-        char_data, weapon, weapon_affix, talent_num, url, is_curve
-    )
-    logger.info('[查询角色] 绘图完成,等待发送...')
-    return im
-
-
-async def get_best_char(char_data: Dict, uid: str) -> Dict:
-    # 设定初始值
-    char_level = int(char_data['avatarLevel'])
-    char_name = char_data['avatarName']
-    fight_prop = await get_base_prop(char_data, char_name, char_level)
-
-    # 开始
-    logger.info(f'[查找最佳圣遗物] UID:{uid}开始进行迭代...')
-    best = []
-    artifacts_repo = await get_artifacts_repo(uid)
-    num = 0
-    TASKS = []
-    for flower in artifacts_repo['flower']:
-        for plume in artifacts_repo['plume']:
-            for sands in artifacts_repo['sands']:
-                for goblet in artifacts_repo['goblet']:
-                    for circlet in artifacts_repo['circlet']:
-                        char_data['equipList'] = [
-                            flower,
-                            plume,
-                            sands,
-                            goblet,
-                            circlet,
-                        ]
-                        char_data = await get_simple_card_prop(
-                            char_data, fight_prop
-                        )
-                        num += 1
-                        TASKS.append(
-                            await get_single_percent(
-                                deepcopy(char_data), uid, num, best
-                            )
-                        )
-                        break
-                        # await get_single_percent(char, uid, num, best)
-    asyncio.gather(*TASKS)
-    best.sort(key=lambda x: (-x['percent']))
-    logger.info(f'[查找最佳圣遗物] UID:{uid}完成!毕业度为{best[0]["percent"]}')
-    return char_data
+    return char_name, weapon, weapon_affix, talent_num, fake_char_name
 
 
 async def get_single_percent(char_data: Dict, uid: str, num: int, best: List):
@@ -213,6 +217,10 @@ async def get_fake_char_data(
 
 
 async def get_fake_char_str(char_name: str) -> Tuple[str, Optional[int]]:
+    '''
+    获取一个角色信息
+
+    '''
     talent_num = None
     if '命' in char_name and char_name[0] in CHAR_TO_INT:
         talent_num = CHAR_TO_INT[char_name[0]]

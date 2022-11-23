@@ -1,4 +1,32 @@
 {
+  "乐园遗落之花": {
+    "normal_effect": {
+      "2": "em+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "a+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "沙上楼阁史话": {
+    "normal_effect": {
+      "2": "AnemoDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "ABC:dmgBonus+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "深林的记忆": {
     "normal_effect": {
       "2": "DendroDmgBonus+15",
@@ -6,7 +34,7 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "r+-30"
+      "4": "DendroResist+-30"
     },
     "group_effect": {
       "2": "",
@@ -104,7 +132,7 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "Q:dmgBonus+75%25%energyRecharge"
+      "4": "Q:dmgBonus+75%25%energyrecharge"
     },
     "group_effect": {
       "2": "",
@@ -328,7 +356,7 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "g+60;r+-40"
+      "4": "g+60;Resist+-40"
     },
     "group_effect": {
       "2": "",

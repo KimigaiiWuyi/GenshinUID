@@ -25,7 +25,8 @@ SWITCH_MAP = {
     '重启使用Poetry': 'UsePoetry',
     '旧面板': 'OldPanle',
     '多彩面板': 'ColorBG',
-    '跳过无感验证': 'CaptchaPass',
+    '失效项': 'CaptchaPass',
+    '无效项': 'MhyPass',
 }
 
 PUSH_MAP = {

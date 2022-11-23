@@ -4586,5 +4586,67 @@
         
       }
     }
+  },
+  "图莱杜拉的回忆": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "A:dmgBonus+48",
+        "2": "A:dmgBonus+60",
+        "3": "A:dmgBonus+72",
+        "4": "A:dmgBonus+84",
+        "5": "A:dmgBonus+96"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 0,
+      "extra": {
+        
+      }
+    }
+  },
+  "东花坊时雨": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "dmgBonus+16",
+        "2": "dmgBonus+20",
+        "3": "dmgBonus+24",
+        "4": "dmgBonus+28",
+        "5": "dmgBonus+32"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 0,
+      "extra": {
+        
+      }
+    }
   }
 }

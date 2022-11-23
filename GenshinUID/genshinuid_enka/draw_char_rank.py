@@ -5,7 +5,6 @@ from typing import Tuple, Union, Literal
 from PIL import Image, ImageDraw
 
 from .mono.Character import Character
-from .dmg_calc.dmg_calc import get_fight_prop
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.alias.avatarId_to_char_star import avatar_id_to_char_star

@@ -8,6 +8,7 @@ from typing import Any, Dict, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
+from ...genshinuid_config.default_config import string_config
 from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
 from ..mhy_api.mhy_api_tools import (
     random_hex,
@@ -18,7 +19,6 @@ from ..mhy_api.mhy_api_tools import (
 )
 from ..mhy_api.mhy_api import (
     SIGN_URL,
-    GT_TEST_URL,
     SIGN_URL_OS,
     SIGN_INFO_URL,
     SIGN_LIST_URL,
@@ -34,7 +34,6 @@ from ..mhy_api.mhy_api import (
     CALCULATE_INFO_URL,
     PLAYER_INFO_URL_OS,
     GET_COOKIE_TOKEN_URL,
-    GET_GACHA_LOG_URL_OS,
     MONTHLY_AWARD_URL_OS,
     CALCULATE_INFO_URL_OS,
     PLAYER_ABYSS_INFO_URL,
@@ -44,6 +43,8 @@ from ..mhy_api.mhy_api import (
     MIHOYO_BBS_PLAYER_INFO_URL,
     MIHOYO_BBS_PLAYER_INFO_URL_OS,
 )
+
+PROXY_URL = string_config.get_config('proxy')
 
 gacha_type_meta_data = {
     '新手祈愿': ['100'],
@@ -234,39 +235,31 @@ async def get_daily_data(uid: str) -> dict:
             method='GET',
             header=HEADER,
             params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
         )
     return data
 
 
-async def get_validate(gt: str, challenge: str) -> str:
-    HEADER = {}
-    HEADER['User-Agent'] = (
-        'Mozilla/5.0 (Linux; Android 10; MIX 2 Build/QKQ1.190825.002; wv) '
-        'AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 '
-        'Chrome/83.0.4103.101 Mobile Safari/537.36 miHoYoBBS/2.35.2'
-    )
-    HEADER['Accept'] = '*/*'
-    HEADER['Accept-Language'] = 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7'
-    HEADER['Referer'] = 'https://webstatic.mihoyo.com/'
-    HEADER['X-Requested-With'] = 'com.mihoyo.hyperion'
-    validate = ''
-    data = await _mhy_request(GT_TEST_URL.format(gt, challenge), 'GET', HEADER)
-    if (
-        data
-        and 'success' in data['status']
-        and 'success' in data['data']['result']
-    ):
-        validate = data['data']['validate']
-    return validate
-
-
-async def get_sign_list() -> dict:
-    data = await _mhy_request(
-        url=SIGN_LIST_URL,
-        method='GET',
-        header=_HEADER,
-        params={'act_id': 'e202009291139501'},
-    )
+async def get_sign_list(uid) -> dict:
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    if int(str(uid)[0]) < 6:
+        data = await _mhy_request(
+            url=SIGN_LIST_URL,
+            method='GET',
+            header=_HEADER,
+            params={'act_id': 'e202009291139501'},
+        )
+    else:
+        data = await _mhy_request(
+            url=SIGN_LIST_URL_OS,
+            method='GET',
+            header=_HEADER_OS,
+            params={
+                'act_id': 'e202102251931481',
+                'lang': 'zh-cn',
+            },
+            use_proxy=True,
+        )
     return data
 
 
@@ -293,7 +286,13 @@ async def get_sign_info(uid) -> dict:
             url=SIGN_INFO_URL_OS,
             method='GET',
             header=HEADER,
-            params={'region': server_id, 'uid': uid},
+            params={
+                'act_id': 'e202102251931481',
+                'lang': 'zh-cn',
+                'region': server_id,
+                'uid': uid,
+            },
+            use_proxy=True,
         )
     return data
 
@@ -339,10 +338,12 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
             method='POST',
             header=HEADER,
             data={
-                'act_id': 'e202009291139501',
+                'act_id': 'e202102251931481',
+                'lang': 'zh-cn',
                 'uid': uid,
                 'region': server_id,
             },
+            use_proxy=True,
         )
     return data
 
@@ -385,6 +386,7 @@ async def get_award(uid) -> dict:
                 'uid': uid,
                 'month': '0',
             },
+            use_proxy=True,
         )
     return data
 
@@ -410,6 +412,7 @@ async def get_info(uid, ck) -> dict:
             method='GET',
             header=HEADER,
             params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
         )
 
     return data
@@ -446,6 +449,7 @@ async def get_spiral_abyss_info(uid, ck, schedule_type='1') -> dict:
                 'role_id': uid,
                 'schedule_type': schedule_type,
             },
+            use_proxy=True,
         )
     return data
 
@@ -486,6 +490,7 @@ async def get_character(uid, character_ids, ck) -> dict:
                 'role_id': uid,
                 'server': server_id,
             },
+            use_proxy=True,
         )
     return data
 
@@ -515,6 +520,7 @@ async def get_calculate_info(client: ClientSession, uid, char_id, ck, name):
             url=CALCULATE_INFO_URL_OS,
             headers=HEADER,
             params={'avatar_id': char_id, 'uid': uid, 'region': server_id},
+            proxy=PROXY_URL,
         )
         data = await req.json()
         data.update({'name': name})
@@ -552,6 +558,7 @@ async def get_mihoyo_bbs_info(
         method='GET',
         header=HEADER,
         params={'uid': mysid},
+        use_proxy=is_os,
     )
     return data
 
@@ -563,6 +570,7 @@ async def _mhy_request(
     params: Optional[Dict[str, Any]] = None,
     data: Optional[Dict[str, Any]] = None,
     sess: Optional[ClientSession] = None,
+    use_proxy: Optional[bool] = False,
 ) -> dict:
     '''
     :说明:
@@ -574,6 +582,7 @@ async def _mhy_request(
       * params (Dict[str, Any]): 参数。
       * data (Dict[str, Any]): 参数(`post`方法需要传)。
       * sess (ClientSession): 可选, 指定client。
+      * use_proxy (bool): 是否使用proxy
     :返回:
       * result (dict): json.loads()解析字段。
     '''
@@ -583,16 +592,25 @@ async def _mhy_request(
         is_temp_sess = True
     try:
         req = await sess.request(
-            method, url=url, headers=header, params=params, json=data
+            method,
+            url=url,
+            headers=header,
+            params=params,
+            json=data,
+            proxy=PROXY_URL if use_proxy else None,
+            timeout=300,
         )
         text_data = await req.text()
+        # DEBUG 日志
+        logger.debug(f'【mhy_request】请求如下:\n{text_data}')
         if text_data.startswith('('):
             text_data = json.loads(text_data.replace("(", "").replace(")", ""))
             return text_data
-        return await req.json()
+        raw_data = await req.json()
+        return raw_data
     except Exception:
         logger.exception(f'访问{url}失败！')
-        return {}
+        return {'retcode': -1}
     finally:
         if is_temp_sess:
             await sess.close()

@@ -6,13 +6,16 @@ from nonebot import on_regex, on_command
 from nonebot.params import CommandArg, RegexGroup
 from nonebot.adapters.onebot.v11 import (
     PRIVATE_FRIEND,
+    Bot,
     Message,
     MessageEvent,
     MessageSegment,
+    GroupMessageEvent,
 )
 
 from .add_ck import deal_ck
 from ..config import priority
+from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
@@ -20,6 +23,12 @@ from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
 
 add_cookie = on_command('添加', permission=PRIVATE_FRIEND)
+get_ck_msg = on_command(
+    '绑定ck说明',
+    aliases={'ck帮助', '绑定ck'},
+    block=True,
+    rule=FullCommand(),
+)
 bind_info = on_command(
     '绑定信息', priority=priority, block=True, rule=FullCommand()
 )
@@ -152,3 +161,19 @@ async def send_link_uid_msg(
         else:
             im = await delete_db(qid, {'MYSID': args[2]})
     await matcher.finish(im, at_sender=True)
+
+
+@get_ck_msg.handle()
+async def send_ck_help(bot: Bot, event: GroupMessageEvent):
+    msg_list = await get_ck_help()
+    forward_msg = []
+    for msg in msg_list:
+        forward_msg.append(
+            {
+                "type": "node",
+                "data": {"name": "小冰", "uin": "2854196306", "content": msg},
+            }
+        )
+    await bot.call_api(
+        'send_group_forward_msg', group_id=event.group_id, messages=forward_msg
+    )

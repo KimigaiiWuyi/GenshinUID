@@ -146,12 +146,17 @@ async def get_char_args(
     weapon, weapon_affix = None, None
 
     msg = msg.replace('带', '换').replace('拿', '换')
+
     # 公子带天空之卷换可莉圣遗物
     msg_list = msg.split('换')
     for index, part in enumerate(msg_list):
         if index == 0:
             fake_char_name, talent_num = await get_fake_char_str(part)
-            char_data = await get_char_data(uid, fake_char_name)
+            # 判断是否开启fake_char
+            if '圣遗物' in msg or '命' in msg:
+                char_data = await get_fake_char_data(char_data, fake_char_name)
+            else:
+                char_data = await get_char_data(uid, fake_char_name)
             if isinstance(char_data, str):
                 return char_data
             continue

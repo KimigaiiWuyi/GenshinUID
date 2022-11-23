@@ -1,5 +1,6 @@
 from typing import List, Literal
 
+from ..etc.base_info import ELEMENT_MAP
 from .MAP_PATH import char_effect_map, weapon_effect_map, artifact_effect_map
 
 
@@ -11,6 +12,12 @@ async def get_buff_list(
 
     # 获取初始数据
     char_name = raw_data['avatarName']
+    # 处理旅行者
+    if char_name == '旅行者':
+        for element in ELEMENT_MAP:
+            if raw_data['avatarElement'] == ELEMENT_MAP[element]:
+                char_name += f'({element})'
+                break
     char_level = int(raw_data['avatarLevel'])
     weaponName = raw_data['weaponInfo']['weaponName']
     weaponAffix = raw_data['weaponInfo']['weaponAffix']

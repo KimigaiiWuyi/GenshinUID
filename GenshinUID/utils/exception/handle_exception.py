@@ -3,7 +3,6 @@ from functools import wraps
 
 from nonebot.log import logger
 from aiocqhttp.exceptions import ActionFailed
-
 from hoshino.typing import List, CQEvent, Iterable
 
 from ..message.error_reply import *  # noqa: F403,F401

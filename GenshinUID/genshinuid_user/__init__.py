@@ -1,5 +1,6 @@
 from ..all_import import *
 from .add_ck import deal_ck
+from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
 
@@ -63,3 +64,19 @@ async def send_link_uid_msg(bot: HoshinoBot, ev: CQEvent):
         else:
             im = await delete_db(qid, {'MYSID': args[2]})
     await bot.send(ev, im, at_sender=True)
+
+
+@sv.on_fullmatch(('绑定ck说明', 'ck帮助', '绑定ck'))
+async def send_ck_msg(bot: HoshinoBot, ev: CQEvent):
+    msg_list = await get_ck_help()
+    forward_msg = []
+    for msg in msg_list:
+        forward_msg.append(
+            {
+                "type": "node",
+                "data": {"name": "小冰", "uin": "2854196306", "content": msg},
+            }
+        )
+    await bot.send_group_forward_msg(
+        group_id=ev.group_id, messages=forward_msg
+    )

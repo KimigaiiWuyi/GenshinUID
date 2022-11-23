@@ -81,6 +81,8 @@ if (ask == true) {
 - [@blue菌hehe](https://bbs.mihoyo.com/ys/accountCenter/postList?id=160367110) - 参考面板的**授权**使用
 - [@音尘绝LiuSXwww](https://bbs.mihoyo.com/ys/accountCenter/postList?id=271681956) - 怪物数据表的**授权**使用
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
+- [@lulu666lulu](https://github.com/lulu666lulu) - DS算法提供和验证码方案提供
+- [@Monst.x](https://github.com/monsterxcn) - [fastapi-genshin-map](https://github.com/KimigaiiWuyi/fastapi_genshin_map)的内容填充和本体的修复
 - [@CMHopeSunshine](https://github.com/CMHopeSunshine) - 随机图API提供
 - [@Enka.Network](https://enka.shinshin.moe/) - 展柜面板的数据来源
 - [@Ice-Cirno](https://github.com/Ice-Cirno) - Hoshino分支的修复与完善

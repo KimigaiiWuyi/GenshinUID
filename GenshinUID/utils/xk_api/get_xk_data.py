@@ -1,51 +1,23 @@
-import sys
-from pathlib import Path
-from typing import Any, Dict, Union, Literal, Optional
+import json
+from typing import Any, Dict, Literal, Optional
 
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-sys.path.append(str(Path(__file__).parents[1]))
-try:
-    from .beta_weapon import BETA_WEAPON_ID
-    from ...utils.ambr_api.ambr_api import (
-        AMBR_CHAR_URL,
-        AMBR_EVENT_URL,
-        AMBR_WEAPON_URL,
-    )
-except ImportError:
-    from utils.ambr_api.beta_weapon import BETA_WEAPON_ID
-    from utils.ambr_api.ambr_api import (
-        AMBR_CHAR_URL,
-        AMBR_EVENT_URL,
-        AMBR_WEAPON_URL,
-    )
+from .xk_api import XK_ABYSS_URL
 
 _HEADER = {}
 
 
-async def get_event_data():
-    data = await _ambr_request(url=AMBR_EVENT_URL, method='GET')
-    return data
-
-
-async def get_char_data(char_id: Union[int, str]):
-    data = await _ambr_request(url=AMBR_CHAR_URL.format(char_id), method='GET')
-    return data
-
-
-async def get_weapon_data(weapon_id: Union[int, str]):
-    if isinstance(weapon_id, str) and not weapon_id.isdigit():
-        for weapon in BETA_WEAPON_ID:
-            if str(weapon_id) in weapon:
-                weapon_id = BETA_WEAPON_ID[weapon]
-    data = await _ambr_request(
-        url=AMBR_WEAPON_URL.format(weapon_id), method='GET'
+async def get_abyss_total():
+    data = await _xk_request(
+        url=XK_ABYSS_URL,
+        method='GET',
     )
     return data
 
 
-async def _ambr_request(
+async def _xk_request(
     url: str,
     method: Literal['GET', 'POST'] = 'GET',
     header: Dict[str, Any] = _HEADER,
@@ -74,7 +46,9 @@ async def _ambr_request(
         req = await sess.request(
             method, url=url, headers=header, params=params, json=data
         )
-        return await req.json()
+        raw = await req.text()
+        raw = raw.replace('var static_abyss_total =', '')
+        return json.loads(raw)
     except Exception:
         logger.exception(f'访问{url}失败！')
         return {}

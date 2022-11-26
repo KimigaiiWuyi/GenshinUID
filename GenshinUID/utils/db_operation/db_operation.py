@@ -1,5 +1,6 @@
 from typing import List, Union, Optional
 
+from .database.models import CK
 from .database.ConfigDAL import ConfigDAL
 from .database.CookiesDAL import CookiesDAL
 from .database.UidDataDAL import UidDataDAL
@@ -267,7 +268,7 @@ async def get_push_data(uid: int) -> dict:
             return push_data
 
 
-async def cache_db(uid):
+async def cache_db(uid) -> Union[CK, str]:
     async with async_session() as session:
         async with session.begin():
             Cookies = CookiesDAL(session)

@@ -2,7 +2,7 @@ import json
 
 from ..utils.download_resource.RESOURCE_PATH import CONFIG_PATH
 
-CONIFG_DEFAULT = {'LU_TOKEN': ''}
+CONIFG_DEFAULT = {'LU_TOKEN': '', 'proxy': ''}
 
 
 class StringConfig:

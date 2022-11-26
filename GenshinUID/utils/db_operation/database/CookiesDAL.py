@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Union, Optional
 
 from nonebot.log import logger
 from sqlalchemy.sql import text
@@ -7,6 +7,7 @@ from sqlalchemy import delete, update
 from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from .models import CK
 from ..database.models import CookiesCache, NewCookiesTable
 
 
@@ -36,7 +37,7 @@ class CookiesDAL:
         else:
             return {}
 
-    async def get_user_ck(self, uid: str) -> str:
+    async def get_user_ck(self, uid: str) -> Union[str, CK]:
         """
         :说明:
           获取Cookies
@@ -47,7 +48,7 @@ class CookiesDAL:
         """
         data = await self.get_user_data(uid)
         if data:
-            return data.Cookies
+            return CK(CK=data.Cookies, UID=data.UID)
         else:
             return '该用户没有绑定过Cookies噢~'
 
@@ -76,6 +77,12 @@ class CookiesDAL:
         else:
             return '该用户没有绑定过Stoken噢~'
 
+    async def get_all_cookie(self) -> List[NewCookiesTable]:
+        sql = select(NewCookiesTable).where(NewCookiesTable.Cookies != '')
+        result = await self.db_session.execute(sql)
+        data: List[NewCookiesTable] = result.scalars().all()
+        return data
+
     async def get_all_cookie_list(self) -> List[str]:
         """
         :说明:
@@ -83,9 +90,7 @@ class CookiesDAL:
         :返回:
           * ck_list (List[str]): Cookie列表。
         """
-        sql = select(NewCookiesTable).where(NewCookiesTable.Cookies != '')
-        result = await self.db_session.execute(sql)
-        data = result.scalars().all()
+        data = await self.get_all_cookie()
         ck_list = []
         for item in data:
             ck_list.append(item.Cookies)
@@ -100,7 +105,7 @@ class CookiesDAL:
         """
         sql = select(NewCookiesTable).where(NewCookiesTable.Stoken != '')
         result = await self.db_session.execute(sql)
-        data = result.scalars().all()
+        data: List[NewCookiesTable] = result.scalars().all()
         sk_list = []
         for item in data:
             sk_list.append(item.Stoken)
@@ -117,12 +122,26 @@ class CookiesDAL:
         """
         sql = select(CookiesCache).where(CookiesCache.UID == uid)
         result = await self.db_session.execute(sql)
-        data = result.scalars().all()
+        data: List[NewCookiesTable] = result.scalars().all()
         if data:
             return data[0].Cookies
         return None
 
-    async def get_random_ck(self, uid: str) -> str:
+    async def get_error_ck(self) -> List[str]:
+        data = await self.get_all_cookie()
+        error_ck_list = []
+        for ck in data:
+            if ck.Extra:
+                error_ck_list.append(ck.Cookies)
+        return error_ck_list
+
+    async def delete_error_cache(self):
+        data = await self.get_error_ck()
+        for ck in data:
+            sql = delete(CookiesCache).where(CookiesCache.Cookies == ck)
+            await self.db_session.execute(sql)
+
+    async def get_random_ck(self, uid: str) -> Union[str, CK]:
         """
         :说明:
           获取随机Cookies并写入缓存
@@ -131,11 +150,17 @@ class CookiesDAL:
         :返回:
           * cookies (str): Cookies。
         """
-        cache_data = await self.get_cache_ck(uid)
+        # 有绑定自己CK 并且该CK有效的前提下，优先使用自己CK
         if await self.user_exists(uid) and await self.get_user_ck_valid(uid):
             return await self.get_user_ck(uid)
-        elif cache_data:
-            return cache_data
+
+        # 刷新缓存
+        await self.delete_error_cache()
+        # 获得缓存库Ck
+        cache_data = await self.get_cache_ck(uid)
+        if cache_data:
+            return CK(CK=cache_data, UID=int(uid))
+        # 随机取一个CK
         else:
             regioncode = 0
             try:
@@ -176,7 +201,7 @@ class CookiesDAL:
                     else:
                         return_ck = data.Cookies
                         await self.add_cache_db(return_ck, uid, None)
-                        return return_ck
+                        return CK(CK=return_ck, UID=int(uid))
                 else:
                     return '没有可以使用的Cookies！'
             else:

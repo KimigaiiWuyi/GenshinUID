@@ -2,9 +2,15 @@ import asyncio
 import threading
 from typing import Optional
 
+from pydantic import BaseModel
 from sqlmodel import Field, SQLModel
 
 from .db_config import engine
+
+
+class CK(BaseModel):
+    UID: int
+    CK: str
 
 
 class PushData(SQLModel, table=True):

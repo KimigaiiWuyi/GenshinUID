@@ -13,11 +13,11 @@ class GetCookies:
     async def get_useable_cookies(self, uid: str) -> str:
         self.uid = uid
         while True:
-            self.useable_cookies = str(await cache_db(uid))
-            if self.useable_cookies == '':
-                return '绑定记录不存在。'
-            elif self.useable_cookies == '没有可以使用的Cookies！':
-                return '没有可以使用的Cookies！'
+            cache = await cache_db(uid)
+            if isinstance(cache, str):
+                return cache
+            else:
+                self.useable_cookies = cache.CK
             await self.get_uid_data()
             msg = await self.check_cookies_useable()
             if isinstance(msg, str):

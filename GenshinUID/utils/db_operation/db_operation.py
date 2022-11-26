@@ -175,7 +175,11 @@ async def owner_cookies(uid: str) -> str:
         async with session.begin():
             Cookies = CookiesDAL(session)
             owner_ck = await Cookies.get_user_ck(uid)
-            return str(owner_ck)
+            if isinstance(owner_ck, CK):
+                ck = owner_ck.CK
+            else:
+                ck = owner_ck
+            return ck
 
 
 async def delete_cookies(uid: str) -> str:

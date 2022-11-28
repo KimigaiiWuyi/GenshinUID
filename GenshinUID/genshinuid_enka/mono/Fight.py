@@ -138,7 +138,12 @@ class Fight:
             if char.attack_type in ['E', 'Q']:
                 dmg_type = char_element_dmg_type
 
-        if char.power_name in ['Q光降之剑基础伤害', 'Q光降之剑基础伤害(13层)', 'Q每层能量伤害']:
+        if char.power_name in [
+            'Q光降之剑基础伤害',
+            'Q光降之剑基础伤害(13层)',
+            'Q每层能量伤害',
+            'Q光降之剑基础伤害(24层)',
+        ]:
             dmg_type = Element.Physical
 
         return dmg_type
@@ -428,7 +433,7 @@ class Fight:
         return normal_dmg, avg_dmg, crit_dmg
 
 
-async def p2v(power: str, power_plus: int) -> Tuple[float, float]:
+async def p2v(power: str, power_plus: float) -> Tuple[float, float]:
     """
     将power转换为value
     """

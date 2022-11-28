@@ -133,10 +133,7 @@ async def get_first_main(mainName: str) -> str:
     return equipMain
 
 
-async def get_char_percent(
-    raw_data: dict, prop: dict, char_name: str
-) -> Tuple[str, str]:
-    percent = '0.0'
+async def get_char_std(raw_data: dict, char_name: str) -> dmgMap:
     weaponName = raw_data['weaponInfo']['weaponName']
 
     equipMain = ''
@@ -178,8 +175,6 @@ async def get_char_percent(
             equipMain,
         )
 
-    if char_name not in dmgMap:
-        return percent, ''
     std_prop = dmgMap[char_name]
     seq_temp_a = ''
     seq_temp_w = ''
@@ -204,52 +199,4 @@ async def get_char_percent(
         else:
             std = dmgMap[char_name][0]
 
-    f = []
-    c = 0.83
-    if std['critRate'] != 'any':
-        crate = (prop['critRate'] - std['critRate']) / 2
-        c = c * (crate + 1)
-    if char_name == '珊瑚宫心海':
-        c = 0.83
-    else:
-        if std['critDmg'] != 'any':
-            if char_name == '香菱':
-                prop['atk'] += 0.25 * prop['baseAtk']
-            f.append(float(prop['critDmg'] / std['critDmg']))
-
-    atk_val = 1
-    if std['atk'] != 'any':
-        atk_val = float(prop['atk'] / std['atk'])
-        if '防御力' in std['other']:
-            atk_val = (atk_val - 0.9) * 0.2 + 0.9
-        f.append(atk_val)
-
-    for i in std['other']:
-        if '生命' in i:
-            f.append(float(prop['hp'] / std['other'][i]))
-        elif '充能' in i:
-            f.append(float(prop['energyRecharge'] / std['other'][i]))
-        elif '精通' in i:
-            em_val = float(prop['elementalMastery'] / std['other'][i])
-            if atk_val <= 0.7:
-                em_val = 0.35 * em_val
-            elif atk_val <= 0.8:
-                em_val = 0.52 * em_val
-            elif atk_val <= 0.95:
-                em_val = 0.68 * em_val
-            elif atk_val <= 1.05:
-                em_val = 0.95 * em_val
-            elif atk_val <= 1.15:
-                em_val = 1.0 * em_val
-            elif atk_val <= 1.3:
-                em_val = 1.08 * em_val
-            else:
-                em_val = 1.15 * em_val
-            f.append(em_val)
-        elif '防御' in i:
-            f.append(float(prop['def'] / std['other'][i]))
-        else:
-            f.append(1)
-
-    percent = '{:.2f}'.format(c * (float(sum(f) / len(f)) * 100))
-    return percent, std['seq']
+    return std

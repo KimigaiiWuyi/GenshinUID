@@ -1,11 +1,12 @@
-from typing import Tuple
+from typing import Dict, Tuple
 
 from PIL import Image, ImageDraw
 
 from ..mono.Enemy import Enemy
 from ..mono.Fight import Fight
-from ..etc.etc import TEXT_PATH
+from ..etc.MAP_PATH import dmgMap
 from ..mono.Character import Character
+from ..etc.etc import TEXT_PATH, get_char_std
 from ...utils.genshin_fonts.genshin_fonts import gs_font_28
 
 dmgBar_1 = Image.open(TEXT_PATH / 'dmgBar_1.png')
@@ -15,11 +16,45 @@ text_color = (255, 255, 255)
 title_color = (255, 255, 100)
 
 
-async def draw_dmg_img(char: Character) -> Tuple[Image.Image, int]:
-    # 获取值
+async def get_char_dmg_percent(char: Character) -> Dict:
     enemy = Enemy(char.char_level, char.char_level)
     fight = Fight({char.char_name: char}, enemy)
     dmg_data = await fight.get_dmg_dict(char.char_name)
+    percent = 0
+    char.seq_str = '无匹配'
+    if char.char_name in dmgMap:
+        std = await get_char_std(char.card_prop, char.char_name)
+        if std['skill']:
+            value = 0
+            std_value = 0
+            if std['skill'] == 'atk':
+                value = char.fight_prop['atk']
+                std_value = std['atk']
+            elif std['skill'] == 'def':
+                value = char.fight_prop['def']
+                std_value = std['other']['防御']
+            elif std['skill'] in dmg_data:
+                if dmg_data[std['skill']]['crit'] == 0:
+                    value = dmg_data[std['skill']]['normal']
+                else:
+                    value = dmg_data[std['skill']]['crit']
+                std_value = std['value']
+                if char.char_name == '夜兰':
+                    std_value *= 3
+            if std_value != 0:
+                percent = (value / std_value) * 100
+                char.seq_str = (
+                    '|'.join([i[:2] for i in std['seq'].split('|')])
+                    + std['seq'][-1]
+                )
+    char.percent = '{:.2f}'.format(percent)
+    char.dmg_data = dmg_data
+    return dmg_data
+
+
+async def draw_dmg_img(char: Character) -> Tuple[Image.Image, int]:
+    # 获取值
+    dmg_data = await get_char_dmg_percent(char)
     if dmg_data == {}:
         return Image.new('RGBA', (950, 1)), 0
     # 计算伤害计算部分图片长宽值

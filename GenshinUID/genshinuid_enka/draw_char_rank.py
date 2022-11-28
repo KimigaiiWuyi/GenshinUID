@@ -5,10 +5,11 @@ from typing import Tuple, Union, Literal
 from PIL import Image, ImageDraw
 
 from .mono.Character import Character
+from .dmg_calc.dmg_calc import get_char_dmg_percent
+from .etc.etc import TEXT_PATH, get_all_artifacts_value
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.alias.avatarId_to_char_star import avatar_id_to_char_star
-from .etc.etc import TEXT_PATH, get_char_percent, get_all_artifacts_value
 from ..utils.download_resource.RESOURCE_PATH import (
     CHAR_PATH,
     PLAYER_PATH,
@@ -92,10 +93,9 @@ async def draw_cahrcard_list(
         char = Character(raw_data)
         await char.new()
         await char.get_fight_prop()
-        temp['percent'] = await get_char_percent(
-            raw_data, char.fight_prop, char_name
-        )
-        temp['percent'] = float(temp['percent'][0])
+        await get_char_dmg_percent(char)
+        temp['percent'] = char.percent
+        temp['percent'] = float(temp['percent'])
         temp['value'] = await get_all_artifacts_value(
             raw_data,
             char.baseHp,

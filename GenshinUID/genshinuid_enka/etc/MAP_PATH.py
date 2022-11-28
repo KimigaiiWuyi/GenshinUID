@@ -8,7 +8,7 @@ EFFECT_PATH = Path(__file__).parents[1] / 'effect'
 class ActionMAP(TypedDict):
     name: str
     type: str
-    plus: int
+    plus: float
     value: List[str]
 
 

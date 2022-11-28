@@ -1,10 +1,9 @@
 from copy import deepcopy
-from typing import Dict, List, Tuple, Union, Literal, Optional
+from typing import Dict, List, Tuple, Optional
 
 from nonebot.log import logger
 
 from .Power import sp_prop
-from ..etc.etc import get_char_percent
 from ..etc.get_buff_list import get_buff_list
 from ...utils.db_operation.db_operation import config_check
 from ..etc.status_change import EXTRA_CHAR_LIST, STATUS_CHAR_LIST
@@ -53,6 +52,7 @@ class Character:
         # 角色的圣遗物总分
         self.artifacts_all_score: float = 0
         self.percent: str = '0.0'
+        self.dmg_data: Dict = {}
         self.seq_str: str = '无匹配'
 
         # 特殊
@@ -265,22 +265,6 @@ class Character:
         生成角色的战斗属性和毕业度
         '''
         await self.get_fight_prop()
-        await self.get_percent()
-
-    async def get_percent(self):
-        '''
-        生成角色的毕业度
-
-        生成:
-            self.seq_str: `Optional[str]`
-            self.percent: `Optional[str]`
-        '''
-        self.percent, seq = await get_char_percent(
-            self.card_prop, self.fight_prop, self.char_name
-        )
-        seq_str = '·'.join([s[:2] for s in seq.split('|')]) + seq[-1:]
-        if seq_str:
-            self.seq_str = seq_str
 
     async def get_effect_prop(
         self,
@@ -560,7 +544,7 @@ class Character:
                 self.power_list['E总护盾量'] = {
                     'name': 'E总护盾量',
                     'type': '生命值',
-                    'plus': 1,
+                    'plus': 1.5,
                     'value': [
                         f'{self.power_list["E护盾附加吸收量"]["value"][index]}+{i}'
                         for index, i in enumerate(
@@ -648,8 +632,11 @@ class Character:
                 ]
                 attack_type = 'Q'
                 skill_level = prop[f'{attack_type}_skill_level'] - 1
-                value = 13 * float(skill_effect[skill_level])
-                self.extra_effect = {'Q光降之剑基础伤害(13层)': value}
+                value = float(skill_effect[skill_level])
+                self.extra_effect = {
+                    'Q光降之剑基础伤害(13层)': value * 13,
+                    'Q光降之剑基础伤害(24层)': value * 24,
+                }
             elif self.char_name == '纳西妲':
                 self.char_talent = len(self.card_prop['talentList'])
                 if self.char_talent >= 1:

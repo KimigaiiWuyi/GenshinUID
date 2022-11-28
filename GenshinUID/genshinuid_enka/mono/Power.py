@@ -7,7 +7,7 @@ class Power(BaseModel):
     raw: str
     percent: float
     value: float
-    plus: int
+    plus: float
 
 
 class sp_prop(BaseModel):

@@ -137,13 +137,19 @@ async def send_card_info(bot: HoshinoBot, ev: CQEvent):
     else:
         return
 
+    at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
+
+    if at:
+        qid = int(at.group(1))
+        message = message.replace(str(at), '')
+    else:
+        if ev.sender:
+            qid = int(ev.sender['user_id'])
+        else:
+            return
+
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-
-    if ev.sender:
-        qid = int(ev.sender['user_id'])
-    else:
-        return
 
     if len(uid) >= 1:
         uid = uid[0]

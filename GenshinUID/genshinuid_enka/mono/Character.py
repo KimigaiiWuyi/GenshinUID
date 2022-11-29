@@ -32,8 +32,12 @@ class Character:
     def __init__(self, card_prop: Dict):
         # 面板数据
         self.card_prop: Dict = card_prop
+        # 无命座效果
+        self.without_talent_card = card_prop
         # 战斗数据
         self.fight_prop: Dict[str, float] = {}
+        # 战斗数据
+        self.without_talent_fight: Dict[str, float] = {}
         # 实时数据
         self.real_prop: Dict[str, float] = {}
 
@@ -184,15 +188,26 @@ class Character:
 
         fight_prop = await self.get_base_prop(self.char_name, self.char_level)
         self.card_prop['avatarFightProp'] = fight_prop
-        all_effects = await get_buff_list(self.card_prop, 'normal')
 
+        self.without_talent_card = self.card_prop
         # 计算圣遗物效果
-        all_effects.extend(await get_artifacts_value(self.card_prop))
+        all_effects = await get_artifacts_value(self.card_prop)
+        part_effects = deepcopy(all_effects)
 
-        fight_prop = await self.get_effect_prop(
-            fight_prop, all_effects, self.char_name
+        all_effects.extend(await get_buff_list(self.card_prop, 'normal'))
+        part_effects.extend(
+            await get_buff_list(self.card_prop, 'normal', False)
         )
-        self.card_prop['avatarFightProp'] = fight_prop
+
+        fight_prop_part = await self.get_effect_prop(
+            deepcopy(fight_prop), part_effects, self.char_name
+        )
+        fight_prop_all = await self.get_effect_prop(
+            deepcopy(fight_prop), all_effects, self.char_name
+        )
+
+        self.card_prop['avatarFightProp'] = fight_prop_all
+        self.without_talent_card['avatarFightProp'] = fight_prop_part
         return self.card_prop
 
     async def get_base_prop(self, char_name: str, char_level: int) -> Dict:
@@ -453,6 +468,8 @@ class Character:
             if 'DmgBonus' in effect_attr:
                 if effect_attr.replace('DmgBonus', '') == char_element:
                     effect_attr = 'dmgBonus'
+                elif effect_attr == 'physicalDmgBonus':
+                    effect_attr = 'physicalDmgBonus'
                 else:
                     continue
 
@@ -592,7 +609,9 @@ class Character:
 
         prop = await self.get_effect_prop(prop, [], self.char_name)
         all_effect = await get_buff_list(self.card_prop, 'fight')
+        part_effect = await get_buff_list(self.card_prop, 'fight', False)
 
+        ex_effect = []
         # 开启效果
         if self.char_name in STATUS_CHAR_LIST:
             for skill_effect in STATUS_CHAR_LIST[self.char_name]:
@@ -603,7 +622,7 @@ class Character:
                 skill: str = skill_effect['effect'].format(skill_value)
                 if skill.endswith('%'):
                     skill = skill[:-1]
-                all_effect.append(skill)
+                ex_effect.append(skill)
 
         # 特殊效果,目前有雷神满愿力
         if self.char_name in EXTRA_CHAR_LIST:
@@ -617,7 +636,7 @@ class Character:
                 value_1 *= 0.6
                 value_2 = float(skill1[skill_level].split('+')[1])
                 value_3 = skill2[skill_level] * 90
-                all_effect.append(
+                ex_effect.append(
                     (
                         f'Q一段伤害:addAtk+{60*value_2};'
                         f'Q重击伤害:addAtk+{60*value_2};'
@@ -649,23 +668,29 @@ class Character:
                 attack_type = 'E'
                 skill_level = prop[f'{attack_type}_skill_level'] - 1
                 value = float(skill_effect[skill_level])
-                all_effect.append((f'前台:dmgBonus+{value*100}'))
+                ex_effect.append((f'前台:dmgBonus+{value*100}'))
 
         # 在计算buff前, 引入特殊效果
         if self.char_name == '雷电将军':
-            all_effect.append('Q:dmgBonus+27')
+            ex_effect.append('Q:dmgBonus+27')
         elif self.char_name == '钟离':
-            all_effect.append('AnemoResist+-20;PhysicalResist+-20')
-            all_effect.append('CryoResist+-20;DendroResist+-20')
-            all_effect.append('ElectroResist+-20;HydroResist+-20')
-            all_effect.append('PyroResist+-20;GeoResist+-20')
+            ex_effect.append('AnemoResist+-20;PhysicalResist+-20')
+            ex_effect.append('CryoResist+-20;DendroResist+-20')
+            ex_effect.append('ElectroResist+-20;HydroResist+-20')
+            ex_effect.append('PyroResist+-20;GeoResist+-20')
         elif self.char_name == '妮露':
-            all_effect.append('addHp+25')
-            all_effect.append('elementalMastery+80')
+            ex_effect.append('addHp+25')
+            ex_effect.append('elementalMastery+80')
+
+        all_effect.extend(ex_effect)
+        part_effect.extend(ex_effect)
 
         # 计算全部的buff，添加入属性
         self.fight_prop = await self.get_effect_prop(
-            prop, all_effect, self.char_name
+            deepcopy(prop), all_effect, self.char_name
+        )
+        self.without_talent_fight = await self.get_effect_prop(
+            deepcopy(prop), part_effect, self.char_name
         )
         return self.fight_prop
 

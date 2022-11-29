@@ -245,7 +245,10 @@ async def send_card_info(
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
-    qid = event.from_wxid
+    if event.at_user_list:
+        qid = event.at_user_list[0]
+    else:
+        qid = event.from_wxid
 
     if len(uid) >= 1:
         uid = uid[0]

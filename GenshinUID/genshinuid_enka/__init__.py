@@ -190,12 +190,16 @@ async def send_card_info(
     bot: Bot,
     matcher: Matcher,
     event: MessageEvent,
+    custom: ImageAndAt = Depends(),
     args: Message = CommandArg(),
 ):
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     qid = str(cast_to_int(event.author))
+    at = custom.get_first_at()
+    if at:
+        qid = at
 
     if len(uid) >= 1:
         uid = uid[0]

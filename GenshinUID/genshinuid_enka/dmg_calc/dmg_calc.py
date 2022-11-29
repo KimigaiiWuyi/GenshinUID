@@ -37,8 +37,10 @@ async def get_char_dmg_percent(char: Character) -> Dict:
             elif std['skill'] in without_talent:
                 if without_talent[std['skill']]['crit'] == 0:
                     value = without_talent[std['skill']]['normal']
+                elif char.char_name == '妮露':
+                    value = without_talent[std['skill']]['normal']
                 else:
-                    value = without_talent[std['skill']]['crit']
+                    value = without_talent[std['skill']]['avg']
                 std_value = std['value']
                 if char.char_name == '夜兰':
                     std_value *= 3

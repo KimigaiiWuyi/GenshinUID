@@ -247,11 +247,15 @@ async def send_card_info(
     matcher: Matcher,
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     args: Message = CommandArg(),
+    custom: ImageAndAt = Depends(),
 ):
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     qid = event.user_id
+    at = custom.get_first_at()
+    if at:
+        qid = at
 
     if len(uid) >= 1:
         uid = uid[0]

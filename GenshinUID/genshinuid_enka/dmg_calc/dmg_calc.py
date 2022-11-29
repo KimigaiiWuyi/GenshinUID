@@ -20,6 +20,7 @@ async def get_char_dmg_percent(char: Character) -> Dict:
     enemy = Enemy(char.char_level, char.char_level)
     fight = Fight({char.char_name: char}, enemy)
     dmg_data = await fight.get_dmg_dict(char.char_name)
+    without_talent = await fight.get_dmg_dict(char.char_name, True)
     percent = 0
     char.seq_str = '无匹配'
     if char.char_name in dmgMap:
@@ -33,14 +34,16 @@ async def get_char_dmg_percent(char: Character) -> Dict:
             elif std['skill'] == 'def':
                 value = char.fight_prop['def']
                 std_value = std['other']['防御']
-            elif std['skill'] in dmg_data:
-                if dmg_data[std['skill']]['crit'] == 0:
-                    value = dmg_data[std['skill']]['normal']
+            elif std['skill'] in without_talent:
+                if without_talent[std['skill']]['crit'] == 0:
+                    value = without_talent[std['skill']]['normal']
                 else:
-                    value = dmg_data[std['skill']]['crit']
+                    value = without_talent[std['skill']]['crit']
                 std_value = std['value']
                 if char.char_name == '夜兰':
                     std_value *= 3
+                elif char.char_name == '刻晴':
+                    std_value *= 2
             if std_value != 0:
                 percent = (value / std_value) * 100
                 char.seq_str = (

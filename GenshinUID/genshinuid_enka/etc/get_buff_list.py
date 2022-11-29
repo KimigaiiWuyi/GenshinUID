@@ -5,7 +5,9 @@ from .MAP_PATH import char_effect_map, weapon_effect_map, artifact_effect_map
 
 
 async def get_buff_list(
-    raw_data: dict, type: Literal['group', 'normal', 'fight']
+    raw_data: dict,
+    type: Literal['group', 'normal', 'fight'],
+    with_talent: bool = True,
 ) -> List[str]:
 
     all_effect: List[str] = []
@@ -89,11 +91,14 @@ async def get_buff_list(
 
     # 计算技能buff
     if char_name in char_effect_map:
-        for talent in char_effect_map[char_name][main][f'{type}_talent']:
-            if len(raw_data['talentList']) >= int(talent):
-                all_effect.append(
-                    char_effect_map[char_name][main][f'{type}_talent'][talent]
-                )
+        if with_talent:
+            for talent in char_effect_map[char_name][main][f'{type}_talent']:
+                if len(raw_data['talentList']) >= int(talent):
+                    all_effect.append(
+                        char_effect_map[char_name][main][f'{type}_talent'][
+                            talent
+                        ]
+                    )
         # 计算角色buff
         for skill in char_effect_map[char_name][main][f'{type}_skill']:
             if char_level >= int(skill):

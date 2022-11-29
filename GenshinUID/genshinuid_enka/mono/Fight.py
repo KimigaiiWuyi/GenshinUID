@@ -68,10 +68,15 @@ class Fight:
         return result
 
     # 进行单人伤害计算
-    async def get_dmg_dict(self, char_name: str) -> Dict:
+    async def get_dmg_dict(
+        self, char_name: str, without_talent: bool = False
+    ) -> Dict:
         result = {}
         char = self.char_list[char_name]
         # 获取本次攻击的类型
+        if without_talent:
+            char.fight_prop = char.without_talent_fight
+
         for power_name in char.power_list:
             # 更新powername
             char.power_name = power_name
@@ -409,7 +414,10 @@ class Fight:
         _char = char if is_single else None
         reactio = await self.enemy.get_dmg_reaction(dmg_type, _char)
 
-        _dmgBonus = char.real_prop[f'{char.attack_type}_dmgBonus']
+        if dmg_type == Element.Physical:
+            _dmgBonus = char.real_prop[f'{char.attack_type}_physicalDmgBonus']
+        else:
+            _dmgBonus = char.real_prop[f'{char.attack_type}_dmgBonus']
         critrate = char.real_prop[f'{char.attack_type}_critRate']
         critdmg = char.real_prop[f'{char.attack_type}_critDmg']
         dmgBonus = _dmgBonus + char.sp.dmgBonus

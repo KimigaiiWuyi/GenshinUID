@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from nonebot.log import logger
 
+from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import config_check, get_all_signin_list
 from ..utils.mhy_api.get_mhy_data import (
     get_sign_info,
@@ -18,6 +19,8 @@ already = 0
 
 # 签到函数
 async def sign_in(uid) -> str:
+    if '未找到绑定的UID' in uid:
+        return UID_HINT
     logger.info(f'[签到] {uid} 开始执行签到')
     # 获得签到信息
     sign_info = await get_sign_info(uid)

@@ -127,7 +127,7 @@ async def _deal_ck(mes, qid) -> str:
                 account_id = await get_account_id(simp_dict)
                 if not account_id:
                     return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
-                cookie_token = simp_dict['cookie_token'].value
+                cookie_token = simp_dict[ck].value
                 status = False
                 break
     if status:

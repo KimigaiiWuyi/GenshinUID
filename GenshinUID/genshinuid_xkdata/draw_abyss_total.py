@@ -93,7 +93,10 @@ async def draw_xk_abyss_img():
     for index, char in enumerate(char_use_list):
         had_count: int = char['maxstar_person_had_count']
         use_count: int = char['maxstar_person_use_count']
-        use_ratio = (use_count / had_count) * 100
+        if had_count == 0 or use_count == 0:
+            use_ratio = 0.0
+        else:
+            use_ratio = (use_count / had_count) * 100
         use_ratio = '{:.2f}%'.format(use_ratio)
         char_id: int = char['avatar_id']
 

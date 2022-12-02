@@ -5,7 +5,6 @@ from ..version import Genshin_version
 
 PRIMOGEMS_DATA_PATH = Path(__file__).parent / 'primogems_data'
 IMG_PATH = Path(__file__).parent / 'img_data'
-version = ['3.0', '3.1']
 
 
 @sv.on_rex(r'^(版本规划|原石预估)(\S+)?$')
@@ -14,8 +13,9 @@ async def send_primogems_data(bot: HoshinoBot, ev: CQEvent):
     logger.info('开始执行[图片][版本规划]')
     logger.info('[图片][版本规划]参数: {}'.format(args))
     if args[1]:
-        if str(args[1]) in version:
-            img = f'{args[1]}.png'
+        path = PRIMOGEMS_DATA_PATH / f'{str(args[1])}.png'
+        if path.exists():
+            img = f'{str(args[1])}.png'
         else:
             return
     else:

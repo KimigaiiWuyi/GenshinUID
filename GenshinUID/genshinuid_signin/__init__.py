@@ -8,7 +8,13 @@ from nonebot import get_bot, require, on_command
 from nonebot.adapters.qqguild import MessageEvent
 
 from ..config import priority
-from .sign import sign_in, daily_sign
+
+try:
+    from sign import sign_in, daily_sign
+except ImportError:
+    from .sign import sign_in, daily_sign
+
+from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.message.cast_type import cast_to_int
 from ..utils.exception.handle_exception import handle_exception

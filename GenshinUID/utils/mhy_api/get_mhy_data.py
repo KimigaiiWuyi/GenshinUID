@@ -613,7 +613,7 @@ async def _mhy_request(
             return text_data
         raw_data = await req.json()
         if 'retcode' in raw_data and raw_data['retcode'] == 1034:
-            await _pass(raw_data)
+            await _pass(header)
         return raw_data
     except Exception:
         logger.exception(f'访问{url}失败！')

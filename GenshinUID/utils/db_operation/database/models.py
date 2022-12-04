@@ -9,11 +9,13 @@ from .db_config import engine
 
 
 class CK(BaseModel):
+    __table_args__ = {'keep_existing': True}
     UID: int
     CK: str
 
 
 class PushData(SQLModel, table=True):
+    __table_args__ = {'keep_existing': True}
     UID: int = Field(default=100000000, primary_key=True, title='UID')
     CoinPush: Optional[str] = Field(title='洞天宝钱推送')
     CoinValue: Optional[int] = Field(title='洞天宝钱阈值')
@@ -30,6 +32,7 @@ class PushData(SQLModel, table=True):
 
 
 class UidData(SQLModel, table=True):
+    __table_args__ = {'keep_existing': True}
     ID: int = Field(
         default=1, primary_key=True, sa_column_kwargs={"autoincrement": 1}
     )
@@ -39,6 +42,7 @@ class UidData(SQLModel, table=True):
 
 
 class NewCookiesTable(SQLModel, table=True):
+    __table_args__ = {'keep_existing': True}
     UID: int = Field(default=100000000, primary_key=True, title='UID')
     Cookies: str = Field(title='CK')
     QID: str = Field(title='QQ号')
@@ -51,12 +55,14 @@ class NewCookiesTable(SQLModel, table=True):
 
 
 class CookiesCache(SQLModel, table=True):
+    __table_args__ = {'keep_existing': True}
     UID: Optional[str] = Field(default='100000000', primary_key=True)
     MYSID: Optional[str] = Field(title='米游社通行证')
     Cookies: str = Field(title='CK')
 
 
 class Config(SQLModel, table=True):
+    __table_args__ = {'keep_existing': True}
     Name: str = Field(default='Config', primary_key=True, title='设置项')
     Status: Optional[str] = Field(title='开启状态')
     GroupList: Optional[str] = Field(title='群组')

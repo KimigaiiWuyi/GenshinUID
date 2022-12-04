@@ -1,6 +1,10 @@
 import random
 
-from .sign import sign_in, daily_sign
+try:
+    from sign import sign_in, daily_sign
+except ImportError:
+    from .sign import sign_in, daily_sign
+
 from ..all_import import *  # noqa: F403,F401
 from ..utils.db_operation.db_operation import config_check
 

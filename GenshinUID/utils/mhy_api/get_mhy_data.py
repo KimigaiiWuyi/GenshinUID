@@ -8,6 +8,11 @@ from typing import Any, Dict, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
+try:
+    from _pass import _pass
+except ImportError:
+    from ..mhy_api._pass import _pass
+
 from ...genshinuid_config.default_config import string_config
 from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
 from ..mhy_api.mhy_api_tools import (
@@ -607,6 +612,8 @@ async def _mhy_request(
             text_data = json.loads(text_data.replace("(", "").replace(")", ""))
             return text_data
         raw_data = await req.json()
+        if 'retcode' in raw_data and raw_data['retcode'] == 1034:
+            await _pass(raw_data)
         return raw_data
     except Exception:
         logger.exception(f'访问{url}失败！')

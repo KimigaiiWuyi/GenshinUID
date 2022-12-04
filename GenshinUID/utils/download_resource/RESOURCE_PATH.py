@@ -1,8 +1,10 @@
+import sys
 from pathlib import Path
 
 import hoshino
 
 MAIN_PATH = Path(hoshino.config.RES_DIR) / 'GenshinUID'
+sys.path.append(str(MAIN_PATH))
 CONFIG_PATH = MAIN_PATH / 'config.json'
 RESOURCE_PATH = MAIN_PATH / 'resource'
 WEAPON_PATH = RESOURCE_PATH / 'weapon'

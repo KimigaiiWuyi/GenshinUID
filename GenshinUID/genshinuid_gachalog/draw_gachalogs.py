@@ -22,11 +22,7 @@ from ..utils.download_resource.RESOURCE_PATH import (
 from ..utils.draw_image_tools.draw_image_tool import (
     get_color_bg,
     get_qq_avatar,
-    get_simple_bg,
-    get_fetter_pic,
-    get_talent_pic,
     draw_pic_with_ring,
-    get_weapon_affix_pic,
 )
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
@@ -138,6 +134,7 @@ async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
             'avg_up': 0,  # up平均数
             'remain': 0,  # 已xx抽未出金
             'r_num': [],  # 不包含首位的抽卡数量
+            'e_num': [],  # 包含首位的up抽卡数量
             'up_list': [],  # 抽到的UP列表(不包含首位)
             'normal_list': [],  # 抽到的五星列表(不包含首位)
             'list': [],  # 抽到的五星列表
@@ -222,11 +219,13 @@ async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
                     data['is_up'] = True
 
                 # 往里加东西
+                if data['is_up']:
+                    total_data[i]['e_num'].append(num)
+                    total_data[i]['up_list'].append(data)
+
                 if is_not_first:
                     total_data[i]['r_num'].append(num)
-                    if data['is_up']:
-                        total_data[i]['up_list'].append(data)
-                    else:
+                    if not data['is_up']:
                         total_data[i]['normal_list'].append(data)
 
                 # 把这个数据扔到抽到的五星列表内
@@ -260,7 +259,7 @@ async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
         else:
             total_data[i]['avg_up'] = float(
                 '{:.2f}'.format(
-                    sum(total_data[i]['r_num']) / len(total_data[i]['up_list'])
+                    sum(total_data[i]['e_num']) / len(total_data[i]['up_list'])
                 )
             )
 

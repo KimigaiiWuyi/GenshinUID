@@ -199,6 +199,11 @@ async def artifact2attrJson() -> None:
     for i in reliquary_data:
         temp[str(i['icon'])] = raw_data[str(i['nameTextMapHash'])]
 
+    temp['UI_RelicIcon_10001_1'] = '异国之盏'
+    temp['UI_RelicIcon_10001_2'] = '归乡之羽'
+    temp['UI_RelicIcon_10001_3'] = '感别之冠'
+    temp['UI_RelicIcon_10001_4'] = '故人之心'
+    temp['UI_RelicIcon_10001_5'] = '逐光之石'
     with open(MAP_PATH / icon2Name_fileName, 'w', encoding='UTF-8') as file:
         json.dump(temp, file, ensure_ascii=False)
 
@@ -214,6 +219,12 @@ async def artifact2attrJson() -> None:
         for k in temp2:
             if i.startswith(temp2[k]):
                 temp3[temp[i]] = k
+
+    temp3['异国之盏'] = '行者之心'
+    temp3['归乡之羽'] = '行者之心'
+    temp3['感别之冠'] = '行者之心'
+    temp3['故人之心'] = '行者之心'
+    temp3['逐光之石'] = '行者之心'
 
     with open(
         MAP_PATH / artifact2attr_fileName, 'w', encoding='UTF-8'

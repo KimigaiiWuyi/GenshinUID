@@ -26,7 +26,7 @@ async def draw_event():
 )
 async def send_events(matcher: Matcher):
     img = await get_event_img('EVENT')
-    await matcher.finish(local_image.image(img))
+    await matcher.finish(local_image(img))
 
 
 @get_gacha.handle()
@@ -39,4 +39,4 @@ async def send_events(matcher: Matcher):
 )
 async def send_gachas(matcher: Matcher):
     img = await get_event_img('GACHA')
-    await matcher.finish(local_image.image(img))
+    await matcher.finish(local_image(img))

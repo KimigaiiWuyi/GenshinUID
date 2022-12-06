@@ -92,7 +92,7 @@ async def avatarName2ElementJson() -> None:
             temp[name] = elementMap[data['element']]
             enName = data['images']['namesideicon'].split('_')[-1]
             enName2Id_result[enName] = _id
-            avatarId2Star_result[int(_id)] = data['rarity']
+            avatarId2Star_result[int(_id)] = str(data['rarity'])
             avatarName2Weapon_result[data['name']] = data['weapontype']
 
     avatarId2Star_result['10000005'] = '5'
@@ -233,13 +233,13 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
-    # await avatarId2NameJson()
+    await avatarId2NameJson()
     await avatarName2ElementJson()
-    # await weaponHash2NameJson()
-    # await skillId2NameJson()
-    # await talentId2NameJson()
-    # await weaponHash2TypeJson()
-    # await artifact2attrJson()
+    await weaponHash2NameJson()
+    await skillId2NameJson()
+    await talentId2NameJson()
+    await weaponHash2TypeJson()
+    await artifact2attrJson()
 
 
 asyncio.run(main())

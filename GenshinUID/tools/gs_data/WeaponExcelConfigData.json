@@ -23,7 +23,7 @@
         "weaponPromoteId": 11101,
         "storyId": 191101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5206550965894458167,
+        "gachaCardNameHash": 5206550965894458167,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -64,7 +64,7 @@
         "weaponPromoteId": 11201,
         "storyId": 191201,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 15367040888523833939,
+        "gachaCardNameHash": 15367040888523833939,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -112,7 +112,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 7434030286633341116,
+        "gachaCardNameHash": 7434030286633341116,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -160,7 +160,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 14913649212262965382,
+        "gachaCardNameHash": 14913649212262965382,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -208,7 +208,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 14002953352838533444,
+        "gachaCardNameHash": 14002953352838533444,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -256,7 +256,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 7682141085973077184,
+        "gachaCardNameHash": 7682141085973077184,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -304,7 +304,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 13740424776523756226,
+        "gachaCardNameHash": 13740424776523756226,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -352,7 +352,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 16598769865197446404,
+        "gachaCardNameHash": 16598769865197446404,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -400,7 +400,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 2826103670021864828,
+        "gachaCardNameHash": 2826103670021864828,
         "destroyReturnMaterial": [
             0
         ],
@@ -448,7 +448,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 10166166836396051281,
+        "gachaCardNameHash": 10166166836396051281,
         "destroyReturnMaterial": [
             0
         ],
@@ -496,7 +496,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 1883640875723621816,
+        "gachaCardNameHash": 1883640875723621816,
         "destroyReturnMaterial": [
             0
         ],
@@ -544,7 +544,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 16957077994127257984,
+        "gachaCardNameHash": 16957077994127257984,
         "destroyReturnMaterial": [
             0
         ],
@@ -592,7 +592,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 680561736722360180,
+        "gachaCardNameHash": 680561736722360180,
         "destroyReturnMaterial": [
             0
         ],
@@ -640,7 +640,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13737495456968346520,
+        "gachaCardNameHash": 13737495456968346520,
         "destroyReturnMaterial": [
             0
         ],
@@ -688,7 +688,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 2753762402572902932,
+        "gachaCardNameHash": 2753762402572902932,
         "destroyReturnMaterial": [
             0
         ],
@@ -736,7 +736,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14290491619481566844,
+        "gachaCardNameHash": 14290491619481566844,
         "destroyReturnMaterial": [
             0
         ],
@@ -784,7 +784,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14499712438899128672,
+        "gachaCardNameHash": 14499712438899128672,
         "destroyReturnMaterial": [
             0
         ],
@@ -832,7 +832,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 1856268080963755910,
+        "gachaCardNameHash": 1856268080963755910,
         "destroyReturnMaterial": [
             0
         ],
@@ -872,7 +872,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_Blunt_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5206550965894458167,
+        "gachaCardNameHash": 5206550965894458167,
         "destroyReturnMaterial": [
             0
         ],
@@ -915,7 +915,7 @@
         "weaponPromoteId": 11412,
         "storyId": 191412,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 9936634703897671573,
+        "gachaCardNameHash": 9936634703897671573,
         "destroyReturnMaterial": [
             0
         ],
@@ -964,7 +964,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 17944186735592580849,
+        "gachaCardNameHash": 17944186735592580849,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -1013,7 +1013,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 7779124416582334188,
+        "gachaCardNameHash": 7779124416582334188,
         "destroyReturnMaterial": [
             0
         ],
@@ -1062,7 +1062,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 15774853427934277321,
+        "gachaCardNameHash": 15774853427934277321,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -1106,7 +1106,7 @@
         "weaponPromoteId": 11416,
         "storyId": 191416,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 4980559788864737813,
+        "gachaCardNameHash": 4980559788864737813,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -1155,7 +1155,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 10515321192698031269,
+        "gachaCardNameHash": 10515321192698031269,
         "destroyReturnMaterial": [
             0
         ],
@@ -1203,7 +1203,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 240606053099582135,
+        "gachaCardNameHash": 240606053099582135,
         "destroyReturnMaterial": [
             0
         ],
@@ -1245,7 +1245,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_YoutouEnchanted",
         "weaponPromoteId": 11419,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 7999085186165141066,
+        "gachaCardNameHash": 7999085186165141066,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -1287,7 +1287,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_YoutouShattered",
         "weaponPromoteId": 11420,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 1293391040647106053,
+        "gachaCardNameHash": 1293391040647106053,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -1330,7 +1330,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_YoutouEnchanted",
         "weaponPromoteId": 11421,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 7999085186165141066,
+        "gachaCardNameHash": 7999085186165141066,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -1347,6 +1347,56 @@
         "weight": 1,
         "rank": 10,
         "gadgetId": 50011421
+    },
+    {
+        "weaponType": "WEAPON_SWORD_ONE_HAND",
+        "rankLevel": 4,
+        "weaponBaseExp": 50000,
+        "skillAffix": [
+            111422,
+            0
+        ],
+        "awakenMaterial": 200113,
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 42.4010009765625,
+                "type": "GROW_CURVE_ATTACK_201"
+            },
+            {
+                "propType": "FIGHT_PROP_ELEMENT_MASTERY",
+                "initValue": 36.0,
+                "type": "GROW_CURVE_CRITICAL_201"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Sword_Kasabouzu/Equip_Sword_Kasabouzu_OverrideTexture/Equip_Sword_Kasabouzu_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Sword_Kasabouzu/Equip_Sword_Kasabouzu_OverrideTexture/Equip_Sword_Kasabouzu_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Sword_Kasabouzu_Awaken",
+        "weaponPromoteId": 11422,
+        "storyId": 191422,
+        "awakenCosts": [
+            1000,
+            2000,
+            4000,
+            8000
+        ],
+        "gachaCardNameHash": 10582637218558451197,
+        "enhanceRule": 1,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 2,
+        "id": 11422,
+        "nameTextMapHash": 2448629019,
+        "descTextMapHash": 449599061,
+        "icon": "UI_EquipIcon_Sword_Kasabouzu",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50011422
     },
     {
         "weaponType": "WEAPON_SWORD_ONE_HAND",
@@ -1379,7 +1429,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 18355363353325362624,
+        "gachaCardNameHash": 18355363353325362624,
         "destroyReturnMaterial": [
             0
         ],
@@ -1427,7 +1477,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 5648527876009382286,
+        "gachaCardNameHash": 5648527876009382286,
         "destroyReturnMaterial": [
             0
         ],
@@ -1475,7 +1525,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 3164760239968649509,
+        "gachaCardNameHash": 3164760239968649509,
         "destroyReturnMaterial": [
             0
         ],
@@ -1523,7 +1573,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 4166664540572046472,
+        "gachaCardNameHash": 4166664540572046472,
         "destroyReturnMaterial": [
             0
         ],
@@ -1571,7 +1621,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 14948704767876625565,
+        "gachaCardNameHash": 14948704767876625565,
         "destroyReturnMaterial": [
             0
         ],
@@ -1611,7 +1661,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_Blunt_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5206550965894458167,
+        "gachaCardNameHash": 5206550965894458167,
         "destroyReturnMaterial": [
             0
         ],
@@ -1651,7 +1701,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_Blunt_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5206550965894458167,
+        "gachaCardNameHash": 5206550965894458167,
         "destroyReturnMaterial": [
             0
         ],
@@ -1691,7 +1741,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_Blunt_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5206550965894458167,
+        "gachaCardNameHash": 5206550965894458167,
         "destroyReturnMaterial": [
             0
         ],
@@ -1739,7 +1789,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 8471582007642535756,
+        "gachaCardNameHash": 8471582007642535756,
         "destroyReturnMaterial": [
             0
         ],
@@ -1787,7 +1837,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 15430308198237933253,
+        "gachaCardNameHash": 15430308198237933253,
         "destroyReturnMaterial": [
             0
         ],
@@ -1835,7 +1885,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 11371944837044655913,
+        "gachaCardNameHash": 11371944837044655913,
         "destroyReturnMaterial": [
             0
         ],
@@ -1876,7 +1926,7 @@
         "weaponPromoteId": 12101,
         "storyId": 192101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5752398527715298532,
+        "gachaCardNameHash": 5752398527715298532,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -1917,7 +1967,7 @@
         "weaponPromoteId": 12201,
         "storyId": 192201,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 4076400545788413250,
+        "gachaCardNameHash": 4076400545788413250,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -1965,7 +2015,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 18902074258675026,
+        "gachaCardNameHash": 18902074258675026,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -2013,7 +2063,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 15434543970837500330,
+        "gachaCardNameHash": 15434543970837500330,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -2061,7 +2111,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 14209955155780405066,
+        "gachaCardNameHash": 14209955155780405066,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -2109,7 +2159,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 12033475205837916122,
+        "gachaCardNameHash": 12033475205837916122,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -2157,7 +2207,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 6577227949849124029,
+        "gachaCardNameHash": 6577227949849124029,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -2205,7 +2255,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 4524304803153106298,
+        "gachaCardNameHash": 4524304803153106298,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -2253,7 +2303,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 17293904821966365728,
+        "gachaCardNameHash": 17293904821966365728,
         "destroyReturnMaterial": [
             0
         ],
@@ -2301,7 +2351,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13452800039440942986,
+        "gachaCardNameHash": 13452800039440942986,
         "destroyReturnMaterial": [
             0
         ],
@@ -2349,7 +2399,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 6388782095948280153,
+        "gachaCardNameHash": 6388782095948280153,
         "destroyReturnMaterial": [
             0
         ],
@@ -2397,7 +2447,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 6529381613679561816,
+        "gachaCardNameHash": 6529381613679561816,
         "destroyReturnMaterial": [
             0
         ],
@@ -2445,7 +2495,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 12069194696619521162,
+        "gachaCardNameHash": 12069194696619521162,
         "destroyReturnMaterial": [
             0
         ],
@@ -2493,7 +2543,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 2194233792160215854,
+        "gachaCardNameHash": 2194233792160215854,
         "destroyReturnMaterial": [
             0
         ],
@@ -2541,7 +2591,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 11700036165820880646,
+        "gachaCardNameHash": 11700036165820880646,
         "destroyReturnMaterial": [
             0
         ],
@@ -2589,7 +2639,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14295299804454463012,
+        "gachaCardNameHash": 14295299804454463012,
         "destroyReturnMaterial": [
             0
         ],
@@ -2637,7 +2687,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 1919083802173727790,
+        "gachaCardNameHash": 1919083802173727790,
         "destroyReturnMaterial": [
             0
         ],
@@ -2685,7 +2735,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13837462810524748396,
+        "gachaCardNameHash": 13837462810524748396,
         "destroyReturnMaterial": [
             0
         ],
@@ -2733,7 +2783,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 12699134380144235913,
+        "gachaCardNameHash": 12699134380144235913,
         "destroyReturnMaterial": [
             0
         ],
@@ -2782,7 +2832,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 30620597733313864,
+        "gachaCardNameHash": 30620597733313864,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -2831,7 +2881,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 18195064631241962598,
+        "gachaCardNameHash": 18195064631241962598,
         "destroyReturnMaterial": [
             0
         ],
@@ -2879,7 +2929,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 9629510738332812465,
+        "gachaCardNameHash": 9629510738332812465,
         "destroyReturnMaterial": [
             0
         ],
@@ -2927,7 +2977,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 11861128859912830679,
+        "gachaCardNameHash": 11861128859912830679,
         "destroyReturnMaterial": [
             0
         ],
@@ -2975,7 +3025,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 395608059073330965,
+        "gachaCardNameHash": 395608059073330965,
         "destroyReturnMaterial": [
             0
         ],
@@ -3023,7 +3073,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 6603911325503630302,
+        "gachaCardNameHash": 6603911325503630302,
         "destroyReturnMaterial": [
             0
         ],
@@ -3071,7 +3121,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 5043970180839010905,
+        "gachaCardNameHash": 5043970180839010905,
         "destroyReturnMaterial": [
             0
         ],
@@ -3119,7 +3169,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 16297328942241737570,
+        "gachaCardNameHash": 16297328942241737570,
         "destroyReturnMaterial": [
             0
         ],
@@ -3167,7 +3217,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 3433322581820259831,
+        "gachaCardNameHash": 3433322581820259831,
         "destroyReturnMaterial": [
             0
         ],
@@ -3207,7 +3257,7 @@
         "awakenIcon": "UI_EquipIcon_Claymore_Aniki_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5752398527715298532,
+        "gachaCardNameHash": 5752398527715298532,
         "destroyReturnMaterial": [
             0
         ],
@@ -3247,7 +3297,7 @@
         "awakenIcon": "UI_EquipIcon_Claymore_Aniki_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5752398527715298532,
+        "gachaCardNameHash": 5752398527715298532,
         "destroyReturnMaterial": [
             0
         ],
@@ -3287,7 +3337,7 @@
         "awakenIcon": "UI_EquipIcon_Claymore_Aniki_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5752398527715298532,
+        "gachaCardNameHash": 5752398527715298532,
         "destroyReturnMaterial": [
             0
         ],
@@ -3322,13 +3372,13 @@
                 "type": "GROW_CURVE_CRITICAL_101"
             }
         ],
-        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Narukami/Equip_Claymore_Narukami_OverrideTexture/Equip_Claymore_Narukami_02_Tex_Diffuse",
-        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Narukami/Equip_Claymore_Narukami_OverrideTexture/Equip_Claymore_Narukami_02_Tex_Lightmap",
-        "awakenIcon": "UI_EquipIcon_Claymore_Narukami_Awaken",
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Aniki/Equip_Claymore_Aniki_OverrideTexture/Equip_Claymore_Aniki_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Aniki/Equip_Claymore_Aniki_OverrideTexture/Equip_Claymore_Aniki_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Claymore_Aniki_Awaken",
         "weaponPromoteId": 11101,
         "storyId": 192509,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 14953139912523555120,
+        "gachaCardNameHash": 5752398527715298532,
         "destroyReturnMaterial": [
             0
         ],
@@ -3339,7 +3389,7 @@
         "id": 12509,
         "nameTextMapHash": 2507837467,
         "descTextMapHash": 4069665493,
-        "icon": "UI_EquipIcon_Claymore_Narukami",
+        "icon": "UI_EquipIcon_Claymore_Aniki",
         "itemType": "ITEM_WEAPON",
         "weight": 1,
         "rank": 10,
@@ -3376,7 +3426,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 17300850195972452228,
+        "gachaCardNameHash": 17300850195972452228,
         "destroyReturnMaterial": [
             0
         ],
@@ -3417,7 +3467,7 @@
         "weaponPromoteId": 13101,
         "storyId": 193101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 9617173300685003508,
+        "gachaCardNameHash": 9617173300685003508,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -3458,7 +3508,7 @@
         "weaponPromoteId": 13201,
         "storyId": 193201,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5665814366753436258,
+        "gachaCardNameHash": 5665814366753436258,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -3506,7 +3556,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 17992976282708699452,
+        "gachaCardNameHash": 17992976282708699452,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -3554,7 +3604,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 4334781063589060204,
+        "gachaCardNameHash": 4334781063589060204,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -3602,7 +3652,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 14654924563928579681,
+        "gachaCardNameHash": 14654924563928579681,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -3648,7 +3698,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 12443670722844209327,
+        "gachaCardNameHash": 12443670722844209327,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -3696,7 +3746,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14930185889305615728,
+        "gachaCardNameHash": 14930185889305615728,
         "destroyReturnMaterial": [
             0
         ],
@@ -3744,7 +3794,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 976897176702373920,
+        "gachaCardNameHash": 976897176702373920,
         "destroyReturnMaterial": [
             0
         ],
@@ -3792,7 +3842,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 5490280544810167750,
+        "gachaCardNameHash": 5490280544810167750,
         "destroyReturnMaterial": [
             0
         ],
@@ -3840,7 +3890,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 11703211656831782686,
+        "gachaCardNameHash": 11703211656831782686,
         "destroyReturnMaterial": [
             0
         ],
@@ -3888,7 +3938,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 392956094286511317,
+        "gachaCardNameHash": 392956094286511317,
         "destroyReturnMaterial": [
             0
         ],
@@ -3936,7 +3986,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 616650412185472015,
+        "gachaCardNameHash": 616650412185472015,
         "destroyReturnMaterial": [
             0
         ],
@@ -3984,7 +4034,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 12611545857192693580,
+        "gachaCardNameHash": 12611545857192693580,
         "destroyReturnMaterial": [
             0
         ],
@@ -4032,7 +4082,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 3245822332709826655,
+        "gachaCardNameHash": 3245822332709826655,
         "destroyReturnMaterial": [
             0
         ],
@@ -4080,7 +4130,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 2214946073113655369,
+        "gachaCardNameHash": 2214946073113655369,
         "destroyReturnMaterial": [
             0
         ],
@@ -4128,7 +4178,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13456455907198010801,
+        "gachaCardNameHash": 13456455907198010801,
         "destroyReturnMaterial": [
             0
         ],
@@ -4177,7 +4227,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 4644589140044765310,
+        "gachaCardNameHash": 4644589140044765310,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -4226,7 +4276,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 8052898222639810429,
+        "gachaCardNameHash": 8052898222639810429,
         "destroyReturnMaterial": [
             0
         ],
@@ -4274,7 +4324,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14263227086136913117,
+        "gachaCardNameHash": 14263227086136913117,
         "destroyReturnMaterial": [
             0
         ],
@@ -4323,7 +4373,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 1048934850750275349,
+        "gachaCardNameHash": 1048934850750275349,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -4372,7 +4422,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 14565230574402364976,
+        "gachaCardNameHash": 14565230574402364976,
         "destroyReturnMaterial": [
             0
         ],
@@ -4420,7 +4470,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 612016346505357440,
+        "gachaCardNameHash": 612016346505357440,
         "destroyReturnMaterial": [
             0
         ],
@@ -4460,7 +4510,7 @@
         "awakenIcon": "UI_EquipIcon_Pole_Gewalt_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 9617173300685003508,
+        "gachaCardNameHash": 9617173300685003508,
         "destroyReturnMaterial": [
             0
         ],
@@ -4508,7 +4558,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 17642096513428870162,
+        "gachaCardNameHash": 17642096513428870162,
         "destroyReturnMaterial": [
             0
         ],
@@ -4556,7 +4606,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 3521327898920020136,
+        "gachaCardNameHash": 3521327898920020136,
         "destroyReturnMaterial": [
             0
         ],
@@ -4596,7 +4646,7 @@
         "awakenIcon": "UI_EquipIcon_Pole_Gewalt_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 9617173300685003508,
+        "gachaCardNameHash": 9617173300685003508,
         "destroyReturnMaterial": [
             0
         ],
@@ -4644,7 +4694,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 5302683599911969005,
+        "gachaCardNameHash": 5302683599911969005,
         "destroyReturnMaterial": [
             0
         ],
@@ -4692,7 +4742,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 5878057430568209464,
+        "gachaCardNameHash": 5878057430568209464,
         "destroyReturnMaterial": [
             0
         ],
@@ -4740,7 +4790,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 5964035598117698518,
+        "gachaCardNameHash": 5964035598117698518,
         "destroyReturnMaterial": [
             0
         ],
@@ -4781,7 +4831,7 @@
         "weaponPromoteId": 14101,
         "storyId": 194101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 10277643394138549720,
+        "gachaCardNameHash": 10277643394138549720,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -4822,7 +4872,7 @@
         "weaponPromoteId": 14201,
         "storyId": 194201,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 12812779732730760768,
+        "gachaCardNameHash": 12812779732730760768,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -4870,7 +4920,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 611719110159309149,
+        "gachaCardNameHash": 611719110159309149,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -4918,7 +4968,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 14969824103534932496,
+        "gachaCardNameHash": 14969824103534932496,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -4966,7 +5016,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 12809585812877031328,
+        "gachaCardNameHash": 12809585812877031328,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -5015,7 +5065,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 13701510421890038124,
+        "gachaCardNameHash": 13701510421890038124,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -5064,7 +5114,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 711257877109476036,
+        "gachaCardNameHash": 711257877109476036,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -5113,7 +5163,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 3518775332131812424,
+        "gachaCardNameHash": 3518775332131812424,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -5161,7 +5211,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 7494659597366800962,
+        "gachaCardNameHash": 7494659597366800962,
         "destroyReturnMaterial": [
             0
         ],
@@ -5209,7 +5259,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 10822411501597536187,
+        "gachaCardNameHash": 10822411501597536187,
         "destroyReturnMaterial": [
             0
         ],
@@ -5257,7 +5307,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 12771167839134295618,
+        "gachaCardNameHash": 12771167839134295618,
         "destroyReturnMaterial": [
             0
         ],
@@ -5305,7 +5355,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 3615600433559183858,
+        "gachaCardNameHash": 3615600433559183858,
         "destroyReturnMaterial": [
             0
         ],
@@ -5354,7 +5404,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 17382006091952807702,
+        "gachaCardNameHash": 17382006091952807702,
         "destroyReturnMaterial": [
             0
         ],
@@ -5403,7 +5453,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 11130998842250245268,
+        "gachaCardNameHash": 11130998842250245268,
         "destroyReturnMaterial": [
             0
         ],
@@ -5451,7 +5501,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 7638363861194296134,
+        "gachaCardNameHash": 7638363861194296134,
         "destroyReturnMaterial": [
             0
         ],
@@ -5500,7 +5550,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 8604279428080495934,
+        "gachaCardNameHash": 8604279428080495934,
         "destroyReturnMaterial": [
             0
         ],
@@ -5549,7 +5599,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 10433058154529092631,
+        "gachaCardNameHash": 10433058154529092631,
         "destroyReturnMaterial": [
             0
         ],
@@ -5597,7 +5647,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 4860119987493817821,
+        "gachaCardNameHash": 4860119987493817821,
         "destroyReturnMaterial": [
             0
         ],
@@ -5637,7 +5687,7 @@
         "awakenIcon": "UI_EquipIcon_Catalyst_Apprentice_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 10277643394138549720,
+        "gachaCardNameHash": 10277643394138549720,
         "destroyReturnMaterial": [
             0
         ],
@@ -5686,7 +5736,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 6460919179106734058,
+        "gachaCardNameHash": 6460919179106734058,
         "destroyReturnMaterial": [
             0
         ],
@@ -5735,7 +5785,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 18028688753821689173,
+        "gachaCardNameHash": 18028688753821689173,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -5785,7 +5835,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 12484859727915047912,
+        "gachaCardNameHash": 12484859727915047912,
         "destroyReturnMaterial": [
             0
         ],
@@ -5834,7 +5884,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 256398963516104130,
+        "gachaCardNameHash": 256398963516104130,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -5884,7 +5934,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 9641777882327664932,
+        "gachaCardNameHash": 9641777882327664932,
         "destroyReturnMaterial": [
             0
         ],
@@ -5933,7 +5983,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 6758226991670809872,
+        "gachaCardNameHash": 6758226991670809872,
         "destroyReturnMaterial": [
             0
         ],
@@ -5981,7 +6031,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 14237223976752557339,
+        "gachaCardNameHash": 14237223976752557339,
         "destroyReturnMaterial": [
             0
         ],
@@ -6029,7 +6079,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 16312259155130398344,
+        "gachaCardNameHash": 16312259155130398344,
         "destroyReturnMaterial": [
             0
         ],
@@ -6069,7 +6119,7 @@
         "awakenIcon": "UI_EquipIcon_Catalyst_Apprentice_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 10277643394138549720,
+        "gachaCardNameHash": 10277643394138549720,
         "destroyReturnMaterial": [
             0
         ],
@@ -6118,7 +6168,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 10597691165751538262,
+        "gachaCardNameHash": 10597691165751538262,
         "destroyReturnMaterial": [
             0
         ],
@@ -6158,7 +6208,7 @@
         "awakenIcon": "UI_EquipIcon_Catalyst_Apprentice_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 10277643394138549720,
+        "gachaCardNameHash": 10277643394138549720,
         "destroyReturnMaterial": [
             0
         ],
@@ -6207,7 +6257,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 16563796787836516904,
+        "gachaCardNameHash": 16563796787836516904,
         "destroyReturnMaterial": [
             0
         ],
@@ -6247,7 +6297,7 @@
         "awakenIcon": "UI_EquipIcon_Catalyst_Apprentice_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 10277643394138549720,
+        "gachaCardNameHash": 10277643394138549720,
         "destroyReturnMaterial": [
             0
         ],
@@ -6296,7 +6346,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 12604352657128457006,
+        "gachaCardNameHash": 12604352657128457006,
         "destroyReturnMaterial": [
             0
         ],
@@ -6344,7 +6394,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 13068041646301633772,
+        "gachaCardNameHash": 13068041646301633772,
         "destroyReturnMaterial": [
             0
         ],
@@ -6360,6 +6410,55 @@
         "weight": 1,
         "rank": 10,
         "gadgetId": 50014511
+    },
+    {
+        "weaponType": "WEAPON_CATALYST",
+        "rankLevel": 5,
+        "weaponBaseExp": 300000,
+        "skillAffix": [
+            114512,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 47.5369987487793,
+                "type": "GROW_CURVE_ATTACK_302"
+            },
+            {
+                "propType": "FIGHT_PROP_CRITICAL_HURT",
+                "initValue": 0.09600000083446503,
+                "type": "GROW_CURVE_CRITICAL_301"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Catalyst_Alaya/Equip_Catalyst_Alaya_OverrideTexture/Equip_Catalyst_Alaya_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Catalyst_Alaya/Equip_Catalyst_Alaya_OverrideTexture/Equip_Catalyst_Alaya_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Catalyst_Alaya_Awaken",
+        "unRotate": true,
+        "weaponPromoteId": 14512,
+        "storyId": 194512,
+        "awakenCosts": [
+            2000,
+            4000,
+            8000,
+            16000
+        ],
+        "gachaCardNameHash": 12309415331107197236,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 1,
+        "id": 14512,
+        "nameTextMapHash": 359484419,
+        "descTextMapHash": 2928522477,
+        "icon": "UI_EquipIcon_Catalyst_Alaya",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50014512
     },
     {
         "weaponType": "WEAPON_BOW",
@@ -6385,7 +6484,7 @@
         "weaponPromoteId": 15101,
         "storyId": 195101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 13264383033532101184,
+        "gachaCardNameHash": 13264383033532101184,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6426,7 +6525,7 @@
         "weaponPromoteId": 15201,
         "storyId": 195201,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5329764258121862474,
+        "gachaCardNameHash": 5329764258121862474,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6474,7 +6573,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 5081828837789974582,
+        "gachaCardNameHash": 5081828837789974582,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6522,7 +6621,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 2044081593285585167,
+        "gachaCardNameHash": 2044081593285585167,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6570,7 +6669,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 8480038908049133666,
+        "gachaCardNameHash": 8480038908049133666,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6618,7 +6717,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 16823257936352887225,
+        "gachaCardNameHash": 16823257936352887225,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6666,7 +6765,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 2054246558624217065,
+        "gachaCardNameHash": 2054246558624217065,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6714,7 +6813,7 @@
             2000,
             4000
         ],
-        "gachaCardNameHashSuffix": 276973567952253327,
+        "gachaCardNameHash": 276973567952253327,
         "destroyRule": "DESTROY_RETURN_MATERIAL",
         "destroyReturnMaterial": [
             104011
@@ -6762,7 +6861,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 9054072525423548322,
+        "gachaCardNameHash": 9054072525423548322,
         "destroyReturnMaterial": [
             0
         ],
@@ -6810,7 +6909,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 7171300797853098508,
+        "gachaCardNameHash": 7171300797853098508,
         "destroyReturnMaterial": [
             0
         ],
@@ -6858,7 +6957,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13893015589353111043,
+        "gachaCardNameHash": 13893015589353111043,
         "destroyReturnMaterial": [
             0
         ],
@@ -6906,7 +7005,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 256038039860421900,
+        "gachaCardNameHash": 256038039860421900,
         "destroyReturnMaterial": [
             0
         ],
@@ -6954,7 +7053,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14570415418557068389,
+        "gachaCardNameHash": 14570415418557068389,
         "destroyReturnMaterial": [
             0
         ],
@@ -7002,7 +7101,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 5079968287668130497,
+        "gachaCardNameHash": 5079968287668130497,
         "destroyReturnMaterial": [
             0
         ],
@@ -7050,7 +7149,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 8612881413685285414,
+        "gachaCardNameHash": 8612881413685285414,
         "destroyReturnMaterial": [
             0
         ],
@@ -7098,7 +7197,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13097553755422323799,
+        "gachaCardNameHash": 13097553755422323799,
         "destroyReturnMaterial": [
             0
         ],
@@ -7146,7 +7245,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 10439566685510464679,
+        "gachaCardNameHash": 10439566685510464679,
         "destroyReturnMaterial": [
             0
         ],
@@ -7194,7 +7293,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 208805811638297109,
+        "gachaCardNameHash": 208805811638297109,
         "destroyReturnMaterial": [
             0
         ],
@@ -7243,7 +7342,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 7234857662360482895,
+        "gachaCardNameHash": 7234857662360482895,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -7292,7 +7391,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 3930712425170854878,
+        "gachaCardNameHash": 3930712425170854878,
         "destroyReturnMaterial": [
             0
         ],
@@ -7341,7 +7440,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14148316077925122889,
+        "gachaCardNameHash": 14148316077925122889,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -7390,7 +7489,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 14093687350322543057,
+        "gachaCardNameHash": 14093687350322543057,
         "destroyReturnMaterial": [
             0
         ],
@@ -7433,7 +7532,7 @@
         "weaponPromoteId": 15415,
         "storyId": 195415,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 10388671598529005467,
+        "gachaCardNameHash": 10388671598529005467,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -7482,7 +7581,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 10617161036777356110,
+        "gachaCardNameHash": 10617161036777356110,
         "destroyReturnMaterial": [
             0
         ],
@@ -7530,7 +7629,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 11308237281803693038,
+        "gachaCardNameHash": 11308237281803693038,
         "destroyReturnMaterial": [
             0
         ],
@@ -7579,7 +7678,7 @@
             4000,
             8000
         ],
-        "gachaCardNameHashSuffix": 13796817766899057363,
+        "gachaCardNameHash": 13796817766899057363,
         "enhanceRule": 1,
         "destroyReturnMaterial": [
             0
@@ -7628,7 +7727,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 15710990870925659617,
+        "gachaCardNameHash": 15710990870925659617,
         "destroyReturnMaterial": [
             0
         ],
@@ -7676,7 +7775,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 2398498731804939314,
+        "gachaCardNameHash": 2398498731804939314,
         "destroyReturnMaterial": [
             0
         ],
@@ -7724,7 +7823,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 12337944913694482317,
+        "gachaCardNameHash": 12337944913694482317,
         "destroyReturnMaterial": [
             0
         ],
@@ -7764,7 +7863,7 @@
         "awakenIcon": "UI_EquipIcon_Bow_Hunters_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 13264383033532101184,
+        "gachaCardNameHash": 13264383033532101184,
         "destroyReturnMaterial": [
             0
         ],
@@ -7804,7 +7903,7 @@
         "awakenIcon": "UI_EquipIcon_Bow_Hunters_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 13264383033532101184,
+        "gachaCardNameHash": 13264383033532101184,
         "destroyReturnMaterial": [
             0
         ],
@@ -7844,7 +7943,7 @@
         "awakenIcon": "UI_EquipIcon_Bow_Hunters_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 13264383033532101184,
+        "gachaCardNameHash": 13264383033532101184,
         "destroyReturnMaterial": [
             0
         ],
@@ -7892,7 +7991,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 4809911376804407484,
+        "gachaCardNameHash": 4809911376804407484,
         "destroyReturnMaterial": [
             0
         ],
@@ -7940,7 +8039,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 10096424995687626343,
+        "gachaCardNameHash": 10096424995687626343,
         "destroyReturnMaterial": [
             0
         ],
@@ -7988,7 +8087,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 7693129140993408932,
+        "gachaCardNameHash": 7693129140993408932,
         "destroyReturnMaterial": [
             0
         ],
@@ -8036,7 +8135,7 @@
             8000,
             16000
         ],
-        "gachaCardNameHashSuffix": 10206880096520017604,
+        "gachaCardNameHash": 10206880096520017604,
         "destroyReturnMaterial": [
             0
         ],
@@ -8077,7 +8176,7 @@
         "weaponPromoteId": 11101,
         "storyId": 200001,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 15086471665590343149,
+        "gachaCardNameHash": 15086471665590343149,
         "destroyReturnMaterial": [
             0
         ],
@@ -8117,7 +8216,7 @@
         "awakenIcon": "UI_EquipIcon_Sword_Template_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 7036004687122454663,
+        "gachaCardNameHash": 7036004687122454663,
         "destroyReturnMaterial": [
             0
         ],
@@ -8156,7 +8255,7 @@
         "awakenIcon": "UI_EquipIcon_Claymore_Template_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 13158338053514893648,
+        "gachaCardNameHash": 13158338053514893648,
         "destroyReturnMaterial": [
             0
         ],
@@ -8195,7 +8294,7 @@
         "awakenIcon": "UI_EquipIcon_Pole_Template_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 1104665665522609963,
+        "gachaCardNameHash": 1104665665522609963,
         "destroyReturnMaterial": [
             0
         ],
@@ -8234,7 +8333,7 @@
         "awakenIcon": "UI_EquipIcon_Catalyst_BookTemplate_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 5158718358316372846,
+        "gachaCardNameHash": 5158718358316372846,
         "destroyReturnMaterial": [
             0
         ],
@@ -8274,7 +8373,7 @@
         "unRotate": true,
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 17136512533674580590,
+        "gachaCardNameHash": 17136512533674580590,
         "destroyReturnMaterial": [
             0
         ],
@@ -8313,7 +8412,7 @@
         "awakenIcon": "UI_EquipIcon_Bow_Template_Awaken",
         "weaponPromoteId": 11101,
         "awakenCosts": [],
-        "gachaCardNameHashSuffix": 3398828888876299936,
+        "gachaCardNameHash": 3398828888876299936,
         "destroyReturnMaterial": [
             0
         ],

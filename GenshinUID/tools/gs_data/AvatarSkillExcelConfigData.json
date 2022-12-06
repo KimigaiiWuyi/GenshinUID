@@ -6299,6 +6299,271 @@
         "globalValueKey": ""
     },
     {
+        "id": 10751,
+        "nameTextMapHash": 668478821,
+        "abilityName": "Avatar_Wanderer_ExtraAttack",
+        "descTextMapHash": 2152227072,
+        "skillIcon": "Skill_A_Catalyst_MD",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7531,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10752,
+        "nameTextMapHash": 3563341277,
+        "abilityName": "",
+        "descTextMapHash": 619167032,
+        "skillIcon": "Skill_S_Wanderer_01",
+        "cdTime": 6.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7532,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10753,
+        "nameTextMapHash": 3444173733,
+        "abilityName": "",
+        "descTextMapHash": 954406728,
+        "skillIcon": "Skill_E_Wanderer_01",
+        "cdTime": 15.0,
+        "costElemType": "Wind",
+        "costElemVal": 60.0,
+        "maxChargeNum": 1,
+        "triggerID": 3,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10755,
+        "nameTextMapHash": 778366677,
+        "abilityName": "",
+        "descTextMapHash": 2253279664,
+        "skillIcon": "Skill_E_Wanderer_01",
+        "cdTime": 15.0,
+        "costElemType": "Wind",
+        "costElemVal": 60.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7539,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10756,
+        "nameTextMapHash": 816641229,
+        "abilityName": "",
+        "descTextMapHash": 2913166016,
+        "skillIcon": "Skill_S_Wanderer_04",
+        "maxChargeNum": 1,
+        "triggerID": 6,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": "",
+        "forceCanDoSkill": true
+    },
+    {
+        "id": 10757,
+        "nameTextMapHash": 1485938005,
+        "abilityName": "Avatar_Wanderer_WeaponVisible",
+        "descTextMapHash": 1660516472,
+        "skillIcon": "Skill_S_Wanderer_01",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10758,
+        "nameTextMapHash": 3915592581,
+        "abilityName": "Avatar_Wanderer_ElementalArt_HoverAir_Shoot",
+        "descTextMapHash": 4244092616,
+        "skillIcon": "Skill_A_Catalyst_MD",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10759,
+        "nameTextMapHash": 33306749,
+        "abilityName": "",
+        "descTextMapHash": 1164818416,
+        "skillIcon": "Skill_S_Wanderer_02",
+        "costStamina": 1.0,
+        "maxChargeNum": 1,
+        "triggerID": 8,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "dragType": "DRAG_ROTATE_CAMERA",
+        "showIconArrow": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10750,
+        "nameTextMapHash": 92557693,
+        "abilityName": "",
+        "descTextMapHash": 2794836664,
+        "skillIcon": "Skill_S_Wanderer_03",
+        "costStamina": 1.0,
+        "maxChargeNum": 1,
+        "triggerID": 9,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10761,
+        "nameTextMapHash": 47732325,
+        "abilityName": "Avatar_Faruzan_PressShoot",
+        "descTextMapHash": 4233673024,
+        "skillIcon": "Skill_A_02",
+        "isRanged": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7631,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10762,
+        "nameTextMapHash": 593897829,
+        "abilityName": "",
+        "descTextMapHash": 3487349912,
+        "skillIcon": "Skill_S_Faruzan_01",
+        "cdTime": 6.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7632,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10764,
+        "nameTextMapHash": 4203849629,
+        "abilityName": "Avatar_Faruzan_AimPressShoot",
+        "descTextMapHash": 2980629824,
+        "skillIcon": "Skill_A_02",
+        "isRanged": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10765,
+        "nameTextMapHash": 2294046741,
+        "abilityName": "",
+        "descTextMapHash": 3288766632,
+        "skillIcon": "Skill_E_Faruzan_01",
+        "cdTime": 20.0,
+        "costElemType": "Wind",
+        "costElemVal": 80.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7639,
+        "globalValueKey": ""
+    },
+    {
         "id": 20001,
         "nameTextMapHash": 1936482797,
         "abilityName": "Dvalin_S01_AirGun",
@@ -6794,7 +7059,7 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": "",
-        "CFDOPPHDKLH": 3
+        "FCJKOLMCMIG": 3
     },
     {
         "id": 20043,
@@ -7606,6 +7871,126 @@
         "energyMin": 50.0
     },
     {
+        "id": 20521,
+        "nameTextMapHash": 2973812453,
+        "abilityName": "ActivityAbility_HideSeek_Seeker_Net_V3",
+        "descTextMapHash": 2848563856,
+        "skillIcon": "UI_Icon_Skill_Hunter_Net",
+        "cdTime": 10.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 2,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20522,
+        "nameTextMapHash": 3495989125,
+        "abilityName": "ActivityAbility_HideSeek_Ghost_Bait_V3",
+        "descTextMapHash": 2096429384,
+        "skillIcon": "Btn_HideAndSeek_Hider_S_02",
+        "cdTime": 20.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 2,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20523,
+        "nameTextMapHash": 2450340517,
+        "abilityName": "ActivityAbility_HideSeek_Hider_InvisibleBait_V3",
+        "descTextMapHash": 790482904,
+        "skillIcon": "UI_Icon_Skill_Prey_Invisible_Bait",
+        "cdTime": 60.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20524,
+        "nameTextMapHash": 1356540013,
+        "abilityName": "ActivityAbility_HideSeek_Seeker_Guide_V3",
+        "descTextMapHash": 4059537528,
+        "skillIcon": "Btn_HideAndSeek_Seeker_S_01",
+        "cdTime": 40.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20525,
+        "nameTextMapHash": 3710444509,
+        "abilityName": "ActivityAbility_HideSeek_Hider_DisguiseHandler_V3",
+        "descTextMapHash": 3099728960,
+        "skillIcon": "Btn_HideAndSeek_Hider_A_01",
+        "cdTime": 0.5,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 20526,
+        "nameTextMapHash": 1656473773,
+        "abilityName": "",
+        "descTextMapHash": 2640357440,
+        "skillIcon": "Btn_HideAndSeek_Hider_A_03",
+        "cdTime": 15.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
         "id": 20310,
         "nameTextMapHash": 4098249149,
         "abilityName": "",
@@ -7744,7 +8129,7 @@
     {
         "id": 20320,
         "nameTextMapHash": 4091597733,
-        "abilityName": "ActivityAbility_Avatar_Blocking",
+        "abilityName": "ActivityAbility_Avatar_Blocking_V2",
         "descTextMapHash": 2738014424,
         "skillIcon": "Btn_Blocking",
         "cdTime": 1.0,
@@ -7800,6 +8185,26 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": ""
+    },
+    {
+        "id": 20340,
+        "nameTextMapHash": 3940661125,
+        "abilityName": "ActivityAbility_Breakout_Ver1",
+        "descTextMapHash": 2697774560,
+        "skillIcon": "Btn_BrickBreaker_Launch",
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": "AVATAR_BREAKOUT_ENERGY",
+        "energyMin": 100.0
     },
     {
         "id": 10384,
@@ -9515,6 +9920,25 @@
         "abilityName": "",
         "descTextMapHash": 1190506424,
         "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5075010,
+        "nameTextMapHash": 1285477197,
+        "abilityName": "",
+        "descTextMapHash": 1656077632,
+        "skillIcon": "Skill_A_Catalyst_MD",
         "maxChargeNum": 1,
         "triggerID": 30,
         "lockShape": "CircleLockEnemyR5H6HC",

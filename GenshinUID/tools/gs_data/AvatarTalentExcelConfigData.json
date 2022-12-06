@@ -8495,5 +8495,279 @@
             0.0,
             0.0
         ]
+    },
+    {
+        "talentId": 751,
+        "nameTextMapHash": 868773065,
+        "descTextMapHash": 3424058423,
+        "icon": "UI_Talent_S_Wanderer_01",
+        "mainCostItemId": 1175,
+        "mainCostItemCount": 1,
+        "openConfig": "Wanderer_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.25,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 752,
+        "nameTextMapHash": 2086697681,
+        "descTextMapHash": 1024331583,
+        "icon": "UI_Talent_S_Wanderer_02",
+        "prevTalent": 751,
+        "mainCostItemId": 1175,
+        "mainCostItemCount": 1,
+        "openConfig": "Wanderer_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.03999999910593033,
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 753,
+        "nameTextMapHash": 215651225,
+        "descTextMapHash": 2516153687,
+        "icon": "UI_Talent_U_Wanderer_02",
+        "prevTalent": 752,
+        "mainCostItemId": 1175,
+        "mainCostItemCount": 1,
+        "openConfig": "Wanderer_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 754,
+        "nameTextMapHash": 3961952345,
+        "descTextMapHash": 3465818367,
+        "icon": "UI_Talent_S_Wanderer_03",
+        "prevTalent": 753,
+        "mainCostItemId": 1175,
+        "mainCostItemCount": 1,
+        "openConfig": "Wanderer_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 755,
+        "nameTextMapHash": 1037858905,
+        "descTextMapHash": 3032413943,
+        "icon": "UI_Talent_U_Wanderer_01",
+        "prevTalent": 754,
+        "mainCostItemId": 1175,
+        "mainCostItemCount": 1,
+        "openConfig": "Wanderer_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 756,
+        "nameTextMapHash": 3600134161,
+        "descTextMapHash": 4050147231,
+        "icon": "UI_Talent_S_Wanderer_04",
+        "prevTalent": 755,
+        "mainCostItemId": 1175,
+        "mainCostItemCount": 1,
+        "openConfig": "Wanderer_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            4.0,
+            40.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 761,
+        "nameTextMapHash": 2013089553,
+        "descTextMapHash": 1528960167,
+        "icon": "UI_Talent_S_Faruzan_01",
+        "mainCostItemId": 1176,
+        "mainCostItemCount": 1,
+        "openConfig": "Faruzan_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 762,
+        "nameTextMapHash": 4140551721,
+        "descTextMapHash": 1173832871,
+        "icon": "UI_Talent_S_Faruzan_02",
+        "prevTalent": 761,
+        "mainCostItemId": 1176,
+        "mainCostItemCount": 1,
+        "openConfig": "Faruzan_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 763,
+        "nameTextMapHash": 1613893961,
+        "descTextMapHash": 2257513135,
+        "icon": "UI_Talent_U_Faruzan_01",
+        "prevTalent": 762,
+        "mainCostItemId": 1176,
+        "mainCostItemCount": 1,
+        "openConfig": "Faruzan_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 764,
+        "nameTextMapHash": 1099441465,
+        "descTextMapHash": 2239791463,
+        "icon": "UI_Talent_S_Faruzan_03",
+        "prevTalent": 763,
+        "mainCostItemId": 1176,
+        "mainCostItemCount": 1,
+        "openConfig": "Faruzan_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            2.0,
+            0.5,
+            2.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 765,
+        "nameTextMapHash": 2879411097,
+        "descTextMapHash": 3222950735,
+        "icon": "UI_Talent_U_Faruzan_02",
+        "prevTalent": 764,
+        "mainCostItemId": 1176,
+        "mainCostItemCount": 1,
+        "openConfig": "Faruzan_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 766,
+        "nameTextMapHash": 1813996249,
+        "descTextMapHash": 2194389751,
+        "icon": "UI_Talent_S_Faruzan_04",
+        "prevTalent": 765,
+        "mainCostItemId": 1176,
+        "mainCostItemCount": 1,
+        "openConfig": "Faruzan_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.4000000059604645,
+            3.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
     }
 ]

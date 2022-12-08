@@ -59,6 +59,18 @@ async def draw_pic_with_ring(
     size: int,
     bg_color: Optional[Tuple[int, int, int]] = None,
 ):
+    '''
+    :说明:
+      绘制一张带白色圆环的1:1比例图片。
+      
+    :参数:
+      * pic: `Image.Image`: 要修改的图片。
+      * size: `int`: 最后传出图片的大小(1:1)。
+      * bg_color: `Optional[Tuple[int, int, int]]`: 是否指定圆环内背景颜色。
+
+    :返回:
+      * img: `Image.Image`: 图片对象
+    '''
     img = Image.new('RGBA', (size, size))
     mask = mask_pic.resize((size, size))
     ring = ring_pic.resize((size, size))

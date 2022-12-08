@@ -9,12 +9,14 @@ from nonebot.params import CommandArg, RegexGroup
 from nonebot.adapters.ntchat import MessageSegment
 from nonebot.adapters.ntchat.message import Message
 
+from .get_card import get_gs_card
 from ..genshinuid_meta import register_menu
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.exception.handle_exception import handle_exception
 
 get_guide_pic = on_regex('([\u4e00-\u9fa5]+)(推荐|攻略)')
 get_bluekun_pic = on_command('参考面板')
+get_card = on_command('原牌')
 
 IMG_PATH = Path(__file__).parent / 'img'
 
@@ -75,7 +77,6 @@ async def send_guide_pic(
     ),
 )
 async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
-    print(args)
     if str(args[0]) in ['冰', '水', '火', '草', '雷', '风', '岩']:
         name = str(args[0])
     else:
@@ -88,3 +89,15 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
         await matcher.finish(im)
     else:
         logger.warning('未找到{}参考面板图片'.format(name))
+
+
+@get_card.handle()
+@handle_exception('原牌')
+async def send_gscard_pic(matcher: Matcher, args: Message = CommandArg()):
+    name = str(args[0])
+    im = await get_gs_card(name)
+    if im:
+        logger.info('获得{}原牌成功！'.format(name))
+        await matcher.finish(MessageSegment.image(im))
+    else:
+        logger.warning('未找到{}原牌图片'.format(name))

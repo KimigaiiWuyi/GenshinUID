@@ -3,6 +3,7 @@ from pathlib import Path
 import httpx
 
 from ..all_import import *
+from .get_card import get_gs_card
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 
 IMG_PATH = Path(__file__).parent / 'img'
@@ -45,3 +46,23 @@ async def send_bluekun_pic(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, img)
     else:
         logger.warning('未找到{}参考面板图片'.format(name))
+
+
+@sv.on_prefix('原牌')
+async def send_gscard_pic(bot: HoshinoBot, ev: CQEvent):
+    if ev.message:
+        name = ev.message.extract_plain_text().replace(' ', '')
+    else:
+        return
+
+    if name == '':
+        return
+
+    im = await get_gs_card(name)
+
+    if im:
+        logger.info('获得{}原牌成功！'.format(name))
+        im = await convert_img(im)
+        await bot.send(ev, im)
+    else:
+        logger.warning('未找到{}原牌图片'.format(name))

@@ -22,10 +22,16 @@
     - 拥有QQ频道机器人的开发者账号（类型：私域）
     - 拥有已经备案好的服务器地址（视情况后期官方放开本地图片发送而定）
     - **腾讯频道Bot官方的文档**，查看[此处](https://bot.q.qq.com/wiki/#)
-    - 安装方法：基于官方的[PythonSDK](https://github.com/tencent-connect/botpy)，本插件的安装方法可自行摸索。
+    - 安装方法：基于 [NoneBot2](https://github.com/nonebot/nonebot2)的频道适配器，具体方法可参考[Wiki](https://github.com/KimigaiiWuyi/GenshinUID/wiki/File_EX1-%E3%80%8CQQGuildBot%E7%9A%84%E5%AE%89%E8%A3%85%E3%80%8D)
 + 如果你想在微信(WeChat)端使用，请自行研究[adapter-ntchat](https://github.com/JustUndertaker/adapter-ntchat) & [ntchat-client](https://github.com/JustUndertaker/ntchat-client)
 
 ## 丨我该如何获取Cookies？[#92](https://github.com/KimigaiiWuyi/GenshinUID/issues/92)（[@RemKeeper](https://github.com/RemKeeper)）
+
+> 该方法现在很可能失效，你应该从米游社网页的网络请求Header中拿到CK
+>
+> 该CK应该携带`cookie_token_v2`参数
+>
+> 如不确定，可以直接使用下面的获取Stoken方法获取，会连带CK一起获取
 
 ```js
 var cookie = document.cookie;
@@ -80,6 +86,8 @@ if (ask == true) {
 - [@猫冬](https://bbs.mihoyo.com/ys/accountCenter/postList?id=74019947) - 原神攻略的**授权**使用
 - [@blue菌hehe](https://bbs.mihoyo.com/ys/accountCenter/postList?id=160367110) - 参考面板的**授权**使用
 - [@音尘绝LiuSXwww](https://bbs.mihoyo.com/ys/accountCenter/postList?id=271681956) - 怪物数据表的**授权**使用
+- [@Asgater](https://www.miyoushe.com/ys/accountCenter/postList?id=79695828) - 原牌图鉴的**授权**使用
+- [虚空数据库](https://akashadata.com/) - 深渊出场数据的**授权**使用
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@lulu666lulu](https://github.com/lulu666lulu) - DS算法提供和验证码方案提供
 - [@Monst.x](https://github.com/monsterxcn) - [fastapi-genshin-map](https://github.com/KimigaiiWuyi/fastapi_genshin_map)的内容填充和本体的修复

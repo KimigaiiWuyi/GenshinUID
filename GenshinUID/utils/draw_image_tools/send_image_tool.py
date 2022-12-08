@@ -1,9 +1,29 @@
 from io import BytesIO
 from pathlib import Path
-from typing import Union
 from base64 import b64encode
+from typing import Union, overload
 
 from PIL import Image
+
+
+@overload
+async def convert_img(img: Image.Image, is_base64: bool = False) -> bytes:
+    ...
+
+
+@overload
+async def convert_img(img: Image.Image, is_base64: bool = True) -> str:
+    ...
+
+
+@overload
+async def convert_img(img: bytes, is_base64: bool) -> str:
+    ...
+
+
+@overload
+async def convert_img(img: Path, is_base64: bool) -> str:
+    ...
 
 
 async def convert_img(

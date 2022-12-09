@@ -231,7 +231,11 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
 
         label_keyword_hurt_list = ['一段', '壹阶', '贰阶', '叁阶', '肆阶']
 
-        if '持续时间' in label_name:
+        if '炽焰箭' in label_name:
+            continue
+        elif '元素爆发伤害提高' in label_name and char == '雷电将军':
+            continue
+        elif '持续时间' in label_name:
             continue
         elif '提升' in label_name:
             # 云瑾和申鹤

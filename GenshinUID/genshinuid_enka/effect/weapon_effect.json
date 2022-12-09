@@ -4648,5 +4648,36 @@
         
       }
     }
+  },
+  "裁叶萃光": {
+    "normal": {
+      "normal_effect": {
+        "1": "critRate+4",
+        "2": "critRate+5",
+        "3": "critRate+6",
+        "4": "critRate+7",
+        "5": "critRate+8"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "AE:addDmg+200%elementalMastery",
+        "2": "AE:addDmg+230%elementalMastery",
+        "3": "AE:addDmg+260%elementalMastery",
+        "4": "AE:addDmg+290%elementalMastery",
+        "5": "AE:addDmg+320%elementalMastery"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 0,
+      "extra": {
+        
+      }
+    }
   }
 }

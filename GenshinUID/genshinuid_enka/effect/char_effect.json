@@ -2789,7 +2789,7 @@
     "fight": {
       "fight_skill": {
         "50": "elementalMastery+60",
-        "70": "E:dmgBonus+0.15%elementalMastery;Q:dmgBonus+0.1%elementalMastery"
+        "70": "Q:dmgBonus+0.12%elementalMastery;光幕攻击伤害:dmgBonus+0.12%elementalMastery"
       },
       "fight_talent": {
         "1": "",
@@ -2810,6 +2810,90 @@
         "4": "",
         "5": "",
         "6": "dmgBonus+12"
+      }
+    }
+  },
+  "艾尔海森": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": "E:dmgBonus+100%0.15%elementalMastery;Q:dmgBonus+100%0.1%elementalMastery"
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "critDmg+70;critRate+10"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "elementalMastery+90",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "瑶瑶": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "DendroDmgBonus+15",
+        "2": "",
+        "3": "",
+        "4": "elementalMastery+120%0.3%hp",
+        "5": "",
+        "6": ""
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "DendroDmgBonus+15",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
       }
     }
   }

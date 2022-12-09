@@ -9,6 +9,8 @@ CARD_DATA = {i.name[:-4]: i for i in CARD_PATH.rglob('*.jpg')}
 
 
 async def get_gs_card(msg: str) -> Optional[bytes]:
+    if not msg:
+        return None
     msg = await alias_to_char_name(msg)
     if msg in CARD_DATA:
         img = CARD_DATA[msg]

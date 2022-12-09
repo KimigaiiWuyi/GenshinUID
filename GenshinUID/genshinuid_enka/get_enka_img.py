@@ -74,7 +74,7 @@ async def draw_enka_img(
         else:
             break
     else:
-        im = await draw_group_dmg_img(char_list)
+        im = await draw_group_dmg_img(uid, char_list)
         if isinstance(im, str):
             return im
         return im, None

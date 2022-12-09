@@ -173,7 +173,11 @@ class Character:
         if self.s_char_name.startswith('旅行者'):
             icon_name = f'Player{ICON_ELEMENT[self.s_char_name[-2]]}'
         else:
-            icon_name = self.card_prop["avatarEnName"]
+            icon_name = self.card_prop['avatarEnName']
+
+        if talent_num is None:
+            talent_num = len(self.card_prop['talentList'])
+
         if talent_num or talent_num == 0:
             talent_list = []
             for i in range(1, talent_num + 1):
@@ -683,6 +687,8 @@ class Character:
             ex_effect.append('elementalMastery+80')
 
         all_effect.extend(ex_effect)
+        if self.char_name == '香菱':
+            part_effect.append('exAtk+1202')
         part_effect.extend(ex_effect)
 
         # 计算全部的buff，添加入属性

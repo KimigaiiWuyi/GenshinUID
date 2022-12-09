@@ -228,6 +228,7 @@ async def get_fake_char_data(
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
     en_name = await avatarId_to_enName(char_data['avatarId'])
+    char_data['avatarEnName'] = en_name
     if fake_name in avatarName2Element:
         char_data['avatarElement'] = avatarName2Element[fake_name]
     else:

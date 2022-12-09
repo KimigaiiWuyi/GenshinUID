@@ -105,7 +105,8 @@ async def draw_group_dmg_img(
         # Action
         bar_draw.text((190, 35), _data['action'], 'white', gs_font_32, 'lm')
         # 具体伤害
-        bar_draw.text((600, 35), _data['avg_dmg'], 'white', gs_font_32, 'lm')
+        _dmg = str(_data['avg_dmg'])
+        bar_draw.text((600, 35), _dmg, 'white', gs_font_32, 'lm')
 
         img.paste(bar, (0, 1030 + index * bar_offset), bar)
 

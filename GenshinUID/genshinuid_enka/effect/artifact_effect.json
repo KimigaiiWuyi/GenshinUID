@@ -1,7 +1,7 @@
 {
   "乐园遗落之花": {
     "normal_effect": {
-      "2": "em+80",
+      "2": "elementalMastery+80",
       "4": ""
     },
     "fight_effect": {

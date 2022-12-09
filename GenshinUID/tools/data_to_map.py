@@ -44,6 +44,11 @@ try:
 except FileNotFoundError:
     pass
 
+BETA_CHAR = {
+    '10000078': '艾尔海森',
+    '10000077': '瑶瑶',
+}
+
 
 async def avatarId2NameJson() -> None:
     with open(
@@ -54,6 +59,9 @@ async def avatarId2NameJson() -> None:
     temp = {}
     for i in avatar_data:
         temp[str(i['id'])] = raw_data[str(i['nameTextMapHash'])]
+
+    for _id in BETA_CHAR:
+        temp[_id] = BETA_CHAR[_id]
 
     with open(
         MAP_PATH / avatarId2Name_fileName, 'w', encoding='UTF-8'

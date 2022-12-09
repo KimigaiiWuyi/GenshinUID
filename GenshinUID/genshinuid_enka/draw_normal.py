@@ -39,9 +39,14 @@ async def get_char_card_base(char: Character) -> Image.Image:
     for talent_num in range(0, 6):
         if talent_num + 1 <= len(card_prop['talentList']):
             talent = card_prop['talentList'][talent_num]
-            talent_img = Image.open(
-                ICON_PATH / '{}.png'.format(talent['talentIcon'])
-            )
+            try:
+                talent_img = Image.open(
+                    ICON_PATH / '{}.png'.format(talent['talentIcon'])
+                )
+            except:
+                talent_img = Image.open(
+                    ICON_PATH / 'UI_Talent_S_Kazuha_02.png'
+                )
             talent_img_new = talent_img.resize(
                 (50, 50), Image.Resampling.LANCZOS
             ).convert("RGBA")

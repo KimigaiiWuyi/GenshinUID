@@ -63,10 +63,17 @@ async def avatarId2NameJson() -> None:
     for _id in BETA_CHAR:
         temp[_id] = BETA_CHAR[_id]
 
+    result = {}
+    for _id in temp:
+        if int(_id) >= 11000000:
+            continue
+        else:
+            result[_id] = temp[_id]
+
     with open(
         MAP_PATH / avatarId2Name_fileName, 'w', encoding='UTF-8'
     ) as file:
-        json.dump(temp, file, ensure_ascii=False)
+        json.dump(result, file, ensure_ascii=False)
 
 
 async def avatarName2ElementJson() -> None:

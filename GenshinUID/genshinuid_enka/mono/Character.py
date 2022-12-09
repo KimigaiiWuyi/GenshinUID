@@ -738,6 +738,7 @@ class Character:
                 or '霜华矢' in power_name
                 or '藏蕴花矢' in power_name
                 or '花筥箭' in power_name
+                or '刀风界' in power_name
             ):
                 self.attack_type = 'B'
             # 下落伤害类型,例如魈
@@ -745,6 +746,8 @@ class Character:
                 self.attack_type = 'C'
             # 一段伤害, 二段伤害等等 应视为A伤害
             elif '段' in power_name and '伤害' in power_name:
+                self.attack_type = 'A'
+            elif '不生断' in power_name:
                 self.attack_type = 'A'
         return self.attack_type
 

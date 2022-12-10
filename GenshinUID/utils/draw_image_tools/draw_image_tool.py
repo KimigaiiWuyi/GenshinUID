@@ -62,7 +62,7 @@ async def draw_pic_with_ring(
     '''
     :说明:
       绘制一张带白色圆环的1:1比例图片。
-      
+
     :参数:
       * pic: `Image.Image`: 要修改的图片。
       * size: `int`: 最后传出图片的大小(1:1)。

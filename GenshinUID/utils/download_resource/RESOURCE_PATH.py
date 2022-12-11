@@ -16,6 +16,7 @@ CHAR_NAMECARD_PATH = RESOURCE_PATH / 'char_namecard'
 REL_PATH = RESOURCE_PATH / 'reliquaries'
 ICON_PATH = RESOURCE_PATH / 'icon'
 TEMP_PATH = RESOURCE_PATH / 'temp'
+CARD_PATH = RESOURCE_PATH / 'card'
 TEXT2D_PATH = Path(__file__).parents[2] / 'resource' / 'texture2d'
 
 PLAYER_PATH = MAIN_PATH / 'players'
@@ -36,6 +37,7 @@ def init_dir():
         TEXT2D_PATH,
         PLAYER_PATH,
         TEMP_PATH,
+        CARD_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

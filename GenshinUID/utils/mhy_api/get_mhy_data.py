@@ -23,7 +23,9 @@ from ..mhy_api.mhy_api_tools import (
     old_version_get_ds_token,
 )
 from ..mhy_api.mhy_api import (
+    GCG_INFO,
     SIGN_URL,
+    GCG_INFO_OS,
     SIGN_URL_OS,
     SIGN_INFO_URL,
     SIGN_LIST_URL,
@@ -86,6 +88,8 @@ RECOGNIZE_SERVER = {
     "8": "os_asia",
     "9": "os_cht",
 }
+
+ATTR = vars()
 
 
 async def get_gacha_log_by_authkey(
@@ -220,29 +224,7 @@ async def get_cookie_token_by_stoken(stoken: str, mys_id: str) -> dict:
 
 
 async def get_daily_data(uid: str) -> dict:
-    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(str(uid)[0]) < 6:
-        HEADER = copy.deepcopy(_HEADER)
-        HEADER['Cookie'] = await owner_cookies(uid)
-        HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
-        data = await _mhy_request(
-            url=DAILY_NOTE_URL,
-            method='GET',
-            header=HEADER,
-            params={'server': server_id, 'role_id': uid},
-        )
-    else:
-        HEADER = copy.deepcopy(_HEADER_OS)
-        HEADER['Cookie'] = await owner_cookies(uid)
-        HEADER['DS'] = generate_dynamic_secret()
-        data = await _mhy_request(
-            url=DAILY_NOTE_URL_OS,
-            method='GET',
-            header=HEADER,
-            params={'server': server_id, 'role_id': uid},
-            use_proxy=True,
-        )
-    return data
+    return await basic_mhy_req('DAILY_NOTE_URL', uid)
 
 
 async def get_sign_list(uid) -> dict:
@@ -397,30 +379,7 @@ async def get_award(uid) -> dict:
 
 
 async def get_info(uid, ck) -> dict:
-    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-    if int(str(uid)[0]) < 6:
-        HEADER = copy.deepcopy(_HEADER)
-        HEADER['Cookie'] = ck
-        HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
-        data = await _mhy_request(
-            url=PLAYER_INFO_URL,
-            method='GET',
-            header=HEADER,
-            params={'server': server_id, 'role_id': uid},
-        )
-    else:
-        HEADER = copy.deepcopy(_HEADER_OS)
-        HEADER['Cookie'] = ck
-        HEADER['DS'] = generate_dynamic_secret()
-        data = await _mhy_request(
-            url=PLAYER_INFO_URL_OS,
-            method='GET',
-            header=HEADER,
-            params={'server': server_id, 'role_id': uid},
-            use_proxy=True,
-        )
-
-    return data
+    return await basic_mhy_req('PLAYER_INFO_URL', uid, ck)
 
 
 async def get_spiral_abyss_info(uid, ck, schedule_type='1') -> dict:
@@ -565,6 +524,46 @@ async def get_mihoyo_bbs_info(
         params={'uid': mysid},
         use_proxy=is_os,
     )
+    return data
+
+
+async def get_gcg_info(uid: str):
+    return await basic_mhy_req('GCG_INFO', uid)
+
+
+async def basic_mhy_req(URL: str, uid: str, ck: Optional[str] = None) -> Dict:
+    if ck is None:
+        ck = await owner_cookies(uid)
+        if '该用户没有绑定过Cookies' in ck:
+            CK = await cache_db(uid)
+            if isinstance(CK, str):
+                return {}
+            ck = CK.CK
+
+    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    _URL = ATTR[URL]
+    _URL_OS = ATTR[f'{URL}_OS']
+    if int(str(uid)[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = ck
+        HEADER['DS'] = get_ds_token(f'role_id={uid}&server={server_id}')
+        data = await _mhy_request(
+            url=_URL,
+            method='GET',
+            header=HEADER,
+            params={'server': server_id, 'role_id': uid},
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = ck
+        HEADER['DS'] = generate_dynamic_secret()
+        data = await _mhy_request(
+            url=_URL_OS,
+            method='GET',
+            header=HEADER,
+            params={'server': server_id, 'role_id': uid},
+            use_proxy=True,
+        )
     return data
 
 

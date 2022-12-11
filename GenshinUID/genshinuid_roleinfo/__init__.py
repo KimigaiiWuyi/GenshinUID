@@ -1,10 +1,12 @@
-from typing import Any, Tuple, Union
+import re
+from typing import Union
 
-from nonebot import on_regex
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.params import Depends, RegexGroup
+from nonebot.params import Depends, CommandArg
 from nonebot.adapters.onebot.v11 import (
+    Message,
     MessageSegment,
     GroupMessageEvent,
     PrivateMessageEvent,
@@ -15,15 +17,9 @@ from ..genshinuid_meta import register_menu
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
-from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
 from ..utils.exception.handle_exception import handle_exception
 
-get_role_info = on_regex(
-    r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|查询|mys)?([0-9]+)?'
-    r'(\[CQ:at,qq=[0-9]+\])?( )?$',
-    block=True,
-)
+get_role_info = on_command('uid', aliases={'查询'})
 
 
 @get_role_info.handle()
@@ -54,27 +50,26 @@ get_role_info = on_regex(
 async def send_role_info(
     event: Union[GroupMessageEvent, PrivateMessageEvent],
     matcher: Matcher,
-    args: Tuple[Any, ...] = RegexGroup(),
+    args: Message = CommandArg(),
     custom: ImageAndAt = Depends(),
 ):
+    raw_mes = args.extract_plain_text().strip().replace(' ', '')
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    if name:
+        return
     qid = event.user_id
     at = custom.get_first_at()
     if at:
         qid = at
 
-    # 判断uid
-    if args[2] != 'mys':
-        if args[3] is None:
-            if args[2] is None:
-                await matcher.finish()
-            uid = await select_db(qid, mode='uid')
-            uid = str(uid)
-        elif len(args[3]) != 9:
-            return
-        else:
-            uid = args[3]
+    # 获取uid
+    uid = re.findall(r'\d+', raw_mes)
+    if uid:
+        uid = uid[0]
     else:
-        uid = await convert_mysid(args[3])
+        uid = await select_db(qid, mode='uid')
+        uid = str(uid)
+
     logger.info('开始执行[查询角色信息]')
     logger.info('[查询角色信息]参数: {}'.format(args))
     logger.info('[查询角色信息]uid: {}'.format(uid))

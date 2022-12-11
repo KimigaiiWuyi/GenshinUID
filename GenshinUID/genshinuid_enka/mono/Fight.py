@@ -27,6 +27,8 @@ class Fight:
         self.char_list: Dict[str, Character] = Character_list
         self.enemy = Enemy
 
+        self.dmg_data: Dict[str, Dict[str, float]] = {}
+
     # 进行队伍伤害计算
     async def update_dmg(self) -> Dict:
         result = {}
@@ -75,6 +77,8 @@ class Fight:
         char = self.char_list[char_name]
         # 获取本次攻击的类型
         if without_talent:
+            if char.rarity == '4' and char_name != '香菱':
+                return self.dmg_data
             char.fight_prop = char.without_talent_fight
 
         for power_name in char.power_list:
@@ -109,6 +113,7 @@ class Fight:
                 'avg': dmg[1],
                 'crit': dmg[2],
             }
+        self.dmg_data = result
         logger.debug(result)
         return result
 
@@ -302,6 +307,15 @@ class Fight:
         extra_ignoreD: float = char.real_prop[f'{char.attack_type}_ignoreDef']
         return extra_ignoreD
 
+    async def get_sp_base(self, power: Power, char: Character) -> float:
+        power_sp = power.raw.replace('%', '').split('+')
+        power_sp = [float(x) / 100 for x in power_sp]
+        real_prop = char.real_prop
+        atk = real_prop['E_atk'] + char.sp.attack
+        em = real_prop[f'{char.attack_type}_elementalMastery']
+        base = power_sp[0] * atk + power_sp[1] * em
+        return base
+
     # 基础乘区
     async def get_base_area(self, char: Character) -> float:
         # 获得该次伤害的倍率信息
@@ -315,12 +329,9 @@ class Fight:
 
         # 对草神进行特殊计算
         if '灭净三业' in power.name or '业障除' in power.name:
-            power_sp = power.raw.replace('%', '').split('+')
-            power_sp = [float(x) / 100 for x in power_sp]
-            real_prop = char.real_prop
-            atk = real_prop['E_atk'] + char.sp.attack
-            em = real_prop[f'{char.attack_type}_elementalMastery']
-            base = power_sp[0] * atk + power_sp[1] * em
+            base = await self.get_sp_base(power, char)
+        elif char.char_name == '艾尔海森' and power.name.startswith('E'):
+            base = await self.get_sp_base(power, char)
         else:
             base = effect_prop * power.percent + power.value
 

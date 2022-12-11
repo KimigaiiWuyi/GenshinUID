@@ -9,19 +9,15 @@ license = { file="LICENSE" }
 requires-python = ">=3.8"
 readme = "README.md"
 dependencies = [
-    'nonebot2>=2.0.0-beta.4',
+    'nonebot2>=2.0.0b4',
     'nonebot-adapter-onebot>=2.1.1',
     'httpx>=0.23.0',
-    'wordcloud>=1.8.2',
-    'numpy>=1.23.1',
     'beautifulsoup4>=4.11.1',
     'lxml>=4.9.1',
     'openpyxl>=3.0.10',
     'aiohttp>=3.8.1',
     'SQLAlchemy>=1.4.39',
     'Pillow>=9.2.0',
-    'scikit-learn>=1.1.2',
-    'shapely>=1.8.2',
     'aiosqlite>=0.17.0',
     'nonebot-plugin-apscheduler>=0.1.4',
     'aiofiles>=0.8.0',
@@ -79,19 +75,15 @@ license = "GPL-3.0-or-later"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-nonebot2 = ">=2.0.0-beta.4"
+nonebot2 = ">=2.0.0b4"
 nonebot-adapter-onebot = ">=2.1.1"
 httpx = ">=0.23.0"
-wordcloud = ">=1.8.2"
-numpy = ">=1.23.1"
 beautifulsoup4 = ">=4.11.1"
 lxml = ">=4.9.1"
 openpyxl = ">=3.0.10"
 aiohttp = ">=3.8.1"
 sqlalchemy = ">=1.4.39"
 pillow = ">=9.2.0"
-scikit-learn = ">=1.1.2"
-shapely = ">=1.8.2"
 aiosqlite = ">=0.17.0"
 nonebot-plugin-apscheduler = ">=0.1.4"
 aiofiles = ">=0.8.0"

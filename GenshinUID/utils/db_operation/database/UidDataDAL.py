@@ -185,9 +185,11 @@ class UidDataDAL:
             if 'UID' in data:
                 if data['UID'] is not None:
                     new_uid = data['UID']
-                    if data['UID'] in uid_list:
-                        return f'该UID{data["UID"]}已经绑定过了噢~'
-                    uid_list.append(data['UID'])
+                    if new_uid in uid_list:
+                        return f'该UID{new_uid}已经绑定过了噢~'
+                    if len(str(new_uid)) != 9:
+                        return f'该UID{new_uid}的位数不正确！'
+                    uid_list.append(new_uid)
                     data['UID'] = '_'.join(uid_list)
                     _bind += (
                         f'绑定UID{new_uid}成功~\n当前绑定UID列表为{",".join(uid_list)}'

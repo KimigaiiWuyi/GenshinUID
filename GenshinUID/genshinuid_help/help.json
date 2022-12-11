@@ -142,6 +142,14 @@
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "七圣召唤/召唤",
+        "desc": "查询自己的七圣召唤进度",
+        "eg": "召唤100740568",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
@@ -200,6 +208,14 @@
         "name": "查询展柜角色",
         "desc": "查询所有已缓存角色列表",
         "eg": "查询展柜角色",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查询队伍 xx",
+        "desc": "查询队伍伤害",
+        "eg": "查询队伍 万叶 公子 ...",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -343,6 +359,14 @@
         "need_admin": false
       },
       {
+        "name": "原牌",
+        "desc": "查询原牌",
+        "eg": "原牌神里、原牌运筹帷幄",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "切换地图",
         "desc": "切换地图至其他区域",
         "eg": "切换地图",
@@ -468,6 +492,14 @@
         "name": "伤害乘区",
         "desc": "伤害到底有几个乘区",
         "eg": "伤害乘区",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "深渊概览",
+        "desc": "从虚空数据库获取当期深渊完成率",
+        "eg": "深渊概览",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

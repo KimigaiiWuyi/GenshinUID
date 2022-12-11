@@ -9,6 +9,7 @@ from ...utils.db_operation.db_operation import config_check
 from ..etc.status_change import EXTRA_CHAR_LIST, STATUS_CHAR_LIST
 from ...utils.alias.avatarId_and_name_covert import name_to_avatar_id
 from ..etc.MAP_PATH import ActionMAP, char_action, avatarName2SkillAdd
+from ...utils.alias.avatarId_to_char_star import avatar_id_to_char_star
 from ...utils.minigg_api.get_minigg_data import get_char_info, get_weapon_info
 from ...utils.enka_api.map.GS_MAP_PATH import (
     avatarName2Weapon,
@@ -49,6 +50,7 @@ class Character:
         self.char_talent: int = len(self.card_prop['talentList'])
         self.weapon_type = self.card_prop['weaponInfo']['weaponType']
         self.char_bytes: Optional[bytes] = None
+        self.rarity: str = '4'
 
         self.power_name: str = ''
         self.attack_type: str = ''
@@ -106,6 +108,9 @@ class Character:
         self.baseHp = self.card_prop['avatarFightProp']['baseHp']
         self.baseAtk = self.card_prop['avatarFightProp']['baseAtk']
         self.baseDef = self.card_prop['avatarFightProp']['baseDef']
+        self.rarity = await avatar_id_to_char_star(
+            str(self.card_prop['avatarId'])
+        )
 
     async def get_card_prop(
         self,
@@ -687,17 +692,21 @@ class Character:
             ex_effect.append('elementalMastery+80')
 
         all_effect.extend(ex_effect)
-        if self.char_name == '香菱':
-            part_effect.append('exAtk+1202')
         part_effect.extend(ex_effect)
 
         # 计算全部的buff，添加入属性
         self.fight_prop = await self.get_effect_prop(
             deepcopy(prop), all_effect, self.char_name
         )
-        self.without_talent_fight = await self.get_effect_prop(
-            deepcopy(prop), part_effect, self.char_name
-        )
+
+        if self.rarity != '5' and self.char_name != '香菱':
+            self.without_talent_fight = self.fight_prop
+        else:
+            if self.char_name == '香菱':
+                part_effect.append('exAtk+1202')
+            self.without_talent_fight = await self.get_effect_prop(
+                deepcopy(prop), part_effect, self.char_name
+            )
         return self.fight_prop
 
     async def get_sp_fight_prop(self, power_name: str) -> sp_prop:

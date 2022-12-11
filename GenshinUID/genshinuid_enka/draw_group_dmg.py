@@ -51,6 +51,10 @@ async def get_group_dmg_data(
     return dmg_data
 
 
+def _f(value: float) -> str:
+    return '{:.2f}'.format(value)
+
+
 async def draw_group_dmg_img(
     uid: str, char_list: List[Character]
 ) -> Union[bytes, str]:
@@ -105,7 +109,7 @@ async def draw_group_dmg_img(
         # Action
         bar_draw.text((190, 35), _data['action'], 'white', gs_font_32, 'lm')
         # 具体伤害
-        _dmg = str(_data['avg_dmg'])
+        _dmg = _f(_data['avg_dmg'])
         bar_draw.text((600, 35), _dmg, 'white', gs_font_32, 'lm')
 
         img.paste(bar, (0, 1030 + index * bar_offset), bar)
@@ -124,10 +128,10 @@ async def draw_group_dmg_img(
     img_draw.text((656, 297), f'{ac_len}个动作', 'white', gs_font_26, 'lm')
 
     # 数值
-    img_draw.text((396, 236), f'{all_avgdmg}', 'white', gs_font_44, 'lm')
-    img_draw.text((656, 236), f'{all_critdmg}', 'white', gs_font_44, 'lm')
-    img_draw.text((396, 333), f'{avg_dps}', 'white', gs_font_44, 'lm')
-    img_draw.text((656, 333), f'{all_time}秒内', 'white', gs_font_44, 'lm')
+    img_draw.text((396, 236), f'{_f(all_avgdmg)}', 'white', gs_font_44, 'lm')
+    img_draw.text((656, 236), f'{_f(all_critdmg)}', 'white', gs_font_44, 'lm')
+    img_draw.text((396, 333), f'{_f(avg_dps)}', 'white', gs_font_44, 'lm')
+    img_draw.text((656, 333), f'{_f(all_time)}秒内', 'white', gs_font_44, 'lm')
 
     img = await convert_img(img)
     return img

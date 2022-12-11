@@ -27,9 +27,12 @@ async def send_gcg_pic(
     args: Message = CommandArg(),
     custom: ImageAndAt = Depends(),
 ):
-    logger.info('开始执行[七圣召唤]')
-    raw_mes = args.extract_plain_text().strip()
+    raw_mes = args.extract_plain_text().strip().replace(' ', '')
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    if name:
+        return
     at = custom.get_first_at()
+    logger.info('开始执行[七圣召唤]')
 
     qid = at or cast_to_int(event.author)
     qid = str(qid)

@@ -1,5 +1,6 @@
-from PIL import Image
 from pathlib import Path
+
+from PIL import Image
 
 target = Path(__file__).parent / 'support'
 img = Path(__file__).parent / '图.png'
@@ -9,7 +10,9 @@ width = 1750
 height = 1045
 
 # 设置要裁剪的图块的位置
-positions = [(120 + width * x, 11540 + height * y) for x in range(2) for y in range(1)]
+positions = [
+    (120 + width * x, 11540 + height * y) for x in range(2) for y in range(1)
+]
 
 # 循环裁剪每个图块
 for i, position in enumerate(positions):

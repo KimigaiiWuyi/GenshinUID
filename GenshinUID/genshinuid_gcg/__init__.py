@@ -24,8 +24,11 @@ async def send_gcg_pic(
     matcher: Matcher,
     args: Message = CommandArg(),
 ):
+    raw_mes = args.extract_plain_text().strip().replace(' ', '')
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    if name:
+        return
     logger.info('开始执行[七圣召唤]')
-    raw_mes = args.extract_plain_text().strip()
     if event.at_user_list:
         qid = event.at_user_list[0]
     else:

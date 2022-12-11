@@ -94,6 +94,8 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
 @get_card.handle()
 @handle_exception('原牌')
 async def send_gscard_pic(matcher: Matcher, args: Message = CommandArg()):
+    if not args:
+        return
     name = str(args[0])
     im = await get_gs_card(name)
     if im:

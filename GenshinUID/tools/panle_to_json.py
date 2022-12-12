@@ -19,7 +19,7 @@ SAMPLE = {
     '迪卢克': 'Q斩击伤害(蒸发)',
     '雷泽': 'A一段伤害',
     '安柏': ['Q箭雨总伤害', 'A满蓄力瞄准射击'],
-    '温迪': '扩散伤害',
+    '温迪': 'A扩散伤害',
     '香菱': 'Q旋火轮伤害(蒸发)',
     '北斗': 'Q闪雷伤害',
     '行秋': 'Q剑雨伤害',
@@ -72,6 +72,8 @@ SAMPLE = {
     '旅行者(草)': 'Q草灯莲攻击伤害(蔓激化)',
     '旅行者(岩)': 'Q地震波单次伤害',
     '旅行者(风)': 'A扩散伤害',
+    '流浪者': 'E空居·不生断伤害',
+    '珐露珊': 'Q伤害',
 }
 
 
@@ -102,7 +104,7 @@ async def panle2Json() -> None:
       访问DATA_PATH并转换数据为dmgMap.json。
     '''
     wb = openpyxl.load_workbook(
-        str(DATA_PATH / '参考面板3.2（下）.xlsx'), data_only=True
+        str(DATA_PATH / '参考面板3.3.xlsx'), data_only=True
     )
     sheet = wb.active
 
@@ -161,11 +163,7 @@ async def panle2Json() -> None:
                 else:
                     if skill != skill_temp:
                         skill_count += 1
-                    print(skill_temp)
-                    print(skill)
                     skill_temp = skill
-                    print(SAMPLE[char_name])
-                    print(skill_count)
                     temp['skill'] = SAMPLE[char_name][skill_count]
                 value = (
                     str(sheet.cell(row, 20).value)
@@ -195,7 +193,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 327:
+            if row == 336:
                 print('ok!')
                 result[char_temp] = char_result
         else:

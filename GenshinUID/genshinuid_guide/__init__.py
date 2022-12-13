@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import Any, Tuple
 
-import httpx
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import on_regex, on_command
@@ -9,6 +8,7 @@ from nonebot.params import CommandArg, RegexGroup
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 
 from .get_card import get_gs_card
+from .get_guide import get_gs_guide
 from ..genshinuid_meta import register_menu
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.exception.handle_exception import handle_exception
@@ -43,16 +43,15 @@ IMG_PATH = Path(__file__).parent / 'img'
 async def send_guide_pic(
     matcher: Matcher, args: Tuple[Any, ...] = RegexGroup()
 ):
-    name = await alias_to_char_name(str(args[0]))
-    if name.startswith('旅行者'):
-        name = f'{name[:3]}-{name[-1]}'
-    url = 'https://file.microgg.cn/MiniGG/guide/{}.jpg'.format(name)
-    if httpx.head(url).status_code == 200:
-        logger.info('获得{}推荐图片成功！'.format(name))
-        await matcher.finish(MessageSegment.image(url))
+    if not args:
+        return
+    name = str(args[0])
+    im = await get_gs_guide(name)
+    if im:
+        logger.info('获得{}攻略成功！'.format(name))
+        await matcher.finish(MessageSegment.image(im))
     else:
-        logger.warning('未获得{}推荐图片。'.format(name))
-        await matcher.finish()
+        logger.warning('未找到{}攻略图片'.format(name))
 
 
 @get_bluekun_pic.handle()

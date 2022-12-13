@@ -11,6 +11,8 @@ from .RESOURCE_PATH import (
     CARD_PATH,
     CHAR_PATH,
     ICON_PATH,
+    WIKI_PATH,
+    GUIDE_PATH,
     WEAPON_PATH,
     CHAR_SIDE_PATH,
     GACHA_IMG_PATH,
@@ -28,6 +30,8 @@ PATH_MAP = {
     7: REL_PATH,
     8: ICON_PATH,
     9: CARD_PATH,
+    10: GUIDE_PATH,
+    11: WIKI_PATH,
 }
 
 
@@ -54,6 +58,8 @@ async def download(
         7: REL_PATH,
         8: ICON_PATH,
         9: CARD_PATH,
+        10: GUIDE_PATH,
+        11: WIKI_PATH,
         '''
       * name: `str`
             资源保存名称

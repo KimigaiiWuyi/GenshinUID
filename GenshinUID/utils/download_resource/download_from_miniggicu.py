@@ -18,6 +18,7 @@ GACHA_FILE = MINIGG_FILE + 'gacha_img'
 ICON_FILE = MINIGG_FILE + 'icon'
 REL_FILE = MINIGG_FILE + 'reliquaries'
 WEAPON_FILE = MINIGG_FILE + 'weapon'
+GUIDE_FILE = MINIGG_FILE + 'guide'
 
 FILE_TO_PATH = {
     NAMECARD_FILE: 6,
@@ -28,6 +29,7 @@ FILE_TO_PATH = {
     ICON_FILE: 8,
     REL_FILE: 7,
     WEAPON_FILE: 5,
+    GUIDE_FILE: 10,
 }
 
 FILE_TO_NAME = {
@@ -39,6 +41,7 @@ FILE_TO_NAME = {
     ICON_FILE: '图标',
     REL_FILE: '圣遗物',
     WEAPON_FILE: '武器',
+    GUIDE_FILE: '攻略',
 }
 
 
@@ -67,6 +70,7 @@ async def download_all_file_from_miniggicu():
             ICON_FILE,
             REL_FILE,
             WEAPON_FILE,
+            GUIDE_FILE,
         ]:
             base_data = await _get_url(file, sess)
             content_bs = BeautifulSoup(base_data, 'lxml')

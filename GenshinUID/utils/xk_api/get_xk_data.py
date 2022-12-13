@@ -48,6 +48,7 @@ async def _xk_request(
         )
         raw = await req.text()
         raw = raw.replace('var static_abyss_total =', '')
+        logger.debug(raw)
         return json.loads(raw)
     except Exception:
         logger.exception(f'访问{url}失败！')

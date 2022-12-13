@@ -74,7 +74,9 @@ async def _ambr_request(
         req = await sess.request(
             method, url=url, headers=header, params=params, json=data
         )
-        return await req.json()
+        raw_data = await req.json()
+        logger.debug(raw_data)
+        return raw_data
     except Exception:
         logger.exception(f'访问{url}失败！')
         return {}

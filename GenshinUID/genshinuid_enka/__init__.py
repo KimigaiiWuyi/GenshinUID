@@ -99,7 +99,7 @@ async def send_char_info(
 ):
     raw_mes = args.extract_plain_text().strip()
     name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
-    if name:
+    if not name:
         return
     logger.info('开始执行[查询角色面板]')
     at = custom.get_first_at()

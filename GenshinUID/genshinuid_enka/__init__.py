@@ -151,10 +151,11 @@ async def send_char_info(
     matcher: Matcher,
     args: Message = CommandArg(),
 ):
-    if args is None:
+    raw_mes = args.extract_plain_text().strip()
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    if name:
         return
     logger.info('开始执行[查询角色面板]')
-    raw_mes = args.extract_plain_text().strip()
     if event.at_user_list:
         qid = event.at_user_list[0]
     else:

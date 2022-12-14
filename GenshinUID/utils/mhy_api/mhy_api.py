@@ -81,7 +81,7 @@ MIHOYO_BBS_PLAYER_INFO_URL_OS = (
 
 # 获取七圣召唤相关信息
 GCG_INFO = NEW_URL + '/game_record/app/genshin/api/gcg/basicInfo'
-GCG_INFO_OS = NEW_URL_OS + '/game_record/app/genshin/api/gcg/basicInfo'
+GCG_INFO_OS = NEW_URL_OS + '/game_record/genshin/api/gcg/basicInfo'
 
 # 米游社的API列表
 bbs_Taskslist = BBS_URL + '/apihub/sapi/getUserMissionsState'  # 获取任务列表

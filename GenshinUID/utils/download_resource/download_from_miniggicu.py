@@ -81,6 +81,8 @@ async def download_all_file_from_miniggicu():
             )
             temp_num = 0
             for data in data_list:
+                if data['href'] == '../':
+                    continue
                 url = f'{file}/{data["href"]}'
                 name = data.text
                 path = Path(PATH_MAP[FILE_TO_PATH[file]] / name)

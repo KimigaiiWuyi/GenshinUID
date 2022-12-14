@@ -10,13 +10,13 @@ from ..utils.db_operation.db_operation import (
     get_all_push_list,
 )
 
-MR_NOTICE = '\n可发送[mr]或者[每日]来查看更多信息!'
+MR_NOTICE = '\n可发送[mr]或者[每日]来查看更多信息！\n'
 
 NOTICE = {
-    'Coin': f'你的洞天宝钱快满啦!{MR_NOTICE}',
-    'Resin': f'你的树脂/体力快满啦!{MR_NOTICE}',
-    'Go': f'你有派遣信息即将可收取!{MR_NOTICE}',
-    'Transform': f'你的质变仪即将可使用!{MR_NOTICE}',
+    'Coin': f'你的洞天宝钱快满啦！{MR_NOTICE}',
+    'Resin': f'你的树脂/体力快满啦！{MR_NOTICE}',
+    'Go': f'你有派遣信息即将可收取！{MR_NOTICE}',
+    'Transform': f'你的质变仪即将可使用！{MR_NOTICE}',
 }
 
 

@@ -44,6 +44,7 @@ class Character:
 
         # 角色等级,名称,元素,武器类型
         self.char_level: int = int(card_prop['avatarLevel'])
+        self.char_id: str = '10000029'
         self.char_name: str = card_prop['avatarName']
         self.char_element = self.card_prop['avatarElement']
         self.char_fetter = self.card_prop['avatarFetter']
@@ -111,6 +112,7 @@ class Character:
         self.rarity = await avatar_id_to_char_star(
             str(self.card_prop['avatarId'])
         )
+        self.char_id = await name_to_avatar_id(self.char_name)
 
     async def get_card_prop(
         self,
@@ -246,8 +248,7 @@ class Character:
 
         char_raw = await get_char_info(name=char_name_covert, mode='char')
         if char_raw is not None and 'errcode' in char_raw:
-            char_id = await name_to_avatar_id(char_name_covert)
-            char_raw = char_data = await convert_ambr_to_minigg(char_id)
+            char_raw = char_data = await convert_ambr_to_minigg(self.char_id)
         else:
             char_data = await get_char_info(
                 name=char_name_covert, mode='char', level=str(char_level)

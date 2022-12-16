@@ -221,9 +221,8 @@ async def draw_gachalogs_img(uid: str, qid: int) -> Union[bytes, str]:
                 # 往里加东西
                 if is_not_first:
                     total_data[i]['r_num'].append(num)
-                    if not data['is_up']:
-                        total_data[i]['normal_list'].append(data)
-                    else:
+                    total_data[i]['normal_list'].append(data)
+                    if data['is_up']:
                         total_data[i]['up_list'].append(data)
 
                 # 把这个数据扔到抽到的五星列表内

@@ -50,7 +50,9 @@ async def mihoyo_coin(qid, s_cookies=None):
     if s_cookies is None:
         s_cookies = await get_stoken(uid)
 
-    if s_cookies:
+    if '该用户没有绑定过Stoken' in s_cookies:
+        im = '你还没有绑定Stoken~'
+    elif s_cookies:
         get_coin = MihoyoBBSCoin(s_cookies)
         im = await get_coin.task_run()
     else:

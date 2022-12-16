@@ -1,5 +1,6 @@
 from typing import Optional
 
+from ..message.error_reply import VERIFY_HINT
 from ..db_operation.db_operation import cache_db, error_db
 from ..mhy_api.get_mhy_data import get_info, get_spiral_abyss_info
 
@@ -36,17 +37,20 @@ class GetCookies:
 
     async def check_cookies_useable(self):
         if self.raw_data:
-            if self.raw_data['retcode'] != 0:
-                if self.raw_data['retcode'] == 10001:
+            retcode = self.raw_data['retcode']
+            if retcode != 0:
+                if retcode == 10001:
                     if self.useable_cookies:
                         await error_db(self.useable_cookies, 'error')
                         return False
-                elif self.raw_data['retcode'] == 10101:
+                elif retcode == 10101:
                     if self.useable_cookies:
                         await error_db(self.useable_cookies, 'limit30')
                         return False
-                elif self.raw_data['retcode'] == 10102:
+                elif retcode == 10102:
                     return '当前查询id已经设置了隐私，无法查询！'
+                elif retcode == 1034:
+                    return VERIFY_HINT
                 else:
                     return (
                         'Api报错，返回内容为：\r\n'

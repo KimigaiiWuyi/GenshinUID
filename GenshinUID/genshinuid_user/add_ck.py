@@ -67,7 +67,7 @@ async def _deal_ck(mes, qid) -> str:
     simp_dict = SimpleCookie(mes)
     uid = await select_db(qid, mode='uid')
     if isinstance(uid, str):
-        if '未找到绑定的UID' in uid:
+        if '未找到绑定的UID' in uid or uid == '':
             return UID_HINT
     else:
         return UID_HINT

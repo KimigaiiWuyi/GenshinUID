@@ -74,8 +74,22 @@ async def draw_group_dmg_img(
     # 角色基本情况
     for index, char in enumerate(char_list):
         char_bg = Image.open(TD_PATH / 'char_bg.png')
+        char_pic = Image.open(CHAR_PATH / f'{char.char_id}.png')
+        char_img = await draw_pic_with_ring(char_pic, 100)
+        char_bg.paste(char_img, (31, 27), char_img)
 
+        hp = _f(char.card_prop['hp'])
+        atk = _f(char.card_prop['atk'])
+        critr = _f(char.card_prop['critRate'])
+        critd = _f(char.card_prop['critDmg'])
+        lv = str(char.char_level)
         char_draw = ImageDraw.Draw(char_bg)
+        char_draw.text((210, 69), hp, 'white', gs_font_26, 'lm')
+        char_draw.text((344, 69), atk, 'white', gs_font_26, 'lm')
+        char_draw.text((270, 130), critr, 'white', gs_font_26, 'lm')
+        char_draw.text((378, 130), critd, 'white', gs_font_26, 'lm')
+        char_draw.text((378, 130), critd, 'white', gs_font_26, 'lm')
+        char_draw.text((85, 154), lv, 'white', gs_font_26, 'mm')
 
         # 将绘制好的角色卡贴到队伍伤害卡上
         img.paste(
@@ -89,9 +103,7 @@ async def draw_group_dmg_img(
     # 初始化一些数值
     all_avgdmg = 0
     all_critdmg = 0
-    ac_len = len(dmg_data)
-    all_time = list(dmg_data.keys())[-1]
-    avg_dps = all_avgdmg / all_time
+    dmg_info = {}
 
     # 粘贴动作序列
     for index, time in enumerate(dmg_data):
@@ -114,8 +126,24 @@ async def draw_group_dmg_img(
 
         img.paste(bar, (0, 1030 + index * bar_offset), bar)
 
+        # 总平均伤害加值
         all_avgdmg += _data['avg_dmg']
         all_critdmg += _data['crit_dmg']
+
+        # 计算一些数据
+        if _data['char'] not in dmg_info:
+            dmg_info[_data['char']] = _data['avg_dmg']
+        else:
+            dmg_info[_data['char']] += _data['avg_dmg']
+
+    ac_len = len(dmg_data)
+    all_time = list(dmg_data.keys())[-1]
+    avg_dps = all_avgdmg / all_time
+
+    char_id = '10000029'
+    char_pic = Image.open(CHAR_PATH / f'{char_id}.png')
+    char_img = await draw_pic_with_ring(char_pic, 280)
+    img.paste(char_img, (60, 78), char_img)
 
     img_draw = ImageDraw.Draw(img)
     # UID

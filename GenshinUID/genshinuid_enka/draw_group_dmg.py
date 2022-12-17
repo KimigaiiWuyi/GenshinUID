@@ -51,8 +51,15 @@ async def get_group_dmg_data(
     return dmg_data
 
 
-def _f(value: float) -> str:
-    return '{:.2f}'.format(value)
+def _f(value: float, is_float: bool = True) -> str:
+    if is_float:
+        return '{:.1f}'.format(value)
+    else:
+        return str(int(value))
+
+
+def _p(value: float) -> str:
+    return '{:.2f}%'.format(value * 100)
 
 
 async def draw_group_dmg_img(
@@ -78,17 +85,16 @@ async def draw_group_dmg_img(
         char_img = await draw_pic_with_ring(char_pic, 100)
         char_bg.paste(char_img, (31, 27), char_img)
 
-        hp = _f(char.card_prop['hp'])
-        atk = _f(char.card_prop['atk'])
-        critr = _f(char.card_prop['critRate'])
-        critd = _f(char.card_prop['critDmg'])
-        lv = str(char.char_level)
+        hp = _f(char.fight_prop['hp'], False)
+        atk = _f(char.fight_prop['atk'], False)
+        critr = _p(char.fight_prop['critRate'])
+        critd = _p(char.fight_prop['critDmg'])
+        lv = f'Lv.{char.char_level}'
         char_draw = ImageDraw.Draw(char_bg)
         char_draw.text((210, 69), hp, 'white', gs_font_26, 'lm')
         char_draw.text((344, 69), atk, 'white', gs_font_26, 'lm')
-        char_draw.text((270, 130), critr, 'white', gs_font_26, 'lm')
-        char_draw.text((378, 130), critd, 'white', gs_font_26, 'lm')
-        char_draw.text((378, 130), critd, 'white', gs_font_26, 'lm')
+        char_draw.text((210, 130), critr, 'white', gs_font_26, 'lm')
+        char_draw.text((344, 130), critd, 'white', gs_font_26, 'lm')
         char_draw.text((85, 154), lv, 'white', gs_font_26, 'mm')
 
         # 将绘制好的角色卡贴到队伍伤害卡上
@@ -156,10 +162,10 @@ async def draw_group_dmg_img(
     img_draw.text((656, 297), f'{ac_len}个动作', 'white', gs_font_26, 'lm')
 
     # 数值
-    img_draw.text((396, 236), f'{_f(all_avgdmg)}', 'white', gs_font_44, 'lm')
-    img_draw.text((656, 236), f'{_f(all_critdmg)}', 'white', gs_font_44, 'lm')
-    img_draw.text((396, 333), f'{_f(avg_dps)}', 'white', gs_font_44, 'lm')
-    img_draw.text((656, 333), f'{_f(all_time)}秒内', 'white', gs_font_44, 'lm')
+    img_draw.text((390, 236), f'{_f(all_avgdmg)}', 'white', gs_font_44, 'lm')
+    img_draw.text((650, 236), f'{_f(all_critdmg)}', 'white', gs_font_44, 'lm')
+    img_draw.text((390, 333), f'{_f(avg_dps)}', 'white', gs_font_44, 'lm')
+    img_draw.text((650, 333), f'{_f(all_time)}秒内', 'white', gs_font_44, 'lm')
 
     img = await convert_img(img)
     return img

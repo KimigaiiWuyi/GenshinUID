@@ -156,6 +156,9 @@ class Fight:
         ]:
             dmg_type = Element.Physical
 
+        if char.char_name == '辛焱' and char.power_name == 'Q伤害':
+            dmg_type = Element.Physical
+
         return dmg_type
 
     # 计算倍率

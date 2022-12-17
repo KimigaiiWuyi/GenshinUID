@@ -1243,7 +1243,7 @@
         "3": "",
         "4": "PhysicalResist+-15",
         "5": "",
-        "6": "B:addAtk+50%def"
+        "6": "B:exAtk+50%def"
       },
       "group_skill": {
         "50": "",

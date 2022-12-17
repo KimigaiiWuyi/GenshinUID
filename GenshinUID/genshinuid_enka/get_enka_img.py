@@ -140,7 +140,7 @@ async def get_char_args(
     # 六命公子带天空之卷换可莉圣遗物换刻晴羽换可莉花
     # 六命公子带天空之卷换刻晴羽
     # 公子换刻晴羽
-    fake_char_name = ''
+    fake_name = ''
     talent_num = None
     char_data = {}
     weapon, weapon_affix = None, None
@@ -150,13 +150,14 @@ async def get_char_args(
     # 公子带天空之卷换可莉圣遗物
     msg_list = msg.split('换')
     for index, part in enumerate(msg_list):
+        # 判断主体
         if index == 0:
-            fake_char_name, talent_num = await get_fake_char_str(part)
+            fake_name, talent_num = await get_fake_char_str(part)
             # 判断是否开启fake_char
             if '圣遗物' in msg:
-                char_data = await get_fake_char_data(char_data, fake_char_name)
+                char_data = await get_fake_char_data(char_data, fake_name, uid)
             else:
-                char_data = await get_char_data(uid, fake_char_name)
+                char_data = await get_char_data(uid, fake_name)
             if isinstance(char_data, str):
                 return char_data
             continue
@@ -165,12 +166,14 @@ async def get_char_args(
             fake_data = await get_char_data(uid, part.replace('圣遗物', ''))
             if isinstance(fake_data, str):
                 return fake_data
-            char_data = await get_fake_char_data(fake_data, fake_char_name)
+            char_data = await get_fake_char_data(fake_data, fake_name, uid)
             if isinstance(char_data, str):
                 return char_data
         else:
             for i, s in enumerate(['生之花', '死之羽', '时之沙', '空之杯', '理之冠']):
-                if s[-1] in part:
+                if '赤沙' in s:
+                    continue
+                if part[-1] == s[-1]:
                     if isinstance(char_data, str):
                         return char_data
                     char_data = await change_equip(uid, char_data, part, s, i)
@@ -222,9 +225,12 @@ async def get_artifacts_repo(uid: str) -> Dict[str, List[Dict]]:
 
 
 async def get_fake_char_data(
-    char_data: Dict, fake_name: str
+    char_data: Dict, fake_name: str, uid: str
 ) -> Union[Dict, str]:
     fake_name = await alias_to_char_name(fake_name)
+    original_data = await get_char_data(uid, fake_name)
+    if isinstance(original_data, Dict):
+        char_data['weaponInfo'] = original_data['weaponInfo']
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
     en_name = await avatarId_to_enName(char_data['avatarId'])

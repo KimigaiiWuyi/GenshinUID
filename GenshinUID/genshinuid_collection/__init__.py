@@ -1,25 +1,20 @@
 from typing import Any, Tuple, Union
 
-from nonebot import on_regex
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.params import RegexGroup
+from nonebot.params import CommandArg
+from nonebot.adapters.ntchat.message import Message
 from nonebot.adapters.ntchat import MessageSegment, TextMessageEvent
 
 from ..genshinuid_meta import register_menu
+from ..utils.data_convert.get_uid import get_uid
 from ..utils.message.error_reply import UID_HINT
-from .draw_collection_card import draw_collection_img
-from ..utils.db_operation.db_operation import select_db
-from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
 from ..utils.exception.handle_exception import handle_exception
+from .draw_collection_card import draw_explora_img, draw_collection_img
 
-get_collection_info = on_regex(
-    r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|查询|mys)?([0-9]+)?'
-    r'(收集|宝箱|sj|bx)'
-    r'(\[CQ:at,qq=[0-9]+\])?( )?$',
-    block=True,
-)
+get_collection_info = on_command('查询收集', aliases={'收集', 'sj'}, block=True)
+get_explora_info = on_command('查询探索', aliases={'探索', 'ts'}, block=True)
 
 
 @get_collection_info.handle()
@@ -51,31 +46,53 @@ get_collection_info = on_regex(
 async def send_collection_info(
     event: TextMessageEvent,
     matcher: Matcher,
-    args: Tuple[Any, ...] = RegexGroup(),
+    args: Message = CommandArg(),
 ):
     logger.info('开始执行[查询收集信息]')
     logger.info('[查询收集信息]参数: {}'.format(args))
+    raw_mes = args.extract_plain_text().strip()
     if event.at_user_list:
         qid = event.at_user_list[0]
     else:
         qid = event.from_wxid
 
-    if args[2] != 'mys':
-        if args[3] is None:
-            uid = await select_db(qid, mode='uid')
-            uid = str(uid)
-        elif len(args[3]) != 9:
-            return
-        else:
-            uid = args[3]
-    else:
-        uid = await convert_mysid(args[3])
+    uid = await get_uid(qid, raw_mes)
     logger.info('[查询收集信息]uid: {}'.format(uid))
 
     if '未找到绑定的UID' in uid:
         await matcher.finish(UID_HINT)
 
-    im = await draw_collection_img(uid)
+    im = await draw_collection_img(qid, uid)
+    if isinstance(im, str):
+        await matcher.finish(im)
+    elif isinstance(im, bytes):
+        await matcher.finish(MessageSegment.image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
+
+
+@get_explora_info.handle()
+@handle_exception('查询探索信息')
+async def send_explora_info(
+    event: TextMessageEvent,
+    matcher: Matcher,
+    args: Message = CommandArg(),
+):
+    logger.info('开始执行[查询探索信息]')
+    logger.info('[查询探索信息]参数: {}'.format(args))
+    raw_mes = args.extract_plain_text().strip()
+    if event.at_user_list:
+        qid = event.at_user_list[0]
+    else:
+        qid = event.from_wxid
+
+    uid = await get_uid(qid, raw_mes)
+    logger.info('[查询探索信息]uid: {}'.format(uid))
+
+    if '未找到绑定的UID' in uid:
+        await matcher.finish(UID_HINT)
+
+    im = await draw_explora_img(qid, uid)
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):

@@ -1,45 +1,70 @@
 from pathlib import Path
-from typing import List, Union
+from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
 
 from ..utils.get_cookies.get_cookies import GetCookies
+from ..utils.enka_api.map.GS_MAP_PATH import avatarId2Name
 from ..utils.draw_image_tools.send_image_tool import convert_img
-from ..utils.draw_image_tools.draw_image_tool import get_simple_bg
-from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
+from ..utils.genshin_fonts.genshin_fonts import gs_font_30, gs_font_40
+from ..utils.draw_image_tools.draw_image_tool import (
+    draw_bar,
+    get_color_bg,
+    get_qq_avatar,
+    draw_pic_with_ring,
+)
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
-collection_fg_pic = Image.open(TEXT_PATH / 'collection_fg.png')
 
-text_color = (31, 32, 26)
-gs_font_23 = genshin_font_origin(23)
-gs_font_26 = genshin_font_origin(26)
-
-based_w = 500
-based_h = 750
-white_overlay = Image.new('RGBA', (based_w, based_h), (255, 255, 255, 222))
+first_color = (29, 29, 29)
+brown_color = (41, 25, 0)
+red_color = (255, 66, 66)
+green_color = (74, 189, 119)
 
 max_data = {
-    '成就': 815,
+    '成就': 842,
     '华丽的宝箱': 173,
-    '珍贵的宝箱': 454,
+    '珍贵的宝箱': 455,
     '精致的宝箱': 1526,
     '普通的宝箱': 2375,
+    '奇馈宝箱': 116,
+    '解锁传送点': 235,
+    '解锁秘境': 42,
+}
+
+award_data = {
+    '成就': 5,
+    '华丽的宝箱': 10,
+    '珍贵的宝箱': 8,
+    '精致的宝箱': 3,
+    '普通的宝箱': 1,
+    '奇馈宝箱': 2,
+    '解锁传送点': 0,
+    '解锁秘境': 0,
+}
+
+expmax_data = {
+    '获得角色数': len(avatarId2Name) - 2,
+    '风神瞳': 66,
+    '岩神瞳': 131,
+    '雷神瞳': 181,
+    '草神瞳': 271,
 }
 
 
-async def dataToDataStr(max: int, my: int) -> List:
-    return [
-        str('{:.2f}'.format(100 * (my / max)))
-        + '% | '
-        + str(my)
-        + '/'
-        + str(max),
-        float('{:.2f}'.format(my / max)) * 450,
-    ]
+async def draw_collection_img(
+    qid: Union[str, int], uid: str
+) -> Union[str, bytes]:
+    return await draw_base_img(qid, uid, '收集')
 
 
-async def draw_collection_img(uid: str) -> Union[bytes, str]:
+async def draw_explora_img(
+    qid: Union[str, int], uid: str
+) -> Union[str, bytes]:
+    return await draw_base_img(qid, uid, '探索')
+
+
+async def get_base_data(uid: str) -> Union[str, Dict]:
     # 获取Cookies
     data_def = GetCookies()
     retcode = await data_def.get_useable_cookies(uid)
@@ -53,139 +78,143 @@ async def draw_collection_img(uid: str) -> Union[bytes, str]:
     if raw_data:
         raw_data = raw_data['data']
     else:
-        return '获取数据为空!'
+        return '数据为空~'
 
-    # 获取背景图片各项参数
-    img = await get_simple_bg(based_w, based_h)
-    img.paste(white_overlay, (0, 0), white_overlay)
-    img.paste(collection_fg_pic, (0, 0), collection_fg_pic)
-    text_draw = ImageDraw.Draw(img)
+    return raw_data
+
+
+async def get_explore_data(
+    uid: str,
+) -> Union[str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
+    raw_data = await get_base_data(uid)
+    if isinstance(raw_data, str):
+        return raw_data
 
     # 处理数据
-    achieve = raw_data['stats']['achievement_number']
-    chest4 = raw_data['stats']['common_chest_number']
-    chest3 = raw_data['stats']['exquisite_chest_number']
-    chest2 = raw_data['stats']['precious_chest_number']
-    chest1 = raw_data['stats']['luxurious_chest_number']
+    data: Dict[str, int] = {
+        '获得角色数': raw_data['stats']['avatar_number'],
+        '风神瞳': raw_data['stats']['anemoculus_number'],
+        '岩神瞳': raw_data['stats']['geoculus_number'],
+        '雷神瞳': raw_data['stats']['electroculus_number'],
+        '草神瞳': raw_data['stats']['dendroculus_number'],
+    }
+    for i in raw_data['world_explorations']:
+        data[i['name']] = i['exploration_percentage']
 
-    achieveStr = await dataToDataStr(max_data['成就'], achieve)
-    chest1Str = await dataToDataStr(max_data['华丽的宝箱'], chest1)
-    chest2Str = await dataToDataStr(max_data['珍贵的宝箱'], chest2)
-    chest3Str = await dataToDataStr(max_data['精致的宝箱'], chest3)
-    chest4Str = await dataToDataStr(max_data['普通的宝箱'], chest4)
+    percent_data = {}
+    value_data = {}
+    day: str = str(raw_data['stats']['active_day_number'])
+    me_percent = 0
+    world_percent = 0
 
-    # 计算
-    val = (
-        str(
-            float(
-                '{:.2f}'.format(
-                    (
-                        achieveStr[1]
-                        + chest1Str[1]
-                        + chest2Str[1]
-                        + chest3Str[1]
-                        + chest4Str[1]
-                    )
-                    / 22.5
-                )
-            )
-        )
-        + '%'
-    )
-    left = (
-        (max_data['华丽的宝箱'] - chest1) * 10
-        + (max_data['珍贵的宝箱'] - chest2) * 5
-        + (max_data['精致的宝箱'] - chest3) * 2
-        + (max_data['普通的宝箱'] - chest4) * 0
-        + (max_data['成就'] - achieve) * 5
-    )
+    for name in data:
+        # 百分比
+        p_str = f'{data[name]}'
+        if name in expmax_data:
+            percent = data[name] / expmax_data[name]
+            if name != '获得角色数':
+                me_percent += percent
+            value = f'{p_str} / {expmax_data[name]} | {_f(percent * 100)}'
+        else:
+            percent = data[name] / 1000
+            world_percent += percent
+            value = f'{_f(percent * 100)}'
 
-    # 用户信息
-    text_draw.text(
-        (50, 135),
-        f'UID{uid}',
-        text_color,
-        gs_font_26,
-        anchor='lm',
-    )
+        percent_data[name] = percent
+        value_data[name] = value
 
-    text_draw.text((130, 200), str(val), text_color, gs_font_26, anchor='lm')
-    text_draw.text(
-        (360, 200),
-        f'约{str(left)}',
-        text_color,
-        gs_font_26,
-        anchor='lm',
-    )
+    me_percent = _f(me_percent * 100 / (len(expmax_data) - 1))
+    world_percent = _f(world_percent * 100 / (len(data) - len(expmax_data)))
 
-    # 成就
-    text_draw.text(
-        (470, 275),
-        achieveStr[0],
-        text_color,
-        gs_font_23,
-        anchor='rm',
-    )
+    return percent_data, value_data, day, me_percent, world_percent
 
-    # 宝箱
-    text_draw.text(
-        (470, 275 + 100),
-        chest1Str[0],
-        text_color,
-        gs_font_23,
-        anchor='rm',
-    )
-    text_draw.text(
-        (470, 275 + 100 * 2),
-        chest2Str[0],
-        text_color,
-        gs_font_23,
-        anchor='rm',
-    )
-    text_draw.text(
-        (470, 275 + 100 * 3),
-        chest3Str[0],
-        text_color,
-        gs_font_23,
-        anchor='rm',
-    )
-    text_draw.text(
-        (470, 275 + 100 * 4),
-        chest4Str[0],
-        text_color,
-        gs_font_23,
-        anchor='rm',
-    )
 
-    base = 304
-    offset = 99.5
+async def get_collection_data(
+    uid: str,
+) -> Union[str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
+    raw_data = await get_base_data(uid)
+    if isinstance(raw_data, str):
+        return raw_data
+    raw_data = raw_data['stats']
 
-    # 进度条
-    text_draw.rounded_rectangle(
-        (23, base, 22 + achieveStr[1], base + 13),
-        fill=(234, 210, 124),
-        radius=20,
-    )
-    text_draw.rounded_rectangle(
-        (23, base + offset, 22 + chest1Str[1], base + offset + 13),
-        fill=(235, 173, 43),
-        radius=20,
-    )
-    text_draw.rounded_rectangle(
-        (23, base + offset * 2, 22 + chest2Str[1], base + offset * 2 + 13),
-        fill=(218, 128, 248),
-        radius=20,
-    )
-    text_draw.rounded_rectangle(
-        (23, base + offset * 3, 22 + chest3Str[1], base + offset * 3 + 13),
-        fill=(60, 122, 227),
-        radius=20,
-    )
-    text_draw.rounded_rectangle(
-        (23, base + offset * 4, 22 + chest4Str[1], base + offset * 4 + 13),
-        fill=(168, 248, 177),
-        radius=20,
-    )
+    # 处理数据
+    data: Dict[str, int] = {
+        '成就': raw_data['achievement_number'],
+        '普通的宝箱': raw_data['common_chest_number'],
+        '精致的宝箱': raw_data['exquisite_chest_number'],
+        '珍贵的宝箱': raw_data['precious_chest_number'],
+        '华丽的宝箱': raw_data['luxurious_chest_number'],
+        '奇馈宝箱': raw_data['magic_chest_number'],
+        '解锁传送点': raw_data['way_point_number'],
+        '解锁秘境': raw_data['domain_number'],
+    }
+    percent_data = {}
+    value_data = {}
+    left = 0
+    day: str = str(raw_data['active_day_number'])
+    all_percent = 0
+
+    for name in data:
+        # 百分比
+        percent = data[name] / max_data[name]
+        all_percent += percent
+        p_str = f'{data[name]} / {max_data[name]}'
+        value = f'{p_str} | {_f(percent * 100)}'
+        # 可获石头
+        left += award_data[name] * (max_data[name] - data[name])
+        percent_data[name] = percent
+        value_data[name] = value
+
+    all_percent = _f(all_percent * 100 / len(data))
+
+    return percent_data, value_data, day, all_percent, f'约{left}'
+
+
+async def draw_base_img(
+    qid: Union[str, int], uid: str, mode: Literal['探索', '收集'] = '收集'
+) -> Union[str, bytes]:
+    # 获取数据
+    if mode == '收集':
+        data = await get_collection_data(uid)
+    else:
+        data = await get_explore_data(uid)
+    if isinstance(data, str):
+        return data
+    percent_data, value_data = data[0], data[1]
+
+    # 获取背景图片各项参数
+    _id = str(qid)
+    if _id.startswith('http'):
+        char_pic = await get_qq_avatar(avatar_url=_id)
+    else:
+        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await draw_pic_with_ring(char_pic, 264)
+
+    if mode == '收集':
+        title = Image.open(TEXT_PATH / 'collection_title.png')
+    else:
+        title = Image.open(TEXT_PATH / 'explora_title.png')
+
+    img = await get_color_bg(750, 600 + len(percent_data) * 115)
+    img.paste(title, (0, 0), title)
+    img.paste(char_pic, (241, 40), char_pic)
+
+    for index, name in enumerate(percent_data):
+        percent = percent_data[name]
+        value = value_data[name]
+        bar = await draw_bar(f'·{name}', percent, value)
+        img.paste(bar, (0, 600 + index * 115), bar)
+
+    # 头
+    img_draw = ImageDraw.Draw(img)
+    img_draw.text((378, 357), f'UID {uid}', first_color, gs_font_30, 'mm')
+    img_draw.text((137, 498), data[2], first_color, gs_font_40, 'mm')
+    img_draw.text((372, 498), data[3], first_color, gs_font_40, 'mm')
+    img_draw.text((607, 498), data[4], first_color, gs_font_40, 'mm')
 
     res = await convert_img(img)
     return res
+
+
+def _f(value: float) -> str:
+    return '{:.2f}%'.format(value)

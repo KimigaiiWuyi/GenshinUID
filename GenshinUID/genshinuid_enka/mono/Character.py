@@ -598,6 +598,22 @@ class Character:
                         'plus': 1,
                         'value': ['200%+400%'] * 15,
                     }
+            elif self.char_name == '甘雨':
+                for power_name in [
+                    'A霜华矢两段伤害',
+                    'A霜华矢两段伤害(融化)',
+                ]:
+                    self.power_list[power_name] = {
+                        'name': power_name,
+                        'type': '攻击力',
+                        'plus': 1,
+                        'value': [
+                            f'{int(i[:-1]) + int(self.power_list["A霜华矢·霜华绽发伤害"]["value"][index][:-1])}%'
+                            for index, i in enumerate(
+                                self.power_list['A霜华矢命中伤害']['value']
+                            )
+                        ],
+                    }
 
         # 获取值
         skillList = self.card_prop['avatarSkill']

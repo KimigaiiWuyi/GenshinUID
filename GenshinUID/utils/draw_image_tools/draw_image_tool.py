@@ -8,7 +8,7 @@ from httpx import get
 from PIL import Image, ImageDraw
 
 from ..genshin_fonts.genshin_fonts import gs_font_32
-from ..download_resource.RESOURCE_PATH import TEXT2D_PATH
+from ..download_resource.RESOURCE_PATH import CU_BG_PATH, TEXT2D_PATH
 
 FETTER_PATH = TEXT2D_PATH / 'fetter'
 TALENT_PATH = TEXT2D_PATH / 'talent'
@@ -22,6 +22,11 @@ ring_pic = Image.open(TEXT_PATH / 'ring.png')
 mask_pic = Image.open(TEXT_PATH / 'mask.png')
 NM_BG_PATH = BG_PATH / 'nm_bg'
 SP_BG_PATH = BG_PATH / 'sp_bg'
+
+if list(CU_BG_PATH.iterdir()) != []:
+    bg_path = CU_BG_PATH
+else:
+    bg_path = NM_BG_PATH
 
 
 async def draw_bar(
@@ -205,8 +210,8 @@ class CustomizeImage:
         elif image:
             edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
         else:
-            bg_path = random.choice(list(NM_BG_PATH.iterdir()))
-            edit_bg = Image.open(bg_path).convert('RGBA')
+            path = random.choice(list(bg_path.iterdir()))
+            edit_bg = Image.open(path).convert('RGBA')
 
         # 确定图片的长宽
         bg_img = crop_center_img(edit_bg, based_w, based_h)

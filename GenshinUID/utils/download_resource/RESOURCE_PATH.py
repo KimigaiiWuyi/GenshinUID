@@ -8,6 +8,7 @@ sys.path.append(str(MAIN_PATH))
 CONFIG_PATH = MAIN_PATH / 'config.json'
 RESOURCE_PATH = MAIN_PATH / 'resource'
 WIKI_PATH = MAIN_PATH / 'wiki'
+CU_BG_PATH = MAIN_PATH / 'bg'
 WEAPON_PATH = RESOURCE_PATH / 'weapon'
 GACHA_IMG_PATH = RESOURCE_PATH / 'gacha_img'
 CHAR_PATH = RESOURCE_PATH / 'chars'
@@ -42,6 +43,7 @@ def init_dir():
         TEMP_PATH,
         CARD_PATH,
         GUIDE_PATH,
+        CU_BG_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

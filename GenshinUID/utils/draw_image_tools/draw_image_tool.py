@@ -4,9 +4,10 @@ from io import BytesIO
 from pathlib import Path
 from typing import Tuple, Union, Optional
 
-from PIL import Image
 from httpx import get
+from PIL import Image, ImageDraw
 
+from ..genshin_fonts.genshin_fonts import gs_font_32
 from ..download_resource.RESOURCE_PATH import TEXT2D_PATH
 
 FETTER_PATH = TEXT2D_PATH / 'fetter'
@@ -21,6 +22,43 @@ ring_pic = Image.open(TEXT_PATH / 'ring.png')
 mask_pic = Image.open(TEXT_PATH / 'mask.png')
 NM_BG_PATH = BG_PATH / 'nm_bg'
 SP_BG_PATH = BG_PATH / 'sp_bg'
+
+
+async def draw_bar(
+    title: str,
+    percent: float,
+    value: str,
+    color: Optional[Tuple[int, int, int]] = None,
+):
+    '''
+    :说明:
+      绘制一张750X100的透明白底进度条图片
+
+    :参数:
+      * title: `str`: 名字
+      * percent: `float`: 进度条百分比, 超过1的部分会被限制在1以内。
+      * value: `str`: 右侧具体数值呈现
+      * bcolor: `Optional[Tuple[int, int, int]]`: 指定文字颜色。
+
+    :返回:
+      * img: `Image.Image`: 图片对象
+    '''
+    bg = Image.open(TEXT2D_PATH / 'slider_bar.png')
+    if color is None:
+        color = (142, 91, 35)
+    if percent >= 1:
+        percent = 1
+
+    draw = ImageDraw.Draw(bg)
+    draw.text((53, 38), title, color, gs_font_32, 'lm')
+    draw.text((706, 38), value, (13, 13, 13), gs_font_32, 'rm')
+    bs = 670 * percent
+    draw.rounded_rectangle(
+        (40, 62, 40 + bs, 76),
+        fill=color,
+        radius=20,
+    )
+    return bg
 
 
 async def get_weapon_affix_pic(affix: int) -> Image.Image:

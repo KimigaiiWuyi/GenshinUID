@@ -211,7 +211,10 @@ class UidDataDAL:
             new_data = UidData(USERID=userid, **data)
             self.db_session.add(new_data)
             if 'UID' in data:
-                _bind += f'绑定UID{data["UID"]}成功~'
+                new_uid = data["UID"]
+                if len(str(new_uid)) != 9:
+                    return f'该UID{new_uid}的位数不正确！'
+                _bind += f'绑定UID{new_uid}成功~'
             if 'MYSID' in data:
                 _bind += f'绑定米游社通行证{data["MYSID"]}成功~'
         await self.db_session.flush()  # type: ignore

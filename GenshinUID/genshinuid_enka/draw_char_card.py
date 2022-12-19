@@ -45,6 +45,10 @@ async def draw_char_card(char: Character, char_url: Optional[str]) -> bytes:
     artifacts_all_score = await get_all_artifacts_value(
         char.card_prop, char.baseHp, char.baseAtk, char.baseDef, char.char_name
     )
+    if char.percent == '0.00':
+        percent_str = '暂无匹配'
+    else:
+        percent_str = f'{char.percent}%'
     # 角色评分
     img_text.text(
         (768, 1564),
@@ -55,7 +59,7 @@ async def draw_char_card(char: Character, char_url: Optional[str]) -> bytes:
     )
     img_text.text(
         (768, 1726),
-        f'{str(char.percent)+"%"}',
+        percent_str,
         (255, 255, 255),
         gs_font_50,
         anchor='mm',

@@ -77,26 +77,6 @@ async def _deal_ck(mes, qid) -> str:
     app_cookie, stoken = '', ''
     account_id, cookie_token = '', ''
     if status:
-        for lt in lt_list:
-            if lt in simp_dict:
-                # 寻找stoken
-                login_ticket = simp_dict[lt].value
-                account_id = await get_account_id(simp_dict)
-                if not account_id:
-                    return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
-                stoken_data = await get_stoken_by_login_ticket(
-                    login_ticket, account_id
-                )
-                stoken = stoken_data['data']['list'][0]['token']
-                app_cookie = f'stuid={account_id};stoken={stoken}'
-                cookie_token_data = await get_cookie_token_by_stoken(
-                    stoken, account_id
-                )
-                cookie_token = cookie_token_data['data']['cookie_token']
-                is_add_stoken = True
-                status = False
-                break
-    if status:
         for sk in sk_list:
             if sk in simp_dict:
                 account_id = await get_account_id(simp_dict)
@@ -110,9 +90,30 @@ async def _deal_ck(mes, qid) -> str:
                             f'stuid={account_id};stoken={stoken};mid={mid}'
                         )
                     else:
+                        logger.warning('v2类型Stoken必须携带mid...')
                         return 'v2类型SK必须携带mid...'
                 else:
                     app_cookie = f'stuid={account_id};stoken={stoken}'
+                cookie_token_data = await get_cookie_token_by_stoken(
+                    stoken, account_id, app_cookie
+                )
+                cookie_token = cookie_token_data['data']['cookie_token']
+                is_add_stoken = True
+                status = False
+                break
+    if status:
+        for lt in lt_list:
+            if lt in simp_dict:
+                # 寻找stoken
+                login_ticket = simp_dict[lt].value
+                account_id = await get_account_id(simp_dict)
+                if not account_id:
+                    return '该CK字段出错, 缺少login_uid或stuid或ltuid字段!'
+                stoken_data = await get_stoken_by_login_ticket(
+                    login_ticket, account_id
+                )
+                stoken = stoken_data['data']['list'][0]['token']
+                app_cookie = f'stuid={account_id};stoken={stoken}'
                 cookie_token_data = await get_cookie_token_by_stoken(
                     stoken, account_id
                 )

@@ -208,9 +208,14 @@ async def get_stoken_by_login_ticket(loginticket: str, mys_id: str) -> dict:
     return data
 
 
-async def get_cookie_token_by_stoken(stoken: str, mys_id: str) -> dict:
+async def get_cookie_token_by_stoken(
+    stoken: str, mys_id: str, full_sk: Optional[str] = None
+) -> dict:
     HEADER = copy.deepcopy(_HEADER)
-    HEADER['Cookie'] = f'stuid={mys_id};stoken={stoken}'
+    if full_sk:
+        HEADER['Cookie'] = full_sk
+    else:
+        HEADER['Cookie'] = f'stuid={mys_id};stoken={stoken}'
     data = await _mhy_request(
         url=GET_COOKIE_TOKEN_URL,
         method='GET',

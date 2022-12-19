@@ -171,7 +171,7 @@ async def get_char_args(
                 return char_data
         else:
             for i, s in enumerate(['生之花', '死之羽', '时之沙', '空之杯', '理之冠']):
-                if '赤沙' in s:
+                if '赤沙' in part:
                     continue
                 if part[-1] == s[-1]:
                     if isinstance(char_data, str):

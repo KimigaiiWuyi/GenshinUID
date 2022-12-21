@@ -25,7 +25,11 @@ from ..mhy_api.mhy_api_tools import (
 from ..mhy_api.mhy_api import (
     GCG_INFO,
     SIGN_URL,
+<<<<<<< HEAD
     GCG_INFO_OS,
+=======
+    GT_TEST_URL,
+>>>>>>> 57bd1814ee1479e2c9d421865531fd2ecc9522da
     SIGN_URL_OS,
     SIGN_INFO_URL,
     SIGN_LIST_URL,
@@ -41,6 +45,10 @@ from ..mhy_api.mhy_api import (
     CALCULATE_INFO_URL,
     PLAYER_INFO_URL_OS,
     GET_COOKIE_TOKEN_URL,
+<<<<<<< HEAD
+=======
+    GET_GACHA_LOG_URL_OS,
+>>>>>>> 57bd1814ee1479e2c9d421865531fd2ecc9522da
     MONTHLY_AWARD_URL_OS,
     CALCULATE_INFO_URL_OS,
     PLAYER_ABYSS_INFO_URL,
@@ -89,8 +97,11 @@ RECOGNIZE_SERVER = {
     "9": "os_cht",
 }
 
+<<<<<<< HEAD
 ATTR = vars()
 
+=======
+>>>>>>> 57bd1814ee1479e2c9d421865531fd2ecc9522da
 
 async def get_gacha_log_by_authkey(
     uid: str, old_data: Optional[dict] = None
@@ -330,12 +341,19 @@ async def mihoyo_bbs_sign(uid, Header={}, server_id='cn_gf01') -> dict:
             method='POST',
             header=HEADER,
             data={
+<<<<<<< HEAD
                 'act_id': 'e202102251931481',
                 'lang': 'zh-cn',
                 'uid': uid,
                 'region': server_id,
             },
             use_proxy=True,
+=======
+                'act_id': 'e202009291139501',
+                'uid': uid,
+                'region': server_id,
+            },
+>>>>>>> 57bd1814ee1479e2c9d421865531fd2ecc9522da
         )
     return data
 

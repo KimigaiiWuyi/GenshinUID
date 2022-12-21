@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from typing import Dict, List, Optional
+=======
+from typing import Dict, List
+>>>>>>> 57bd1814ee1479e2c9d421865531fd2ecc9522da
 
 from .Character import Character
 from .Element import Element, reactable_elements_dict

@@ -99,6 +99,7 @@ if (ask == true) {
 - [@珊瑚宫千花](https://space.bilibili.com/398528056) - 角色别名Json提供
 - [@wudifeixue](https://github.com/wudifeixue) - PR贡献 & Bug报告
 - [@ZhouYingSASA](https://github.com/ZhouYingSASA) - PR贡献 & Bug报告
+- [@lulu666lulu](https://github.com/lulu666lulu)) - PR贡献 & Bug报告
 
 ## 丨其他
 

@@ -1,8 +1,13 @@
+import asyncio
+import threading
+from typing import List
 from pathlib import Path
 
 from ..all_import import *
 from .get_card import get_gs_card
 from .get_guide import get_gs_guide
+from ..version import Genshin_version
+from .get_abyss_data import get_review, generate_data
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 
 IMG_PATH = Path(__file__).parent / 'img'
@@ -69,3 +74,45 @@ async def send_gscard_pic(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, im)
     else:
         logger.warning('未找到{}原牌图片'.format(name))
+
+
+@sv.on_prefix('版本深渊')
+async def send_abyss_review(bot: HoshinoBot, ev: CQEvent):
+    if ev.message:
+        version = ev.message.extract_plain_text().replace(' ', '')
+    else:
+        return
+
+    if version == '':
+        version = Genshin_version[:-2]
+
+    im = await get_review(version)
+
+    if isinstance(im, List):
+        mes = []
+        for msg in im:
+            mes.append(
+                {
+                    'type': 'node',
+                    'data': {
+                        'name': '小仙',
+                        'uin': '3399214199',
+                        'content': msg,
+                    },
+                }
+            )
+        await hoshino_bot.send_group_forward_msg(
+            group_id=ev.group_id, messages=mes
+        )
+    elif isinstance(im, str):
+        await bot.send(ev, im)
+    elif isinstance(im, bytes):
+        im = await convert_img(im)
+        await bot.send(ev, im)
+    else:
+        await bot.send(ev, '发生了未知错误,请联系管理员检查后台输出!')
+
+
+threading.Thread(
+    target=lambda: asyncio.run(generate_data()), daemon=True
+).start()

@@ -137,9 +137,12 @@ async def get_cookie_token(game_token_data: dict):
 async def main_bot(bot,sid,userid,gid):
     code_data=await createurl()
     im=f"[CQ:image,file=base64://{get_qrcode_base64(code_data['url'])}]"
-    await bot.send_msg(
-        self_id=sid, user_id=userid, group_id=gid, message=im
-    )
+    try:
+        await bot.send_msg(
+            self_id=sid, user_id=userid, group_id=gid, message=im
+        )
+    except:
+        pass
     sta,game_token_data=await refresh(code_data)
     if sta==0:
         print("game_token获取成功")
@@ -153,9 +156,13 @@ async def main_bot(bot,sid,userid,gid):
     else:
         print("game_token获取失败")
         im="game_token获取失败,二维码已过期"
-        bot.send_msg(
-        self_id=sid, user_id=userid, group_id=gid, message=im
-    )
+        try:
+            await bot.send_msg(
+                self_id=sid, user_id=userid, group_id=gid, message=im
+            )
+        except:
+            pass
+    return "none"
 if __name__ == '__main__':
     async def main():
         code_data=await createurl()

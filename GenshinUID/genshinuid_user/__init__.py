@@ -32,7 +32,7 @@ async def send_add_ck_msg(ctx):
     if message.startswith('添加'):
         message = message.replace('添加', '').replace(' ', '')
         im = await deal_ck(message, userid)  # type: ignore
-    elif message.startswith('扫码登录'):
+    elif message.startswith('扫码登录') or message.startswith('扫码登陆') or message.startswith('扫码登入'):
         im = await main_bot(hoshino_bot, sid, userid, gid)
         im = await deal_ck(im, userid)  # type: ignore
     else:

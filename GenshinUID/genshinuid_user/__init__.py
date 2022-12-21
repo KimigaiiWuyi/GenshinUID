@@ -1,3 +1,5 @@
+import random
+
 from ..all_import import *
 from .add_ck import deal_ck
 from .qrlogin import main_bot
@@ -21,6 +23,7 @@ async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
 @hoshino_bot.on_request('friend')
 async def friend_approve(session):
     hoshino.logger.info(f'已自动接受来自{session.event.user_id}的好友请求')
+    await asyncio.sleep(random.randint(10, 100))
     await session.approve()
 
 @hoshino_bot.on_message('private')  # type: ignore

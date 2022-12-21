@@ -1,21 +1,32 @@
+import asyncio
+import threading
 from pathlib import Path
-from typing import Any, Tuple
+from typing import Any, List, Tuple
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import on_regex, on_command
 from nonebot.params import CommandArg, RegexGroup
-from nonebot.adapters.onebot.v11 import Message, MessageSegment
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    MessageSegment,
+    GroupMessageEvent,
+)
 
 from .get_card import get_gs_card
 from .get_guide import get_gs_guide
+from ..version import Genshin_version
 from ..genshinuid_meta import register_menu
+from .get_abyss_data import get_review, generate_data
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.exception.handle_exception import handle_exception
 
 get_guide_pic = on_regex('([\u4e00-\u9fa5]+)(推荐|攻略)')
 get_bluekun_pic = on_command('参考面板')
 get_card = on_command('原牌')
+get_abyss = on_command('版本深渊')
+
 
 IMG_PATH = Path(__file__).parent / 'img'
 
@@ -101,3 +112,46 @@ async def send_gscard_pic(matcher: Matcher, args: Message = CommandArg()):
         await matcher.finish(MessageSegment.image(im))
     else:
         logger.warning('未找到{}原牌图片'.format(name))
+
+
+@get_abyss.handle()
+@handle_exception('原牌')
+async def send_abyss_review(
+    bot: Bot,
+    event: GroupMessageEvent,
+    matcher: Matcher,
+    args: Message = CommandArg(),
+):
+    if not args:
+        version = Genshin_version[:-2]
+    else:
+        version = str(args[0])
+    im = await get_review(version)
+    if isinstance(im, List):
+        mes = []
+        for msg in im:
+            mes.append(
+                {
+                    'type': 'node',
+                    'data': {
+                        'name': '小仙',
+                        'uin': '3399214199',
+                        'content': msg,
+                    },
+                }
+            )
+        await bot.call_api(
+            'send_group_forward_msg', group_id=event.group_id, messages=mes
+        )
+        await matcher.finish()
+    elif isinstance(im, str):
+        await matcher.finish(im)
+    elif isinstance(im, bytes):
+        await matcher.finish(MessageSegment.image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
+
+
+threading.Thread(
+    target=lambda: asyncio.run(generate_data()), daemon=True
+).start()

@@ -1,11 +1,7 @@
-<<<<<<< HEAD
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 
 from nonebot.log import logger
-=======
-from typing import Dict, List, Tuple
->>>>>>> 57bd1814ee1479e2c9d421865531fd2ecc9522da
 
 from .Enemy import Enemy
 from .Power import Power

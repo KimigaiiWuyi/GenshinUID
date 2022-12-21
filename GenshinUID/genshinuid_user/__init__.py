@@ -1,5 +1,6 @@
 from ..all_import import *
 from .add_ck import deal_ck
+from .qrlogin import main_bot
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
@@ -27,6 +28,9 @@ async def send_add_ck_msg(ctx):
     if message.startswith('添加'):
         message = message.replace('添加', '').replace(' ', '')
         im = await deal_ck(message, userid)  # type: ignore
+    elif message.startswith('扫码登录'):
+        im = await main_bot(hoshino_bot, sid, userid, gid)
+        im = await deal_ck(im, userid)  # type: ignore
     else:
         return
     if isinstance(im, bytes):

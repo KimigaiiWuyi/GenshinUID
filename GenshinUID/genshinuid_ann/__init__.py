@@ -1,8 +1,15 @@
 from hoshino import Service, priv
 from hoshino.typing import MessageSegment
+
 from .main import consume_remind
 from ..all_import import UID_HINT, select_db
-from .ann_card import ann_list_card, ann_detail_card, sub_ann, unsub_ann, check_ann_state
+from .ann_card import (
+    sub_ann,
+    unsub_ann,
+    ann_list_card,
+    ann_detail_card,
+    check_ann_state,
+)
 
 sv_help = '''
 原神公告
@@ -16,7 +23,7 @@ sv = Service(
     visible=True,  # 可见性
     enable_on_default=True,  # 默认启用
     # bundle = '娱乐', #分组归类
-    help_=sv_help  # 帮助说明
+    help_=sv_help,  # 帮助说明
 )
 
 prefix = '原神'
@@ -29,7 +36,7 @@ async def ann_(bot, ev):
         img = await ann_list_card()
         await bot.send(ev, MessageSegment.image(img), at_sender=True)
         return
-    
+
     if not ann_id.isdigit():
         raise Exception("公告ID不正确")
     try:
@@ -72,6 +79,7 @@ async def consume_remind_(bot, ev):
     except Exception as e:
         await bot.finish(ev, str(e))
 
-@sv.scheduled_job('cron',minute=10)
+
+@sv.scheduled_job('cron', minute=10)
 async def check_ann():
     await check_ann_state()

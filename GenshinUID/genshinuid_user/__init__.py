@@ -22,11 +22,13 @@ async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
     logger.info('[查询用户绑定状态]完成!等待图片发送中...')
     await bot.send(ev, im)
 
+
 @on_request('friend')
 async def friend_approve(session):
     logger.info(f'已自动接受来自{session.event.user_id}的好友请求')
     await asyncio.sleep(random.randint(10, 100))
     await session.approve()
+
 
 @hoshino_bot.on_message('private')  # type: ignore
 async def send_add_ck_msg(ctx):
@@ -37,7 +39,11 @@ async def send_add_ck_msg(ctx):
     if message.startswith('添加'):
         message = message.replace('添加', '').replace(' ', '')
         im = await deal_ck(message, userid)  # type: ignore
-    elif message.startswith('扫码登录') or message.startswith('扫码登陆') or message.startswith('扫码登入'):
+    elif (
+        message.startswith('扫码登录')
+        or message.startswith('扫码登陆')
+        or message.startswith('扫码登入')
+    ):
         im = await main_bot(hoshino_bot, sid, userid, gid)
         im = await deal_ck(im, userid)  # type: ignore
     else:

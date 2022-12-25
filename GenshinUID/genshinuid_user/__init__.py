@@ -1,10 +1,6 @@
-import random
-
-from nonebot import on_request
-
 from ..all_import import *
 from .add_ck import deal_ck
-from .qrlogin import main_bot
+from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
@@ -23,13 +19,6 @@ async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
     await bot.send(ev, im)
 
 
-@on_request('friend')
-async def friend_approve(session):
-    logger.info(f'已自动接受来自{session.event.user_id}的好友请求')
-    await asyncio.sleep(random.randint(10, 100))
-    await session.approve()
-
-
 @hoshino_bot.on_message('private')  # type: ignore
 async def send_add_ck_msg(ctx):
     message = ctx['raw_message']
@@ -44,7 +33,9 @@ async def send_add_ck_msg(ctx):
         or message.startswith('扫码登陆')
         or message.startswith('扫码登入')
     ):
-        im = await main_bot(hoshino_bot, sid, userid, gid)
+        im = await qrcode_login(hoshino_bot, userid)
+        if not im:
+            return
         im = await deal_ck(im, userid)  # type: ignore
     else:
         return

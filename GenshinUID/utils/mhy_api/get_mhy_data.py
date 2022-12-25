@@ -1,8 +1,10 @@
 import copy
 import json
 import time
+import uuid
 import random
 import asyncio
+from string import digits, ascii_letters
 from typing import Any, Dict, Literal, Optional
 
 from nonebot.log import logger
@@ -19,14 +21,18 @@ from ..mhy_api.mhy_api_tools import (
     random_hex,
     random_text,
     get_ds_token,
+    generate_passport_ds,
     generate_dynamic_secret,
     old_version_get_ds_token,
 )
 from ..mhy_api.mhy_api import (
     GCG_INFO,
     SIGN_URL,
+    GET_STOKEN,
     GCG_INFO_OS,
     SIGN_URL_OS,
+    CHECK_QRCODE,
+    CREATE_QRCODE,
     SIGN_INFO_URL,
     SIGN_LIST_URL,
     DAILY_NOTE_URL,
@@ -49,6 +55,7 @@ from ..mhy_api.mhy_api import (
     PLAYER_DETAIL_INFO_URL_OS,
     MIHOYO_BBS_PLAYER_INFO_URL,
     MIHOYO_BBS_PLAYER_INFO_URL_OS,
+    GET_COOKIE_TOKEN_BY_GAME_TOKEN,
 )
 
 PROXY_URL = string_config.get_config('proxy')
@@ -536,6 +543,48 @@ async def get_gcg_info(uid: str):
     return await basic_mhy_req('GCG_INFO', uid)
 
 
+async def create_qrcode_url():
+    device_id: str = "".join(random.choices(ascii_letters + digits, k=64))
+    app_id: str = "4"
+    data = await _mhy_request(
+        CREATE_QRCODE,
+        "POST",
+        header={},
+        data={"app_id": app_id, "device": device_id},
+    )
+    url = data["data"]["url"]
+    ticket = url.split("ticket=")[1]
+    return {
+        "app_id": app_id,
+        "ticket": ticket,
+        "device": device_id,
+        "url": url,
+    }
+
+
+async def check_qrcode(app_id: str, ticket: str, device: str):
+    return await _mhy_request(
+        CHECK_QRCODE,
+        "POST",
+        data={
+            "app_id": app_id,
+            "ticket": ticket,
+            "device": device,
+        },
+    )
+
+
+async def get_cookie_token(token: str, uid: str):
+    return await _mhy_request(
+        GET_COOKIE_TOKEN_BY_GAME_TOKEN,
+        "GET",
+        params={
+            "game_token": token,
+            "account_id": uid,
+        },
+    )
+
+
 async def basic_mhy_req(URL: str, uid: str, ck: Optional[str] = None) -> Dict:
     if ck is None:
         ck = await owner_cookies(uid)
@@ -570,6 +619,36 @@ async def basic_mhy_req(URL: str, uid: str, ck: Optional[str] = None) -> Dict:
             use_proxy=True,
         )
     return data
+
+
+async def get_stoken_by_game_token(account_id: int, game_token: str):
+    data = {
+        "account_id": account_id,
+        "game_token": game_token,
+    }
+    return await _mhy_request(
+        GET_STOKEN,
+        "POST",
+        {
+            "x-rpc-app_version": "2.41.0",
+            "DS": generate_passport_ds(b=data),
+            "x-rpc-aigis": "",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "x-rpc-game_biz": "bbs_cn",
+            "x-rpc-sys_version": "11",
+            "x-rpc-device_id": uuid.uuid4().hex,
+            "x-rpc-device_fp": "".join(
+                random.choices(ascii_letters + digits, k=13)
+            ),
+            "x-rpc-device_name": "GenshinUid_login_device_lulu",
+            "x-rpc-device_model": "GenshinUid_login_device_lulu",
+            "x-rpc-app_id": "bll8iq97cem8",
+            "x-rpc-client_type": "2",
+            "User-Agent": "okhttp/4.8.0",
+        },
+        data=data,
+    )
 
 
 async def _mhy_request(

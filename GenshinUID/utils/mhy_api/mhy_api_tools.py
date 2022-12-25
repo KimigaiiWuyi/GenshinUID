@@ -3,6 +3,7 @@ import time
 import random
 import string
 import hashlib
+from typing import Any, Dict, Optional
 
 
 def random_hex(length):
@@ -22,39 +23,51 @@ def random_text(num: int) -> str:
     return ''.join(random.sample(string.ascii_lowercase + string.digits, num))
 
 
-def old_version_get_ds_token(mysbbs=False):
-    if mysbbs:
-        n = 'N50pqm7FSy2AkFz2B3TqtuZMJ5TOl3Ep'
-    else:
-        n = 'z8DRIUjNDT7IT5IZXvrUAxyupA1peND9'
+def _random_str_ds(
+    salt: str,
+    sets: str = string.ascii_lowercase + string.digits,
+    with_body: bool = False,
+    q: str = '',
+    b: Optional[Dict[str, Any]] = None,
+):
     i = str(int(time.time()))
-    r = ''.join(random.sample(string.ascii_lowercase + string.digits, 6))
-    c = md5('salt=' + n + '&t=' + i + '&r=' + r)
-    return i + ',' + r + ',' + c
+    r = ''.join(random.sample(sets, 6))
+    s = f'salt={salt}&t={i}&r={r}'
+    if with_body:
+        s += f"&b={json.dumps(b) if b else ''}&q={q}"
+    c = md5(s)
+    return f'{i},{r},{c}'
 
 
-def get_ds_token(q='', b=None, salt=None):
-    if b:
-        br = json.dumps(b)
-    else:
-        br = ''
-    if salt:
-        s = salt
-    else:
-        s = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
+def old_version_get_ds_token(mysbbs=False):
+    return _random_str_ds(
+        'N50pqm7FSy2AkFz2B3TqtuZMJ5TOl3Ep'
+        if mysbbs
+        else 'z8DRIUjNDT7IT5IZXvrUAxyupA1peND9'
+    )
+
+
+def _random_int_ds(salt: str, q: str = '', b: Optional[Dict[str, Any]] = None):
+    br = json.dumps(b) if b else ''
+    s = salt
     t = str(int(time.time()))
     r = str(random.randint(100000, 200000))
-    c = md5('salt=' + s + '&t=' + t + '&r=' + r + '&b=' + br + '&q=' + q)
-    return t + ',' + r + ',' + c
+    c = md5(f'salt={s}&t={t}&r={r}&b={br}&q={q}')
+    return f'{t},{r},{c}'
 
 
-def generate_dynamic_secret(salt=None) -> str:
+def get_ds_token(q: str = '', b: Optional[Dict[str, Any]] = None):
+    return _random_int_ds('xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs', q, b)
+
+
+def generate_dynamic_secret(salt: str = "") -> str:
     """Create a new overseas dynamic secret."""
-    if salt:
-        s = salt
-    else:
-        s = '6cqshh5dhw73bzxn20oexa9k516chk7s'
-    t = int(time.time())
-    r = "".join(random.choices(string.ascii_letters, k=6))
-    h = hashlib.md5(f"salt={s}&t={t}&r={r}".encode()).hexdigest()
-    return f"{t},{r},{h}"
+    return _random_str_ds(
+        salt or '6cqshh5dhw73bzxn20oexa9k516chk7s', sets=string.ascii_letters
+    )
+
+
+def generate_passport_ds(q: str = '', b: Optional[Dict[str, Any]] = None):
+    return _random_str_ds(
+        "JwYDpKvLj6MrMqqYU6jTKF17KNO2PXoS", string.ascii_letters, True, q, b
+    )

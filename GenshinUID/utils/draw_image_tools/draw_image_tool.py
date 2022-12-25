@@ -30,9 +30,7 @@ else:
     bg_path = NM_BG_PATH
 
 
-async def get_pic(
-    url, size: Optional[Tuple[int, int]] = None
-) -> Image.Image:
+async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
     """
     从网络获取图片，格式化为RGBA格式的指定尺寸
     """

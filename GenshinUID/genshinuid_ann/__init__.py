@@ -1,15 +1,13 @@
+from nonebot.log import logger
 from hoshino import Service, priv
 from hoshino.typing import MessageSegment
+from nonebot import MessageSegment, get_bot
 
-from .main import consume_remind
+from .util import black_ids
+from .main import ann, consume_remind
 from ..all_import import UID_HINT, select_db
-from .ann_card import (
-    sub_ann,
-    unsub_ann,
-    ann_list_card,
-    ann_detail_card,
-    check_ann_state,
-)
+from ..genshinuid_config.default_config import string_config
+from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card
 
 sv_help = '''
 原神公告
@@ -83,3 +81,46 @@ async def consume_remind_(bot, ev):
 @sv.scheduled_job('cron', minute=10)
 async def check_ann():
     await check_ann_state()
+
+
+async def check_ann_state():
+    logger.info('[原神公告] 定时任务: 原神公告查询..')
+    ids = string_config.get_config('Ann_Ids')
+    sub_list = string_config.get_config('Ann_Groups')
+    if not sub_list:
+        logger.info('没有群订阅, 取消获取数据')
+        return
+    if not ids:
+        ids = await ann().get_ann_ids()
+        if not ids:
+            raise Exception('获取原神公告ID列表错误,请检查接口')
+        string_config.set_config('Ann_Ids', ids)
+        logger.info('初始成功, 将在下个轮询中更新.')
+        return
+    new_ids = await ann().get_ann_ids()
+
+    new_ann = set(ids) ^ set(new_ids)
+    if not new_ann:
+        logger.info('[原神公告] 没有最新公告')
+        return
+
+    detail_list = []
+    for ann_id in new_ann:
+        if ann_id in black_ids:
+            continue
+        try:
+            img = await ann_detail_card(ann_id)
+            detail_list.append(MessageSegment.image(img))
+        except Exception as e:
+            logger.exception(str(e))
+
+    logger.info('[原神公告] 推送完毕, 更新数据库')
+    string_config.set_config('Ann_Ids', new_ids)
+
+    for group in sub_list:
+        for msg in detail_list:
+            try:
+                bot = get_bot()
+                await bot.send_group_msg(group_id=group, message=msg)
+            except Exception as e:
+                logger.exception(e)

@@ -1,21 +1,18 @@
-import math
-from io import BytesIO
 from pathlib import Path
 
-import httpx
 from bs4 import BeautifulSoup
 from PIL import Image, ImageOps, ImageDraw
-from nonebot import MessageSegment, get_bot
 
 from .main import ann
-from .util import (
-    config,
-    pil2b64,
-    get_font,
-    get_path,
-    black_ids,
-    filter_list,
-    write_config,
+from .util import get_path, filter_list
+from ..genshinuid_config.default_config import string_config
+from ..utils.draw_image_tools.send_image_tool import convert_img
+from ..utils.genshin_fonts.genshin_fonts import gs_font_18, gs_font_26
+from ..utils.draw_image_tools.draw_image_tool import (
+    get_pic,
+    easy_paste,
+    draw_text_by_line,
+    easy_alpha_composite,
 )
 
 assets_dir = Path(get_path('assets'))
@@ -25,10 +22,8 @@ list_item = (
     Image.open(assets_dir / "item.png").resize((384, 96)).convert("RGBA")
 )
 
-w65 = get_font(26, w=65)
 
-
-async def ann_list_card():
+async def ann_list_card() -> bytes:
     ann_list = await ann().get_ann_list()
     if not ann_list:
         raise Exception('获取游戏公告失败,请检查接口是否正常')
@@ -57,7 +52,7 @@ async def ann_list_card():
                 new_item,
                 (0, 30 - (len(subtitle) > 10 and 10 or 0)),
                 subtitle,
-                get_font(25),
+                gs_font_26,
                 '#3b4354',
                 250,
                 True,
@@ -67,7 +62,7 @@ async def ann_list_card():
                 new_item,
                 (new_item.width - 80, 10),
                 str(ann_info['ann_id']),
-                get_font(18),
+                gs_font_18,
                 '#3b4354',
                 100,
             )
@@ -78,10 +73,10 @@ async def ann_list_card():
 
     tip = '*可以使用 原神公告#0000(右上角ID) 来查看详细内容, 例子: 原神公告#2434'
     draw_text_by_line(
-        bg, (0, bg.height - 35), tip, get_font(18), '#767779', 1000, True
+        bg, (0, bg.height - 35), tip, gs_font_18, '#767779', 1000, True
     )
 
-    return pil2b64(bg)
+    return await convert_img(bg)
 
 
 async def ann_detail_card(ann_id):
@@ -95,8 +90,6 @@ async def ann_detail_card(ann_id):
     banner = content[0]['banner']
     ann_img = banner if banner else ''
     for a in soup.find_all('a'):
-        # href = a.get('href')
-        # a.string += ' (%s)' % re.search(r'https?.+', re.sub(r'[;()\']', '', href)).group()
         a.string = ''
 
     for img in soup.find_all('img'):
@@ -145,17 +138,17 @@ async def ann_detail_card(ann_id):
                 drow_height,
             ) = split_text(msg)
             for duanluo, line_count in drow_duanluo:
-                draw.text((x, y), duanluo, fill=(0, 0, 0), font=w65)
+                draw.text((x, y), duanluo, fill=(0, 0, 0), font=gs_font_26)
                 y += drow_line_height * line_count
 
-    _x, _y = w65.getsize("囗")
+    _x, _y = gs_font_26.getsize("囗")
     padding = (_x, _y, _x, _y)
     im = ImageOps.expand(im, padding, '#f9f6f2')
 
-    return pil2b64(im)
+    return await convert_img(im)
 
 
-def split_text(content):
+def split_text(content: str):
     # 按规定宽度分组
     max_line_height, total_lines = 0, 0
     allText = []
@@ -170,7 +163,7 @@ def split_text(content):
     return allText, total_height, line_height, drow_height
 
 
-def get_duanluo(text):
+def get_duanluo(text: str):
     txt = Image.new('RGBA', (600, 800), (255, 255, 255, 0))
     draw = ImageDraw.Draw(txt)
     # 所有文字的段落
@@ -183,7 +176,7 @@ def get_duanluo(text):
     # 行高
     line_height = 0
     for char in text:
-        width, height = draw.textsize(char, w65)
+        width, height = draw.textsize(char, gs_font_26)
         sum_width += width
         if sum_width > max_width:  # 超过预设宽度就修改段落 以及当前行数
             line_count += 1
@@ -197,144 +190,20 @@ def get_duanluo(text):
 
 
 def sub_ann(group):
-    if group in config["group"]:
+    groups = string_config.get_config('Ann_Groups')
+    if group in groups:
         return '已经订阅了'
     else:
-        config["group"].append(group)
-        write_config(config)
+        groups.append(group)
+        string_config.set_config('Ann_Groups', groups)
     return '成功订阅原神公告'
 
 
 def unsub_ann(group):
-    if group in config["group"]:
-        config["group"].remove(group)
-        write_config(config)
+    groups = string_config.get_config('Ann_Groups')
+    if group in groups:
+        groups.remove(group)
+        string_config.set_config('Ann_Groups', groups)
         return '成功取消订阅原神公告'
     else:
         return '已经不在订阅中了'
-
-
-async def check_ann_state(bot, ev):
-    # print('定时任务: 原神公告查询..')
-    ids = config["ids"]
-    sub_list = config["group"]
-    if not sub_list:
-        # print('没有群订阅, 取消获取数据')
-        return
-    if not ids:
-        ids = await ann().get_ann_ids()
-        if not ids:
-            raise Exception('获取原神公告ID列表错误,请检查接口')
-        config["ids"] = ids
-        print('初始成功, 将在下个轮询中更新.')
-        return
-    new_ids = await ann().get_ann_ids()
-
-    new_ann = set(ids) ^ set(new_ids)
-    if not new_ann:
-        # print('没有最新公告')
-        return
-
-    detail_list = []
-    for ann_id in new_ann:
-        if ann_id in black_ids:
-            continue
-        try:
-            img = await ann_detail_card(ann_id)
-            detail_list.append(MessageSegment.image(img))
-        except Exception as e:
-            print(str(e))
-
-    # print('推送完毕, 更新数据库')
-    config["ids"] = new_ids
-
-    for group in sub_list:
-        for msg in detail_list:
-            try:
-                bot = get_bot()
-                await bot.send_group_msg(group_id=group, message=msg)
-            except Exception as e:
-                print(e)
-
-
-async def get_pic(url, size=None) -> Image:
-    """
-    从网络获取图片，格式化为RGBA格式的指定尺寸
-    """
-    async with httpx.AsyncClient() as client:
-        resp = await client.get(url=url)
-        if resp.status_code != 200:
-            return None
-        pic = Image.open(BytesIO(resp.read()))
-        pic = pic.convert("RGBA")
-        if size is not None:
-            pic = pic.resize(size, Image.LANCZOS)
-        return pic
-
-
-def easy_paste(im: Image, im_paste: Image, pos=(0, 0), direction="lt"):
-    """
-    inplace method
-    快速粘贴, 自动获取被粘贴图像的坐标。
-    pos应当是粘贴点坐标，direction指定粘贴点方位，例如lt为左上
-    """
-    x, y = pos
-    size_x, size_y = im_paste.size
-    if "d" in direction:
-        y = y - size_y
-    if "r" in direction:
-        x = x - size_x
-    if "c" in direction:
-        x = x - int(0.5 * size_x)
-        y = y - int(0.5 * size_y)
-    im.paste(im_paste, (x, y, x + size_x, y + size_y), im_paste)
-
-
-def easy_alpha_composite(
-    im: Image, im_paste: Image, pos=(0, 0), direction="lt"
-) -> Image:
-    '''
-    透明图像快速粘贴
-    '''
-    base = Image.new("RGBA", im.size)
-    easy_paste(base, im_paste, pos, direction)
-    base = Image.alpha_composite(im, base)
-    return base
-
-
-def draw_text_by_line(
-    img, pos, text, font, fill, max_length, center=False, line_space=None
-):
-    """
-    在图片上写长段文字, 自动换行
-    max_length单行最大长度, 单位像素
-    line_space  行间距, 单位像素, 默认是字体高度的0.3倍
-    """
-    x, y = pos
-    _, h = font.getsize("X")
-    if line_space is None:
-        y_add = math.ceil(1.3 * h)
-    else:
-        y_add = math.ceil(h + line_space)
-    draw = ImageDraw.Draw(img)
-    row = ""  # 存储本行文字
-    length = 0  # 记录本行长度
-    for character in text:
-        w, h = font.getsize(character)  # 获取当前字符的宽度
-        if length + w * 2 <= max_length:
-            row += character
-            length += w
-        else:
-            row += character
-            if center:
-                font_size = font.getsize(row)
-                x = math.ceil((img.size[0] - font_size[0]) / 2)
-            draw.text((x, y), row, font=font, fill=fill)
-            row = ""
-            length = 0
-            y += y_add
-    if row != "":
-        if center:
-            font_size = font.getsize(row)
-            x = math.ceil((img.size[0] - font_size[0]) / 2)
-        draw.text((x, y), row, font=font, fill=fill)

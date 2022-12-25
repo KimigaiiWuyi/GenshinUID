@@ -26,28 +26,6 @@ def filter_list(plist, func):
     return list(filter(func, plist))
 
 
-def get_font(size, w='85'):
-    return ImageFont.truetype(
-        get_path('font', f'HYWenHei {w}W.ttf'), size=size
-    )
-
-
-def pil2b64(data):
-    bio = BytesIO()
-    data = data.convert("RGB")
-    data.save(bio, format='JPEG', quality=75)
-    base64_str = base64.b64encode(bio.getvalue()).decode()
-    return 'base64://' + base64_str
-
-
-def pil2b64(data):
-    bio = BytesIO()
-    data = data.convert("RGB")
-    data.save(bio, format='JPEG', quality=75)
-    base64_str = base64.b64encode(bio.getvalue()).decode()
-    return 'base64://' + base64_str
-
-
 def cache(ttl=datetime.timedelta(hours=1), **kwargs):
     def wrap(func):
         cache_data = {}

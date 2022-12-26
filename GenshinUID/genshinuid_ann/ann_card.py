@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from PIL import Image, ImageOps, ImageDraw
 
 from .main import ann
-from .util import get_path, filter_list
+from .util import filter_list
 from ..genshinuid_config.default_config import string_config
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.genshin_fonts.genshin_fonts import gs_font_18, gs_font_26
@@ -15,11 +15,11 @@ from ..utils.draw_image_tools.draw_image_tool import (
     easy_alpha_composite,
 )
 
-assets_dir = Path(get_path('assets'))
+assets_dir = Path(__file__).parent / 'assets'
 
-list_head = Image.open(assets_dir / "list.png")
+list_head = Image.open(assets_dir / 'list.png')
 list_item = (
-    Image.open(assets_dir / "item.png").resize((384, 96)).convert("RGBA")
+    Image.open(assets_dir / 'item.png').resize((384, 96)).convert('RGBA')
 )
 
 
@@ -119,7 +119,7 @@ async def ann_detail_card(ann_id):
             ) = split_text(msg)
             drow_height += x_drow_height
 
-    im = Image.new("RGB", (1080, drow_height), '#f9f6f2')
+    im = Image.new('RGB', (1080, drow_height), '#f9f6f2')
     draw = ImageDraw.Draw(im)
     # 左上角开始
     x, y = 0, 0
@@ -141,7 +141,7 @@ async def ann_detail_card(ann_id):
                 draw.text((x, y), duanluo, fill=(0, 0, 0), font=gs_font_26)
                 y += drow_line_height * line_count
 
-    _x, _y = gs_font_26.getsize("囗")
+    _x, _y = gs_font_26.getsize('囗')
     padding = (_x, _y, _x, _y)
     im = ImageOps.expand(im, padding, '#f9f6f2')
 
@@ -167,7 +167,7 @@ def get_duanluo(text: str):
     txt = Image.new('RGBA', (600, 800), (255, 255, 255, 0))
     draw = ImageDraw.Draw(txt)
     # 所有文字的段落
-    duanluo = ""
+    duanluo = ''
     max_width = 1080
     # 宽度总和
     sum_width = 0

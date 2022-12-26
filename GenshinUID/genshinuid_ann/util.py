@@ -1,25 +1,20 @@
 # -*- coding: UTF-8 -*-
-import os
-import json
-import base64
 import inspect
 import datetime
 import functools
-from io import BytesIO
+from typing import Dict, Optional, TypedDict
 
 import httpx
-from PIL import ImageFont
-
-config_path = os.path.join(os.path.dirname(__file__), 'config.json')
 
 
-class Dict(dict):
-    __setattr__ = dict.__setitem__
+class _Dict(dict):
+    __setattr__ = dict.__setitem__  # type: ignore
     __getattr__ = dict.__getitem__
 
 
-def get_path(*paths):
-    return os.path.join(os.path.dirname(__file__), *paths)
+class _CacheData(TypedDict):
+    time: Optional[datetime.datetime]
+    value: Optional[int]
 
 
 def filter_list(plist, func):
@@ -28,7 +23,7 @@ def filter_list(plist, func):
 
 def cache(ttl=datetime.timedelta(hours=1), **kwargs):
     def wrap(func):
-        cache_data = {}
+        cache_data: Dict[str, _CacheData] = {}
 
         @functools.wraps(func)
         async def wrapped(*args, **kw):
@@ -38,7 +33,10 @@ def cache(ttl=datetime.timedelta(hours=1), **kwargs):
             ins_key = '|'.join(
                 ['%s_%s' % (k, v) for k, v in bound.arguments.items()]
             )
-            default_data = {"time": None, "value": None}
+            default_data: _CacheData = {
+                'time': None,
+                'value': None,
+            }
             data = cache_data.get(ins_key, default_data)
 
             now = datetime.datetime.now()
@@ -61,23 +59,7 @@ def cache(ttl=datetime.timedelta(hours=1), **kwargs):
 async def cache_request_json(url):
     async with httpx.AsyncClient() as client:
         res = await client.get(url, timeout=10)
-        return res.json(object_hook=Dict)
-
-
-def load_config() -> int:
-    try:
-        with open(config_path, encoding='utf8') as f:
-            config = json.load(f)
-            return config
-    except:
-        return {"group": [], "ids": []}
-
-
-# 写入群设置
-def write_config(config) -> int:
-    with open(config_path, 'w', encoding='utf-8') as f:
-        json.dump(config, f, ensure_ascii=False)
+        return res.json(object_hook=_Dict)
 
 
 black_ids = [762, 422, 423, 1263, 495, 1957, 2522, 2388, 2516, 2476]
-config = load_config()

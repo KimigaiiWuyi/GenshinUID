@@ -12,11 +12,6 @@ files = [
     {file = "aiofiles-22.1.0.tar.gz", hash = "sha256:9107f1ca0b2a5553987a94a3c9959fe5b491fdf731389aa5b7b1bd0733e32de6"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "aiohttp"
 version = "3.8.3"
@@ -126,11 +121,6 @@ yarl = ">=1.0,<2.0"
 [package.extras]
 speedups = ["Brotli", "aiodns", "cchardet"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "aiosignal"
 version = "1.3.1"
@@ -146,11 +136,6 @@ files = [
 [package.dependencies]
 frozenlist = ">=1.1.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "aiosqlite"
 version = "0.18.0"
@@ -162,11 +147,6 @@ files = [
     {file = "aiosqlite-0.18.0-py3-none-any.whl", hash = "sha256:c3511b841e3a2c5614900ba1d179f366826857586f78abd75e7cbeb88e75a557"},
     {file = "aiosqlite-0.18.0.tar.gz", hash = "sha256:faa843ef5fb08bafe9a9b3859012d3d9d6f77ce3637899de20606b7fc39aa213"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "anyio"
@@ -188,11 +168,6 @@ sniffio = ">=1.1"
 doc = ["packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
 test = ["contextlib2", "coverage[toml] (>=4.5)", "hypothesis (>=4.0)", "mock (>=4)", "pytest (>=7.0)", "pytest-mock (>=3.6.1)", "trustme", "uvloop (<0.15)", "uvloop (>=0.15)"]
 trio = ["trio (>=0.16,<0.22)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "apscheduler"
@@ -225,11 +200,6 @@ tornado = ["tornado (>=4.3)"]
 twisted = ["twisted"]
 zookeeper = ["kazoo"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "asgiref"
 version = "3.6.0"
@@ -244,11 +214,6 @@ files = [
 
 [package.extras]
 tests = ["mypy (>=0.800)", "pytest", "pytest-asyncio"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "async-asgi-testclient"
@@ -265,11 +230,6 @@ files = [
 multidict = ">=4.0,<7.0"
 requests = ">=2.21,<3.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "async-timeout"
 version = "4.0.2"
@@ -281,11 +241,6 @@ files = [
     {file = "async-timeout-4.0.2.tar.gz", hash = "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15"},
     {file = "async_timeout-4.0.2-py3-none-any.whl", hash = "sha256:8ca1e4fcf50d07413d66d1a5e416e42cfdf5851c981d679a09851a6853383b3c"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "attrs"
@@ -305,11 +260,6 @@ dev = ["attrs[docs,tests]"]
 docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope.interface"]
 tests = ["attrs[tests-no-zope]", "zope.interface"]
 tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy (>=0.971,<0.990)", "mypy (>=0.971,<0.990)", "pympler", "pympler", "pytest (>=4.3.0)", "pytest (>=4.3.0)", "pytest-mypy-plugins", "pytest-mypy-plugins", "pytest-xdist[psutil]", "pytest-xdist[psutil]"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "backports-zoneinfo"
@@ -339,11 +289,6 @@ files = [
 
 [package.extras]
 tzdata = ["tzdata"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "bcrypt"
@@ -380,11 +325,6 @@ files = [
 tests = ["pytest (>=3.2.1,!=3.3.0)"]
 typecheck = ["mypy"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "beautifulsoup4"
 version = "4.11.1"
@@ -403,11 +343,6 @@ soupsieve = ">1.2"
 [package.extras]
 html5lib = ["html5lib"]
 lxml = ["lxml"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "black"
@@ -445,11 +380,6 @@ d = ["aiohttp (>=3.7.4)"]
 jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "certifi"
 version = "2022.12.7"
@@ -462,11 +392,6 @@ files = [
     {file = "certifi-2022.12.7.tar.gz", hash = "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "cfgv"
 version = "3.3.1"
@@ -478,11 +403,6 @@ files = [
     {file = "cfgv-3.3.1-py2.py3-none-any.whl", hash = "sha256:c6a0883f3917a037485059700b9e75da2464e6c27051014ad85ba6aaa5884426"},
     {file = "cfgv-3.3.1.tar.gz", hash = "sha256:f5a830efb9ce7a445376bb66ec94c638a9787422f96264c98edc6bdeed8ab736"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "charset-normalizer"
@@ -499,11 +419,6 @@ files = [
 [package.extras]
 unicode-backport = ["unicodedata2"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "click"
 version = "8.1.3"
@@ -519,11 +434,6 @@ files = [
 [package.dependencies]
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "colorama"
 version = "0.4.6"
@@ -536,11 +446,6 @@ files = [
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "distlib"
 version = "0.3.6"
@@ -552,11 +457,6 @@ files = [
     {file = "distlib-0.3.6-py2.py3-none-any.whl", hash = "sha256:f35c4b692542ca110de7ef0bea44d73981caeb34ca0b9b6b2e6d7790dda8f80e"},
     {file = "distlib-0.3.6.tar.gz", hash = "sha256:14bad2d9b04d3a36127ac97f30b12a19268f211063d8f8ee4f47108896e11b46"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "dnspython"
@@ -578,11 +478,6 @@ idna = ["idna (>=2.1,<4.0)"]
 trio = ["trio (>=0.14,<0.20)"]
 wmi = ["wmi (>=1.5.1,<2.0.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "email-validator"
 version = "1.3.0"
@@ -599,11 +494,6 @@ files = [
 dnspython = ">=1.15.0"
 idna = ">=2.0.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "et-xmlfile"
 version = "1.1.0"
@@ -615,11 +505,6 @@ files = [
     {file = "et_xmlfile-1.1.0-py3-none-any.whl", hash = "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"},
     {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "exceptiongroup"
@@ -635,11 +520,6 @@ files = [
 
 [package.extras]
 test = ["pytest (>=6)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "fastapi"
@@ -663,15 +543,10 @@ dev = ["pre-commit (>=2.17.0,<3.0.0)", "ruff (==0.0.138)", "uvicorn[standard] (>
 doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1.1.2,<2.0.0)", "mkdocs-markdownextradata-plugin (>=0.1.7,<0.3.0)", "mkdocs-material (>=8.1.4,<9.0.0)", "pyyaml (>=5.3.1,<7.0.0)", "typer[all] (>=0.6.1,<0.7.0)"]
 test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==22.10.0)", "coverage[toml] (>=6.5.0,<7.0)", "databases[sqlite] (>=0.3.2,<0.7.0)", "email-validator (>=1.1.1,<2.0.0)", "flask (>=1.1.2,<3.0.0)", "httpx (>=0.23.0,<0.24.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.982)", "orjson (>=3.2.1,<4.0.0)", "passlib[bcrypt] (>=1.7.2,<2.0.0)", "peewee (>=3.13.3,<4.0.0)", "pytest (>=7.1.3,<8.0.0)", "python-jose[cryptography] (>=3.3.0,<4.0.0)", "python-multipart (>=0.0.5,<0.0.6)", "pyyaml (>=5.3.1,<7.0.0)", "ruff (==0.0.138)", "sqlalchemy (>=1.3.18,<=1.4.41)", "types-orjson (==3.6.2)", "types-ujson (==5.5.0)", "ujson (>=4.0.1,!=4.0.2,!=4.1.0,!=4.2.0,!=4.3.0,!=5.0.0,!=5.1.0,<6.0.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "fastapi-amis-admin"
 version = "0.4.2"
-description = "FastAPI-Amis-Admin is a high-performance, efficient and easily extensible FastAPI admin framework. Inspired by Django-admin, and has as many powerful functions as Django-admin."
+description = "FastAPI-Amis-Admin is a high-performance, efficient and easily extensible FastAPI admin framework. Inspired by Django-admin, and has as many powerful functions as Django-admin. "
 category = "main"
 optional = false
 python-versions = ">=3.7"
@@ -693,11 +568,6 @@ cli = ["fastapi-amis-admin-cli (>=0.1.0,<0.2.0)"]
 dev = ["fastapi-amis-admin[test]", "pre-commit (>=2.20.0)"]
 standard = ["fastapi-amis-admin-cli (>=0.1.0,<0.2.0)", "uvicorn[standard] (>=0.19.0,<1.0)"]
 test = ["aiosqlite (>=0.15.0)", "fastapi-amis-admin[standard]", "httpx (>=0.23.0,<1.0)", "jinja2 (>=2.11.2,<4.0.0)", "pytest (>=6.2.4,<7.0.0)", "pytest-asyncio (>=0.17)", "requests (>=2.28.1)", "ujson (>=4.0.1)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "fastapi-user-auth"
@@ -726,11 +596,6 @@ jwt = ["python-jose (==3.3.0)"]
 redis = ["aioredis"]
 test = ["aiosqlite (>=0.15.0)", "jinja2 (>=2.11.2,<4.0.0)", "pytest (>=6.2.4)", "pytest-asyncio (>=0.17)", "python-jose (==3.3.0)", "ujson (>=5.5.0)", "uvicorn[standard] (>=0.19.0,<1.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "filelock"
 version = "3.8.2"
@@ -746,11 +611,6 @@ files = [
 [package.extras]
 docs = ["furo (>=2022.9.29)", "sphinx (>=5.3)", "sphinx-autodoc-typehints (>=1.19.5)"]
 testing = ["covdefaults (>=2.2.2)", "coverage (>=6.5)", "pytest (>=7.2)", "pytest-cov (>=4)", "pytest-timeout (>=2.1)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "flake8"
@@ -768,11 +628,6 @@ files = [
 mccabe = ">=0.7.0,<0.8.0"
 pycodestyle = ">=2.10.0,<2.11.0"
 pyflakes = ">=3.0.0,<3.1.0"
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "frozenlist"
@@ -858,11 +713,6 @@ files = [
     {file = "frozenlist-1.3.3.tar.gz", hash = "sha256:58bcc55721e8a90b88332d6cd441261ebb22342e238296bb330968952fbb3a6a"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "gitdb"
 version = "4.0.10"
@@ -878,11 +728,6 @@ files = [
 [package.dependencies]
 smmap = ">=3.0.1,<6"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "gitpython"
 version = "3.1.29"
@@ -897,11 +742,6 @@ files = [
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "greenlet"
@@ -977,11 +817,6 @@ files = [
 docs = ["Sphinx", "docutils (<0.18)"]
 test = ["faulthandler", "objgraph", "psutil"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "h11"
 version = "0.14.0"
@@ -993,11 +828,6 @@ files = [
     {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
     {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "httpcore"
@@ -1020,11 +850,6 @@ sniffio = ">=1.0.0,<2.0.0"
 [package.extras]
 http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (>=1.0.0,<2.0.0)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "httptools"
@@ -1080,11 +905,6 @@ files = [
 [package.extras]
 test = ["Cython (>=0.29.24,<0.30.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "httpx"
 version = "0.23.1"
@@ -1109,11 +929,6 @@ cli = ["click (>=8.0.0,<9.0.0)", "pygments (>=2.0.0,<3.0.0)", "rich (>=10,<13)"]
 http2 = ["h2 (>=3,<5)"]
 socks = ["socksio (>=1.0.0,<2.0.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "identify"
 version = "2.5.11"
@@ -1129,11 +944,6 @@ files = [
 [package.extras]
 license = ["ukkonen"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "idna"
 version = "3.4"
@@ -1146,11 +956,6 @@ files = [
     {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "iniconfig"
 version = "1.1.1"
@@ -1162,11 +967,6 @@ files = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
     {file = "iniconfig-1.1.1.tar.gz", hash = "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "isort"
@@ -1186,11 +986,6 @@ pipfile-deprecated-finder = ["pipreqs", "requirementslib"]
 plugins = ["setuptools"]
 requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "loguru"
 version = "0.6.0"
@@ -1209,11 +1004,6 @@ win32-setctime = {version = ">=1.0.0", markers = "sys_platform == \"win32\""}
 
 [package.extras]
 dev = ["Sphinx (>=4.1.1)", "black (>=19.10b0)", "colorama (>=0.3.4)", "docutils (==0.16)", "flake8 (>=3.7.7)", "isort (>=5.1.1)", "pytest (>=4.6.2)", "pytest-cov (>=2.7.1)", "sphinx-autobuild (>=0.7.1)", "sphinx-rtd-theme (>=0.4.3)", "tox (>=3.9.0)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "lxml"
@@ -1308,11 +1098,6 @@ html5 = ["html5lib"]
 htmlsoup = ["BeautifulSoup4"]
 source = ["Cython (>=0.29.7)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "mccabe"
 version = "0.7.0"
@@ -1324,11 +1109,6 @@ files = [
     {file = "mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e"},
     {file = "mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "msgpack"
@@ -1391,11 +1171,6 @@ files = [
     {file = "msgpack-1.0.4-cp39-cp39-win_amd64.whl", hash = "sha256:4d5834a2a48965a349da1c5a79760d94a1a0172fbb5ab6b5b33cbf8447e109ce"},
     {file = "msgpack-1.0.4.tar.gz", hash = "sha256:f5d869c18f030202eb412f08b28d2afeea553d6613aee89e200d7aca7ef01f5f"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "multidict"
@@ -1481,11 +1256,6 @@ files = [
     {file = "multidict-6.0.4.tar.gz", hash = "sha256:3666906492efb76453c0e7b97f2cf459b0682e7402c0489a95484965dbc1da49"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "mypy-extensions"
 version = "0.4.3"
@@ -1497,11 +1267,6 @@ files = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "nodeenv"
@@ -1517,11 +1282,6 @@ files = [
 
 [package.dependencies]
 setuptools = "*"
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "nonebot-adapter-onebot"
@@ -1539,11 +1299,6 @@ files = [
 msgpack = ">=1.0.3,<2.0.0"
 nonebot2 = ">=2.0.0-beta.3,<3.0.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "nonebot-plugin-apscheduler"
 version = "0.2.0"
@@ -1559,11 +1314,6 @@ files = [
 [package.dependencies]
 apscheduler = ">=3.7.0,<4.0.0"
 nonebot2 = ">=2.0.0-rc.1,<3.0.0"
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "nonebot2"
@@ -1594,11 +1344,6 @@ httpx = ["httpx[http2] (>=0.20.0,<1.0.0)"]
 quart = ["Quart (>=0.18.0,<1.0.0)"]
 websockets = ["websockets (>=10.0,<11.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "nonebug"
 version = "0.2.2"
@@ -1618,11 +1363,6 @@ nonebot2 = ">=2.0.0-beta.1,<3.0.0"
 pytest = ">=7.0.0,<8.0.0"
 typing-extensions = ">=4.0.0,<5.0.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "openpyxl"
 version = "3.0.10"
@@ -1638,11 +1378,6 @@ files = [
 [package.dependencies]
 et-xmlfile = "*"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "packaging"
 version = "22.0"
@@ -1654,11 +1389,6 @@ files = [
     {file = "packaging-22.0-py3-none-any.whl", hash = "sha256:957e2148ba0e1a3b282772e791ef1d8083648bc131c8ab0c1feba110ce1146c3"},
     {file = "packaging-22.0.tar.gz", hash = "sha256:2198ec20bd4c017b8f9717e00f0c8714076fc2fd93816750ab48e2c41de2cfd3"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "passlib"
@@ -1678,11 +1408,6 @@ bcrypt = ["bcrypt (>=3.1.0)"]
 build-docs = ["cloud-sptheme (>=1.10.1)", "sphinx (>=1.6)", "sphinxcontrib-fulltoc (>=1.2.0)"]
 totp = ["cryptography"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pathspec"
 version = "0.10.3"
@@ -1694,11 +1419,6 @@ files = [
     {file = "pathspec-0.10.3-py3-none-any.whl", hash = "sha256:3c95343af8b756205e2aba76e843ba9520a24dd84f68c22b9f93251507509dd6"},
     {file = "pathspec-0.10.3.tar.gz", hash = "sha256:56200de4077d9d0791465aa9095a01d421861e405b5096955051deefd697d6f6"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "pillow"
@@ -1775,11 +1495,6 @@ files = [
 docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-issues (>=3.0.1)", "sphinx-removed-in", "sphinxext-opengraph"]
 tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "platformdirs"
 version = "2.6.0"
@@ -1796,11 +1511,6 @@ files = [
 docs = ["furo (>=2022.9.29)", "proselint (>=0.13)", "sphinx (>=5.3)", "sphinx-autodoc-typehints (>=1.19.4)"]
 test = ["appdirs (==1.4.4)", "pytest (>=7.2)", "pytest-cov (>=4)", "pytest-mock (>=3.10)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pluggy"
 version = "1.0.0"
@@ -1816,11 +1526,6 @@ files = [
 [package.extras]
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "pre-commit"
@@ -1841,11 +1546,6 @@ nodeenv = ">=0.11.1"
 pyyaml = ">=5.1"
 virtualenv = ">=20.10.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pycodestyle"
 version = "2.10.0"
@@ -1857,11 +1557,6 @@ files = [
     {file = "pycodestyle-2.10.0-py2.py3-none-any.whl", hash = "sha256:8a4eaf0d0495c7395bdab3589ac2db602797d76207242c17d470186815706610"},
     {file = "pycodestyle-2.10.0.tar.gz", hash = "sha256:347187bdb476329d98f695c213d7295a846d1152ff4fe9bacb8a9590b8ee7053"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "pydantic"
@@ -1917,11 +1612,6 @@ typing-extensions = ">=4.1.0"
 dotenv = ["python-dotenv (>=0.10.4)"]
 email = ["email-validator (>=1.0.3)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pyflakes"
 version = "3.0.1"
@@ -1934,11 +1624,6 @@ files = [
     {file = "pyflakes-3.0.1.tar.gz", hash = "sha256:ec8b276a6b60bd80defed25add7e439881c19e64850afd9b346283d4165fd0fd"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pygtrie"
 version = "2.5.0"
@@ -1950,11 +1635,6 @@ files = [
     {file = "pygtrie-2.5.0-py3-none-any.whl", hash = "sha256:8795cda8105493d5ae159a5bef313ff13156c5d4d72feddefacaad59f8c8ce16"},
     {file = "pygtrie-2.5.0.tar.gz", hash = "sha256:203514ad826eb403dab1d2e2ddd034e0d1534bbe4dbe0213bb0593f66beba4e2"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "pytest"
@@ -1980,11 +1660,6 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 [package.extras]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pytest-asyncio"
 version = "0.20.3"
@@ -2004,11 +1679,6 @@ pytest = ">=6.1.0"
 docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
 testing = ["coverage (>=6.2)", "flaky (>=3.5.0)", "hypothesis (>=5.7.1)", "mypy (>=0.931)", "pytest-trio (>=0.7.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "python-dotenv"
 version = "0.21.0"
@@ -2024,11 +1694,6 @@ files = [
 [package.extras]
 cli = ["click (>=5.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "python-multipart"
 version = "0.0.5"
@@ -2043,11 +1708,6 @@ files = [
 [package.dependencies]
 six = ">=1.4.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "pytz"
 version = "2022.7"
@@ -2059,11 +1719,6 @@ files = [
     {file = "pytz-2022.7-py2.py3-none-any.whl", hash = "sha256:93007def75ae22f7cd991c84e02d434876818661f8df9ad5df9e950ff4e52cfd"},
     {file = "pytz-2022.7.tar.gz", hash = "sha256:7ccfae7b4b2c067464a6733c6261673fdb8fd1be905460396b97a073e9fa683a"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "pytz-deprecation-shim"
@@ -2080,11 +1735,6 @@ files = [
 [package.dependencies]
 "backports.zoneinfo" = {version = "*", markers = "python_version >= \"3.6\" and python_version < \"3.9\""}
 tzdata = {version = "*", markers = "python_version >= \"3.6\""}
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "pyyaml"
@@ -2136,11 +1786,6 @@ files = [
     {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "qrcode"
 version = "7.3.1"
@@ -2162,11 +1807,6 @@ dev = ["pytest", "tox"]
 maintainer = ["zest.releaser[recommended]"]
 pil = ["pillow"]
 test = ["pytest", "pytest-cov"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "requests"
@@ -2190,11 +1830,6 @@ urllib3 = ">=1.21.1,<1.27"
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "rfc3986"
 version = "1.5.0"
@@ -2213,11 +1848,6 @@ idna = {version = "*", optional = true, markers = "extra == \"idna2008\""}
 [package.extras]
 idna2008 = ["idna"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "setuptools"
 version = "65.6.3"
@@ -2235,11 +1865,6 @@ docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-g
 testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "six"
 version = "1.16.0"
@@ -2251,11 +1876,6 @@ files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "smmap"
@@ -2269,11 +1889,6 @@ files = [
     {file = "smmap-5.0.0.tar.gz", hash = "sha256:c840e62059cd3be204b0c9c9f74be2c09d5648eddd4580d9314c3ecde0b30936"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "sniffio"
 version = "1.3.0"
@@ -2286,11 +1901,6 @@ files = [
     {file = "sniffio-1.3.0.tar.gz", hash = "sha256:e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "soupsieve"
 version = "2.3.2.post1"
@@ -2302,11 +1912,6 @@ files = [
     {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
     {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "sqlalchemy"
@@ -2383,11 +1988,6 @@ postgresql-psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql", "pymysql (<1)"]
 sqlcipher = ["sqlcipher3-binary"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "sqlalchemy-database"
 version = "0.1.0"
@@ -2408,11 +2008,6 @@ sqlalchemy2-stubs = ">=0.0.2a29"
 docs = ["mkdocs-material (>=8.3.8)", "mkdocstrings[python] (>=0.19.0)"]
 test = ["aiosqlite", "fastapi", "httpx", "pytest (>=6.2.4,<7.0.0)", "pytest-asyncio (>=0.17)", "pytest-cov", "sqlmodel"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "sqlalchemy2-stubs"
 version = "0.0.2a31"
@@ -2427,11 +2022,6 @@ files = [
 
 [package.dependencies]
 typing-extensions = ">=3.7.4"
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "sqlmodel"
@@ -2450,11 +2040,6 @@ pydantic = ">=1.8.2,<2.0.0"
 SQLAlchemy = ">=1.4.17,<=1.4.41"
 sqlalchemy2-stubs = "*"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "sqlmodelx"
 version = "0.0.4"
@@ -2472,11 +2057,6 @@ sqlmodel = ">=0.0.7"
 
 [package.extras]
 test = ["pytest (>=7.1.3)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "starlette"
@@ -2497,11 +2077,6 @@ typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""
 [package.extras]
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "tomli"
 version = "2.0.1"
@@ -2513,11 +2088,6 @@ files = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "tomlkit"
@@ -2531,11 +2101,6 @@ files = [
     {file = "tomlkit-0.11.6.tar.gz", hash = "sha256:71b952e5721688937fb02cf9d354dbcf0785066149d2855e44531ebdd2b65d73"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "typing-extensions"
 version = "4.4.0"
@@ -2548,11 +2113,6 @@ files = [
     {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "tzdata"
 version = "2022.7"
@@ -2564,11 +2124,6 @@ files = [
     {file = "tzdata-2022.7-py2.py3-none-any.whl", hash = "sha256:2b88858b0e3120792a3c0635c23daf36a7d7eeeca657c323da299d2094402a0d"},
     {file = "tzdata-2022.7.tar.gz", hash = "sha256:fe5f866eddd8b96e9fcba978f8e503c909b19ea7efda11e52e39494bad3a7bfa"},
 ]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "tzlocal"
@@ -2591,11 +2146,6 @@ tzdata = {version = "*", markers = "platform_system == \"Windows\""}
 devenv = ["black", "pyroma", "pytest-cov", "zest.releaser"]
 test = ["pytest (>=4.3)", "pytest-mock (>=3.3)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "urllib3"
 version = "1.26.13"
@@ -2612,11 +2162,6 @@ files = [
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
 secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)", "urllib3-secure-extra"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "uvicorn"
@@ -2643,11 +2188,6 @@ websockets = {version = ">=10.4", optional = true, markers = "extra == \"standar
 
 [package.extras]
 standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)", "pyyaml (>=5.1)", "uvloop (>=0.14.0,!=0.15.0,!=0.15.1)", "watchfiles (>=0.13)", "websockets (>=10.4)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "uvloop"
@@ -2694,11 +2234,6 @@ dev = ["Cython (>=0.29.32,<0.30.0)", "Sphinx (>=4.1.2,<4.2.0)", "aiohttp", "flak
 docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)"]
 test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "mypy (>=0.800)", "psutil", "pyOpenSSL (>=22.0.0,<22.1.0)", "pycodestyle (>=2.7.0,<2.8.0)"]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "virtualenv"
 version = "20.17.1"
@@ -2719,11 +2254,6 @@ platformdirs = ">=2.4,<3"
 [package.extras]
 docs = ["proselint (>=0.13)", "sphinx (>=5.3)", "sphinx-argparse (>=0.3.2)", "sphinx-rtd-theme (>=1)", "towncrier (>=22.8)"]
 testing = ["coverage (>=6.2)", "coverage-enable-subprocess (>=1)", "flaky (>=3.7)", "packaging (>=21.3)", "pytest (>=7.0.1)", "pytest-env (>=0.6.2)", "pytest-freezegun (>=0.4.2)", "pytest-mock (>=3.6.1)", "pytest-randomly (>=3.10.3)", "pytest-timeout (>=2.1)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "watchfiles"
@@ -2755,11 +2285,6 @@ files = [
 
 [package.dependencies]
 anyio = ">=3.0.0"
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "websockets"
@@ -2840,11 +2365,6 @@ files = [
     {file = "websockets-10.4.tar.gz", hash = "sha256:eef610b23933c54d5d921c92578ae5f89813438fded840c2e9809d378dc765d3"},
 ]
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [[package]]
 name = "win32-setctime"
 version = "1.1.0"
@@ -2859,11 +2379,6 @@ files = [
 
 [package.extras]
 dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
-
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
 
 [[package]]
 name = "yarl"
@@ -2953,12 +2468,7 @@ files = [
 idna = ">=2.0"
 multidict = ">=4.0"
 
-[package.source]
-type = "legacy"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-reference = "USTC"
-
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "dd926e04cc8968316474fa4133f53198150fcee7769c130cff8e9b671c0bf3e7"
+content-hash = "f0b2d2a2fe46569e3f799bf2b48dfd17130656bffced5844a5cbc8bd576cea29"

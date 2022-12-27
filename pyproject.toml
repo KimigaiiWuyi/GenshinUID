@@ -62,7 +62,8 @@ qrcode = {extras = ["pil"], version = "^7.3.1"}
 [[tool.poetry.source]]
 name = "USTC"
 url = "https://pypi.mirrors.ustc.edu.cn/simple"
-default = true
+default = false
+secondary = true
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

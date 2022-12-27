@@ -9,6 +9,7 @@ from nonebot.adapters.qqguild import Message, MessageEvent
 
 from .add_ck import deal_ck
 from ..config import priority
+from .qrlogin import qrcode_login
 from ..utils.nonebot2.perm import DIRECT
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
@@ -31,6 +32,28 @@ bind_info = on_command(
 bind = on_regex(
     r'^(绑定|切换|解绑|删除)(uid|UID|mys|MYS)([0-9]+)?$', priority=priority
 )
+get_qrcode_login = on_command(
+    '扫码登录',
+    aliases={'扫码登陆', '扫码登入'},
+    permission=DIRECT,
+    rule=FullCommand(),
+)
+
+
+@get_qrcode_login.handle()
+async def send_qrcode_login(
+    event: MessageEvent,
+    matcher: Matcher,
+):
+    logger.info('开始执行[扫码登陆]')
+    qid = cast_to_int(event.author)
+    im = await qrcode_login(matcher, qid)
+    if not im:
+        return
+    im = await deal_ck(im, qid)
+    if isinstance(im, str):
+        await matcher.finish(im)
+    await matcher.finish(local_image(im))
 
 
 @bind_info.handle()
@@ -57,10 +80,10 @@ async def send_add_ck_msg(
     if qid is None:
         await matcher.finish('QID为空，请重试！')
     qid = str(qid)
-    im = await deal_ck(mes, qid, 'TEXT')
+    im = await deal_ck(mes, qid)
     if isinstance(im, str):
         await matcher.finish(im)
-    # await matcher.finish(local_image(im))
+    await matcher.finish(local_image(im))
 
 
 # 群聊内 绑定uid或者mysid 的命令，会绑定至当前qq号上

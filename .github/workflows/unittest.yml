@@ -22,16 +22,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - name: Install poetry
+        run: pipx install poetry
+        shell: bash
+
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.version }}
           architecture: "x64"
+          cache: "poetry"
 
       - name: Install dependencies
-        run: pip3 install ".[dev]"
+        run: poetry install
         shell: bash
 
       - name: Run Pytest
         run: |
           cd tests
-          pytest
+          poetry run pytest

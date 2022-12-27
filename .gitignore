@@ -210,7 +210,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+.env/
 .venv
 env/
 venv/
@@ -667,5 +667,7 @@ result.txt
 
 ### GenshinUID ###
 GenshinUID/genshinuid_help/help.png
-GenshinUID/genshinuid_eventlist/event.jpg
-GenshinUID/genshinuid_map/map_data/*
+GenshinUID/genshinuid_map/map_data
+
+### Debug ###
+testnb2/

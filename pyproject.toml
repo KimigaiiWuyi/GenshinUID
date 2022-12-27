@@ -2,30 +2,26 @@
 name = "GenshinUID"
 version = "0.1.0"
 description = "基于HoshinoBot/NoneBot2/QQ官方频道Bot(PythonSDK)的原神Uid查询/原神Wiki/米社签到/树脂提醒插件"
-authors = ["Your Name <you@example.com>"]
+authors = ["KimigaiiWuyi <444835641@qq.com>"]
 license = "GPL-3.0-or-later"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-nonebot2 = "^2.0.0-beta.4"
-nonebot-adapter-onebot = "^2.1.1"
-requests = "^2.28.1"
 httpx = "^0.23.0"
-wordcloud = "^1.8.2"
-numpy = "^1.23.1"
 beautifulsoup4 = "^4.11.1"
 lxml = "^4.9.1"
 openpyxl = "^3.0.10"
 aiohttp = "^3.8.1"
 SQLAlchemy = "^1.4.39"
 Pillow = "^9.2.0"
-scikit-learn = "^1.1.2"
-shapely = "^1.8.2"
 aiosqlite = "^0.17.0"
 sqlmodel = "^0.0.8"
 GitPython = "^3.1.27"
 fastapi_amis_admin = "^0.2.1"
 fastapi_user_auth = "^0.2.1"
+pydantic = "^1.10.2"
+aiofiles = "^22.1.0"
+qrcode = {extras = ["pil"], version = "^7.3.1"}
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

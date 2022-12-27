@@ -104,6 +104,5 @@ def make_event(
                 "anonymous": anonymous,
                 **kwargs,
             },
-            str(self_id),
         ),
     )

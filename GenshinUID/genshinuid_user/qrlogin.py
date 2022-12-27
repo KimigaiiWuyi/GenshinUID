@@ -38,7 +38,7 @@ async def refresh(
     scanned = False
     while True:
         await asyncio.sleep(2)
-        status_data = await check_qrcode(**code_data)
+        status_data = await check_qrcode(code_data["app_id"],code_data["ticket"],code_data["device"])
         if status_data["retcode"] != 0:
             logger.warn("二维码已过期")
             return False, None

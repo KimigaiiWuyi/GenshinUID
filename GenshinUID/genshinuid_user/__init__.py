@@ -15,6 +15,7 @@ from nonebot.adapters.onebot.v11 import (
 
 from .add_ck import deal_ck
 from ..config import priority
+from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..genshinuid_meta import register_menu
@@ -35,6 +36,27 @@ bind_info = on_command(
 bind = on_regex(
     r'^(绑定|切换|解绑|删除)(uid|UID|mys|MYS)([0-9]+)?$', priority=priority
 )
+get_qrcode_login = on_command(
+    '扫码登录',
+    aliases={'扫码登陆', '扫码登入'},
+    permission=PRIVATE_FRIEND,
+    rule=FullCommand(),
+)
+
+
+@get_qrcode_login.handle()
+async def send_qrcode_login(
+    bot: Bot,
+    event: MessageEvent,
+    matcher: Matcher,
+):
+    logger.info('开始执行[扫码登陆]')
+    qid = event.user_id
+    im = await qrcode_login(bot, qid)
+    if not im:
+        return
+    im = await deal_ck(im, qid)
+    await matcher.finish(MessageSegment.image(im))
 
 
 @bind_info.handle()

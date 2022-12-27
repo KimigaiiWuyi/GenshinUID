@@ -1,5 +1,5 @@
 import json
-from typing import List, Union, Unpack, Literal, overload
+from typing import List, Union, Literal, overload
 
 from ..utils.download_resource.RESOURCE_PATH import CONFIG_PATH
 

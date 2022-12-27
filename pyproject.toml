@@ -1,52 +1,3 @@
-[project]
-name = "GenshinUID"
-version = "3.1.0"
-authors = [
-    { name="KimigaiiWuyi", email="444835641@qq.com" },
-]
-description = "基于HoshinoBot/NoneBot2/QQ官方频道Bot(PythonSDK)的原神Uid查询/原神Wiki/米社签到/树脂提醒插件"
-license = { file="LICENSE" }
-requires-python = ">=3.8"
-readme = "README.md"
-dependencies = [
-    'nonebot2>=2.0.0-beta.4',
-    'nonebot-adapter-onebot>=2.1.1',
-    'httpx>=0.23.0',
-    'wordcloud>=1.8.2',
-    'numpy>=1.23.1',
-    'beautifulsoup4>=4.11.1',
-    'lxml>=4.9.1',
-    'openpyxl>=3.0.10',
-    'aiohttp>=3.8.1',
-    'SQLAlchemy>=1.4.39',
-    'Pillow>=9.2.0',
-    'scikit-learn>=1.1.2',
-    'shapely>=1.8.2',
-    'aiosqlite>=0.17.0',
-    'nonebot-plugin-apscheduler>=0.1.4',
-    'aiofiles>=0.8.0',
-    'sqlmodel>=0.0.8',
-    'gitpython>=3.1.27',
-    'fastapi_amis_admin>=0.2.1',
-    'fastapi_user_auth>=0.2.1'
-]
-
-[project.optional-dependencies]
-dev = [
-    'flake8>=4.0.1', 
-    'black>=22.6.0', 
-    'isort>=5.10.1', 
-    'pre-commit>=2.20.0',
-    'nonebug>=0.2.1',
-    'pytest>=6.2.5',
-    'pytest-asyncio>=0.16.0'
-]
-
-[project.urls]
-"Homepage" = "https://github.com/KimigaiiWuyi/GenshinUID/tree/nonebot2-beta1"
-"Documentation" = "https://github.com/KimigaiiWuyi/GenshinUID/wiki"
-"Bug Tracker" = "https://github.com/KimigaiiWuyi/GenshinUID/issues"
-
 [tool.black]
 line-length = 79
 target-version = ["py38", "py39", "py310"]
@@ -67,31 +18,38 @@ extra_standard_library = ["typing_extensions"]
 asyncio_mode = "auto"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "GenshinUID"
-version = "0.1.0"
-description = "基于HoshinoBot/NoneBot2/QQ官方频道Bot(PythonSDK)的原神Uid查询/原神Wiki/米社签到/树脂提醒插件"
-authors = ["Your Name <you@example.com>"]
+version = "3.1.0"
+description = "基于HoshinoBot/NoneBot2/QQ官方频道/微信Bot的原神面板查询/原神Wiki/米社签到/树脂提醒插件"
+authors = ["KimigaiiWuyi <444835641@qq.com>"]
 license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://github.com/KimigaiiWuyi/GenshinUID/tree/ntchat"
+repository = "https://github.com/KimigaiiWuyi/GenshinUID"
+documentation = "https://github.com/KimigaiiWuyi/GenshinUID/wiki"
+packages = [
+    { include = "GenshinUID" }
+]
+exclude = ["tests", "deploy"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/KimigaiiWuyi/GenshinUID/issues"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-nonebot2 = ">=2.0.0-beta.4"
-nonebot-adapter-onebot = ">=2.1.1"
+python = "^3.8.1"
+nonebot2 = ">=2.0.0b4"
+nonebot-adapter-ntchat = ">=0.3.4"
 httpx = ">=0.23.0"
-wordcloud = ">=1.8.2"
-numpy = ">=1.23.1"
 beautifulsoup4 = ">=4.11.1"
-lxml = ">=4.9.1"
+lxml = ">=4.9.2"
 openpyxl = ">=3.0.10"
 aiohttp = ">=3.8.1"
 sqlalchemy = ">=1.4.39"
 pillow = ">=9.2.0"
-scikit-learn = ">=1.1.2"
-shapely = ">=1.8.2"
 aiosqlite = ">=0.17.0"
 nonebot-plugin-apscheduler = ">=0.1.4"
 aiofiles = ">=0.8.0"
@@ -99,8 +57,19 @@ sqlmodel = ">=0.0.8"
 gitpython = ">=3.1.27"
 fastapi-amis-admin = ">=0.2.1"
 fastapi-user-auth = ">=0.2.1"
+qrcode = {extras = ["pil"], version = "^7.3.1"}
 
 [[tool.poetry.source]]
 name = "USTC"
 url = "https://pypi.mirrors.ustc.edu.cn/simple"
-default = true
+default = false
+secondary = true
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "^22.12.0"
+isort = "^5.11.4"
+pre-commit = "^2.21.0"
+nonebug = "^0.2.2"
+pytest = "^7.2.0"
+pytest-asyncio = "^0.20.3"

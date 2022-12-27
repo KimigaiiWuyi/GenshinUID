@@ -63,6 +63,7 @@ async def refresh(
 async def qrcode_login(matcher: Matcher, user_id) -> str:
     code_data = await create_qrcode_url()
     try:
+        await matcher.send('请扫描下方二维码登录：')
         await matcher.send(
             MessageSegment.image(
                 f'base64://{get_qrcode_base64(code_data["url"])}'

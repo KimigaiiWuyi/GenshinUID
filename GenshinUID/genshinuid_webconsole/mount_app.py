@@ -1,3 +1,4 @@
+# flake8: noqa
 import platform
 import contextlib
 from pathlib import Path
@@ -6,7 +7,6 @@ from typing import (
     Any,
     Set,
     List,
-    Type,
     Union,
     Callable,
     Optional,
@@ -40,7 +40,6 @@ from fastapi_amis_admin.amis.components import (
     Alert,
     Action,
     Property,
-    ActionType,
     Horizontal,
     InputExcel,
     InputTable,
@@ -50,8 +49,8 @@ from fastapi_amis_admin.amis.components import (
 
 from ..version import GenshinUID_version
 from ..genshinuid_user.add_ck import _deal_ck
-from .login_page import amis_admin, user_auth_admin  # 不要删!!
 from ..utils.db_operation.database.db_config import DATABASE_URL
+from .login_page import amis_admin, user_auth_admin  # noqa  # 不要删
 from ..utils.db_operation.database.models import (
     Config,
     UidData,
@@ -359,7 +358,7 @@ class UserBindFormAdmin(admin.FormAdmin):
     ) -> BaseApiOut[Any]:
         try:
             im = await _deal_ck(data.Cookies, data.QQ)
-        except:
+        except Exception:
             return BaseApiOut(status=-1, msg='你输入的CK可能已经失效,请按照[入门使用]进行操作!')
         ok_num = im.count('成功')
         if ok_num < 1:

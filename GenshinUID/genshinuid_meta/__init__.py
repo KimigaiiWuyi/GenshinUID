@@ -8,7 +8,8 @@ __plugin_meta__ = PluginMetadata(
     description='基于NoneBot2的原神Uid查询/原神Wiki/米游社签到/树脂提醒插件',
     usage=(
         '发送 <ft color=(238,120,0)>gs帮助</ft> 可以获取帮助列表，也可以参考下面的表格\n'
-        '可以使用 <ft color=(238,120,0)>菜单 gsuid </ft><ft color=(0,148,200)>[序号]</ft> '
+        '可以使用 <ft color=(238,120,0)>菜单 gsuid </ft>'
+        '<ft color=(0,148,200)>[序号]</ft> '
         '指令获取某功能详细介绍\n'
         ' \n'
         '菜单描述中的指令：\n'

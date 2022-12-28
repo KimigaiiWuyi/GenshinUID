@@ -45,7 +45,7 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
     data = await get_award(uid)
     if data['retcode'] != 0:
         return '请先绑定一个可用CK & UID再来查询哦~'
-    nickname = data['data']['nickname']
+    # nickname = data['data']['nickname']
     day_stone = data['data']['day_data']['current_primogems']
     day_mora = data['data']['day_data']['current_mora']
     lastday_stone = 0

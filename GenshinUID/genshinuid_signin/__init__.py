@@ -3,8 +3,9 @@ import asyncio
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
+from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
-from nonebot import get_bot, require, on_command
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.ntchat import Bot, MessageEvent
 
 from ..config import priority
@@ -14,13 +15,12 @@ try:
 except ImportError:
     from .sign import sign_in, daily_sign
 
+from nonebot_plugin_apscheduler import scheduler
+
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, config_check
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 sign_scheduler = scheduler
 

@@ -1,11 +1,11 @@
 import random
 import asyncio
-from typing import Union
 
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import require, on_command
 from nonebot.permission import SUPERUSER
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.ntchat import Bot, TextMessageEvent
 
 from .backup_data import data_backup
@@ -18,9 +18,6 @@ from ..utils.message.get_cqhttp_data import (
     get_all_friend_list,
     get_group_member_list,
 )
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 backup = on_command('gs清除缓存', rule=FullCommand())
 check = on_command('校验全部Cookies', rule=FullCommand())
@@ -58,7 +55,7 @@ async def send_backup_msg(
     if not await SUPERUSER(bot, event):
         return
     await data_backup()
-    await matcher.finish(f'操作成功完成!')
+    await matcher.finish('操作成功完成!')
 
 
 @remove_invalid_user.handle()

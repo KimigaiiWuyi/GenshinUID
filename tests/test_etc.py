@@ -41,17 +41,23 @@ async def test_primogems_version(app: App, load_etc: None):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 
+    from GenshinUID.version import Genshin_version
     from GenshinUID.genshinuid_etcimg import get_primogems_data
 
     with open(
-        Path("../GenshinUID/genshinuid_etcimg/primogems_data/3.0.png"),
+        Path(
+            (
+                "../GenshinUID/genshinuid_etcimg"
+                f"/primogems_data/{Genshin_version[:3]}.png"
+            )
+        ),
         "rb",
     ) as f:
         data = f.read()
 
     async with app.test_matcher(get_primogems_data) as ctx:
         bot = ctx.create_bot(base=Bot)
-        event = make_event(message=Message("版本规划3.0"))
+        event = make_event(message=Message(f"版本规划{Genshin_version[:3]}"))
         ctx.receive_event(bot, event)
         ctx.should_call_send(
             event,

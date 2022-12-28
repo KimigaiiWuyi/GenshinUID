@@ -1,13 +1,14 @@
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
+from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
-from nonebot import get_bot, require, on_command
-from nonebot.adapters.ntchat.message import Message
-from nonebot.adapters.ntchat import (
+from nonebot_plugin_apscheduler import scheduler
+from nonebot.adapters.onebot.v11 import (
+    Message,
     MessageEvent,
     MessageSegment,
-    TextMessageEvent,
+    GroupMessageEvent,
 )
 
 from .util import black_ids
@@ -19,9 +20,6 @@ from ..utils.db_operation.db_operation import select_db
 from ..genshinuid_config.default_config import string_config
 from ..utils.exception.handle_exception import handle_exception
 from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 update_ann_scheduler = scheduler
 get_ann_info = on_command('原神公告', priority=priority)
@@ -60,19 +58,19 @@ async def send_ann_pic(
 @reg_ann.handle()
 @handle_exception('设置原神公告', '设置原神公告失败')
 async def send_reg_ann(
-    event: TextMessageEvent,
+    event: GroupMessageEvent,
     matcher: Matcher,
 ):
-    await matcher.finish(sub_ann(event.room_wxid))
+    await matcher.finish(sub_ann(event.group_id))
 
 
 @unreg_ann.handle()
 @handle_exception('取消原神公告', '取消设置原神公告失败')
 async def send_unreg_ann(
-    event: TextMessageEvent,
+    event: GroupMessageEvent,
     matcher: Matcher,
 ):
-    await matcher.finish(unsub_ann(event.room_wxid))
+    await matcher.finish(unsub_ann(event.group_id))
 
 
 @consume_ann.handle()
@@ -81,7 +79,7 @@ async def send_consume_ann(
     event: MessageEvent,
     matcher: Matcher,
 ):
-    qid = event.from_wxid
+    qid = str(event.user_id)
     uid = await select_db(qid, mode='uid')
     uid = str(uid)
     if '未找到绑定的UID' in uid:
@@ -133,9 +131,9 @@ async def check_ann_state():
             try:
                 bot = get_bot()
                 await bot.call_api(
-                    api='send_text',
-                    to_wxid=group,
-                    content=msg,
+                    api='send_group_msg',
+                    group_id=group,
+                    message=msg,
                 )
             except Exception as e:
                 logger.exception(e)

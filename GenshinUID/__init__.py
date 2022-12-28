@@ -1,5 +1,7 @@
 from nonebot.log import logger
-from nonebot import load_all_plugins, get_plugin_by_module_name
+from nonebot import require, load_all_plugins, get_plugin_by_module_name
+
+require('nonebot_plugin_apscheduler')
 
 if get_plugin_by_module_name("GenshinUID"):
     logger.info("推荐直接加载 GenshinUID 仓库文件夹")
@@ -7,6 +9,8 @@ if get_plugin_by_module_name("GenshinUID"):
         [
             'GenshinUID.genshinuid_abyss',
             'GenshinUID.genshinuid_adv',
+            'GenshinUID.genshinuid_ann',
+            'GenshinUID.genshinuid_gcg',
             'GenshinUID.genshinuid_check',
             'GenshinUID.genshinuid_collection',
             'GenshinUID.genshinuid_config',

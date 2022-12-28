@@ -1,8 +1,6 @@
+import fastapi_amis_admin
 from fastapi import Request
 from nonebot.typing import overrides
-import fastapi_amis_admin  # noqa: F401
-from starlette.requests import Request
-from fastapi_amis_admin.models.fields import Field
 from fastapi_user_auth import admin as user_auth_admin
 from fastapi_amis_admin.admin import admin as amis_admin
 from fastapi_amis_admin.utils.translation import i18n as _
@@ -66,13 +64,16 @@ footer_html = f'''
 </p>
 '''
 
+
 # 还原高版本的注册按钮丢失
 @overrides(user_auth_admin.UserLoginFormAdmin)
 async def get_form(self, request: Request) -> Form:
     form = await super(user_auth_admin.UserLoginFormAdmin, self).get_form(
         request
     )
-    form.body.sort(key=lambda form_item: form_item.type, reverse=True)  # type: ignore
+    form.body.sort(
+        key=lambda form_item: form_item.type, reverse=True  # type: ignore
+    )
     form.update_from_kwargs(
         title='',
         mode=DisplayModeEnum.horizontal,

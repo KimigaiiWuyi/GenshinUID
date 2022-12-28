@@ -1,5 +1,6 @@
+from nonebot import on_command
 from nonebot.matcher import Matcher
-from nonebot import require, on_command
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.ntchat import MessageSegment
 
 from ..config import priority
@@ -7,9 +8,6 @@ from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from .draw_event_img import get_event_img, get_all_event_img
 from ..utils.exception.handle_exception import handle_exception
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 get_event = on_command('活动列表', priority=priority, rule=FullCommand())
 get_gacha = on_command('卡池列表', priority=priority, rule=FullCommand())

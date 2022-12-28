@@ -3,11 +3,12 @@ import random
 import asyncio
 from typing import Tuple
 
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
-from nonebot import require, on_command
 from nonebot.permission import SUPERUSER
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.ntchat.message import Message
 from nonebot.adapters.ntchat import (
     Bot,
@@ -29,9 +30,6 @@ from ..utils.enka_api.enka_to_data import enka_to_data
 from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, get_all_uid
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 refresh = on_command('强制刷新')
 original_pic = on_command('原图', rule=FullCommand())

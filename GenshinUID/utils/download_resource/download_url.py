@@ -1,7 +1,6 @@
-from typing import Tuple, Literal, Optional
+from typing import Tuple, Optional
 
 import aiofiles
-from pydantic import conint
 from nonebot.log import logger
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError

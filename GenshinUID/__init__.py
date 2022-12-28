@@ -9,6 +9,9 @@ if get_plugin_by_module_name("GenshinUID"):
         [
             'GenshinUID.genshinuid_abyss',
             'GenshinUID.genshinuid_adv',
+            'GenshinUID.genshinuid_ann',
+            'GenshinUID.genshinuid_gcg',
+            'GenshinUID.genshinuid_xkdata',
             'GenshinUID.genshinuid_check',
             'GenshinUID.genshinuid_collection',
             'GenshinUID.genshinuid_config',

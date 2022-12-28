@@ -4,9 +4,10 @@ from typing import List
 from pathlib import Path
 
 from nonebot.log import logger
-from nonebot import load_plugins
+from nonebot import require, load_plugins
 
 dir_ = Path(__file__).parent
+require('nonebot_plugin_apscheduler')
 
 
 def copy_and_delete_files():

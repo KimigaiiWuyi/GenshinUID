@@ -33,7 +33,7 @@ jobs:
           cache: "poetry"
 
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --with test --without dev
         shell: bash
 
       - name: Run Pytest

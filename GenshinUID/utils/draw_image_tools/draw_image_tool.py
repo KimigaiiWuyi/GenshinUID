@@ -4,8 +4,9 @@ from io import BytesIO
 from pathlib import Path
 from typing import Tuple, Union, Optional
 
+import httpx
 from httpx import get
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 from ..genshin_fonts.genshin_fonts import gs_font_32
 from ..download_resource.RESOURCE_PATH import CU_BG_PATH, TEXT2D_PATH
@@ -27,6 +28,100 @@ if list(CU_BG_PATH.iterdir()) != []:
     bg_path = CU_BG_PATH
 else:
     bg_path = NM_BG_PATH
+
+
+async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
+    """
+    从网络获取图片，格式化为RGBA格式的指定尺寸
+    """
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url=url)
+        if resp.status_code != 200:
+            if size is None:
+                size = (960, 600)
+            return Image.new('RGBA', size)
+        pic = Image.open(BytesIO(resp.read()))
+        pic = pic.convert("RGBA")
+        if size is not None:
+            pic = pic.resize(size, Image.LANCZOS)
+        return pic
+
+
+def draw_text_by_line(
+    img: Image.Image,
+    pos: Tuple[int, int],
+    text: str,
+    font: ImageFont.FreeTypeFont,
+    fill: Union[Tuple[int, int, int, int], str],
+    max_length: float,
+    center=False,
+    line_space: Optional[float] = None,
+):
+    """
+    在图片上写长段文字, 自动换行
+    max_length单行最大长度, 单位像素
+    line_space  行间距, 单位像素, 默认是字体高度的0.3倍
+    """
+    x, y = pos
+    _, h = font.getsize('X')
+    if line_space is None:
+        y_add = math.ceil(1.3 * h)
+    else:
+        y_add = math.ceil(h + line_space)
+    draw = ImageDraw.Draw(img)
+    row = ""  # 存储本行文字
+    length = 0  # 记录本行长度
+    for character in text:
+        w, h = font.getsize(character)  # 获取当前字符的宽度
+        if length + w * 2 <= max_length:
+            row += character
+            length += w
+        else:
+            row += character
+            if center:
+                font_size = font.getsize(row)
+                x = math.ceil((img.size[0] - font_size[0]) / 2)
+            draw.text((x, y), row, font=font, fill=fill)
+            row = ""
+            length = 0
+            y += y_add
+    if row != "":
+        if center:
+            font_size = font.getsize(row)
+            x = math.ceil((img.size[0] - font_size[0]) / 2)
+        draw.text((x, y), row, font=font, fill=fill)
+
+
+def easy_paste(
+    im: Image.Image, im_paste: Image.Image, pos=(0, 0), direction="lt"
+):
+    """
+    inplace method
+    快速粘贴, 自动获取被粘贴图像的坐标。
+    pos应当是粘贴点坐标，direction指定粘贴点方位，例如lt为左上
+    """
+    x, y = pos
+    size_x, size_y = im_paste.size
+    if "d" in direction:
+        y = y - size_y
+    if "r" in direction:
+        x = x - size_x
+    if "c" in direction:
+        x = x - int(0.5 * size_x)
+        y = y - int(0.5 * size_y)
+    im.paste(im_paste, (x, y, x + size_x, y + size_y), im_paste)
+
+
+def easy_alpha_composite(
+    im: Image.Image, im_paste: Image.Image, pos=(0, 0), direction="lt"
+) -> Image.Image:
+    '''
+    透明图像快速粘贴
+    '''
+    base = Image.new("RGBA", im.size)
+    easy_paste(base, im_paste, pos, direction)
+    base = Image.alpha_composite(im, base)
+    return base
 
 
 async def draw_bar(

@@ -1,7 +1,6 @@
 from io import BytesIO
 from re import findall
 from pathlib import Path
-from datetime import datetime
 from typing import List, Literal
 
 from httpx import get
@@ -100,10 +99,10 @@ class DrawEventList:
         base_img = await get_color_bg(950, base_h)
 
         font_l = genshin_font_origin(62)
-        font_m = genshin_font_origin(34)
+        # font_m = genshin_font_origin(34)
         font_s = genshin_font_origin(26)
 
-        now_time = datetime.now().strftime('%Y/%m/%d')
+        # now_time = datetime.now().strftime('%Y/%m/%d')
         event_cover = Image.open(TEXT_PATH / 'normal_event_cover.png')
 
         for index, value in enumerate(self.normal_event):
@@ -177,10 +176,10 @@ class DrawEventList:
         base_img = await get_color_bg(950, base_h)
 
         font_l = genshin_font_origin(62)
-        font_m = genshin_font_origin(34)
+        # font_m = genshin_font_origin(34)
         font_s = genshin_font_origin(26)
 
-        now_time = datetime.now().strftime('%Y/%m/%d')
+        # now_time = datetime.now().strftime('%Y/%m/%d')
         gacha_cover = Image.open(TEXT_PATH / 'gacha_event_cover.png')
 
         for index, value in enumerate(self.gacha_event):

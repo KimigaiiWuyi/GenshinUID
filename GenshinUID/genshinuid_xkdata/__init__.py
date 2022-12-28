@@ -2,16 +2,14 @@ import random
 import asyncio
 import threading
 
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import require, on_command
+from nonebot_plugin_apscheduler import scheduler
 
 from ..utils.nonebot2.send import local_image
 from .draw_abyss_total import TOTAL_IMG, draw_xk_abyss_img
 from ..utils.exception.handle_exception import handle_exception
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 draw_total_scheduler = scheduler
 get_abyss_total = on_command('深渊概览', aliases={'深渊统计', '深渊使用率'})

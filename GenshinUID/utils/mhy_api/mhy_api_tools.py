@@ -56,7 +56,11 @@ def _random_int_ds(salt: str, q: str = '', b: Optional[Dict[str, Any]] = None):
     return f'{t},{r},{c}'
 
 
-def get_ds_token(q: str = '', b: Optional[Dict[str, Any]] = None, salt: str = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'):
+def get_ds_token(
+    q: str = '',
+    b: Optional[Dict[str, Any]] = None,
+    salt: str = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs',
+):
     return _random_int_ds(salt, q, b)
 
 

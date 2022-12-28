@@ -98,12 +98,8 @@ async def sign_in(uid) -> str:
     else:
         mes_im = f'签到失败, 状态为:{status}'
         sign_missed -= 1
-    try:
-        sign_missed = sign_info['sign_cnt_missed']
-    except:
-        # 国际服无sign_missed字段
-        pass
-    im = mes_im + '!' + '\n' + get_im + '\n' + f'本月漏签次数：{sign_missed}'
+    sign_missed = sign_info.get('sign_cnt_missed') or sign_missed
+    im = f'{mes_im}!\n{get_im}\n本月漏签次数：{sign_missed}'
     logger.info(f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
     return im
 

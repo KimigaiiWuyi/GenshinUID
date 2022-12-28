@@ -1,9 +1,10 @@
 import random
 import asyncio
 
+from nonebot import on_command
 from nonebot.matcher import Matcher
-from nonebot import require, on_command
 from nonebot.permission import SUPERUSER
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.qqguild import Bot, MessageEvent
 
 from .backup_data import data_backup
@@ -16,7 +17,7 @@ backup = on_command('gs清除缓存', rule=FullCommand())
 check = on_command('校验全部Cookies', rule=FullCommand())
 check_stoken = on_command('校验全部Stoken', rule=FullCommand())
 
-backup_scheduler = require('nonebot_plugin_apscheduler').scheduler
+backup_scheduler = scheduler
 
 
 @backup_scheduler.scheduled_job('cron', hour=0)
@@ -34,7 +35,7 @@ async def send_backup_msg(
     if not await SUPERUSER(bot, event):
         return
     await data_backup()
-    await matcher.finish(f'操作成功完成!')
+    await matcher.finish('操作成功完成!')
 
 
 # 群聊内 校验Cookies 是否正常的功能，不正常自动删掉

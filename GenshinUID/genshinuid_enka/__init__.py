@@ -3,11 +3,12 @@ import random
 import asyncio
 from typing import Tuple
 
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import require, on_command
 from nonebot.permission import SUPERUSER
 from nonebot.params import Depends, CommandArg
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.qqguild import Bot, Message, MessageEvent
 
 from ..config import priority
@@ -35,7 +36,7 @@ get_char_info = on_command(
 )
 
 AUTO_REFRESH = False
-refresh_scheduler = require('nonebot_plugin_apscheduler').scheduler
+refresh_scheduler = scheduler
 
 
 @change_api.handle()

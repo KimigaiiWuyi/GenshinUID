@@ -1,5 +1,6 @@
+from nonebot import on_regex
 from nonebot.matcher import Matcher
-from nonebot import require, on_regex
+from nonebot_plugin_apscheduler import scheduler
 
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.send import local_image
@@ -8,7 +9,6 @@ from ..utils.exception.handle_exception import handle_exception
 
 get_event = on_regex(r'^活动列表$')
 get_gacha = on_regex(r'^卡池列表$')
-scheduler = require('nonebot_plugin_apscheduler').scheduler
 
 
 @scheduler.scheduled_job('cron', hour='2')

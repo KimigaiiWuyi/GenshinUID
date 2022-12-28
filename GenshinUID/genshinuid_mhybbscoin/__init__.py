@@ -3,9 +3,10 @@ import asyncio
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
+from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
-from nonebot import get_bot, require, on_command
-from nonebot.adapters.onebot.v11 import MessageEvent
+from nonebot_plugin_apscheduler import scheduler
+from nonebot.adapters.qqguild import MessageEvent
 
 from ..config import SUPERUSERS, priority
 from ..utils.nonebot2.rule import FullCommand
@@ -13,7 +14,7 @@ from ..utils.db_operation.db_operation import config_check
 from ..utils.exception.handle_exception import handle_exception
 from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
 
-bbscoin_scheduler = require('nonebot_plugin_apscheduler').scheduler
+bbscoin_scheduler = scheduler
 
 get_mihoyo_coin = on_command('开始获取米游币', priority=priority, rule=FullCommand())
 all_bbscoin_recheck = on_command(

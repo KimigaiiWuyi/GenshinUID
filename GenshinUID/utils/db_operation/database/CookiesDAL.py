@@ -19,16 +19,12 @@ class CookiesDAL:
     async def get_user_data(self, uid: str) -> Optional[NewCookiesTable]:
         with contextlib.suppress(Exception):
             await self.db_session.execute(
-                'ALTER TABLE NewCookiesTable '
-                'ADD COLUMN Stoken TEXT'  # type: ignore
+                'ALTER TABLE NewCookiesTable '  # type: ignore
+                'ADD COLUMN Stoken TEXT'
             )
         sql = select(NewCookiesTable).where(NewCookiesTable.UID == uid)
         result = await self.db_session.execute(sql)
-        data = result.scalars().all()
-        if data:
-            return data[0]
-        else:
-            return None
+        return data[0] if (data := result.scalars().all()) else None
 
     async def get_user_data_dict(self, uid: str) -> dict:
         data = await self.get_user_data(uid)
@@ -165,7 +161,7 @@ class CookiesDAL:
             regioncode = 0
             try:
                 regioncode = int(uid[0])
-            except:
+            except Exception:
                 logger.info('[随机Cookie]uid不合法！')
                 return 'uid不正确，请检查uid格式！'
 

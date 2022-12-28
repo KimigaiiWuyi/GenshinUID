@@ -35,7 +35,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
     char_info_1 = Image.open(TEXT_PATH / 'char_info_1.png')
     # 命座处理
     lock_img = Image.open(TEXT_PATH / 'icon_lock.png')
-    holo_img = Image.open(TEXT_PATH / 'holo.png')
+    # holo_img = Image.open(TEXT_PATH / 'holo.png')
     for talent_num in range(0, 6):
         if talent_num + 1 <= len(card_prop['talentList']):
             talent = card_prop['talentList'][talent_num]
@@ -43,7 +43,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
                 talent_img = Image.open(
                     ICON_PATH / '{}.png'.format(talent['talentIcon'])
                 )
-            except:
+            except Exception:
                 talent_img = Image.open(
                     ICON_PATH / 'UI_Talent_S_Kazuha_02.png'
                 )

@@ -1,13 +1,12 @@
 import copy
 import json
 from pathlib import Path
-from typing import Optional
 
 from openpyxl import load_workbook
 
 sample = {
     'weapon': {'5': [], '4': [], '3': []},
-    'artifact': [],  # type: list[list[str,Optional[str]]]  # 四件套 / 2+2
+    'artifact': [],  # list[list[str,Optional[str]]]  四件套 / 2+2
     'remark': [],
 }
 

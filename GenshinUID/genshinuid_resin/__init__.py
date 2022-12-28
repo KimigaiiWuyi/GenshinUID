@@ -1,10 +1,10 @@
 import asyncio
-from typing import Union
 
 from nonebot.log import logger
 from nonebot.params import Depends
 from nonebot.matcher import Matcher
-from nonebot import get_bot, require, on_command
+from nonebot import get_bot, on_command
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.qqguild import MessageEvent
 
 from .notice import get_notice_list
@@ -18,7 +18,7 @@ from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.exception.handle_exception import handle_exception
 
-notice_scheduler = require('nonebot_plugin_apscheduler').scheduler
+notice_scheduler = scheduler
 get_resin_info = on_command(
     '每日',
     aliases={'mr', '状态', '实时便笺', '便笺', '便签'},

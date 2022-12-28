@@ -1,8 +1,12 @@
 import json
+from typing import List, Union, Literal, overload
 
 from ..utils.download_resource.RESOURCE_PATH import CONFIG_PATH
 
-CONIFG_DEFAULT = {'LU_TOKEN': '', 'proxy': ''}
+CONIFG_DEFAULT = {'LU_TOKEN': '', 'proxy': '', 'Ann_Groups': [], 'Ann_Ids': []}
+
+STR_CONFIG = Literal['LU_TOKEN', 'proxy']
+LIST_CONFIG = Literal['Ann_Groups', 'Ann_Ids']
 
 
 class StringConfig:
@@ -29,16 +33,32 @@ class StringConfig:
         # 重新写回
         self.write_config()
 
-    def get_config(self, key: str) -> str:
+    @overload
+    def get_config(self, key: STR_CONFIG) -> str:
+        ...
+
+    @overload
+    def get_config(self, key: LIST_CONFIG) -> List:
+        ...
+
+    def get_config(self, key: str) -> Union[str, List]:
         if key in self.config:
             return self.config[key]
         elif key in CONIFG_DEFAULT:
             self.update_config()
             return self.config[key]
         else:
-            return ''
+            return []
 
-    def set_config(self, key: str, value: str) -> bool:
+    @overload
+    def set_config(self, key: STR_CONFIG, value: str) -> bool:
+        ...
+
+    @overload
+    def set_config(self, key: LIST_CONFIG, value: List) -> bool:
+        ...
+
+    def set_config(self, key: str, value: Union[str, List]) -> bool:
         if key in CONIFG_DEFAULT:
             # 设置值
             self.config[key] = value

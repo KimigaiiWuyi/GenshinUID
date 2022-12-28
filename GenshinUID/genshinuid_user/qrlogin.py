@@ -20,7 +20,7 @@ from ..utils.mhy_api.get_mhy_data import (
 )
 
 
-def get_qrcode_base64(url):
+def get_qrcode_base64(url, is_b64: bool = True):
     qr = qrcode.QRCode(
         version=1,
         error_correction=ERROR_CORRECT_L,
@@ -33,7 +33,10 @@ def get_qrcode_base64(url):
     img_byte = io.BytesIO()
     img.save(img_byte, format='PNG')  # type: ignore
     img_byte = img_byte.getvalue()
-    return base64.b64encode(img_byte).decode()
+    if is_b64:
+        return base64.b64encode(img_byte).decode()
+    else:
+        return img_byte
 
 
 async def refresh(
@@ -63,11 +66,12 @@ async def refresh(
 async def qrcode_login(matcher: Matcher, user_id) -> str:
     code_data = await create_qrcode_url()
     try:
-        await matcher.send('请扫描下方二维码登录：')
+        await matcher.send('请使用米游社扫描下方二维码登录：')
         await matcher.send(
-            local_image(f'base64://{get_qrcode_base64(code_data["url"])}')
+            local_image(get_qrcode_base64(code_data["url"], False))
         )
-    except Exception:
+    except Exception as e:
+        logger.debug(e)
         logger.warning('[扫码登录] {user_id} 图片发送失败')
     status, game_token_data = await refresh(code_data)
     if status:

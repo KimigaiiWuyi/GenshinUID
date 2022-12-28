@@ -45,7 +45,7 @@ async def draw_char_curve_card(
     # 顶栏
     img_text.text(
         (475, 2240),
-        f'曲线(上)为正常面板,曲线(下)为触发各种战斗buff后面板',
+        '曲线(上)为正常面板,曲线(下)为触发各种战斗buff后面板',
         (255, 255, 255),
         genshin_font_origin(32),
         anchor='mm',

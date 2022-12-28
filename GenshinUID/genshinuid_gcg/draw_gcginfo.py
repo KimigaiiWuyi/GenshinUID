@@ -1,7 +1,5 @@
-import json
-import asyncio
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 from nonebot.log import logger
 from PIL import Image, ImageDraw
@@ -11,7 +9,6 @@ from ..utils.mhy_api.get_mhy_data import get_gcg_info
 from ..utils.download_resource.download_url import download
 from ..utils.download_resource.RESOURCE_PATH import CARD_PATH
 from ..utils.draw_image_tools.send_image_tool import convert_img
-from ..utils.db_operation.db_operation import select_db, owner_cookies
 from ..utils.genshin_fonts.genshin_fonts import (
     gs_font_18,
     gs_font_26,

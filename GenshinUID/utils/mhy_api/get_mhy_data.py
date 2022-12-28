@@ -25,7 +25,7 @@ from ..mhy_api.mhy_api_tools import (
     generate_dynamic_secret,
     old_version_get_ds_token,
 )
-from ..mhy_api.mhy_api import (
+from ..mhy_api.mhy_api import (  # noqa
     GCG_INFO,
     SIGN_URL,
     GET_STOKEN,
@@ -240,7 +240,7 @@ async def get_daily_data(uid: str) -> dict:
 
 
 async def get_sign_list(uid) -> dict:
-    server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+    # server_id = RECOGNIZE_SERVER.get(str(uid)[0])
     if int(str(uid)[0]) < 6:
         data = await _mhy_request(
             url=SIGN_LIST_URL,

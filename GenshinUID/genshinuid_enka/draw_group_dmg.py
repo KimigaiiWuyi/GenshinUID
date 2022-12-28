@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Dict, List, Union
 
 from PIL import Image, ImageDraw

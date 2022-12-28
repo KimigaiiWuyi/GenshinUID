@@ -66,7 +66,10 @@ async def draw_enka_card(
         else:
             ex = '刷新'
 
-    line_str = f'UID {uid} {ex} {len(char_data_list)} 个角色! 使用 查询{char_data_list[0]["avatarName"]} 命令进行查询!'
+    line_str = (
+        f'UID {uid} {ex} {len(char_data_list)} 个角色! '
+        f'使用 查询{char_data_list[0]["avatarName"]} 命令进行查询!'
+    )
     based_w, based_h = 950, ((len(char_data_list) + 3) // 4) * 220 + 200
     img = await get_color_bg(based_w, based_h, 'shin-w')
     img_rect = Image.new('RGBA', (based_w, based_h))

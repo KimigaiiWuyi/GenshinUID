@@ -8,6 +8,7 @@ from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.ntchat import Bot, TextMessageEvent
 
+from ..config import priority
 from .backup_data import data_backup
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
@@ -19,10 +20,12 @@ from ..utils.message.get_cqhttp_data import (
     get_group_member_list,
 )
 
-backup = on_command('gs清除缓存', rule=FullCommand())
-check = on_command('校验全部Cookies', rule=FullCommand())
-check_stoken = on_command('校验全部Stoken', rule=FullCommand())
-remove_invalid_user = on_command('清除无效用户', rule=FullCommand())
+backup = on_command('gs清除缓存', rule=FullCommand(), priority=priority)
+check = on_command('校验全部Cookies', rule=FullCommand(), priority=priority)
+check_stoken = on_command('校验全部Stoken', rule=FullCommand(), priority=priority)
+remove_invalid_user = on_command(
+    '清除无效用户', rule=FullCommand(), priority=priority
+)
 
 backup_scheduler = scheduler
 

@@ -3,11 +3,12 @@ import random
 import asyncio
 from typing import Tuple, Union
 
+from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import require, on_command
 from nonebot.permission import SUPERUSER
 from nonebot.params import Depends, CommandArg
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11 import (
     Bot,
     Message,
@@ -29,9 +30,6 @@ from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
 from ..utils.exception.handle_exception import handle_exception
 from ..utils.db_operation.db_operation import select_db, get_all_uid
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 refresh = on_command('强制刷新')
 original_pic = on_command('原图', rule=FullCommand())

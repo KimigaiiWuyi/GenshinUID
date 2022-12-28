@@ -1,8 +1,9 @@
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
+from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
-from nonebot import get_bot, require, on_command
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11 import (
     Message,
     MessageEvent,
@@ -19,9 +20,6 @@ from ..utils.db_operation.db_operation import select_db
 from ..genshinuid_config.default_config import string_config
 from ..utils.exception.handle_exception import handle_exception
 from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 update_ann_scheduler = scheduler
 get_ann_info = on_command('原神公告', priority=priority)

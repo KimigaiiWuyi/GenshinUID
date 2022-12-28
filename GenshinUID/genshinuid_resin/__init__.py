@@ -4,7 +4,8 @@ from typing import Union
 from nonebot.log import logger
 from nonebot.params import Depends
 from nonebot.matcher import Matcher
-from nonebot import get_bot, require, on_command
+from nonebot import get_bot, on_command
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11 import (
     MessageSegment,
     GroupMessageEvent,
@@ -20,9 +21,6 @@ from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.exception.handle_exception import handle_exception
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 notice_scheduler = scheduler
 get_resin_info = on_command(

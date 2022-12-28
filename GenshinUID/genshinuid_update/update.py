@@ -53,8 +53,13 @@ async def update_genshinuid(
     level: int = 0, repo_path: Union[str, Path, None] = None
 ) -> str:
     log_list = await update_from_git(level, repo_path)
-    if log_list == []:
-        return f'更新失败!更多错误信息请查看控制台...\n >> 可以尝试使用\n >> [gs强制更新](危险)\n >> [gs强行强制更新](超级危险)!'
+    if len(log_list) == 0:
+        return (
+            '更新失败!更多错误信息请查看控制台...\n '
+            '>> 可以尝试使用\n '
+            '>> [gs强制更新](危险)\n '
+            '>> [gs强行强制更新](超级危险)!'
+        )
     log = '\n'.join(log_list)
     logger.info(f'[gs更新]\n{log}')
     return f'更新成功!\n >> 最近有效更新为:\n{log}'

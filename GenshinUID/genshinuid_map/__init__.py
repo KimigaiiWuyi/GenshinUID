@@ -49,9 +49,11 @@ MAP_CHN_NAME = {
         '介绍：\n'
         '切换查找资源点功能所使用的地图\n'
         '指令按列表顺序轮流切换地图\n'
-        f'目前可用地图：'
-        f'{"；".join([f"<ft color=(238,120,0)>{x}</ft>" for x in MAP_CHN_NAME.values()])}\n'
-        ' \n'
+        '目前可用地图：'
+        + "；".join(
+            [f"<ft color=(238,120,0)>{x}</ft>" for x in MAP_CHN_NAME.values()]
+        )
+        + ' \n\n'
         '指令：\n'
         '- <ft color=(238,120,0)>切换地图</ft>'
     ),

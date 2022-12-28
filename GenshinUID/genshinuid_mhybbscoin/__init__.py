@@ -3,8 +3,9 @@ import asyncio
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
+from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
-from nonebot import get_bot, require, on_command
+from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11 import MessageEvent
 
 from ..config import SUPERUSERS, priority
@@ -13,9 +14,6 @@ from ..utils.nonebot2.rule import FullCommand
 from ..utils.db_operation.db_operation import config_check
 from ..utils.exception.handle_exception import handle_exception
 from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
-
-require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 bbscoin_scheduler = scheduler
 

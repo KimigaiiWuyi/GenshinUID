@@ -6,7 +6,6 @@ from http.cookies import SimpleCookie
 from typing import Any, Tuple, Union, Literal
 
 import qrcode
-from PIL import Image
 from nonebot.log import logger
 from qrcode.constants import ERROR_CORRECT_L
 

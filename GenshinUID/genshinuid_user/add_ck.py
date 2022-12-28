@@ -156,8 +156,8 @@ async def _deal_ck(mes, qid) -> str:
                 return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
         else:
             logger.warning('该CK似乎未通过校验, 这并不影响正常使用...但可能会造成奇怪的问题...')
-    except:
-        print('Null mys_data')
+    except Exception:
+        logger.warning('Null mys_data')
 
     if not uid:
         return f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'

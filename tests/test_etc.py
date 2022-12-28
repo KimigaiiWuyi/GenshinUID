@@ -46,7 +46,10 @@ async def test_primogems_version(app: App, load_etc: None):
 
     with open(
         Path(
-            f"../GenshinUID/genshinuid_etcimg/primogems_data/{Genshin_version[:3]}.png"
+            (
+                "../GenshinUID/genshinuid_etcimg"
+                f"/primogems_data/{Genshin_version[:3]}.png"
+            )
         ),
         "rb",
     ) as f:

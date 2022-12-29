@@ -156,6 +156,9 @@ class Fight:
         ]:
             dmg_type = Element.Physical
 
+        if '段' in char.power_name and 'A' not in char.power_name:
+            dmg_type = char_element_dmg_type
+
         if char.char_name == '辛焱' and char.power_name == 'Q伤害':
             dmg_type = Element.Physical
 
@@ -173,6 +176,9 @@ class Fight:
         power = power_list[power_name]['value'][power_level - 1]
         # 计算是否多次伤害
         power_plus = power_list[power_name]['plus']
+
+        if char.char_name == '宵宫' and power_name == 'A一段伤害':
+            power_plus = 1
 
         # 拿到百分比和固定值,百分比为float,形如2.2 也就是202%
         power_percent, power_value = await p2v(power, power_plus)
@@ -305,6 +311,12 @@ class Fight:
         return extra_d
 
     # 防御值加成
+    async def get_base_area_plus(self, char: Character) -> float:
+        # 计算直接增加的伤害
+        base_area_plus: float = char.real_prop[f'{char.attack_type}_baseArea']
+        return base_area_plus
+
+    # 防御值加成
     async def get_extra_ignoreD(self, char: Character) -> float:
         # 计算直接增加的伤害
         extra_ignoreD: float = char.real_prop[f'{char.attack_type}_ignoreDef']
@@ -330,6 +342,8 @@ class Fight:
         # 获得伤害提高值的信息
         add_dmg = await self.get_add_dmg(char)
 
+        base_area_plus = await self.get_base_area_plus(char)
+
         # 对草神进行特殊计算
         if '灭净三业' in power.name or '业障除' in power.name:
             base = await self.get_sp_base(power, char)
@@ -340,6 +354,9 @@ class Fight:
 
         # 基本乘区 = 有效数值(例如攻击力) * 倍率 + 固定值 + 激化区 + 额外加成值 + 特殊加成值
         base_area = base + reaction_power + add_dmg + char.sp.addDmg
+        if base_area_plus != 1:
+            base_area_plus -= 1
+            base_area = base_area_plus * base_area
         return base_area
 
     # 聚变反应

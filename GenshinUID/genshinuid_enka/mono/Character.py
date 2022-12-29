@@ -311,6 +311,7 @@ class Character:
                 prop[attr] = 0
             prop['k'] = 1
             prop['sp'] = []
+            prop['baseArea'] = 1
             if prop['baseHp'] + prop['addHp'] == prop['hp']:
                 prop['exHp'] = prop['addHp']
                 prop['exAtk'] = prop['addAtk']
@@ -645,6 +646,9 @@ class Character:
                     prop[f'{skill_effect["name"][0]}_skill_level'] - 1
                 )
                 skill_value = skill_effect['value'][skill_level]
+                plus = skill_effect['plus']
+                if isinstance(skill_value, float):
+                    skill_value = '{:.4f}%'.format(skill_value * 100 * plus)
                 skill: str = skill_effect['effect'].format(skill_value)
                 if skill.endswith('%'):
                     skill = skill[:-1]

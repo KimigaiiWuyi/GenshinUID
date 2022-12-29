@@ -73,6 +73,22 @@
         "need_ck": false,
         "need_sk": true,
         "need_admin": false
+      },
+      {
+        "name": "扫码登陆",
+        "desc": "私聊扫码登陆，米游社扫码即可",
+        "eg": "扫码登陆",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "清除原神公告红点",
+        "desc": "清除自己的原神公告红点",
+        "eg": "清除原神公告红点",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
@@ -301,6 +317,38 @@
         "name": "御神签",
         "desc": "随机抽一签,当天内签文固定",
         "eg": "御神签",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "原神公告",
+        "desc": "获取原神公告",
+        "eg": "原神公告#3898",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "订阅原神公告",
+        "desc": "在本群订阅原神公告",
+        "eg": "订阅原神公告",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "取消订阅原神公告",
+        "desc": "在本群取消订阅原神公告",
+        "eg": "取消订阅原神公告",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "版本深渊",
+        "desc": "获取当前版本深渊阵容",
+        "eg": "版本深渊3.4",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

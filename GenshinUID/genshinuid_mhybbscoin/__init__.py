@@ -8,9 +8,10 @@ from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11 import MessageEvent
 
-from ..config import SUPERUSERS, priority
+from ..config import priority
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
+from ..utils.nonebot2.utils import get_superusers
 from ..utils.db_operation.db_operation import config_check
 from ..utils.exception.handle_exception import handle_exception
 from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
@@ -84,7 +85,7 @@ async def send_daily_mihoyo_bbs_sign():
             )
             await asyncio.sleep(5 + random.randint(1, 3))
     if await config_check('PrivateReport'):
-        for qid in SUPERUSERS:
+        for qid in get_superusers():
             await bot.call_api(api='send_private_msg', user_id=qid, message=im)
             await asyncio.sleep(5 + random.randint(1, 3))
     logger.info('米游币获取已结束。')

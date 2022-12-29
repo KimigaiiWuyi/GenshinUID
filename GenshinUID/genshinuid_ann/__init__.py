@@ -7,6 +7,7 @@ from .util import black_ids
 from .main import ann, consume_remind
 from ..all_import import UID_HINT, select_db
 from ..genshinuid_config.default_config import string_config
+from ..utils.draw_image_tools.send_image_tool import convert_img
 from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card
 
 sv_help = '''
@@ -32,6 +33,7 @@ async def ann_(bot, ev):
     ann_id = ev.message.extract_plain_text().strip()
     if not ann_id:
         img = await ann_list_card()
+        img = await convert_img(img)
         await bot.send(ev, MessageSegment.image(img), at_sender=True)
         return
 
@@ -39,6 +41,7 @@ async def ann_(bot, ev):
         raise Exception("公告ID不正确")
     try:
         img = await ann_detail_card(int(ann_id))
+        img = await convert_img(img)
         await bot.send(ev, MessageSegment.image(img), at_sender=True)
     except Exception as e:
         await bot.finish(ev, str(e))
@@ -110,6 +113,7 @@ async def check_ann_state():
             continue
         try:
             img = await ann_detail_card(ann_id)
+            img = await convert_img(img)
             detail_list.append(MessageSegment.image(img))
         except Exception as e:
             logger.exception(str(e))

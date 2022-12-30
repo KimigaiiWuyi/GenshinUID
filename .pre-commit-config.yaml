@@ -5,6 +5,11 @@ ci:
   autoupdate_schedule: monthly
   autoupdate_commit_msg: ":arrow_up: auto update by pre-commit-ci"
 repos:
+  - repo: https://github.com/hadialqattan/pycln
+    rev: v2.1.2
+    hooks:
+      - id: pycln
+
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
@@ -26,5 +31,12 @@ repos:
       - id: poetry-check
       - id: poetry-lock
       - id: poetry-export
-        args: ["-f", "requirements.txt", "--without-hashes", "-o", "requirements.txt"]
+        args:
+          [
+            "-f",
+            "requirements.txt",
+            "--without-hashes",
+            "-o",
+            "requirements.txt",
+          ]
         verbose: true

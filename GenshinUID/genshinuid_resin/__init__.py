@@ -1,10 +1,16 @@
+import re
+import asyncio
+
+from nonebot import get_bot
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from .notice import get_notice_list
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
-from ..all_import import *  # noqa: F403,F401
+from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
-from ..utils.message.get_image_and_at import ImageAndAt
-from ..utils.message.error_reply import *  # noqa: F403,F401
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 
 @sv.on_fullmatch('当前状态')
@@ -49,7 +55,7 @@ async def notice_job():
                 )
                 send_success = True
                 break
-            except:
+            except Exception:
                 logger.info(f'[推送检查(轮推)] BOT {sid} 没有 {qid} 好友，已跳过')
         if not send_success:
             logger.warning(f'[推送检查] QQ {qid} 私聊推送失败!')
@@ -67,7 +73,7 @@ async def notice_job():
                 )
                 send_success = True
                 break
-            except:
+            except Exception:
                 logger.info(f'[推送检查(轮推)] BOT {sid} 没有 {group_id} 群，已跳过')
         if not send_success:
             logger.warning(f'[推送检查] 群 {group_id} 推送失败!')

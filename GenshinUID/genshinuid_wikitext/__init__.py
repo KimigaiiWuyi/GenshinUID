@@ -1,6 +1,9 @@
 import re
 
-from ..all_import import *  # noqa: F401, F403
+from nonebot import MessageSegment
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv
 from .get_wiki_text import (
     char_wiki,
     audio_wiki,
@@ -102,9 +105,7 @@ async def send_talents(bot: HoshinoBot, ev: CQEvent):
     if len(num) == 1:
         im = await char_wiki(name, 'talents', num[0])
         if isinstance(im, list):
-            await hoshino_bot.send_group_forward_msg(
-                group_id=ev.group_id, messages=im
-            )
+            await bot.send_group_forward_msg(group_id=ev.group_id, messages=im)
             return
     else:
         im = '参数不正确。'

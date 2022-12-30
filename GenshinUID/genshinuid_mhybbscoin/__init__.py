@@ -1,6 +1,10 @@
 import random
+import asyncio
 
-from ..all_import import *  # noqa: F403,F401
+from nonebot import get_bot
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from ..utils.db_operation.db_operation import config_check
 from .daily_mihoyo_bbs_coin import mihoyo_coin, all_daily_mihoyo_bbs_coin
 

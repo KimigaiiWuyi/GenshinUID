@@ -1,6 +1,9 @@
+import asyncio
 import threading
 
-from ..all_import import *  # noqa: F403, F401
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from ..utils.download_resource.download_all_resource import (
     download_all_resource,
 )

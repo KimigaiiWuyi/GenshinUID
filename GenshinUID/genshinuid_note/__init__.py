@@ -1,6 +1,13 @@
+import re
+
+from hoshino.typing import CQEvent, HoshinoBot
+
 from .note_text import award
-from ..all_import import *  # noqa
+from ..base import sv, logger
 from .draw_note_card import draw_note_img
+from ..utils.message.error_reply import UID_HINT
+from ..utils.db_operation.db_operation import select_db
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 
 # 群聊内 每月统计 功能

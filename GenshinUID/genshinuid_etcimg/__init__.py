@@ -1,7 +1,10 @@
 from pathlib import Path
 
-from ..all_import import *
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from ..version import Genshin_version
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 PRIMOGEMS_DATA_PATH = Path(__file__).parent / 'primogems_data'
 IMG_PATH = Path(__file__).parent / 'img_data'

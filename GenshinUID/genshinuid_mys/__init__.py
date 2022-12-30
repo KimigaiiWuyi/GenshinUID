@@ -1,9 +1,12 @@
 import asyncio
 
-from ..all_import import *
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from .get_lots_data import get_lots_msg
 from .get_meme_card import get_meme_img
 from .get_mys_data import get_region_task, get_task_detail
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 
 @sv.on_rex(r'^(原神任务|任务|任务详情|任务攻略)( )?([\u4e00-\u9fa5]+)( )?$')
@@ -12,9 +15,7 @@ async def send_task_adv(bot: HoshinoBot, ev: CQEvent):
     if str(args[2]) in ['须弥', '层岩', '海岛']:
         im = await get_region_task(str(args[2]))
         for i in im:
-            await hoshino_bot.send_group_forward_msg(
-                group_id=ev.group_id, messages=i
-            )
+            await bot.send_group_forward_msg(group_id=ev.group_id, messages=i)
             await asyncio.sleep(1)
         return
     else:

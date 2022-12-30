@@ -62,6 +62,4 @@ def copy_and_delete_files():
 
 
 copy_and_delete_files()
-load_plugins(
-    str(dir_ / 'GenshinUID'), f'hoshino.modules.GenshinUID.GenshinUID'
-)
+load_plugins(str(dir_ / 'GenshinUID'), 'hoshino.modules.GenshinUID.GenshinUID')

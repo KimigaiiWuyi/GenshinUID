@@ -1,10 +1,10 @@
 import random
 import asyncio
 
-from nonebot.log import logger
+from hoshino.typing import CQEvent, HoshinoBot
 
+from ..base import sv, logger
 from .backup_data import data_backup
-from ..all_import import *  # noqa: F403, F401
 from ..utils.db_operation.db_cache_and_check import check_db, check_stoken_db
 from ..utils.db_operation.db_operation import delete_cookies, get_all_push_list
 from ..utils.message.get_cqhttp_data import (
@@ -31,7 +31,7 @@ async def send_backup_msg(
         return
 
     await data_backup()
-    await bot.send(ev, f'操作成功完成!')
+    await bot.send(ev, '操作成功完成!')
 
 
 @sv.on_fullmatch('清除无效用户')

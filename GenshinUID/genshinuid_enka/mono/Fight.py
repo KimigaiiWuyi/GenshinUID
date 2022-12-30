@@ -45,9 +45,9 @@ class Fight:
             await self.enemy.update(self.time)
 
             # 获取本次攻击的类型
-            attack_type = await char.get_attack_type(char.power_name)
+            # attack_type = await char.get_attack_type(char.power_name)
             # 初始化char的sp_prop
-            sp = await char.get_sp_fight_prop(char.power_name)
+            # sp = await char.get_sp_fight_prop(char.power_name)
             # 获取本次攻击的元素
             dmg_type = await self.get_dmg_type(char, seq)
             # 更新角色的属性
@@ -84,7 +84,7 @@ class Fight:
         for power_name in char.power_list:
             # 更新powername
             char.power_name = power_name
-            sp = await char.get_sp_fight_prop(char.power_name)
+            # sp = await char.get_sp_fight_prop(char.power_name)
             await char.get_attack_type(char.power_name)
             # 更新角色的属性
             await self.get_new_fight_prop(char)
@@ -209,7 +209,9 @@ class Fight:
         if '前台' in char.power_list[char.power_name]['name']:
             if char.char_name == '纳西妲':
                 em = char.fight_prop[f'{char.attack_type}_elementalMastery']
-                effect = f'elementalMastery+{0.25 * em if 0.25 * em <= 250 else 250}'
+                effect = f'''elementalMastery+
+                {0.25 * em if 0.25 * em <= 250 else 250}
+                '''.strip()
                 effect_list.append(effect)
 
         if '丰穰之核' in char.power_name and char.fight_prop['hp'] >= 30000:

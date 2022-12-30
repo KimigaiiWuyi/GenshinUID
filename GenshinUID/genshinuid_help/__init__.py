@@ -1,8 +1,10 @@
 import asyncio
 import threading
+from pathlib import Path
 
+from ..base import sv, logger
 from .draw_help_card import draw_help_img
-from ..all_import import *  # noqa: F403,F401
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 HELP_IMG = Path(__file__).parent / 'help.png'
 

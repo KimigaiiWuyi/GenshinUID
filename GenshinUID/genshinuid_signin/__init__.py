@@ -5,8 +5,13 @@ try:
 except ImportError:
     from .sign import sign_in, daily_sign
 
-from ..all_import import *  # noqa: F403,F401
-from ..utils.db_operation.db_operation import config_check
+import asyncio
+
+from nonebot import get_bot
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
+from ..utils.db_operation.db_operation import select_db, config_check
 
 
 # 每日零点半执行米游社原神签到
@@ -59,7 +64,7 @@ async def send_daily_sign():
                 user_id=qid,
                 message=private_msg_list[qid],
             )
-        except:
+        except Exception:
             logger.warning(f'[每日全部签到] QQ {qid} 私聊推送失败!')
         await asyncio.sleep(0.5)
     logger.info('[每日全部签到]私聊推送完成')
@@ -86,7 +91,7 @@ async def send_daily_sign():
                 group_id=gid,
                 message=msg_title,
             )
-        except:
+        except Exception:
             logger.warning(f'[每日全部签到]群 {gid} 推送失败!')
         await asyncio.sleep(0.5 + random.randint(1, 3))
     logger.info('[每日全部签到]群聊推送完成')

@@ -1,5 +1,8 @@
-from ..all_import import *  # noqa
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from .draw_genshinmap_card import MAP_DATA, draw_genshin_map
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 MAP_ID_LIST = [
     '2',  # 提瓦特
@@ -59,7 +62,7 @@ async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
             ev,
             f'正在查找{args},可能需要比较久的时间...\n当前地图：{map_name}',
         )
-        logger.info(f'本地未缓存,正在渲染...')
+        logger.info('本地未缓存,正在渲染...')
         im = await draw_genshin_map(args, map_id, map_name)
         if isinstance(im, str):
             await bot.send(ev, im)

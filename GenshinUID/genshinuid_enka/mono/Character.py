@@ -497,7 +497,9 @@ class Character:
         prop = await self.get_base_value(prop)
 
         # 重新计算加成值
-        # base_effect_list = [[limit_list, effect_attr, effect_value,effect_base]]
+        # base_effect_list = [
+        #   [limit_list, effect_attr, effect_value,effect_base]
+        # ]
         for effect in base_effect_list:
             prop = await self.get_buff_value(prop, *effect)
 
@@ -609,7 +611,9 @@ class Character:
                         'type': '攻击力',
                         'plus': 1,
                         'value': [
-                            f'{int(i[:-1]) + int(self.power_list["A霜华矢·霜华绽发伤害"]["value"][index][:-1])}%'
+                            f'''{int(i[:-1]) +
+                                int(self.power_list["A霜华矢·霜华绽发伤害"]["value"][index][:-1])
+                            }%'''
                             for index, i in enumerate(
                                 self.power_list['A霜华矢命中伤害']['value']
                             )

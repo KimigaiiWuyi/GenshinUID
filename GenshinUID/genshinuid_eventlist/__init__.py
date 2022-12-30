@@ -1,5 +1,8 @@
-from ..all_import import *  # noqa: F401, F403
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv
 from .draw_event_img import get_event_img, get_all_event_img
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 
 @sv.scheduled_job('cron', hour='2')

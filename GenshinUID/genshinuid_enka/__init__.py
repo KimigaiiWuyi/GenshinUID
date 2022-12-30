@@ -1,18 +1,20 @@
 import re
 import random
+import asyncio
 from typing import Tuple
 
-from .draw_char_card import *
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from .get_enka_img import draw_enka_img
-from .draw_char_card import draw_char_img
-from ..all_import import *  # noqa: F401,F403
 from .draw_char_rank import draw_cahrcard_list
+from ..utils.message.error_reply import UID_HINT
 from ..utils.enka_api.get_enka_data import switch_api
 from ..utils.enka_api.enka_to_card import enka_to_card
 from ..utils.enka_api.enka_to_data import enka_to_data
-from ..utils.db_operation.db_operation import get_all_uid
-from ..utils.message.error_reply import *  # noqa: F401,F403
 from ..utils.download_resource.RESOURCE_PATH import TEMP_PATH
+from ..utils.draw_image_tools.send_image_tool import convert_img
+from ..utils.db_operation.db_operation import select_db, get_all_uid
 
 AUTO_REFRESH = False
 
@@ -114,7 +116,7 @@ async def refresh_char_data():
             logger.info(im)
             t += 1
             await asyncio.sleep(35 + random.randint(1, 20))
-        except:
+        except Exception:
             logger.exception(f'{uid}刷新失败！')
             logger.error(f'{uid}刷新失败！本次自动刷新结束！')
             return f'执行失败从{uid}！共刷新{str(t)}个角色！'

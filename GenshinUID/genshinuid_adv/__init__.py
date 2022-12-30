@@ -1,5 +1,8 @@
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv
 from .get_adv import char_adv, weapon_adv
-from ..all_import import *  # noqa: F401, F403
+from ..utils.alias.alias_to_char_name import alias_to_char_name
 
 
 @sv.on_rex(r'([\u4e00-\u9fa5]+)(用什么|能用啥|怎么养)')

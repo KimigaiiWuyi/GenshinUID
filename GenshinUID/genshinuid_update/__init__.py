@@ -1,6 +1,7 @@
 from nonebot import get_bot, on_startup
+from hoshino.typing import CQEvent, HoshinoBot
 
-from ..all_import import *  # noqa: F403,F401
+from ..base import sv, logger
 from .draw_update_log import draw_update_log_img
 from .restart import restart_message, restart_genshinuid
 from ..utils.draw_image_tools.send_image_tool import convert_img
@@ -25,7 +26,7 @@ async def check_msg():
                 message=update_log['msg'],
             )
         logger.info('遗留信息检查完毕!')
-    except:
+    except Exception:
         logger.warning('遗留信息检查失败!')
 
 

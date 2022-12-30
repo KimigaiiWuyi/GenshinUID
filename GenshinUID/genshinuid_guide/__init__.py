@@ -3,12 +3,15 @@ import threading
 from typing import List
 from pathlib import Path
 
-from ..all_import import *
+from hoshino.typing import CQEvent, HoshinoBot
+
+from ..base import sv, logger
 from .get_card import get_gs_card
 from .get_guide import get_gs_guide
 from ..version import Genshin_version
 from .get_abyss_data import get_review, generate_data
 from ..utils.alias.alias_to_char_name import alias_to_char_name
+from ..utils.draw_image_tools.send_image_tool import convert_img
 
 IMG_PATH = Path(__file__).parent / 'img'
 
@@ -101,9 +104,7 @@ async def send_abyss_review(bot: HoshinoBot, ev: CQEvent):
                     },
                 }
             )
-        await hoshino_bot.send_group_forward_msg(
-            group_id=ev.group_id, messages=mes
-        )
+        await bot.send_group_forward_msg(group_id=ev.group_id, messages=mes)
     elif isinstance(im, str):
         await bot.send(ev, im)
     elif isinstance(im, bytes):

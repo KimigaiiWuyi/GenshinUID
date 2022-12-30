@@ -1,17 +1,7 @@
+# flake8: noqa
 import platform
 from pathlib import Path
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Set,
-    Dict,
-    List,
-    Type,
-    Union,
-    Callable,
-    Optional,
-    cast,
-)
+from typing import Any, Set, Dict, List, Callable
 
 from quart import Quart
 from nonebot import get_bot
@@ -41,7 +31,6 @@ from fastapi_amis_admin.amis.components import (
     Alert,
     Action,
     Property,
-    ActionType,
     Horizontal,
     InputExcel,
     InputTable,
@@ -51,7 +40,7 @@ from fastapi_amis_admin.amis.components import (
 
 from ..version import GenshinUID_version
 from ..genshinuid_user.add_ck import _deal_ck
-from .login_page import amis_admin, user_auth_admin  # 不要删!!
+from .login_page import amis_admin, user_auth_admin  # noqa
 from ..utils.db_operation.database.db_config import DATABASE_URL
 from ..utils.db_operation.database.models import (
     Config,
@@ -170,7 +159,9 @@ if float(fastapi_amis_admin.__version__[:3]) >= 0.3:
     class MyUser(User, table=True):
         point: float = Field(default=0, title=_('Point'))  # type: ignore
         phone: str = Field(None, title=_('Tel'), max_length=15)  # type: ignore
-        parent_id: int = Field(None, title=_('Parent'), foreign_key='auth_user.id')  # type: ignore
+        parent_id: int = Field(
+            None, title=_('Parent'), foreign_key='auth_user.id'  # type: ignore
+        )
         children: List['User'] = Relationship(
             sa_relationship_kwargs=dict(
                 backref=backref('parent', remote_side='User.id'),
@@ -320,7 +311,7 @@ class UserBindFormAdmin(admin.FormAdmin):
     ) -> BaseApiOut[Any]:
         try:
             im = await _deal_ck(data.Cookies, data.QQ)
-        except:
+        except Exception:
             return BaseApiOut(status=-1, msg='你输入的CK可能已经失效,请按照[入门使用]进行操作!')
         ok_num = im.count('成功')
         if ok_num < 1:

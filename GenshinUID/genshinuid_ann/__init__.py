@@ -1,11 +1,12 @@
-from nonebot.log import logger
+from nonebot import get_bot
 from hoshino import Service, priv
 from hoshino.typing import MessageSegment
-from nonebot import MessageSegment, get_bot
 
+from ..base import logger
 from .util import black_ids
 from .main import ann, consume_remind
-from ..all_import import UID_HINT, select_db
+from ..utils.message.error_reply import UID_HINT
+from ..utils.db_operation.db_operation import select_db
 from ..genshinuid_config.default_config import string_config
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card

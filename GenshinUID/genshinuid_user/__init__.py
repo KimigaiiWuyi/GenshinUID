@@ -1,9 +1,15 @@
-from ..all_import import *
+import hoshino
+from hoshino.typing import CQEvent, HoshinoBot
+
 from .add_ck import deal_ck
+from ..base import sv, logger
 from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
+from ..utils.draw_image_tools.send_image_tool import convert_img
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
+
+hoshino_bot = hoshino.get_bot()
 
 
 @sv.on_fullmatch('绑定信息')

@@ -1,6 +1,6 @@
 import httpx
 
-from .util import Dict, black_ids, filter_list, cache_request_json
+from .util import _Dict, black_ids, filter_list, cache_request_json
 
 # https://webstatic.mihoyo.com/hk4e/announcement/index.html?auth_appid=announcement&authkey_ver=1&bundle_id=hk4e_cn&channel_id=1&game=hk4e&game_biz=hk4e_cn&lang=zh-cn&level=57&platform=pc&region=cn_gf01&sdk_presentation_style=fullscreen&sdk_screen_transparent=true&sign_type=2&uid=105293904#/
 api_url = 'https://hk4e-api-static.mihoyo.com/common/hk4e_cn/announcement/api/'
@@ -114,7 +114,7 @@ async def consume_remind(uid):
                         'uid': uid,
                     },
                 )
-                res = res.json(object_hook=Dict)
+                res = res.json(object_hook=_Dict)
                 if res.retcode != 0:
                     msg += '\n %s 失败,原因:%s' % (ann_id, res.message)
     return msg

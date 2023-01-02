@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from bs4 import BeautifulSoup
@@ -105,6 +106,9 @@ async def ann_detail_card(ann_id):
     drow_height = 0
     for msg in msg_list:
         if msg.strip().endswith(('jpg', 'png')):
+            _msg = re.search(r'(https://.*[png|jpg])', msg)
+            if _msg:
+                msg = _msg.group(0)
             img = await get_pic(msg.strip())
             img_height = img.size[1]
             if img.width > 1080:
@@ -125,6 +129,9 @@ async def ann_detail_card(ann_id):
     x, y = 0, 0
     for msg in msg_list:
         if msg.strip().endswith(('jpg', 'png')):
+            _msg = re.search(r'(https://.*[png|jpg])', msg)
+            if _msg:
+                msg = _msg.group(0)
             img = await get_pic(msg.strip())
             if img.width > im.width:
                 img = img.resize((int(img.width * 0.6), int(img.height * 0.6)))

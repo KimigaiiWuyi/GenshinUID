@@ -119,7 +119,7 @@ class Enemy:
                     self.element = result_element
 
                 return reaction
-        return 0
+        return 1
 
     async def get_resist(self, dmg_type: Element):
         # 计算抗性

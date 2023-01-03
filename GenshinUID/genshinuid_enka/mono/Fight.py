@@ -45,9 +45,8 @@ class Fight:
             await self.enemy.update(self.time)
 
             # 获取本次攻击的类型
-            # attack_type = await char.get_attack_type(char.power_name)
-            # 初始化char的sp_prop
-            # sp = await char.get_sp_fight_prop(char.power_name)
+            await char.get_sp_fight_prop(char.power_name)
+            await char.get_attack_type(char.power_name)
             # 获取本次攻击的元素
             dmg_type = await self.get_dmg_type(char, seq)
             # 更新角色的属性
@@ -56,8 +55,16 @@ class Fight:
             # 更新self.seq_history
             self.seq_history = seq
 
-            # 进行攻击
-            normal_dmg, avg_dmg, crit_dmg = await self.get_dmg(char, dmg_type)
+            # 聚变反应
+            for i in ['扩散', '绽放)', '感电', '超载']:
+                if i in char.power_name:
+                    dmg = await self.get_transform_dmg(char)
+                    break
+            else:
+                # 进行攻击
+                dmg = await self.get_dmg(char, dmg_type)
+            normal_dmg, avg_dmg, crit_dmg = dmg[0], dmg[1], dmg[2]
+
             result[self.time] = {
                 'char': char_name,
                 'action': seq['action'],
@@ -84,7 +91,7 @@ class Fight:
         for power_name in char.power_list:
             # 更新powername
             char.power_name = power_name
-            sp = await char.get_sp_fight_prop(char.power_name)
+            await char.get_sp_fight_prop(char.power_name)
             await char.get_attack_type(char.power_name)
             # 更新角色的属性
             await self.get_new_fight_prop(char)

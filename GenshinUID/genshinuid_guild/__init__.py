@@ -7,13 +7,44 @@ from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.message import event_preprocessor
 from nonebot.adapters.qqguild.message import Text
-from nonebot.adapters.qqguild.api.model import Guild
 from nonebot.adapters.qqguild import Bot, MessageEvent
+from nonebot.adapters.qqguild.api.model import DMS, Guild
 
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
 
 guild_detail = on_command('频道统计', block=True, rule=FullCommand())
+get_dirct_msg = on_command(
+    '给我发消息',
+    aliases={'给我发私信', '给我发短信', '给我发信息'},
+    block=True,
+    rule=FullCommand(),
+)
+
+
+@get_dirct_msg.handle()
+@handle_exception('发私信')
+async def send_dirct_msg(
+    bot: Bot,
+    event: MessageEvent,
+    matcher: Matcher,
+):
+    if not event.author:
+        return
+
+    dms: DMS = await bot.call_api(
+        'post_dms',
+        recipient_id=str(event.author.id),
+        source_guild_id=str(event.guild_id),
+    )
+
+    await bot.call_api(
+        'post_dms_messages',
+        guild_id=dms.guild_id,
+        content='一条消息!',
+    )
+
+    await matcher.finish('已发送消息！')
 
 
 @event_preprocessor

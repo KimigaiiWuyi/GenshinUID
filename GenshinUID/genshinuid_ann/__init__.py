@@ -35,7 +35,7 @@ async def ann_(bot, ev):
     if not ann_id:
         img = await ann_list_card()
         img = await convert_img(img)
-        await bot.send(ev, MessageSegment.image(img), at_sender=True)
+        await bot.send(ev, img, at_sender=True)
         return
 
     if not ann_id.isdigit():
@@ -43,7 +43,7 @@ async def ann_(bot, ev):
     try:
         img = await ann_detail_card(int(ann_id))
         img = await convert_img(img)
-        await bot.send(ev, MessageSegment.image(img), at_sender=True)
+        await bot.send(ev, img, at_sender=True)
     except Exception as e:
         await bot.finish(ev, str(e))
 

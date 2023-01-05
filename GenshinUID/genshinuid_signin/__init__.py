@@ -101,7 +101,7 @@ async def send_daily_sign():
             await bot.call_api(
                 api='send_text',
                 to_wxid=qid,
-                message=private_msg_list[qid],
+                content=private_msg_list[qid],
             )
         except Exception:
             logger.warning(f'[每日全部签到] QQ {qid} 私聊推送失败!')

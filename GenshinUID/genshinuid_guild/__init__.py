@@ -8,10 +8,13 @@ from nonebot.permission import SUPERUSER
 from nonebot.message import event_preprocessor
 from nonebot.adapters.qqguild.message import Text
 from nonebot.adapters.qqguild import Bot, MessageEvent
-from nonebot.adapters.qqguild.api.model import DMS, Guild
+from nonebot.adapters.qqguild.api.model import DMS, Guild, MessageMarkdown
 
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception
+
+_md = '''## 这是一个自定义MD文本
+'''
 
 guild_detail = on_command('频道统计', block=True, rule=FullCommand())
 get_dirct_msg = on_command(
@@ -20,6 +23,27 @@ get_dirct_msg = on_command(
     block=True,
     rule=FullCommand(),
 )
+get_markdown_msg = on_command(
+    '给我发md',
+    aliases={'给我发markdown'},
+    block=True,
+    rule=FullCommand(),
+)
+
+
+@get_markdown_msg.handle()
+@handle_exception('发md')
+async def send_markdown_msg(bot: Bot, event: MessageEvent, matcher: Matcher):
+    if not event.author:
+        return
+
+    await bot.call_api(
+        'post_markdown_message',
+        channel_id=str(event.channel_id),
+        content=_md,
+    )
+
+    await matcher.finish('已发送消息！')
 
 
 @get_dirct_msg.handle()

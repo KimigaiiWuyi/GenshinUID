@@ -22,6 +22,7 @@ from nonebot.adapters.qqguild.event import (
 from nonebot.adapters.qqguild.api.model import (
     MessageArk,
     MessageEmbed,
+    MessageMarkdown,
     MessageReference,
 )
 
@@ -47,9 +48,9 @@ class MessageSend(BaseModel):
     content: Optional[str] = None
     embed: Optional[MessageEmbed] = None
     ark: Optional[MessageArk] = None
+    markdown: Optional[MessageMarkdown] = None
     message_reference: Optional[MessageReference] = None
     image: Optional[str] = None
-    file_image: Optional[bytes] = None
     msg_id: Optional[str] = None
 
 
@@ -89,6 +90,8 @@ def patch_send():
             image = image[-1].data["url"]
         if local_image := (message["local_image"] or None):
             local_image = local_image[-1].data["content"]
+        if markdown := (message["markdown"] or None):
+            markdown = markdown[-1].data["markdown"]
         return await self.post_messages(
             channel_id=event.channel_id,
             guild_id=guild_id,
@@ -96,6 +99,7 @@ def patch_send():
             content=content,
             embed=embed,
             ark=ark,
+            markdown=markdown,
             image=image,
             file_image=local_image,
             **kwargs,

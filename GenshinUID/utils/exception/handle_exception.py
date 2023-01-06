@@ -4,7 +4,6 @@ from typing import Optional
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.exception import FinishedException
-from nonebot.adapters.onebot.v11 import ActionFailed
 
 
 def handle_exception(
@@ -30,10 +29,6 @@ def handle_exception(
             matcher: Matcher = kwargs['matcher']
             try:
                 await func(**kwargs)
-            except ActionFailed as e:
-                # 此为bot本身由于风控或网络问题发不出消息，并非代码本身出问题
-                await matcher.send(f'发送消息失败{e.info["wording"]}')
-                logger.exception(f'发送{name}消息失败')
             except FinishedException:
                 # `finish` 会抛出此异常，应予以抛出而不处理
                 raise

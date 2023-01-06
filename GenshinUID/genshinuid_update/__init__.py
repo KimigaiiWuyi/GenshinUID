@@ -32,15 +32,15 @@ async def _():
         return
     if update_log['send_type'] == 'group':
         await bot.call_api(
-            api='send_group_msg',
-            group_id=update_log['send_to'],
-            message=update_log['msg'],
+            api='send_room_at_msg',
+            to_wxid=update_log['send_to'],
+            content=update_log['msg'],
         )
     else:
         await bot.call_api(
-            api='send_private_msg',
-            user_id=update_log['send_to'],
-            message=update_log['msg'],
+            api='send_text',
+            to_wxid=update_log['send_to'],
+            content=update_log['msg'],
         )
     logger.info('遗留信息检查完毕!')
 

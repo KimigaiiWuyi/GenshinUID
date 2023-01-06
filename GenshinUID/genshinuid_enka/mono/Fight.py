@@ -337,7 +337,7 @@ class Fight:
         real_prop = char.real_prop
         atk = real_prop['E_atk'] + char.sp.attack
         em = real_prop[f'{char.attack_type}_elementalMastery']
-        base = power_sp[0] * atk + power_sp[1] * em
+        base = (power_sp[0] * atk + power_sp[1] * em) * power.plus
         return base
 
     # 基础乘区

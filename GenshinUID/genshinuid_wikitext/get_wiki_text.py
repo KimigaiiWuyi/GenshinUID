@@ -5,20 +5,18 @@ from io import BytesIO
 from pathlib import Path
 
 from httpx import AsyncClient
-from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.log import logger
+from nonebot.adapters.onebot.v11 import MessageSegment
 
+from ..utils.download_resource.RESOURCE_PATH import RESOURCE_PATH
 from .draw_wiki_img import (
-    draw_artifacts_wiki_img, 
+    draw_chars_wiki_img,
     draw_weapons_wiki_img,
-    draw_chars_wiki_img
+    draw_artifacts_wiki_img,
 )
 from .get_wiki_template import (
     food_im,
-    weapon_im,
     audio_json,
-    artifacts_im,
-    char_info_im,
 )
 from ..utils.minigg_api.get_minigg_data import (
     get_char_info,
@@ -26,12 +24,12 @@ from ..utils.minigg_api.get_minigg_data import (
     get_audio_info,
     get_weapon_info,
 )
-from ..utils.download_resource.RESOURCE_PATH import RESOURCE_PATH
 
 WIKI_PATH = RESOURCE_PATH / 'wiki'
 WIKI_WEAPON_PATH = WIKI_PATH / 'weapons'
 WIKI_ARTIFACTS_PATH = WIKI_PATH / 'artifacts'
 WIKI_CHAR_PATH = WIKI_PATH / 'chars'
+
 
 async def audio_wiki(name, message):
     async def get(_audioid):
@@ -100,7 +98,7 @@ async def artifacts_wiki(name):
         logger.info(f'查找圣遗物{name}')
         if not WIKI_ARTIFACTS_PATH.exists():
             WIKI_ARTIFACTS_PATH.mkdir()
-        resource_temp_path = WIKI_ARTIFACTS_PATH/f'{name}.jpg'
+        resource_temp_path = WIKI_ARTIFACTS_PATH / f'{name}.jpg'
         if resource_temp_path.exists():
             logger.info(f'本地已有{name}的资源,直接发送...')
             im = MessageSegment.image(resource_temp_path)
@@ -190,41 +188,41 @@ async def weapon_wiki(name: str, level=None) -> MessageSegment:
         )
     # draw img
     else:
-    #     name = data['name']
-    #     _type = data['weapontype']
-    #     star = data['rarity'] + '星'
-    #     info = data['description']
-    #     atk = str(data['baseatk'])
-    #     sub_name = data['substat']
-    #     if data['subvalue'] != '':
-    #         sub_val = (
-    #             (data['subvalue'] + '%')
-    #             if sub_name != '元素精通'
-    #             else data['subvalue']
-    #         )
-    #         sub = '\n' + '【' + sub_name + '】' + sub_val
-    #     else:
-    #         sub = ''
+        #     name = data['name']
+        #     _type = data['weapontype']
+        #     star = data['rarity'] + '星'
+        #     info = data['description']
+        #     atk = str(data['baseatk'])
+        #     sub_name = data['substat']
+        #     if data['subvalue'] != '':
+        #         sub_val = (
+        #             (data['subvalue'] + '%')
+        #             if sub_name != '元素精通'
+        #             else data['subvalue']
+        #         )
+        #         sub = '\n' + '【' + sub_name + '】' + sub_val
+        #     else:
+        #         sub = ''
 
-    #     if data['effectname'] != '':
-    #         raw_effect = data['effect']
-    #         rw_ef = []
-    #         for i in range(len(data['r1'])):
-    #             now = ''
-    #             for j in range(1, 6):
-    #                 now = now + data['r{}'.format(j)][i] + '/'
-    #             now = now[:-1]
-    #             rw_ef.append(now)
-    #         raw_effect = raw_effect.format(*rw_ef)
-    #         effect = '\n' + '【' + data['effectname'] + '】' + '：' + raw_effect
-    #     else:
-    #         effect = ''
-    #     im = weapon_im.format(name, _type, star, info, atk, sub, effect)
+        #     if data['effectname'] != '':
+        #         raw_effect = data['effect']
+        #         rw_ef = []
+        #         for i in range(len(data['r1'])):
+        #             now = ''
+        #             for j in range(1, 6):
+        #                 now = now + data['r{}'.format(j)][i] + '/'
+        #             now = now[:-1]
+        #             rw_ef.append(now)
+        #         raw_effect = raw_effect.format(*rw_ef)
+        #         effect = '\n' + '【' + data['effectname'] + '】' + '：' + raw_effect
+        #     else:
+        #         effect = ''
+        #     im = weapon_im.format(name, _type, star, info, atk, sub, effect)
         name = data['name']
         logger.info(f'查找武器{name}')
         if not WIKI_WEAPON_PATH.exists():
             WIKI_WEAPON_PATH.mkdir()
-        resource_temp_path = WIKI_WEAPON_PATH/f'{name}.jpg'
+        resource_temp_path = WIKI_WEAPON_PATH / f'{name}.jpg'
         if resource_temp_path.exists():
             logger.info(f'本地已有{name}的资源,直接发送...')
             im = MessageSegment.image(resource_temp_path)
@@ -281,7 +279,7 @@ async def char_wiki(name, mode='char', level=None):
             logger.info(f'查找角色{name}')
             if not WIKI_CHAR_PATH.exists():
                 WIKI_CHAR_PATH.mkdir()
-            resource_temp_path = WIKI_CHAR_PATH/f'{name}.jpg'
+            resource_temp_path = WIKI_CHAR_PATH / f'{name}.jpg'
             if resource_temp_path.exists():
                 logger.info(f'本地已有{name}的资源,直接发送...')
                 im = MessageSegment.image(resource_temp_path)

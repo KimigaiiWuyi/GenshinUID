@@ -109,7 +109,9 @@ async def send_find_map_msg(
     resource_temp_path = MAP_DATA / f'{map_name}_{name}.jpg'
     if resource_temp_path.exists():
         logger.info(f'本地已有{map_name}_{name}的资源点,直接发送...')
-        await matcher.finish(MessageSegment.image(resource_temp_path))
+        with open(resource_temp_path, mode="rb") as f:
+            img_data = f.read()
+        await matcher.finish(MessageSegment.image(img_data))
     else:
         await matcher.send(
             (

@@ -1,12 +1,12 @@
 import contextlib
 from typing import List, Union, Optional
 
-from sqlalchemy.future import select
+from nonebot.log import logger
 from sqlalchemy.sql import text
+from sqlalchemy.future import select
 from sqlalchemy import delete, update
 from sqlalchemy.sql.expression import func
 from sqlalchemy.ext.asyncio import AsyncSession
-from nonebot.log import logger
 
 from .models import CK
 from ..database.models import CookiesCache, NewCookiesTable
@@ -167,11 +167,27 @@ class CookiesDAL:
 
             if regioncode < 6:
                 # cn server
-                sql = select(NewCookiesTable).where(text("cast(substr(newcookiestable.uid,1,1) as int) < 6")).order_by(func.random())
+                sql = (
+                    select(NewCookiesTable)
+                    .where(
+                        text(
+                            "cast(substr(newcookiestable.uid,1,1) as int) < 6"
+                        )
+                    )
+                    .order_by(func.random())
+                )
             else:
                 # os server
-                sql = select(NewCookiesTable).where(text("cast(substr(newcookiestable.uid,1,1) as int) >= 6")).order_by(func.random())
-            
+                sql = (
+                    select(NewCookiesTable)
+                    .where(
+                        text(
+                            "cast(substr(newcookiestable.uid,1,1) as int) >= 6"
+                        )
+                    )
+                    .order_by(func.random())
+                )
+
             a = await self.db_session.execute(sql)
             random_data: List[NewCookiesTable] = a.scalars().all()
             if random_data:

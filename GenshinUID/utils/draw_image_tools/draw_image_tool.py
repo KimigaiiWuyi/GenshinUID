@@ -184,10 +184,7 @@ async def get_level_pic(level: int) -> Image.Image:
 async def get_qq_avatar(
     qid: Optional[Union[int, str]] = None, avatar_url: Optional[str] = None
 ) -> Image.Image:
-    if qid:
-        avatar_url = f'http://q1.qlogo.cn/g?b=qq&nk={qid}&s=640'
-    elif avatar_url is None:
-        avatar_url = 'https://q1.qlogo.cn/g?b=qq&nk=3399214199&s=640'
+    avatar_url = 'https://q1.qlogo.cn/g?b=qq&nk=3399214199&s=640'
     char_pic = Image.open(BytesIO(get(avatar_url).content)).convert('RGBA')
     return char_pic
 

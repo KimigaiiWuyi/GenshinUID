@@ -178,7 +178,7 @@ async def send_char_info(
         await matcher.finish(im)
     elif isinstance(im, Tuple):
         req = await matcher.send(MessageSegment.image(im[0]))
-        #msg_id = req['message_id']
+        # msg_id = req['message_id']
         if im[1]:
             with open(TEMP_PATH / f'{uid}.jpg', 'wb') as f:
                 f.write(im[1])

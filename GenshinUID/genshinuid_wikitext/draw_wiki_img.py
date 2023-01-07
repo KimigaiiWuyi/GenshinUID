@@ -7,6 +7,7 @@ from httpx import AsyncClient, get
 from PIL import Image, ImageDraw, ImageFont
 
 from ..utils.download_resource.RESOURCE_PATH import RESOURCE_PATH
+from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from ..utils.minigg_api.get_minigg_data import (
     get_char_info,
     get_misc_info,
@@ -23,12 +24,6 @@ WIKI_PATH = RESOURCE_PATH / 'wiki'
 WIKI_ARTIFACTS_PATH = WIKI_PATH / 'artifacts'
 WIKI_WEAPON_PATH = WIKI_PATH / 'weapons'
 WIKI_CHAR_PATH = WIKI_PATH / 'chars'
-
-
-def genshin_font_origin(size: int):
-    return ImageFont.truetype(
-        str(TEXT_PATH / 'yuanshen_origin.ttf'), size=size
-    )
 
 
 async def strLenth(r: str, size: int, limit: int = 540) -> str:

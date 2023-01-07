@@ -8,15 +8,12 @@ from httpx import AsyncClient
 from nonebot.log import logger
 from nonebot.adapters.onebot.v11 import MessageSegment
 
+from .get_wiki_template import food_im, audio_json
 from ..utils.download_resource.RESOURCE_PATH import RESOURCE_PATH
 from .draw_wiki_img import (
     draw_chars_wiki_img,
     draw_weapons_wiki_img,
     draw_artifacts_wiki_img,
-)
-from .get_wiki_template import (
-    food_im,
-    audio_json,
 )
 from ..utils.minigg_api.get_minigg_data import (
     get_char_info,

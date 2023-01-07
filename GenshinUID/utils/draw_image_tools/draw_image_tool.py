@@ -184,7 +184,7 @@ async def get_level_pic(level: int) -> Image.Image:
 async def get_qq_avatar(
     qid: Optional[Union[int, str]] = None, avatar_url: Optional[str] = None
 ) -> Image.Image:
-    avatar_url = 'https://q1.qlogo.cn/g?b=qq&nk=3399214199&s=640'
+    avatar_url = 'https://s2.loli.net/2022/01/31/kwCIl3cF1Z2GxnR.png'
     char_pic = Image.open(BytesIO(get(avatar_url).content)).convert('RGBA')
     return char_pic
 

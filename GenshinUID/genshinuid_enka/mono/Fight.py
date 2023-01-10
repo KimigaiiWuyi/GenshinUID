@@ -425,7 +425,7 @@ class Fight:
         heal_bonus = 1 + char.real_prop['healBonus']
         base_area = effect_prop * power.percent + power.value + add_heal
         normal_value = base_area * heal_bonus
-        return normal_value, 0, 0
+        return normal_value, normal_value, 0
 
     async def get_shield(self, char: Character) -> Tuple[float, float, float]:
         # 获得护盾倍率
@@ -468,11 +468,7 @@ class Fight:
         # 暴击伤害 = 普通伤害 * 暴击区
         crit_dmg = normal_dmg * (1 + critdmg)
         # 平均伤害
-        if critrate < 1:
-            avg_dmg = crit_dmg * critrate + (1 - critrate) * normal_dmg
-        else:
-            # 暴击率超过100%后不再计算期望
-            avg_dmg = crit_dmg
+        avg_dmg = normal_dmg if critrate < 0 else crit_dmg if critrate > 1 else crit_dmg * critrate + (1 - critrate) * normal_dmg
 
         self.total_normal_dmg += normal_dmg
         self.total_avg_dmg += avg_dmg

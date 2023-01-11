@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
 
+from httpx import get
+
 from .get_gachalogs import save_gachalogs
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 
@@ -16,8 +18,11 @@ INT_TO_TYPE = {
 async def import_gachalogs(history_url: str, uid: str) -> str:
     # 是否Json文件检测
     try:
-        with open(history_url, 'r', encoding='utf-8') as history_url_files:
-            history_data = json.load(history_url_files)
+        if not history_url.startswith(('http', 'https')):
+            with open (history_url,'r',encoding='utf-8') as history_url_files:
+                history_data = json.load(history_url_files)
+        else:
+            history_data: dict = json.loads(get(history_url).text)
         data_uid = history_data['info']['uid']
         if data_uid != uid:
             return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'

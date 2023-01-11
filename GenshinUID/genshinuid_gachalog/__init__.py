@@ -1,7 +1,7 @@
+import os
+import asyncio
 from typing import Union
 import xml.etree.ElementTree as ET
-import asyncio
-import os
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
@@ -85,15 +85,19 @@ async def export_gacha_log_info(
     ),
 )
 async def import_gacha_log_info(event: FileMessageEvent, matcher: Matcher):
-    await asyncio.sleep(2) #等待下载文件，避免占用
-    #获取文件名
+    await asyncio.sleep(2)  # 等待下载文件，避免占用
+    # 获取文件名
     root = ET.fromstring(event.data['raw_msg'])
-    name_title:str = root.find('appmsg').find('title').text
-    #获取文件路径
+    name_title: str = root.find('appmsg').find('title').text
+    # 获取文件路径
     file_path = event.data['file']
     file_from_wxid = event.data['from_wxid']
-    #检测文件是否存在并小于8MB
-    if os.path.exists(file_path) and os.path.getsize(file_path) <= 8 * 1024 * 1024 and name_title.endswith(".json"):
+    # 检测文件是否存在并小于8MB
+    if (
+        os.path.exists(file_path)
+        and os.path.getsize(file_path) <= 8 * 1024 * 1024
+        and name_title.endswith(".json")
+    ):
         uid = await select_db(file_from_wxid, mode='uid')
         if not isinstance(uid, str) or '未找到绑定的UID' in uid:
             await matcher.finish(UID_HINT)

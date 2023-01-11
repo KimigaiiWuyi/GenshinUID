@@ -14,9 +14,9 @@ INT_TO_TYPE = {
 
 
 async def import_gachalogs(history_url: str, uid: str) -> str:
-    #是否Json文件检测
+    # 是否Json文件检测
     try:
-        with open (history_url,'r',encoding='utf-8') as history_url_files:
+        with open(history_url, 'r', encoding='utf-8') as history_url_files:
             history_data = json.load(history_url_files)
         data_uid = history_data['info']['uid']
         if data_uid != uid:

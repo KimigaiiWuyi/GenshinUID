@@ -19,7 +19,7 @@ async def import_gachalogs(history_url: str, uid: str) -> str:
     # 是否Json文件检测
     try:
         if not history_url.startswith(('http', 'https')):
-            with open (history_url,'r',encoding='utf-8') as history_url_files:
+            with open(history_url, 'r', encoding='utf-8') as history_url_files:
                 history_data = json.load(history_url_files)
         else:
             history_data: dict = json.loads(get(history_url).text)

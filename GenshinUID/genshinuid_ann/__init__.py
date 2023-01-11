@@ -1,6 +1,5 @@
 from nonebot import get_bot
 from hoshino import Service, priv
-from hoshino.typing import MessageSegment
 
 from ..base import logger
 from .util import black_ids

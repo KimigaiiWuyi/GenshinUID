@@ -115,7 +115,7 @@ async def check_ann_state():
         try:
             img = await ann_detail_card(ann_id)
             img = await convert_img(img)
-            detail_list.append(MessageSegment.image(img))
+            detail_list.append(img)
         except Exception as e:
             logger.exception(str(e))
 

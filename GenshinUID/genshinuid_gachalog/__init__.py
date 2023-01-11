@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import get_bot, on, on_command
+from nonebot import on, get_bot, on_command
 from nonebot.adapters.ntchat.permission import GROUP
 from nonebot.adapters.ntchat import (
     MessageEvent,

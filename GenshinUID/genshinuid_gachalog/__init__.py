@@ -1,11 +1,10 @@
 import os
 import asyncio
-from typing import Union
 import xml.etree.ElementTree as ET
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import get_bot, on_notice, on_command
+from nonebot import get_bot, on, on_command
 from nonebot.adapters.ntchat.permission import GROUP
 from nonebot.adapters.ntchat import (
     MessageEvent,
@@ -25,7 +24,7 @@ from .export_and_import import export_gachalogs, import_gachalogs
 
 get_gacha_log = on_command('刷新抽卡记录', rule=FullCommand())
 get_gacha_log_card = on_command('抽卡记录', rule=FullCommand())
-import_gacha_log = on_type(types=FileMessageEvent)
+import_gacha_log = on("app")
 export_gacha_log = on_command('导出抽卡记录', rule=FullCommand(), permission=GROUP)
 
 

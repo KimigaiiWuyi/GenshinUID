@@ -3,6 +3,7 @@ from pathlib import Path
 from base64 import b64encode
 from typing import Union, overload
 
+import aiofiles
 from PIL import Image
 
 
@@ -47,6 +48,8 @@ async def convert_img(
             res = 'base64://' + b64encode(res).decode()
         return res
     elif isinstance(img, bytes):
-        return 'base64://' + b64encode(img).decode()
+        pass
     else:
-        return f'[CQ:image,file=file:///{str(img)}]'
+        async with aiofiles.open(img, 'rb') as fp:
+            img = await fp.read()
+    return f'[CQ:image,file=base64://{b64encode(img).decode()}]'

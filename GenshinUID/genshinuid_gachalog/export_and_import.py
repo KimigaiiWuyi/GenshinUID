@@ -22,7 +22,7 @@ async def import_gachalogs(history_url: str, uid: str) -> str:
             with open(history_url, 'r', encoding='utf-8') as history_url_files:
                 history_data = json.load(history_url_files)
         else:
-            history_data: dict = json.loads(get(history_url).text)
+            history_data: dict = get(history_url).json()
         data_uid = history_data['info']['uid']
         if data_uid != uid:
             return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'

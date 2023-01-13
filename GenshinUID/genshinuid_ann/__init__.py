@@ -133,4 +133,4 @@ async def check_ann_state():
                     file_path="base64://" + b64img.decode(),
                 )
         except Exception as e:
-            logger.exception(str(e))
+            logger.exception(e)

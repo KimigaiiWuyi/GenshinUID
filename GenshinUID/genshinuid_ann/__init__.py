@@ -129,7 +129,7 @@ async def check_ann_state():
                 b64img = base64.b64encode(img)
                 await bot.call_api(
                     api='send_image',
-                    to_wxid=f'{str(group)}',
+                    to_wxid=str(group),
                     file_path="base64://" + b64img.decode(),
                 )
         except Exception as e:

@@ -5,7 +5,12 @@ from nonebot.log import logger
 
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_cache_and_check import refresh_ck
-from ..utils.db_operation.db_operation import select_db, stoken_db, cookies_db
+from ..utils.db_operation.db_operation import (
+    select_db,
+    stoken_db,
+    cookies_db,
+    get_stoken,
+)
 from ..utils.mhy_api.get_mhy_data import (
     get_mihoyo_bbs_info,
     get_cookie_token_by_stoken,
@@ -31,6 +36,18 @@ id_list = [
 sk_list = ['stoken', 'stoken_v2']
 ck_list = ['cookie_token', 'cookie_token_v2']
 lt_list = ['login_ticket', 'login_ticket_v2']
+
+
+async def get_ck_by_stoken(qid: str):
+    uid = await select_db(qid, mode='uid')
+    if isinstance(uid, str):
+        if '未找到绑定的UID' in uid or uid == '':
+            return UID_HINT
+    else:
+        return UID_HINT
+    stoken = await get_stoken(uid)
+    im = await deal_ck(stoken, qid)
+    return im
 
 
 async def deal_ck(mes, qid, mode: str = 'PIC'):

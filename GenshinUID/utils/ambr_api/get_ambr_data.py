@@ -9,16 +9,22 @@ sys.path.append(str(Path(__file__).parents[1]))
 try:
     from .beta_weapon import BETA_WEAPON_ID
     from ...utils.ambr_api.ambr_api import (
+        AMBR_BOOK_URL,
         AMBR_CHAR_URL,
         AMBR_EVENT_URL,
         AMBR_WEAPON_URL,
+        AMBR_BOOK_DATA_URL,
+        AMBR_BOOK_DETAILS_URL,
     )
 except ImportError:
     from utils.ambr_api.beta_weapon import BETA_WEAPON_ID
     from utils.ambr_api.ambr_api import (
+        AMBR_BOOK_URL,
         AMBR_CHAR_URL,
         AMBR_EVENT_URL,
         AMBR_WEAPON_URL,
+        AMBR_BOOK_DATA_URL,
+        AMBR_BOOK_DETAILS_URL,
     )
 
 _HEADER = {}
@@ -43,6 +49,22 @@ async def get_weapon_data(weapon_id: Union[int, str]):
         url=AMBR_WEAPON_URL.format(weapon_id), method='GET'
     )
     return data
+
+
+async def get_all_book_id():
+    return await _ambr_request(url=AMBR_BOOK_URL, method='GET')
+
+
+async def get_book_volume(book_id: Union[int, str]):
+    return await _ambr_request(
+        url=AMBR_BOOK_DETAILS_URL.format(book_id), method='GET'
+    )
+
+
+async def get_book_data(story_id: Union[int, str]):
+    return await _ambr_request(
+        url=AMBR_BOOK_DATA_URL.format(story_id), method='GET'
+    )
 
 
 async def _ambr_request(

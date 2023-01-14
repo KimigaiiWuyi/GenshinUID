@@ -1,3 +1,5 @@
+import base64
+
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -115,27 +117,20 @@ async def check_ann_state():
         logger.info('[原神公告] 没有最新公告')
         return
 
-    detail_list = []
     for ann_id in new_ann:
         if ann_id in black_ids:
             continue
         try:
             img = await ann_detail_card(ann_id)
-            detail_list.append(MessageSegment.image(img))
-        except Exception as e:
-            logger.exception(str(e))
-
-    logger.info('[原神公告] 推送完毕, 更新数据库')
-    string_config.set_config('Ann_Ids', new_ids)
-
-    for group in sub_list:
-        for msg in detail_list:
-            try:
+            logger.info('[原神公告] 推送完毕, 更新数据库')
+            string_config.set_config('Ann_Ids', new_ids)
+            for group in sub_list:
                 bot = get_bot()
+                b64img = base64.b64encode(img)
                 await bot.call_api(
-                    api='send_text',
-                    to_wxid=group,
-                    content=msg,
+                    api='send_image',
+                    to_wxid=str(group),
+                    file_path="base64://" + b64img.decode(),
                 )
-            except Exception as e:
-                logger.exception(e)
+        except Exception as e:
+            logger.exception(e)

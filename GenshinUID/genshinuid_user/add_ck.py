@@ -1,3 +1,4 @@
+from typing import List
 from pathlib import Path
 from http.cookies import SimpleCookie
 
@@ -10,6 +11,7 @@ from ..utils.db_operation.db_operation import (
     stoken_db,
     cookies_db,
     get_stoken,
+    owner_cookies,
 )
 from ..utils.mhy_api.get_mhy_data import (
     get_mihoyo_bbs_info,
@@ -39,14 +41,32 @@ lt_list = ['login_ticket', 'login_ticket_v2']
 
 
 async def get_ck_by_stoken(qid: str):
-    uid = await select_db(qid, mode='uid')
-    if isinstance(uid, str):
-        if '未找到绑定的UID' in uid or uid == '':
-            return UID_HINT
-    else:
-        return UID_HINT
-    stoken = await get_stoken(uid)
-    im = await deal_ck(stoken, qid)
+    uid_list: List = await select_db(qid, mode='list')  # type: ignore
+    uid_num = len(uid_list)
+    if uid_num == 0:
+        return '请先绑定一个UID噢~'
+    error_list = {}
+    for uid in uid_list:
+        status = await owner_cookies(uid)
+        if status != '该用户没有绑定过Cookies噢~':
+            stoken = await get_stoken(uid)
+            if '该用户没有绑定过Stoken噢~' in stoken or stoken is None:
+                error_list[uid] = '该UID还未绑定SK噢~'
+                continue
+            mes = await _deal_ck(stoken, qid)
+            ok_num = mes.count('成功')
+            if ok_num < 2:
+                error_list[uid] = '可能是SK已过期~'
+                continue
+        else:
+            error_list[uid] = '还没有绑定过Token(CK或SK)~'
+            continue
+    error_num = len(error_list)
+
+    s_im = f'执行完成~成功刷新CK{uid_num - error_num}个！'
+    f_im = '\n'.join([f'UID{u}:{error_list[u]}' for u in error_list])
+    im = f'{s_im}失败列表：\n{f_im}' if f_im else s_im
+
     return im
 
 

@@ -5,15 +5,14 @@ from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import RegexGroup
 from nonebot import on_regex, on_command
-from nonebot.adapters.qqguild import Bot, MessageEvent
+from nonebot.adapters.qqguild import Bot, MessageEvent, MessageSegment
 
 from ..config import priority
 from .get_lots_data import get_lots_msg
 from .get_meme_card import get_meme_img
+from .get_mys_data import get_task_detail
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from ..utils.message.cast_type import cast_to_int
-from .get_mys_data import get_region_task, get_task_detail
 from ..utils.exception.handle_exception import handle_exception
 
 get_task_adv = on_regex(
@@ -52,7 +51,7 @@ async def send_task_adv(
 async def send_meme_card(matcher: Matcher):
     logger.info('开始执行[抽表情]')
     img = await get_meme_img()
-    await matcher.finish(local_image(img))
+    await matcher.finish(MessageSegment.file_image(img))
 
 
 @get_lots.handle()

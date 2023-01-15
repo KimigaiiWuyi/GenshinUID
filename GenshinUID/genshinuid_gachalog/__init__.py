@@ -1,14 +1,11 @@
-from typing import Union
-
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import get_bot, on_notice, on_command
-from nonebot.adapters.qqguild import Bot, Message, MessageEvent
+from nonebot.adapters.qqguild import MessageEvent, MessageSegment
 
 from .get_gachalogs import save_gachalogs
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from .draw_gachalogs import draw_gachalogs_img
 from ..utils.message.error_reply import UID_HINT
 from ..utils.message.cast_type import cast_to_int
@@ -98,7 +95,7 @@ async def send_gacha_log_card_info(
     if isinstance(uid, str):
         im = await draw_gachalogs_img(uid, avatar)  # type: ignore
         if isinstance(im, bytes):
-            await matcher.finish(local_image(im))
+            await matcher.finish(MessageSegment.file_image(im))
         else:
             await matcher.finish(im)
     else:

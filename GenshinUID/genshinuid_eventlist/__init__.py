@@ -1,9 +1,9 @@
 from nonebot import on_regex
 from nonebot.matcher import Matcher
 from nonebot_plugin_apscheduler import scheduler
+from nonebot.adapters.qqguild import MessageSegment
 
 from ..genshinuid_meta import register_menu
-from ..utils.nonebot2.send import local_image
 from .draw_event_img import get_event_img, get_all_event_img
 from ..utils.exception.handle_exception import handle_exception
 
@@ -26,7 +26,7 @@ async def draw_event():
 )
 async def send_events(matcher: Matcher):
     img = await get_event_img('EVENT')
-    await matcher.finish(local_image(img))
+    await matcher.finish(MessageSegment.file_image(img))
 
 
 @get_gacha.handle()
@@ -39,4 +39,4 @@ async def send_events(matcher: Matcher):
 )
 async def send_gachas(matcher: Matcher):
     img = await get_event_img('GACHA')
-    await matcher.finish(local_image(img))
+    await matcher.finish(MessageSegment.file_image(img))

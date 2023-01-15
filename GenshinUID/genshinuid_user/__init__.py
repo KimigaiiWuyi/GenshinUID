@@ -5,7 +5,7 @@ from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import on_regex, on_command
 from nonebot.params import CommandArg, RegexGroup
-from nonebot.adapters.qqguild import Message, MessageEvent
+from nonebot.adapters.qqguild import Message, MessageEvent, MessageSegment
 
 from ..config import priority
 from .qrlogin import qrcode_login
@@ -13,7 +13,6 @@ from ..utils.nonebot2.perm import DIRECT
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from .add_ck import deal_ck, get_ck_by_stoken
 from ..utils.message.cast_type import cast_to_int
 from ..utils.exception.handle_exception import handle_exception
@@ -57,7 +56,7 @@ async def send_refresh_ck_msg(
     im = await get_ck_by_stoken(qid)
     if isinstance(im, str):
         await matcher.finish(im)
-    await matcher.finish(local_image(im))
+    await matcher.finish(MessageSegment.file_image(im))
 
 
 @get_qrcode_login.handle()
@@ -73,7 +72,7 @@ async def send_qrcode_login(
     im = await deal_ck(im, qid)
     if isinstance(im, str):
         await matcher.finish(im)
-    await matcher.finish(local_image(im))
+    await matcher.finish(MessageSegment.file_image(im))
 
 
 @bind_info.handle()
@@ -87,7 +86,7 @@ async def send_bind_card(
         await matcher.finish('QID为空，请重试！')
     im = await get_user_card(str(qid))
     logger.info('[查询用户绑定状态]完成!等待图片发送中...')
-    await matcher.finish(local_image(im))
+    await matcher.finish(MessageSegment.file_image(im))
 
 
 @add_cookie.handle()
@@ -103,7 +102,7 @@ async def send_add_ck_msg(
     im = await deal_ck(mes, qid)
     if isinstance(im, str):
         await matcher.finish(im)
-    await matcher.finish(local_image(im))
+    await matcher.finish(MessageSegment.file_image(im))
 
 
 # 群聊内 绑定uid或者mysid 的命令，会绑定至当前qq号上

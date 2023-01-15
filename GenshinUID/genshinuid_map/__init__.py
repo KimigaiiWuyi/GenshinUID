@@ -5,11 +5,10 @@ from nonebot.matcher import Matcher
 from nonebot.params import RegexDict
 from nonebot import on_regex, on_command
 from nonebot.permission import SUPERUSER
-from nonebot.adapters.qqguild import Bot, MessageEvent
+from nonebot.adapters.qqguild import Bot, MessageEvent, MessageSegment
 
 from ..config import priority
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from .draw_genshinmap_card import MAP_DATA, draw_genshin_map
 from ..utils.exception.handle_exception import handle_exception
 
@@ -73,7 +72,7 @@ async def send_find_map_msg(
     resource_temp_path = MAP_DATA / f'{map_name}_{name}.jpg'
     if resource_temp_path.exists():
         logger.info(f'本地已有{map_name}_{name}的资源点,直接发送...')
-        await matcher.finish(local_image(resource_temp_path))
+        await matcher.finish(MessageSegment.file_image(resource_temp_path))
     else:
         await matcher.send((f'正在查找{name},可能需要比较久的时间...\n' f'当前地图：{map_name}'))
         logger.info('本地未缓存,正在渲染...')
@@ -81,6 +80,6 @@ async def send_find_map_msg(
         if isinstance(im, str):
             await matcher.finish(im)
         elif isinstance(im, bytes):
-            await matcher.finish(local_image(im))
+            await matcher.finish(MessageSegment.file_image(im))
         else:
             await matcher.finish('查找失败!')

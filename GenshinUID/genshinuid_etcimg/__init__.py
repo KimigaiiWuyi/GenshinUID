@@ -4,12 +4,11 @@ from typing import Any, Tuple
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import on_regex, on_command
-from nonebot.adapters.qqguild import Message
 from nonebot.params import CommandArg, RegexGroup
+from nonebot.adapters.qqguild import Message, MessageSegment
 
 from ..version import Genshin_version
 from ..genshinuid_meta import register_menu
-from ..utils.nonebot2.send import local_image
 from ..utils.exception.handle_exception import handle_exception
 
 get_primogems_data = on_command('版本规划', aliases={'原石预估'})
@@ -50,7 +49,7 @@ async def send_primogems_data(matcher: Matcher, args: Message = CommandArg()):
         img = f'{Genshin_version[:3]}.png'
     primogems_img = PRIMOGEMS_DATA_PATH / img
     logger.info('[图片][版本规划]访问图片: {}'.format(img))
-    await matcher.finish(local_image(primogems_img))
+    await matcher.finish(MessageSegment.file_image(primogems_img))
 
 
 @get_img_data.handle()
@@ -90,4 +89,4 @@ async def send_img_data(
     logger.info('[图片][杂图]参数: {}'.format(args))
     img = IMG_PATH / f'{args[1]}.jpg'
     if img.exists():
-        await matcher.finish(local_image(img))
+        await matcher.finish(MessageSegment.file_image(img))

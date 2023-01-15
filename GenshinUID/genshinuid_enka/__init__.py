@@ -9,12 +9,11 @@ from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.params import Depends, CommandArg
 from nonebot_plugin_apscheduler import scheduler
-from nonebot.adapters.qqguild import Bot, Message, MessageEvent
+from nonebot.adapters.qqguild import Bot, Message, MessageEvent, MessageSegment
 
 from ..config import priority
 from .get_enka_img import draw_enka_img
 from ..genshinuid_meta import register_menu
-from ..utils.nonebot2.send import local_image
 from .draw_char_rank import draw_cahrcard_list
 from ..utils.message.error_reply import UID_HINT
 from ..utils.message.cast_type import cast_to_int
@@ -67,7 +66,7 @@ async def send_original_pic(
         if path.exists():
             logger.info('[原图]访问图片: {}'.format(path))
             with open(path, 'rb') as f:
-                await matcher.finish(local_image(f.read()))
+                await matcher.finish(MessageSegment.file_image(f.read()))
 
 
 @get_char_info.handle()
@@ -130,7 +129,9 @@ async def send_char_info(
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, Tuple):
-        req = await matcher.send(local_image(im[0]))
+        if isinstance(im[0], str):
+            await matcher.finish(im[0])
+        req = await matcher.send(MessageSegment.file_image(im[0]))
         msg_id = req.id
         if im[1]:
             with open(TEMP_PATH / f'{msg_id}.jpg', 'wb') as f:
@@ -220,7 +221,9 @@ async def send_card_info(
                 await matcher.finish(UID_HINT)
     im = await enka_to_card(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
-    await matcher.finish(local_image(im))
+    if isinstance(im, str):
+        await matcher.finish(im)
+    await matcher.finish(MessageSegment.file_image(im))
 
 
 @get_charcard_list.handle()
@@ -270,6 +273,6 @@ async def send_charcard_list(
 
     logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish(str(im))

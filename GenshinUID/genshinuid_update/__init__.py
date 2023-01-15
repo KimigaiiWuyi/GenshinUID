@@ -5,9 +5,8 @@ from nonebot.matcher import Matcher
 from nonebot.params import RegexGroup
 from nonebot.permission import SUPERUSER
 from nonebot import get_bot, on_regex, get_driver
-from nonebot.adapters.qqguild import Bot, MessageEvent
+from nonebot.adapters.qqguild import Bot, MessageEvent, MessageSegment
 
-from ..utils.nonebot2.send import local_image
 from .draw_update_log import draw_update_log_img
 from ..utils.message.cast_type import cast_to_int
 from .restart import restart_message, restart_genshinuid
@@ -66,7 +65,7 @@ async def send_updatelog_msg(
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 
@@ -93,6 +92,6 @@ async def send_update_msg(
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

@@ -6,14 +6,13 @@ from typing import Any, List, Tuple
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import on_regex, on_command
-from nonebot.adapters.qqguild import Message
 from nonebot.params import CommandArg, RegexGroup
+from nonebot.adapters.qqguild import Message, MessageSegment
 
 from .get_card import get_gs_card
 from .get_guide import get_gs_guide
 from ..version import Genshin_version
 from ..genshinuid_meta import register_menu
-from ..utils.nonebot2.send import local_image
 from .get_abyss_data import get_review, generate_data
 from ..utils.alias.alias_to_char_name import alias_to_char_name
 from ..utils.exception.handle_exception import handle_exception
@@ -53,7 +52,8 @@ async def send_guide_pic(
     im = await get_gs_guide(name)
     if im:
         logger.info('获得{}攻略成功！'.format(name))
-        await matcher.finish(local_image(im))
+        print('gg')
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         logger.warning('未找到{}攻略图片'.format(name))
 
@@ -84,7 +84,7 @@ async def send_bluekun_pic(matcher: Matcher, args: Message = CommandArg()):
     img = IMG_PATH / '{}.jpg'.format(name)
     if img.exists():
         logger.info('获得{}参考面板图片成功！'.format(name))
-        await matcher.finish(local_image(img))
+        await matcher.finish(MessageSegment.file_image(img))
     else:
         logger.warning('未找到{}参考面板图片'.format(name))
 
@@ -98,7 +98,7 @@ async def send_gscard_pic(matcher: Matcher, args: Message = CommandArg()):
     im = await get_gs_card(name)
     if im:
         logger.info('获得{}原牌成功！'.format(name))
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         logger.warning('未找到{}原牌图片'.format(name))
 
@@ -120,7 +120,7 @@ async def send_abyss_review(
     elif isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 

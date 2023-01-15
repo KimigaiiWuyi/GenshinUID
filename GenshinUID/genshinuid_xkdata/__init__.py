@@ -6,8 +6,8 @@ from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot_plugin_apscheduler import scheduler
+from nonebot.adapters.qqguild import MessageSegment
 
-from ..utils.nonebot2.send import local_image
 from .draw_abyss_total import TOTAL_IMG, draw_xk_abyss_img
 from ..utils.exception.handle_exception import handle_exception
 
@@ -26,7 +26,7 @@ async def scheduled_draw_abyss():
 async def send_guide_pic(matcher: Matcher):
     if TOTAL_IMG.exists():
         logger.info('获得深渊概览成功！')
-        await matcher.finish(local_image(TOTAL_IMG))
+        await matcher.finish(MessageSegment.file_image(TOTAL_IMG))
     else:
         await matcher.finish('深渊概览图不存在!')
 

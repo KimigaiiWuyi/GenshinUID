@@ -5,13 +5,12 @@ from nonebot.params import Depends
 from nonebot.matcher import Matcher
 from nonebot import get_bot, on_command
 from nonebot_plugin_apscheduler import scheduler
-from nonebot.adapters.qqguild import MessageEvent
+from nonebot.adapters.qqguild import MessageEvent, MessageSegment
 
 from .notice import get_notice_list
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from ..utils.message.error_reply import UID_HINT
 from ..utils.message.cast_type import cast_to_int
 from ..utils.db_operation.db_operation import select_db
@@ -103,6 +102,6 @@ async def send_uid_info(
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

@@ -3,9 +3,9 @@ from nonebot import require, load_all_plugins, get_plugin_by_module_name
 
 require('nonebot_plugin_apscheduler')
 
-from .utils.nonebot2.send import patch_send
+# from .utils.nonebot2.send import patch_send
 
-patch_send()
+# patch_send()
 if get_plugin_by_module_name("GenshinUID"):
     logger.info("推荐直接加载 GenshinUID 仓库文件夹")
     load_all_plugins(

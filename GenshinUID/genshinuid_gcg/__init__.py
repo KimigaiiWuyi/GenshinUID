@@ -4,11 +4,10 @@ from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import Depends, CommandArg
-from nonebot.adapters.qqguild import Message, MessageEvent
+from nonebot.adapters.qqguild import Message, MessageEvent, MessageSegment
 
 from ..config import priority
 from .draw_gcginfo import draw_gcg_info
-from ..utils.nonebot2.send import local_image
 from ..utils.message.cast_type import cast_to_int
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
@@ -56,6 +55,6 @@ async def send_gcg_pic(
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

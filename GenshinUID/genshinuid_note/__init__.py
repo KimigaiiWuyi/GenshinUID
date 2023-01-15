@@ -1,13 +1,12 @@
 from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.adapters.qqguild import MessageEvent
+from nonebot.adapters.qqguild import MessageEvent, MessageSegment
 
 from .note_text import award
 from ..config import priority
 from .draw_note_card import draw_note_img
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from ..utils.message.cast_type import cast_to_int
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.error_reply import CK_HINT, UID_HINT
@@ -58,6 +57,6 @@ async def send_monthly_pic(
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):
-        await matcher.finish(local_image(im))
+        await matcher.finish(MessageSegment.file_image(im))
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

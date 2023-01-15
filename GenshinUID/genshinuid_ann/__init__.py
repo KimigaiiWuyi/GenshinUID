@@ -4,13 +4,12 @@ from nonebot.params import CommandArg
 from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler
-from nonebot.adapters.qqguild import Message, MessageEvent
+from nonebot.adapters.qqguild import Message, MessageEvent, MessageSegment
 
 from .util import black_ids
 from ..config import priority
 from .main import ann, consume_remind
 from ..utils.nonebot2.rule import FullCommand
-from ..utils.nonebot2.send import local_image
 from ..utils.message.error_reply import UID_HINT
 from ..utils.message.cast_type import cast_to_int
 from ..utils.db_operation.db_operation import select_db
@@ -43,13 +42,13 @@ async def send_ann_pic(
 
     if not ann_id:
         img = await ann_list_card()
-        await matcher.finish(local_image(img))
+        await matcher.finish(MessageSegment.file_image(img))
 
     if not ann_id.isdigit():
         raise Exception("公告ID不正确")
 
     img = await ann_detail_card(int(ann_id))
-    await matcher.finish(local_image(img))
+    await matcher.finish(MessageSegment.file_image(img))
 
 
 @reg_ann.handle()
@@ -116,7 +115,7 @@ async def check_ann_state():
             continue
         try:
             img = await ann_detail_card(ann_id)
-            detail_list.append(local_image(img))
+            detail_list.append(MessageSegment.file_image(img))
         except Exception as e:
             logger.exception(str(e))
 

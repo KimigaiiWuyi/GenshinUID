@@ -109,20 +109,22 @@ async def send_find_map_msg(
     resource_temp_path = MAP_DATA / f'{map_name}_{name}.jpg'
     if resource_temp_path.exists():
         logger.info(f'本地已有{map_name}_{name}的资源点,直接发送...')
-        with open(resource_temp_path, mode="rb") as f:
-            img_data = f.read()
-        await matcher.finish(MessageSegment.image(img_data))
+        with open(resource_temp_path, 'rb') as f:
+            await matcher.finish(MessageSegment.image(f.read()))
     else:
+        # 放弃安慰剂回复
+        '''
         await matcher.send(
             (
                 f'正在查找{name},可能需要比较久的时间...\n'
                 f'当前地图：{MAP_CHN_NAME.get(MAP_ID_LIST[0])}'
             )
         )
+        '''
         logger.info('本地未缓存,正在渲染...')
         im = await draw_genshin_map(name, map_id, map_name)
     if isinstance(im, str):
-        await matcher.finish(im)
+        await matcher.finish()
     elif isinstance(im, bytes):
         await matcher.finish(MessageSegment.image(im))
     else:

@@ -58,14 +58,18 @@ async def send_find_map_msg(bot: HoshinoBot, ev: CQEvent):
         resource_temp = await convert_img(resource_temp_path)
         await bot.send(ev, resource_temp)
     else:
+        # 放弃安慰剂回复
+        '''
         await bot.send(
             ev,
             f'正在查找{args},可能需要比较久的时间...\n当前地图：{map_name}',
         )
+        '''
         logger.info('本地未缓存,正在渲染...')
         im = await draw_genshin_map(args, map_id, map_name)
         if isinstance(im, str):
-            await bot.send(ev, im)
+            return
+            # await bot.send(ev, im)
         elif isinstance(im, bytes):
             im = await convert_img(im)
             await bot.send(ev, im)

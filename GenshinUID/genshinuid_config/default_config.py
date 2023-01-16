@@ -3,9 +3,15 @@ from typing import List, Union, Literal, overload
 
 from ..utils.download_resource.RESOURCE_PATH import CONFIG_PATH
 
-CONIFG_DEFAULT = {'LU_TOKEN': '', 'proxy': '', 'Ann_Groups': [], 'Ann_Ids': []}
+CONIFG_DEFAULT = {
+    'LU_TOKEN': '',
+    'proxy': '',
+    '_pass_API': '',
+    'Ann_Groups': [],
+    'Ann_Ids': [],
+}
 
-STR_CONFIG = Literal['LU_TOKEN', 'proxy']
+STR_CONFIG = Literal['LU_TOKEN', 'proxy', '_pass_API']
 LIST_CONFIG = Literal['Ann_Groups', 'Ann_Ids']
 
 

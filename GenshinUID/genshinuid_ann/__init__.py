@@ -121,16 +121,19 @@ async def check_ann_state():
         if ann_id in black_ids:
             continue
         try:
-            img = await ann_detail_card(ann_id)
+            img = await ann_detail_card(ann_id)#防止抛出异常报错
             logger.info('[原神公告] 推送完毕, 更新数据库')
             string_config.set_config('Ann_Ids', new_ids)
             for group in sub_list:
-                bot = get_bot()
-                b64img = base64.b64encode(img)
-                await bot.call_api(
-                    api='send_image',
-                    to_wxid=str(group),
-                    file_path="base64://" + b64img.decode(),
-                )
+                try:
+                    bot = get_bot()
+                    b64img = base64.b64encode(img)
+                    await bot.call_api(
+                        api='send_image',
+                        to_wxid=str(group),
+                        file_path="base64://" + b64img.decode(),
+                    )
+                except Exception as e:
+                    logger.exception(e)
         except Exception as e:
             logger.exception(e)

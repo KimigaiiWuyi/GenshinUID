@@ -13,7 +13,7 @@ if (ask == true) {
 '''
 
 CK_URL = '''1.复制上面全部代码，然后打开下面的网站
-https://bbs.mihoyo.com/ys（国服）
+https://bbs.mihoyo.com/ys/obc/?bbs_presentation_style=no_header（国服）
 https://www.hoyolab.com/home（国际服）
 2.在页面上右键检查或者Ctrl+Shift+i
 3.选择控制台（Console），粘贴，回车，在弹出的窗口点确认（点完自动复制）

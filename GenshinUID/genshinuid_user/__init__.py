@@ -5,11 +5,26 @@ from ..base import sv, logger
 from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
-from .add_ck import deal_ck, get_ck_by_stoken
 from ..utils.draw_image_tools.send_image_tool import convert_img
+from .add_ck import deal_ck, get_ck_by_stoken, get_ck_by_all_stoken
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
 
 hoshino_bot = hoshino.get_bot()
+
+
+@sv.on_fullmatch(('刷新全部CK', '刷新全部ck', '刷新全部Ck', '刷新全部Cookies'))
+async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
+    if ev.sender:
+        qid = int(ev.sender['user_id'])
+    else:
+        return
+    if qid not in bot.config.SUPERUSERS:
+        return
+    logger.info('开始执行[刷新全部ck]')
+    im = await get_ck_by_all_stoken()
+    if isinstance(im, bytes):
+        im = await convert_img(im)
+    await bot.send(ev, im)
 
 
 @sv.on_fullmatch(('刷新CK', '刷新ck', '刷新Ck', '刷新Cookies'))

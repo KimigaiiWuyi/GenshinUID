@@ -10,11 +10,8 @@ from typing import Any, Dict, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-try:
-    from _pass import _pass
-except ImportError:
-    from ..mhy_api._pass import _pass
-
+from .mhy_api_tools import get_ds_token
+from .mhy_api import VERIFY_URL, VERIFICATION_URL
 from ...genshinuid_config.default_config import string_config
 from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
 from ..mhy_api.mhy_api_tools import (
@@ -651,6 +648,80 @@ async def get_stoken_by_game_token(account_id: int, game_token: str):
     )
 
 
+async def _pass(gt: str, ch: str, header: Dict):
+    # 警告：使用该服务（例如某RR等）需要注意风险问题
+    # 本项目不以任何形式提供相关接口
+    # 代码来源：GITHUB项目MIT开源
+    _pass_api = string_config.get_config('_pass_API')
+    if _pass_api:
+        logger.info('正在进行加强跳过验证...')
+        data = await _mhy_request(
+            url=f'{_pass_api}&gt={gt}&challenge={ch}',
+            method='GET',
+            header=header,
+        )
+        if 'data' in data and 'validate' in data['data']:
+            validate = data['data']['validate']
+            ch = data['data']['challenge']
+        else:
+            return None, None
+    else:
+        validate = None
+        '''
+        logger.warning('开始普通无感验证...')
+        header['DS'] = get_ds_token(f'gt={gt}')
+        _ = await _mhy_request(
+            url=GT_TPYE_URL.format(gt),
+            method='GET',
+            header=header,
+        )
+        header['DS'] = get_ds_token(f'gt={gt}&challenge={ch}')
+        data = await _mhy_request(
+            url=GT_TEST_URL_V6.format(gt, ch),
+            method='GET',
+            header=header,
+        )
+        validate = data['data']['validate']
+        '''
+
+    return validate, ch
+
+
+async def _upass(header: Dict):
+    # 警告：使用该服务（例如某RR等）需要注意风险问题
+    # 本项目不以任何形式提供相关接口
+    # 代码来源：GITHUB项目MIT开源
+    header['DS'] = get_ds_token(f'is_high=false')
+    raw_data = await _mhy_request(
+        url=VERIFICATION_URL,
+        method='GET',
+        header=header,
+    )
+    gt = raw_data['data']['gt']
+    ch = raw_data['data']['challenge']
+
+    vl, ch = await _pass(gt, ch, header)
+
+    header['DS'] = get_ds_token(
+        '',
+        {
+            'geetest_challenge': ch,
+            'geetest_validate': vl,
+            'geetest_seccode': f'{vl}|jordan',
+        },
+    )
+    _ = await _mhy_request(
+        url=VERIFY_URL,
+        method='POST',
+        header=header,
+        data={
+            'geetest_challenge': ch,
+            'geetest_validate': vl,
+            'geetest_seccode': f'{vl}|jordan',
+        },
+    )
+
+
 async def _mhy_request(
     url: str,
     method: Literal['GET', 'POST'] = 'GET',
@@ -696,7 +767,7 @@ async def _mhy_request(
             return text_data
         raw_data = await req.json()
         if 'retcode' in raw_data and raw_data['retcode'] == 1034:
-            await _pass(header)
+            await _upass(header)
         return raw_data
     except Exception:
         logger.exception(f'访问{url}失败！')

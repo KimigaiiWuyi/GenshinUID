@@ -4,6 +4,7 @@ from typing import Any, Tuple
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot import on_regex, on_command
+from nonebot.permission import SUPERUSER
 from nonebot.params import CommandArg, RegexGroup
 from nonebot.adapters.qqguild import Message, MessageEvent, MessageSegment
 
@@ -13,9 +14,9 @@ from ..utils.nonebot2.perm import DIRECT
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..utils.nonebot2.rule import FullCommand
-from .add_ck import deal_ck, get_ck_by_stoken
 from ..utils.message.cast_type import cast_to_int
 from ..utils.exception.handle_exception import handle_exception
+from .add_ck import deal_ck, get_ck_by_stoken, get_ck_by_all_stoken
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
 
 add_cookie = on_command('添加', permission=DIRECT)
@@ -35,6 +36,14 @@ refresh_ck = on_command(
     block=True,
     rule=FullCommand(),
 )
+refresh_all_ck = on_command(
+    '刷新全部CK',
+    aliases={'刷新全部ck', '刷新全部Ck', '刷新全部Cookies'},
+    priority=priority,
+    block=True,
+    rule=FullCommand(),
+    permission=SUPERUSER,
+)
 bind = on_regex(
     r'^(绑定|切换|解绑|删除)(uid|UID|mys|MYS)([0-9]+)?$', priority=priority
 )
@@ -44,6 +53,17 @@ get_qrcode_login = on_command(
     permission=DIRECT,
     rule=FullCommand(),
 )
+
+
+@refresh_all_ck.handle()
+async def send_refresh_all_ck_msg(
+    matcher: Matcher,
+):
+    logger.info('开始执行[刷新全部CK]')
+    im = await get_ck_by_all_stoken()
+    if isinstance(im, str):
+        await matcher.finish(im)
+    await matcher.finish(MessageSegment.image(im))
 
 
 @refresh_ck.handle()

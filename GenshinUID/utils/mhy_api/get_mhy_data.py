@@ -702,24 +702,27 @@ async def _upass(header: Dict):
 
     vl, ch = await _pass(gt, ch, header)
 
-    header['DS'] = get_ds_token(
-        '',
-        {
-            'geetest_challenge': ch,
-            'geetest_validate': vl,
-            'geetest_seccode': f'{vl}|jordan',
-        },
-    )
-    _ = await _mhy_request(
-        url=VERIFY_URL,
-        method='POST',
-        header=header,
-        data={
-            'geetest_challenge': ch,
-            'geetest_validate': vl,
-            'geetest_seccode': f'{vl}|jordan',
-        },
-    )
+    if vl:
+        header['DS'] = get_ds_token(
+            '',
+            {
+                'geetest_challenge': ch,
+                'geetest_validate': vl,
+                'geetest_seccode': f'{vl}|jordan',
+            },
+        )
+        _ = await _mhy_request(
+            url=VERIFY_URL,
+            method='POST',
+            header=header,
+            data={
+                'geetest_challenge': ch,
+                'geetest_validate': vl,
+                'geetest_seccode': f'{vl}|jordan',
+            },
+        )
+    else:
+        return True
 
 
 async def _mhy_request(

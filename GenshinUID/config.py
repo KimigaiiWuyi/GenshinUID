@@ -1,6 +1,7 @@
 from typing import Set
+
 from nonebot import get_driver
-from pydantic import BaseModel, Field
+from pydantic import Field, BaseModel
 
 
 class Config(BaseModel):

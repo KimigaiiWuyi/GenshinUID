@@ -96,13 +96,11 @@ async def sign_in(uid) -> str:
     # 获取签到列表
     sign_list = await get_sign_list(uid)
     status = sign_data['message']
+    # 获取签到奖励物品，拿旧的总签到天数 + 1 为新的签到天数，再 -1 即为今日奖励物品的下标
     getitem = sign_list['data']['awards'][
-        int(sign_info['total_sign_day']) - 1
-    ]['name']
-    getnum = sign_list['data']['awards'][int(sign_info['total_sign_day']) - 1][
-        'cnt'
+        int(sign_info['total_sign_day']) +1 - 1
     ]
-    get_im = f'本次签到获得{getitem}x{getnum}'
+    get_im = f'本次签到获得{getitem["name"]}x{getitem["getnum"]}'
     new_sign_info = await get_sign_info(uid)
     new_sign_info = new_sign_info['data']
     day_of_month = int(new_sign_info['today'].split('-')[-1])

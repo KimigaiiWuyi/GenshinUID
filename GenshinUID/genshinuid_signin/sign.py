@@ -100,7 +100,7 @@ async def sign_in(uid) -> str:
     getitem = sign_list['data']['awards'][
         int(sign_info['total_sign_day']) + 1 - 1
     ]
-    get_im = f'本次签到获得{getitem["name"]}x{getitem["getnum"]}'
+    get_im = f'本次签到获得{getitem["name"]}x{getitem["cnt"]}'
     new_sign_info = await get_sign_info(uid)
     new_sign_info = new_sign_info['data']
     day_of_month = int(new_sign_info['today'].split('-')[-1])

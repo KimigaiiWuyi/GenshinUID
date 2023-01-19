@@ -4679,5 +4679,67 @@
         
       }
     }
+  },
+  "饰铁之花": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+12;elementalMastery+48",
+        "2": "addAtk+15;elementalMastery+60",
+        "3": "addAtk+18;elementalMastery+72",
+        "4": "addAtk+21;elementalMastery+84",
+        "5": "addAtk+24;elementalMastery+96",
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 8,
+      "extra": {
+        
+      }
+    }
+  },
+  "苇海信标": {
+    "normal": {
+      "normal_effect": {
+        "1": "addHp+32",
+        "2": "addHp+40",
+        "3": "addHp+48",
+        "4": "addHp+56",
+        "5": "addHp+64"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+40",
+        "2": "addAtk+50",
+        "3": "addAtk+60",
+        "4": "addAtk+70",
+        "5": "addAtk+80",
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 8,
+      "extra": {
+        
+      }
+    }
   }
 }

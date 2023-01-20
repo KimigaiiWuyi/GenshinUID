@@ -269,7 +269,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             else:
                 parameter_list['name'] = fill_label(label_name, index)
                 result[fill_label(label_name, index)] = parameter_list
-        elif '治疗' in label_name:
+        elif '治疗' in label_name or '回复' in label_name:
             parameter_list['name'] = fill_label(label_name, index)
             result[fill_label(label_name, index)] = parameter_list
         elif '护盾' in label_name:

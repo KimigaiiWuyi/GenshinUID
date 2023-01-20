@@ -248,7 +248,7 @@ class Character:
 
         char_raw = await get_char_info(name=char_name_covert, mode='char')
         self.char_id = await name_to_avatar_id(char_name_covert)
-        if not self.char_id:
+        if not self.char_id and char_name != '旅行者':
             return {}
         if char_raw is not None and 'errcode' in char_raw:
             char_raw = char_data = await convert_ambr_to_minigg(self.char_id)

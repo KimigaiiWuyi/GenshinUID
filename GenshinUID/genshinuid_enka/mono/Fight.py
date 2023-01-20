@@ -105,7 +105,7 @@ class Fight:
 
             # 正常伤害
             if not dmg:
-                if '治疗' in power_name:
+                if '治疗' in power_name or '回复' in power_name:
                     dmg = await self.get_heal(char)
                 elif '护盾' in power_name:
                     dmg = await self.get_shield(char)

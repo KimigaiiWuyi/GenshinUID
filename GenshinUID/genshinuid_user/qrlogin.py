@@ -9,8 +9,8 @@ import qrcode
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from qrcode.constants import ERROR_CORRECT_L
+from nonebot.adapters.qqguild import MessageSegment
 
-from ..utils.nonebot2.send import local_image
 from ..utils.mhy_api.get_mhy_data import (
     check_qrcode,
     get_cookie_token,
@@ -65,10 +65,10 @@ async def refresh(
 async def qrcode_login(matcher: Matcher, user_id) -> str:
     code_data = await create_qrcode_url()
     try:
-        await matcher.send('请使用米游社扫描下方二维码登录：')
         await matcher.send(
-            local_image(get_qrcode_base64(code_data["url"], False))
+            MessageSegment.file_image(get_qrcode_base64(code_data["url"]))  # type: ignore
         )
+        await matcher.send('请绑定UID之后使用米游社扫描上方二维码登录')
     except Exception as e:
         logger.debug(e)
         logger.warning('[扫码登录] {user_id} 图片发送失败')

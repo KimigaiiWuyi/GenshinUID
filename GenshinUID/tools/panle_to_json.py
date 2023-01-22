@@ -74,6 +74,8 @@ SAMPLE = {
     '旅行者(风)': 'A扩散伤害',
     '流浪者': 'E空居·不生断伤害',
     '珐露珊': 'Q伤害',
+    '艾尔海森': 'E1枚光幕攻击伤害(蔓激化)',
+    '瑶瑶': 'E白玉萝卜治疗量',
 }
 
 
@@ -93,8 +95,14 @@ async def get_misc_info(mode: str, name: str):
 
 
 async def getEquipName(name: str) -> str:
+    if name == '花神':
+        name = '乐园遗落之花'
+    elif name == '饰金':
+        name = '饰金之梦'
+    print(name)
     r = await get_misc_info('artifacts', name)
     re = r['name']
+    print(re)
     return re
 
 
@@ -104,7 +112,7 @@ async def panle2Json() -> None:
       访问DATA_PATH并转换数据为dmgMap.json。
     '''
     wb = openpyxl.load_workbook(
-        str(DATA_PATH / '参考面板3.3.xlsx'), data_only=True
+        str(DATA_PATH / '参考面板3.4.xlsx'), data_only=True
     )
     sheet = wb.active
 
@@ -193,7 +201,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 336:
+            if row == 344:
                 print('ok!')
                 result[char_temp] = char_result
         else:

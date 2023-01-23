@@ -8,7 +8,7 @@ with open(path / 'all_achi.json', "r", encoding='UTF-8') as f:
 with open(path / 'daily_achi.json', "r", encoding='UTF-8') as f:
     daily_achi = json.load(f)
 
-daily_template = '''委托：【{}】
+daily_template = '''任务：【{}】
 成就：【{}】
 描述：【{}】
 攻略：【{}】

@@ -47,9 +47,9 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None) -> str:
                 raw_data[i].extend(gachalogs_history[i])
 
     if raw_data == {}:
-        return '你还没有绑定过Stoken噢~'
+        return '你还没有绑定过Stoken噢~\n请加好友私聊Bot[扫码登陆]以获取Stoken'
     if not raw_data:
-        return '你还没有绑定过Stoken或者Stoken已失效~'
+        return '你还没有绑定过Stoken或者Stoken已失效~\n请加好友私聊Bot[扫码登陆]以获取Stoken'
 
     # 校验值 & 两个版本后删除这段
     temp_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}

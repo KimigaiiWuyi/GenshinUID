@@ -56,16 +56,20 @@ async def refresh(
             break
     return True, json.loads(status_data['data']['payload']['raw'])
 
+
 # 发送聊天记录
 async def send_forward_msg(
-        bot: Bot,
-        userid: int,
-        name: str,
-        uin: str,
-        msgs: List[str],
+    bot: Bot,
+    userid: int,
+    name: str,
+    uin: str,
+    msgs: List[str],
 ):
     def to_json(msg):
-        return {"type": "node", "data": {"name": name, "uin": uin, "content": msg}}
+        return {
+            "type": "node",
+            "data": {"name": name, "uin": uin, "content": msg},
+        }
 
     messages = [to_json(msg) for msg in msgs]
     await bot.call_api(
@@ -76,10 +80,14 @@ async def send_forward_msg(
 async def qrcode_login(bot, user_id) -> str:
     code_data = await create_qrcode_url()
     try:
-        im=[]
+        im = []
         im.append('请使用米游社扫描下方二维码登录：')
-        im.append(f'[CQ:image,file=base64://{get_qrcode_base64(code_data["url"])}]')
-        im.append('免责声明:您将通过扫码完成获取米游社sk以及ck。\n本Bot将不会保存您的登录状态。\n我方仅提供米游社查询及相关游戏内容服务,\n若您的账号封禁、被盗等处罚与我方无关。\n害怕风险请勿扫码~')
+        im.append(
+            f'[CQ:image,file=base64://{get_qrcode_base64(code_data["url"])}]'
+        )
+        im.append(
+            '免责声明:您将通过扫码完成获取米游社sk以及ck。\n本Bot将不会保存您的登录状态。\n我方仅提供米游社查询及相关游戏内容服务,\n若您的账号封禁、被盗等处罚与我方无关。\n害怕风险请勿扫码~'
+        )
         await send_forward_msg(bot, user_id, "扫码小助手", str(user_id), im)
     except Exception:
         logger.warning('[扫码登录] {user_id} 图片发送失败')

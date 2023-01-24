@@ -76,10 +76,10 @@ async def draw_gcg_info(uid: str) -> Union[bytes, str]:
         file_name = f'{card["id"]}.png'
         path = CARD_PATH / file_name
         if path.exists():
-            card_img = Image.open(path)
+            card_img = Image.open(path).resize((160, 275))
         else:
             await download(card['image'], 9, file_name)
-            card_img = Image.open(path)
+            card_img = Image.open(path).resize((160, 275))
 
         img.paste(card_img, (65 + i * 204, 198), card_img)
 

@@ -8769,5 +8769,279 @@
             0.0,
             0.0
         ]
+    },
+    {
+        "talentId": 771,
+        "nameTextMapHash": 2088049169,
+        "descTextMapHash": 2207252855,
+        "icon": "UI_Talent_S_Yaoyao_01",
+        "mainCostItemId": 1177,
+        "mainCostItemCount": 1,
+        "openConfig": "Yaoyao_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            8.0,
+            0.15000000596046448,
+            15.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 772,
+        "nameTextMapHash": 1185801489,
+        "descTextMapHash": 2615149191,
+        "icon": "UI_Talent_S_Yaoyao_02",
+        "prevTalent": 771,
+        "mainCostItemId": 1177,
+        "mainCostItemCount": 1,
+        "openConfig": "Yaoyao_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            0.800000011920929,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 773,
+        "nameTextMapHash": 1513031537,
+        "descTextMapHash": 2456299903,
+        "icon": "UI_Talent_U_Yaoyao_01",
+        "prevTalent": 772,
+        "mainCostItemId": 1177,
+        "mainCostItemCount": 1,
+        "openConfig": "Yaoyao_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 774,
+        "nameTextMapHash": 2674638561,
+        "descTextMapHash": 2648079719,
+        "icon": "UI_Talent_S_Yaoyao_03",
+        "prevTalent": 773,
+        "mainCostItemId": 1177,
+        "mainCostItemCount": 1,
+        "openConfig": "Yaoyao_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.003000000026077032,
+            8.0,
+            120.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 775,
+        "nameTextMapHash": 738869801,
+        "descTextMapHash": 3407006263,
+        "icon": "UI_Talent_U_Yaoyao_02",
+        "prevTalent": 774,
+        "mainCostItemId": 1177,
+        "mainCostItemCount": 1,
+        "openConfig": "Yaoyao_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 776,
+        "nameTextMapHash": 4046679753,
+        "descTextMapHash": 3305258887,
+        "icon": "UI_Talent_S_Yaoyao_04",
+        "prevTalent": 775,
+        "mainCostItemId": 1177,
+        "mainCostItemCount": 1,
+        "openConfig": "Yaoyao_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.75,
+            0.07500000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 781,
+        "nameTextMapHash": 1459644873,
+        "descTextMapHash": 1350239855,
+        "icon": "UI_Talent_S_Alhatham_02",
+        "mainCostItemId": 1178,
+        "mainCostItemCount": 1,
+        "openConfig": "Alhatham_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.2000000476837158,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 782,
+        "nameTextMapHash": 3637950009,
+        "descTextMapHash": 1314977759,
+        "icon": "UI_Talent_S_Alhatham_01",
+        "prevTalent": 781,
+        "mainCostItemId": 1178,
+        "mainCostItemCount": 1,
+        "openConfig": "Alhatham_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            50.0,
+            8.0,
+            4.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 783,
+        "nameTextMapHash": 2621846313,
+        "descTextMapHash": 3590318815,
+        "icon": "UI_Talent_U_Alhatham_01",
+        "prevTalent": 782,
+        "mainCostItemId": 1178,
+        "mainCostItemCount": 1,
+        "openConfig": "Alhatham_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 784,
+        "nameTextMapHash": 1055939881,
+        "descTextMapHash": 2223376895,
+        "icon": "UI_Talent_S_Alhatham_03",
+        "prevTalent": 783,
+        "mainCostItemId": 1178,
+        "mainCostItemCount": 1,
+        "openConfig": "Alhatham_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            30.0,
+            15.0,
+            0.10000000149011612,
+            15.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 785,
+        "nameTextMapHash": 3387153385,
+        "descTextMapHash": 822413127,
+        "icon": "UI_Talent_U_Alhatham_02",
+        "prevTalent": 784,
+        "mainCostItemId": 1178,
+        "mainCostItemCount": 1,
+        "openConfig": "Alhatham_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 786,
+        "nameTextMapHash": 540494281,
+        "descTextMapHash": 3238715695,
+        "icon": "UI_Talent_S_Alhatham_04",
+        "prevTalent": 785,
+        "mainCostItemId": 1178,
+        "mainCostItemCount": 1,
+        "openConfig": "Alhatham_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.699999988079071,
+            6.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
     }
 ]

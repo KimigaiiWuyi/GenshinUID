@@ -3,9 +3,10 @@ import json
 import base64
 import asyncio
 from http.cookies import SimpleCookie
-from typing import Any, Tuple, Union, Literal
+from typing import Any, Tuple, Union, Literal, List
 
 import qrcode
+from nonebot.adapters.onebot.v11 import Bot
 from nonebot.log import logger
 from qrcode.constants import ERROR_CORRECT_L
 

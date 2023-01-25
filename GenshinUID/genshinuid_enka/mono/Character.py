@@ -866,6 +866,8 @@ async def text_to_effect(name: str, value: float) -> str:
         str = f'physicalDmgBonus+{value}'
     elif '元素伤害加成' in name:
         str = f'{ELEMENT_MAP[name[0]]}DmgBonus+{value}'
+    elif '治疗加成' in name:
+        str = f'healBonus+{value}'
     return str
 
 

@@ -8,12 +8,20 @@ from typing import Any, Tuple, Union, Literal
 import qrcode
 from nonebot.log import logger
 
+from ..utils.message.send_msg import send_forward_msg
 from ..utils.mhy_api.get_mhy_data import (
     check_qrcode,
     get_cookie_token,
     create_qrcode_url,
     get_stoken_by_game_token,
 )
+
+disnote = '''免责声明:您将通过扫码完成获取米游社sk以及ck。
+本Bot将不会保存您的登录状态。
+我方仅提供米游社查询及相关游戏内容服务
+若您的账号封禁、被盗等处罚与我方无关。
+害怕风险请勿扫码!
+'''
 
 
 def get_qrcode_base64(url):
@@ -58,12 +66,13 @@ async def refresh(
 
 async def qrcode_login(bot, user_id) -> str:
     code_data = await create_qrcode_url()
-    im = (
-        "请扫描下方二维码登录："
-        f"[CQ:image,file=base64://{get_qrcode_base64(code_data['url'])}]"
-    )
     try:
-        await bot.send_private_msg(user_id=user_id, message=im)
+        im = []
+        qrc = f'[CQ:image,file=base64://{get_qrcode_base64(code_data["url"])}]'
+        im.append('请使用米游社扫描下方二维码登录：')
+        im.append(qrc)
+        im.append(disnote)
+        await send_forward_msg(bot, user_id, "扫码小助手", str(user_id), im)
     except Exception:
         logger.warn("[扫码登录] {user_id} 图片发送失败")
     status, game_token_data = await refresh(code_data)

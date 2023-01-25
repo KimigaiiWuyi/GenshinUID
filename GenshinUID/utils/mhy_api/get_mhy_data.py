@@ -10,7 +10,6 @@ from typing import Any, Dict, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-from .mhy_api_tools import get_ds_token
 from .mhy_api import VERIFY_URL, VERIFICATION_URL
 from ...genshinuid_config.default_config import string_config
 from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies
@@ -691,7 +690,7 @@ async def _upass(header: Dict):
     # 警告：使用该服务（例如某RR等）需要注意风险问题
     # 本项目不以任何形式提供相关接口
     # 代码来源：GITHUB项目MIT开源
-    header['DS'] = get_ds_token(f'is_high=false')
+    header['DS'] = get_ds_token('is_high=false')
     raw_data = await _mhy_request(
         url=VERIFICATION_URL,
         method='GET',

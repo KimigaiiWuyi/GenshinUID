@@ -18,6 +18,13 @@ from ..utils.mhy_api.get_mhy_data import (
     get_stoken_by_game_token,
 )
 
+disnote = '''免责声明:您将通过扫码完成获取米游社sk以及ck。
+本Bot将不会保存您的登录状态。
+我方仅提供米游社查询及相关游戏内容服务
+若您的账号封禁、被盗等处罚与我方无关。
+害怕风险请勿扫码!
+'''
+
 
 def get_qrcode_base64(url):
     qr = qrcode.QRCode(
@@ -68,6 +75,7 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
                 f'base64://{get_qrcode_base64(code_data["url"])}'
             )
         )
+        await matcher.send(disnote)
     except Exception:
         logger.warning('[扫码登录] {user_id} 图片发送失败')
     status, game_token_data = await refresh(code_data)

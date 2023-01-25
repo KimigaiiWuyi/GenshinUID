@@ -13,7 +13,9 @@ async def calc_reg_time(uid: str):
         # 获取时间戳
         reg_time = json.loads(raw_data['data']['data'])["1"]
         # 转换为日期
-        regtime_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(reg_time))
+        regtime_date = time.strftime(
+            "%Y-%m-%d %H:%M:%S", time.localtime(reg_time)
+        )
         # logger.debug(reg_time)
         return f'UID{uid} 的注册时间为\n{regtime_date}'
     except Exception as e:

@@ -69,7 +69,6 @@ async def send_reg_ann(
 ):
     await matcher.finish(sub_ann(event.room_wxid))
 
-
 @unreg_ann.handle()
 @handle_exception('取消原神公告', '取消设置原神公告失败')
 async def send_unreg_ann(

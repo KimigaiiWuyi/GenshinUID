@@ -13,5 +13,5 @@ async def calc_reg_time(uid: str):
     reg_time = json.loads(raw_data['data']['data'])["1"]
     # 转换为日期
     regtime_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(reg_time))
-    logger.debug(reg_time)
+    #logger.debug(reg_time)
     return regtime_date

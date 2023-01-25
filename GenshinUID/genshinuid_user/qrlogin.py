@@ -3,13 +3,13 @@ import json
 import base64
 import asyncio
 from http.cookies import SimpleCookie
-from typing import Any, List, Tuple, Union, Literal
+from typing import Any, Tuple, Union, Literal
 
 import qrcode
 from nonebot.log import logger
-from nonebot.adapters.onebot.v11 import Bot
 from qrcode.constants import ERROR_CORRECT_L
 
+from ..utils.message.send_msg import send_forward_msg
 from ..utils.mhy_api.get_mhy_data import (
     check_qrcode,
     get_cookie_token,
@@ -56,26 +56,6 @@ async def refresh(
             # print(status_data['data']['payload']['raw'])
             break
     return True, json.loads(status_data['data']['payload']['raw'])
-
-
-# 发送聊天记录
-async def send_forward_msg(
-    bot: Bot,
-    userid: int,
-    name: str,
-    uin: str,
-    msgs: List[str],
-):
-    def to_json(msg):
-        return {
-            "type": "node",
-            "data": {"name": name, "uin": uin, "content": msg},
-        }
-
-    messages = [to_json(msg) for msg in msgs]
-    await bot.call_api(
-        "send_private_forward_msg", user_id=userid, messages=messages
-    )
 
 
 async def qrcode_login(bot, user_id) -> str:

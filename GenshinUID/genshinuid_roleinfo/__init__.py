@@ -117,6 +117,6 @@ async def regtime(
     im = await calc_reg_time(uid)
 
     if isinstance(im, str):
-        await matcher.finish(f'UID{uid} 的注册时间为\n{im}')
+        await matcher.finish(im)
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

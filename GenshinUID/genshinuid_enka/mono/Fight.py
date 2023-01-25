@@ -361,6 +361,11 @@ class Fight:
         else:
             base = effect_prop * power.percent + power.value
 
+        if char.char_name == '珊瑚宫心海':
+            hp = char.real_prop['hp']
+            hb = char.real_prop['healBonus']
+            add_dmg += 0.15 * hp * hb
+
         # 基本乘区 = 有效数值(例如攻击力) * 倍率 + 固定值 + 激化区 + 额外加成值 + 特殊加成值
         base_area = base + reaction_power + add_dmg + char.sp.addDmg
         if base_area_plus != 1:
@@ -448,7 +453,7 @@ class Fight:
         # 获得这次攻击的减伤乘区(抗性区+防御区)
         d = await self.get_extra_d(char)
         i_d = await self.get_extra_ignoreD(char)
-        logger.debug(self.enemy.__dict__)
+        # logger.debug(self.enemy.__dict__)
         proof = await self.enemy.get_dmg_proof(dmg_type, d, i_d)
         # 获得这次攻击的增幅乘区
         _char = char if is_single else None

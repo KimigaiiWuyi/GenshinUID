@@ -13,7 +13,7 @@ hoshino_bot = hoshino.get_bot()
 
 
 @sv.on_fullmatch(('刷新全部CK', '刷新全部ck', '刷新全部Ck', '刷新全部Cookies'))
-async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
+async def send_refresh_allck_msg(bot: HoshinoBot, ev: CQEvent):
     if ev.sender:
         qid = int(ev.sender['user_id'])
     else:
@@ -28,7 +28,7 @@ async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
 
 
 @sv.on_fullmatch(('刷新CK', '刷新ck', '刷新Ck', '刷新Cookies'))
-async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
+async def send_refresh_ck_msg(bot: HoshinoBot, ev: CQEvent):
     logger.info('开始执行[刷新ck]')
     if ev.sender:
         qid = ev.sender['user_id']

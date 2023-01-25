@@ -1,4 +1,6 @@
 import base64
+import random
+import asyncio
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
@@ -122,8 +124,7 @@ async def check_ann_state():
             continue
         try:
             img = await ann_detail_card(ann_id)#防止抛出异常报错
-            logger.info('[原神公告] 推送完毕, 更新数据库')
-            string_config.set_config('Ann_Ids', new_ids)
+            
             for group in sub_list:
                 try:
                     bot = get_bot()
@@ -133,7 +134,11 @@ async def check_ann_state():
                         to_wxid=str(group),
                         file_path="base64://" + b64img.decode(),
                     )
+                    await asyncio.sleep(random.uniform(1, 3))
                 except Exception as e:
                     logger.exception(e)
         except Exception as e:
             logger.exception(e)
+
+    logger.info('[原神公告] 推送完毕, 更新数据库')
+    string_config.set_config('Ann_Ids', new_ids)

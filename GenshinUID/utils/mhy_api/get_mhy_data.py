@@ -8,7 +8,7 @@ from string import digits, ascii_letters
 from typing import Any, Dict, Literal, Optional
 
 from nonebot.log import logger
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientResponse
 
 from .mhy_api_tools import get_ds_token
 from .mhy_api import VERIFY_URL, VERIFICATION_URL
@@ -27,6 +27,8 @@ from ..mhy_api.mhy_api import (  # noqa
     SIGN_URL,
     GET_STOKEN,
     GCG_INFO_OS,
+    REG_TIME_CN,
+    REG_TIME_OS,
     SIGN_URL_OS,
     CHECK_QRCODE,
     CREATE_QRCODE,
@@ -34,12 +36,14 @@ from ..mhy_api.mhy_api import (  # noqa
     SIGN_LIST_URL,
     DAILY_NOTE_URL,
     GET_STOKEN_URL,
+    HK4E_LOGIN_URL,
     GET_AUTHKEY_URL,
     PLAYER_INFO_URL,
     SIGN_INFO_URL_OS,
     SIGN_LIST_URL_OS,
     DAILY_NOTE_URL_OS,
     GET_GACHA_LOG_URL,
+    HK4E_LOGIN_URL_OS,
     MONTHLY_AWARD_URL,
     CALCULATE_INFO_URL,
     PLAYER_INFO_URL_OS,
@@ -778,3 +782,100 @@ async def _mhy_request(
     finally:
         if is_temp_sess:
             await sess.close()
+
+
+async def get_hk4e_token(
+    uid: str, 
+    sess: Optional[ClientSession] = None,
+    use_proxy: Optional[bool] = False,
+):
+    # 获取e_hk4e_token
+    server_id = RECOGNIZE_SERVER.get(uid[0])
+    header = {
+        'Cookie': await owner_cookies(uid),
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Referer': 'https://webstatic.mihoyo.com/',
+        'Origin': 'https://webstatic.mihoyo.com'
+    }
+    if int(str(uid)[0]) < 6:
+        url= HK4E_LOGIN_URL
+        data= {
+            "game_biz": "hk4e_cn",
+            "lang": "zh-cn",
+            "uid": f"{uid}",
+            "region": f"{server_id}"
+        }
+    else:
+        url= HK4E_LOGIN_URL_OS
+        data= {
+            "game_biz": "hk4e_global",
+            "lang": "zh-cn",
+            "uid": f"{uid}",
+            "region": f"{server_id}"
+        }
+        use_proxy = True
+    is_temp_sess = False
+    if sess is None:
+        sess = ClientSession()
+        is_temp_sess = True
+    try:
+        req = await sess.request(
+            method='POST',
+            url=url,
+            headers=header,
+            json=data,
+            proxy=PROXY_URL if use_proxy else None,
+            timeout=300,
+        )
+        raw_data = await req.json()
+        if 'retcode' in raw_data and raw_data['retcode'] == 0:
+            ck = req.cookies['e_hk4e_token'].key + '=' + req.cookies['e_hk4e_token'].value
+            #logger.debug(f'【hk4e_request】请求如下:\n{raw_data}')
+            return ck
+        if 'retcode' in raw_data and raw_data['retcode'] == 1034:
+            await _upass(header)
+
+    except Exception:
+        logger.exception(f'访问{url}失败！')
+        return {'retcode': -1}
+    finally:
+        if is_temp_sess:
+            await sess.close()
+
+async def get_regtime_data(
+    uid: str
+)-> Any:
+    server_id = RECOGNIZE_SERVER.get(uid[0])
+    hk4e_token = await get_hk4e_token(uid)
+    ck_token = await owner_cookies(uid)
+    if int(str(uid)[0]) < 6:
+        HEADER = copy.deepcopy(_HEADER)
+        HEADER['Cookie'] = f'{hk4e_token};{ck_token}'
+        data = await _mhy_request(
+            url=REG_TIME_CN,
+            method='GET',
+            header=HEADER,
+            params={
+                'game_biz': 'hk4e_cn',
+                'lang': 'zh-cn',
+                'badge_uid': uid,
+                'badge_region': server_id,
+            },
+        )
+    else:
+        HEADER = copy.deepcopy(_HEADER_OS)
+        HEADER['Cookie'] = await owner_cookies(uid)
+        HEADER['DS'] = generate_dynamic_secret()
+        data = await _mhy_request(
+            url=REG_TIME_OS,
+            method='GET',
+            header=HEADER,
+            params={
+                'game_biz': 'hk4e_global',
+                'lang': 'zh-cn',
+                'badge_uid': uid,
+                'badge_region': server_id,
+            },
+            use_proxy=True,
+        )
+    return data

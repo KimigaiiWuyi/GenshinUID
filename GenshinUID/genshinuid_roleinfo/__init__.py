@@ -16,7 +16,7 @@ from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
 
 get_role_info = on_command('uid', aliases={'查询'})
-get_reg_time = on_command('原神注册时间', aliases={'注册时间','查询注册时间'})
+get_reg_time = on_command('原神注册时间', aliases={'注册时间', '查询注册时间'})
 
 
 @get_role_info.handle()
@@ -83,6 +83,7 @@ async def send_role_info(
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
 
+
 @get_reg_time.handle()
 async def regtime(
     event: TextMessageEvent,
@@ -119,4 +120,3 @@ async def regtime(
         await matcher.finish(f'UID{uid} 的注册时间为\n{im}')
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
-        

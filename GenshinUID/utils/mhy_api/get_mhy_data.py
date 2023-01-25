@@ -785,7 +785,7 @@ async def _mhy_request(
 
 
 async def get_hk4e_token(
-    uid: str, 
+    uid: str,
     sess: Optional[ClientSession] = None,
     use_proxy: Optional[bool] = False,
 ):
@@ -795,23 +795,23 @@ async def get_hk4e_token(
         'Cookie': await owner_cookies(uid),
         'Content-Type': 'application/json;charset=UTF-8',
         'Referer': 'https://webstatic.mihoyo.com/',
-        'Origin': 'https://webstatic.mihoyo.com'
+        'Origin': 'https://webstatic.mihoyo.com',
     }
     if int(str(uid)[0]) < 6:
-        url= HK4E_LOGIN_URL
-        data= {
+        url = HK4E_LOGIN_URL
+        data = {
             "game_biz": "hk4e_cn",
             "lang": "zh-cn",
             "uid": f"{uid}",
-            "region": f"{server_id}"
+            "region": f"{server_id}",
         }
     else:
-        url= HK4E_LOGIN_URL_OS
-        data= {
+        url = HK4E_LOGIN_URL_OS
+        data = {
             "game_biz": "hk4e_global",
             "lang": "zh-cn",
             "uid": f"{uid}",
-            "region": f"{server_id}"
+            "region": f"{server_id}",
         }
         use_proxy = True
     is_temp_sess = False
@@ -829,8 +829,12 @@ async def get_hk4e_token(
         )
         raw_data = await req.json()
         if 'retcode' in raw_data and raw_data['retcode'] == 0:
-            ck = req.cookies['e_hk4e_token'].key + '=' + req.cookies['e_hk4e_token'].value
-            #logger.debug(f'【hk4e_request】请求如下:\n{raw_data}')
+            ck = (
+                req.cookies['e_hk4e_token'].key
+                + '='
+                + req.cookies['e_hk4e_token'].value
+            )
+            # logger.debug(f'【hk4e_request】请求如下:\n{raw_data}')
             return ck
         if 'retcode' in raw_data and raw_data['retcode'] == 1034:
             await _upass(header)
@@ -842,9 +846,8 @@ async def get_hk4e_token(
         if is_temp_sess:
             await sess.close()
 
-async def get_regtime_data(
-    uid: str
-)-> Any:
+
+async def get_regtime_data(uid: str) -> Any:
     server_id = RECOGNIZE_SERVER.get(uid[0])
     hk4e_token = await get_hk4e_token(uid)
     ck_token = await owner_cookies(uid)

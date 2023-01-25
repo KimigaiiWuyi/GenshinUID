@@ -245,6 +245,8 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
 
         if '炽焰箭' in label_name:
             continue
+        elif char == '珊瑚宫心海' and '提高' in label_name:
+            continue
         elif '元素爆发伤害提高' in label_name and char == '雷电将军':
             continue
         elif '持续时间' in label_name:

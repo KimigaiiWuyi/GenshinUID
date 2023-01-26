@@ -819,7 +819,7 @@ async def get_hk4e_token(uid: str):
             if 'retcode' in raw_data and raw_data['retcode'] == 0:
                 _k = resp.cookies['e_hk4e_token'].key
                 _v = resp.cookies['e_hk4e_token'].value
-                ck = f'{_k}+{_v}'
+                ck = f'{_k}={_v}'
                 return ck
             if 'retcode' in raw_data and raw_data['retcode'] == 1034:
                 await _upass(header)

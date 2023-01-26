@@ -3,11 +3,37 @@ import re
 from hoshino.typing import CQEvent, HoshinoBot
 
 from ..base import sv, logger
+from .get_regtime import calc_reg_time
 from .draw_roleinfo_card import draw_pic
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.mhy_api.convert_mysid_to_uid import convert_mysid
 from ..utils.draw_image_tools.send_image_tool import convert_img
+
+
+@sv.on_prefix(('原神注册时间', '注册时间'))
+async def regtime(bot, ev):
+    at = re.search(r'\[CQ:at,qq=(\d*)]', str(ev.message))
+
+    if at:
+        qid = int(at.group(1))
+    else:
+        if ev.sender:
+            qid = int(ev.sender['user_id'])
+        else:
+            return
+
+    uid = await select_db(qid, mode='uid')
+    uid = str(uid)
+
+    logger.info('开始执行[查询注册时间]')
+    logger.info('[查询注册时间]uid: {}'.format(uid))
+
+    if '未找到绑定的UID' in uid:
+        await bot.send(ev, UID_HINT)
+
+    im = await calc_reg_time(uid)
+    await bot.send(ev, im)
 
 
 @sv.on_rex(r'^()?()?()?([1256][0-9]{8})()?()?$')

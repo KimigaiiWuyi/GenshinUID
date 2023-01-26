@@ -39,7 +39,7 @@ async def import_gachalogs(history_url: str, uid: str) -> str:
         im = await save_gachalogs(uid, result)
         return im
     except Exception:
-        return f'导入失败，请检查你的Json文件！'
+        return '导入失败，请检查你的Json文件！'
 
 
 async def export_gachalogs(uid: str) -> dict:

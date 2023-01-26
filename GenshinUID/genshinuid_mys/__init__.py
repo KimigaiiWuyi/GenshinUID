@@ -1,4 +1,3 @@
-import asyncio
 from typing import Any, Tuple
 
 from nonebot.log import logger
@@ -15,9 +14,9 @@ from nonebot.adapters.ntchat import (
 from ..config import priority
 from .get_lots_data import get_lots_msg
 from .get_meme_card import get_meme_img
+from .get_mys_data import get_task_detail
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
-from .get_mys_data import get_region_task, get_task_detail
 from ..utils.exception.handle_exception import handle_exception
 
 get_task_adv = on_regex(

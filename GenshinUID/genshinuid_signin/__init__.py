@@ -15,8 +15,6 @@ try:
 except ImportError:
     from .sign import sign_in, daily_sign
 
-from nonebot_plugin_apscheduler import scheduler
-
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
 from ..utils.exception.handle_exception import handle_exception

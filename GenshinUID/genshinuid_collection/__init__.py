@@ -1,5 +1,3 @@
-from typing import Any, Tuple, Union
-
 from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher

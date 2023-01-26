@@ -1,4 +1,4 @@
-from typing import Any, Tuple, Union
+from typing import Any, Tuple
 
 from nonebot import on_regex
 from nonebot.log import logger

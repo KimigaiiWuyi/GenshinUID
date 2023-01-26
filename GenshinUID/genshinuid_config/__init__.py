@@ -1,16 +1,11 @@
-from typing import Any, Tuple, Union
+from typing import Any, Tuple
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import RegexGroup
 from nonebot import on_regex, on_command
 from nonebot.permission import SUPERUSER
-from nonebot.adapters.ntchat import (
-    Bot,
-    MessageEvent,
-    MessageSegment,
-    TextMessageEvent,
-)
+from nonebot.adapters.ntchat import Bot, MessageSegment, TextMessageEvent
 
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand

@@ -4,14 +4,12 @@ from nonebot import on_command
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from nonebot.adapters.ntchat.message import Message
-from nonebot.adapters.ntchat import Bot, MessageSegment
 
 from ..config import priority
 from ..genshinuid_meta import register_menu
 from ..utils.exception.handle_exception import handle_exception
 from .get_wiki_text import (
     char_wiki,
-    audio_wiki,
     foods_wiki,
     weapon_wiki,
     enemies_wiki,

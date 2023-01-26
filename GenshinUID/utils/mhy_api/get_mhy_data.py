@@ -10,7 +10,6 @@ from typing import Any, Dict, Literal, Optional
 from nonebot.log import logger
 from aiohttp import ClientSession
 
-from .mhy_api_tools import get_ds_token
 from .mhy_api import VERIFY_URL, VERIFICATION_URL
 from ...genshinuid_config.default_config import string_config
 from ..db_operation.db_operation import cache_db, get_stoken, owner_cookies

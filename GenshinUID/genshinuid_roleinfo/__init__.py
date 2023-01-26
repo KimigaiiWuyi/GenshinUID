@@ -12,14 +12,19 @@ from nonebot.adapters.onebot.v11 import (
     PrivateMessageEvent,
 )
 
+from .get_regtime import calc_reg_time
 from .draw_roleinfo_card import draw_pic
 from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.message.get_image_and_at import ImageAndAt
 from ..utils.exception.handle_exception import handle_exception
 
 get_role_info = on_command('uid', aliases={'查询'})
+get_reg_time = on_command(
+    '原神注册时间', aliases={'注册时间', '查询注册时间'}, rule=FullCommand()
+)
 
 
 @get_role_info.handle()
@@ -83,5 +88,33 @@ async def send_role_info(
         await matcher.finish(im)
     elif isinstance(im, bytes):
         await matcher.finish(MessageSegment.image(im))
+    else:
+        await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')
+
+
+@get_reg_time.handle()
+async def regtime(
+    event: Union[GroupMessageEvent, PrivateMessageEvent],
+    matcher: Matcher,
+    custom: ImageAndAt = Depends(),
+):
+    qid = event.user_id
+    at = custom.get_first_at()
+    if at:
+        qid = at
+
+    uid = await select_db(qid, mode='uid')
+    uid = str(uid)
+
+    logger.info('开始执行[查询注册时间]')
+    logger.info('[查询注册时间]uid: {}'.format(uid))
+
+    if '未找到绑定的UID' in uid:
+        await matcher.finish(UID_HINT)
+
+    im = await calc_reg_time(uid)
+
+    if isinstance(im, str):
+        await matcher.finish(im)
     else:
         await matcher.finish('发生了未知错误,请联系管理员检查后台输出!')

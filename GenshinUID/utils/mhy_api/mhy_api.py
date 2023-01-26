@@ -9,6 +9,10 @@ NEW_URL_OS = 'https://bbs-api-os.hoyolab.com'
 BBS_URL_OS = 'https://bbs-api-os.hoyolab.com'
 HK4_URL_OS = 'https://hk4e-api-os.hoyoverse.com'
 SIGN_URL_OS = 'https://sg-hk4e-api.hoyolab.com'
+ACT_URL_OS = 'https://sg-hk4e-api.hoyoverse.com'
+
+HK4E_LOGIN_URL = f'{OLD_URL}/common/badge/v1/login/account'
+HK4E_LOGIN_URL_OS = f'{OLD_URL_OS}/common/badge/v1/login/account'
 
 BBS_TASKLIST = f'{BBS_URL}/apihub/sapi/getUserMissionsState'
 
@@ -96,6 +100,10 @@ MIHOYO_BBS_PLAYER_INFO_URL_OS = (
 # 获取七圣召唤相关信息
 GCG_INFO = f'{NEW_URL}/game_record/app/genshin/api/gcg/basicInfo'
 GCG_INFO_OS = f'{NEW_URL_OS}/game_record/genshin/api/gcg/basicInfo'
+
+# 获取注册时间API 绘忆星辰
+REG_TIME_CN = f'{HK4_URL}/event/e20220928anniversary/game_data?'
+REG_TIME_OS = f'{ACT_URL_OS}/event/e20220928anniversary/game_data?'
 
 # 米游社的API列表
 bbs_Taskslist = f'{BBS_URL}/apihub/sapi/getUserMissionsState'

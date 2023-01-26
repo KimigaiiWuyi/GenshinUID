@@ -1,3 +1,6 @@
+import random
+import asyncio
+
 from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -92,9 +95,11 @@ async def check_ann_state():
     logger.info('[原神公告] 定时任务: 原神公告查询..')
     ids = string_config.get_config('Ann_Ids')
     sub_list = string_config.get_config('Ann_Groups')
+
     if not sub_list:
         logger.info('没有群订阅, 取消获取数据')
         return
+
     if not ids:
         ids = await ann().get_ann_ids()
         if not ids:
@@ -102,34 +107,32 @@ async def check_ann_state():
         string_config.set_config('Ann_Ids', ids)
         logger.info('初始成功, 将在下个轮询中更新.')
         return
-    new_ids = await ann().get_ann_ids()
 
+    new_ids = await ann().get_ann_ids()
     new_ann = set(ids) ^ set(new_ids)
+
     if not new_ann:
         logger.info('[原神公告] 没有最新公告')
         return
 
-    detail_list = []
     for ann_id in new_ann:
         if ann_id in black_ids:
             continue
         try:
-            img = await ann_detail_card(ann_id)
-            detail_list.append(MessageSegment.file_image(img))
+            img = await ann_detail_card(ann_id)  # 防止抛出异常报错
+            bot = get_bot()
+            for group in sub_list:
+                try:
+                    await bot.call_api(
+                        api='_post_messages',
+                        channel_id=group,
+                        content=img,
+                    )
+                    await asyncio.sleep(random.uniform(1, 3))
+                except Exception as e:
+                    logger.exception(e)
         except Exception as e:
             logger.exception(str(e))
 
     logger.info('[原神公告] 推送完毕, 更新数据库')
     string_config.set_config('Ann_Ids', new_ids)
-
-    for group in sub_list:
-        for msg in detail_list:
-            try:
-                bot = get_bot()
-                await bot.call_api(
-                    api='_post_messages',
-                    channel_id=group,
-                    content=msg,
-                )
-            except Exception as e:
-                logger.exception(e)

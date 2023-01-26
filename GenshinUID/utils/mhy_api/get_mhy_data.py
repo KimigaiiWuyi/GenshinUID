@@ -8,7 +8,7 @@ from string import digits, ascii_letters
 from typing import Any, Dict, Literal, Optional
 
 from nonebot.log import logger
-from aiohttp import ClientSession, ClientResponse
+from aiohttp import ClientSession
 
 from .mhy_api_tools import get_ds_token
 from .mhy_api import VERIFY_URL, VERIFICATION_URL
@@ -82,19 +82,19 @@ _HEADER = {
 }
 
 _HEADER_OS = {
-    "x-rpc-app_version": "1.5.0",
-    "x-rpc-client_type": "4",
-    "x-rpc-language": "zh-cn",
+    'x-rpc-app_version': '1.5.0',
+    'x-rpc-client_type': '4',
+    'x-rpc-language': 'zh-cn',
 }
 
 RECOGNIZE_SERVER = {
-    "1": "cn_gf01",
-    "2": "cn_gf01",
-    "5": "cn_qd01",
-    "6": "os_usa",
-    "7": "os_euro",
-    "8": "os_asia",
-    "9": "os_cht",
+    '1': 'cn_gf01',
+    '2': 'cn_gf01',
+    '5': 'cn_qd01',
+    '6': 'os_usa',
+    '7': 'os_euro',
+    '8': 'os_asia',
+    '9': 'os_cht',
 }
 
 ATTR = vars()
@@ -148,7 +148,7 @@ async def get_gacha_log_by_authkey(
                     return {}
                 if data == []:
                     break
-                end_id = data[-1]["id"]
+                end_id = data[-1]['id']
                 if data[-1] in full_data[gacha_name]:
                     for item in data:
                         if item not in full_data[gacha_name]:
@@ -545,32 +545,32 @@ async def get_gcg_info(uid: str):
 
 
 async def create_qrcode_url():
-    device_id: str = "".join(random.choices(ascii_letters + digits, k=64))
-    app_id: str = "4"
+    device_id: str = ''.join(random.choices(ascii_letters + digits, k=64))
+    app_id: str = '4'
     data = await _mhy_request(
         CREATE_QRCODE,
-        "POST",
+        'POST',
         header={},
-        data={"app_id": app_id, "device": device_id},
+        data={'app_id': app_id, 'device': device_id},
     )
-    url = data["data"]["url"]
-    ticket = url.split("ticket=")[1]
+    url = data['data']['url']
+    ticket = url.split('ticket=')[1]
     return {
-        "app_id": app_id,
-        "ticket": ticket,
-        "device": device_id,
-        "url": url,
+        'app_id': app_id,
+        'ticket': ticket,
+        'device': device_id,
+        'url': url,
     }
 
 
 async def check_qrcode(app_id: str, ticket: str, device: str):
     return await _mhy_request(
         CHECK_QRCODE,
-        "POST",
+        'POST',
         data={
-            "app_id": app_id,
-            "ticket": ticket,
-            "device": device,
+            'app_id': app_id,
+            'ticket': ticket,
+            'device': device,
         },
     )
 
@@ -578,10 +578,10 @@ async def check_qrcode(app_id: str, ticket: str, device: str):
 async def get_cookie_token(token: str, uid: str):
     return await _mhy_request(
         GET_COOKIE_TOKEN_BY_GAME_TOKEN,
-        "GET",
+        'GET',
         params={
-            "game_token": token,
-            "account_id": uid,
+            'game_token': token,
+            'account_id': uid,
         },
     )
 
@@ -624,29 +624,29 @@ async def basic_mhy_req(URL: str, uid: str, ck: Optional[str] = None) -> Dict:
 
 async def get_stoken_by_game_token(account_id: int, game_token: str):
     data = {
-        "account_id": account_id,
-        "game_token": game_token,
+        'account_id': account_id,
+        'game_token': game_token,
     }
     return await _mhy_request(
         GET_STOKEN,
-        "POST",
+        'POST',
         {
-            "x-rpc-app_version": "2.41.0",
-            "DS": generate_passport_ds(b=data),
-            "x-rpc-aigis": "",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "x-rpc-game_biz": "bbs_cn",
-            "x-rpc-sys_version": "11",
-            "x-rpc-device_id": uuid.uuid4().hex,
-            "x-rpc-device_fp": "".join(
+            'x-rpc-app_version': '2.41.0',
+            'DS': generate_passport_ds(b=data),
+            'x-rpc-aigis': '',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-rpc-game_biz': 'bbs_cn',
+            'x-rpc-sys_version': '11',
+            'x-rpc-device_id': uuid.uuid4().hex,
+            'x-rpc-device_fp': ''.join(
                 random.choices(ascii_letters + digits, k=13)
             ),
-            "x-rpc-device_name": "GenshinUid_login_device_lulu",
-            "x-rpc-device_model": "GenshinUid_login_device_lulu",
-            "x-rpc-app_id": "bll8iq97cem8",
-            "x-rpc-client_type": "2",
-            "User-Agent": "okhttp/4.8.0",
+            'x-rpc-device_name': 'GenshinUid_login_device_lulu',
+            'x-rpc-device_model': 'GenshinUid_login_device_lulu',
+            'x-rpc-app_id': 'bll8iq97cem8',
+            'x-rpc-client_type': '2',
+            'User-Agent': 'okhttp/4.8.0',
         },
         data=data,
     )
@@ -695,7 +695,7 @@ async def _upass(header: Dict):
     # 警告：使用该服务（例如某RR等）需要注意风险问题
     # 本项目不以任何形式提供相关接口
     # 代码来源：GITHUB项目MIT开源
-    header['DS'] = get_ds_token(f'is_high=false')
+    header['DS'] = get_ds_token('is_high=false')
     raw_data = await _mhy_request(
         url=VERIFICATION_URL,
         method='GET',
@@ -743,7 +743,7 @@ async def _mhy_request(
       访问URL并进行json解析返回。
     :参数:
       * url (str): MihoyoAPI。
-      * method (Literal["GET", "POST"]): `POST` or `GET`。
+      * method (Literal['GET', 'POST']): `POST` or `GET`。
       * header (Dict[str, Any]): 默认为_HEADER。
       * params (Dict[str, Any]): 参数。
       * data (Dict[str, Any]): 参数(`post`方法需要传)。
@@ -770,7 +770,7 @@ async def _mhy_request(
         # DEBUG 日志
         logger.debug(f'【mhy_request】请求如下:\n{text_data}')
         if text_data.startswith('('):
-            text_data = json.loads(text_data.replace("(", "").replace(")", ""))
+            text_data = json.loads(text_data.replace('(', '').replace(')', ''))
             return text_data
         raw_data = await req.json()
         if 'retcode' in raw_data and raw_data['retcode'] == 1034:
@@ -784,11 +784,7 @@ async def _mhy_request(
             await sess.close()
 
 
-async def get_hk4e_token(
-    uid: str,
-    sess: Optional[ClientSession] = None,
-    use_proxy: Optional[bool] = False,
-):
+async def get_hk4e_token(uid: str):
     # 获取e_hk4e_token
     server_id = RECOGNIZE_SERVER.get(uid[0])
     header = {
@@ -797,88 +793,65 @@ async def get_hk4e_token(
         'Referer': 'https://webstatic.mihoyo.com/',
         'Origin': 'https://webstatic.mihoyo.com',
     }
+    use_proxy = False
+    data = {
+        'game_biz': 'hk4e_cn',
+        'lang': 'zh-cn',
+        'uid': f'{uid}',
+        'region': f'{server_id}',
+    }
     if int(str(uid)[0]) < 6:
         url = HK4E_LOGIN_URL
-        data = {
-            "game_biz": "hk4e_cn",
-            "lang": "zh-cn",
-            "uid": f"{uid}",
-            "region": f"{server_id}",
-        }
     else:
         url = HK4E_LOGIN_URL_OS
-        data = {
-            "game_biz": "hk4e_global",
-            "lang": "zh-cn",
-            "uid": f"{uid}",
-            "region": f"{server_id}",
-        }
+        data['game_biz'] = 'hk4e_global'
         use_proxy = True
-    is_temp_sess = False
-    if sess is None:
-        sess = ClientSession()
-        is_temp_sess = True
-    try:
-        req = await sess.request(
+
+    async with ClientSession() as client:
+        async with client.request(
             method='POST',
             url=url,
             headers=header,
             json=data,
             proxy=PROXY_URL if use_proxy else None,
             timeout=300,
-        )
-        raw_data = await req.json()
-        if 'retcode' in raw_data and raw_data['retcode'] == 0:
-            ck = (
-                req.cookies['e_hk4e_token'].key
-                + '='
-                + req.cookies['e_hk4e_token'].value
-            )
-            # logger.debug(f'【hk4e_request】请求如下:\n{raw_data}')
-            return ck
-        if 'retcode' in raw_data and raw_data['retcode'] == 1034:
-            await _upass(header)
-
-    except Exception:
-        logger.exception(f'访问{url}失败！')
-        return {'retcode': -1}
-    finally:
-        if is_temp_sess:
-            await sess.close()
+        ) as resp:
+            raw_data = await resp.json()
+            if 'retcode' in raw_data and raw_data['retcode'] == 0:
+                _k = resp.cookies['e_hk4e_token'].key
+                _v = resp.cookies['e_hk4e_token'].value
+                ck = f'{_k}+{_v}'
+                return ck
+            if 'retcode' in raw_data and raw_data['retcode'] == 1034:
+                await _upass(header)
 
 
 async def get_regtime_data(uid: str) -> Any:
     server_id = RECOGNIZE_SERVER.get(uid[0])
     hk4e_token = await get_hk4e_token(uid)
     ck_token = await owner_cookies(uid)
+    params = {
+        'game_biz': 'hk4e_cn',
+        'lang': 'zh-cn',
+        'badge_uid': uid,
+        'badge_region': server_id,
+    }
     if int(str(uid)[0]) < 6:
         HEADER = copy.deepcopy(_HEADER)
         HEADER['Cookie'] = f'{hk4e_token};{ck_token}'
         data = await _mhy_request(
-            url=REG_TIME_CN,
-            method='GET',
-            header=HEADER,
-            params={
-                'game_biz': 'hk4e_cn',
-                'lang': 'zh-cn',
-                'badge_uid': uid,
-                'badge_region': server_id,
-            },
+            url=REG_TIME_CN, method='GET', header=HEADER, params=params
         )
     else:
         HEADER = copy.deepcopy(_HEADER_OS)
         HEADER['Cookie'] = await owner_cookies(uid)
         HEADER['DS'] = generate_dynamic_secret()
+        params['game_biz'] = 'hk4e_global'
         data = await _mhy_request(
             url=REG_TIME_OS,
             method='GET',
             header=HEADER,
-            params={
-                'game_biz': 'hk4e_global',
-                'lang': 'zh-cn',
-                'badge_uid': uid,
-                'badge_region': server_id,
-            },
+            params=params,
             use_proxy=True,
         )
     return data

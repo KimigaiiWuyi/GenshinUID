@@ -1,22 +1,24 @@
 import re
-from typing import Union
 
 from nonebot import on_command
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot.params import Depends, CommandArg
+from nonebot.params import CommandArg
 from nonebot.adapters.ntchat.message import Message
 from nonebot.adapters.ntchat import MessageSegment, TextMessageEvent
 
 from .get_regtime import calc_reg_time
 from .draw_roleinfo_card import draw_pic
 from ..genshinuid_meta import register_menu
+from ..utils.nonebot2.rule import FullCommand
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
 
 get_role_info = on_command('uid', aliases={'查询'})
-get_reg_time = on_command('原神注册时间', aliases={'注册时间', '查询注册时间'})
+get_reg_time = on_command(
+    '原神注册时间', aliases={'注册时间', '查询注册时间'}, rule=FullCommand()
+)
 
 
 @get_role_info.handle()
@@ -88,25 +90,14 @@ async def send_role_info(
 async def regtime(
     event: TextMessageEvent,
     matcher: Matcher,
-    args: Message = CommandArg(),
 ):
-    raw_mes = args.extract_plain_text().strip().replace(' ', '')
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
-    if name:
-        return
-
     if event.at_user_list:
         qid = event.at_user_list[0]
     else:
         qid = event.from_wxid
 
-    # 获取uid
-    uid = re.findall(r'\d+', raw_mes)
-    if uid:
-        uid = uid[0]
-    else:
-        uid = await select_db(qid, mode='uid')
-        uid = str(uid)
+    uid = await select_db(qid, mode='uid')
+    uid = str(uid)
 
     logger.info('开始执行[查询注册时间]')
     logger.info('[查询注册时间]uid: {}'.format(uid))

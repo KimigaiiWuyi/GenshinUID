@@ -102,9 +102,11 @@ async def check_ann_state():
     logger.info('[原神公告] 定时任务: 原神公告查询..')
     ids = string_config.get_config('Ann_Ids')
     sub_list = string_config.get_config('Ann_Groups')
+
     if not sub_list:
         logger.info('没有群订阅, 取消获取数据')
         return
+
     if not ids:
         ids = await ann().get_ann_ids()
         if not ids:
@@ -112,9 +114,10 @@ async def check_ann_state():
         string_config.set_config('Ann_Ids', ids)
         logger.info('初始成功, 将在下个轮询中更新.')
         return
-    new_ids = await ann().get_ann_ids()
 
+    new_ids = await ann().get_ann_ids()
     new_ann = set(ids) ^ set(new_ids)
+
     if not new_ann:
         logger.info('[原神公告] 没有最新公告')
         return
@@ -124,11 +127,11 @@ async def check_ann_state():
             continue
         try:
             img = await ann_detail_card(ann_id)  # 防止抛出异常报错
+            bot = get_bot()
+            b64img = base64.b64encode(img)
 
             for group in sub_list:
                 try:
-                    bot = get_bot()
-                    b64img = base64.b64encode(img)
                     await bot.call_api(
                         api='send_image',
                         to_wxid=str(group),

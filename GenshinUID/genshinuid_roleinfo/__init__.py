@@ -52,14 +52,23 @@ async def send_role_info(
     args: Message = CommandArg(),
 ):
     raw_mes = args.extract_plain_text().strip().replace(' ', '')
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
-    if name:
-        return
-
-    if event.at_user_list:
-        qid = event.at_user_list[0]
+    #若@在文本中 先无视@后面内容 如果@前面有内容则无视并停止执行下方命令 避免与enka查询打架
+    if "@" in raw_mes:
+        name = ''.join(re.findall('^[\u4e00-\u9fa5]+', raw_mes.split("@")[0]))
+        if name:
+            return
     else:
-        qid = event.from_wxid
+        name = ''.join(re.findall('^[\u4e00-\u9fa5]+', raw_mes))
+        if name:
+            return
+    
+    qid = event.from_wxid
+    # 识别@的人 排除空
+    if event.at_user_list:
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
 
     # 获取uid
     uid = re.findall(r'\d+', raw_mes)
@@ -91,10 +100,13 @@ async def regtime(
     event: TextMessageEvent,
     matcher: Matcher,
 ):
+    qid = event.from_wxid
+    # 识别@的人 排除空
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
 
     uid = await select_db(qid, mode='uid')
     uid = str(uid)

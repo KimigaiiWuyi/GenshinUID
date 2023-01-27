@@ -151,13 +151,23 @@ async def send_char_info(
 ):
     raw_mes = args.extract_plain_text().strip()
     name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
+    #如果输入中（查询之后的内容）没有其他字符串（如角色名等）则忽略。
     if not name:
         return
+    #若查询中有@则排除@后内容，排除后若@前没有 其他内容则不继续运行下方代码 防止与roleinfo查询打架
+    #修改后@人应该在命令末尾 如：查询万叶@XXXX
+    if "@" in raw_mes:
+        raw_mes = raw_mes.split("@")[0]
+        if not raw_mes:
+            return
     logger.info('开始执行[查询角色面板]')
+    #获取被@的Wxid，排除""
+    qid = event.from_wxid
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
     logger.info('[查询角色面板]WXID: {}'.format(qid))
 
     # 获取uid
@@ -244,10 +254,13 @@ async def send_card_info(
     message = args.extract_plain_text().strip().replace(' ', '')
     uid = re.findall(r'\d+', message)  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
+    #获取被@的Wxid，排除""
+    qid = event.from_wxid
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
 
     if len(uid) >= 1:
         uid = uid[0]
@@ -298,10 +311,13 @@ async def send_charcard_list(
     args: Message = CommandArg(),
 ):
     raw_mes = args.extract_plain_text().strip()
+    #获取被@的Wxid，排除""
+    qid = event.from_wxid
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
 
     # 获取uid
     uid = re.findall(r'\d+', raw_mes)

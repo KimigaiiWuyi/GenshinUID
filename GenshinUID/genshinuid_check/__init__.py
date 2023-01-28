@@ -20,11 +20,11 @@ from ..utils.message.get_cqhttp_data import (
     get_group_member_list,
 )
 
-backup = on_command('gs清除缓存', rule=FullCommand(), priority=priority)
-check = on_command('校验全部Cookies', rule=FullCommand(), priority=priority)
-check_stoken = on_command('校验全部Stoken', rule=FullCommand(), priority=priority)
+backup = on_command('gs清除缓存', rule=FullCommand(), priority=priority, permission=SUPERUSER)
+check = on_command('校验全部Cookies', rule=FullCommand(), priority=priority, permission=SUPERUSER)
+check_stoken = on_command('校验全部Stoken', rule=FullCommand(), priority=priority, permission=SUPERUSER)
 remove_invalid_user = on_command(
-    '清除无效用户', rule=FullCommand(), priority=priority
+    '清除无效用户', rule=FullCommand(), priority=priority, permission=SUPERUSER
 )
 
 backup_scheduler = scheduler

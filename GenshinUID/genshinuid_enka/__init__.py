@@ -63,7 +63,7 @@ async def send_change_api_info(
     event: MessageEvent,
     matcher: Matcher,
 ):
-    if await SUPERUSER(bot, event):
+    if not await SUPERUSER(bot, event):
         return
 
     im = await switch_api()

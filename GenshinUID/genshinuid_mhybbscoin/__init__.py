@@ -6,7 +6,7 @@ from nonebot.matcher import Matcher
 from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler
-from nonebot.adapters.ntchat import Bot, MessageEvent
+from nonebot.adapters.ntchat import Bot, MessageEvent, MessageSegment
 
 from ..config import SUPERUSERS, priority
 from ..genshinuid_meta import register_menu
@@ -39,10 +39,12 @@ all_bbscoin_recheck = on_command(
     ),
 )
 async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
-    await matcher.send('开始操作……', at_sender=True)
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
+    await matcher.send(MessageSegment.room_at_msg(content= '{$@}开始操作……', at_list= wxid_list))
     qid = event.from_wxid
     im = await mihoyo_coin(qid)
-    await matcher.finish(im, at_sender=True)
+    await matcher.finish(MessageSegment.room_at_msg(content= "{$@}"+f'{im}', at_list= wxid_list))
 
 
 @all_bbscoin_recheck.handle()
@@ -61,10 +63,11 @@ async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
 )
 async def bbs_recheck(bot: Bot, event: MessageEvent, matcher: Matcher):
     if await SUPERUSER(bot, event):
+        await matcher.send('已开始执行!可能需要较久时间!')
+        await send_daily_mihoyo_bbs_sign()
+        await matcher.finish('执行完成!')
+    else:
         return
-    await matcher.send('已开始执行!可能需要较久时间!')
-    await send_daily_mihoyo_bbs_sign()
-    await matcher.finish('执行完成!')
 
 
 # 每日一点十六分进行米游币获取

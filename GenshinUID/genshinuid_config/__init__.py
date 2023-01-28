@@ -83,31 +83,35 @@ async def send_config_msg(
 ):
     logger.info('开始执行[设置阈值信息]')
     logger.info('[设置阈值信息]参数: {}'.format(args))
-    if event.at_user_list and await SUPERUSER(bot, event):
-        qid = event.at_user_list[0]
-    elif event.at_user_list:
-        await matcher.finish('你没有权限操作别人的状态噢~', at_sender=True)
-    else:
-        qid = event.from_wxid
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
+    qid = event.from_wxid
+    if event.at_user_list:
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "" and await SUPERUSER(bot, event):
+                qid = user
+            else:
+                await matcher.finish(MessageSegment.room_at_msg(content= "{$@}你没有权限操作别人的状态噢~", at_list= wxid_list))
 
     logger.info('[设置阈值信息]qid: {}'.format(qid))
 
     try:
         uid = await select_db(qid, mode='uid')
     except TypeError:
-        await matcher.finish(UID_HINT)
+        await matcher.finish(MessageSegment.room_at_msg(content= '{$@}'+UID_HINT, at_list= wxid_list))
 
     func = args[4].replace('阈值', '')
     if args[5]:
         try:
             value = int(args[5])
         except ValueError:
-            await matcher.finish('请输入数字哦~', at_sender=True)
+            await matcher.finish(MessageSegment.room_at_msg(content= "{$@}请输入数字哦~", at_list= wxid_list))
     else:
-        await matcher.finish('请输入正确的阈值数字!', at_sender=True)
+        await matcher.finish(MessageSegment.room_at_msg(content= "{$@}请输入正确的阈值数字!", at_list= wxid_list))
     logger.info('[设置阈值信息]func: {}, value: {}'.format(func, value))
     im = await set_push_value(func, str(uid), value)
-    await matcher.finish(im, at_sender=True)
+    await matcher.finish(MessageSegment.room_at_msg(content= "{$@}"+f"{im}", at_list= wxid_list))
 
 
 # 开启 自动签到 和 推送树脂提醒 功能
@@ -136,13 +140,16 @@ async def open_switch_func(
     matcher: Matcher,
     args: Tuple[Any, ...] = RegexGroup(),
 ):
-    is_admin = await SUPERUSER(bot, event)
-    if event.at_user_list and is_admin:
-        qid = event.at_user_list[0]
-    elif event.at_user_list:
-        await matcher.finish('你没有权限操作别人的状态噢~', at_sender=True)
-    else:
-        qid = event.from_wxid
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
+    qid = event.from_wxid
+    if event.at_user_list:
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "" and await SUPERUSER(bot, event):
+                qid = user
+            else:
+                await matcher.finish(MessageSegment.room_at_msg(content= "{$@}你没有权限操作别人的状态噢~", at_list= wxid_list))
 
     config_name = args[4]
 
@@ -161,7 +168,7 @@ async def open_switch_func(
 
     uid = await select_db(qid, mode='uid')
     if uid is None or not isinstance(uid, str) or not uid.isdecimal():
-        await matcher.finish(UID_HINT)
+        await matcher.finish(MessageSegment.room_at_msg(content= '{$@}'+UID_HINT, at_list= wxid_list))
 
     im = await set_config_func(
         config_name=config_name,
@@ -169,6 +176,6 @@ async def open_switch_func(
         qid=str(qid),
         option=gid,
         query=query,
-        is_admin=is_admin,
+        is_admin=await SUPERUSER(bot, event),
     )
-    await matcher.finish(im, at_sender=True)
+    await matcher.finish(MessageSegment.room_at_msg(content= "{$@}"+f"{im}", at_list= wxid_list))

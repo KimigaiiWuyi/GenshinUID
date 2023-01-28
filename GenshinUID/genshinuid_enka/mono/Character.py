@@ -300,7 +300,7 @@ class Character:
         effect_list: List[str],
         char_name: str,
     ) -> dict:
-        logger.debug(effect_list)
+        #logger.debug(effect_list)
         if 'A_d' not in prop:
             for attr in [
                 'shieldBonus',
@@ -507,7 +507,7 @@ class Character:
             prop = await self.get_buff_value(prop, *effect)
 
         prop = await self.get_base_value(prop)
-        logger.debug(prop)
+        #logger.debug(prop)
         return prop
 
     async def get_base_value(self, prop: Dict) -> Dict:
@@ -556,7 +556,7 @@ class Character:
                     prop[f'{attr}_{effect_attr}'] += effect_value
             prop[f'{effect_attr}'] += effect_value
 
-        logger.debug(f'{effect_attr} + {effect_value} 基于[{effect_base}]')
+        #logger.debug(f'{effect_attr} + {effect_value} 基于[{effect_base}]')
 
         return prop
 

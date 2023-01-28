@@ -171,7 +171,7 @@ async def send_char_info(
     logger.info('[查询角色面板]WXID: {}'.format(qid))
 
     # 获取uid
-    uid = re.findall(r'\d+', raw_mes)
+    uid = re.findall(r'\d+', raw_mes.split("@")[0])
     if uid:
         uid = uid[0]
     else:
@@ -252,7 +252,7 @@ async def send_card_info(
     args: Message = CommandArg(),
 ):
     message = args.extract_plain_text().strip().replace(' ', '')
-    uid = re.findall(r'\d+', message)  # str
+    uid = re.findall(r'\d+', message.split("@")[0])  # str
     m = ''.join(re.findall('[\u4e00-\u9fa5]', message))
     # 获取被@的Wxid，排除""
     qid = event.from_wxid
@@ -320,7 +320,7 @@ async def send_charcard_list(
                 qid = user
 
     # 获取uid
-    uid = re.findall(r'\d+', raw_mes)
+    uid = re.findall(r'\d+', raw_mes.split("@")[0])
     if uid:
         uid = uid[0]
     else:

@@ -16,12 +16,12 @@ from ..utils.draw_image_tools.send_image_tool import convert_img
 
 get_abyss_info = on_regex(
     r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|查询|mys)?([0-9]+)?(上期)?(深渊|sy)'
+    r'(uid|mys)?([0-9]+)?(上期)?(深渊|sy)'
     r'(9|10|11|12|九|十|十一|十二)?(层)?'
     r'(\[CQ:at,qq=[0-9]+\])?( )?$',
     block=True,
 )
-
+#删除了查询二字，不然要和其他的查询打架！
 
 @get_abyss_info.handle()
 @handle_exception('查询深渊信息')
@@ -58,10 +58,12 @@ async def send_abyss_info(
 ):
     logger.info('开始执行[查询深渊信息]')
     logger.info(f'[查询深渊信息]参数: {args}')
+    qid = event.from_wxid
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
 
     if args[2] == 'mys':
         uid = await convert_mysid(args[3])

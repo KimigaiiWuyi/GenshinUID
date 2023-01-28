@@ -71,7 +71,7 @@ async def send_role_info(
                 qid = user
 
     # 获取uid
-    uid = re.findall(r'\d+', raw_mes)
+    uid = re.findall(r'\d+', raw_mes.split("@")[0])
     if uid:
         uid = uid[0]
     else:

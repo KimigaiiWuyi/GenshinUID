@@ -73,7 +73,7 @@ class Fight:
                 'crit_dmg': crit_dmg,
                 'enemy_element': self.enemy.element,
             }
-        #logger.debug(result)
+        # logger.debug(result)
         return result
 
     # 进行单人伤害计算
@@ -121,7 +121,7 @@ class Fight:
                 'crit': dmg[2],
             }
         self.dmg_data = result
-        #logger.debug(result)
+        # logger.debug(result)
         return result
 
     # 伤害类型
@@ -409,7 +409,7 @@ class Fight:
             base_area = 0
 
         # 获得这次攻击的减伤乘区(抗性区+防御区)
-        #logger.debug(self.enemy.__dict__)
+        # logger.debug(self.enemy.__dict__)
         proof = await self.enemy.get_resist(dmg_type)
 
         normal_dmg = base_area * proof

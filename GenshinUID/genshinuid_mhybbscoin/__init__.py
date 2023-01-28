@@ -41,10 +41,14 @@ all_bbscoin_recheck = on_command(
 async def send_mihoyo_coin(event: MessageEvent, matcher: Matcher):
     wxid_list = []
     wxid_list.append(event.from_wxid)
-    await matcher.send(MessageSegment.room_at_msg(content= '{$@}开始操作……', at_list= wxid_list))
+    await matcher.send(
+        MessageSegment.room_at_msg(content='{$@}开始操作……', at_list=wxid_list)
+    )
     qid = event.from_wxid
     im = await mihoyo_coin(qid)
-    await matcher.finish(MessageSegment.room_at_msg(content= "{$@}"+f'{im}', at_list= wxid_list))
+    await matcher.finish(
+        MessageSegment.room_at_msg(content="{$@}" + f'{im}', at_list=wxid_list)
+    )
 
 
 @all_bbscoin_recheck.handle()

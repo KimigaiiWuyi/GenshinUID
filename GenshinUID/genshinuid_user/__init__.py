@@ -220,7 +220,9 @@ async def send_link_uid_msg(
             im = await delete_db(qid, {'UID': args[2]})
         else:
             im = await delete_db(qid, {'MYSID': args[2]})
-    await matcher.finish(MessageSegment.room_at_msg(content= "{$@}"+f'{im}', at_list= wxid_list))
+    await matcher.finish(
+        MessageSegment.room_at_msg(content="{$@}" + f'{im}', at_list=wxid_list)
+    )
 
 
 @get_ck_msg.handle()

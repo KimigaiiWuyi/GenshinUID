@@ -41,9 +41,7 @@ def handle_exception(
                     if not fail_msg:
                         fail_msg = log_msg
                     if fail_msg[0] == '@':
-                        await matcher.send(
-                            f'{fail_msg[1:]}\n错误信息为{e}'
-                        )
+                        await matcher.send(f'{fail_msg[1:]}\n错误信息为{e}')
                     else:
                         await matcher.send(f'{fail_msg}\n错误信息为{e}')
                     if log_msg[0] == '@':

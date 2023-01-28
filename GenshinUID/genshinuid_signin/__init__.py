@@ -60,7 +60,9 @@ async def get_sign_func(
     uid = await select_db(qid, mode='uid')
     logger.info('[签到]UID: {}'.format(uid))
     im = await sign_in(uid)
-    await matcher.finish(MessageSegment.room_at_msg(content= "{$@}"+f'{im}', at_list= wxid_list))
+    await matcher.finish(
+        MessageSegment.room_at_msg(content="{$@}" + f'{im}', at_list=wxid_list)
+    )
 
 
 @all_recheck.handle()

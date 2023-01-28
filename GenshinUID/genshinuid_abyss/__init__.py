@@ -21,7 +21,8 @@ get_abyss_info = on_regex(
     r'(\[CQ:at,qq=[0-9]+\])?( )?$',
     block=True,
 )
-#删除了查询二字，不然要和其他的查询打架！
+# 删除了查询二字，不然要和其他的查询打架！
+
 
 @get_abyss_info.handle()
 @handle_exception('查询深渊信息')

@@ -25,18 +25,25 @@ async def send_gcg_pic(
     args: Message = CommandArg(),
 ):
     raw_mes = args.extract_plain_text().strip().replace(' ', '')
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', raw_mes))
-    if name:
-        return
-    logger.info('开始执行[七圣召唤]')
-    if event.at_user_list:
-        qid = event.at_user_list[0]
+    if "@" in raw_mes:
+        name = ''.join(re.findall('^[\u4e00-\u9fa5]+', raw_mes.split("@")[0]))
+        if name:
+            return
     else:
-        qid = event.from_wxid
+        name = ''.join(re.findall('^[\u4e00-\u9fa5]+', raw_mes))
+        if name:
+            return
+    logger.info('开始执行[七圣召唤]')
+    qid = event.from_wxid
+    if event.at_user_list:
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
     logger.info('[七圣召唤]WXID: {}'.format(qid))
 
     # 获取uid
-    uid = re.findall(r'\d+', raw_mes)
+    uid = re.findall(r'\d+', raw_mes.split("@")[0])
     if uid:
         uid = uid[0]
     else:

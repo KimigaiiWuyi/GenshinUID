@@ -201,6 +201,8 @@ async def send_link_uid_msg(
     logger.info('开始执行[绑定/解绑用户信息]')
     logger.info('[绑定/解绑]参数: {}'.format(args))
     qid = event.from_wxid
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
     logger.info('[绑定/解绑]UserID: {}'.format(qid))
 
     if args[0] in ('绑定'):
@@ -218,7 +220,9 @@ async def send_link_uid_msg(
             im = await delete_db(qid, {'UID': args[2]})
         else:
             im = await delete_db(qid, {'MYSID': args[2]})
-    await matcher.finish(im, at_sender=True)
+    await matcher.finish(
+        MessageSegment.room_at_msg(content="{$@}" + f'{im}', at_list=wxid_list)
+    )
 
 
 @get_ck_msg.handle()

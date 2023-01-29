@@ -34,14 +34,22 @@ async def send_monthly_data(
     matcher: Matcher,
 ):
     qid = event.from_wxid
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
     uid = await select_db(qid, mode='uid')
     if isinstance(uid, str):
         if '未找到绑定的UID' in uid:
-            await matcher.finish(UID_HINT)
+            await matcher.finish(
+                MessageSegment.room_at_msg(
+                    content='{$@}' + UID_HINT, at_list=wxid_list
+                )
+            )
     else:
         await matcher.finish('发生未知错误...')
     im = await award(uid)
-    await matcher.finish(im, at_sender=True)
+    await matcher.finish(
+        MessageSegment.room_at_msg(content="{$@}" + f'{im}', at_list=wxid_list)
+    )
 
 
 # 群聊内 每月统计 功能
@@ -66,10 +74,16 @@ async def send_monthly_pic(
     matcher: Matcher,
 ):
     qid = event.from_wxid
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
     uid = await select_db(qid, mode='uid')
     if isinstance(uid, str):
         if '未找到绑定的UID' in uid:
-            await matcher.finish(UID_HINT)
+            await matcher.finish(
+                MessageSegment.room_at_msg(
+                    content='{$@}' + UID_HINT, at_list=wxid_list
+                )
+            )
     else:
         await matcher.finish('发生未知错误...')
     logger.info(f'[原石札记] 开始绘制,UID: {uid}')

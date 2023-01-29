@@ -6,7 +6,7 @@ from nonebot.matcher import Matcher
 from nonebot import get_bot, on_command
 from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler
-from nonebot.adapters.ntchat import Bot, MessageEvent
+from nonebot.adapters.ntchat import Bot, MessageEvent, MessageSegment
 
 from ..config import priority
 
@@ -54,11 +54,15 @@ async def get_sign_func(
 ):
     logger.info('开始执行[签到]')
     qid = event.from_wxid
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
     logger.info('[签到]QQ号: {}'.format(qid))
     uid = await select_db(qid, mode='uid')
     logger.info('[签到]UID: {}'.format(uid))
     im = await sign_in(uid)
-    await matcher.finish(im, at_sender=True)
+    await matcher.finish(
+        MessageSegment.room_at_msg(content="{$@}" + f'{im}', at_list=wxid_list)
+    )
 
 
 @all_recheck.handle()
@@ -76,7 +80,7 @@ async def get_sign_func(
     ),
 )
 async def recheck(bot: Bot, event: MessageEvent, matcher: Matcher):
-    if await SUPERUSER(bot, event):
+    if not await SUPERUSER(bot, event):
         return
     logger.info('开始执行[全部重签]')
     await matcher.send('已开始执行')

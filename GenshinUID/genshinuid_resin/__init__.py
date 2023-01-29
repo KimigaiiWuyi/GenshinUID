@@ -45,10 +45,12 @@ async def send_daily_info(
 ):
     logger.info('开始执行[每日信息文字版]')
 
+    qid = event.from_wxid
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
     logger.info('[每日信息文字版]QQ号: {}'.format(qid))
 
     uid: str = await select_db(qid, mode='uid')  # type: ignore
@@ -115,10 +117,12 @@ async def send_uid_info(
     matcher: Matcher,
 ):
     logger.info('开始执行[每日信息]')
+    qid = event.from_wxid
     if event.at_user_list:
-        qid = event.at_user_list[0]
-    else:
-        qid = event.from_wxid
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
     logger.info('[每日信息]QQ号: {}'.format(qid))
 
     im = await get_resin_img(qid)  # type:ignore

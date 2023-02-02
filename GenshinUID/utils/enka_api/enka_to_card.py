@@ -110,9 +110,11 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
     char_img = (
         Image.open(str(CHAR_PATH / f'{char_id}.png'))
         .convert('RGBA')
-        .resize((220, 220))
+        .resize((204, 204))
     )
-    char_card.paste(char_img, (0, 0), char_mask)
+    char_temp = Image.new('RGBA', (220, 220))
+    char_temp.paste(char_img, (8, 8), char_img)
+    char_card.paste(char_temp, (0, 0), char_mask)
     if index <= 7:
         if img.size[0] <= 1100:
             x = 60 + (index % 4) * 220

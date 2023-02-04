@@ -99,6 +99,8 @@ async def getEquipName(name: str) -> str:
         name = '乐园遗落之花'
     elif name == '饰金':
         name = '饰金之梦'
+    elif name == '追忆':
+        name = '追忆之注连'
     print(name)
     r = await get_misc_info('artifacts', name)
     re = r['name']

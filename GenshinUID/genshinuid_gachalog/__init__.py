@@ -1,10 +1,9 @@
 import os
 import asyncio
-import xml.etree.ElementTree as ET
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
-from nonebot import on, get_bot, on_command
+from nonebot import get_bot, on_command, on_message
 from nonebot.adapters.ntchat.permission import GROUP
 from nonebot.adapters.ntchat import (
     MessageSegment,
@@ -23,7 +22,7 @@ from .export_and_import import export_gachalogs, import_gachalogs
 
 get_gacha_log = on_command('刷新抽卡记录', rule=FullCommand())
 get_gacha_log_card = on_command('抽卡记录', rule=FullCommand())
-import_gacha_log = on("app")
+import_gacha_log = on_message(block=False, priority=45) 
 export_gacha_log = on_command('导出抽卡记录', rule=FullCommand(), permission=GROUP)
 
 
@@ -84,23 +83,17 @@ async def export_gacha_log_info(
 )
 async def import_gacha_log_info(event: FileMessageEvent, matcher: Matcher):
     await asyncio.sleep(2)  # 等待下载文件，避免占用
-    # 获取文件名
-    root = ET.fromstring(event.data['raw_msg'])
-    name_title: str = root.find('appmsg').find('title').text
-    # 获取文件路径
-    file_path = event.data['file']
-    file_from_wxid = event.data['from_wxid']
     # 检测文件是否存在并小于8MB
     if (
-        os.path.exists(file_path)
-        and os.path.getsize(file_path) <= 8 * 1024 * 1024
-        and name_title.endswith(".json")
+        os.path.exists(event.file)
+        and os.path.getsize(event.file) <= 8 * 1024 * 1024
+        and event.file_name.endswith(".json")
     ):
-        uid = await select_db(file_from_wxid, mode='uid')
+        uid = await select_db(event.from_wxid, mode='uid')
         if not isinstance(uid, str) or '未找到绑定的UID' in uid:
             await matcher.finish(UID_HINT)
         logger.info('开始执行[导入抽卡记录]')
-        im = await import_gachalogs(file_path, uid)
+        im = await import_gachalogs(event.file, uid)
         await matcher.finish(im)
     else:
         await matcher.finish()

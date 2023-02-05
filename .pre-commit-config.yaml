@@ -6,7 +6,7 @@ ci:
   autoupdate_commit_msg: ":arrow_up: auto update by pre-commit-ci"
 repos:
   - repo: https://github.com/pycqa/isort
-    rev: 5.10.1
+    rev: 5.11.5
     hooks:
       - id: isort
 

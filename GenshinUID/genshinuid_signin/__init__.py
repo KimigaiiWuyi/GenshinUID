@@ -125,12 +125,15 @@ async def send_daily_sign():
                 report,
             )
         else:
-            msg_title = group_msg_list[gid]['push_message']
+            msg_title = group_msg_list[gid]['push_message'].rstrip()
         # 发送群消息
+        at_wxid = []
+        at_wxid.append(group_msg_list[gid]['wxid'])
         try:
             await bot.call_api(
                 api='send_room_at_msg',
                 to_wxid=gid,
+                at_list=at_wxid,
                 content=msg_title,
             )
         except Exception:

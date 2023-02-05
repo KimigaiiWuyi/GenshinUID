@@ -139,16 +139,17 @@ async def single_daily_sign(uid: str, gid: str, qid: str):
             # 如果失败, 则添加到推送列表
             if im.startswith('签到失败') or im.startswith('网络有点忙'):
                 # 不用MessageSegment.at(row[2])，因为不方便移植
-                message = f'[CQ:at,qq={qid}] {im}'
+                message = f'UID:{uid} | {im}'
                 group_msg_list[gid]['failed'] += 1
-                group_msg_list[gid]['push_message'] += '\n' + message
+                group_msg_list[gid]['push_message'] += message + '\n'
             else:
                 group_msg_list[gid]['success'] += 1
         # 没有开启简洁签到, 则每条消息都要携带@信息
         else:
             # 不用MessageSegment.at(row[2])，因为不方便移植
-            message = f'[CQ:at,qq={qid}] {im}'
-            group_msg_list[gid]['push_message'] += '\n' + message
+            message = '{$@}' + f'UID:{uid} | {im}'
+            group_msg_list[gid]['wxid'] = qid
+            group_msg_list[gid]['push_message'] += message + '\n'
             group_msg_list[gid]['success'] -= 1
 
 

@@ -177,11 +177,13 @@ async def open_switch_func(
 
     logger.info(f'[{qid}]尝试[{args[3]}]了[{config_name}]功能')
 
+    fake_seession = f'group_{event.room_wxid}_{event.from_wxid}'
+
     if args[3] == '开启':
         query = 'OPEN'
         gid = (
-            event.get_session_id().split('_')[1]
-            if len(event.get_session_id().split('_')) == 3
+            fake_seession.split('_')[1]
+            if len(fake_seession.split('_')) == 3
             else 'on'
         )
     else:

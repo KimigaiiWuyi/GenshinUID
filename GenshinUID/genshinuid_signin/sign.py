@@ -147,7 +147,8 @@ async def single_daily_sign(uid: str, gid: str, qid: str):
         # 没有开启简洁签到, 则每条消息都要携带@信息
         else:
             # 不用MessageSegment.at(row[2])，因为不方便移植
-            message = '{$@}' + f'UID:{uid} | {im}'
+            # message = '{$@}' + f'UID:{uid} | {im}'
+            message = f'UID:{uid} | {im}'
             group_msg_list[gid]['wxid'] = qid
             group_msg_list[gid]['push_message'] += message + '\n'
             group_msg_list[gid]['success'] -= 1

@@ -381,7 +381,7 @@ async def get_char_img(
         else:
             char_name_url = char_name
         chbg_path = CU_CHBG_PATH / char_name_url
-        char_url = f'http://img.genshin.cherishmoon.fun/{char_name_url}'
+        char_url = f'https://genshin-res.cherishmoon.fun/img?name={char_name_url}'
         if chbg_path.exists():
             cuch_img = random.choice(list(chbg_path.iterdir()))
             async with aiofiles.open(cuch_img, 'rb') as f:

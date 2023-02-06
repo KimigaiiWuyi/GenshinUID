@@ -672,16 +672,15 @@ class Character:
                 value_1 = float(skill1[skill_level].split('+')[0])
                 value_1 *= 0.6
                 value_2 = float(skill1[skill_level].split('+')[1])
+                value_2 *= 0.6
                 value_3 = skill2[skill_level] * 90
-                ex_effect.append(
-                    (
-                        f'Q一段伤害:addAtk+{60*value_2};'
-                        f'Q重击伤害:addAtk+{60*value_2};'
-                        f'Q高空下落伤害:addAtk+{60*value_2};'
-                        f'Q梦想一刀基础伤害:dmgBonus+{value_3}'
-                    )
-                )
-                self.extra_effect = {'Q梦想一刀基础伤害(满愿力)': value_1}
+                ex_effect.append((f'Q梦想一刀基础伤害:dmgBonus+{value_3}'))
+                self.extra_effect = {
+                    'Q梦想一刀基础伤害(满愿力)': value_1,
+                    'Q一段伤害(满愿力)': value_2,
+                    'Q重击伤害(满愿力)': value_2,
+                    'Q高空下落伤害(满愿力)': value_2,
+                }
             elif self.char_name == '优菈':
                 skill_effect = EXTRA_CHAR_LIST[self.char_name]['Q每层能量伤害'][
                     'value'

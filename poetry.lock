@@ -1828,14 +1828,14 @@ files = [
 
 [[package]]
 name = "qrcode"
-version = "7.4.1"
+version = "7.4.2"
 description = "QR Code image generator"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "qrcode-7.4.1-py3-none-any.whl", hash = "sha256:ba7520e031f28dadcd92049a88832a585111d09342bd0d15ddae5ccf5af98c12"},
-    {file = "qrcode-7.4.1.tar.gz", hash = "sha256:26185f4c48ea8a896d5c9a0b080c41b75448e30b533b418ea0c65d91d10f0901"},
+    {file = "qrcode-7.4.2-py3-none-any.whl", hash = "sha256:581dca7a029bcb2deef5d01068e39093e80ef00b4a61098a2182eac59d01643a"},
+    {file = "qrcode-7.4.2.tar.gz", hash = "sha256:9dd969454827e127dbd93696b20747239e6d540e082937c90f14ac95b30f5845"},
 ]
 
 [package.dependencies]

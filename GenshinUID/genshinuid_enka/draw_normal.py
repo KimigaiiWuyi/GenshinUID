@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageChops
 from .mono.Character import Character
 from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
 from ..utils.db_operation.db_operation import config_check
+from ..genshinuid_config.default_config import string_config
 from ..utils.genshin_fonts.genshin_fonts import genshin_font_origin
 from .etc.etc import TEXT_PATH, strLenth, get_star_png, get_artifacts_value
 from ..utils.draw_image_tools.draw_image_tool import (
@@ -31,6 +32,7 @@ ARTIFACTS_POS = {
     '空之杯': (18, 1447),
     '理之冠': (318, 1447),
 }
+PIC_API = string_config.get_config('random_pic_API')
 
 
 async def get_char_card_base(char: Character) -> Image.Image:
@@ -381,7 +383,7 @@ async def get_char_img(
         else:
             char_name_url = char_name
         chbg_path = CU_CHBG_PATH / char_name_url
-        char_url = f'https://genshin-res.cherishmoon.fun/img?name={char_name_url}'
+        char_url = f'{PIC_API}{char_name_url}'
         if chbg_path.exists():
             cuch_img = random.choice(list(chbg_path.iterdir()))
             async with aiofiles.open(cuch_img, 'rb') as f:

@@ -40,7 +40,7 @@ class StringConfig:
         delete_keys = []
         for key in self.config:
             if key not in CONIFG_DEFAULT:
-                delete_keys.append(delete_keys)
+                delete_keys.append(key)
         for key in delete_keys:
             self.config.pop(key)
 

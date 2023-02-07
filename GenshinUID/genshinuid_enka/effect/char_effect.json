@@ -1571,7 +1571,7 @@
     "fight": {
       "fight_skill": {
         "50": "",
-        "70": "Q:dmgBonus+12%energyRecharge"
+        "70": ""
       },
       "fight_talent": {
         "1": "",

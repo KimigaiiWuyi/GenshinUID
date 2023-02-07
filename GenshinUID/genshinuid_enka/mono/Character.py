@@ -685,6 +685,10 @@ class Character:
                     'Q重击伤害(满愿力)': value_2,
                     'Q高空下落伤害(满愿力)': value_2,
                 }
+                if self.card_prop['weaponInfo']['weaponName'] == '薙草之稻光':
+                    weaponAffix = self.card_prop['weaponInfo']['weaponAffix']
+                    _ex = 10 + weaponAffix * 2
+                    ex_effect.append(f'Q:dmgBonus+{_ex}')
             elif self.char_name == '优菈':
                 skill_effect = EXTRA_CHAR_LIST[self.char_name]['Q每层能量伤害'][
                     'value'

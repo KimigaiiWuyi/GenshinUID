@@ -74,7 +74,7 @@ async def send_gacha_log_card_info(bot: HoshinoBot, ev: CQEvent):
         await bot.send(ev, UID_HINT)
 
 
-@sv.on_fullmatch('刷新抽卡记录')
+@sv.on_fullmatch(('刷新抽卡记录', '强制刷新抽卡记录'))
 async def send_daily_info(bot: HoshinoBot, ev: CQEvent):
     logger.info('开始执行[刷新抽卡记录]')
     if ev.sender:
@@ -83,7 +83,10 @@ async def send_daily_info(bot: HoshinoBot, ev: CQEvent):
         return
     uid = await select_db(qid, mode='uid')
     if isinstance(uid, str):
-        im = await save_gachalogs(uid)
+        is_force = False
+        if ev.message and ev.message.startswith('强制'):
+            is_force = True
+        im = await save_gachalogs(uid, None, is_force)
         await bot.send(ev, im)
     else:
         await bot.send(ev, UID_HINT)

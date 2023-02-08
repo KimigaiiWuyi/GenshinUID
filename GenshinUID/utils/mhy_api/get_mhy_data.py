@@ -100,7 +100,7 @@ ATTR = vars()
 
 
 async def get_gacha_log_by_authkey(
-    uid: str, old_data: Optional[dict] = None
+    uid: str, old_data: Optional[dict] = None, is_force: bool = False
 ) -> Optional[dict]:
     server_id = 'cn_qd01' if uid[0] == '5' else 'cn_gf01'
     authkey_rawdata = await get_authkey_by_cookie(uid)
@@ -148,7 +148,7 @@ async def get_gacha_log_by_authkey(
                 if data == []:
                     break
                 end_id = data[-1]['id']
-                if data[-1] in full_data[gacha_name]:
+                if data[-1] in full_data[gacha_name] and not is_force:
                     for item in data:
                         if item not in full_data[gacha_name]:
                             temp.append(item)

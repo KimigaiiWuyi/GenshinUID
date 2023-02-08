@@ -19,7 +19,7 @@ from ..utils.db_operation.db_operation import select_db
 from ..utils.exception.handle_exception import handle_exception
 from .export_and_import import export_gachalogs, import_gachalogs
 
-get_gacha_log = on_command('刷新抽卡记录', rule=FullCommand())
+get_gacha_log = on_command('刷新抽卡记录', aliases={'强制刷新抽卡记录'}, rule=FullCommand())
 get_gacha_log_card = on_command('抽卡记录', rule=FullCommand())
 import_gacha_log = on_notice()
 export_gacha_log = on_command('导出抽卡记录', rule=FullCommand())
@@ -152,7 +152,10 @@ async def send_daily_info(
     logger.info('开始执行[刷新抽卡记录]')
     uid = await select_db(event.user_id, mode='uid')
     if isinstance(uid, str):
-        im = await save_gachalogs(uid)
+        is_force = False
+        if event.raw_message.startswith('强制'):
+            is_force = True
+        im = await save_gachalogs(uid, None, is_force)
         await matcher.finish(im)
     else:
         await matcher.finish(UID_HINT)

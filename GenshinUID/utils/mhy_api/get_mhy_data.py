@@ -545,7 +545,7 @@ async def get_gcg_info(uid: str):
 
 async def create_qrcode_url():
     device_id: str = ''.join(random.choices(ascii_letters + digits, k=64))
-    app_id: str = '4'
+    app_id: str = '8'
     data = await _mhy_request(
         CREATE_QRCODE,
         'POST',

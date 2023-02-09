@@ -77,7 +77,11 @@ async def qrcode_login(bot, group_id, user_id) -> str:
             f'[CQ:image,file=base64://{get_qrcode_base64(code_data["url"])}]'
         )
         im.append(
-            '免责声明:您将通过扫码完成获取米游社sk以及ck。\n本Bot将不会保存您的登录状态。\n我方仅提供米游社查询及相关游戏内容服务,\n若您的账号封禁、被盗等处罚与我方无关。\n害怕风险请勿扫码~'
+            '免责声明:您将通过扫码完成获取米游社sk以及ck。\n'
+            '本Bot将不会保存您的登录状态。\n'
+            '我方仅提供米游社查询及相关游戏内容服务,\n'
+            '若您的账号封禁、被盗等处罚与我方无关。\n'
+            '害怕风险请勿扫码~'
         )
         await send_forward_msg(bot, group_id, "扫码小助手", str(user_id), im)
     except Exception:

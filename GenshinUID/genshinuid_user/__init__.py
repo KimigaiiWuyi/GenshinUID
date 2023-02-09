@@ -55,7 +55,6 @@ bind = on_regex(
 get_qrcode_login = on_command(
     '扫码登录',
     aliases={'扫码登陆', '扫码登入'},
-    permission=PRIVATE_FRIEND,
     rule=FullCommand(),
 )
 
@@ -87,12 +86,13 @@ async def send_refresh_ck_msg(
 @get_qrcode_login.handle()
 async def send_qrcode_login(
     bot: Bot,
-    event: MessageEvent,
+    event: GroupMessageEvent,
     matcher: Matcher,
 ):
     logger.info('开始执行[扫码登陆]')
     qid = event.user_id
-    im = await qrcode_login(bot, qid)
+    groupid = event.group_id
+    im = await qrcode_login(bot, groupid, qid)
     if not im:
         return
     im = await deal_ck(im, qid)

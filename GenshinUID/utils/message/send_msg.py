@@ -6,7 +6,7 @@ from nonebot.adapters.onebot.v11 import Bot
 # 发送聊天记录
 async def send_forward_msg(
     bot: Bot,
-    userid: int,
+    groupid: int,
     name: str,
     uin: str,
     msgs: List[str],
@@ -19,5 +19,5 @@ async def send_forward_msg(
 
     messages = [to_json(msg) for msg in msgs]
     await bot.call_api(
-        "send_private_forward_msg", user_id=userid, messages=messages
+        "send_group_forward_msg", group_id=groupid, messages=messages
     )

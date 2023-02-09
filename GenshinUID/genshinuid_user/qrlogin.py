@@ -10,11 +10,14 @@ from nonebot.log import logger
 from qrcode.constants import ERROR_CORRECT_L
 
 from ..utils.message.send_msg import send_forward_msg
+from ..utils.db_operation.db_operation import select_db
 from ..utils.mhy_api.get_mhy_data import (
     check_qrcode,
     get_cookie_token,
     create_qrcode_url,
+    get_mihoyo_bbs_info,
     get_stoken_by_game_token,
+    get_cookie_token_by_stoken,
 )
 
 disnote = '''免责声明:您将通过扫码完成获取米游社sk以及ck。
@@ -65,17 +68,24 @@ async def refresh(
     return True, json.loads(status_data['data']['payload']['raw'])
 
 
-async def qrcode_login(bot, user_id) -> str:
+async def qrcode_login(bot, group_id, user_id) -> str:
     code_data = await create_qrcode_url()
     try:
         im = []
-        qrc = f'[CQ:image,file=base64://{get_qrcode_base64(code_data["url"])}]'
         im.append('请使用米游社扫描下方二维码登录：')
-        im.append(qrc)
-        im.append(disnote)
-        await send_forward_msg(bot, user_id, "扫码小助手", str(user_id), im)
+        im.append(
+            f'[CQ:image,file=base64://{get_qrcode_base64(code_data["url"])}]'
+        )
+        im.append(
+            '免责声明:您将通过扫码完成获取米游社sk以及ck。\n'
+            '本Bot将不会保存您的登录状态。\n'
+            '我方仅提供米游社查询及相关游戏内容服务,\n'
+            '若您的账号封禁、被盗等处罚与我方无关。\n'
+            '害怕风险请勿扫码~'
+        )
+        await send_forward_msg(bot, group_id, "扫码小助手", str(user_id), im)
     except Exception:
-        logger.warning('[扫码登录] {user_id} 图片发送失败')
+        logger.warning(f'[扫码登录] {user_id} 图片发送失败')
     status, game_token_data = await refresh(code_data)
     if status:
         assert game_token_data is not None  # 骗过 pyright
@@ -85,19 +95,46 @@ async def qrcode_login(bot, user_id) -> str:
             account_id=int(game_token_data['uid']),
             game_token=game_token_data['token'],
         )
-        return SimpleCookie(
-            {
-                'stoken_v2': stoken_data['data']['token']['token'],
-                'stuid': stoken_data['data']['user_info']['aid'],
-                'mid': stoken_data['data']['user_info']['mid'],
-                'cookie_token': cookie_token['data']['cookie_token'],
-            }
-        ).output(header='', sep=';')
+        account_id = game_token_data['uid']
+        stoken = stoken_data['data']['token']['token']
+        mid = stoken_data['data']['user_info']['mid']
+        app_cookie = f'stuid={account_id};stoken={stoken};mid={mid}'
+        ck = await get_cookie_token_by_stoken(stoken, account_id, app_cookie)
+        ck = ck['data']['cookie_token']
+        cookie_check = f'account_id={account_id};cookie_token={ck}'
+        get_uid = await get_mihoyo_bbs_info(account_id, cookie_check)
+        uid_check = get_uid['data']['list'][0]['game_role_id']
+        uid_bind = await select_db(user_id, mode='uid')
+        if uid_bind == "未找到绑定的UID~":
+            logger.warning('game_token获取失败')
+            await bot.call_api(
+                api='send_group_msg',
+                group_id=group_id,
+                message='你还没有绑定uid，请输入[绑定uid123456]绑定你的uid，再发送[扫码登录]进行绑定',
+            )
+            return ''
+        if str(uid_bind) == uid_check or str(uid_bind) == account_id:
+            return SimpleCookie(
+                {
+                    'stoken_v2': stoken_data['data']['token']['token'],
+                    'stuid': stoken_data['data']['user_info']['aid'],
+                    'mid': stoken_data['data']['user_info']['mid'],
+                    'cookie_token': cookie_token['data']['cookie_token'],
+                }
+            ).output(header='', sep=';')
+        else:
+            logger.warning('game_token获取失败')
+            await bot.call_api(
+                api='send_group_msg',
+                group_id=group_id,
+                message='game_token获取失败：被非绑定指定uid用户扫取，取消绑定，请重新发送[扫码登录]登录账号',
+            )
+            return ''
     else:
         logger.warning('game_token获取失败')
         await bot.call_api(
-            api='send_private_msg',
-            user_id=user_id,
+            api='send_group_msg',
+            group_id=group_id,
             message='game_token获取失败：二维码已过期',
         )
         return ''

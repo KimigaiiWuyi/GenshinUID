@@ -103,8 +103,21 @@ async def qrcode_login(bot, group_id, user_id) -> str:
         ck = ck['data']['cookie_token']
         cookie_check = f'account_id={account_id};cookie_token={ck}'
         get_uid = await get_mihoyo_bbs_info(account_id, cookie_check)
-        uid_check = get_uid['data']['list'][0]['game_role_id']
+        # 剔除除了原神之外的其他游戏
+        if get_uid:
+            for i in get_uid['data']['list']:
+                if i['game_id'] == 2:
+                    uid_check = i['game_role_id']
+                    break
+            else:
+                await bot.call_api(
+                    api='send_group_msg',
+                    group_id=group_id,
+                    message=f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！',
+                )
+                return ''
         uid_bind = await select_db(user_id, mode='uid')
+        # 没有在gsuid绑定uid的情况
         if uid_bind == "未找到绑定的UID~":
             logger.warning('game_token获取失败')
             await bot.call_api(
@@ -113,6 +126,7 @@ async def qrcode_login(bot, group_id, user_id) -> str:
                 message='你还没有绑定uid，请输入[绑定uid123456]绑定你的uid，再发送[扫码登录]进行绑定',
             )
             return ''
+        # 比对gsuid数据库和扫码登陆获取到的uid
         if str(uid_bind) == uid_check or str(uid_bind) == account_id:
             return SimpleCookie(
                 {

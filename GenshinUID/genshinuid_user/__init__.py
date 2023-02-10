@@ -237,6 +237,7 @@ async def send_ck_help(matcher: Matcher):
         await matcher.send(msg)
         await asyncio.sleep(0.5)
 
+
 @get_qr_msg.handle()
 async def send_qr_help(matcher: Matcher):
     msg_list = await get_qr_help()

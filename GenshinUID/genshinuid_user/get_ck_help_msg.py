@@ -39,6 +39,7 @@ async def get_ck_help() -> List:
     msg_list.append(SK_URL)
     return msg_list
 
+
 async def get_qr_help() -> List:
     msg_list = []
     msg_list.append(QRL)

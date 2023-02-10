@@ -80,7 +80,11 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
                 f'base64://{get_qrcode_base64(code_data["url"])}'
             )
         )
-        await matcher.send(MessageSegment.room_at_msg(content='{$@}'+disnote, at_list=wxid_list))
+        await matcher.send(
+            MessageSegment.room_at_msg(
+                content='{$@}' + disnote, at_list=wxid_list
+            )
+        )
     except Exception:
         logger.warning('[扫码登录] {user_id} 图片发送失败')
     status, game_token_data = await refresh(code_data)
@@ -92,7 +96,7 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
             account_id=int(game_token_data['uid']),
             game_token=game_token_data['token'],
         )
-        #Code By @xi-yue-233 commit 1a69c78 for nonebot2-beta1
+        # Code By @xi-yue-233 commit 1a69c78 for nonebot2-beta1
         account_id = game_token_data['uid']
         stoken = stoken_data['data']['token']['token']
         mid = stoken_data['data']['user_info']['mid']
@@ -117,7 +121,17 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
             ).output(header='', sep=';')
         else:
             logger.warning('game_token获取失败：非触发者本人扫码')
-            await matcher.finish(MessageSegment.room_at_msg(content='{$@}'+f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同,gametoken获取失败，请重新发送[扫码登录]进行登录', at_list=wxid_list))
+            await matcher.finish(
+                MessageSegment.room_at_msg(
+                    content='{$@}'
+                    + f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同,gametoken获取失败，请重新发送[扫码登录]进行登录',
+                    at_list=wxid_list,
+                )
+            )
     else:
         logger.warning('game_token获取失败')
-        await matcher.finish(MessageSegment.room_at_msg(content='{$@}game_token获取失败：二维码已过期', at_list=wxid_list))
+        await matcher.finish(
+            MessageSegment.room_at_msg(
+                content='{$@}game_token获取失败：二维码已过期', at_list=wxid_list
+            )
+        )

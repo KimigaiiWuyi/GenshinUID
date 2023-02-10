@@ -121,10 +121,10 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
             ).output(header='', sep=';')
         else:
             logger.warning('game_token获取失败：非触发者本人扫码')
+            im = '{$@}' + f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同，gametoken获取失败，请重新发送[扫码登录]进行登录'
             await matcher.finish(
                 MessageSegment.room_at_msg(
-                    content='{$@}'
-                    + f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同，gametoken获取失败，请重新发送[扫码登录]进行登录',
+                    content=im,
                     at_list=wxid_list,
                 )
             )

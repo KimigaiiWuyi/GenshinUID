@@ -11,19 +11,24 @@ from nonebot.matcher import Matcher
 from qrcode.constants import ERROR_CORRECT_L
 from nonebot.adapters.ntchat import MessageSegment
 
+from ..utils.message.error_reply import UID_HINT
+from ..utils.db_operation.db_operation import select_db
 from ..utils.mhy_api.get_mhy_data import (
     check_qrcode,
     get_cookie_token,
     create_qrcode_url,
+    get_mihoyo_bbs_info,
     get_stoken_by_game_token,
+    get_cookie_token_by_stoken,
 )
 
-disnote = '''免责声明:您将通过扫码完成获取米游社sk以及ck。
-本Bot将不会保存您的登录状态。
-我方仅提供米游社查询及相关游戏内容服务
+disnote = '''免责声明：您将通过扫码完成获取米游社sk以及ck。
+登录米游社相当于将账号授权于机器人，可能会带来未知的账号风险。
 若您的账号封禁、被盗等处罚与我方无关。
-害怕风险请勿扫码!
-'''
+登录后即代表您同意机器人使用协议并知晓会带来未知的账号风险！
+若想取消授权，请到米游社退出登录以清除机器人绑定的登录状态。
+
+请扫描下方二维码登录：'''
 
 
 def get_qrcode_base64(url):
@@ -61,43 +66,58 @@ async def refresh(
             continue
         if status_data['data']['stat'] == 'Confirmed':
             logger.info('二维码已确认')
-            # print(status_data['data']['payload']['raw'])
             break
     return True, json.loads(status_data['data']['payload']['raw'])
 
 
 async def qrcode_login(matcher: Matcher, user_id) -> str:
+    wxid_list = []
+    wxid_list.append(user_id)
     code_data = await create_qrcode_url()
     try:
-        await matcher.send('请扫描下方二维码登录：')
         await matcher.send(
             MessageSegment.image(
                 f'base64://{get_qrcode_base64(code_data["url"])}'
             )
         )
-        await matcher.send(disnote)
+        await matcher.send(MessageSegment.room_at_msg(content='{$@}'+disnote, at_list=wxid_list))
     except Exception:
         logger.warning('[扫码登录] {user_id} 图片发送失败')
     status, game_token_data = await refresh(code_data)
     if status:
         assert game_token_data is not None  # 骗过 pyright
-        logger.info('game_token获取成功')
+        logger.info('[扫码登录]game_token获取成功')
         cookie_token = await get_cookie_token(**game_token_data)
         stoken_data = await get_stoken_by_game_token(
             account_id=int(game_token_data['uid']),
             game_token=game_token_data['token'],
         )
-        return SimpleCookie(
-            {
-                'stoken_v2': stoken_data['data']['token']['token'],
-                'stuid': stoken_data['data']['user_info']['aid'],
-                'mid': stoken_data['data']['user_info']['mid'],
-                'cookie_token': cookie_token['data']['cookie_token'],
-            }
-        ).output(header='', sep=';')
+        #Code By @xi-yue-233 commit 1a69c78 for nonebot2-beta1
+        account_id = game_token_data['uid']
+        stoken = stoken_data['data']['token']['token']
+        mid = stoken_data['data']['user_info']['mid']
+        app_cookie = f'stuid={account_id};stoken={stoken};mid={mid}'
+        ck = await get_cookie_token_by_stoken(stoken, account_id, app_cookie)
+        ck = ck['data']['cookie_token']
+        cookie_check = f'account_id={account_id};cookie_token={ck}'
+        get_uid = await get_mihoyo_bbs_info(account_id, cookie_check)
+        uid_check = get_uid['data']['list'][0]['game_role_id']
+        uid_bind = await select_db(user_id, mode='uid')
+        if uid_bind == "未找到绑定的UID~":
+            logger.warning('game_token获取失败')
+            await matcher.finish(UID_HINT)
+        if str(uid_bind) == uid_check or str(uid_bind) == account_id:
+            return SimpleCookie(
+                {
+                    'stoken_v2': stoken_data['data']['token']['token'],
+                    'stuid': stoken_data['data']['user_info']['aid'],
+                    'mid': stoken_data['data']['user_info']['mid'],
+                    'cookie_token': cookie_token['data']['cookie_token'],
+                }
+            ).output(header='', sep=';')
+        else:
+            logger.warning('game_token获取失败：非触发者本人扫码')
+            await matcher.finish(MessageSegment.room_at_msg(content='{$@}'+f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同,gametoken获取失败，请重新发送[扫码登录]进行登录', at_list=wxid_list))
     else:
         logger.warning('game_token获取失败')
-        await matcher.send(
-            'game_token获取失败：二维码已过期',
-        )
-        return ''
+        await matcher.finish(MessageSegment.room_at_msg(content='{$@}game_token获取失败：二维码已过期', at_list=wxid_list))

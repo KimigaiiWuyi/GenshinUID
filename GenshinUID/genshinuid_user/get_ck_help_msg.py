@@ -26,6 +26,10 @@ http://user.mihoyo.com/（国服）
 然后在和机器人的私聊窗口，粘贴发送即可
 '''
 
+QRL = '''请在群里发送【扫码登录】并用米游社/原神进行扫码绑定
+如果使用该功能，请先绑定UID后再进行登录
+注意不要乱扫他人二维码'''
+
 
 async def get_ck_help() -> List:
     msg_list = []
@@ -33,4 +37,10 @@ async def get_ck_help() -> List:
     msg_list.append(CK_CONSOLE)
     msg_list.append(CK_URL)
     msg_list.append(SK_URL)
+    return msg_list
+
+
+async def get_qr_help() -> List:
+    msg_list = []
+    msg_list.append(QRL)
     return msg_list

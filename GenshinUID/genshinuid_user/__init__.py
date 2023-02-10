@@ -12,10 +12,10 @@ from nonebot.adapters.ntchat import Bot, MessageEvent, MessageSegment
 
 from ..config import priority
 from .qrlogin import qrcode_login
-from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
 from ..genshinuid_meta import register_menu
 from ..utils.nonebot2.rule import FullCommand
+from .get_ck_help_msg import get_ck_help, get_qr_help
 from ..utils.exception.handle_exception import handle_exception
 from .add_ck import deal_ck, get_ck_by_stoken, get_ck_by_all_stoken
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
@@ -24,6 +24,12 @@ add_cookie = on_command('添加', permission=PRIVATE)
 get_ck_msg = on_command(
     '绑定ck说明',
     aliases={'ck帮助', '绑定ck'},
+    block=True,
+    rule=FullCommand(),
+)
+get_qr_msg = on_command(
+    '扫码登录说明',
+    aliases={'扫码帮助', '登录帮助', '登陆帮助'},
     block=True,
     rule=FullCommand(),
 )
@@ -51,7 +57,6 @@ bind = on_regex(
 get_qrcode_login = on_command(
     '扫码登录',
     aliases={'扫码登陆', '扫码登入'},
-    permission=PRIVATE,
     rule=FullCommand(),
 )
 
@@ -228,6 +233,14 @@ async def send_link_uid_msg(
 @get_ck_msg.handle()
 async def send_ck_help(matcher: Matcher):
     msg_list = await get_ck_help()
+    for msg in msg_list:
+        await matcher.send(msg)
+        await asyncio.sleep(0.5)
+
+
+@get_qr_msg.handle()
+async def send_qr_help(matcher: Matcher):
+    msg_list = await get_qr_help()
     for msg in msg_list:
         await matcher.send(msg)
         await asyncio.sleep(0.5)

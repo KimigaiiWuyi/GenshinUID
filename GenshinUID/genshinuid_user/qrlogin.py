@@ -3,7 +3,7 @@ import json
 import base64
 import asyncio
 from http.cookies import SimpleCookie
-from typing import Any, Tuple, Union, Literal
+from typing import Any, List, Tuple, Union, Literal, NoReturn
 
 import qrcode
 from nonebot.log import logger
@@ -71,6 +71,11 @@ async def refresh(
 
 
 async def qrcode_login(matcher: Matcher, user_id) -> str:
+    async def send_group_msg(msg: str, at_list: List) -> NoReturn:
+        await matcher.finish(
+            MessageSegment.room_at_msg(content=msg, at_list=at_list)
+        )
+
     wxid_list = []
     wxid_list.append(user_id)
     code_data = await create_qrcode_url()
@@ -96,7 +101,6 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
             account_id=int(game_token_data['uid']),
             game_token=game_token_data['token'],
         )
-        # Code By @xi-yue-233 commit 1a69c78 for nonebot2-beta1
         account_id = game_token_data['uid']
         stoken = stoken_data['data']['token']['token']
         mid = stoken_data['data']['user_info']['mid']
@@ -105,7 +109,19 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
         ck = ck['data']['cookie_token']
         cookie_check = f'account_id={account_id};cookie_token={ck}'
         get_uid = await get_mihoyo_bbs_info(account_id, cookie_check)
-        uid_check = get_uid['data']['list'][0]['game_role_id']
+        im = None
+        if get_uid:
+            for i in get_uid['data']['list']:
+                if i['game_id'] == 2:
+                    uid_check = i['game_role_id']
+                    break
+            else:
+                im = f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+                await send_group_msg(im, wxid_list)
+        else:
+            im = '请求失败, 请稍后再试...'
+            await send_group_msg(im, wxid_list)
+
         uid_bind = await select_db(user_id, mode='uid')
         if uid_bind == "未找到绑定的UID~":
             logger.warning('game_token获取失败')
@@ -122,19 +138,10 @@ async def qrcode_login(matcher: Matcher, user_id) -> str:
         else:
             logger.warning('game_token获取失败：非触发者本人扫码')
             im = (
-                '{$@}'
-                + f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同，gametoken获取失败，请重新发送[扫码登录]进行登录'
+                '{$@}' + f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同,'
+                'gametoken获取失败，请重新发送[扫码登录]进行登录'
             )
-            await matcher.finish(
-                MessageSegment.room_at_msg(
-                    content=im,
-                    at_list=wxid_list,
-                )
-            )
+            await send_group_msg(im, wxid_list)
     else:
         logger.warning('game_token获取失败')
-        await matcher.finish(
-            MessageSegment.room_at_msg(
-                content='{$@}game_token获取失败：二维码已过期', at_list=wxid_list
-            )
-        )
+        await send_group_msg('{$@}game_token获取失败：二维码已过期', wxid_list)

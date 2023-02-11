@@ -84,7 +84,8 @@ async def send_daily_info(bot: HoshinoBot, ev: CQEvent):
     uid = await select_db(qid, mode='uid')
     if isinstance(uid, str):
         is_force = False
-        if ev.message and ev.message.startswith('强制'):
+        if ev.raw_message and str(ev.raw_message).startswith('强制'):
+            logger.info('[WARNING]本次为强制刷新')
             is_force = True
         im = await save_gachalogs(uid, None, is_force)
         await bot.send(ev, im)

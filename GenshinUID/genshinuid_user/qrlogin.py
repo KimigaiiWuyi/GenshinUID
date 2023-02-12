@@ -69,6 +69,14 @@ async def refresh(
 
 
 async def qrcode_login(bot, group_id, user_id) -> str:
+    async def send_group_msg(msg: str):
+        await bot.call_api(
+            api='send_group_msg',
+            group_id=group_id,
+            message=msg,
+        )
+        return ''
+
     code_data = await create_qrcode_url()
     try:
         im = []
@@ -104,28 +112,25 @@ async def qrcode_login(bot, group_id, user_id) -> str:
         cookie_check = f'account_id={account_id};cookie_token={ck}'
         get_uid = await get_mihoyo_bbs_info(account_id, cookie_check)
         # 剔除除了原神之外的其他游戏
+        im = None
         if get_uid:
             for i in get_uid['data']['list']:
                 if i['game_id'] == 2:
                     uid_check = i['game_role_id']
                     break
             else:
-                await bot.call_api(
-                    api='send_group_msg',
-                    group_id=group_id,
-                    message=f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！',
-                )
-                return ''
+                im = f'你的米游社账号{account_id}尚未绑定原神账号，请前往米游社操作！'
+                return await send_group_msg(im)
+        else:
+            im = '请求失败, 请稍后再试...'
+            return await send_group_msg(im)
+
         uid_bind = await select_db(user_id, mode='uid')
         # 没有在gsuid绑定uid的情况
         if uid_bind == "未找到绑定的UID~":
             logger.warning('game_token获取失败')
-            await bot.call_api(
-                api='send_group_msg',
-                group_id=group_id,
-                message='你还没有绑定uid，请输入[绑定uid123456]绑定你的uid，再发送[扫码登录]进行绑定',
-            )
-            return ''
+            im = '你还没有绑定uid，请输入[绑定uid123456]绑定你的uid，再发送[扫码登录]进行绑定'
+            return await send_group_msg(im)
         # 比对gsuid数据库和扫码登陆获取到的uid
         if str(uid_bind) == uid_check or str(uid_bind) == account_id:
             return SimpleCookie(
@@ -138,17 +143,8 @@ async def qrcode_login(bot, group_id, user_id) -> str:
             ).output(header='', sep=';')
         else:
             logger.warning('game_token获取失败')
-            await bot.call_api(
-                api='send_group_msg',
-                group_id=group_id,
-                message='game_token获取失败：被非绑定指定uid用户扫取，取消绑定，请重新发送[扫码登录]登录账号',
-            )
-            return ''
+            im = 'game_token获取失败：被非绑定指定uid用户扫取，取消绑定，请重新发送[扫码登录]登录账号'
     else:
         logger.warning('game_token获取失败')
-        await bot.call_api(
-            api='send_group_msg',
-            group_id=group_id,
-            message='game_token获取失败：二维码已过期',
-        )
-        return ''
+        im = 'game_token获取失败：二维码已过期'
+    return await send_group_msg(im)

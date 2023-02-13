@@ -2,6 +2,7 @@ import os
 import asyncio
 
 from nonebot.log import logger
+from nonebot.rule import is_type
 from nonebot.matcher import Matcher
 from nonebot import get_bot, on_command, on_message
 from nonebot.adapters.ntchat.permission import GROUP
@@ -22,7 +23,7 @@ from .export_and_import import export_gachalogs, import_gachalogs
 
 get_gacha_log = on_command('刷新抽卡记录', aliases={'强制刷新抽卡记录'}, rule=FullCommand())
 get_gacha_log_card = on_command('抽卡记录', rule=FullCommand())
-import_gacha_log = on_message(block=False, priority=45)
+import_gacha_log = on_message(block=False, rule=(is_type(FileMessageEvent)))
 export_gacha_log = on_command('导出抽卡记录', rule=FullCommand(), permission=GROUP)
 
 
@@ -57,7 +58,7 @@ async def export_gacha_log_info(
         await bot.call_api(
             'send_file',
             to_wxid=gid,
-            file=raw_data['url'],
+            file_path=raw_data['url'],
         )
         logger.info(f'[导出抽卡记录] UID{uid}成功!')
         await matcher.finish('上传成功!')
@@ -151,11 +152,15 @@ async def send_daily_info(
     matcher: Matcher,
 ):
     logger.info('开始执行[刷新抽卡记录]')
+    wxid_list = []
+    wxid_list.append(event.from_wxid)
     uid = await select_db(event.from_wxid, mode='uid')
     if isinstance(uid, str):
         is_force = False
         if event.msg.startswith('强制'):
             is_force = True
+        tip = '正在刷新抽卡记录，请耐心等待，不要重复发送命令。'
+        await matcher.send(MessageSegment.room_at_msg(content=tip , at_list=wxid_list))
         im = await save_gachalogs(uid, None, is_force)
         await matcher.finish(im)
     else:

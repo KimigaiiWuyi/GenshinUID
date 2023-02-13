@@ -160,7 +160,9 @@ async def send_daily_info(
         if event.msg.startswith('强制'):
             is_force = True
         tip = '正在刷新抽卡记录，请耐心等待，不要重复发送命令。'
-        await matcher.send(MessageSegment.room_at_msg(content=tip , at_list=wxid_list))
+        await matcher.send(
+            MessageSegment.room_at_msg(content=tip, at_list=wxid_list)
+        )
         im = await save_gachalogs(uid, None, is_force)
         await matcher.finish(im)
     else:

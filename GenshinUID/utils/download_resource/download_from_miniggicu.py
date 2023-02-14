@@ -76,17 +76,25 @@ async def download_all_file_from_miniggicu():
             content_bs = BeautifulSoup(base_data, 'lxml')
             pre_data = content_bs.find_all('pre')[0]
             data_list = pre_data.find_all('a')
+            size_list = [i for i in content_bs.strings]
             logger.info(
                 f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]中存在{len(data_list)}个内容!'
             )
             temp_num = 0
-            for data in data_list:
+            for index, data in enumerate(data_list):
                 if data['href'] == '../':
                     continue
                 url = f'{file}/{data["href"]}'
                 name = data.text
+                size = size_list[index * 2 + 6].split(' ')[-1]
+                size = size.replace('\r\n', '')
                 path = Path(PATH_MAP[FILE_TO_PATH[file]] / name)
-                if not path.exists() or not os.stat(path).st_size:
+                is_diff = size == str(os.stat(path).st_size)
+                if (
+                    not path.exists()
+                    or not os.stat(path).st_size
+                    or not is_diff
+                ):
                     logger.info(
                         f'[minigg.icu]开始下载[{FILE_TO_NAME[file]}]_[{name}]...'
                     )
@@ -109,7 +117,7 @@ async def download_all_file_from_miniggicu():
             temp_num = 0
             logger.info(im)
     if failed_list:
-        logger.info(f"[minigg.icu]开始重新下载失败的{len(failed_list)}个文件...")
+        logger.info(f'[minigg.icu]开始重新下载失败的{len(failed_list)}个文件...')
         for url, file, name in failed_list:
             TASKS.append(
                 asyncio.wait_for(
@@ -122,4 +130,4 @@ async def download_all_file_from_miniggicu():
         else:
             await _download(TASKS)
         if count := len(failed_list):
-            logger.error(f"[minigg.icu]仍有{count}个文件未下载，请使用命令 `下载全部资源` 重新下载")
+            logger.error(f'[minigg.icu]仍有{count}个文件未下载，请使用命令 `下载全部资源` 重新下载')

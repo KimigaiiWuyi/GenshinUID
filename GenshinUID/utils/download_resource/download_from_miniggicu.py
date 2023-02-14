@@ -89,7 +89,10 @@ async def download_all_file_from_miniggicu():
                 size = size_list[index * 2 + 6].split(' ')[-1]
                 size = size.replace('\r\n', '')
                 path = Path(PATH_MAP[FILE_TO_PATH[file]] / name)
-                is_diff = size == str(os.stat(path).st_size)
+                if path.exists():
+                    is_diff = size == str(os.stat(path).st_size)
+                else:
+                    is_diff = True
                 if (
                     not path.exists()
                     or not os.stat(path).st_size

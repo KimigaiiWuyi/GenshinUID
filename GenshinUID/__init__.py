@@ -7,7 +7,7 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent, PrivateMessageEvent
 from .client import BOT_ID, GsClient
 from .models import Message, MessageReceive
 
-get_message = on_message()
+get_message = on_message(priority=999)
 driver = get_driver()
 gsclient: GsClient
 

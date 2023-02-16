@@ -34,8 +34,14 @@ class GsClient:
                 content = ''
                 if msg.content:
                     for _c in msg.content:
-                        if _c.type == 'text' or _c.type == 'image':
-                            content += _c.data if _c.data else ''
+                        if _c.data:
+                            if _c.type == 'text':
+                                content += _c.data
+                            elif _c.type == 'image':
+                                content += f'[CQ:image,file={_c.data}]'
+                            elif _c.type and _c.type.startswith('log'):
+                                _type = _c.type.split('_')[-1].lower()
+                                getattr(logger, _type)(_c.data)
                 else:
                     pass
                 if msg.bot_id.startswith('NoneBot'):

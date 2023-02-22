@@ -6,7 +6,7 @@ from ...base import hoshino_bot
 # 发送聊天记录
 async def send_forward_msg(
     bot: hoshino_bot,
-    userid: int,
+    group_id: int,
     name: str,
     uin: str,
     msgs: List[str],
@@ -19,5 +19,5 @@ async def send_forward_msg(
 
     messages = [to_json(msg) for msg in msgs]
     await bot.call_action(
-        action='send_private_forward_msg', user_id=userid, messages=messages
+        action='send_group_forward_msg', group_id=group_id, messages=messages
     )

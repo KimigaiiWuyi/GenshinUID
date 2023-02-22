@@ -67,10 +67,11 @@ async def refresh(
     return True, json.loads(status_data["data"]["payload"]["raw"])
 
 
-async def qrcode_login(bot, user_id) -> str:
+async def qrcode_login(bot, group_id, user_id) -> str:
     async def send_group_msg(msg: str):
-        await bot.send_private_msg(
-            user_id=user_id,
+        await bot.call_action(
+            action='send_group_msg',
+            group_id=group_id,
             message=msg,
         )
         return ""
@@ -82,9 +83,9 @@ async def qrcode_login(bot, user_id) -> str:
         im.append('请使用米游社扫描下方二维码登录：')
         im.append(qrc)
         im.append(disnote)
-        await send_forward_msg(bot, user_id, "扫码小助手", str(user_id), im)
+        await send_forward_msg(bot, group_id, "扫码小助手", str(group_id), im)
     except Exception:
-        logger.warn("[扫码登录] {user_id} 图片发送失败")
+        logger.warn(f"[扫码登录] {group_id} 图片发送失败")
     status, game_token_data = await refresh(code_data)
     if status:
         assert game_token_data is not None  # 骗过 pyright

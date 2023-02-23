@@ -1,34 +1,23 @@
-from typing import TYPE_CHECKING, Optional
-
 import pytest
+import nonebot
+from nonebug import NONEBOT_INIT_KWARGS
+from nonebot.adapters.onebot.v11 import Adapter
 
-if TYPE_CHECKING:
-    from nonebot.plugin import Plugin
-
-
-@pytest.fixture
-def load_metadata(nonebug_init: None) -> Optional["Plugin"]:
-    import nonebot
-
-    return nonebot.load_plugin("GenshinUID.genshinuid_meta")
+PLUGINS = ["meta", "adv", "etcimg", "guide"]
 
 
-@pytest.fixture
-def load_adv(nonebug_init: None) -> Optional["Plugin"]:
-    import nonebot
+@pytest.fixture(scope="session", autouse=True)
+def load_bot():
+    driver = nonebot.get_driver()
+    driver.register_adapter(Adapter)
 
-    return nonebot.load_plugin("GenshinUID.genshinuid_adv")
-
-
-@pytest.fixture
-def load_etc(nonebug_init: None) -> Optional["Plugin"]:
-    import nonebot
-
-    return nonebot.load_plugin("GenshinUID.genshinuid_etcimg")
+    nonebot.load_all_plugins(
+        [f"GenshinUID.genshinuid_{name}" for name in PLUGINS], []
+    )
 
 
-@pytest.fixture
-def load_guide(nonebug_init: None) -> Optional["Plugin"]:
-    import nonebot
-
-    return nonebot.load_plugin("GenshinUID.genshinuid_guide")
+def pytest_configure(config: pytest.Config):
+    config.stash[NONEBOT_INIT_KWARGS] = {
+        "genshinuid_disabled_plugins": {"xkdata", "abyss", "adv"},
+        "genshinuid_priority": 5,
+    }

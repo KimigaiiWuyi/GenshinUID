@@ -1,5 +1,7 @@
 ci:
   autofix_commit_msg: ":rotating_light: auto fix by pre-commit-ci"
+  skip:
+    - "poetry-lock"
   autofix_prs: true
   autoupdate_branch: master
   autoupdate_schedule: monthly

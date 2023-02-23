@@ -13,7 +13,7 @@ from nonebug import App
 #         "岩王爷攻略",  # alias
 #     ],
 # )
-# async def test_get_guide_pic(app: App, alias, load_guide: None):
+# async def test_get_guide_pic(app: App, alias ):
 #     from utils import make_event
 #     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 
@@ -35,7 +35,7 @@ from nonebug import App
 
 
 # @pytest.mark.asyncio
-# async def test_get_guide_pic_traveler(app: App, load_guide: None):
+# async def test_get_guide_pic_traveler(app: App ):
 #     from utils import make_event
 #     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 
@@ -57,7 +57,7 @@ from nonebug import App
 
 
 # @pytest.mark.asyncio
-# async def test_get_guide_pic_failed(app: App, load_guide: None):
+# async def test_get_guide_pic_failed(app: App ):
 #     from utils import make_event
 #     from nonebot.adapters.onebot.v11 import Bot, Message
 
@@ -79,7 +79,7 @@ from nonebug import App
         "参考面板岩王爷",  # alias
     ],
 )
-async def test_get_bluekun_pic(app: App, alias, load_guide: None):
+async def test_get_bluekun_pic(app: App, alias):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 
@@ -104,7 +104,7 @@ async def test_get_bluekun_pic(app: App, alias, load_guide: None):
         "冰",
     ],
 )
-async def test_get_bluekun_pic_element(app: App, alias, load_guide: None):
+async def test_get_bluekun_pic_element(app: App, alias):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 

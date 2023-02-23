@@ -17,7 +17,7 @@ MESSAGE = """「安柏」
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(argnames="alias", argvalues=["安柏用什么", "安柏怎么养"])
-async def test_adv_char_chat(app: App, alias, load_adv: None):
+async def test_adv_char_chat(app: App, alias):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message
 

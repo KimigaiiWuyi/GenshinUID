@@ -192,7 +192,7 @@ class MihoyoBBSCoin:
     # 进行签到操作
     async def signing(self):
         if self.Task_do['bbs_Sign']:
-            return '讨论区任务已经完成过了~'
+            return 'SignM已经完成过了~'
         else:
             header = deepcopy(self.headers)
             for i in self.mihoyobbs_List_Use:
@@ -215,7 +215,7 @@ class MihoyoBBSCoin:
     # 看帖子
     async def read_posts(self):
         if self.Task_do['bbs_Read_posts']:
-            return '看帖任务已经完成过了~'
+            return 'ReadM已经完成过了~'
         else:
             num_ok = 0
             for i in range(self.Task_do['bbs_Read_posts_num']):
@@ -233,7 +233,7 @@ class MihoyoBBSCoin:
     # 点赞
     async def like_posts(self):
         if self.Task_do['bbs_Like_posts']:
-            return 'Like任务已经完成过了~'
+            return 'LikeM任务已经完成过了~'
         else:
             num_ok = 0
             num_cancel = 0
@@ -273,7 +273,7 @@ class MihoyoBBSCoin:
 
     async def share_post(self):
         if self.Task_do['bbs_Share']:
-            return '分享任务已经完成过了~'
+            return 'ShareM已经完成过了~'
         else:
             for _ in range(3):
                 async with AsyncClient() as client:

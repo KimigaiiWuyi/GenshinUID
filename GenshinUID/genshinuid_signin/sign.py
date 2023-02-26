@@ -7,6 +7,7 @@ from nonebot.log import logger
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_operation import config_check, get_all_signin_list
 from ..utils.mhy_api.get_mhy_data import (
+    _pass,
     get_sign_info,
     get_sign_list,
     mihoyo_bbs_sign,
@@ -52,7 +53,21 @@ async def sign_in(uid) -> str:
                 # 出现校验码
                 if sign_data['data']['risk_code'] == 375:
                     if await config_check('CaptchaPass'):
-                        logger.info('旧配置已失效...')
+                        gt = sign_data['data']['gt']
+                        ch = sign_data['data']['challenge']
+                        vl, ch = await _pass(gt, ch, Header)
+                        if vl:
+                            delay = 1
+                            Header['x-rpc-challenge'] = ch
+                            Header['x-rpc-validate'] = vl
+                            Header['x-rpc-seccode'] = f'{vl}|jordan'
+                            logger.info(f'[签到] {uid} 已获取验证码, 等待时间{delay}秒')
+                            await asyncio.sleep(delay)
+                        else:
+                            delay = 605 + random.randint(1, 120)
+                            logger.info(f'[签到] {uid} 未获取验证码,等待{delay}秒后重试...')
+                            await asyncio.sleep(delay)
+                        continue
                     else:
                         logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')
                     return '签到失败...出现验证码!'
@@ -81,13 +96,11 @@ async def sign_in(uid) -> str:
     # 获取签到列表
     sign_list = await get_sign_list(uid)
     status = sign_data['message']
+    # 获取签到奖励物品，拿旧的总签到天数 + 1 为新的签到天数，再 -1 即为今日奖励物品的下标
     getitem = sign_list['data']['awards'][
-        int(sign_info['total_sign_day']) - 1
-    ]['name']
-    getnum = sign_list['data']['awards'][int(sign_info['total_sign_day']) - 1][
-        'cnt'
+        int(sign_info['total_sign_day']) + 1 - 1
     ]
-    get_im = f'本次签到获得{getitem}x{getnum}'
+    get_im = f'本次签到获得{getitem["name"]}x{getitem["cnt"]}'
     new_sign_info = await get_sign_info(uid)
     new_sign_info = new_sign_info['data']
     day_of_month = int(new_sign_info['today'].split('-')[-1])

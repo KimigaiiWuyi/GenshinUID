@@ -1,15 +1,24 @@
 from pathlib import Path
+from typing import Dict, List
 from http.cookies import SimpleCookie
 
 from nonebot.log import logger
 
 from ..utils.message.error_reply import UID_HINT
 from ..utils.db_operation.db_cache_and_check import refresh_ck
-from ..utils.db_operation.db_operation import select_db, stoken_db, cookies_db
 from ..utils.mhy_api.get_mhy_data import (
     get_mihoyo_bbs_info,
     get_cookie_token_by_stoken,
     get_stoken_by_login_ticket,
+)
+from ..utils.db_operation.db_operation import (
+    select_db,
+    stoken_db,
+    cookies_db,
+    get_stoken,
+    get_all_uid,
+    owner_cookies,
+    get_user_bind_data,
 )
 
 pic_path = Path(__file__).parent / 'pic'
@@ -31,6 +40,66 @@ id_list = [
 sk_list = ['stoken', 'stoken_v2']
 ck_list = ['cookie_token', 'cookie_token_v2']
 lt_list = ['login_ticket', 'login_ticket_v2']
+
+
+async def get_ck_by_all_stoken():
+    uid_list: List = await get_all_uid()
+    uid_dict = {}
+    for uid in uid_list:
+        user_data = await get_user_bind_data(uid)
+        if 'QID' in user_data:
+            qid = user_data['QID']
+            uid_dict[uid] = qid
+    logger.info(f'[刷新全部CK] 即将刷新CK的UID个数{len(uid_dict)}')
+    im = await refresh_ck_by_uid_list(uid_dict)
+    return im
+
+
+async def get_ck_by_stoken(qid: int):
+    uid_list: List = await select_db(qid, mode='list')  # type: ignore
+    uid_dict = {uid: qid for uid in uid_list}
+    im = await refresh_ck_by_uid_list(uid_dict)
+    return im
+
+
+async def refresh_ck_by_uid_list(uid_dict: Dict):
+    uid_num = len(uid_dict)
+    if uid_num == 0:
+        return '请先绑定一个UID噢~'
+    error_list = {}
+    skip_num = 0
+    error_num = 0
+    for uid in uid_dict:
+        status = await owner_cookies(uid)
+        if status != '该用户没有绑定过Cookies噢~':
+            stoken = await get_stoken(uid)
+            if '该用户没有绑定过Stoken噢~' in stoken or stoken is None:
+                skip_num += 1
+                error_num += 1
+                continue
+            qid = uid_dict[uid]
+            try:
+                mes = await _deal_ck(stoken, qid)
+            except TypeError:
+                error_list[uid] = 'SK或CK已过期！'
+                error_num += 1
+                continue
+            ok_num = mes.count('成功')
+            if ok_num < 2:
+                error_list[uid] = '可能是SK已过期~'
+                error_num += 1
+                continue
+            logger.info(f'UID{uid}刷新CK成功！')
+        else:
+            skip_num += 1
+            error_num += 1
+            continue
+
+    s_im = f'执行完成~成功刷新CK{uid_num - error_num}个！跳过{skip_num}个!'
+    f_im = '\n'.join([f'UID{u}:{error_list[u]}' for u in error_list])
+    im = f'{s_im}\n{f_im}' if f_im else s_im
+
+    return im
 
 
 async def deal_ck(mes, qid, mode: str = 'PIC'):

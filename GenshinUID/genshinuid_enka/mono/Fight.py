@@ -105,7 +105,7 @@ class Fight:
 
             # 正常伤害
             if not dmg:
-                if '治疗' in power_name:
+                if '治疗' in power_name or '回复' in power_name:
                     dmg = await self.get_heal(char)
                 elif '护盾' in power_name:
                     dmg = await self.get_shield(char)
@@ -361,6 +361,11 @@ class Fight:
         else:
             base = effect_prop * power.percent + power.value
 
+        if char.char_name == '珊瑚宫心海':
+            hp = char.real_prop['hp']
+            hb = char.real_prop['healBonus']
+            add_dmg += 0.15 * hp * hb
+
         # 基本乘区 = 有效数值(例如攻击力) * 倍率 + 固定值 + 激化区 + 额外加成值 + 特殊加成值
         base_area = base + reaction_power + add_dmg + char.sp.addDmg
         if base_area_plus != 1:
@@ -425,7 +430,7 @@ class Fight:
         heal_bonus = 1 + char.real_prop['healBonus']
         base_area = effect_prop * power.percent + power.value + add_heal
         normal_value = base_area * heal_bonus
-        return normal_value, 0, 0
+        return normal_value, normal_value, 0
 
     async def get_shield(self, char: Character) -> Tuple[float, float, float]:
         # 获得护盾倍率
@@ -448,7 +453,7 @@ class Fight:
         # 获得这次攻击的减伤乘区(抗性区+防御区)
         d = await self.get_extra_d(char)
         i_d = await self.get_extra_ignoreD(char)
-        logger.debug(self.enemy.__dict__)
+        # logger.debug(self.enemy.__dict__)
         proof = await self.enemy.get_dmg_proof(dmg_type, d, i_d)
         # 获得这次攻击的增幅乘区
         _char = char if is_single else None
@@ -468,11 +473,13 @@ class Fight:
         # 暴击伤害 = 普通伤害 * 暴击区
         crit_dmg = normal_dmg * (1 + critdmg)
         # 平均伤害
-        if critrate < 1:
-            avg_dmg = crit_dmg * critrate + (1 - critrate) * normal_dmg
-        else:
-            # 暴击率超过100%后不再计算期望
-            avg_dmg = crit_dmg
+        avg_dmg = (
+            normal_dmg
+            if critrate < 0
+            else crit_dmg
+            if critrate > 1
+            else crit_dmg * critrate + (1 - critrate) * normal_dmg
+        )
 
         self.total_normal_dmg += normal_dmg
         self.total_avg_dmg += avg_dmg

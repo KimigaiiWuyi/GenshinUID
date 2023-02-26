@@ -1,11 +1,17 @@
 import json
-from typing import List, Union, Literal, overload
+from typing import Dict, List, Union, Literal, overload
 
 from ..utils.download_resource.RESOURCE_PATH import CONFIG_PATH
 
-CONIFG_DEFAULT = {'LU_TOKEN': '', 'proxy': '', 'Ann_Groups': [], 'Ann_Ids': []}
+CONIFG_DEFAULT = {
+    'proxy': '',
+    '_pass_API': '',
+    'random_pic_API': 'https://genshin-res.cherishmoon.fun/img?name=',
+    'Ann_Groups': [],
+    'Ann_Ids': [],
+}
 
-STR_CONFIG = Literal['LU_TOKEN', 'proxy']
+STR_CONFIG = Literal['proxy', '_pass_API', 'random_pic_API']
 LIST_CONFIG = Literal['Ann_Groups', 'Ann_Ids']
 
 
@@ -24,11 +30,19 @@ class StringConfig:
     def update_config(self):
         # 打开config.json
         with open(CONFIG_PATH, 'r', encoding='UTF-8') as f:
-            self.config = json.load(f)
+            self.config: Dict = json.load(f)
         # 对没有的值，添加默认值
         for key in CONIFG_DEFAULT:
             if key not in self.config:
                 self.config[key] = CONIFG_DEFAULT[key]
+
+        # 对默认值没有的值，直接删除
+        delete_keys = []
+        for key in self.config:
+            if key not in CONIFG_DEFAULT:
+                delete_keys.append(key)
+        for key in delete_keys:
+            self.config.pop(key)
 
         # 重新写回
         self.write_config()

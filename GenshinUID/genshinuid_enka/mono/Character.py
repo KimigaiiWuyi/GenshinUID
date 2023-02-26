@@ -247,6 +247,9 @@ class Character:
             char_name_covert = '荧'
 
         char_raw = await get_char_info(name=char_name_covert, mode='char')
+        self.char_id = await name_to_avatar_id(char_name_covert)
+        if not self.char_id and char_name != '旅行者':
+            return {}
         if char_raw is not None and 'errcode' in char_raw:
             char_raw = char_data = await convert_ambr_to_minigg(self.char_id)
         else:
@@ -673,16 +676,19 @@ class Character:
                 value_1 = float(skill1[skill_level].split('+')[0])
                 value_1 *= 0.6
                 value_2 = float(skill1[skill_level].split('+')[1])
+                value_2 *= 0.6
                 value_3 = skill2[skill_level] * 90
-                ex_effect.append(
-                    (
-                        f'Q一段伤害:addAtk+{60*value_2};'
-                        f'Q重击伤害:addAtk+{60*value_2};'
-                        f'Q高空下落伤害:addAtk+{60*value_2};'
-                        f'Q梦想一刀基础伤害:dmgBonus+{value_3}'
-                    )
-                )
-                self.extra_effect = {'Q梦想一刀基础伤害(满愿力)': value_1}
+                ex_effect.append((f'Q梦想一刀基础伤害:dmgBonus+{value_3}'))
+                self.extra_effect = {
+                    'Q梦想一刀基础伤害(满愿力)': value_1,
+                    'Q一段伤害(满愿力)': value_2,
+                    'Q重击伤害(满愿力)': value_2,
+                    'Q高空下落伤害(满愿力)': value_2,
+                }
+                if self.card_prop['weaponInfo']['weaponName'] == '薙草之稻光':
+                    weaponAffix = self.card_prop['weaponInfo']['weaponAffix']
+                    _ex = 10 + weaponAffix * 2
+                    ex_effect.append(f'Q:dmgBonus+{_ex}')
             elif self.char_name == '优菈':
                 skill_effect = EXTRA_CHAR_LIST[self.char_name]['Q每层能量伤害'][
                     'value'
@@ -867,6 +873,8 @@ async def text_to_effect(name: str, value: float) -> str:
         str = f'physicalDmgBonus+{value}'
     elif '元素伤害加成' in name:
         str = f'{ELEMENT_MAP[name[0]]}DmgBonus+{value}'
+    elif '治疗加成' in name:
+        str = f'healBonus+{value}'
     return str
 
 

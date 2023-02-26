@@ -1,4683 +1,4745 @@
 {
-  "恶王丸": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "Q:dmgBonus+40",
-        "2": "Q:dmgBonus+50",
-        "3": "Q:dmgBonus+60",
-        "4": "Q:dmgBonus+70",
-        "5": "Q:dmgBonus+80"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "暗巷猎手": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "天目影打刀": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "阿莫斯之弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:dmgBonus+52",
-        "2": "AB:dmgBonus+65",
-        "3": "AB:dmgBonus+78",
-        "4": "AB:dmgBonus+91",
-        "5": "AB:dmgBonus+104"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "学徒笔记": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "若水": {
-    "normal": {
-      "normal_effect": {
-        "1": "addHp+16",
-        "2": "addHp+20",
-        "3": "addHp+24",
-        "4": "addHp+28",
-        "5": "addHp+32"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+20",
-        "2": "dmgBonus+25",
-        "3": "dmgBonus+30",
-        "4": "dmgBonus+35",
-        "5": "dmgBonus+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "风鹰剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "新手长枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑岩绯玉": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+36",
-        "2": "addAtk+45",
-        "3": "addAtk+54",
-        "4": "addAtk+63",
-        "5": "addAtk+72"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑岩长剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+36",
-        "2": "addAtk+45",
-        "3": "addAtk+54",
-        "4": "addAtk+63",
-        "5": "addAtk+72"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑岩刺枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+36",
-        "2": "addAtk+45",
-        "3": "addAtk+54",
-        "4": "addAtk+63",
-        "5": "addAtk+72"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑岩斩刀": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+36",
-        "2": "addAtk+45",
-        "3": "addAtk+54",
-        "4": "addAtk+63",
-        "5": "addAtk+72"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑岩战弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+36",
-        "2": "addAtk+45",
-        "3": "addAtk+54",
-        "4": "addAtk+63",
-        "5": "addAtk+72"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑缨枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "沐浴龙血的剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Pyro","Electro"]
-      }
-    }
-  },
-  "息灾": {
-    "normal": {
-      "normal_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+19.2",
-        "2": "addAtk+24",
-        "3": "addAtk+28.8",
-        "4": "addAtk+33.6",
-        "5": "addAtk+38.4"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "up":"bg:2"
-      }
-    }
-  },
-  "辰砂之纺锤": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "E:addDmg+40%def",
-        "2": "E:addDmg+50%def",
-        "3": "E:addDmg+60%def",
-        "4": "E:addDmg+70%def",
-        "5": "E:addDmg+80%def"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "钢轮弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+16",
-        "2": "addAtk+20",
-        "3": "addAtk+24",
-        "4": "addAtk+28",
-        "5": "addAtk+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "冷刃": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Hydro","Cryo"]
-      }
-    }
-  },
-  "流月针": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:addDmg+20%atk",
-        "2": "AB:addDmg+25%atk",
-        "3": "AB:addDmg+30%atk",
-        "4": "AB:addDmg+35%atk",
-        "5": "AB:addDmg+40%atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "暗铁剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 12,
-      "extra": {
-        "trigger":["Electro"]
-      }
-    }
-  },
-  "决斗之枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+24",
-        "2": "addAtk+30",
-        "3": "addAtk+36",
-        "4": "addAtk+42",
-        "5": "addAtk+48"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "以理服人": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:extraDmg+60atk",
-        "2": "AB:extraDmg+75atk",
-        "3": "AB:extraDmg+90atk",
-        "4": "AB:extraDmg+105atk",
-        "5": "AB:extraDmg+120atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 15,
-      "extra": {
-        "trigger":["E"]
-      }
-    }
-  },
-  "嘟嘟可故事集": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "B:dmgBonus+16;addAtk+8",
-        "2": "B:dmgBonus+20;addAtk+10",
-        "3": "B:dmgBonus+24;addAtk+12",
-        "4": "B:dmgBonus+28;addAtk+14",
-        "5": "B:dmgBonus+32;addAtk+16"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 6,
-      "extra": {
-        "trigger":["A","B"]
-      }
-    }
-  },
-  "匣里灭辰": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+20",
-        "2": "dmgBonus+24",
-        "3": "dmgBonus+28",
-        "4": "dmgBonus+32",
-        "5": "dmgBonus+36"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Hydro","Pyro"]
-      }
-    }
-  },
-  "龙脊长枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "无锋剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "终末嗟叹之诗": {
-    "normal": {
-      "normal_effect": {
-        "1": "elementalMastery+60",
-        "2": "elementalMastery+75",
-        "3": "elementalMastery+90",
-        "4": "elementalMastery+105",
-        "5": "elementalMastery+120"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "elementalMastery+100;addAtk+20",
-        "2": "elementalMastery+125;addAtk+25",
-        "3": "elementalMastery+150;addAtk+30",
-        "4": "elementalMastery+175;addAtk+35",
-        "5": "elementalMastery+200;addAtk+40"
-      },
-      "group_effect": {
-        "1": "elementalMastery+100;addAtk+20",
-        "2": "elementalMastery+125;addAtk+25",
-        "3": "elementalMastery+150;addAtk+30",
-        "4": "elementalMastery+175;addAtk+35",
-        "5": "elementalMastery+200;addAtk+40"
-      },
-      "time": 12,
-      "extra": {
-        
-      }
-    }
-  },
-  "翡玉法球": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 12,
-      "extra": {
-        "trigger":["Hydro"]
-      }
-    }
-  },
-  "薙草之稻光": {
-    "normal": {
-      "normal_effect": {
-        "1": "addAtk+28%energyRecharge",
-        "2": "addAtk+35%energyRecharge",
-        "3": "addAtk+42%energyRecharge",
-        "4": "addAtk+49%energyRecharge",
-        "5": "addAtk+56%energyRecharge"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "energyRecharge+30;addAtk+8.4",
-        "2": "energyRecharge+35;addAtk+12.25",
-        "3": "energyRecharge+40;addAtk+16.8",
-        "4": "energyRecharge+45;addAtk+22.05",
-        "5": "energyRecharge+50;addAtk+28"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 12,
-      "extra": {
-        "trigger":["Q"]
-      }
-    }
-  },
-  "不灭月华": {
-    "normal": {
-      "normal_effect": {
-        "1": "healBonus+10",
-        "2": "healBonus+12.5",
-        "3": "healBonus+15",
-        "4": "healBonus+17.5",
-        "5": "healBonus+20"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:addDmg+1%hp",
-        "2": "A:addDmg+1.5%hp",
-        "3": "A:addDmg+2%hp",
-        "4": "A:addDmg+2.5%hp",
-        "5": "A:addDmg+3%hp"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "昭心": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:extraDmg+240%atk",
-        "2": "AB:extraDmg+270%atk",
-        "3": "AB:extraDmg+300%atk",
-        "4": "AB:extraDmg+330%atk",
-        "5": "AB:extraDmg+360%atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "落霞": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+10",
-        "2": "dmgBonus+12.5",
-        "3": "dmgBonus+15",
-        "4": "dmgBonus+17.5",
-        "5": "dmgBonus+20"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "西风秘典": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "西风大剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "西风长枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "西风剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "西风猎弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "铁影阔剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "B:dmgBonus+30",
-        "2": "B:dmgBonus+35",
-        "3": "B:dmgBonus+40",
-        "4": "B:dmgBonus+45",
-        "5": "B:dmgBonus+50"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "腐殖之剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "E:dmgBonus+16;E:critRate+6",
-        "2": "E:dmgBonus+20;E:critRate+7.5",
-        "3": "E:dmgBonus+24;E:critRate+9",
-        "4": "E:dmgBonus+28;E:critRate+10.5",
-        "5": "E:dmgBonus+32;E:critRate+12"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "吃虎鱼刀": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "extraDmg+240%atk",
-        "2": "extraDmg+280%atk",
-        "3": "extraDmg+320%atk",
-        "4": "extraDmg+360%atk",
-        "5": "extraDmg+400%atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "苍古自由之誓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+10;ABC:dmgBonus+16;addAtk+20",
-        "2": "dmgBonus+12.5;ABC:dmgBonus+20;addAtk+25",
-        "3": "dmgBonus+15;ABC:dmgBonus+24;addAtk+30",
-        "4": "dmgBonus+17.5;ABC:dmgBonus+28;addAtk+35",
-        "5": "dmgBonus+20;ABC:dmgBonus+32;addAtk+40"
-      },
-      "group_effect": {
-        "1": "ABC:dmgBonus+16;addAtk+20",
-        "2": "ABC:dmgBonus+20;addAtk+25",
-        "3": "ABC:dmgBonus+24;addAtk+30",
-        "4": "ABC:dmgBonus+28;addAtk+35",
-        "5": "ABC:dmgBonus+32;addAtk+40"
-      },
-      "time": 12,
-      "extra": {
-        
-      }
-    }
-  },
-  "忍冬之果": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "白辰之环": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+10",
-        "2": "dmgBonus+12.5",
-        "3": "dmgBonus+15",
-        "4": "dmgBonus+17.5",
-        "5": "dmgBonus+20"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 6,
-      "extra": {
-        "trigger":["Electro"]
-      }
-    }
-  },
-  "钺矛": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:extraDmg+160%atk",
-        "2": "A:extraDmg+200%atk",
-        "3": "A:extraDmg+240%atk",
-        "4": "A:extraDmg+280%atk",
-        "5": "A:extraDmg+320%atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "破魔之弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:dmgBonus+32;B:dmgBonus+24",
-        "2": "A:dmgBonus+40;B:dmgBonus+30",
-        "3": "A:dmgBonus+48;B:dmgBonus+36",
-        "4": "A:dmgBonus+56;B:dmgBonus+42",
-        "5": "A:dmgBonus+64;B:dmgBonus+48"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "波乱月白经津": {
-    "normal": {
-      "normal_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:dmgBonus+40",
-        "2": "A:dmgBonus+50",
-        "3": "A:dmgBonus+60",
-        "4": "A:dmgBonus+70",
-        "5": "A:dmgBonus+80"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黎明神剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "critRate+14",
-        "2": "critRate+17.5",
-        "3": "critRate+21",
-        "4": "critRate+24.5",
-        "5": "critRate+28"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "猎弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "铁尖枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "铁蜂刺": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-      
-      }
-    }
-  },
-  "神乐之真意": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "E:dmgBonus+36;dmgBonus+12",
-        "2": "E:dmgBonus+45;dmgBonus+15",
-        "3": "E:dmgBonus+54;dmgBonus+18",
-        "4": "E:dmgBonus+63;dmgBonus+21",
-        "5": "E:dmgBonus+72;dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "桂木斩长正": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "E:dmgBonus+6",
-        "2": "E:dmgBonus+7.5",
-        "3": "E:dmgBonus+9",
-        "4": "E:dmgBonus+10.5",
-        "5": "E:dmgBonus+12"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "喜多院十文字": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "E:dmgBonus+6",
-        "2": "E:dmgBonus+7.5",
-        "3": "E:dmgBonus+9",
-        "4": "E:dmgBonus+10.5",
-        "5": "E:dmgBonus+12"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "匣里龙吟": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+20",
-        "2": "dmgBonus+24",
-        "3": "dmgBonus+28",
-        "4": "dmgBonus+32",
-        "5": "dmgBonus+36"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Pyro", "Electro"]
-      }
-    }
-  },
-  "千岩古剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+21;critRate+9",
-        "2": "addAtk+24;critRate+12",
-        "3": "addAtk+27;critRate+15",
-        "4": "addAtk+30;critRate+18",
-        "5": "addAtk+33;critRate+21"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "千岩长枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+21;critRate+9",
-        "2": "addAtk+24;critRate+12",
-        "3": "addAtk+27;critRate+15",
-        "4": "addAtk+30;critRate+18",
-        "5": "addAtk+33;critRate+21"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "四风原典": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+32",
-        "2": "dmgBonus+40",
-        "3": "dmgBonus+48",
-        "4": "dmgBonus+56",
-        "5": "dmgBonus+64"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "trigger":["fg"]
-      }
-    }
-  },
-  "衔珠海皇": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "Q:dmgBonus+12;Q:extraDmg+100%atk",
-        "2": "Q:dmgBonus+15;Q:extraDmg+125%atk",
-        "3": "Q:dmgBonus+18;Q:extraDmg+150%atk",
-        "4": "Q:dmgBonus+21;Q:extraDmg+175%atk",
-        "5": "Q:dmgBonus+24;Q:extraDmg+200%atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "魔导绪论": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Hydro","Electro"]
-      }
-    }
-  },
-  "万国诸海图谱": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+16",
-        "2": "dmgBonus+20",
-        "3": "dmgBonus+24",
-        "4": "dmgBonus+28",
-        "5": "dmgBonus+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "尘世之锁": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "shieldBonus+20;addAtk+20",
-        "2": "shieldBonus+25;addAtk+25",
-        "3": "shieldBonus+30;addAtk+30",
-        "4": "shieldBonus+35;addAtk+35",
-        "5": "shieldBonus+40;addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "信使": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "雾切之回光": {
-    "normal": {
-      "normal_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+28",
-        "2": "dmgBonus+35",
-        "3": "dmgBonus+42",
-        "4": "dmgBonus+49",
-        "5": "dmgBonus+56"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "幽夜华尔兹": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AE:dmgBonus+20",
-        "2": "AE:dmgBonus+25",
-        "3": "AE:dmgBonus+30",
-        "4": "AE:dmgBonus+35",
-        "5": "AE:dmgBonus+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "曚云之月": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "Q:dmgBonus+40",
-        "2": "Q:dmgBonus+50",
-        "3": "Q:dmgBonus+60",
-        "4": "Q:dmgBonus+70",
-        "5": "Q:dmgBonus+80"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "证誓之明瞳": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "energyRecharge+24",
-        "2": "energyRecharge+30",
-        "3": "energyRecharge+36",
-        "4": "energyRecharge+42",
-        "5": "energyRecharge+48"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "佣兵重剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "异世界行记": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "口袋魔导书": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "冬极白星": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "EQ:dmgBonus+12;addAtk+48",
-        "2": "EQ:dmgBonus+15;addAtk+60",
-        "3": "EQ:dmgBonus+18;addAtk+72",
-        "4": "EQ:dmgBonus+21;addAtk+84",
-        "5": "EQ:dmgBonus+24;addAtk+96"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "掠食者": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "磐岩结绿": {
-    "normal": {
-      "normal_effect": {
-        "1": "addHp+20;exAtk+1.2%hp",
-        "2": "addHp+25;exAtk+1.5%hp",
-        "3": "addHp+30;exAtk+1.8%hp",
-        "4": "addHp+35;exAtk+2.1%hp",
-        "5": "addHp+40;exAtk+2.4%hp"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "和璞鸢": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+22.4;dmgBonus+12",
-        "2": "addAtk+27.3;dmgBonus+15",
-        "3": "addAtk+32.2;dmgBonus+18",
-        "4": "addAtk+37.1;dmgBonus+21",
-        "5": "addAtk+42;dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "试作金珀": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "试作古华": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "试作澹月": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+36",
-        "2": "addAtk+45",
-        "3": "addAtk+54",
-        "4": "addAtk+63",
-        "5": "addAtk+72"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "试作斩岩": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+16;addDef+16",
-        "2": "addAtk+20;addDef+20",
-        "3": "addAtk+24;addDef+24",
-        "4": "addAtk+28;addDef+28",
-        "5": "addAtk+32;addDef+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "试作星镰": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:dmgBonus+16",
-        "2": "AB:dmgBonus+20",
-        "3": "AB:dmgBonus+24",
-        "4": "AB:dmgBonus+28",
-        "5": "AB:dmgBonus+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "雨裁": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+20",
-        "2": "dmgBonus+24",
-        "3": "dmgBonus+28",
-        "4": "dmgBonus+32",
-        "5": "dmgBonus+36"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Hydro","Electro"]
-      }
-    }
-  },
-  "鸦羽弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        "limit":["Hydro","Pyro"]
-      }
-    }
-  },
-  "反曲弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "赤角石溃杵": {
-    "normal": {
-      "normal_effect": {
-        "1": "addDef+28",
-        "2": "addDef+35",
-        "3": "addDef+42",
-        "4": "addDef+49",
-        "5": "addDef+56"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:addDmg+40%def",
-        "2": "AB:addDmg+50%def",
-        "3": "AB:addDmg+60%def",
-        "4": "AB:addDmg+70%def",
-        "5": "AB:addDmg+80%def"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "宗室长弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "critRate+14",
-        "2": "critRate+16",
-        "3": "critRate+18",
-        "4": "critRate+22",
-        "5": "critRate+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "宗室大剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "critRate+14",
-        "2": "critRate+16",
-        "3": "critRate+18",
-        "4": "critRate+22",
-        "5": "critRate+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "宗室秘法录": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "critRate+14",
-        "2": "critRate+16",
-        "3": "critRate+18",
-        "4": "critRate+22",
-        "5": "critRate+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "宗室长剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "critRate+14",
-        "2": "critRate+16",
-        "3": "critRate+18",
-        "4": "critRate+22",
-        "5": "critRate+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "宗室猎枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "critRate+14",
-        "2": "critRate+16",
-        "3": "critRate+18",
-        "4": "critRate+22",
-        "5": "critRate+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "弓藏": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:dmgBonus+40",
-        "2": "A:dmgBonus+50",
-        "3": "A:dmgBonus+60",
-        "4": "A:dmgBonus+70",
-        "5": "A:dmgBonus+80"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "祭礼弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "祭礼残章": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "祭礼大剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "祭礼剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "历练的猎弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "螭骨剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+30",
-        "2": "dmgBonus+35",
-        "3": "dmgBonus+40",
-        "4": "dmgBonus+45",
-        "5": "dmgBonus+50"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "神射手之誓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "B:dmgBonus+24",
-        "2": "B:dmgBonus+30",
-        "3": "B:dmgBonus+36",
-        "4": "B:dmgBonus+42",
-        "5": "B:dmgBonus+48"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "银剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "飞天大御剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+24",
-        "2": "addAtk+28",
-        "3": "addAtk+32",
-        "4": "addAtk+36",
-        "5": "addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "飞天御剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+12",
-        "2": "addAtk+15",
-        "3": "addAtk+18",
-        "4": "addAtk+21",
-        "5": "addAtk+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "天空之卷": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "天空之刃": {
-    "normal": {
-      "normal_effect": {
-        "1": "critRate+4",
-        "2": "critRate+5",
-        "3": "critRate+6",
-        "4": "critRate+7",
-        "5": "critRate+8"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:extraDmg+20%atk",
-        "2": "AB:extraDmg+25%atk",
-        "3": "AB:extraDmg+30%atk",
-        "4": "AB:extraDmg+35%atk",
-        "5": "AB:extraDmg+40%atk"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 12,
-      "extra": {
-        
-      }
-    }
-  },
-  "天空之翼": {
-    "normal": {
-      "normal_effect": {
-        "1": "critDmg+20",
-        "2": "critDmg+25",
-        "3": "critDmg+30",
-        "4": "critDmg+35",
-        "5": "critDmg+40"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "天空之傲": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+8",
-        "2": "dmgBonus+10",
-        "3": "dmgBonus+12",
-        "4": "dmgBonus+14",
-        "5": "dmgBonus+16"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "天空之脊": {
-    "normal": {
-      "normal_effect": {
-        "1": "critRate+8",
-        "2": "critRate+10",
-        "3": "critRate+12",
-        "4": "critRate+14",
-        "5": "critRate+16"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "弹弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:dmgBonus+36",
-        "2": "AB:dmgBonus+42",
-        "3": "AB:dmgBonus+48",
-        "4": "AB:dmgBonus+54",
-        "5": "AB:dmgBonus+60"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "雪葬的星银": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "匣里日月": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AEQ:dmgBonus+20",
-        "2": "AEQ:dmgBonus+25",
-        "3": "AEQ:dmgBonus+30",
-        "4": "AEQ:dmgBonus+35",
-        "5": "AEQ:dmgBonus+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "松籁响起之时": {
-    "normal": {
-      "normal_effect": {
-        "1": "addAtk+16",
-        "2": "addAtk+20",
-        "3": "addAtk+24",
-        "4": "addAtk+28",
-        "5": "addAtk+32"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      },
-      "group_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "护摩之杖": {
-    "normal": {
-      "normal_effect": {
-        "1": "addHp+20;exAtk+0.8%hp",
-        "2": "addHp+25;exAtk+1%hp",
-        "3": "addHp+30;exAtk+1.2%hp",
-        "4": "addHp+35;exAtk+1.4%hp",
-        "5": "addHp+40;exAtk+1.6%hp"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "exAtk+1%hp",
-        "2": "exAtk+1.2%hp",
-        "3": "exAtk+1.4%hp",
-        "4": "exAtk+1.6%hp",
-        "5": "exAtk+1.8%hp"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "斫峰之刃": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "shieldBonus+20;addAtk+20",
-        "2": "shieldBonus+25;addAtk+25",
-        "3": "shieldBonus+30;addAtk+30",
-        "4": "shieldBonus+35;addAtk+35",
-        "5": "shieldBonus+40;addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "降临之剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "暗巷闪光": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "钟剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "黑剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AB:dmgBonus+20",
-        "2": "AB:dmgBonus+25",
-        "3": "AB:dmgBonus+30",
-        "4": "AB:dmgBonus+35",
-        "5": "AB:dmgBonus+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "「渔获」": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "Q:dmgBonus+16;Q:critRate+6",
-        "2": "Q:dmgBonus+20;Q:critRate+7.5",
-        "3": "Q:dmgBonus+24;Q:critRate+9",
-        "4": "Q:dmgBonus+28;Q:critRate+10.5",
-        "5": "Q:dmgBonus+32;Q:critRate+12"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "笛剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "绝弦": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "EQ:dmgBonus+24",
-        "2": "EQ:dmgBonus+30",
-        "3": "EQ:dmgBonus+36",
-        "4": "EQ:dmgBonus+42",
-        "5": "EQ:dmgBonus+48"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "无工之剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "shieldBonus+20;addAtk+20",
-        "2": "shieldBonus+25;addAtk+25",
-        "3": "shieldBonus+30;addAtk+30",
-        "4": "shieldBonus+35;addAtk+35",
-        "5": "shieldBonus+40;addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "苍翠猎弓": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "流浪乐章": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+48",
-        "2": "dmgBonus+60",
-        "3": "dmgBonus+72",
-        "4": "dmgBonus+84",
-        "5": "dmgBonus+96"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "讨龙英杰谭": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "atk+24",
-        "2": "atk+30",
-        "3": "atk+36",
-        "4": "atk+42",
-        "5": "atk+48"
-      },
-      "time": 10,
-      "extra": {
-        
-      }
-    }
-  },
-  "飞雷之弦振": {
-    "normal": {
-      "normal_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:dmgBonus+40",
-        "2": "A:dmgBonus+50",
-        "3": "A:dmgBonus+60",
-        "4": "A:dmgBonus+70",
-        "5": "A:dmgBonus+80"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "旅行剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "甲级宝珏": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+12",
-        "2": "addAtk+14",
-        "3": "addAtk+16",
-        "4": "addAtk+18",
-        "5": "addAtk+20"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "贯虹之槊": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "shieldBonus+20;addAtk+20",
-        "2": "shieldBonus+25;addAtk+25",
-        "3": "shieldBonus+30;addAtk+30",
-        "4": "shieldBonus+35;addAtk+35",
-        "5": "shieldBonus+40;addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "训练大剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "断浪长鳍": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "Q:dmgBonus+40",
-        "2": "Q:dmgBonus+50",
-        "3": "Q:dmgBonus+60",
-        "4": "Q:dmgBonus+70",
-        "5": "Q:dmgBonus+80"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "白影剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+24;addDef+24",
-        "2": "addAtk+30;addDef+30",
-        "3": "addAtk+36;addDef+36",
-        "4": "addAtk+42;addDef+42",
-        "5": "addAtk+46;addDef+46"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "白铁大剑": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "白缨枪": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:dmgBonus+24",
-        "2": "A:dmgBonus+30",
-        "3": "A:dmgBonus+36",
-        "4": "A:dmgBonus+42",
-        "5": "A:dmgBonus+48"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "风花之颂": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+16",
-        "2": "addAtk+20",
-        "3": "addAtk+24",
-        "4": "addAtk+28",
-        "5": "addAtk+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 6,
-      "extra": {
-        
-      }
-    }
-  },
-  "暗巷的酒与诗": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "狼的末路": {
-    "normal": {
-      "normal_effect": {
-        "1": "addAtk+20",
-        "2": "addAtk+25",
-        "3": "addAtk+30",
-        "4": "addAtk+35",
-        "5": "addAtk+40"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+40",
-        "2": "addAtk+50",
-        "3": "addAtk+60",
-        "4": "addAtk+70",
-        "5": "addAtk+80"
-      },
-      "group_effect": {
-        "1": "addAtk+40",
-        "2": "addAtk+50",
-        "3": "addAtk+60",
-        "4": "addAtk+70",
-        "5": "addAtk+80"
-      },
-      "time": 12,
-      "extra": {
-        
-      }
-    }
-  },
-  "笼钓瓶一心": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+15",
-        "2": "addAtk+15",
-        "3": "addAtk+15",
-        "4": "addAtk+15",
-        "5": "addAtk+15"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "猎人之径": {
-    "normal": {
-      "normal_effect": {
-        "1": "dmgBonus+12",
-        "2": "dmgBonus+15",
-        "3": "dmgBonus+18",
-        "4": "dmgBonus+21",
-        "5": "dmgBonus+24"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "B:addDmg+160%elementalMastery",
-        "2": "B:addDmg+200%elementalMastery",
-        "3": "B:addDmg+240%elementalMastery",
-        "4": "B:addDmg+280%elementalMastery",
-        "5": "B:addDmg+320%elementalMastery"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "竭泽": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "王下近侍": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "elementalMastery+60",
-        "2": "elementalMastery+80",
-        "3": "elementalMastery+100",
-        "4": "elementalMastery+120",
-        "5": "elementalMastery+140"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "森林王器": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "elementalMastery+60",
-        "2": "elementalMastery+75",
-        "3": "elementalMastery+90",
-        "4": "elementalMastery+105",
-        "5": "elementalMastery+120"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 12,
-      "extra": {
-        
-      }
-    }
-  },
-  "原木刀": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "elementalMastery+60",
-        "2": "elementalMastery+75",
-        "3": "elementalMastery+90",
-        "4": "elementalMastery+105",
-        "5": "elementalMastery+120"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 12,
-      "extra": {
-        
-      }
-    }
-  },
-  "盈满之实": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "elementalMastery+120;addAtk+-25",
-        "2": "elementalMastery+135;addAtk+-25",
-        "3": "elementalMastery+150;addAtk+-25",
-        "4": "elementalMastery+165;addAtk+-25",
-        "5": "elementalMastery+180;addAtk+-25"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "贯月矢": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+16",
-        "2": "addAtk+20",
-        "3": "addAtk+24",
-        "4": "addAtk+28",
-        "5": "addAtk+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "赤沙之杖": {
-    "normal": {
-      "normal_effect": {
-        "1": "exAtk+52%elementalMastery",
-        "2": "exAtk+65%elementalMastery",
-        "3": "exAtk+78%elementalMastery",
-        "4": "exAtk+91%elementalMastery",
-        "5": "exAtk+104%elementalMastery"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "exAtk+84%elementalMastery",
-        "2": "exAtk+105%elementalMastery",
-        "3": "exAtk+126%elementalMastery",
-        "4": "exAtk+147%elementalMastery",
-        "5": "exAtk+168%elementalMastery"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "圣显之钥": {
-    "normal": {
-      "normal_effect": {
-        "1": "addHp+20",
-        "2": "addHp+25",
-        "3": "addHp+30",
-        "4": "addHp+35",
-        "5": "addHp+40"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "elementalMastery+0.56%hp",
-        "2": "elementalMastery+0.70%hp",
-        "3": "elementalMastery+0.84%hp",
-        "4": "elementalMastery+0.98%hp",
-        "5": "elementalMastery+1.12%hp"
-      },
-      "group_effect": {
-        "1": "elementalMastery+0.2%hp",
-        "2": "elementalMastery+0.25%hp",
-        "3": "elementalMastery+0.30%hp",
-        "4": "elementalMastery+0.35%hp",
-        "5": "elementalMastery+0.4%hp"
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "玛海菈的水色": {
-    "normal": {
-      "normal_effect": {
-        "1": "exAtk+24%elementalMastery",
-        "2": "exAtk+30%elementalMastery",
-        "3": "exAtk+36%elementalMastery",
-        "4": "exAtk+42%elementalMastery",
-        "5": "exAtk+48%elementalMastery"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "exAtk+7.2%elementalMastery",
-        "2": "exAtk+9%elementalMastery",
-        "3": "exAtk+10.8%elementalMastery",
-        "4": "exAtk+12.6%elementalMastery",
-        "5": "exAtk+14.4%elementalMastery"
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "西福斯的月光": {
-    "normal": {
-      "normal_effect": {
-        "1": "energyRecharge+0.036%elementalMastery",
-        "2": "energyRecharge+0.045%elementalMastery",
-        "3": "energyRecharge+0.054%elementalMastery",
-        "4": "energyRecharge+0.063%elementalMastery",
-        "5": "energyRecharge+0.072%elementalMastery"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "energyRecharge+0.0108%elementalMastery",
-        "2": "energyRecharge+0.0135%elementalMastery",
-        "3": "energyRecharge+0.0162%elementalMastery",
-        "4": "energyRecharge+0.0189%elementalMastery",
-        "5": "energyRecharge+0.0216%elementalMastery"
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "流浪的晚星": {
-    "normal": {
-      "normal_effect": {
-        "1": "exAtk+24%elementalMastery",
-        "2": "exAtk+30%elementalMastery",
-        "3": "exAtk+36%elementalMastery",
-        "4": "exAtk+42%elementalMastery",
-        "5": "exAtk+48%elementalMastery"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "exAtk+7.2%elementalMastery",
-        "2": "exAtk+9%elementalMastery",
-        "3": "exAtk+10.8%elementalMastery",
-        "4": "exAtk+12.6%elementalMastery",
-        "5": "exAtk+14.4%elementalMastery"
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "风信之锋": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "addAtk+12;elementalMastery+48",
-        "2": "addAtk+15;elementalMastery+60",
-        "3": "addAtk+18;elementalMastery+72",
-        "4": "addAtk+21;elementalMastery+84",
-        "5": "addAtk+24;elementalMastery+96"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "千夜浮梦": {
-    "normal": {
-      "normal_effect": {
-        "1": "dmgBonus+30",
-        "2": "dmgBonus+42",
-        "3": "dmgBonus+54",
-        "4": "dmgBonus+66",
-        "5": "dmgBonus+78"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "图莱杜拉的回忆": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "A:dmgBonus+48",
-        "2": "A:dmgBonus+60",
-        "3": "A:dmgBonus+72",
-        "4": "A:dmgBonus+84",
-        "5": "A:dmgBonus+96"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "东花坊时雨": {
-    "normal": {
-      "normal_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "dmgBonus+16",
-        "2": "dmgBonus+20",
-        "3": "dmgBonus+24",
-        "4": "dmgBonus+28",
-        "5": "dmgBonus+32"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  },
-  "裁叶萃光": {
-    "normal": {
-      "normal_effect": {
-        "1": "critRate+4",
-        "2": "critRate+5",
-        "3": "critRate+6",
-        "4": "critRate+7",
-        "5": "critRate+8"
-      }
-    },
-    "fight": {
-      "fight_effect": {
-        "1": "AE:addDmg+200%elementalMastery",
-        "2": "AE:addDmg+230%elementalMastery",
-        "3": "AE:addDmg+260%elementalMastery",
-        "4": "AE:addDmg+290%elementalMastery",
-        "5": "AE:addDmg+320%elementalMastery"
-      },
-      "group_effect": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": ""
-      },
-      "time": 0,
-      "extra": {
-        
-      }
-    }
-  }
+	"恶王丸": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "Q:dmgBonus+40",
+				"2": "Q:dmgBonus+50",
+				"3": "Q:dmgBonus+60",
+				"4": "Q:dmgBonus+70",
+				"5": "Q:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"暗巷猎手": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"天目影打刀": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"阿莫斯之弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:dmgBonus+52",
+				"2": "AB:dmgBonus+65",
+				"3": "AB:dmgBonus+78",
+				"4": "AB:dmgBonus+91",
+				"5": "AB:dmgBonus+104"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"学徒笔记": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"若水": {
+		"normal": {
+			"normal_effect": {
+				"1": "addHp+16",
+				"2": "addHp+20",
+				"3": "addHp+24",
+				"4": "addHp+28",
+				"5": "addHp+32"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+20",
+				"2": "dmgBonus+25",
+				"3": "dmgBonus+30",
+				"4": "dmgBonus+35",
+				"5": "dmgBonus+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"风鹰剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"新手长枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑岩绯玉": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+36",
+				"2": "addAtk+45",
+				"3": "addAtk+54",
+				"4": "addAtk+63",
+				"5": "addAtk+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑岩长剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+36",
+				"2": "addAtk+45",
+				"3": "addAtk+54",
+				"4": "addAtk+63",
+				"5": "addAtk+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑岩刺枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+36",
+				"2": "addAtk+45",
+				"3": "addAtk+54",
+				"4": "addAtk+63",
+				"5": "addAtk+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑岩斩刀": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+36",
+				"2": "addAtk+45",
+				"3": "addAtk+54",
+				"4": "addAtk+63",
+				"5": "addAtk+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑岩战弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+36",
+				"2": "addAtk+45",
+				"3": "addAtk+54",
+				"4": "addAtk+63",
+				"5": "addAtk+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑缨枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"沐浴龙血的剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Pyro", "Electro"]
+			}
+		}
+	},
+	"息灾": {
+		"normal": {
+			"normal_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+19.2",
+				"2": "addAtk+24",
+				"3": "addAtk+28.8",
+				"4": "addAtk+33.6",
+				"5": "addAtk+38.4"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"up": "bg:2"
+			}
+		}
+	},
+	"辰砂之纺锤": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:addDmg+40%def",
+				"2": "E:addDmg+50%def",
+				"3": "E:addDmg+60%def",
+				"4": "E:addDmg+70%def",
+				"5": "E:addDmg+80%def"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"钢轮弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+16",
+				"2": "addAtk+20",
+				"3": "addAtk+24",
+				"4": "addAtk+28",
+				"5": "addAtk+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"冷刃": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Hydro", "Cryo"]
+			}
+		}
+	},
+	"流月针": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:addDmg+20%atk",
+				"2": "AB:addDmg+25%atk",
+				"3": "AB:addDmg+30%atk",
+				"4": "AB:addDmg+35%atk",
+				"5": "AB:addDmg+40%atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"暗铁剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+				"trigger": ["Electro"]
+			}
+		}
+	},
+	"决斗之枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+24",
+				"2": "addAtk+30",
+				"3": "addAtk+36",
+				"4": "addAtk+42",
+				"5": "addAtk+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"以理服人": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:extraDmg+60atk",
+				"2": "AB:extraDmg+75atk",
+				"3": "AB:extraDmg+90atk",
+				"4": "AB:extraDmg+105atk",
+				"5": "AB:extraDmg+120atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 15,
+			"extra": {
+				"trigger": ["E"]
+			}
+		}
+	},
+	"嘟嘟可故事集": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "B:dmgBonus+16;addAtk+8",
+				"2": "B:dmgBonus+20;addAtk+10",
+				"3": "B:dmgBonus+24;addAtk+12",
+				"4": "B:dmgBonus+28;addAtk+14",
+				"5": "B:dmgBonus+32;addAtk+16"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 6,
+			"extra": {
+				"trigger": ["A", "B"]
+			}
+		}
+	},
+	"匣里灭辰": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+20",
+				"2": "dmgBonus+24",
+				"3": "dmgBonus+28",
+				"4": "dmgBonus+32",
+				"5": "dmgBonus+36"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Hydro", "Pyro"]
+			}
+		}
+	},
+	"龙脊长枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"无锋剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"终末嗟叹之诗": {
+		"normal": {
+			"normal_effect": {
+				"1": "elementalMastery+60",
+				"2": "elementalMastery+75",
+				"3": "elementalMastery+90",
+				"4": "elementalMastery+105",
+				"5": "elementalMastery+120"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+100;addAtk+20",
+				"2": "elementalMastery+125;addAtk+25",
+				"3": "elementalMastery+150;addAtk+30",
+				"4": "elementalMastery+175;addAtk+35",
+				"5": "elementalMastery+200;addAtk+40"
+			},
+			"group_effect": {
+				"1": "elementalMastery+100;addAtk+20",
+				"2": "elementalMastery+125;addAtk+25",
+				"3": "elementalMastery+150;addAtk+30",
+				"4": "elementalMastery+175;addAtk+35",
+				"5": "elementalMastery+200;addAtk+40"
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"翡玉法球": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+				"trigger": ["Hydro"]
+			}
+		}
+	},
+	"薙草之稻光": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+28%energyRecharge",
+				"2": "addAtk+35%energyRecharge",
+				"3": "addAtk+42%energyRecharge",
+				"4": "addAtk+49%energyRecharge",
+				"5": "addAtk+56%energyRecharge"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "energyRecharge+30;addAtk+8.4",
+				"2": "energyRecharge+35;addAtk+12.25",
+				"3": "energyRecharge+40;addAtk+16.8",
+				"4": "energyRecharge+45;addAtk+22.05",
+				"5": "energyRecharge+50;addAtk+28"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+				"trigger": ["Q"]
+			}
+		}
+	},
+	"不灭月华": {
+		"normal": {
+			"normal_effect": {
+				"1": "healBonus+10",
+				"2": "healBonus+12.5",
+				"3": "healBonus+15",
+				"4": "healBonus+17.5",
+				"5": "healBonus+20"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:addDmg+1%hp",
+				"2": "A:addDmg+1.5%hp",
+				"3": "A:addDmg+2%hp",
+				"4": "A:addDmg+2.5%hp",
+				"5": "A:addDmg+3%hp"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"昭心": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:extraDmg+240%atk",
+				"2": "AB:extraDmg+270%atk",
+				"3": "AB:extraDmg+300%atk",
+				"4": "AB:extraDmg+330%atk",
+				"5": "AB:extraDmg+360%atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"落霞": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+10",
+				"2": "dmgBonus+12.5",
+				"3": "dmgBonus+15",
+				"4": "dmgBonus+17.5",
+				"5": "dmgBonus+20"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"西风秘典": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"西风大剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"西风长枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"西风剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"西风猎弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"铁影阔剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "B:dmgBonus+30",
+				"2": "B:dmgBonus+35",
+				"3": "B:dmgBonus+40",
+				"4": "B:dmgBonus+45",
+				"5": "B:dmgBonus+50"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"腐殖之剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:dmgBonus+16;E:critRate+6",
+				"2": "E:dmgBonus+20;E:critRate+7.5",
+				"3": "E:dmgBonus+24;E:critRate+9",
+				"4": "E:dmgBonus+28;E:critRate+10.5",
+				"5": "E:dmgBonus+32;E:critRate+12"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"吃虎鱼刀": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "extraDmg+240%atk",
+				"2": "extraDmg+280%atk",
+				"3": "extraDmg+320%atk",
+				"4": "extraDmg+360%atk",
+				"5": "extraDmg+400%atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"苍古自由之誓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+10;ABC:dmgBonus+16;addAtk+20",
+				"2": "dmgBonus+12.5;ABC:dmgBonus+20;addAtk+25",
+				"3": "dmgBonus+15;ABC:dmgBonus+24;addAtk+30",
+				"4": "dmgBonus+17.5;ABC:dmgBonus+28;addAtk+35",
+				"5": "dmgBonus+20;ABC:dmgBonus+32;addAtk+40"
+			},
+			"group_effect": {
+				"1": "ABC:dmgBonus+16;addAtk+20",
+				"2": "ABC:dmgBonus+20;addAtk+25",
+				"3": "ABC:dmgBonus+24;addAtk+30",
+				"4": "ABC:dmgBonus+28;addAtk+35",
+				"5": "ABC:dmgBonus+32;addAtk+40"
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"忍冬之果": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"白辰之环": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+10",
+				"2": "dmgBonus+12.5",
+				"3": "dmgBonus+15",
+				"4": "dmgBonus+17.5",
+				"5": "dmgBonus+20"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 6,
+			"extra": {
+				"trigger": ["Electro"]
+			}
+		}
+	},
+	"钺矛": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:extraDmg+160%atk",
+				"2": "A:extraDmg+200%atk",
+				"3": "A:extraDmg+240%atk",
+				"4": "A:extraDmg+280%atk",
+				"5": "A:extraDmg+320%atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"破魔之弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+32;B:dmgBonus+24",
+				"2": "A:dmgBonus+40;B:dmgBonus+30",
+				"3": "A:dmgBonus+48;B:dmgBonus+36",
+				"4": "A:dmgBonus+56;B:dmgBonus+42",
+				"5": "A:dmgBonus+64;B:dmgBonus+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"波乱月白经津": {
+		"normal": {
+			"normal_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+40",
+				"2": "A:dmgBonus+50",
+				"3": "A:dmgBonus+60",
+				"4": "A:dmgBonus+70",
+				"5": "A:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黎明神剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "critRate+14",
+				"2": "critRate+17.5",
+				"3": "critRate+21",
+				"4": "critRate+24.5",
+				"5": "critRate+28"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"猎弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"铁尖枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"铁蜂刺": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"神乐之真意": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:dmgBonus+36;dmgBonus+12",
+				"2": "E:dmgBonus+45;dmgBonus+15",
+				"3": "E:dmgBonus+54;dmgBonus+18",
+				"4": "E:dmgBonus+63;dmgBonus+21",
+				"5": "E:dmgBonus+72;dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"桂木斩长正": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:dmgBonus+6",
+				"2": "E:dmgBonus+7.5",
+				"3": "E:dmgBonus+9",
+				"4": "E:dmgBonus+10.5",
+				"5": "E:dmgBonus+12"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"喜多院十文字": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:dmgBonus+6",
+				"2": "E:dmgBonus+7.5",
+				"3": "E:dmgBonus+9",
+				"4": "E:dmgBonus+10.5",
+				"5": "E:dmgBonus+12"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"匣里龙吟": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+20",
+				"2": "dmgBonus+24",
+				"3": "dmgBonus+28",
+				"4": "dmgBonus+32",
+				"5": "dmgBonus+36"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Pyro", "Electro"]
+			}
+		}
+	},
+	"千岩古剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+21;critRate+9",
+				"2": "addAtk+24;critRate+12",
+				"3": "addAtk+27;critRate+15",
+				"4": "addAtk+30;critRate+18",
+				"5": "addAtk+33;critRate+21"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"千岩长枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+21;critRate+9",
+				"2": "addAtk+24;critRate+12",
+				"3": "addAtk+27;critRate+15",
+				"4": "addAtk+30;critRate+18",
+				"5": "addAtk+33;critRate+21"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"四风原典": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+32",
+				"2": "dmgBonus+40",
+				"3": "dmgBonus+48",
+				"4": "dmgBonus+56",
+				"5": "dmgBonus+64"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"trigger": ["fg"]
+			}
+		}
+	},
+	"衔珠海皇": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "Q:dmgBonus+12;Q:extraDmg+100%atk",
+				"2": "Q:dmgBonus+15;Q:extraDmg+125%atk",
+				"3": "Q:dmgBonus+18;Q:extraDmg+150%atk",
+				"4": "Q:dmgBonus+21;Q:extraDmg+175%atk",
+				"5": "Q:dmgBonus+24;Q:extraDmg+200%atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"魔导绪论": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Hydro", "Electro"]
+			}
+		}
+	},
+	"万国诸海图谱": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+16",
+				"2": "dmgBonus+20",
+				"3": "dmgBonus+24",
+				"4": "dmgBonus+28",
+				"5": "dmgBonus+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"尘世之锁": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "shieldBonus+20;addAtk+20",
+				"2": "shieldBonus+25;addAtk+25",
+				"3": "shieldBonus+30;addAtk+30",
+				"4": "shieldBonus+35;addAtk+35",
+				"5": "shieldBonus+40;addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"信使": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"雾切之回光": {
+		"normal": {
+			"normal_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+28",
+				"2": "dmgBonus+35",
+				"3": "dmgBonus+42",
+				"4": "dmgBonus+49",
+				"5": "dmgBonus+56"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"幽夜华尔兹": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AE:dmgBonus+20",
+				"2": "AE:dmgBonus+25",
+				"3": "AE:dmgBonus+30",
+				"4": "AE:dmgBonus+35",
+				"5": "AE:dmgBonus+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"曚云之月": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "Q:dmgBonus+40",
+				"2": "Q:dmgBonus+50",
+				"3": "Q:dmgBonus+60",
+				"4": "Q:dmgBonus+70",
+				"5": "Q:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"证誓之明瞳": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "energyRecharge+24",
+				"2": "energyRecharge+30",
+				"3": "energyRecharge+36",
+				"4": "energyRecharge+42",
+				"5": "energyRecharge+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"佣兵重剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"异世界行记": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"口袋魔导书": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"冬极白星": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "EQ:dmgBonus+12;addAtk+48",
+				"2": "EQ:dmgBonus+15;addAtk+60",
+				"3": "EQ:dmgBonus+18;addAtk+72",
+				"4": "EQ:dmgBonus+21;addAtk+84",
+				"5": "EQ:dmgBonus+24;addAtk+96"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"掠食者": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"磐岩结绿": {
+		"normal": {
+			"normal_effect": {
+				"1": "addHp+20;exAtk+1.2%hp",
+				"2": "addHp+25;exAtk+1.5%hp",
+				"3": "addHp+30;exAtk+1.8%hp",
+				"4": "addHp+35;exAtk+2.1%hp",
+				"5": "addHp+40;exAtk+2.4%hp"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"和璞鸢": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+22.4;dmgBonus+12",
+				"2": "addAtk+27.3;dmgBonus+15",
+				"3": "addAtk+32.2;dmgBonus+18",
+				"4": "addAtk+37.1;dmgBonus+21",
+				"5": "addAtk+42;dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"试作金珀": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"试作古华": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"试作澹月": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+36",
+				"2": "addAtk+45",
+				"3": "addAtk+54",
+				"4": "addAtk+63",
+				"5": "addAtk+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"试作斩岩": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+16;addDef+16",
+				"2": "addAtk+20;addDef+20",
+				"3": "addAtk+24;addDef+24",
+				"4": "addAtk+28;addDef+28",
+				"5": "addAtk+32;addDef+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"试作星镰": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:dmgBonus+16",
+				"2": "AB:dmgBonus+20",
+				"3": "AB:dmgBonus+24",
+				"4": "AB:dmgBonus+28",
+				"5": "AB:dmgBonus+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"雨裁": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+20",
+				"2": "dmgBonus+24",
+				"3": "dmgBonus+28",
+				"4": "dmgBonus+32",
+				"5": "dmgBonus+36"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Hydro", "Electro"]
+			}
+		}
+	},
+	"鸦羽弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+				"limit": ["Hydro", "Pyro"]
+			}
+		}
+	},
+	"反曲弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"赤角石溃杵": {
+		"normal": {
+			"normal_effect": {
+				"1": "addDef+28",
+				"2": "addDef+35",
+				"3": "addDef+42",
+				"4": "addDef+49",
+				"5": "addDef+56"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:addDmg+40%def",
+				"2": "AB:addDmg+50%def",
+				"3": "AB:addDmg+60%def",
+				"4": "AB:addDmg+70%def",
+				"5": "AB:addDmg+80%def"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"宗室长弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "critRate+14",
+				"2": "critRate+16",
+				"3": "critRate+18",
+				"4": "critRate+22",
+				"5": "critRate+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"宗室大剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "critRate+14",
+				"2": "critRate+16",
+				"3": "critRate+18",
+				"4": "critRate+22",
+				"5": "critRate+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"宗室秘法录": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "critRate+14",
+				"2": "critRate+16",
+				"3": "critRate+18",
+				"4": "critRate+22",
+				"5": "critRate+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"宗室长剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "critRate+14",
+				"2": "critRate+16",
+				"3": "critRate+18",
+				"4": "critRate+22",
+				"5": "critRate+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"宗室猎枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "critRate+14",
+				"2": "critRate+16",
+				"3": "critRate+18",
+				"4": "critRate+22",
+				"5": "critRate+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"弓藏": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+40",
+				"2": "A:dmgBonus+50",
+				"3": "A:dmgBonus+60",
+				"4": "A:dmgBonus+70",
+				"5": "A:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"祭礼弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"祭礼残章": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"祭礼大剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"祭礼剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"历练的猎弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"螭骨剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+30",
+				"2": "dmgBonus+35",
+				"3": "dmgBonus+40",
+				"4": "dmgBonus+45",
+				"5": "dmgBonus+50"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"神射手之誓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "B:dmgBonus+24",
+				"2": "B:dmgBonus+30",
+				"3": "B:dmgBonus+36",
+				"4": "B:dmgBonus+42",
+				"5": "B:dmgBonus+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"银剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"飞天大御剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+24",
+				"2": "addAtk+28",
+				"3": "addAtk+32",
+				"4": "addAtk+36",
+				"5": "addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"飞天御剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+12",
+				"2": "addAtk+15",
+				"3": "addAtk+18",
+				"4": "addAtk+21",
+				"5": "addAtk+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"天空之卷": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"天空之刃": {
+		"normal": {
+			"normal_effect": {
+				"1": "critRate+4",
+				"2": "critRate+5",
+				"3": "critRate+6",
+				"4": "critRate+7",
+				"5": "critRate+8"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:extraDmg+20%atk",
+				"2": "AB:extraDmg+25%atk",
+				"3": "AB:extraDmg+30%atk",
+				"4": "AB:extraDmg+35%atk",
+				"5": "AB:extraDmg+40%atk"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"天空之翼": {
+		"normal": {
+			"normal_effect": {
+				"1": "critDmg+20",
+				"2": "critDmg+25",
+				"3": "critDmg+30",
+				"4": "critDmg+35",
+				"5": "critDmg+40"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"天空之傲": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+8",
+				"2": "dmgBonus+10",
+				"3": "dmgBonus+12",
+				"4": "dmgBonus+14",
+				"5": "dmgBonus+16"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"天空之脊": {
+		"normal": {
+			"normal_effect": {
+				"1": "critRate+8",
+				"2": "critRate+10",
+				"3": "critRate+12",
+				"4": "critRate+14",
+				"5": "critRate+16"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"弹弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:dmgBonus+36",
+				"2": "AB:dmgBonus+42",
+				"3": "AB:dmgBonus+48",
+				"4": "AB:dmgBonus+54",
+				"5": "AB:dmgBonus+60"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"雪葬的星银": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"匣里日月": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AEQ:dmgBonus+20",
+				"2": "AEQ:dmgBonus+25",
+				"3": "AEQ:dmgBonus+30",
+				"4": "AEQ:dmgBonus+35",
+				"5": "AEQ:dmgBonus+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"松籁响起之时": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+16",
+				"2": "addAtk+20",
+				"3": "addAtk+24",
+				"4": "addAtk+28",
+				"5": "addAtk+32"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			},
+			"group_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"护摩之杖": {
+		"normal": {
+			"normal_effect": {
+				"1": "addHp+20;exAtk+0.8%hp",
+				"2": "addHp+25;exAtk+1%hp",
+				"3": "addHp+30;exAtk+1.2%hp",
+				"4": "addHp+35;exAtk+1.4%hp",
+				"5": "addHp+40;exAtk+1.6%hp"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "exAtk+1%hp",
+				"2": "exAtk+1.2%hp",
+				"3": "exAtk+1.4%hp",
+				"4": "exAtk+1.6%hp",
+				"5": "exAtk+1.8%hp"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"斫峰之刃": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "shieldBonus+20;addAtk+20",
+				"2": "shieldBonus+25;addAtk+25",
+				"3": "shieldBonus+30;addAtk+30",
+				"4": "shieldBonus+35;addAtk+35",
+				"5": "shieldBonus+40;addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"降临之剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"暗巷闪光": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"钟剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"黑剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AB:dmgBonus+20",
+				"2": "AB:dmgBonus+25",
+				"3": "AB:dmgBonus+30",
+				"4": "AB:dmgBonus+35",
+				"5": "AB:dmgBonus+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"「渔获」": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "Q:dmgBonus+16;Q:critRate+6",
+				"2": "Q:dmgBonus+20;Q:critRate+7.5",
+				"3": "Q:dmgBonus+24;Q:critRate+9",
+				"4": "Q:dmgBonus+28;Q:critRate+10.5",
+				"5": "Q:dmgBonus+32;Q:critRate+12"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"笛剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"绝弦": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "EQ:dmgBonus+24",
+				"2": "EQ:dmgBonus+30",
+				"3": "EQ:dmgBonus+36",
+				"4": "EQ:dmgBonus+42",
+				"5": "EQ:dmgBonus+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"无工之剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "shieldBonus+20;addAtk+20",
+				"2": "shieldBonus+25;addAtk+25",
+				"3": "shieldBonus+30;addAtk+30",
+				"4": "shieldBonus+35;addAtk+35",
+				"5": "shieldBonus+40;addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"苍翠猎弓": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"流浪乐章": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+48",
+				"2": "dmgBonus+60",
+				"3": "dmgBonus+72",
+				"4": "dmgBonus+84",
+				"5": "dmgBonus+96"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"讨龙英杰谭": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "atk+24",
+				"2": "atk+30",
+				"3": "atk+36",
+				"4": "atk+42",
+				"5": "atk+48"
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"飞雷之弦振": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+40",
+				"2": "A:dmgBonus+50",
+				"3": "A:dmgBonus+60",
+				"4": "A:dmgBonus+70",
+				"5": "A:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"旅行剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"甲级宝珏": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+12",
+				"2": "addAtk+14",
+				"3": "addAtk+16",
+				"4": "addAtk+18",
+				"5": "addAtk+20"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"贯虹之槊": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "shieldBonus+20;addAtk+20",
+				"2": "shieldBonus+25;addAtk+25",
+				"3": "shieldBonus+30;addAtk+30",
+				"4": "shieldBonus+35;addAtk+35",
+				"5": "shieldBonus+40;addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"训练大剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"断浪长鳍": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "Q:dmgBonus+40",
+				"2": "Q:dmgBonus+50",
+				"3": "Q:dmgBonus+60",
+				"4": "Q:dmgBonus+70",
+				"5": "Q:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"白影剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+24;addDef+24",
+				"2": "addAtk+30;addDef+30",
+				"3": "addAtk+36;addDef+36",
+				"4": "addAtk+42;addDef+42",
+				"5": "addAtk+46;addDef+46"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"白铁大剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"白缨枪": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+24",
+				"2": "A:dmgBonus+30",
+				"3": "A:dmgBonus+36",
+				"4": "A:dmgBonus+42",
+				"5": "A:dmgBonus+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"风花之颂": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+16",
+				"2": "addAtk+20",
+				"3": "addAtk+24",
+				"4": "addAtk+28",
+				"5": "addAtk+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 6,
+			"extra": {
+
+			}
+		}
+	},
+	"暗巷的酒与诗": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"狼的末路": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+40",
+				"2": "addAtk+50",
+				"3": "addAtk+60",
+				"4": "addAtk+70",
+				"5": "addAtk+80"
+			},
+			"group_effect": {
+				"1": "addAtk+40",
+				"2": "addAtk+50",
+				"3": "addAtk+60",
+				"4": "addAtk+70",
+				"5": "addAtk+80"
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"笼钓瓶一心": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+15",
+				"2": "addAtk+15",
+				"3": "addAtk+15",
+				"4": "addAtk+15",
+				"5": "addAtk+15"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"猎人之径": {
+		"normal": {
+			"normal_effect": {
+				"1": "dmgBonus+12",
+				"2": "dmgBonus+15",
+				"3": "dmgBonus+18",
+				"4": "dmgBonus+21",
+				"5": "dmgBonus+24"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "B:addDmg+160%elementalMastery",
+				"2": "B:addDmg+200%elementalMastery",
+				"3": "B:addDmg+240%elementalMastery",
+				"4": "B:addDmg+280%elementalMastery",
+				"5": "B:addDmg+320%elementalMastery"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"竭泽": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"王下近侍": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+60",
+				"2": "elementalMastery+80",
+				"3": "elementalMastery+100",
+				"4": "elementalMastery+120",
+				"5": "elementalMastery+140"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"森林王器": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+60",
+				"2": "elementalMastery+75",
+				"3": "elementalMastery+90",
+				"4": "elementalMastery+105",
+				"5": "elementalMastery+120"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"原木刀": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+60",
+				"2": "elementalMastery+75",
+				"3": "elementalMastery+90",
+				"4": "elementalMastery+105",
+				"5": "elementalMastery+120"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"盈满之实": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+120;addAtk+-25",
+				"2": "elementalMastery+135;addAtk+-25",
+				"3": "elementalMastery+150;addAtk+-25",
+				"4": "elementalMastery+165;addAtk+-25",
+				"5": "elementalMastery+180;addAtk+-25"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"贯月矢": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+16",
+				"2": "addAtk+20",
+				"3": "addAtk+24",
+				"4": "addAtk+28",
+				"5": "addAtk+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"赤沙之杖": {
+		"normal": {
+			"normal_effect": {
+				"1": "exAtk+52%elementalMastery",
+				"2": "exAtk+65%elementalMastery",
+				"3": "exAtk+78%elementalMastery",
+				"4": "exAtk+91%elementalMastery",
+				"5": "exAtk+104%elementalMastery"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "exAtk+84%elementalMastery",
+				"2": "exAtk+105%elementalMastery",
+				"3": "exAtk+126%elementalMastery",
+				"4": "exAtk+147%elementalMastery",
+				"5": "exAtk+168%elementalMastery"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"圣显之钥": {
+		"normal": {
+			"normal_effect": {
+				"1": "addHp+20",
+				"2": "addHp+25",
+				"3": "addHp+30",
+				"4": "addHp+35",
+				"5": "addHp+40"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+0.56%hp",
+				"2": "elementalMastery+0.70%hp",
+				"3": "elementalMastery+0.84%hp",
+				"4": "elementalMastery+0.98%hp",
+				"5": "elementalMastery+1.12%hp"
+			},
+			"group_effect": {
+				"1": "elementalMastery+0.2%hp",
+				"2": "elementalMastery+0.25%hp",
+				"3": "elementalMastery+0.30%hp",
+				"4": "elementalMastery+0.35%hp",
+				"5": "elementalMastery+0.4%hp"
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"玛海菈的水色": {
+		"normal": {
+			"normal_effect": {
+				"1": "exAtk+24%elementalMastery",
+				"2": "exAtk+30%elementalMastery",
+				"3": "exAtk+36%elementalMastery",
+				"4": "exAtk+42%elementalMastery",
+				"5": "exAtk+48%elementalMastery"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "exAtk+7.2%elementalMastery",
+				"2": "exAtk+9%elementalMastery",
+				"3": "exAtk+10.8%elementalMastery",
+				"4": "exAtk+12.6%elementalMastery",
+				"5": "exAtk+14.4%elementalMastery"
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"西福斯的月光": {
+		"normal": {
+			"normal_effect": {
+				"1": "energyRecharge+0.036%elementalMastery",
+				"2": "energyRecharge+0.045%elementalMastery",
+				"3": "energyRecharge+0.054%elementalMastery",
+				"4": "energyRecharge+0.063%elementalMastery",
+				"5": "energyRecharge+0.072%elementalMastery"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "energyRecharge+0.0108%elementalMastery",
+				"2": "energyRecharge+0.0135%elementalMastery",
+				"3": "energyRecharge+0.0162%elementalMastery",
+				"4": "energyRecharge+0.0189%elementalMastery",
+				"5": "energyRecharge+0.0216%elementalMastery"
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"流浪的晚星": {
+		"normal": {
+			"normal_effect": {
+				"1": "exAtk+24%elementalMastery",
+				"2": "exAtk+30%elementalMastery",
+				"3": "exAtk+36%elementalMastery",
+				"4": "exAtk+42%elementalMastery",
+				"5": "exAtk+48%elementalMastery"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "exAtk+7.2%elementalMastery",
+				"2": "exAtk+9%elementalMastery",
+				"3": "exAtk+10.8%elementalMastery",
+				"4": "exAtk+12.6%elementalMastery",
+				"5": "exAtk+14.4%elementalMastery"
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"风信之锋": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+12;elementalMastery+48",
+				"2": "addAtk+15;elementalMastery+60",
+				"3": "addAtk+18;elementalMastery+72",
+				"4": "addAtk+21;elementalMastery+84",
+				"5": "addAtk+24;elementalMastery+96"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"千夜浮梦": {
+		"normal": {
+			"normal_effect": {
+				"1": "dmgBonus+30",
+				"2": "dmgBonus+42",
+				"3": "dmgBonus+54",
+				"4": "dmgBonus+66",
+				"5": "dmgBonus+78"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"图莱杜拉的回忆": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+48",
+				"2": "A:dmgBonus+60",
+				"3": "A:dmgBonus+72",
+				"4": "A:dmgBonus+84",
+				"5": "A:dmgBonus+96"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"东花坊时雨": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+16",
+				"2": "dmgBonus+20",
+				"3": "dmgBonus+24",
+				"4": "dmgBonus+28",
+				"5": "dmgBonus+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"裁叶萃光": {
+		"normal": {
+			"normal_effect": {
+				"1": "critRate+4",
+				"2": "critRate+5",
+				"3": "critRate+6",
+				"4": "critRate+7",
+				"5": "critRate+8"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "AE:addDmg+200%elementalMastery",
+				"2": "AE:addDmg+230%elementalMastery",
+				"3": "AE:addDmg+260%elementalMastery",
+				"4": "AE:addDmg+290%elementalMastery",
+				"5": "AE:addDmg+320%elementalMastery"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"饰铁之花": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+12;elementalMastery+48",
+				"2": "addAtk+15;elementalMastery+60",
+				"3": "addAtk+18;elementalMastery+72",
+				"4": "addAtk+21;elementalMastery+84",
+				"5": "addAtk+24;elementalMastery+96"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 8,
+			"extra": {
+
+			}
+		}
+	},
+	"苇海信标": {
+		"normal": {
+			"normal_effect": {
+				"1": "addHp+32",
+				"2": "addHp+40",
+				"3": "addHp+48",
+				"4": "addHp+56",
+				"5": "addHp+64"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+40",
+				"2": "addAtk+50",
+				"3": "addAtk+60",
+				"4": "addAtk+70",
+				"5": "addAtk+80"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 8,
+			"extra": {
+
+			}
+		}
+	}
 }

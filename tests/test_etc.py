@@ -6,7 +6,7 @@ from nonebug import App
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(argnames="alias", argvalues=["版本规划", "原石预估"])
-async def test_get_primogems_data(app: App, alias, load_etc: None):
+async def test_get_primogems_data(app: App, alias):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 
@@ -37,7 +37,7 @@ async def test_get_primogems_data(app: App, alias, load_etc: None):
 
 
 @pytest.mark.asyncio
-async def test_primogems_version(app: App, load_etc: None):
+async def test_primogems_version(app: App):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 
@@ -68,7 +68,7 @@ async def test_primogems_version(app: App, load_etc: None):
 
 
 @pytest.mark.asyncio
-async def test_primogems_failed(app: App, load_etc: None):
+async def test_primogems_failed(app: App):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message
 
@@ -100,7 +100,7 @@ async def test_primogems_failed(app: App, load_etc: None):
         "伤害乘区",
     ],
 )
-async def test_get_img_data(app: App, alias, load_etc: None):
+async def test_get_img_data(app: App, alias):
     from utils import make_event
     from nonebot.adapters.onebot.v11 import Bot, Message, MessageSegment
 

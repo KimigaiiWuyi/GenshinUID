@@ -2,11 +2,14 @@ import json
 from typing import Optional
 from datetime import datetime
 
+from ..utils.message.error_reply import SK_HINT
 from ..utils.download_resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.mhy_api.get_mhy_data import get_gacha_log_by_authkey
 
 
-async def save_gachalogs(uid: str, raw_data: Optional[dict] = None) -> str:
+async def save_gachalogs(
+    uid: str, raw_data: Optional[dict] = None, is_force: bool = False
+) -> str:
     path = PLAYER_PATH / str(uid)
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
@@ -34,23 +37,33 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None) -> str:
 
     # 获取新抽卡记录
     if raw_data is None:
-        raw_data = await get_gacha_log_by_authkey(uid, gachalogs_history)
+        raw_data = await get_gacha_log_by_authkey(
+            uid, gachalogs_history, is_force
+        )
     else:
         new_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
         if gachalogs_history:
             for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
                 for item in raw_data[i]:
-                    if item not in gachalogs_history[i]:
+                    if (
+                        item not in gachalogs_history[i]
+                        and item not in new_data[i]
+                    ):
                         new_data[i].append(item)
             raw_data = new_data
             for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
                 raw_data[i].extend(gachalogs_history[i])
 
-    if raw_data == {}:
-        return '你还没有绑定过Stoken噢~'
-    if not raw_data:
-        return '你还没有绑定过Stoken或者Stoken已失效~'
+    if raw_data == {} or not raw_data:
+        return SK_HINT
 
+    temp_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
+    for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+        for item in raw_data[i]:
+            if item not in temp_data[i]:
+                temp_data[i].append(item)
+    raw_data = temp_data
+    '''
     # 校验值 & 两个版本后删除这段
     temp_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
     for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
@@ -58,6 +71,7 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None) -> str:
             if 'count' in item:
                 temp_data[i].append(item)
     raw_data = temp_data
+    '''
 
     result['uid'] = uid
     result['data_time'] = current_time

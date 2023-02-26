@@ -122,6 +122,6 @@ async def get_user_card(qid: int) -> bytes:
             )
         img.paste(uid_img, (0, 150 + uid_index * 210), uid_img)
 
-    res: bytes = await convert_img(img)  # type: ignore
+    res: bytes = await convert_img(img)
     logger.info('[查询绑定状态]绘图已完成,等待发送!')
     return res

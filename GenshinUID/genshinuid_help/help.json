@@ -120,6 +120,14 @@
         "need_admin": false
       },
       {
+        "name": "探索/ts",
+        "desc": "探索百分比,后可跟UID",
+        "eg": "探索100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "每日/mr",
         "desc": "自己的游戏日常和树脂",
         "eg": "便签",
@@ -164,6 +172,14 @@
         "desc": "查询自己的七圣召唤进度",
         "eg": "召唤100740568",
         "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "原神注册时间",
+        "desc": "获取自己的原神注册时间",
+        "eg": "原神注册时间",
+        "need_ck": true,
         "need_sk": false,
         "need_admin": false
       }
@@ -352,6 +368,22 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "查成就",
+        "desc": "查询这个成就的攻略",
+        "eg": "查成就捉猫记",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "查委托",
+        "desc": "查询当天的委托有没有成就",
+        "eg": "查委托这本小说",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
@@ -497,6 +529,22 @@
         "eg": "gs重启",
         "need_ck": false,
         "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "刷新ck",
+        "desc": "通过sk重新获取ck",
+        "eg": "刷新ck",
+        "need_ck": true,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "刷新全部ck",
+        "desc": "刷新绑定的全部ck",
+        "eg": "刷新全部ck",
+        "need_ck": true,
+        "need_sk": true,
         "need_admin": true
       }
     ]

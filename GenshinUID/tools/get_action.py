@@ -60,8 +60,8 @@ extra = {
     '雷电将军': {
         'E协同攻击伤害': '超激化',
         'Q梦想一刀基础伤害': '满愿力',
-        'Q一段伤害': '超激化',
-        'Q重击伤害': '超激化',
+        'Q一段伤害': '满愿力',
+        'Q重击伤害': '满愿力',
     },
     '班尼特': {'Q技能伤害': '蒸发'},
     '甘雨': {'A霜华矢命中伤害': '融化', 'A霜华矢·霜华绽发伤害': '融化'},
@@ -100,7 +100,14 @@ extra = {
     '纳西妲': {'E长按伤害': '蔓激化', 'E灭净三业伤害': ['蔓激化', '蔓激化·前台']},
     '旅行者(草)': {'Q草灯莲攻击伤害': '蔓激化'},
     '夜兰': {'E伤害': '蒸发'},
-    '艾尔海森': {'Q单次伤害': '蔓激化', 'E突进攻击伤害': '蔓激化'},
+    '艾尔海森': {'Q单次伤害': '蔓激化', 'E突进攻击伤害': '蔓激化', 'E1枚光幕攻击伤害': '蔓激化'},
+    '迪希雅': {
+        'E净焰昂藏伤害': '蒸发',
+        'E剑域炽焰伤害': '蒸发',
+        'E领域伤害': '蒸发',
+        'Q炽鬃拳伤害': '蒸发',
+        'Q焚落踢伤害': '蒸发',
+    },
 }
 template = {'A重击伤害': {'name': 'A重击伤害', 'type': '', 'plus': 1, 'value': []}}
 
@@ -238,6 +245,8 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
 
         if '炽焰箭' in label_name:
             continue
+        elif char == '珊瑚宫心海' and '提高' in label_name:
+            continue
         elif '元素爆发伤害提高' in label_name and char == '雷电将军':
             continue
         elif '持续时间' in label_name:
@@ -262,7 +271,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
             else:
                 parameter_list['name'] = fill_label(label_name, index)
                 result[fill_label(label_name, index)] = parameter_list
-        elif '治疗' in label_name:
+        elif '治疗' in label_name or '回复' in label_name:
             parameter_list['name'] = fill_label(label_name, index)
             result[fill_label(label_name, index)] = parameter_list
         elif '护盾' in label_name:

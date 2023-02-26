@@ -1903,6 +1903,54 @@
         "gadgetId": 50011511
     },
     {
+        "weaponType": "WEAPON_SWORD_ONE_HAND",
+        "rankLevel": 5,
+        "weaponBaseExp": 300000,
+        "skillAffix": [
+            111512,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 44.33580017089844,
+                "type": "GROW_CURVE_ATTACK_304"
+            },
+            {
+                "propType": "FIGHT_PROP_CRITICAL_HURT",
+                "initValue": 0.19200000166893005,
+                "type": "GROW_CURVE_CRITICAL_301"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Sword_Ayus/Equip_Sword_Ayus_OverrideTexture/Equip_Sword_Ayus_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Sword_Ayus/Equip_Sword_Ayus_OverrideTexture/Equip_Sword_Ayus_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Sword_Ayus_Awaken",
+        "weaponPromoteId": 11512,
+        "storyId": 191512,
+        "awakenCosts": [
+            2000,
+            4000,
+            8000,
+            16000
+        ],
+        "gachaCardNameHash": 16593168387307432572,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 1,
+        "id": 11512,
+        "nameTextMapHash": 275622963,
+        "descTextMapHash": 3735292813,
+        "icon": "UI_EquipIcon_Sword_Ayus",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50011512
+    },
+    {
         "weaponType": "WEAPON_CLAYMORE",
         "rankLevel": 1,
         "weaponBaseExp": 600,

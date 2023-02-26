@@ -53,7 +53,7 @@ async def send_bind_card(bot: HoshinoBot, ev: CQEvent):
     await bot.send(ev, im)
 
 
-@sv.on_fullmatch('扫码登陆')
+@sv.on_fullmatch(('扫码登陆', '扫码登录', '扫码登入'))
 async def send_qr_card(bot: HoshinoBot, ev: CQEvent):
     im = await qrcode_login(hoshino_bot, ev.group_id, ev.user_id)
     if not im:

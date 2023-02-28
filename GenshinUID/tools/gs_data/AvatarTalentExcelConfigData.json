@@ -9043,5 +9043,279 @@
             0.0,
             0.0
         ]
+    },
+    {
+        "talentId": 791,
+        "nameTextMapHash": 975929929,
+        "descTextMapHash": 572639103,
+        "icon": "UI_Talent_S_Dehya_01",
+        "mainCostItemId": 1179,
+        "mainCostItemCount": 1,
+        "openConfig": "Dehya_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.20000000298023224,
+            0.035999998450279236,
+            0.05999999865889549,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 792,
+        "nameTextMapHash": 1063269113,
+        "descTextMapHash": 3507377919,
+        "icon": "UI_Talent_S_Dehya_02",
+        "prevTalent": 791,
+        "mainCostItemId": 1179,
+        "mainCostItemCount": 1,
+        "openConfig": "Dehya_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            6.0,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 793,
+        "nameTextMapHash": 3309645225,
+        "descTextMapHash": 890858055,
+        "icon": "UI_Talent_U_Dehya_01",
+        "prevTalent": 792,
+        "mainCostItemId": 1179,
+        "mainCostItemCount": 1,
+        "openConfig": "Dehya_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 794,
+        "nameTextMapHash": 1318685825,
+        "descTextMapHash": 1101112519,
+        "icon": "UI_Talent_S_Dehya_03",
+        "prevTalent": 793,
+        "mainCostItemId": 1179,
+        "mainCostItemCount": 1,
+        "openConfig": "Dehya_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            1.5,
+            0.02500000037252903,
+            0.20000000298023224,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 795,
+        "nameTextMapHash": 2001862177,
+        "descTextMapHash": 640281255,
+        "icon": "UI_Talent_U_Dehya_02",
+        "prevTalent": 794,
+        "mainCostItemId": 1179,
+        "mainCostItemCount": 1,
+        "openConfig": "Dehya_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 796,
+        "nameTextMapHash": 2802373841,
+        "descTextMapHash": 343338087,
+        "icon": "UI_Talent_S_Dehya_04",
+        "prevTalent": 795,
+        "mainCostItemId": 1179,
+        "mainCostItemCount": 1,
+        "openConfig": "Dehya_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.10000000149011612,
+            0.15000000596046448,
+            0.5,
+            4.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 801,
+        "nameTextMapHash": 896455753,
+        "descTextMapHash": 379336143,
+        "icon": "UI_Talent_S_Mika_01",
+        "mainCostItemId": 1180,
+        "mainCostItemCount": 1,
+        "openConfig": "Mika_Constellation_1",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 802,
+        "nameTextMapHash": 1491617321,
+        "descTextMapHash": 3170359879,
+        "icon": "UI_Talent_S_Mika_02",
+        "prevTalent": 801,
+        "mainCostItemId": 1180,
+        "mainCostItemCount": 1,
+        "openConfig": "Mika_Constellation_2",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 803,
+        "nameTextMapHash": 973254489,
+        "descTextMapHash": 993496535,
+        "icon": "UI_Talent_U_Mika_01",
+        "prevTalent": 802,
+        "mainCostItemId": 1180,
+        "mainCostItemCount": 1,
+        "openConfig": "Mika_Constellation_3",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 804,
+        "nameTextMapHash": 3408467449,
+        "descTextMapHash": 4039593527,
+        "icon": "UI_Talent_S_Mika_03",
+        "prevTalent": 803,
+        "mainCostItemId": 1180,
+        "mainCostItemCount": 1,
+        "openConfig": "Mika_Constellation_4",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            3.0,
+            5.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 805,
+        "nameTextMapHash": 101621505,
+        "descTextMapHash": 2531853591,
+        "icon": "UI_Talent_U_Mika_02",
+        "prevTalent": 804,
+        "mainCostItemId": 1180,
+        "mainCostItemCount": 1,
+        "openConfig": "Mika_Constellation_5",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
+    },
+    {
+        "talentId": 806,
+        "nameTextMapHash": 1784924817,
+        "descTextMapHash": 96145279,
+        "icon": "UI_Talent_S_Mika_04",
+        "prevTalent": 805,
+        "mainCostItemId": 1180,
+        "mainCostItemCount": 1,
+        "openConfig": "Mika_Constellation_6",
+        "addProps": [
+            {},
+            {}
+        ],
+        "paramList": [
+            0.6000000238418579,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ]
     }
 ]

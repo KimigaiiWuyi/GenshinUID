@@ -104,7 +104,7 @@ async def avatarName2ElementJson() -> None:
         ).json()
         if 'errcode' in data:
             data = await convert_ambr_to_minigg(_id)
-        if data is not None and 'code' not in data:
+        if data is not None and 'retcode' not in data:
             temp[name] = elementMap[data['element']]
             enName = data['images']['namesideicon'].split('_')[-1]
             enName2Id_result[enName] = _id

@@ -3092,6 +3092,56 @@
     },
     {
         "weaponType": "WEAPON_CLAYMORE",
+        "rankLevel": 4,
+        "weaponBaseExp": 50000,
+        "skillAffix": [
+            112418,
+            0
+        ],
+        "awakenMaterial": 200114,
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 43.734901428222656,
+                "type": "GROW_CURVE_ATTACK_202"
+            },
+            {
+                "propType": "FIGHT_PROP_ELEMENT_MASTERY",
+                "initValue": 24.0,
+                "type": "GROW_CURVE_CRITICAL_201"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Fleurfair/Equip_Claymore_Fleurfair_OverrideTexture/Equip_Claymore_Fleurfair_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Fleurfair/Equip_Claymore_Fleurfair_OverrideTexture/Equip_Claymore_Fleurfair_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Claymore_Fleurfair_Awaken",
+        "weaponPromoteId": 12418,
+        "storyId": 192418,
+        "awakenCosts": [
+            1000,
+            2000,
+            4000,
+            8000
+        ],
+        "gachaCardNameHash": 4757987924769494923,
+        "enhanceRule": 1,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 2,
+        "id": 12418,
+        "nameTextMapHash": 1200948859,
+        "descTextMapHash": 1929795277,
+        "icon": "UI_EquipIcon_Claymore_Fleurfair",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50012418
+    },
+    {
+        "weaponType": "WEAPON_CLAYMORE",
         "rankLevel": 5,
         "weaponBaseExp": 300000,
         "skillAffix": [
@@ -3490,6 +3540,54 @@
         "weight": 1,
         "rank": 10,
         "gadgetId": 50012510
+    },
+    {
+        "weaponType": "WEAPON_CLAYMORE",
+        "rankLevel": 5,
+        "weaponBaseExp": 300000,
+        "skillAffix": [
+            112511,
+            0
+        ],
+        "weaponProp": [
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.9364013671875,
+                "type": "GROW_CURVE_ATTACK_301"
+            },
+            {
+                "propType": "FIGHT_PROP_CRITICAL",
+                "initValue": 0.07199999690055847,
+                "type": "GROW_CURVE_CRITICAL_301"
+            }
+        ],
+        "awakenTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Deshret/Equip_Claymore_Deshret_OverrideTexture/Equip_Claymore_Deshret_02_Tex_Diffuse",
+        "awakenLightMapTexture": "ART/Equip/AvatarEquip/Equip_Claymore_Deshret/Equip_Claymore_Deshret_OverrideTexture/Equip_Claymore_Deshret_02_Tex_Lightmap",
+        "awakenIcon": "UI_EquipIcon_Claymore_Deshret_Awaken",
+        "weaponPromoteId": 12511,
+        "storyId": 192511,
+        "awakenCosts": [
+            2000,
+            4000,
+            8000,
+            16000
+        ],
+        "gachaCardNameHash": 16886464146810442136,
+        "destroyReturnMaterial": [
+            0
+        ],
+        "destroyReturnMaterialCount": [
+            0
+        ],
+        "initialLockState": 1,
+        "id": 12511,
+        "nameTextMapHash": 2834063555,
+        "descTextMapHash": 1038210501,
+        "icon": "UI_EquipIcon_Claymore_Deshret",
+        "itemType": "ITEM_WEAPON",
+        "weight": 1,
+        "rank": 10,
+        "gadgetId": 50012511
     },
     {
         "weaponType": "WEAPON_POLE",

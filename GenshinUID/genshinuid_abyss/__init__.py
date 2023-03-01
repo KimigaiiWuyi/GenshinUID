@@ -1,0 +1,39 @@
+from gsuid_core.sv import SV
+from gsuid_core.bot import Bot
+from gsuid_core.models import Event
+
+from ..utils.convert import get_uid
+from ..utils.error_reply import UID_HINT
+from .draw_abyss_card import draw_abyss_img
+
+
+@SV('查询深渊').on_prefix(('查询深渊', 'sy', '查询上期深渊', 'sqsy'))
+async def send_abyss_info(bot: Bot, ev: Event):
+    await bot.logger.info('开始执行[查询深渊信息]')
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    await bot.logger.info('[查询深渊信息]uid: {}'.format(uid))
+
+    if 'sq' in ev.command or '上期' in ev.command:
+        schedule_type = '2'
+    else:
+        schedule_type = '1'
+    await bot.logger.info('[查询深渊信息]深渊期数: {}'.format(schedule_type))
+
+    if ev.text in ['九', '十', '十一', '十二']:
+        floor = (
+            ev.text.replace('九', '9')
+            .replace('十一', '11')
+            .replace('十二', '12')
+            .replace('十', '10')
+        )
+    else:
+        floor = ev.text
+    if floor is not None:
+        floor = int(floor)
+
+    await bot.logger.info('[查询深渊信息]深渊层数: {}'.format(floor))
+
+    im = await draw_abyss_img(uid, floor, schedule_type)
+    await bot.send(im)

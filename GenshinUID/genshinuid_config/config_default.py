@@ -1,0 +1,85 @@
+from typing import Dict, Union
+
+from .models import GsStrConfig, GsBoolConfig, GsDictConfig, GsListConfig
+
+CONIFG_DEFAULT: Dict[
+    str, Union[GsDictConfig, GsBoolConfig, GsListConfig, GsStrConfig]
+] = {
+    'proxy': GsStrConfig('设置代理', '设置国际服的代理地址', ''),
+    '_pass_API': GsStrConfig('神奇API', '设置某种神奇的API', ''),
+    'random_pic_API': GsStrConfig(
+        '随机图API',
+        '用于面板查询的随机图API',
+        'https://genshin-res.cherishmoon.fun/img?name=',
+    ),
+    'Ann_Groups': GsDictConfig(
+        '推送公告群组',
+        '原神公告推送群组',
+        {},
+    ),
+    'Ann_Ids': GsListConfig(
+        '推送公告ID',
+        '原神公告推送ID列表',
+        [],
+    ),
+    'MhyBBSCoinReport': GsBoolConfig(
+        '米游币推送',
+        '开启后会私聊每个用户当前米游币任务完成情况',
+        False,
+    ),
+    'SignReportSimple': GsBoolConfig(
+        '简洁签到报告',
+        '开启后可以大大减少每日签到报告字数',
+        True,
+    ),
+    'PrivateReport': GsBoolConfig(
+        '私聊报告',
+        '关闭后将不再给主人推送当天米游币任务完成情况',
+        False,
+    ),
+    'RandomPic': GsBoolConfig(
+        '随机图',
+        '开启后[查询心海]等命令展示图将替换为随机图片',
+        False,
+    ),
+    'SchedSignin': GsBoolConfig(
+        '定时签到',
+        '开启后每晚00:30将开始自动签到任务',
+        True,
+    ),
+    'SchedMhyBBSCoin': GsBoolConfig(
+        '定时米游币',
+        '开启后每晚01:16将开始自动米游币任务',
+        True,
+    ),
+    'CrazyNotice': GsBoolConfig(
+        '催命模式',
+        '开启后当达到推送阈值将会一直推送',
+        False,
+    ),
+    'OldPanle': GsBoolConfig(
+        '旧面板',
+        '会稍微增加面板访问速度,但会损失很多功能',
+        False,
+    ),
+    'OpenWeb': GsBoolConfig(
+        '网页控制台',
+        '开启后重启生效,地址位于Bot所处端口下/genshinuid',
+        False,
+    ),
+    'ColorBG': GsBoolConfig(
+        '多彩面板',
+        '面板颜色不按照属性来渲染,而按照自定义颜色',
+        False,
+    ),
+    'CaptchaPass': GsBoolConfig(
+        '失效项',
+        '该选项已经无效且可能有一定危险性...',
+        False,
+    ),
+    'MysPass': GsBoolConfig(
+        '无效项',
+        '该选项已经无效且可能有一定危险性...',
+        False,
+    ),
+}

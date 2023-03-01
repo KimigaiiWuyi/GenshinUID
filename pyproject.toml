@@ -1,0 +1,78 @@
+[tool.black]
+line-length = 79
+target-version = ["py38", "py39", "py310"]
+include = '\.pyi?$'
+skip-string-normalization = true
+extend-exclude = '''
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 79
+length_sort = true
+skip_gitignore = true
+force_sort_within_sections = true
+extra_standard_library = ["typing_extensions"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "GenshinUID"
+version = "4.0.0"
+description = "基于HoshinoBot/NoneBot2/QQ官方频道/微信Bot的原神面板查询/原神Wiki/米社签到/树脂提醒插件"
+authors = ["KimigaiiWuyi <444835641@qq.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://github.com/KimigaiiWuyi/GenshinUID/tree/v4"
+repository = "https://github.com/KimigaiiWuyi/GenshinUID"
+documentation = "https://github.com/KimigaiiWuyi/GenshinUID/wiki"
+packages = [
+    { include = "GenshinUID" }
+]
+exclude = ["tests", "deploy"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/KimigaiiWuyi/GenshinUID/issues"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+httpx = ">=0.23.0"
+beautifulsoup4 = ">=4.11.1"
+lxml = ">=4.9.2"
+openpyxl = ">=3.0.10"
+aiohttp = ">=3.8.1"
+sqlalchemy = ">=1.4.39"
+pillow = ">=9.2.0"
+aiosqlite = ">=0.17.0"
+nonebot-plugin-apscheduler = ">=0.1.4"
+aiofiles = ">=0.8.0"
+sqlmodel = ">=0.0.8"
+gitpython = ">=3.1.27"
+fastapi-amis-admin = ">=0.2.1"
+fastapi = ">=0.87.0,!=0.89.0,<1.0.0"
+msgspec = ">=0.13.1"
+fastapi-user-auth = ">=0.2.1"
+qrcode = {extras = ["pil"], version = "^7.3.1"}
+
+[[tool.poetry.source]]
+name = "USTC"
+url = "https://pypi.mirrors.ustc.edu.cn/simple"
+default = false
+secondary = true
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+black = "^22.12.0"
+isort = "^5.11.5"
+pre-commit = "^2.21.0"
+pycln = "^2.1.2"
+
+[tool.poetry.group.test.dependencies]
+nonebug = "^0.3.0"
+pytest = "^7.2.0"
+pytest-asyncio = "^0.20.3"

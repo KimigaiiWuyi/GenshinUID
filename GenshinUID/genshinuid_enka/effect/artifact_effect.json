@@ -1,0 +1,618 @@
+{
+  "乐园遗落之花": {
+    "normal_effect": {
+      "2": "elementalMastery+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "a+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "沙上楼阁史话": {
+    "normal_effect": {
+      "2": "AnemoDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "ABC:dmgBonus+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "深林的记忆": {
+    "normal_effect": {
+      "2": "DendroDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "DendroResist+-30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "饰金之梦": {
+    "normal_effect": {
+      "2": "elementalMastery+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "elementalMastery+150"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "勇士": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "辰砂往生录": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addAtk+48"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "来歆余响": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "A:addDmg+70%atk"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "华馆梦醒形骸记": {
+    "normal_effect": {
+      "2": "addDef+30",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+24;addDef+24"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "海染砗磲": {
+    "normal_effect": {
+      "2": "healBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "绝缘之旗印": {
+    "normal_effect": {
+      "2": "energyRecharge+20",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "Q:dmgBonus+75%25%energyrecharge"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "追忆之注连": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "ABC:dmgBonus+50"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "千岩牢固": {
+    "normal_effect": {
+      "2": "addHp+20",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addAtk+20;shieldBonus+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "addAtk+20;shieldBonus+30"
+    }
+  },
+  "苍白之火": {
+    "normal_effect": {
+      "2": "physicalDmgBonus+25",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addAtk+18;physicalDmgBonus+25"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "平息鸣雷的尊者": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+35"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "炽烈的炎之魔女": {
+    "normal_effect": {
+      "2": "PyroDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "a+15;dmgBonus+22.5"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "流浪大地的乐团": {
+    "normal_effect": {
+      "2": "elementalMastery+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "B:dmgBonus+35"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "染血的骑士道": {
+    "normal_effect": {
+      "2": "physicalDmgBonus+25",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "B:dmgBonus+50"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "被怜爱的少女": {
+    "normal_effect": {
+      "2": "healBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "healBonus+20"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "角斗士的终幕礼": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "A:dmgBonus+35"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "渡过烈火的贤人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+35"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "悠古的磐岩": {
+    "normal_effect": {
+      "2": "GeoDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": "dmgBonus+35"
+    }
+  },
+  "如雷的盛怒": {
+    "normal_effect": {
+      "2": "ElectroDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "沉沦之心": {
+    "normal_effect": {
+      "2": "HydroDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "AB:dmgBonus+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "逆飞的流星": {
+    "normal_effect": {
+      "2": "shieldBonus+35",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "AB:dmgBonus+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "昔日宗室之仪": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "Q:dmgBonus+20",
+      "4": "addAtk+20"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "addAtk+20"
+    }
+  },
+  "翠绿之影": {
+    "normal_effect": {
+      "2": "AnemoDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "g+60;Resist+-40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "冰风迷途的勇士": {
+    "normal_effect": {
+      "2": "CryoDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "critRate+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "勇士之心": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "教官": {
+    "normal_effect": {
+      "2": "elementalMastery+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "elementalMastery+120"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "elementalMastery+120"
+    }
+  },
+  "流放者": {
+    "normal_effect": {
+      "2": "energyRecharge+20",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "战狂": {
+    "normal_effect": {
+      "2": "critRate+12",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "critRate+24"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "武人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "AB:dmgBonus+15",
+      "4": "AB:dmgBonus+25"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "学士": {
+    "normal_effect": {
+      "2": "energyRecharge+20",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "赌徒": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "E:dmgBonus+20",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "奇迹": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "行者之心": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "B:critRate+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "守护之心": {
+    "normal_effect": {
+      "2": "addDef+30",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "幸运儿": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "冒险家": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "游医": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "祭冰之人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "祭雷之人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "祭火之人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "祭水之人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": ""
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  }
+}

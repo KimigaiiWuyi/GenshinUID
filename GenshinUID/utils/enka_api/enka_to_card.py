@@ -2,6 +2,7 @@ import asyncio
 from pathlib import Path
 from typing import List, Union, Optional
 
+from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from .enka_to_data import enka_to_dict
@@ -33,6 +34,7 @@ async def enka_to_card(
 ) -> Union[str, bytes]:
     char_data_list = await enka_to_dict(uid, enka_data)
     if isinstance(char_data_list, str):
+        logger.warning(f'UID{uid}的数据未刷新成功...错误信息: {char_data_list}')
         if '服务器正在维护或者关闭中' in char_data_list:
             return await convert_img(pic_500)
         elif '未打开角色展柜' in char_data_list:
@@ -41,8 +43,9 @@ async def enka_to_card(
             return await convert_img(pic_500)
     else:
         if char_data_list == []:
+            logger.warning(f'UID{uid}的数据未刷新成功...可能由于展柜数据为空或服务器异常..')
             return await convert_img(pic_500)
-
+    logger.info(f'UID{uid}的数据已刷新成功...')
     img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
     return img
 

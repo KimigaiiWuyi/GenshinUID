@@ -271,7 +271,6 @@ async def send_charcard_list(
 
     im = await draw_cahrcard_list(str(uid), avatar)
 
-    logger.info(f'UID{uid}获取角色数据成功！')
     if isinstance(im, bytes):
         await matcher.finish(MessageSegment.file_image(im))
     else:

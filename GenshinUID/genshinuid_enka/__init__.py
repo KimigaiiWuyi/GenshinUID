@@ -278,7 +278,7 @@ async def send_card_info(
             if not uid:
                 await matcher.finish(UID_HINT)
     im = await enka_to_card(uid)
-    logger.info(f'UID{uid}获取角色数据成功！')
+
     if isinstance(im, str):
         await matcher.finish(im)
     elif isinstance(im, bytes):

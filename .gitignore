@@ -675,8 +675,10 @@ AvatarSkillExcelConfigData.json
 WeaponExcelConfigData.json
 AvatarTalentExcelConfigData.json
 AvatarExcelConfigData.json
+
 曲线素材.xlsx
 参考面板.xlsx
+textMap.json
 
 ### Debug ###
 testnb2/

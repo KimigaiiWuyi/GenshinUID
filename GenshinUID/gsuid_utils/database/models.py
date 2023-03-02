@@ -39,6 +39,7 @@ class GsCache(SQLModel, table=True):
 class GsPush(SQLModel, table=True):
     __table_args__ = {'keep_existing': True}
     id: Optional[int] = Field(default=None, primary_key=True, title='序号')
+    bot_id: str = Field(title='平台')
     uid: str = Field(title='UID')
     coin_push: Optional[str] = Field(title='洞天宝钱推送')
     coin_value: Optional[int] = Field(title='洞天宝钱阈值')

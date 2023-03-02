@@ -316,6 +316,7 @@ class SQLA:
     #####################
     async def insert_push_data(self, uid: str):
         push_data = GsPush(
+            bot_id=self.bot_id,
             uid=uid,
             coin_push='off',
             coin_value=2100,
@@ -335,7 +336,11 @@ class SQLA:
 
     async def update_push_data(self, uid: str, data: dict) -> bool:
         await self.push_exists(uid)
-        sql = update(GsPush).where(GsPush.uid == uid).values(**data)
+        sql = (
+            update(GsPush)
+            .where(GsPush.uid == uid and GsPush.bot_id == self.bot_id)
+            .values(**data)
+        )
         await self.session.execute(sql)
         await self.session.commit()
         return True
@@ -350,12 +355,16 @@ class SQLA:
 
     async def select_push_data(self, uid: str) -> GsPush:
         await self.push_exists(uid)
-        sql = select(GsPush).where(GsPush.uid == uid)
+        sql = select(GsPush).where(
+            GsPush.uid == uid and GsPush.bot_id == self.bot_id
+        )
         result = await self.session.execute(sql)
         return result.scalars().one()
 
     async def push_exists(self, uid: str) -> bool:
-        sql = select(GsPush).where(GsPush.uid == uid)
+        sql = select(GsPush).where(
+            GsPush.uid == uid and GsPush.bot_id == self.bot_id
+        )
         result = await self.session.execute(sql)
         data = result.scalars().all()
         if not data:

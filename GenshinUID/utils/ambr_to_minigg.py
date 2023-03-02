@@ -230,8 +230,8 @@ async def convert_ambr_to_talent(
         para_list = re.findall(r'{(param[0-9]+):', label_str)
 
         # 进行排序
-        new_para_list = [
-            f'param{i}'
+        nums = [
+            i
             for i in sorted(
                 [
                     int(i[-2:]) if i[-2].isdigit() else int(i[-1])
@@ -239,6 +239,16 @@ async def convert_ambr_to_talent(
                 ]
             )
         ]
+
+        num_temp = 0
+        new_nums = []
+        for num in nums:
+            if num != num_temp + 1:
+                new_nums.append(num_temp + 1)
+            num_temp = num
+            new_nums.append(num)
+
+        new_para_list = [f'param{i}' for i in new_nums]
 
         for ig, para in enumerate(new_para_list):
             for level in talent_data[i]['promote']:

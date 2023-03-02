@@ -7,9 +7,7 @@ import httpx
 
 sys.path.append(str(Path(__file__).parents[1]))
 from version import Genshin_version  # noqa: E402
-from utils.ambr_api.convert_ambr_data import (  # noqa: E402
-    convert_ambr_to_minigg,
-)
+from utils.ambr_to_minigg import convert_ambr_to_minigg  # noqa: E402
 
 R_PATH = Path(__file__).parents[0]
 MAP_PATH = Path(__file__).parents[1] / 'utils' / 'enka_api' / 'map'

@@ -16,12 +16,12 @@ from ..utils.draw_image_tools.send_image_tool import convert_img
 
 get_abyss_info = on_regex(
     r'^(\[CQ:at,qq=[0-9]+\])?( )?'
-    r'(uid|mys)?([0-9]+)?(上期)?(深渊|sy)'
+    r'(uid|查询|mys)?([0-9]+)?(上期)?(深渊|sy)'
     r'(9|10|11|12|九|十|十一|十二)?(层)?'
     r'(\[CQ:at,qq=[0-9]+\])?( )?$',
     block=True,
 )
-# 删除了查询二字，不然要和其他的查询打架！
+# 恢复了查询二字，和其他的查询打架下次解决
 
 
 @get_abyss_info.handle()

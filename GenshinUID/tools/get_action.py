@@ -319,7 +319,7 @@ async def main():
         talent_data = httpx.get(
             f'https://info.minigg.cn/talents?query={char}'
         ).json()
-        if 'errcode' in talent_data:
+        if 'retcode' in talent_data:
             for _id in char_id_list:
                 if char_id_list[_id] == char:
                     char_id = _id

@@ -124,7 +124,7 @@ class Character:
         if weapon:
             weapon_info = deepcopy(baseWeaponInfo)
             weapon_raw_data = await get_weapon_info(weapon)
-            if 'errcode' in weapon_raw_data:
+            if 'retcode' in weapon_raw_data:
                 weapon_raw_data = await convert_ambr_to_weapon(weapon)
                 if not weapon_raw_data:
                     return {}
@@ -250,7 +250,7 @@ class Character:
         self.char_id = await name_to_avatar_id(char_name_covert)
         if not self.char_id and char_name != '旅行者':
             return {}
-        if char_raw is not None and 'errcode' in char_raw:
+        if char_raw is not None and 'retcode' in char_raw:
             char_raw = char_data = await convert_ambr_to_minigg(self.char_id)
         else:
             char_data = await get_char_info(

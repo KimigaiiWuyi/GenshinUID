@@ -12,7 +12,7 @@ from ...version import __version__
 
 ADDRESS = {
     'enka': 'https://enka.network',
-    'microgg': 'https://profile.microgg.cn',
+    'microgg': 'http://profile.microgg.cn',
 }
 
 

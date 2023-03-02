@@ -9,7 +9,7 @@ from aiohttp.client import ClientSession
 
 from .download_url import PATH_MAP, download_file
 
-MINIGG_FILE = 'https://file.microgg.cn/KimigaiiWuyi/resource/'
+MINIGG_FILE = 'http://file.microgg.cn/KimigaiiWuyi/resource/'
 NAMECARD_FILE = MINIGG_FILE + 'char_namecard'
 SIDE_FILE = MINIGG_FILE + 'char_side'
 STAND_FILE = MINIGG_FILE + 'char_stand'

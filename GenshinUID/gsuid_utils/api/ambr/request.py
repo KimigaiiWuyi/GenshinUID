@@ -86,4 +86,6 @@ async def _ambr_request(
             method, url=url, headers=header, params=params, json=data
         )
         data = req.json()
+        if data and 'code' in data:
+            data['response'] = data['code']
         return data

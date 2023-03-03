@@ -5,12 +5,13 @@ from pathlib import Path
 
 import httpx
 
-sys.path.append(str(Path(__file__).parents[1]))
-from version import Genshin_version  # noqa: E402
-from utils.ambr_to_minigg import convert_ambr_to_minigg  # noqa: E402
+sys.path.append(str(Path(__file__).parents[2]))
+__package__ = 'GenshinUID.tools'
+from ..version import Genshin_version  # noqa: E402
+from ..utils.ambr_to_minigg import convert_ambr_to_minigg  # noqa: E402
 
 R_PATH = Path(__file__).parents[0]
-MAP_PATH = Path(__file__).parents[1] / 'utils' / 'enka_api' / 'map'
+MAP_PATH = Path(__file__).parents[1] / 'utils' / 'map' / 'data'
 DATA_PATH = R_PATH / 'gs_data'
 WEAPON_TYPE = {
     "WEAPON_POLE": "长柄武器",
@@ -46,6 +47,8 @@ BETA_CHAR = {
     '10000077': '瑶瑶',
     '10000079': '迪希雅',
     '10000080': '米卡',
+    '10000081': '卡维',
+    '10000082': '白术',
 }
 
 
@@ -100,7 +103,7 @@ async def avatarName2ElementJson() -> None:
         data = httpx.get(
             f'https://info.minigg.cn/characters?query={name}'
         ).json()
-        if 'errcode' in data:
+        if 'retcode' in data:
             data = await convert_ambr_to_minigg(_id)
         if data is not None and 'code' not in data:
             temp[name] = elementMap[data['element']]

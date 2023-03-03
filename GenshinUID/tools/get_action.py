@@ -8,29 +8,13 @@ from copy import deepcopy
 
 import httpx
 
-sys.path.append(str(Path(__file__).parents[1]))
-from version import Genshin_version  # noqa: E402
-from utils.ambr_to_minigg import convert_ambr_to_talent  # noqa: E402
-
-path = (
-    Path(__file__).parents[1]
-    / 'utils'
-    / 'enka_api'
-    / 'map'
-    / f'avatarId2Name_mapping_{Genshin_version}.json'
+sys.path.append(str(Path(__file__).parents[2]))
+__package__ = 'GenshinUID.tools'
+from ..utils.ambr_to_minigg import convert_ambr_to_talent  # noqa: E402
+from ..utils.map.GS_MAP_PATH import (  # noqa: E402
+    avatarId2Name,
+    avatarName2Element,
 )
-element_path = (
-    Path(__file__).parents[1]
-    / 'utils'
-    / 'enka_api'
-    / 'map'
-    / f'avatarName2Element_mapping_{Genshin_version}.json'
-)
-with open(path, 'r', encoding='utf-8') as f:
-    char_id_list = json.load(f)
-
-with open(element_path, 'r', encoding='utf-8') as f:
-    char_element_list = json.load(f)
 
 char_list: List[str] = []
 char_action = {}
@@ -136,7 +120,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
     result = {}
     for label in labels:
         if '旅行者' not in char:
-            if char_element_list[char] == 'Anemo':
+            if avatarName2Element[char] == 'Anemo':
                 if 'A扩散伤害' not in result:
                     result['A扩散伤害'] = {
                         'name': 'A扩散伤害',
@@ -309,17 +293,17 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
 
 
 async def main():
-    for char_id in char_id_list:
-        char_list.append(char_id_list[char_id])
+    for char_id in avatarId2Name:
+        char_list.append(avatarId2Name[char_id])
     char_list.extend(['旅行者(风)', '旅行者(雷)', '旅行者(岩)', '旅行者(草)'])
     for char in char_list:
         print(char)
         talent_data = httpx.get(
             f'https://info.minigg.cn/talents?query={char}'
         ).json()
-        if 'errcode' in talent_data:
-            for _id in char_id_list:
-                if char_id_list[_id] == char:
+        if 'retcode' in talent_data:
+            for _id in avatarId2Name:
+                if avatarId2Name[_id] == char:
                     char_id = _id
                     break
             else:

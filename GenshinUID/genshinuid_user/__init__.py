@@ -1,6 +1,7 @@
 import hoshino
 from hoshino.typing import CQEvent, HoshinoBot
 
+from .topup import topup_
 from ..base import sv, logger
 from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
@@ -126,3 +127,14 @@ async def send_ck_msg(bot: HoshinoBot, ev: CQEvent):
     await bot.send_group_forward_msg(
         group_id=ev.group_id, messages=forward_msg
     )
+
+@sv.on_prefix("oprc")
+async def topup(bot: HoshinoBot, ev: CQEvent):
+    qid = ev.user_id
+    goods_id=ev.message.extract_plain_text()
+    if goods_id == "":
+        goods_id=0
+    else:
+        goods_id=int(goods_id)
+    group_id=ev.group_id
+    await topup_(bot,qid,group_id,goods_id)

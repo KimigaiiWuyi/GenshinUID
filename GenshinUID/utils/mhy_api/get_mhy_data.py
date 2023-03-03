@@ -859,52 +859,53 @@ async def get_regtime_data(uid: str) -> Any:
         )
     return data
 
+
 async def fetchgoods():
-    data={
+    data = {
         "released_flag": True,
         "game": "hk4e_cn",
         "region": "cn_gf01",
         "uid": "1",
-        "account": "1"
+        "account": "1",
     }
     goodslist = await _mhy_request(
         url=fetchGoodsurl,
         method='POST',
         data=data,
     )
-    #print(json.dumps(goodslist.json(),indent=4,ensure_ascii=False))
+    # print(json.dumps(goodslist.json(),indent=4,ensure_ascii=False))
     return goodslist["data"]["goods_list"]
 
-async def topup(uid,goods):
-    device_id=str(uuid.uuid4())
-    HEADER=copy.deepcopy(_HEADER)
-    HEADER["Cookie"]=await owner_cookies(uid)
-    account=HEADER["Cookie"].split("account_id=")[1].split(";")[0]
-    order={
-            "account": str(account),
-            "region": "cn_gf01",
-            "uid": uid,
-            "delivery_url": "",
-            "device": device_id,
-            "channel_id": 1,
-            "client_ip": "",
-            "client_type": 4,
-            "game": "hk4e_cn",
-            "amount": goods["price"],
-            #"amount": 600,
-            "goods_num": 1,
-            "goods_id": goods["goods_id"],
-            "goods_title": f"{goods['goods_name']}×{str(goods['goods_unit'])}" if int(goods['goods_unit']) > 0 else goods["goods_name"],
-            "price_tier": goods["tier_id"],
-            #"price_tier": "Tier_1",
-            "currency": "CNY",
-            "pay_plat": "alipay",
-        }
-    data={
-        "order": order,
-        "sign": gen_payment_sign(order)
+
+async def topup(uid, goods):
+    device_id = str(uuid.uuid4())
+    HEADER = copy.deepcopy(_HEADER)
+    HEADER["Cookie"] = await owner_cookies(uid)
+    account = HEADER["Cookie"].split("account_id=")[1].split(";")[0]
+    order = {
+        "account": str(account),
+        "region": "cn_gf01",
+        "uid": uid,
+        "delivery_url": "",
+        "device": device_id,
+        "channel_id": 1,
+        "client_ip": "",
+        "client_type": 4,
+        "game": "hk4e_cn",
+        "amount": goods["price"],
+        # "amount": 600,
+        "goods_num": 1,
+        "goods_id": goods["goods_id"],
+        "goods_title": f"{goods['goods_name']}×{str(goods['goods_unit'])}"
+        if int(goods['goods_unit']) > 0
+        else goods["goods_name"],
+        "price_tier": goods["tier_id"],
+        # "price_tier": "Tier_1",
+        "currency": "CNY",
+        "pay_plat": "alipay",
     }
-    HEADER["x-rpc-device_id"]=device_id
+    data = {"order": order, "sign": gen_payment_sign(order)}
+    HEADER["x-rpc-device_id"] = device_id
     HEADER["x-rpc-client_type"] = "4"
     order = await _mhy_request(
         url=CreateOrderurl,
@@ -914,16 +915,17 @@ async def topup(uid,goods):
     )
     return order["data"]
 
-async def checkorder(order,uid):
-    HEADER=copy.deepcopy(_HEADER)
-    HEADER["Cookie"]=await owner_cookies(uid)
-    data={
+
+async def checkorder(order, uid):
+    HEADER = copy.deepcopy(_HEADER)
+    HEADER["Cookie"] = await owner_cookies(uid)
+    data = {
         "order_no": order["order_no"],
         "game": "hk4e_cn",
         "region": "cn_gf01",
         "uid": uid,
     }
-    order= await _mhy_request(
+    order = await _mhy_request(
         url=CheckOrderurl,
         method='GET',
         header=HEADER,

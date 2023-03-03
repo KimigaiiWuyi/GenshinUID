@@ -128,13 +128,14 @@ async def send_ck_msg(bot: HoshinoBot, ev: CQEvent):
         group_id=ev.group_id, messages=forward_msg
     )
 
+
 @sv.on_prefix("oprc")
 async def topup(bot: HoshinoBot, ev: CQEvent):
     qid = ev.user_id
-    goods_id=ev.message.extract_plain_text()
+    goods_id = ev.message.extract_plain_text()
     if goods_id == "":
-        goods_id=0
+        goods_id = 0
     else:
-        goods_id=int(goods_id)
-    group_id=ev.group_id
-    await topup_(bot,qid,group_id,goods_id)
+        goods_id = int(goods_id)
+    group_id = ev.group_id
+    await topup_(bot, qid, group_id, goods_id)

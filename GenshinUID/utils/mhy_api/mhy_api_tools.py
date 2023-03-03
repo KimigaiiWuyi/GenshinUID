@@ -77,6 +77,7 @@ def generate_passport_ds(q: str = '', b: Optional[Dict[str, Any]] = None):
         "JwYDpKvLj6MrMqqYU6jTKF17KNO2PXoS", string.ascii_letters, True, q, b
     )
 
+
 def HMCASHA256(data, key):
     key = key.encode('utf-8')
     message = data.encode('utf-8')

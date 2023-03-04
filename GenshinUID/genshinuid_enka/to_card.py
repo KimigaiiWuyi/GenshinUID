@@ -8,19 +8,16 @@ from .to_data import enka_to_dict
 from ..utils.image.convert import convert_img
 from ..gsuid_utils.api.enka.models import EnkaData
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH
-from ..utils.fonts.genshin_fonts import genshin_font_origin
+from ..utils.fonts.genshin_fonts import gs_font_18, gs_font_58
 from ..utils.map.name_covert import name_to_avatar_id, avatar_id_to_char_star
 
 half_color = (255, 255, 255, 120)
 first_color = (29, 29, 29)
 second_color = (67, 61, 56)
 white_color = (247, 247, 247)
-gs_font_18 = genshin_font_origin(18)
-gs_font_28 = genshin_font_origin(28)
-gs_font_58 = genshin_font_origin(58)
 
 MAP_PATH = Path(__file__).parent / 'map'
-TEXT_PATH = Path(__file__).parent / 'texture2d'
+TEXT_PATH = Path(__file__).parent / 'texture2D'
 char_mask = Image.open(TEXT_PATH / 'char_mask.png')
 tag = Image.open(TEXT_PATH / 'tag.png')
 footbar = Image.open(TEXT_PATH / 'footbar.png')

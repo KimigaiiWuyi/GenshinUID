@@ -42,22 +42,9 @@ exclude = []
 [tool.poetry.dependencies]
 python = "^3.8.1"
 nonebot2 = ">=2.0.0b4"
-nonebot-adapter-onebot = ">=2.1.1"
-httpx = ">=0.23.0"
-beautifulsoup4 = ">=4.11.1"
-lxml = ">=4.9.2"
-openpyxl = ">=3.0.10"
-aiohttp = ">=3.8.1"
-sqlalchemy = ">=1.4.39"
 pillow = ">=9.2.0"
-aiosqlite = ">=0.17.0"
-nonebot-plugin-apscheduler = ">=0.1.4"
-aiofiles = ">=0.8.0"
-sqlmodel = ">=0.0.8"
 gitpython = ">=3.1.27"
-fastapi-amis-admin = ">=0.2.1"
-fastapi-user-auth = ">=0.2.1"
-qrcode = {extras = ["pil"], version = "^7.3.1"}
+msgspec = ">=0.13.1"
 
 [[tool.poetry.source]]
 name = "USTC"

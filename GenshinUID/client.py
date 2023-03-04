@@ -9,7 +9,7 @@ from websockets.exceptions import ConnectionClosedError
 
 from .models import MessageSend, MessageReceive
 
-BOT_ID = 'NoneBot-OB11'
+BOT_ID = 'NoneBot2'
 
 
 class GsClient:
@@ -21,7 +21,7 @@ class GsClient:
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
         cls.ws = await websockets.client.connect(cls.ws_url)
-        logger.success('与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
+        logger.success(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
         return self
 
@@ -31,31 +31,59 @@ class GsClient:
             async for message in self.ws:
                 msg = msgjson.decode(message, type=MessageSend)
                 logger.info(f'【接收】[gsuid-core]: {msg}')
+                # 解析消息
                 content = ''
+                image = ''
                 if msg.content:
                     for _c in msg.content:
                         if _c.data:
                             if _c.type == 'text':
                                 content += _c.data
                             elif _c.type == 'image':
-                                content += f'[CQ:image,file={_c.data}]'
+                                image += _c.data
                             elif _c.type and _c.type.startswith('log'):
                                 _type = _c.type.split('_')[-1].lower()
                                 getattr(logger, _type)(_c.data)
                 else:
                     pass
-                if msg.bot_id.startswith('NoneBot'):
+
+                # 根据bot_id字段发送消息
+                if msg.bot_id == 'onebot':
+                    result_image = f'[CQ:image,file={image}]' if image else ''
+                    result_msg = content + result_image
                     if msg.target_type == 'group':
                         await bot.call_api(
                             'send_group_msg',
                             group_id=msg.target_id,
-                            message=content,
+                            message=result_msg,
                         )
                     else:
                         await bot.call_api(
                             'send_private_msg',
                             user_id=msg.target_id,
-                            message=content,
+                            message=result_msg,
+                        )
+                elif msg.bot_id == 'ntchat':
+                    if content:
+                        await bot.call_api(
+                            'send_text',
+                            to_wxid=msg.target_id,
+                            content=content,
+                        )
+                    if image:
+                        await bot.call_api(
+                            'send_image',
+                            to_wxid=msg.target_id,
+                            content=content,
+                        )
+                elif msg.bot_id == 'qqguild':
+                    if msg.target_type == 'group':
+                        await bot.call_api(
+                            'post_messages',
+                            channel_id=int(msg.target_id)
+                            if msg.target_id
+                            else 0,
+                            content=content,
                         )
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')

@@ -1,6 +1,5 @@
 import random
 import asyncio
-import threading
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
@@ -21,8 +20,3 @@ async def send_abyss_pic(bot: Bot):
     img = await convert_img(TOTAL_IMG)
     await bot.logger.info('获得gs帮助图片成功!')
     await bot.send(img)
-
-
-threading.Thread(
-    target=lambda: asyncio.run(draw_xk_abyss_img()), daemon=True
-).start()

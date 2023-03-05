@@ -131,8 +131,8 @@ class SQLA:
     async def select_cache_cookie(self, uid: str) -> Optional[str]:
         sql = select(GsCache).where(GsCache.uid == uid)
         result = await self.session.execute(sql)
-        data: GsCache = result.scalars().one()
-        return data.cookie if data else None
+        data: List[GsCache] = result.scalars().all()
+        return data[0].cookie if len(data) >= 1 else None
 
     async def delete_error_cache(self) -> bool:
         data = await self.get_all_error_cookie()
@@ -353,13 +353,14 @@ class SQLA:
     ):
         await self.update_push_data(uid, {f'{mode}_is_push': status})
 
-    async def select_push_data(self, uid: str) -> GsPush:
+    async def select_push_data(self, uid: str) -> Optional[GsPush]:
         await self.push_exists(uid)
         sql = select(GsPush).where(
             GsPush.uid == uid and GsPush.bot_id == self.bot_id
         )
         result = await self.session.execute(sql)
-        return result.scalars().one()
+        data = result.scalars().all()
+        return data[0] if len(data) >= 1 else None
 
     async def push_exists(self, uid: str) -> bool:
         sql = select(GsPush).where(

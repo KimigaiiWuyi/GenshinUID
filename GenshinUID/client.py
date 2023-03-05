@@ -21,7 +21,7 @@ class GsClient:
         self = GsClient()
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
-        cls.ws = await websockets.client.connect(cls.ws_url)
+        cls.ws = await websockets.client.connect(cls.ws_url, max_size=2**26)
         logger.success(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
         return self

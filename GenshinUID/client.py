@@ -1,13 +1,14 @@
 import asyncio
-from typing import Union, Optional
+from typing import List, Union, Optional
 
 import websockets.client
 from nonebot import get_bot
 from nonebot.log import logger
+from nonebot.adapters import Bot
 from msgspec import json as msgjson
 from websockets.exceptions import ConnectionClosedError
 
-from .models import MessageSend, MessageReceive
+from .models import Message, MessageSend, MessageReceive
 
 BOT_ID = 'NoneBot2'
 
@@ -34,6 +35,7 @@ class GsClient:
                 # 解析消息
                 content = ''
                 image: Optional[bytes] = None
+                node = []
                 if msg.content:
                     for _c in msg.content:
                         if _c.data:
@@ -44,54 +46,35 @@ class GsClient:
                             elif _c.type and _c.type.startswith('log'):
                                 _type = _c.type.split('_')[-1].lower()
                                 getattr(logger, _type)(_c.data)
+                            elif _c.type == 'node':
+                                node = _c.data
                 else:
                     pass
 
                 # 根据bot_id字段发送消息
+                # OneBot v11 & v12
                 if msg.bot_id == 'onebot':
-                    result_image = (
-                        f'[CQ:image,file=base64://{image}]' if image else ''
+                    await onebot_send(
+                        bot,
+                        content,
+                        image,
+                        node,
+                        msg.target_id,
+                        msg.target_type,
                     )
-                    result_msg = content + result_image
-                    if msg.target_type == 'group':
-                        await bot.call_api(
-                            'send_group_msg',
-                            group_id=msg.target_id,
-                            message=result_msg,
-                        )
-                    else:
-                        await bot.call_api(
-                            'send_private_msg',
-                            user_id=msg.target_id,
-                            message=result_msg,
-                        )
+                # ntchat
                 elif msg.bot_id == 'ntchat':
-                    if content:
-                        await bot.call_api(
-                            'send_text',
-                            to_wxid=msg.target_id,
-                            content=content,
-                        )
-                    if image:
-                        await bot.call_api(
-                            'send_image',
-                            to_wxid=msg.target_id,
-                            content=content,
-                        )
+                    await ntchat_send(bot, content, image, node, msg.target_id)
+                # 频道
                 elif msg.bot_id == 'qqguild':
-                    result = {}
-                    if image:
-                        result['file_image'] = image
-                    if content:
-                        result['content'] = content
-                    if msg.target_type == 'group':
-                        await bot.call_api(
-                            'post_messages',
-                            channel_id=int(msg.target_id)
-                            if msg.target_id
-                            else 0,
-                            **result,
-                        )
+                    await guild_send(
+                        bot,
+                        content,
+                        image,
+                        node,
+                        msg.target_id,
+                        msg.target_type,
+                    )
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
 
@@ -113,3 +96,133 @@ class GsClient:
         )
         for task in pending:
             task.cancel()
+
+
+def to_json(msg: str, name: str, uin: int):
+    return {
+        'type': 'node',
+        'data': {'name': name, 'uin': uin, 'content': msg},
+    }
+
+
+async def onebot_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[bytes],
+    node: Optional[List[Message]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[bytes]):
+        result_image = f'[CQ:image,file=base64://{image}]' if image else ''
+        content = content if content else ''
+        result_msg = content + result_image
+        if target_type == 'group':
+            await bot.call_api(
+                'send_group_msg',
+                group_id=target_id,
+                message=result_msg,
+            )
+        else:
+            await bot.call_api(
+                'send_private_msg',
+                user_id=target_id,
+                message=result_msg,
+            )
+
+    async def _send_node(messages):
+        if target_type == 'group':
+            await bot.call_api(
+                'send_group_forward_msg',
+                group_id=target_id,
+                messages=messages,
+            )
+        else:
+            await bot.call_api(
+                'send_private_forward_msg',
+                user_id=target_id,
+                messages=messages,
+            )
+
+    if node:
+        messages = (
+            [
+                to_json(
+                    f'[CQ:image,file=base64://{_msg.data}]'
+                    if _msg.type == 'image'
+                    else _msg.data,
+                    '小助手',
+                    2854196310,
+                )
+                for _msg in node
+                if _msg.data
+            ],
+        )
+        await _send_node(messages)
+    else:
+        await _send(content, image)
+
+
+async def guild_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[bytes],
+    node: Optional[List[Message]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[bytes]):
+        result = {}
+        if image:
+            result['file_image'] = image
+        if content:
+            result['content'] = content
+        if target_type == 'group':
+            await bot.call_api(
+                'post_messages',
+                channel_id=int(target_id) if target_id else 0,
+                **result,
+            )
+
+    if node:
+        for _msg in node:
+            if _msg.type == 'image':
+                image = _msg.data
+                content = None
+            else:
+                image = None
+                content = _msg.data
+            await _send(content, image)
+    else:
+        await _send(content, image)
+
+
+async def ntchat_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[bytes],
+    node: Optional[List[Message]],
+    target_id: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[bytes]):
+        if content:
+            await bot.call_api(
+                'send_text',
+                to_wxid=target_id,
+                content=content,
+            )
+        if image:
+            await bot.call_api(
+                'send_image',
+                to_wxid=target_id,
+                content=content,
+            )
+
+    if node:
+        for _msg in node:
+            if _msg.type == 'image':
+                await _send(None, _msg.data)
+            else:
+                await _send(_msg.data, None)
+    else:
+        await _send(content, image)

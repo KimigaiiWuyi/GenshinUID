@@ -1,5 +1,5 @@
 import asyncio
-from typing import List, Union, Optional
+from typing import Dict, List, Union, Optional
 
 import websockets.client
 from nonebot import get_bot
@@ -8,7 +8,7 @@ from nonebot.adapters import Bot
 from msgspec import json as msgjson
 from websockets.exceptions import ConnectionClosedError
 
-from .models import Message, MessageSend, MessageReceive
+from .models import MessageSend, MessageReceive
 
 BOT_ID = 'NoneBot2'
 
@@ -109,7 +109,7 @@ async def onebot_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[bytes],
-    node: Optional[List[Message]],
+    node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -145,19 +145,17 @@ async def onebot_send(
             )
 
     if node:
-        messages = (
-            [
-                to_json(
-                    f'[CQ:image,file=base64://{_msg.data}]'
-                    if _msg.type == 'image'
-                    else _msg.data,
-                    '小助手',
-                    2854196310,
-                )
-                for _msg in node
-                if _msg.data
-            ],
-        )
+        messages = [
+            to_json(
+                f'[CQ:image,file=base64://{_msg["data"]}]'
+                if _msg['type'] == 'image'
+                else _msg['data'],
+                '小助手',
+                2854196310,
+            )
+            for _msg in node
+            if 'data' in _msg
+        ]
         await _send_node(messages)
     else:
         await _send(content, image)
@@ -167,7 +165,7 @@ async def guild_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[bytes],
-    node: Optional[List[Message]],
+    node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -186,12 +184,12 @@ async def guild_send(
 
     if node:
         for _msg in node:
-            if _msg.type == 'image':
-                image = _msg.data
+            if _msg['type'] == 'image':
+                image = _msg['data']
                 content = None
             else:
                 image = None
-                content = _msg.data
+                content = _msg['data']
             await _send(content, image)
     else:
         await _send(content, image)
@@ -201,7 +199,7 @@ async def ntchat_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[bytes],
-    node: Optional[List[Message]],
+    node: Optional[List[Dict]],
     target_id: Optional[str],
 ):
     async def _send(content: Optional[str], image: Optional[bytes]):
@@ -220,9 +218,9 @@ async def ntchat_send(
 
     if node:
         for _msg in node:
-            if _msg.type == 'image':
-                await _send(None, _msg.data)
+            if _msg['type'] == 'image':
+                await _send(None, _msg['data'])
             else:
-                await _send(_msg.data, None)
+                await _send(_msg['data'], None)
     else:
         await _send(content, image)

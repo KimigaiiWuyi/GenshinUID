@@ -34,7 +34,7 @@ async def get_sign_func(bot: Bot, ev: Event):
 
 
 @SV('原神签到', pm=2).on_fullmatch('全部重签')
-async def recheck(bot: Bot):
+async def recheck(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[全部重签]')
     await bot.send('已开始执行')
     await send_daily_sign()

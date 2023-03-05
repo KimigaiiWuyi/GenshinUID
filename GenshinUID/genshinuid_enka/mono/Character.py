@@ -6,7 +6,6 @@ from nonebot.log import logger
 from .Power import sp_prop
 from ..etc.get_buff_list import get_buff_list
 from ...genshinuid_config.gs_config import gsconfig
-from ...gsuid_utils.api.minigg.models import MiniGGError
 from ..etc.status_change import EXTRA_CHAR_LIST, STATUS_CHAR_LIST
 from ..etc.MAP_PATH import ActionMAP, char_action, avatarName2SkillAdd
 from ...utils.map.GS_MAP_PATH import avatarName2Weapon, avatarName2Element
@@ -126,7 +125,7 @@ class Character:
         if weapon:
             weapon_info = deepcopy(baseWeaponInfo)
             weapon_raw_data = await get_weapon_info(weapon)
-            if isinstance(weapon_raw_data, MiniGGError) or isinstance(
+            if isinstance(weapon_raw_data, int) or isinstance(
                 weapon_raw_data, List
             ):
                 weapon_raw_data = await convert_ambr_to_weapon(weapon)
@@ -146,7 +145,7 @@ class Character:
                     weapon_level_data = await get_weapon_stats(weapon, 70)
                     weapon_info['weaponLevel'] = 70
                     weapon_info['promoteLevel'] = 4
-                if isinstance(weapon_level_data, MiniGGError) or isinstance(
+                if isinstance(weapon_level_data, int) or isinstance(
                     weapon_level_data, List
                 ):
                     return {}
@@ -258,14 +257,14 @@ class Character:
         self.char_id = await name_to_avatar_id(char_name_covert)
         if not self.char_id and char_name != '旅行者':
             return {}
-        if isinstance(char_raw, MiniGGError) or isinstance(char_raw, List):
+        if isinstance(char_raw, int) or isinstance(char_raw, List):
             char_raw = char_data = await convert_ambr_to_minigg(self.char_id)
         else:
             char_data = await get_character_stats(char_name_covert, char_level)
 
         if (
             isinstance(char_data, List)
-            or isinstance(char_data, MiniGGError)
+            or isinstance(char_data, int)
             or char_data is None
         ):
             return {}

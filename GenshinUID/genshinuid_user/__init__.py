@@ -90,6 +90,6 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
 
 
 @SV('帮助').on_fullmatch(('ck帮助', '绑定帮助'))
-async def send_ck_help(bot: Bot):
+async def send_ck_help(bot: Bot, ev: Event):
     msg_list = await get_ck_help()
     await bot.send(MessageSegment.node(msg_list))

@@ -20,7 +20,7 @@ MAP_CHN_NAME = {
 
 
 @SV('查询地图设置', pm=2).on_fullmatch(('切换地图'))
-async def send_change_map_msg(bot: Bot):
+async def send_change_map_msg(bot: Bot, ev: Event):
     await bot.logger.info('[切换地图]正在执行...')
     MAP_ID_LIST.append(MAP_ID_LIST[0])
     MAP_ID_LIST.pop(0)

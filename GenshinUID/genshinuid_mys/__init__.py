@@ -25,7 +25,7 @@ async def send_task_adv(bot: Bot, ev: Event):
 
 
 @SV('娱乐功能').on_fullmatch(('抽表情'))
-async def send_meme_card(bot: Bot):
+async def send_meme_card(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[抽表情]')
     await bot.send(await get_meme_img())
 

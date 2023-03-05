@@ -13,7 +13,7 @@ class _MysApi(MysApi):
         # 警告：使用该服务（例如某RR等）需要注意风险问题
         # 本项目不以任何形式提供相关接口
         # 代码来源：GITHUB项目MIT开源
-        _pass_api = gsconfig.get_config('_pass_API')
+        _pass_api = gsconfig.get_config('_pass_API').data
         if _pass_api:
             data = await self._mys_request(
                 url=f'{_pass_api}&gt={gt}&challenge={ch}',

@@ -2,7 +2,6 @@ import re
 import math
 from typing import List, Union
 
-from ..gsuid_utils.api.minigg.models import MiniGGError
 from .get_wiki_template import food_im, weapon_im, artifacts_im, char_info_im
 from ..gsuid_utils.api.minigg.request import (
     get_others_info,
@@ -19,7 +18,7 @@ from ..gsuid_utils.api.minigg.request import (
 
 async def artifacts_wiki(name: str) -> str:
     data = await get_others_info('artifacts', name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '该圣遗物不存在。'
     else:
         star = ''
@@ -47,7 +46,7 @@ async def artifacts_wiki(name: str) -> str:
 
 async def foods_wiki(name: str) -> str:
     data = await get_others_info('foods', name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '该食物不存在。'
     else:
         ingredients = ''
@@ -74,7 +73,7 @@ async def foods_wiki(name: str) -> str:
 
 async def enemies_wiki(name: str) -> str:
     data = await get_others_info('enemies', name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '该食物不存在。'
     else:
         reward = ''
@@ -97,7 +96,7 @@ async def enemies_wiki(name: str) -> str:
 
 async def weapon_wiki(name: str) -> str:
     data = await get_weapon_info(name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '该武器不存在。'
     elif isinstance(data, List):
         im = ', '.join(data)
@@ -138,7 +137,7 @@ async def weapon_wiki(name: str) -> str:
 async def weapon_stats_wiki(name: str, stats: int):
     data = await get_weapon_info(name)
     data2 = await get_weapon_stats(name, stats)
-    if isinstance(data, MiniGGError) or isinstance(data2, MiniGGError):
+    if isinstance(data, int) or isinstance(data2, int):
         im = '该武器不存在。'
     elif isinstance(data, List) or isinstance(data2, List):
         im = '请输入具体的武器名称...'
@@ -172,7 +171,7 @@ async def weapon_stats_wiki(name: str, stats: int):
 
 async def weapon_costs_wiki(name: str) -> str:
     data = await get_weapon_costs(name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '不存在该武器或类型。'
     elif isinstance(data, List):
         im = ', '.join(data)
@@ -193,7 +192,7 @@ async def weapon_costs_wiki(name: str) -> str:
 
 async def char_wiki(name: str) -> str:
     data = await get_character_info(name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '不存在该角色或类型。'
     elif isinstance(data, List):
         im = ', '.join(data)
@@ -216,7 +215,7 @@ async def char_wiki(name: str) -> str:
 async def char_stats_wiki(name: str, stats: int):
     data2 = await get_character_info(name)
     data = await get_character_stats(name, stats)
-    if isinstance(data, MiniGGError) or isinstance(data2, MiniGGError):
+    if isinstance(data, int) or isinstance(data2, int):
         im = '该角色不存在。'
     elif isinstance(data, List) or isinstance(data2, List):
         im = '请输入具体的角色名称...'
@@ -245,7 +244,7 @@ async def char_stats_wiki(name: str, stats: int):
 async def char_costs_wiki(name: str) -> str:
     data = await get_character_costs(name)
     data2 = await get_talent_info(name)
-    if isinstance(data, MiniGGError) or isinstance(data2, MiniGGError):
+    if isinstance(data, int) or isinstance(data2, int):
         im = '该角色不存在。'
     elif isinstance(data, List) or isinstance(data2, List):
         im = '请输入具体的角色名称...'
@@ -284,7 +283,7 @@ async def char_costs_wiki(name: str) -> str:
 
 async def constellation_wiki(name: str, c: int) -> str:
     data = await get_constellation_info(name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '该角色不存在。'
     else:
         im = (
@@ -300,7 +299,7 @@ async def constellation_wiki(name: str, c: int) -> str:
 
 async def talent_wiki(name: str, level: int) -> Union[List, str]:
     data = await get_talent_info(name)
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         im = '该角色不存在。'
     else:
         if int(level) <= 3:

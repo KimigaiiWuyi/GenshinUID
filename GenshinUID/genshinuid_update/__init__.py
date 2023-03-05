@@ -44,7 +44,7 @@ async def send_restart_msg(bot: Bot, ev: Event):
 
 
 @SV('Core更新记录').on_fullmatch(('更新记录'))
-async def send_updatelog_msg(bot: Bot):
+async def send_updatelog_msg(bot: Bot, ev: Event):
     await bot.logger.info('正在执行[更新记录]...')
     im = await draw_update_log_img(is_update=False)
     await bot.send(im)

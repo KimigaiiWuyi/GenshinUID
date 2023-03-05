@@ -19,7 +19,7 @@ async def daily_refresh_charData():
 
 
 @SV('数据管理', pm=2).on_fullmatch(('gs清除缓存'))
-async def send_backup_msg(bot: Bot):
+async def send_backup_msg(bot: Bot, ev: Event):
     await data_backup()
     await bot.send('操作成功完成!')
 

@@ -54,8 +54,8 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
     index = 0
     for name in CONIFG_DEFAULT:
         if isinstance(CONIFG_DEFAULT[name].data, bool):
-            index += 1
             tasks.append(_draw_config_line(img, name, index))
+            index += 1
     await asyncio.gather(*tasks)
 
     res = await convert_img(img)
@@ -69,7 +69,8 @@ async def _draw_config_line(img: Image.Image, name: str, index: int):
     config_line_draw = ImageDraw.Draw(config_line)
     if name.startswith('定时'):
         name += '(全部)'
-    config_line_draw.text((52, 46), name, first_color, gs_font_36, 'lm')
+    title = CONIFG_DEFAULT[name].title
+    config_line_draw.text((52, 46), title, first_color, gs_font_36, 'lm')
     config_line_draw.text((52, 80), detail, second_color, gs_font_24, 'lm')
     if CONIFG_DEFAULT[name].data:
         config_line.paste(config_on, (613, 21), config_on)

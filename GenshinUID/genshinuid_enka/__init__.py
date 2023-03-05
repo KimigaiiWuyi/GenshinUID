@@ -14,7 +14,7 @@ from .draw_char_rank import draw_cahrcard_list
 
 
 @SV('面板设置', pm=2).on_fullmatch('切换api')
-async def send_change_api_info(bot: Bot):
+async def send_change_api_info(bot: Bot, ev: Event):
     await bot.send(await switch_api())
 
 
@@ -22,6 +22,8 @@ async def send_change_api_info(bot: Bot):
 async def send_char_info(bot: Bot, ev: Event):
     # 获取角色名
     msg = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    if not msg:
+        return
     await bot.logger.info('开始执行[查询角色面板]')
     # 获取uid
     uid = await get_uid(bot, ev)

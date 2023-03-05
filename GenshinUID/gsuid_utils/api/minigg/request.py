@@ -22,7 +22,6 @@ from .models import (
     Artifact,
     Material,
     Character,
-    MiniGGError,
     WeaponStats,
     CharacterStats,
     CharacterTalents,
@@ -141,7 +140,7 @@ async def minigg_request(
     result_languages: APILanguages = APILanguages.CHS,
     match_categories: bool = False,
     **kwargs: Any,
-) -> Union[AnyDict, List[str], MiniGGError]:
+) -> Union[AnyDict, List[str], int]:
     '''请求 MiniGG API。
 
     Args:
@@ -171,7 +170,8 @@ async def minigg_request(
         req = await client.get(endpoint, params=params)
         data = req.json()
         if 'retcode' in data:
-            return cast(MiniGGError, data)
+            retcode: int = data['retcode']
+            return retcode
         if req.status_code == 404:
             raise MiniggNotFoundError(**data)
         return data
@@ -181,7 +181,7 @@ async def get_weapon_info(
     name: str,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[Weapon, List[str], MiniGGError]:
+) -> Union[Weapon, List[str], int]:
     '''获取武器信息
 
     Args:
@@ -202,7 +202,7 @@ async def get_weapon_info(
         query_languages=query_languages,
         result_languages=result_languages,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         data = cast(Weapon, data)
@@ -213,7 +213,7 @@ async def get_weapon_costs(
     name: str,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[Weapon, List[str], MiniGGError]:
+) -> Union[Weapon, List[str], int]:
     '''获取武器信息（花费）
 
     Args:
@@ -234,7 +234,7 @@ async def get_weapon_costs(
         result_languages=result_languages,
         costs=True,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         data = cast(Weapon, data)
@@ -246,7 +246,7 @@ async def get_weapon_stats(
     stats: int,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[WeaponStats, List[str], MiniGGError]:
+) -> Union[WeaponStats, List[str], int]:
     '''_summary_
 
     Args:
@@ -272,7 +272,7 @@ async def get_weapon_stats(
         result_languages=result_languages,
         stats=stats,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         data = cast(WeaponStats, data)
@@ -283,14 +283,14 @@ async def get_character_info(
     name: str,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[Character, List[str], MiniGGError]:
+) -> Union[Character, List[str], int]:
     data = await minigg_request(
         '/characters',
         name,
         query_languages=query_languages,
         result_languages=result_languages,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         data = cast(Character, data)
@@ -301,7 +301,7 @@ async def get_character_costs(
     name: str,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[Costs, MiniGGError]:
+) -> Union[Costs, int]:
     data = await minigg_request(
         '/characters',
         name,
@@ -309,12 +309,12 @@ async def get_character_costs(
         result_languages=result_languages,
         Costs=True,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         return cast(Costs, data)
     else:
-        return MiniGGError(retcode=-1, error='未知错误')
+        return -1
 
 
 async def get_character_stats(
@@ -322,7 +322,7 @@ async def get_character_stats(
     stats: int,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[CharacterStats, MiniGGError]:
+) -> Union[CharacterStats, int]:
     if stats > 90 or stats <= 0:
         raise ValueError('stats must <= 90 and > 0')
 
@@ -333,12 +333,12 @@ async def get_character_stats(
         result_languages=result_languages,
         stats=stats,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         return cast(CharacterStats, data)
     else:
-        return MiniGGError(retcode=-1, error='未知错误')
+        return -1
 
 
 async def get_constellation_info(
@@ -346,7 +346,7 @@ async def get_constellation_info(
     c: Optional[int] = None,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[CharacterConstellations, MiniGGError]:
+) -> Union[CharacterConstellations, int]:
     if c and (c > 6 or c <= 0):
         raise ValueError('c must <= 6 and > 0')
 
@@ -357,65 +357,65 @@ async def get_constellation_info(
         result_languages=result_languages,
         c=c,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         return cast(CharacterConstellations, data)
     else:
-        return MiniGGError(retcode=-1, error='未知错误')
+        return -1
 
 
 async def get_talent_info(
     name: str,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[CharacterTalents, MiniGGError]:
+) -> Union[CharacterTalents, int]:
     data = await minigg_request(
         '/talents',
         name,
         query_languages=query_languages,
         result_languages=result_languages,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         return cast(CharacterTalents, data)
     else:
-        return MiniGGError(retcode=-1, error='未知错误')
+        return -1
 
 
 @overload
 async def get_others_info(
     type: Literal['foods'], name: str
-) -> Union[Food, MiniGGError]:
+) -> Union[Food, int]:
     ...
 
 
 @overload
 async def get_others_info(
     type: Literal['enemies'], name: str
-) -> Union[Enemy, MiniGGError]:
+) -> Union[Enemy, int]:
     ...
 
 
 @overload
 async def get_others_info(
     type: Literal['domains'], name: str
-) -> Union[Domain, MiniGGError]:
+) -> Union[Domain, int]:
     ...
 
 
 @overload
 async def get_others_info(
     type: Literal['artifacts'], name: str
-) -> Union[Artifact, MiniGGError]:
+) -> Union[Artifact, int]:
     ...
 
 
 @overload
 async def get_others_info(
     type: Literal['materials'], name: str
-) -> Union[Material, MiniGGError]:
+) -> Union[Material, int]:
     ...
 
 
@@ -424,14 +424,14 @@ async def get_others_info(
     name: str,
     query_languages: APILanguages = APILanguages.CHS,
     result_languages: APILanguages = APILanguages.CHS,
-) -> Union[Food, Material, Domain, Artifact, Enemy, MiniGGError]:
+) -> Union[Food, Material, Domain, Artifact, Enemy, int]:
     data = await minigg_request(
         f'/{type}',
         name,
         query_languages=query_languages,
         result_languages=result_languages,
     )
-    if isinstance(data, MiniGGError):
+    if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
         if type == 'foods':
@@ -445,4 +445,4 @@ async def get_others_info(
         elif type == 'enemies':
             return cast(Enemy, data)
     else:
-        return MiniGGError(retcode=-1, error='未知错误')
+        return -1

@@ -9,7 +9,7 @@ from gsuid_core.aps import scheduler
 
 from ..utils.mys_api import mys_api
 from .backup_data import data_backup
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..gsuid_utils.database.models import GsUser
 
 
@@ -26,7 +26,7 @@ async def send_backup_msg(bot: Bot):
 
 @SV('数据管理', pm=2).on_fullmatch(('校验全部Cookies'))
 async def send_check_cookie(bot: Bot, ev: Event):
-    user_list = await active_sqla[bot.bot_id].get_all_user()
+    user_list = await get_sqla(bot.bot_id).get_all_user()
     invalid_user: List[GsUser] = []
     for user in user_list:
         if user.cookie and user.mys_id:
@@ -36,7 +36,7 @@ async def send_check_cookie(bot: Bot, ev: Event):
                 True if int(user.uid[0]) > 5 else False,
             )
             if isinstance(mys_data, int):
-                await active_sqla[bot.bot_id].delete_user_data(user.uid)
+                await get_sqla(bot.bot_id).delete_user_data(user.uid)
                 invalid_user.append(user)
                 continue
             for i in mys_data:
@@ -76,7 +76,7 @@ async def send_check_cookie(bot: Bot, ev: Event):
 
 @SV('数据管理', pm=2).on_fullmatch(('校验全部Stoken'))
 async def send_check_stoken(bot: Bot, ev: Event):
-    user_list = await active_sqla[bot.bot_id].get_all_user()
+    user_list = await get_sqla(bot.bot_id).get_all_user()
     invalid_user: List[GsUser] = []
     for user in user_list:
         if user.stoken and user.mys_id:
@@ -85,9 +85,7 @@ async def send_check_stoken(bot: Bot, ev: Event):
                 user.mys_id,
             )
             if isinstance(mys_data, int):
-                await active_sqla[bot.bot_id].update_user_stoken(
-                    user.uid, None
-                )
+                await get_sqla(bot.bot_id).update_user_stoken(user.uid, None)
                 invalid_user.append(user)
                 continue
     if len(user_list) > 4:

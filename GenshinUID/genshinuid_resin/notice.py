@@ -4,7 +4,7 @@ from gsuid_core.gss import gss
 from nonebot.log import logger
 
 from ..utils.mys_api import mys_api
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..genshinuid_config.gs_config import gsconfig
 from ..gsuid_utils.api.mys.models import DailyNoteData
 
@@ -21,7 +21,7 @@ NOTICE = {
 async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
     msg_dict: Dict[str, Dict[str, Dict]] = {}
     for bot_id in gss.active_bot:
-        sqla = active_sqla[bot_id]
+        sqla = get_sqla(bot_id)
         user_list = await sqla.get_all_push_user_list()
         for user in user_list:
             raw_data = await mys_api.get_daily_data(user.uid)
@@ -48,7 +48,7 @@ async def all_check(
     user_id: str,
     uid: str,
 ) -> Dict[str, Dict[str, Dict]]:
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     for mode in NOTICE.keys():
         # 检查条件
         if push_data[f'{mode}_is_push'] == 'on':

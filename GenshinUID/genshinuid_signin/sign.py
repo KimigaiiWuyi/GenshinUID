@@ -2,10 +2,11 @@ import random
 import asyncio
 from copy import deepcopy
 
+from gsuid_core.gss import gss
 from nonebot.log import logger
 
 from ..utils.mys_api import mys_api
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..genshinuid_config.gs_config import gsconfig
 
 private_msg_list = {}
@@ -158,8 +159,8 @@ async def daily_sign():
     """
     global already
     tasks = []
-    for bot_id in active_sqla:
-        sqla = active_sqla[bot_id]
+    for bot_id in gss.active_bot:
+        sqla = get_sqla(bot_id)
         user_list = await sqla.get_all_user()
         for user in user_list:
             if user.sign_switch != 'off':

@@ -7,12 +7,13 @@ from typing import Any, List, Tuple, Union, Literal
 
 import qrcode
 from gsuid_core.bot import Bot
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from qrcode.constants import ERROR_CORRECT_L
 from gsuid_core.segment import MessageSegment
 
 from ..utils.mys_api import mys_api
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 
 disnote = '''免责声明:您将通过扫码完成获取米游社sk以及ck。
 本Bot将不会保存您的登录状态。
@@ -61,8 +62,8 @@ async def refresh(
     return True, json.loads(status_data['payload']['raw'])
 
 
-async def qrcode_login(bot: Bot, user_id: str) -> str:
-    sqla = active_sqla[bot.bot_id]
+async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
+    sqla = get_sqla(ev.bot_id)
 
     async def send_msg(msg: str):
         await bot.send(msg)

@@ -1,6 +1,6 @@
 from typing import Dict, Literal, Optional
 
-from .database import active_sqla
+from .database import get_sqla
 from ..gsuid_utils.api.mys import MysApi
 from ..genshinuid_config.gs_config import gsconfig
 
@@ -47,21 +47,15 @@ class _MysApi(MysApi):
     async def get_ck(
         self, uid: str, mode: Literal['OWNER', 'RANDOM'] = 'RANDOM'
     ) -> Optional[str]:
-        for bot_id in active_sqla:
-            sqla = active_sqla[bot_id]
-            if mode == 'RANDOM':
-                return await sqla.get_random_cookie(uid)
-            else:
-                return await sqla.get_user_cookie(uid)
+        sqla = get_sqla('TEMP')
+        if mode == 'RANDOM':
+            return await sqla.get_random_cookie(uid)
         else:
-            return None
+            return await sqla.get_user_cookie(uid)
 
     async def get_stoken(self, uid: str) -> Optional[str]:
-        for bot_id in active_sqla:
-            sqla = active_sqla[bot_id]
-            return await sqla.get_user_stoken(uid)
-        else:
-            return None
+        sqla = get_sqla('TEMP')
+        return await sqla.get_user_stoken(uid)
 
 
 mys_api = _MysApi()

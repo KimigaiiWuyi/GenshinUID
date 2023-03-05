@@ -6,7 +6,7 @@ from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 
 from .qrlogin import qrcode_login
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from .get_ck_help_msg import get_ck_help
 from ..utils.message import send_diff_msg
 from .draw_user_card import get_user_card
@@ -30,7 +30,7 @@ async def send_refresh_ck_msg(bot: Bot, ev: Event):
 @SV('扫码登陆').on_fullmatch(('扫码登陆', '扫码登录'))
 async def send_qrcode_login(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[扫码登陆]')
-    im = await qrcode_login(bot, ev.user_id)
+    im = await qrcode_login(bot, ev, ev.user_id)
     if not im:
         return
     im = await deal_ck(ev.bot_id, im, ev.user_id)
@@ -57,7 +57,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     qid = ev.user_id
     await bot.logger.info('[绑定/解绑]UserID: {}'.format(qid))
 
-    sqla = active_sqla[ev.bot_id]
+    sqla = get_sqla(ev.bot_id)
     uid = ev.text
 
     if ev.command.startswith('绑定'):

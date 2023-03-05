@@ -3,7 +3,7 @@ from typing import Optional
 from nonebot.log import logger
 
 from .gs_config import gsconfig
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from .config_default import CONIFG_DEFAULT
 
 PUSH_MAP = {
@@ -20,7 +20,7 @@ PRIV_MAP = {
 
 
 async def set_push_value(bot_id: str, func: str, uid: str, value: int):
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     if func in PUSH_MAP:
         status = PUSH_MAP[func]
     else:
@@ -41,7 +41,7 @@ async def set_config_func(
     query: Optional[bool] = None,
     is_admin: bool = False,
 ):
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     # 这里将传入的中文config_name转换为英文status
     for _name in CONIFG_DEFAULT:
         config = CONIFG_DEFAULT[_name]

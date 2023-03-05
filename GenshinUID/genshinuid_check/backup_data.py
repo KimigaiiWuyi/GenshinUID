@@ -4,7 +4,7 @@ from shutil import copyfile
 
 from nonebot.log import logger
 
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 
 
@@ -24,8 +24,10 @@ async def data_backup():
                 f.unlink()
             except OSError as e:
                 print("Error: %s : %s" % (f, e.strerror))
-        for bot_id in active_sqla:
-            await active_sqla[bot_id].delete_cache()
+        sqla = get_sqla('TEMP')
+        await sqla.delete_cache()
+        await sqla.close()
+        del sqla
         logger.info('————缓存成功清除————')
     except Exception:
         logger.info('————数据库备份失败————')

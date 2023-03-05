@@ -3,7 +3,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
 from ..gsuid_utils.database.models import GsUser
 from ..utils.image.image_tools import get_simple_bg
@@ -26,7 +26,7 @@ gs_font_26 = genshin_font_origin(26)
 
 
 async def get_user_card(bot_id: str, user_id: str) -> bytes:
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     uid_list: List = await sqla.get_bind_uid_list(user_id)
     w, h = 500, len(uid_list) * 210 + 330
     img = await get_simple_bg(w, h)

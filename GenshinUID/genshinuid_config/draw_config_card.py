@@ -5,7 +5,7 @@ from typing import Union
 from nonebot.log import logger
 from PIL import Image, ImageDraw
 
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from .config_default import CONIFG_DEFAULT
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import CustomizeImage
@@ -22,7 +22,7 @@ second_color = (57, 57, 57)
 
 
 async def draw_config_img(bot_id: str) -> Union[bytes, str]:
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     # 获取背景图片各项参数
     based_w = 850
     based_h = 850 + 155 * (len(CONIFG_DEFAULT) - 5)

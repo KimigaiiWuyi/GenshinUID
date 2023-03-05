@@ -7,7 +7,7 @@ from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.mys_api import mys_api
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
 from ..genshinuid_enka.to_data import get_enka_info
 from ..gsuid_utils.api.mys.models import Expedition
@@ -70,7 +70,7 @@ async def _draw_task_img(
 
 async def get_resin_img(bot_id: str, user_id: str):
     try:
-        sqla = active_sqla[bot_id]
+        sqla = get_sqla(bot_id)
         uid_list: List = await sqla.get_bind_uid_list(user_id)
         logger.info('[每日信息]UID: {}'.format(uid_list))
         # 进行校验UID是否绑定CK

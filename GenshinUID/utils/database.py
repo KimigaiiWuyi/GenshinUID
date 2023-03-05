@@ -1,7 +1,6 @@
 from typing import Dict
 
 from sqlalchemy import event
-from gsuid_core.gss import gss
 
 from ..gsuid_utils.database.dal import SQLA
 
@@ -11,9 +10,8 @@ active_sqla: Dict[str, SQLA] = {}
 db_url = 'GsData.db'
 
 
-@gss.on_bot_connect
-async def refresh_sqla():
-    for bot_id in gss.active_bot:
+def get_sqla(bot_id) -> SQLA:
+    if bot_id not in active_sqla:
         sqla = SQLA(db_url, bot_id)
         active_sqla[bot_id] = sqla
         sqla.create_all()
@@ -24,3 +22,5 @@ async def refresh_sqla():
                 cursor = conn.cursor()
                 cursor.execute('PRAGMA journal_mode=WAL')
                 cursor.close()
+
+    return active_sqla[bot_id]

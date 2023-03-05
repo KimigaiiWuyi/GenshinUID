@@ -5,7 +5,7 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 
 from .mys_api import mys_api
-from .database import active_sqla
+from .database import get_sqla
 from .error_reply import VERIFY_HINT
 
 
@@ -15,7 +15,7 @@ async def get_uid(bot: Bot, ev: Event):
     if uid:
         uid = uid[0]
     else:
-        sqla = active_sqla[bot.bot_id]
+        sqla = get_sqla(ev.bot_id)
         uid = await sqla.get_bind_uid(user_id)
     return uid
 
@@ -25,9 +25,7 @@ class GsCookie:
         self.cookie: Optional[str] = None
         self.uid: Optional[str] = None
         self.raw_data = None
-        for bot_id in active_sqla:
-            self.sqla = active_sqla[bot_id]
-            break
+        self.sqla = get_sqla('TEMP')
 
     async def get_cookie(self, uid: str) -> str:
         self.uid = uid

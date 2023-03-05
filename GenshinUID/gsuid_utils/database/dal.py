@@ -380,3 +380,6 @@ class SQLA:
         sql = delete(GsCache).where(GsCache.uid == uid)
         await self.session.execute(sql)
         return True
+
+    async def close(self):
+        await self.session.close()

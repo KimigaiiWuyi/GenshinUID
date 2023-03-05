@@ -4,7 +4,7 @@ from gsuid_core.models import Event
 
 from .note_text import award
 from ..utils.convert import get_uid
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..utils.error_reply import UID_HINT
 from .draw_note_card import draw_note_img
 
@@ -12,7 +12,7 @@ from .draw_note_card import draw_note_img
 # 群聊内 每月统计 功能
 @SV('查询札记').on_fullmatch(('每月统计'))
 async def send_monthly_data(bot: Bot, ev: Event):
-    sqla = active_sqla[bot.bot_id]
+    sqla = get_sqla(ev.bot_id)
     uid = await sqla.get_bind_uid(ev.user_id)
     if uid is None:
         return UID_HINT

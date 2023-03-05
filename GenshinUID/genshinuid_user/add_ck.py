@@ -3,7 +3,7 @@ from typing import Dict, List
 from http.cookies import SimpleCookie
 
 from ..utils.mys_api import mys_api
-from ..utils.database import active_sqla
+from ..utils.database import get_sqla
 from ..utils.error_reply import UID_HINT
 
 pic_path = Path(__file__).parent / 'pic'
@@ -28,7 +28,7 @@ lt_list = ['login_ticket', 'login_ticket_v2']
 
 
 async def get_ck_by_all_stoken(bot_id: str):
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     uid_list: List = await sqla.get_all_uid_list()
     uid_dict = {}
     for uid in uid_list:
@@ -40,7 +40,7 @@ async def get_ck_by_all_stoken(bot_id: str):
 
 
 async def get_ck_by_stoken(bot_id: str, user_id: str):
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     uid_list: List = await sqla.get_bind_uid_list(user_id)
     uid_dict = {uid: user_id for uid in uid_list}
     im = await refresh_ck_by_uid_list(bot_id, uid_dict)
@@ -48,7 +48,7 @@ async def get_ck_by_stoken(bot_id: str, user_id: str):
 
 
 async def refresh_ck_by_uid_list(bot_id: str, uid_dict: Dict):
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     uid_num = len(uid_dict)
     if uid_num == 0:
         return '请先绑定一个UID噢~'
@@ -113,7 +113,7 @@ async def get_account_id(simp_dict: SimpleCookie) -> str:
 
 
 async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
-    sqla = active_sqla[bot_id]
+    sqla = get_sqla(bot_id)
     simp_dict = SimpleCookie(mes)
     uid = await sqla.get_bind_uid(user_id)
     if uid is None:

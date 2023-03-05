@@ -36,7 +36,7 @@ async def set_config_func(
     bot_id: str,
     config_name: str = '',
     uid: str = '0',
-    user_id: Optional[str] = None,
+    user_id: str = '',
     option: str = '0',
     query: Optional[bool] = None,
     is_admin: bool = False,
@@ -57,7 +57,6 @@ async def set_config_func(
             await sqla.update_user_data(
                 uid,
                 {
-                    'user_id': user_id,
                     f'{PRIV_MAP[config_name]}_switch': option,
                 },
             )

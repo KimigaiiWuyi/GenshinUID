@@ -7,7 +7,7 @@ from .draw_gcginfo import draw_gcg_info
 from ..utils.error_reply import UID_HINT
 
 
-@SV('查询七圣').on_command(('七圣召唤', '七圣', 'qszh'))
+@SV('查询七圣').on_command(('七圣召唤', 'qszh'))
 async def send_gcg_pic(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

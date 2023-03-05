@@ -183,19 +183,21 @@ class SQLA:
         await self.session.commit()
         return True
 
-    async def update_user_data(self, user_id: str, data: Optional[Dict]):
+    async def update_user_data(self, uid: str, data: Optional[Dict]):
         sql = update(GsUser).where(
-            GsUser.user_id == user_id and GsUser.bot_id == self.bot_id
+            GsUser.uid == uid and GsUser.bot_id == self.bot_id
         )
         if data is not None:
             query = sql.values(**data)
             query.execution_options(synchronize_session='fetch')
             await self.session.execute(query)
+            await self.session.commit()
 
     async def delete_user_data(self, uid: str):
         if await self.user_exists(uid):
             sql = delete(GsUser).where(GsUser.uid == uid)
             await self.session.execute(sql)
+            await self.session.commit()
             return True
         return False
 
@@ -208,10 +210,12 @@ class SQLA:
         empty_sql = delete(GsCache)
         await self.session.execute(sql)
         await self.session.execute(empty_sql)
+        await self.session.commit()
 
     async def mark_invalid(self, cookie: str, mark: str):
         sql = update(GsUser).where(GsUser.cookie == cookie).values(status=mark)
         await self.session.execute(sql)
+        await self.session.commit()
 
     async def user_exists(self, uid: str) -> bool:
         data = await self.select_user_data(uid)

@@ -3,7 +3,7 @@ from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
 
-from ..utils.mys_api import mys_api
+from ..utils.convert import GsCookie
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import avatarId2Name
 from ..gsuid_utils.api.mys.models import IndexData
@@ -67,8 +67,12 @@ async def draw_explora_img(
 
 async def get_base_data(uid: str) -> Union[str, IndexData]:
     # 获取Cookies
-    raw_data = await mys_api.get_info(uid)
-    if isinstance(raw_data, int):
+    data_def = GsCookie()
+    retcode = await data_def.get_cookie(uid)
+    if retcode:
+        return retcode
+    raw_data = data_def.raw_data
+    if raw_data is None:
         return '数据异常！'
     return raw_data
 

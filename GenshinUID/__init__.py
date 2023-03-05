@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
@@ -14,7 +14,7 @@ get_message = on_message(priority=999)
 install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
 start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
 driver = get_driver()
-gsclient: GsClient
+gsclient: Optional[GsClient] = None
 
 
 @get_message.handle()
@@ -36,14 +36,14 @@ async def send_char_adv(ev: Event):
         return
     msg = MessageReceive(
         bot_id=bot_id,
-        user_type='group' if group_id else 'user',
+        user_type='group' if group_id else 'direct',
         group_id=group_id,
         user_id=user_id,
         content=message,
     )
     if gsclient is None:
-        await start_client()
-    logger.info(f'【发送】[gsuid-core]: {msg}')
+        return await start_client()
+    logger.info(f'【发送】[gsuid-core]: {msg.bot_id}')
     await gsclient._input(msg)
 
 
@@ -55,11 +55,16 @@ async def send_install_msg(matcher: Matcher):
 
 @start_core.handle()
 async def send_start_msg(matcher: Matcher):
-    await matcher.send(await start())
+    await start()
+    await start_client()
+    await matcher.send('启动完成...')
 
 
 @driver.on_bot_connect
 async def start_client():
     global gsclient
-    gsclient = await GsClient().async_connect()
-    await gsclient.start()
+    try:
+        gsclient = await GsClient().async_connect()
+        await gsclient.start()
+    except ConnectionRefusedError:
+        logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')

@@ -1,5 +1,4 @@
 import asyncio
-from base64 import b64encode
 from typing import Union, Optional
 
 import websockets.client
@@ -51,9 +50,7 @@ class GsClient:
                 # 根据bot_id字段发送消息
                 if msg.bot_id == 'onebot':
                     result_image = (
-                        f'[CQ:image,file=base64://{b64encode(image).decode()}]'
-                        if image
-                        else ''
+                        f'[CQ:image,file=base64://{image}]' if image else ''
                     )
                     result_msg = content + result_image
                     if msg.target_type == 'group':

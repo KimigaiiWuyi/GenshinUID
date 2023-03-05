@@ -1,16 +1,13 @@
 import asyncio
 import subprocess
-from pathlib import Path
 
 from git.repo import Repo
 from pip._internal import main as pip_install
 
-CORE_PATH = Path().cwd().parent / 'gsuid_core'
-GSUID_PATH = CORE_PATH / 'gsuid_core' / 'plugins' / 'GenshinUID'
+from .path import RUN_CORE, CORE_PATH, GSUID_PATH
+
 GS_GIT = 'https://ghproxy.com/https://github.com/KimigaiiWuyi/GenshinUID.git'
 CORE_GIT = 'https://ghproxy.com/https://github.com/Genshin-bots/gsuid-core.git'
-
-RUN_CORE = CORE_PATH / 'gsuid_core'
 
 
 async def _install():

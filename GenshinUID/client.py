@@ -1,5 +1,6 @@
 import asyncio
-from typing import Union
+from base64 import b64encode
+from typing import Union, Optional
 
 import websockets.client
 from nonebot import get_bot
@@ -33,14 +34,14 @@ class GsClient:
                 logger.info(f'【接收】[gsuid-core]: {msg}')
                 # 解析消息
                 content = ''
-                image = ''
+                image: Optional[bytes] = None
                 if msg.content:
                     for _c in msg.content:
                         if _c.data:
                             if _c.type == 'text':
                                 content += _c.data
                             elif _c.type == 'image':
-                                image += _c.data
+                                image = _c.data
                             elif _c.type and _c.type.startswith('log'):
                                 _type = _c.type.split('_')[-1].lower()
                                 getattr(logger, _type)(_c.data)
@@ -49,7 +50,11 @@ class GsClient:
 
                 # 根据bot_id字段发送消息
                 if msg.bot_id == 'onebot':
-                    result_image = f'[CQ:image,file={image}]' if image else ''
+                    result_image = (
+                        f'[CQ:image,file=base64://{b64encode(image).decode()}]'
+                        if image
+                        else ''
+                    )
                     result_msg = content + result_image
                     if msg.target_type == 'group':
                         await bot.call_api(
@@ -77,13 +82,18 @@ class GsClient:
                             content=content,
                         )
                 elif msg.bot_id == 'qqguild':
+                    result = {}
+                    if image:
+                        result['file_image'] = image
+                    if content:
+                        result['content'] = content
                     if msg.target_type == 'group':
                         await bot.call_api(
                             'post_messages',
                             channel_id=int(msg.target_id)
                             if msg.target_id
                             else 0,
-                            content=content,
+                            **result,
                         )
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')

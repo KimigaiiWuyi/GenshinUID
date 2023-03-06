@@ -90,7 +90,8 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
             )
         )
         await bot.send(MessageSegment.node(im))
-    except Exception:
+    except Exception as e:
+        logger.error(e)
         logger.warning(f'[扫码登录] {user_id} 图片发送失败')
     status, game_token_data = await refresh(code_data)
     if status:

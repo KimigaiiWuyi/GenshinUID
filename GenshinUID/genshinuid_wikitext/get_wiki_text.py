@@ -2,6 +2,9 @@ import re
 import math
 from typing import List, Union
 
+from gsuid_core.models import Message
+from gsuid_core.segment import MessageSegment
+
 from .get_wiki_template import food_im, weapon_im, artifacts_im, char_info_im
 from ..gsuid_utils.api.minigg.request import (
     get_others_info,
@@ -74,7 +77,7 @@ async def foods_wiki(name: str) -> str:
 async def enemies_wiki(name: str) -> str:
     data = await get_others_info('enemies', name)
     if isinstance(data, int):
-        im = '该食物不存在。'
+        im = '该原魔不存在。'
     else:
         reward = ''
         for i in data['rewardpreview']:
@@ -297,7 +300,7 @@ async def constellation_wiki(name: str, c: int) -> str:
     return im
 
 
-async def talent_wiki(name: str, level: int) -> Union[List, str]:
+async def talent_wiki(name: str, level: int) -> Union[List[Message], str]:
     data = await get_talent_info(name)
     if isinstance(data, int):
         im = '该角色不存在。'
@@ -313,7 +316,7 @@ async def talent_wiki(name: str, level: int) -> Union[List, str]:
             skill_info = data['info']
             skill_detail = ''
 
-            mes_list = []
+            mes_list: List[Message] = []
             parameters = []
             add_switch = True
 
@@ -369,10 +372,12 @@ async def talent_wiki(name: str, level: int) -> Union[List, str]:
                 else:
                     skill_info = skill_info.replace('**', '」', 1)
 
-            mes_list.append(f'【{skill_name}】\n{skill_info}')
+            mes_list.append(
+                MessageSegment.text(f'【{skill_name}】\n{skill_info}')
+            )
             for index, i in enumerate(parameters):
                 mes = skill_detail.format(**i)
-                mes_list.append(f'lv.{index + 1}\n{mes}')
+                mes_list.append(MessageSegment.text(f'lv.{index + 1}\n{mes}'))
             im = mes_list
         else:
             if level == '4':

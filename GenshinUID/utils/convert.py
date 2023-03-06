@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import Union, Optional
 
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
@@ -7,6 +7,7 @@ from gsuid_core.models import Event
 from .mys_api import mys_api
 from .database import get_sqla
 from .error_reply import VERIFY_HINT
+from ..gsuid_utils.api.mys.models import AbyssData, IndexData
 
 
 async def get_uid(bot: Bot, ev: Event):
@@ -23,7 +24,7 @@ async def get_uid(bot: Bot, ev: Event):
 class GsCookie:
     def __init__(self) -> None:
         self.cookie: Optional[str] = None
-        self.uid: Optional[str] = None
+        self.uid: str = '0'
         self.raw_data = None
         self.sqla = get_sqla('TEMP')
 
@@ -40,19 +41,19 @@ class GsCookie:
             elif msg:
                 return ''
 
-    async def get_uid_data(self):
+    async def get_uid_data(self) -> Union[int, IndexData]:
         data = await mys_api.get_info(self.uid, self.cookie)
         if not isinstance(data, int):
             self.raw_data = data
+        return data
 
-    async def get_spiral_abyss_data(self, schedule_type: str = '1'):
+    async def get_spiral_abyss_data(
+        self, schedule_type: str = '1'
+    ) -> Union[AbyssData, int]:
         data = await mys_api.get_spiral_abyss_info(
             self.uid, schedule_type, self.cookie
         )
-        if isinstance(data, int):
-            return None
-        else:
-            return data
+        return data
 
     async def check_cookies_useable(self):
         if isinstance(self.raw_data, int) and self.cookie:

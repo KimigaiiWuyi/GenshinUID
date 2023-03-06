@@ -35,12 +35,12 @@ async def send_artifacts(bot: Bot, ev: Event):
     await bot.send(await artifacts_wiki(ev.text))
 
 
-@SV('原神WIKI文字版').on_prefix(('武器'))
+@SV('原神WIKI文字版').on_prefix(('武器介绍'))
 async def send_weapon(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     level = re.findall(r'\d+', ev.text)
     if len(level) == 1:
-        im = await weapon_stats_wiki(name, level[0])
+        im = await weapon_stats_wiki(name, int(level[0]))
     else:
         im = await weapon_wiki(name)
     await bot.send(im)
@@ -51,20 +51,20 @@ async def send_talents(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     num = re.findall(r'\d+', ev.text)
     if len(num) == 1:
-        im = await talent_wiki(name, num[0])
+        im = await talent_wiki(name, int(num[0]))
         if isinstance(im, list):
-            return bot.send(MessageSegment.node(im))
+            return await bot.send(MessageSegment.node(im))
     else:
         im = '参数不正确。'
     await bot.send(im)
 
 
-@SV('原神WIKI文字版').on_prefix(('角色'))
+@SV('原神WIKI文字版').on_prefix(('角色介绍'))
 async def send_char(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     level = re.findall(r'\d+', ev.text)
     if len(level) == 1:
-        im = await char_stats_wiki(name, level[0])
+        im = await char_stats_wiki(name, int(level[0]))
     else:
         im = await char_wiki(name)
     await bot.send(im)

@@ -7,20 +7,19 @@ from nonebot.log import logger
 from PIL import Image, ImageDraw
 
 from ..utils.convert import GsCookie
+from ..utils.error_reply import get_error
 from ..utils.image.convert import convert_img
-from ..utils.image.image_tools import get_simple_bg
 from ..utils.resource.download_url import download_file
 from ..gsuid_utils.api.mys.models import AbyssBattleAvatar
-from ..utils.fonts.genshin_fonts import genshin_font_origin
+from ..utils.image.image_tools import get_simple_bg, get_talent_pic
+from ..utils.fonts.genshin_fonts import gs_font_28, gs_font_32, gs_font_70
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,
-    TEXT2D_PATH,
     CHAR_SIDE_PATH,
     CHAR_STAND_PATH,
 )
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
-TALENT_PATH = TEXT2D_PATH / 'talent'
 
 abyss_title_pic = Image.open(TEXT_PATH / 'abyss_title.png')
 char_mask = Image.open(TEXT_PATH / 'char_mask.png')
@@ -28,10 +27,6 @@ char_frame = Image.open(TEXT_PATH / 'char_frame.png')
 
 text_title_color = (29, 29, 29)
 text_floor_color = (30, 31, 25)
-
-genshin_font_70 = genshin_font_origin(70)
-genshin_font_32 = genshin_font_origin(32)
-genshin_font_27 = genshin_font_origin(27)
 
 
 async def get_abyss_star_pic(star: int) -> Image.Image:
@@ -42,10 +37,6 @@ async def get_abyss_star_pic(star: int) -> Image.Image:
 async def get_rarity_pic(rarity: int) -> Image.Image:
     rarity_pic = Image.open(TEXT_PATH / f'rarity{rarity}.png')
     return rarity_pic
-
-
-async def get_talent_pic(talent: int) -> Image.Image:
-    return Image.open(TALENT_PATH / f'talent_{talent}.png')
 
 
 async def get_rank_data(data, path):
@@ -97,7 +88,7 @@ async def _draw_abyss_card(
     char_card_draw.text(
         (9, 172),
         f'Lv.{char["level"]}',
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_floor_color,
         anchor='lm',
     )
@@ -121,7 +112,7 @@ async def _draw_floor_card(
     floor_pic_draw.text(
         (31, 25),
         time_str,
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_floor_color,
         anchor='lm',
     )
@@ -133,7 +124,6 @@ async def draw_abyss_img(
     floor: Optional[int] = None,
     schedule_type: str = '1',
 ) -> Union[bytes, str]:
-
     # 获取Cookies
     data = GsCookie()
     retcode = await data.get_cookie(uid)
@@ -143,8 +133,8 @@ async def draw_abyss_img(
     raw_abyss_data = await data.get_spiral_abyss_data(schedule_type)
 
     # 获取数据
-    if not raw_abyss_data:
-        return '没有获取到深渊数据'
+    if isinstance(raw_abyss_data, int):
+        return get_error(raw_abyss_data)
     if raw_data:
         char_data = raw_data['avatars']
     else:
@@ -214,56 +204,56 @@ async def draw_abyss_img(
     abyss_title_draw.text(
         (41, 95),
         f'深渊{floors_title}',
-        font=genshin_font_70,
+        font=gs_font_70,
         fill=text_title_color,
         anchor='lm',
     )
     abyss_title_draw.text(
         (41, 139),
         f'UID{uid}',
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_title_color,
         anchor='lm',
     )
     abyss_title_draw.text(
         (610, 282),
         dmg_val,
-        font=genshin_font_32,
+        font=gs_font_32,
         fill=text_title_color,
         anchor='rm',
     )
     abyss_title_draw.text(
         (610, 357),
         str(raw_abyss_data['total_battle_times']),
-        font=genshin_font_32,
+        font=gs_font_32,
         fill=text_title_color,
         anchor='rm',
     )
     abyss_title_draw.text(
         (64, 217),
         defeat_val,
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_title_color,
         anchor='lm',
     )
     abyss_title_draw.text(
         (64, 217 + 54),
         take_damage_val,
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_title_color,
         anchor='lm',
     )
     abyss_title_draw.text(
         (64, 217 + 54 * 2),
         normal_skill_val,
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_title_color,
         anchor='lm',
     )
     abyss_title_draw.text(
         (64, 217 + 54 * 3),
         energy_skill_val,
-        font=genshin_font_27,
+        font=gs_font_28,
         fill=text_title_color,
         anchor='lm',
     )

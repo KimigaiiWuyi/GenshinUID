@@ -32,6 +32,8 @@ async def send_abyss_info(bot: Bot, ev: Event):
         floor = ev.text
     if floor:
         floor = int(floor)
+    else:
+        floor = None
 
     await bot.logger.info('[查询深渊信息]深渊层数: {}'.format(floor))
 

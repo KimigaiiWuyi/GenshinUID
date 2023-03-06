@@ -312,7 +312,7 @@ async def get_character_costs(
     if isinstance(data, int):
         return data
     elif isinstance(data, Dict):
-        return cast(Costs, data)
+        return cast(Costs, data['costs'])
     else:
         return -1
 

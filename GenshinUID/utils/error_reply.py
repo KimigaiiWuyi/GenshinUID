@@ -25,5 +25,7 @@ def get_error(retcode: Union[int, str]) -> str:
         return '当前查询id已经设置了隐私, 无法查询!'
     elif retcode == 1034:
         return VERIFY_HINT
+    elif retcode == -10001:
+        return '请求体出错, 请检查具体实现代码...'
     else:
         return f'API报错, 错误码为{retcode}!'

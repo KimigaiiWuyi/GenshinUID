@@ -294,16 +294,16 @@ class MysApi:
         return data
 
     async def get_spiral_abyss_info(
-        self, uid, schedule_type='1', ck: Optional[str] = None
+        self, uid: str, schedule_type='1', ck: Optional[str] = None
     ) -> Union[AbyssData, int]:
-        server_id = RECOGNIZE_SERVER.get(str(uid)[0])
+        server_id = RECOGNIZE_SERVER.get(uid[0])
         data = await self.simple_mys_req(
             'PLAYER_ABYSS_INFO_URL',
             uid,
             {
-                'server': server_id,
                 'role_id': uid,
                 'schedule_type': schedule_type,
+                'server': server_id,
             },
             cookie=ck,
         )
@@ -654,10 +654,10 @@ class MysApi:
             is_os = uid
             server_id = 'cn_qd01' if is_os else 'cn_gf01'
         else:
-            server_id = RECOGNIZE_SERVER.get(str(uid)[0])
-            is_os = False if int(str(uid)[0]) < 6 else True
+            server_id = RECOGNIZE_SERVER.get(uid[0])
+            is_os = False if int(uid[0]) < 6 else True
         ex_params = '&'.join([f'{k}={v}' for k, v in params.items()])
-
+        print(ex_params)
         if is_os:
             _URL = _API[f'{URL}_OS']
             HEADER = copy.deepcopy(_HEADER_OS)
@@ -702,6 +702,12 @@ class MysApi:
             use_proxy = False
         if header:
             HEADER.update(header)
+
+        if 'Cookie' not in HEADER and 'uid' in params:
+            ck = await self.get_ck(params['uid'])
+            if ck is None:
+                return -51
+            HEADER['Cookie'] = ck
         data = await self._mys_request(
             url=_URL,
             method='GET',
@@ -734,6 +740,7 @@ class MysApi:
                 retcode: int = raw_data['retcode']
                 if retcode == 1034:
                     await self._upass(header)
+                    return retcode
                 elif retcode != 0:
                     return retcode
                 return raw_data

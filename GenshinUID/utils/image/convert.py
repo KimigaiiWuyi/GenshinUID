@@ -52,4 +52,4 @@ async def convert_img(
     else:
         async with aiofiles.open(img, 'rb') as fp:
             img = await fp.read()
-    return f'[CQ:image,file=base64://{b64encode(img).decode()}]'
+    return f'base64://{b64encode(img).decode()}'

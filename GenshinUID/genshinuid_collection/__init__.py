@@ -7,7 +7,7 @@ from ..utils.error_reply import UID_HINT
 from .draw_collection_card import draw_explora_img, draw_collection_img
 
 
-@SV('查询数据').on_command(('查询收集', 'sj'))
+@SV('查询数据').on_command(('查询收集', 'sj'), block=True)
 async def send_collection_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询收集信息]')
     user_id = ev.at if ev.at else ev.user_id
@@ -22,7 +22,7 @@ async def send_collection_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('查询数据').on_command(('查询探索', 'ts'))
+@SV('查询数据').on_command(('查询探索', 'ts'), block=True)
 async def send_explora_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询探索信息]')
     user_id = ev.at if ev.at else ev.user_id

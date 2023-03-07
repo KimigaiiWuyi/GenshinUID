@@ -20,22 +20,22 @@ from .get_wiki_text import (
 )
 
 
-@SV('原神WIKI文字版').on_prefix(('原魔'))
+@SV('原神WIKI文字版').on_prefix(('原魔介绍', '原魔资料'))
 async def send_enemies(bot: Bot, ev: Event):
     await bot.send(await enemies_wiki(ev.text))
 
 
-@SV('原神WIKI文字版').on_prefix(('食物'))
+@SV('原神WIKI文字版').on_prefix(('食物介绍', '食物资料'))
 async def send_food(bot: Bot, ev: Event):
     await bot.send(await foods_wiki(ev.text))
 
 
-@SV('原神WIKI文字版').on_prefix(('圣遗物'))
+@SV('原神WIKI文字版').on_prefix(('圣遗物介绍', '圣遗物资料'))
 async def send_artifacts(bot: Bot, ev: Event):
     await bot.send(await artifacts_wiki(ev.text))
 
 
-@SV('原神WIKI文字版').on_prefix(('武器介绍'))
+@SV('原神WIKI文字版').on_prefix(('武器介绍', '武器资料'))
 async def send_weapon(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     level = re.findall(r'\d+', ev.text)
@@ -46,7 +46,7 @@ async def send_weapon(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('原神WIKI文字版').on_prefix(('天赋'))
+@SV('原神WIKI文字版').on_prefix(('角色天赋'))
 async def send_talents(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     num = re.findall(r'\d+', ev.text)
@@ -59,7 +59,7 @@ async def send_talents(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('原神WIKI文字版').on_prefix(('角色介绍'))
+@SV('原神WIKI文字版').on_prefix(('角色介绍', '角色资料'))
 async def send_char(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     level = re.findall(r'\d+', ev.text)
@@ -82,7 +82,7 @@ async def send_weapon_cost(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('原神WIKI文字版').on_prefix(('命座'))
+@SV('原神WIKI文字版').on_prefix(('角色命座'))
 async def send_polar(bot: Bot, ev: Event):
     num = int(re.findall(r'\d+', ev.text)[0])
     m = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))

@@ -115,3 +115,9 @@ bbs_Listurl = (
 bbs_Detailurl = BBS_URL + '/post/api/getPostFull?post_id={}'
 bbs_Shareurl = BBS_URL + '/apihub/api/getShareConf?entity_id={}&entity_type=1'
 bbs_Likeurl = f'{BBS_URL}/apihub/sapi/upvotePost'
+
+# 原神充值中心
+fetchGoodsurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/fetchGoods"
+CreateOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/createOrder"
+CheckOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/checkOrder"
+PriceTierurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/listPriceTier"

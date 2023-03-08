@@ -8,8 +8,14 @@ from nonebot.permission import SUPERUSER
 from nonebot.params import CommandArg, RegexGroup
 from nonebot.adapters.ntchat.message import Message
 from nonebot.adapters.ntchat.permission import PRIVATE
-from nonebot.adapters.ntchat import Bot, MessageEvent, MessageSegment
+from nonebot.adapters.ntchat import (
+    Bot,
+    MessageEvent,
+    MessageSegment,
+    TextMessageEvent,
+)
 
+from .topup import topup_
 from ..config import priority
 from .qrlogin import qrcode_login
 from .draw_user_card import get_user_card
@@ -59,6 +65,22 @@ get_qrcode_login = on_command(
     aliases={'扫码登陆', '扫码登入'},
     rule=FullCommand(),
 )
+get_topup = on_command('gsrc', priority=priority, block=True, aliases={'原神充值'})
+
+
+@get_topup.handle()
+async def send_topup(
+    matcher: Matcher,
+    event: TextMessageEvent,
+):
+    qid = event.from_wxid
+    goods_id = event.msg.replace('原神充值', '').replace('gsrc', '')
+    if goods_id == "":
+        goods_id = 0
+    else:
+        goods_id = int(goods_id)
+    group_id = event.room_wxid
+    await topup_(matcher, qid, group_id, goods_id)
 
 
 @refresh_all_ck.handle()
@@ -243,4 +265,5 @@ async def send_qr_help(matcher: Matcher):
     msg_list = await get_qr_help()
     for msg in msg_list:
         await matcher.send(msg)
+        await asyncio.sleep(0.5)
         await asyncio.sleep(0.5)

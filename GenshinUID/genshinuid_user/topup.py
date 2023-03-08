@@ -56,7 +56,7 @@ async def topup_(bot, qid, group_id, goods_id):
         return ""
 
     uid = await select_db(qid, mode="uid")
-    if uid == None:
+    if uid is None:
         await send_group_msg("未绑定米游社账号")
         return
     fetchgoods_data = await fetchgoods()
@@ -73,7 +73,8 @@ async def topup_(bot, qid, group_id, goods_id):
         return
     try:
         im = []
-        qrc = f'[CQ:image,file=base64://{get_qrcode_base64(order["encode_order"])}]'
+        b64_data = get_qrcode_base64(order["encode_order"])
+        qrc = f'[CQ:image,file=base64://{b64_data}]'
         im.append(f"充值uid：{uid}")
         im.append(
             f"商品名称：{goods_data['goods_name']}×{str(goods_data['goods_unit'])}"

@@ -129,7 +129,7 @@ async def send_ck_msg(bot: HoshinoBot, ev: CQEvent):
     )
 
 
-@sv.on_prefix("oprc")
+@sv.on_prefix(("gsrc", "原神充值"))
 async def topup(bot: HoshinoBot, ev: CQEvent):
     qid = ev.user_id
     goods_id = ev.message.extract_plain_text()

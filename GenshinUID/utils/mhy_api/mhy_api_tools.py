@@ -1,3 +1,4 @@
+import hmac
 import json
 import time
 import random
@@ -75,3 +76,17 @@ def generate_passport_ds(q: str = '', b: Optional[Dict[str, Any]] = None):
     return _random_str_ds(
         "JwYDpKvLj6MrMqqYU6jTKF17KNO2PXoS", string.ascii_letters, True, q, b
     )
+
+
+def HMCASHA256(data, key):
+    key = key.encode('utf-8')
+    message = data.encode('utf-8')
+    sign = hmac.new(key, message, digestmod=hashlib.sha256).digest()
+    return sign.hex()
+
+
+def gen_payment_sign(data):
+    data = dict(sorted(data.items(), key=lambda x: x[0]))
+    value = "".join([str(i) for i in data.values()])
+    sign = HMCASHA256(value, "6bdc3982c25f3f3c38668a32d287d16b")
+    return sign

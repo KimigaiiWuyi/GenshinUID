@@ -1,4 +1,4 @@
-from typing import List, Union, Optional
+from typing import Dict, List, Union, Optional
 
 from .database.models import CK
 from .database.ConfigDAL import ConfigDAL
@@ -56,6 +56,14 @@ async def bind_db(userid, uid=None, mys=None):
         async with session.begin():
             UidData = UidDataDAL(session)
             im = await UidData.bind_db(userid, {'UID': uid, 'MYSID': mys})
+            return im
+
+
+async def get_all_bind() -> List[Dict]:
+    async with async_session() as session:
+        async with session.begin():
+            UidData = UidDataDAL(session)
+            im = await UidData.get_all_bind()
             return im
 
 

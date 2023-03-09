@@ -19,6 +19,8 @@ gsclient: Optional[GsClient] = None
 
 @get_message.handle()
 async def send_char_adv(ev: Event):
+    if gsclient is None:
+        return await start_client()
     sessions = ev.get_session_id().split('_')
     group_id = sessions[-2] if len(sessions) >= 2 else None
     user_id = str(ev.get_user_id())
@@ -41,8 +43,6 @@ async def send_char_adv(ev: Event):
         user_id=user_id,
         content=message,
     )
-    if gsclient is None:
-        return await start_client()
     logger.info(f'【发送】[gsuid-core]: {msg.bot_id}')
     await gsclient._input(msg)
 

@@ -4,7 +4,7 @@ import subprocess
 from git.repo import Repo
 from pip._internal import main as pip_install
 
-from .path import RUN_CORE, CORE_PATH, GSUID_PATH
+from .path import CORE_PATH, GSUID_PATH
 
 GS_GIT = 'https://ghproxy.com/https://github.com/KimigaiiWuyi/GenshinUID.git'
 CORE_GIT = 'https://ghproxy.com/https://github.com/Genshin-bots/gsuid_core.git'
@@ -37,7 +37,7 @@ async def install():
 
 async def start():
     subprocess.Popen(
-        ['poetry', 'run', 'python', 'core.py'],
-        cwd=f'{RUN_CORE}',
+        ['poetry', 'run', 'python', 'gsuid_core/core.py'],
+        cwd=f'{CORE_PATH}',
     )
     return '启动成功完成...'

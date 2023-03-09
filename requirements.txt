@@ -7,7 +7,7 @@ msgspec==0.13.1 ; python_full_version >= "3.8.1" and python_full_version < "4.0.
 multidict==6.0.4 ; python_full_version >= "3.8.1" and python_version < "4.0"
 nonebot2==2.0.0rc3 ; python_full_version >= "3.8.1" and python_version < "4.0"
 pillow==9.4.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
-pydantic[dotenv]==1.10.5 ; python_full_version >= "3.8.1" and python_version < "4.0"
+pydantic[dotenv]==1.10.6 ; python_full_version >= "3.8.1" and python_version < "4.0"
 pygtrie==2.5.0 ; python_full_version >= "3.8.1" and python_version < "4.0"
 python-dotenv==1.0.0 ; python_full_version >= "3.8.1" and python_version < "4.0"
 smmap==5.0.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"

@@ -13,4 +13,3 @@ CORE_PATH = (
 )
 
 GSUID_PATH = CORE_PATH / 'gsuid_core' / 'plugins' / 'GenshinUID'
-RUN_CORE = CORE_PATH / 'gsuid_core'

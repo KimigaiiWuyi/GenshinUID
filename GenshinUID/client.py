@@ -1,3 +1,4 @@
+import base64
 import asyncio
 from typing import Dict, List, Union, Optional
 
@@ -34,7 +35,7 @@ class GsClient:
                 logger.info(f'【接收】[gsuid-core]: {msg}')
                 # 解析消息
                 content = ''
-                image: Optional[bytes] = None
+                image: Optional[str] = None
                 node = []
                 if msg.content:
                     for _c in msg.content:
@@ -108,12 +109,12 @@ def to_json(msg: str, name: str, uin: int):
 async def onebot_send(
     bot: Bot,
     content: Optional[str],
-    image: Optional[bytes],
+    image: Optional[str],
     node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
-    async def _send(content: Optional[str], image: Optional[bytes]):
+    async def _send(content: Optional[str], image: Optional[str]):
         result_image = f'[CQ:image,file=base64://{image}]' if image else ''
         content = content if content else ''
         result_msg = content + result_image
@@ -164,15 +165,16 @@ async def onebot_send(
 async def guild_send(
     bot: Bot,
     content: Optional[str],
-    image: Optional[bytes],
+    image: Optional[str],
     node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
-    async def _send(content: Optional[str], image: Optional[bytes]):
+    async def _send(content: Optional[str], image: Optional[str]):
         result = {}
         if image:
-            result['file_image'] = image
+            img_bytes = base64.b64decode(image)
+            result['file_image'] = img_bytes
         if content:
             result['content'] = content
         if target_type == 'group':
@@ -198,11 +200,11 @@ async def guild_send(
 async def ntchat_send(
     bot: Bot,
     content: Optional[str],
-    image: Optional[bytes],
+    image: Optional[str],
     node: Optional[List[Dict]],
     target_id: Optional[str],
 ):
-    async def _send(content: Optional[str], image: Optional[bytes]):
+    async def _send(content: Optional[str], image: Optional[str]):
         if content:
             await bot.call_api(
                 'send_text',

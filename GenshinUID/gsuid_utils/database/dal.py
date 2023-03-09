@@ -387,3 +387,13 @@ class SQLA:
 
     async def close(self):
         await self.session.close()
+
+    async def insert_new_bind(self, **kwargs):
+        new_data = GsBind(**kwargs)
+        self.session.add(new_data)
+        await self.session.commit()
+
+    async def insert_new_user(self, **kwargs):
+        new_data = GsUser(**kwargs)
+        self.session.add(new_data)
+        await self.session.commit()

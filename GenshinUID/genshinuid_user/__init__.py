@@ -146,7 +146,7 @@ async def topup(bot: HoshinoBot, ev: CQEvent):
 @sv.on_prefix(("帮帮捏"))
 async def one_more_thing(bot: HoshinoBot, ev: CQEvent):
     qid = ev.user_id
-    group_id = ev.group_id
+    #group_id = ev.group_id
     from io import BytesIO
 
     import cv2
@@ -162,7 +162,7 @@ async def one_more_thing(bot: HoshinoBot, ev: CQEvent):
         else:
             await bot.send(ev,"也没有检测到链接捏")
             return 0
-    file= ret.group(1)
+    #file= ret.group(1)
     url = ret.group(2)
     d=cv2.QRCodeDetector()
     sess=ClientSession()

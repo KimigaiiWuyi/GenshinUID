@@ -19,6 +19,7 @@ from .tools import (
     random_text,
     get_ds_token,
     generate_os_ds,
+    gen_payment_sign,
     get_web_ds_token,
     generate_passport_ds,
 )
@@ -28,6 +29,8 @@ from .models import (
     MysSign,
     RegTime,
     GachaLog,
+    MysGoods,
+    MysOrder,
     SignInfo,
     SignList,
     AbyssData,
@@ -38,6 +41,7 @@ from .models import (
     CalculateInfo,
     DailyNoteData,
     GameTokenInfo,
+    MysOrderCheck,
     CharDetailData,
     CookieTokenInfo,
     LoginTicketInfo,
@@ -642,6 +646,90 @@ class MysApi:
         else:
             return data
 
+    async def get_fetchgoods(self) -> Union[int, List[MysGoods]]:
+        data = {
+            'released_flag': True,
+            'game': 'hk4e_cn',
+            'region': 'cn_gf01',
+            'uid': '1',
+            'account': '1',
+        }
+        resp = await self._mys_request(
+            url=_API['fetchGoodsurl'],
+            method='POST',
+            data=data,
+        )
+        if isinstance(resp, int):
+            return resp
+        return cast(List[MysGoods], resp['data']['goods_list'])
+
+    async def topup(self, uid: str, goods: MysGoods) -> Union[int, MysOrder]:
+        device_id = str(uuid.uuid4())
+        HEADER = copy.deepcopy(_HEADER)
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        HEADER['Cookie'] = ck
+        account = HEADER['Cookie'].split('account_id=')[1].split(';')[0]
+        order = {
+            'account': str(account),
+            'region': 'cn_gf01',
+            'uid': uid,
+            'delivery_url': '',
+            'device': device_id,
+            'channel_id': 1,
+            'client_ip': '',
+            'client_type': 4,
+            'game': 'hk4e_cn',
+            'amount': goods['price'],
+            # 'amount': 600,
+            'goods_num': 1,
+            'goods_id': goods['goods_id'],
+            'goods_title': f'{goods["goods_name"]}×{str(goods["goods_unit"])}'
+            if int(goods['goods_unit']) > 0
+            else goods['goods_name'],
+            'price_tier': goods['tier_id'],
+            # 'price_tier': 'Tier_1',
+            'currency': 'CNY',
+            'pay_plat': 'alipay',
+        }
+        data = {'order': order, 'sign': gen_payment_sign(order)}
+        HEADER['x-rpc-device_id'] = device_id
+        HEADER['x-rpc-client_type'] = '4'
+        resp = await self._mys_request(
+            url=_API['CreateOrderurl'],
+            method='POST',
+            header=HEADER,
+            data=data,
+        )
+        if isinstance(resp, int):
+            return resp
+        return cast(MysOrder, resp['data'])
+
+    async def check_order(
+        self, order: MysOrder, uid: str
+    ) -> Union[int, MysOrderCheck]:
+        HEADER = copy.deepcopy(_HEADER)
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        HEADER['Cookie'] = ck
+        data = {
+            'order_no': order['order_no'],
+            'game': 'hk4e_cn',
+            'region': 'cn_gf01',
+            'uid': uid,
+        }
+        resp = await self._mys_request(
+            url=_API['CheckOrderurl'],
+            method='GET',
+            header=HEADER,
+            params=data,
+        )
+        if isinstance(resp, int):
+            return resp
+        return cast(MysOrderCheck, resp['data'])
+
     async def simple_mys_req(
         self,
         URL: str,
@@ -657,7 +745,6 @@ class MysApi:
             server_id = RECOGNIZE_SERVER.get(uid[0])
             is_os = False if int(uid[0]) < 6 else True
         ex_params = '&'.join([f'{k}={v}' for k, v in params.items()])
-        print(ex_params)
         if is_os:
             _URL = _API[f'{URL}_OS']
             HEADER = copy.deepcopy(_HEADER_OS)

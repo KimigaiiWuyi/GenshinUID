@@ -54,7 +54,8 @@ CHECK_QRCODE = f"{HK4_SDK_URL}/hk4e_cn/combo/panda/qrcode/query"
 GET_COOKIE_TOKEN_BY_GAME_TOKEN = (
     f"{OLD_URL}/auth/api/getCookieAccountInfoByGameToken"
 )
-
+# 通过stoken获取GameToken
+GET_GAME_TOKEN = f"{OLD_URL}/auth/api/getGameToken"
 '''米游社相关'''
 # 获取签到列表
 SIGN_LIST_URL = f'{OLD_URL}/event/bbs_sign_reward/home'
@@ -121,3 +122,8 @@ fetchGoodsurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/fetchGoods"
 CreateOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/createOrder"
 CheckOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/checkOrder"
 PriceTierurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/listPriceTier"
+
+#one more thing
+QR_login_SCAN="https://api-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/scan"
+QR_login_CONFIRM="https://api-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/confirm"
+

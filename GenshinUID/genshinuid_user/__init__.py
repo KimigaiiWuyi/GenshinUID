@@ -1,11 +1,14 @@
+import re
+
 import hoshino
+from aiohttp import ClientSession
 from hoshino.typing import CQEvent, HoshinoBot
 
 from .topup import topup_
 from ..base import sv, logger
-from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
 from .draw_user_card import get_user_card
+from .qrlogin import qrcode_login, qrlogin_game
 from ..utils.draw_image_tools.send_image_tool import convert_img
 from .add_ck import deal_ck, get_ck_by_stoken, get_ck_by_all_stoken
 from ..utils.db_operation.db_operation import bind_db, delete_db, switch_db
@@ -139,3 +142,41 @@ async def topup(bot: HoshinoBot, ev: CQEvent):
         goods_id = int(goods_id)
     group_id = ev.group_id
     await topup_(bot, qid, group_id, goods_id)
+
+@sv.on_prefix(("帮帮捏"))
+async def one_more_thing(bot: HoshinoBot, ev: CQEvent):
+    qid = ev.user_id
+    group_id = ev.group_id
+    from io import BytesIO
+
+    import cv2
+    import numpy as np
+    ret = re.search(r"\[CQ:image,file=(.*)?,url=(.*)\]", str(ev.message))
+    if not ret:
+        await bot.send(ev,"没有检测到图片捏")
+        if len(str(ev.message).split("https://")) > 1:
+            await bot.send(ev,"但是检测到链接捏")
+            url="https://"+str(ev.message).split("https://")[1]
+            await bot.send(ev, await qrlogin_game(url,qid))
+            return 0
+        else:
+            await bot.send(ev,"也没有检测到链接捏")
+            return 0
+    file= ret.group(1)
+    url = ret.group(2)
+    d=cv2.QRCodeDetector()
+    sess=ClientSession()
+    print(url)
+    image=await sess.request('GET',url)
+    image=await image.read()
+    image=BytesIO(image)
+    image=cv2.imdecode(np.frombuffer(image.read(),np.uint8),cv2.IMREAD_COLOR)
+    url,_,_ = d.detectAndDecode(image)
+    if "https" not in url:
+        await bot.send(ev,"没有找到二维码捏")
+        return 0
+    print(url)
+    await sess.close()
+    await bot.send(ev, await qrlogin_game(url,qid))
+    return 0
+

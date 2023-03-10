@@ -35,6 +35,7 @@ from ..mhy_api.mhy_api import (  # noqa
     SIGN_INFO_URL,
     SIGN_LIST_URL,
     DAILY_NOTE_URL,
+    GET_GAME_TOKEN,
     GET_STOKEN_URL,
     HK4E_LOGIN_URL,
     GET_AUTHKEY_URL,
@@ -58,7 +59,9 @@ from ..mhy_api.mhy_api import (  # noqa
     MIHOYO_BBS_PLAYER_INFO_URL_OS,
     GET_COOKIE_TOKEN_BY_GAME_TOKEN,
     CheckOrderurl,
+    QR_login_SCAN,
     CreateOrderurl,
+    QR_login_CONFIRM,
     fetchGoodsurl,
 )
 
@@ -932,3 +935,74 @@ async def checkorder(order, uid):
         params=data,
     )
     return order["data"]["status"]
+
+
+async def get_game_token(uid):
+    HEADER = copy.deepcopy(_HEADER)
+    HEADER["Cookie"] = await get_stoken(uid)
+    param = {
+        "uid": HEADER["Cookie"].split("stuid=")[1].split(";")[0],
+        "stoken": HEADER["Cookie"].split("stoken=")[1].split(";")[0]
+    }
+    data = await _mhy_request(
+        url=GET_GAME_TOKEN,
+        method='GET',
+        header=HEADER,
+        params=param,
+    )
+    return HEADER["Cookie"].split("stuid=")[1].split(";")[0], data["data"]["game_token"]
+
+
+async def login_in_game_by_qrcode(info: dict, uid,biz_key):
+    aid, game_token = await get_game_token(uid)
+    qrscan=QR_login_SCAN.replace("hk4e_cn",biz_key)
+    qrconfirm=QR_login_CONFIRM.replace("hk4e_cn",biz_key)
+    HEADER = {
+        'x-rpc-app_version': '2.41.0',
+        'x-rpc-aigis': '',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'x-rpc-game_biz': 'bbs_cn',
+        'x-rpc-sys_version': '11',
+        'x-rpc-device_id': uuid.uuid4().hex,
+        'x-rpc-device_fp': ''.join(
+            random.choices(ascii_letters + digits, k=13)
+        ),
+        'x-rpc-device_name': 'GenshinUid_login_device_lulu',
+        'x-rpc-device_model': 'GenshinUid_login_device_lulu',
+        'x-rpc-app_id': 'bll8iq97cem8',
+        'x-rpc-client_type': '2',
+        'User-Agent': 'okhttp/4.8.0',
+    }
+    data = info
+    data["device"]=HEADER['x-rpc-device_id']
+    print(data)
+    HEADER['DS'] = generate_passport_ds(b=data)
+    HEADER["Cookie"] = await get_stoken(uid)
+    info=await _mhy_request(
+        url=qrscan,
+        method='POST',
+        header=HEADER,
+        data=data,
+    )
+    print(info)
+    if info["message"] != "OK":
+        return info["retcode"],info["message"]
+    data["payload"] = {
+        "proto": "Account",
+        "raw": json.dumps({
+            "uid": str(aid),
+            "token": game_token
+        },indent=4,ensure_ascii=False)
+    }
+    print(data)
+    HEADER['DS'] = generate_passport_ds(b=data)
+    await asyncio.sleep(5)
+    info=await _mhy_request(
+        url=qrconfirm,
+        method='POST',
+        header=HEADER,
+        data=data,
+    )
+    print(info)
+    return info["retcode"],info["message"]

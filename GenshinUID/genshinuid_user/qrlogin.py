@@ -15,6 +15,7 @@ from ..utils.mhy_api.get_mhy_data import (
     get_cookie_token,
     create_qrcode_url,
     get_mihoyo_bbs_info,
+    login_in_game_by_qrcode,
     get_stoken_by_game_token,
     get_cookie_token_by_stoken,
 )
@@ -139,3 +140,17 @@ async def qrcode_login(bot, group_id, user_id) -> str:
         logger.warning('game_token获取失败')
         im = 'game_token获取失败：二维码已过期'
     return await send_group_msg(im)
+
+async def qrlogin_game(url,qid):
+    if "https://user.mihoyo.com/qr_code_in_game.html" not in url:
+        return "链接不正确哦~"
+    ticket = url.split("ticket=")[1].split("&")[0]
+    app_id=url.split("app_id=")[1].split("&")[0]
+    biz_key=url.split("biz_key=")[1].split("&")[0]
+    data={"ticket": ticket, "app_id": app_id}
+    uid = await select_db(qid, mode="uid")
+    code,message=await login_in_game_by_qrcode(data, uid,biz_key)
+    if code != 0:
+        return message
+    else:
+        return "帮帮捏~"

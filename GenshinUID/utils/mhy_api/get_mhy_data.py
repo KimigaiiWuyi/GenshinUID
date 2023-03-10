@@ -942,7 +942,7 @@ async def get_game_token(uid):
     HEADER["Cookie"] = await get_stoken(uid)
     param = {
         "uid": HEADER["Cookie"].split("stuid=")[1].split(";")[0],
-        "stoken": HEADER["Cookie"].split("stoken=")[1].split(";")[0]
+        "stoken": HEADER["Cookie"].split("stoken=")[1].split(";")[0],
     }
     data = await _mhy_request(
         url=GET_GAME_TOKEN,
@@ -950,13 +950,16 @@ async def get_game_token(uid):
         header=HEADER,
         params=param,
     )
-    return HEADER["Cookie"].split("stuid=")[1].split(";")[0], data["data"]["game_token"]
+    return (
+        HEADER["Cookie"].split("stuid=")[1].split(";")[0],
+        data["data"]["game_token"],
+    )
 
 
-async def login_in_game_by_qrcode(info: dict, uid,biz_key):
+async def login_in_game_by_qrcode(info: dict, uid, biz_key):
     aid, game_token = await get_game_token(uid)
-    qrscan=QR_login_SCAN.replace("hk4e_cn",biz_key)
-    qrconfirm=QR_login_CONFIRM.replace("hk4e_cn",biz_key)
+    qrscan = QR_login_SCAN.replace("hk4e_cn", biz_key)
+    qrconfirm = QR_login_CONFIRM.replace("hk4e_cn", biz_key)
     HEADER = {
         'x-rpc-app_version': '2.41.0',
         'x-rpc-aigis': '',
@@ -975,11 +978,11 @@ async def login_in_game_by_qrcode(info: dict, uid,biz_key):
         'User-Agent': 'okhttp/4.8.0',
     }
     data = info
-    data["device"]=HEADER['x-rpc-device_id']
+    data["device"] = HEADER['x-rpc-device_id']
     print(data)
     HEADER['DS'] = generate_passport_ds(b=data)
     HEADER["Cookie"] = await get_stoken(uid)
-    info=await _mhy_request(
+    info = await _mhy_request(
         url=qrscan,
         method='POST',
         header=HEADER,
@@ -987,22 +990,23 @@ async def login_in_game_by_qrcode(info: dict, uid,biz_key):
     )
     print(info)
     if info["message"] != "OK":
-        return info["retcode"],info["message"]
+        return info["retcode"], info["message"]
     data["payload"] = {
         "proto": "Account",
-        "raw": json.dumps({
-            "uid": str(aid),
-            "token": game_token
-        },indent=4,ensure_ascii=False)
+        "raw": json.dumps(
+            {"uid": str(aid), "token": game_token},
+            indent=4,
+            ensure_ascii=False,
+        ),
     }
     print(data)
     HEADER['DS'] = generate_passport_ds(b=data)
     await asyncio.sleep(5)
-    info=await _mhy_request(
+    info = await _mhy_request(
         url=qrconfirm,
         method='POST',
         header=HEADER,
         data=data,
     )
     print(info)
-    return info["retcode"],info["message"]
+    return info["retcode"], info["message"]

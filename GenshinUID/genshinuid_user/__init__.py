@@ -143,6 +143,7 @@ async def topup(bot: HoshinoBot, ev: CQEvent):
     group_id = ev.group_id
     await topup_(bot, qid, group_id, goods_id)
 
+
 @sv.on_prefix(("帮帮捏"))
 async def one_more_thing(bot: HoshinoBot, ev: CQEvent):
     qid = ev.user_id
@@ -151,32 +152,34 @@ async def one_more_thing(bot: HoshinoBot, ev: CQEvent):
 
     import cv2
     import numpy as np
+
     ret = re.search(r"\[CQ:image,file=(.*)?,url=(.*)\]", str(ev.message))
     if not ret:
-        await bot.send(ev,"没有检测到图片捏")
+        await bot.send(ev, "没有检测到图片捏")
         if len(str(ev.message).split("https://")) > 1:
-            await bot.send(ev,"但是检测到链接捏")
-            url="https://"+str(ev.message).split("https://")[1]
-            await bot.send(ev, await qrlogin_game(url,qid))
+            await bot.send(ev, "但是检测到链接捏")
+            url = "https://" + str(ev.message).split("https://")[1]
+            await bot.send(ev, await qrlogin_game(url, qid))
             return 0
         else:
-            await bot.send(ev,"也没有检测到链接捏")
+            await bot.send(ev, "也没有检测到链接捏")
             return 0
     #file= ret.group(1)
     url = ret.group(2)
-    d=cv2.QRCodeDetector()
-    sess=ClientSession()
+    d = cv2.QRCodeDetector()
+    sess = ClientSession()
     print(url)
-    image=await sess.request('GET',url)
-    image=await image.read()
-    image=BytesIO(image)
-    image=cv2.imdecode(np.frombuffer(image.read(),np.uint8),cv2.IMREAD_COLOR)
-    url,_,_ = d.detectAndDecode(image)
+    image = await sess.request('GET', url)
+    image = await image.read()
+    image = BytesIO(image)
+    image = cv2.imdecode(
+        np.frombuffer(image.read(), np.uint8), cv2.IMREAD_COLOR
+    )
+    url, _, _ = d.detectAndDecode(image)
     if "https" not in url:
-        await bot.send(ev,"没有找到二维码捏")
+        await bot.send(ev, "没有找到二维码捏")
         return 0
     print(url)
     await sess.close()
-    await bot.send(ev, await qrlogin_game(url,qid))
+    await bot.send(ev, await qrlogin_game(url, qid))
     return 0
-

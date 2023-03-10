@@ -61,7 +61,7 @@ mihoyobbs_List = [
         'id': '8',
         'forumId': '57',
         'name': '绝区零',
-        'url': 'https://bbs.mihoyo.com/zzz/'
+        'url': 'https://bbs.mihoyo.com/zzz/',
     },
 ]
 
@@ -115,7 +115,7 @@ class MihoyoBBSCoin:
             return '米游社币任务执行出错了~'
 
     async def load_mihoyo_bbs_list_use(self):
-        for i in range(1,8):
+        for i in range(1, 8):
             for k in mihoyobbs_List:
                 if i == int(k['id']):
                     self.mihoyobbs_List_Use.append(k)

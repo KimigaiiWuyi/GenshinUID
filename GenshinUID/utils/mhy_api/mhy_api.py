@@ -123,7 +123,8 @@ CreateOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/createOrder"
 CheckOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/checkOrder"
 PriceTierurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/listPriceTier"
 
-#one more thing
-QR_login_SCAN="https://api-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/scan"
-QR_login_CONFIRM="https://api-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/confirm"
-
+# one more thing
+QR_login_SCAN = "https://api-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/scan"
+QR_login_CONFIRM = (
+    "https://api-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/confirm"
+)

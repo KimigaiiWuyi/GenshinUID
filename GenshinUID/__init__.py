@@ -99,7 +99,6 @@ async def send_install_msg(matcher: Matcher):
 
 @start_core.handle()
 async def send_start_msg(matcher: Matcher):
-    await start()
     await start_client()
     await matcher.send('启动完成...')
 

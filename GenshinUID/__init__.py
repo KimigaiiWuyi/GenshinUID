@@ -1,6 +1,7 @@
 from typing import List, Literal, Optional
 
 from nonebot.log import logger
+from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.internal.adapter import Event
@@ -18,7 +19,7 @@ gsclient: Optional[GsClient] = None
 
 
 @get_message.handle()
-async def send_char_adv(ev: Event):
+async def send_char_adv(bot: Bot, ev: Event):
     if gsclient is None:
         return await connect()
 
@@ -33,6 +34,10 @@ async def send_char_adv(ev: Event):
     sp_user_type: Optional[
         Literal['group', 'direct', 'channel', 'sub_channel']
     ] = None
+    pm = 3
+
+    if await SUPERUSER(bot, ev):
+        pm = 2
 
     # qqguild
     if '_message' in raw_data:
@@ -86,6 +91,7 @@ async def send_char_adv(ev: Event):
         user_id=user_id,
         content=message,
         msg_id=msg_id,
+        user_pm=pm,
     )
     logger.info(f'【发送】[gsuid-core]: {msg.bot_id}')
     await gsclient._input(msg)
@@ -116,4 +122,5 @@ async def connect():
         gsclient = await GsClient().async_connect()
         await gsclient.start()
     except ConnectionRefusedError:
+        logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')

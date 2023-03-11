@@ -5,8 +5,8 @@ from typing import Union
 from nonebot.log import logger
 from PIL import Image, ImageDraw
 
+from .gs_config import gsconfig
 from ..utils.database import get_sqla
-from .config_default import CONIFG_DEFAULT
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import CustomizeImage
 from ..utils.resource.RESOURCE_PATH import TEXT2D_PATH
@@ -25,7 +25,7 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
     sqla = get_sqla(bot_id)
     # 获取背景图片各项参数
     based_w = 850
-    based_h = 850 + 155 * (len(CONIFG_DEFAULT) - 5)
+    based_h = 850 + 155 * (len(gsconfig) - 5)
 
     CI_img = CustomizeImage('', based_w, based_h)
     img = CI_img.bg_img
@@ -52,8 +52,8 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
 
     tasks = []
     index = 0
-    for name in CONIFG_DEFAULT:
-        if isinstance(CONIFG_DEFAULT[name].data, bool):
+    for name in gsconfig:
+        if isinstance(gsconfig[name].data, bool):
             tasks.append(_draw_config_line(img, name, index))
             index += 1
     await asyncio.gather(*tasks)
@@ -64,15 +64,15 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
 
 
 async def _draw_config_line(img: Image.Image, name: str, index: int):
-    detail = CONIFG_DEFAULT[name].desc
+    detail = gsconfig[name].desc
     config_line = Image.open(TEXT_PATH / 'config_line.png')
     config_line_draw = ImageDraw.Draw(config_line)
     if name.startswith('定时'):
         name += '(全部)'
-    title = CONIFG_DEFAULT[name].title
+    title = gsconfig[name].title
     config_line_draw.text((52, 46), title, first_color, gs_font_36, 'lm')
     config_line_draw.text((52, 80), detail, second_color, gs_font_24, 'lm')
-    if CONIFG_DEFAULT[name].data:
+    if gsconfig[name].data:
         config_line.paste(config_on, (613, 21), config_on)
     else:
         config_line.paste(config_off, (613, 21), config_off)

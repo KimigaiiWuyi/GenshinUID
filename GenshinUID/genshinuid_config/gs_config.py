@@ -20,6 +20,15 @@ class StringConfig:
         self.config: Dict[str, GSC] = {}
         self.update_config()
 
+    def __len__(self):
+        return len(self.config)
+
+    def __iter__(self):
+        return iter(self.config)
+
+    def __getitem__(self, key) -> GSC:
+        return self.config[key]
+
     def write_config(self):
         with open(CONFIG_PATH, 'wb') as file:
             file.write(msgjson.format(msgjson.encode(self.config), indent=4))

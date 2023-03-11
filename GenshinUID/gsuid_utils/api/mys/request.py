@@ -436,7 +436,7 @@ class MysApi:
         server_id = 'cn_qd01' if uid[0] == '5' else 'cn_gf01'
         authkey_rawdata = await self.get_authkey_by_cookie(uid)
         if isinstance(authkey_rawdata, int):
-            return -1
+            return authkey_rawdata
         authkey = authkey_rawdata['authkey']
         data = await self._mys_request(
             url=_API['GET_GACHA_LOG_URL'],
@@ -561,7 +561,7 @@ class MysApi:
         HEADER['Cookie'] = stoken
         HEADER['DS'] = get_web_ds_token(True)
         HEADER['User-Agent'] = 'okhttp/4.8.0'
-        HEADER['x-rpc-app_version'] = '2.35.2'
+        HEADER['x-rpc-app_version'] = '2.44.1'
         HEADER['x-rpc-sys_version'] = '12'
         HEADER['x-rpc-client_type'] = '5'
         HEADER['x-rpc-channel'] = 'mihoyo'

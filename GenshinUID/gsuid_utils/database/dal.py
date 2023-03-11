@@ -258,7 +258,9 @@ class SQLA:
         return data.stoken if data and data.stoken else None
 
     async def get_all_user(self) -> List[GsUser]:
-        sql = select(GsUser).where(GsUser.cookie)
+        sql = select(GsUser).where(
+            GsUser.cookie is not None and GsUser.cookie != ''
+        )
         result = await self.session.execute(sql)
         data: List[GsUser] = result.scalars().all()
         return data

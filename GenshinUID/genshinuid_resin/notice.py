@@ -1,7 +1,7 @@
 from typing import Dict
 
 from gsuid_core.gss import gss
-from nonebot.log import logger
+from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla

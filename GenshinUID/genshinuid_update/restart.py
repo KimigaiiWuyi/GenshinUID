@@ -1,14 +1,11 @@
 import os
-import sys
 import json
 import time
 import platform
 import subprocess
 from pathlib import Path
 
-from ..genshinuid_config.gs_config import gsconfig
-
-bot_start = Path().cwd() / 'core.py'
+bot_start = Path(__file__).parents[4] / 'core.py'
 restart_sh_path = Path().cwd() / 'gs_restart.sh'
 update_log_path = Path(__file__).parent / 'update_log.json'
 
@@ -17,8 +14,8 @@ kill -9 {}
 {} &'''
 
 
-async def get_restart_sh(extra: str) -> str:
-    args = f'{extra} {str(bot_start.absolute())}'
+async def get_restart_sh() -> str:
+    args = f'poetry run python {str(bot_start.absolute())}'
     return _restart_sh.format(str(bot_start.absolute()), args)
 
 
@@ -26,11 +23,7 @@ async def restart_genshinuid(
     bot_id: str, send_type: str, send_id: str
 ) -> None:
     pid = os.getpid()
-    extra = ''
-    if gsconfig.get_config('UsePoetry').data:
-        extra = 'poetry run '
-    extra += sys.executable
-    restart_sh = await get_restart_sh(extra)
+    restart_sh = await get_restart_sh()
     with open(restart_sh_path, "w", encoding="utf8") as f:
         f.write(restart_sh)
     if platform.system() == 'Linux':
@@ -49,12 +42,12 @@ async def restart_genshinuid(
         json.dump(update_log, f)
     if platform.system() == 'Linux':
         subprocess.Popen(
-            f'kill -9 {pid} & {extra} {bot_start}',
+            f'kill -9 {pid} & poetry run python {bot_start}',
             shell=True,
         )
     else:
         subprocess.Popen(
-            f'taskkill /F /PID {pid} & {extra} {bot_start}',
+            f'taskkill /F /PID {pid} & poetry run python {bot_start}',
             shell=True,
         )
 

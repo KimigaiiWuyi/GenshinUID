@@ -34,6 +34,7 @@ class GsClient:
         cls, IP: str = 'localhost', PORT: Union[str, int] = '8765'
     ):
         self = GsClient()
+        cls.is_alive = True
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
         cls.ws = await websockets.client.connect(cls.ws_url, max_size=2**26)
@@ -109,6 +110,7 @@ class GsClient:
                     logger.error(e)
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
+            self.is_alive = False
 
     async def _input(self, msg: MessageReceive):
         await self.msg_list.put(msg)

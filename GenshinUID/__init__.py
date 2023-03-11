@@ -13,14 +13,16 @@ from .models import Message, MessageReceive
 
 get_message = on_message(priority=999)
 install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
-connect_core = on_fullmatch('连接core', permission=SUPERUSER, block=True)
+connect_core = on_fullmatch(
+    ('连接core', '链接core'), permission=SUPERUSER, block=True
+)
 driver = get_driver()
 gsclient: Optional[GsClient] = None
 
 
 @get_message.handle()
 async def send_char_adv(bot: Bot, ev: Event):
-    if gsclient is None:
+    if gsclient is None or not gsclient.is_alive:
         return await connect()
 
     # 通用字段获取
@@ -105,8 +107,8 @@ async def send_install_msg(matcher: Matcher):
 
 @connect_core.handle()
 async def send_start_msg(matcher: Matcher):
-    await start_client()
-    await matcher.send('链接成功！...')
+    await connect()
+    await matcher.send('链接成功！')
 
 
 @driver.on_bot_connect

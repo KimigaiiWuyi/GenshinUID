@@ -2,6 +2,7 @@ import asyncio
 import subprocess
 
 from git.repo import Repo
+from nonebot.log import logger
 from pip._internal import main as pip_install
 
 from .path import CORE_PATH, GSUID_PATH
@@ -28,10 +29,8 @@ async def _install():
 
 
 async def install():
-    done, _ = await asyncio.wait([_install()])
-    for future in done:
-        if future.result is None:
-            return '安装出现错误, 请查看控制台信息！'
+    done = await asyncio.gather(_install())
+    logger.info(done)
     return '安装成功...'
 
 

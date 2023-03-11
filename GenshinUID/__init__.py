@@ -20,22 +20,55 @@ gsclient: Optional[GsClient] = None
 @get_message.handle()
 async def send_char_adv(ev: Event):
     if gsclient is None:
-        return await start_client()
+        return await connect()
+
+    # 通用字段获取
     sessions = ev.get_session_id().split('_')
-    group_id = sessions[-2] if len(sessions) >= 2 else None
     user_id = str(ev.get_user_id())
     messages = ev.get_message()
-    bot_id = messages.__class__.__module__.split('.')[2]
+    raw_data = ev.__dict__
+    group_id = sessions[-2] if len(sessions) >= 2 else None
     message: List[Message] = []
+
+    # ntchat
+    if '_message' in raw_data:
+        messages = raw_data['_message']
+        group_id = str(raw_data['channel_id'])
+    # qqguild
+    elif not messages and 'message' in raw_data:
+        messages = raw_data['message']
+    # ntchat
+    elif 'data' in raw_data:
+        if 'chatroom' in raw_data['data']['to_wxid']:
+            group_id = raw_data['data']['to_wxid']
+        if 'image' in raw_data['data']:
+            message.append(Message('image', raw_data['data']['image']))
+        if 'from_wxid' in raw_data['data']:
+            user_id = raw_data['data']['from_wxid']
+        if 'at_user_list' in raw_data['data']:
+            _at_list = raw_data['data']['at_user_list']
+            at_list = [Message('at', i) for i in _at_list]
+            message.extend(at_list)
+    bot_id = messages.__class__.__module__.split('.')[2]
+
+    # 处理消息
     for _msg in messages:
         if _msg.type == 'text':
-            message.append(Message('text', _msg.data['text']))
+            message.append(
+                Message(
+                    'text',
+                    _msg.data['text']
+                    if 'text' in _msg.data
+                    else _msg.data['content'],
+                )
+            )
         elif _msg.type == 'image':
             message.append(Message('image', _msg.data['url']))
         elif _msg.type == 'at':
             message.append(Message('at', _msg.data['qq']))
     if not message:
         return
+
     msg = MessageReceive(
         bot_id=bot_id,
         user_type='group' if group_id else 'direct',
@@ -62,6 +95,11 @@ async def send_start_msg(matcher: Matcher):
 
 @driver.on_bot_connect
 async def start_client():
+    await start()
+    await connect()
+
+
+async def connect():
     global gsclient
     try:
         gsclient = await GsClient().async_connect()

@@ -8,12 +8,12 @@ from nonebot.internal.adapter import Event
 from nonebot import get_driver, on_message, on_fullmatch
 
 from .client import GsClient
-from .auto_install import start, install
+from .auto_install import install
 from .models import Message, MessageReceive
 
 get_message = on_message(priority=999)
 install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
-start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
+connect_core = on_fullmatch('连接core', permission=SUPERUSER, block=True)
 driver = get_driver()
 gsclient: Optional[GsClient] = None
 
@@ -37,7 +37,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     pm = 3
 
     if await SUPERUSER(bot, ev):
-        pm = 2
+        pm = 1
 
     # qqguild
     if '_message' in raw_data:
@@ -103,17 +103,16 @@ async def send_install_msg(matcher: Matcher):
     await matcher.send(await install())
 
 
-@start_core.handle()
+@connect_core.handle()
 async def send_start_msg(matcher: Matcher):
     await start_client()
-    await matcher.send('启动完成...')
+    await matcher.send('链接成功！...')
 
 
 @driver.on_bot_connect
 async def start_client():
     if gsclient is None:
-        await start()
-    await connect()
+        await connect()
 
 
 async def connect():
@@ -122,5 +121,4 @@ async def connect():
         gsclient = await GsClient().async_connect()
         await gsclient.start()
     except ConnectionRefusedError:
-        logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')

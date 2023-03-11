@@ -1,13 +1,14 @@
 from typing import Dict
 
 from sqlalchemy import event
+from gsuid_core.data_store import get_res_path
 
 from ..gsuid_utils.database.dal import SQLA
 
 is_wal = False
 
 active_sqla: Dict[str, SQLA] = {}
-db_url = 'GsData.db'
+db_url = str(get_res_path().parent / 'GsData.db')
 
 
 def get_sqla(bot_id) -> SQLA:

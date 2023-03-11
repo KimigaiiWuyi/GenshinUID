@@ -1,7 +1,9 @@
 import sys
 from pathlib import Path
 
-MAIN_PATH = Path() / 'data' / 'GenshinUID'
+from gsuid_core.data_store import get_res_path
+
+MAIN_PATH = get_res_path() / 'GenshinUID'
 sys.path.append(str(MAIN_PATH))
 CONFIG_PATH = MAIN_PATH / 'config.json'
 RESOURCE_PATH = MAIN_PATH / 'resource'

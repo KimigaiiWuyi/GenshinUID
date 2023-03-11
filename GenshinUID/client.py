@@ -1,6 +1,6 @@
 import base64
 import asyncio
-from typing import Dict, List, Union, Optional
+from typing import Any, Dict, List, Union, Optional
 
 import websockets.client
 from nonebot.log import logger
@@ -103,6 +103,7 @@ class GsClient:
                             node,
                             msg.target_id,
                             msg.target_type,
+                            msg.msg_id,
                         )
                 except Exception as e:
                     logger.error(e)
@@ -199,9 +200,10 @@ async def guild_send(
     node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
+    msg_id: Optional[str],
 ):
     async def _send(content: Optional[str], image: Optional[str]):
-        result = {}
+        result: Dict[str, Any] = {'msg_id': msg_id}
         if image:
             img_bytes = base64.b64decode(image.replace('base64://', ''))
             result['file_image'] = img_bytes
@@ -211,6 +213,12 @@ async def guild_send(
             await bot.call_api(
                 'post_messages',
                 channel_id=int(target_id) if target_id else 0,
+                **result,
+            )
+        else:
+            await bot.call_api(
+                'post_dms_messages',
+                guild_id=int(target_id) if target_id else 0,
                 **result,
             )
 

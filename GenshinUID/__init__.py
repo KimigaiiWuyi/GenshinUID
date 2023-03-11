@@ -29,16 +29,22 @@ async def send_char_adv(ev: Event):
     raw_data = ev.__dict__
     group_id = sessions[-2] if len(sessions) >= 2 else None
     message: List[Message] = []
+    msg_id = ''
 
-    # ntchat
+    # qqguild
     if '_message' in raw_data:
         messages = raw_data['_message']
-        group_id = str(raw_data['channel_id'])
-    # qqguild
+        if 'direct_message' in raw_data and raw_data['direct_message']:
+            group_id = None
+            user_id = str(raw_data['guild_id'])
+        else:
+            group_id = str(raw_data['channel_id'])
+        msg_id = raw_data['id']
+    # ntchat
     elif not messages and 'message' in raw_data:
         messages = raw_data['message']
     # ntchat
-    elif 'data' in raw_data:
+    if 'data' in raw_data:
         if 'chatroom' in raw_data['data']['to_wxid']:
             group_id = raw_data['data']['to_wxid']
         if 'image' in raw_data['data']:
@@ -75,6 +81,7 @@ async def send_char_adv(ev: Event):
         group_id=group_id,
         user_id=user_id,
         content=message,
+        msg_id=msg_id,
     )
     logger.info(f'【发送】[gsuid-core]: {msg.bot_id}')
     await gsclient._input(msg)
@@ -95,7 +102,8 @@ async def send_start_msg(matcher: Matcher):
 
 @driver.on_bot_connect
 async def start_client():
-    await start()
+    if gsclient is None:
+        await start()
     await connect()
 
 

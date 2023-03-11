@@ -1,4 +1,4 @@
-from typing import Any, List, Optional
+from typing import Any, List, Literal, Optional
 
 from msgspec import Struct
 
@@ -10,7 +10,8 @@ class Message(Struct):
 
 class MessageReceive(Struct):
     bot_id: str = 'Bot'
-    user_type: Optional[str] = None
+    msg_id: str = ''
+    user_type: Literal['group', 'direct', 'channel', 'sub_channel'] = 'group'
     group_id: Optional[str] = None
     user_id: Optional[str] = None
     user_pm: int = 3
@@ -30,6 +31,7 @@ class MessageContent(Struct):
 
 class MessageSend(Struct):
     bot_id: str = 'Bot'
+    msg_id: str = ''
     target_type: Optional[str] = None
     target_id: Optional[str] = None
     content: Optional[List[Message]] = None

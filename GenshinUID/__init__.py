@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from nonebot.log import logger
 from nonebot.matcher import Matcher
@@ -30,13 +30,16 @@ async def send_char_adv(ev: Event):
     group_id = sessions[-2] if len(sessions) >= 2 else None
     message: List[Message] = []
     msg_id = ''
+    sp_user_type: Optional[
+        Literal['group', 'direct', 'channel', 'sub_channel']
+    ] = None
 
     # qqguild
     if '_message' in raw_data:
         messages = raw_data['_message']
         if 'direct_message' in raw_data and raw_data['direct_message']:
-            group_id = None
-            user_id = str(raw_data['guild_id'])
+            sp_user_type = 'direct'
+            group_id = str(raw_data['guild_id'])
         else:
             group_id = str(raw_data['channel_id'])
         msg_id = raw_data['id']
@@ -75,9 +78,10 @@ async def send_char_adv(ev: Event):
     if not message:
         return
 
+    user_type = 'group' if group_id else 'direct'
     msg = MessageReceive(
         bot_id=bot_id,
-        user_type='group' if group_id else 'direct',
+        user_type=sp_user_type if sp_user_type else user_type,
         group_id=group_id,
         user_id=user_id,
         content=message,

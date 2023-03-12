@@ -65,14 +65,14 @@ get_qrcode_login = on_command(
     aliases={'扫码登陆', '扫码登入'},
     rule=FullCommand(),
 )
-get_topup = on_command('gsrc', priority=priority, block=True, aliases={'原神充值', 'pay'})
+get_topup = on_command(
+    'gsrc', priority=priority, block=True, aliases={'原神充值', 'pay'}
+)
 
 
 @get_topup.handle()
 async def send_topup(
-    matcher: Matcher,
-    event: TextMessageEvent,
-    args: Message = CommandArg()
+    matcher: Matcher, event: TextMessageEvent, args: Message = CommandArg()
 ):
     # 获取被@的Wxid，排除""
     qid = event.from_wxid
@@ -96,7 +96,9 @@ async def send_topup(
                 goods_id = gId
                 break
     group_id = event.room_wxid
-    await matcher.finish(await topup_(matcher, qid, group_id, goods_id, method))
+    await matcher.finish(
+        await topup_(matcher, qid, group_id, goods_id, method)
+    )
 
 
 @refresh_all_ck.handle()

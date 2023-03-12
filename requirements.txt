@@ -32,7 +32,7 @@ msgspec==0.13.1 ; python_full_version >= "3.8.1" and python_full_version < "4.0.
 multidict==6.0.4 ; python_full_version >= "3.8.1" and python_version < "4.0"
 nonebot-plugin-apscheduler==0.2.0 ; python_full_version >= "3.8.1" and python_version < "4.0"
 nonebot2==2.0.0rc3 ; python_full_version >= "3.8.1" and python_version < "4.0"
-openpyxl==3.1.1 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+openpyxl==3.1.2 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 passlib==1.7.4 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 pillow==9.4.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 pydantic==1.10.6 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"

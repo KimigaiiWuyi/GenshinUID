@@ -1,10 +1,14 @@
-from typing import Dict, Union
+from typing import Dict
 
-from .models import GsStrConfig, GsBoolConfig, GsDictConfig, GsListConfig
+from .models import (
+    GSC,
+    GsStrConfig,
+    GsBoolConfig,
+    GsDictConfig,
+    GsListIntConfig,
+)
 
-CONIFG_DEFAULT: Dict[
-    str, Union[GsDictConfig, GsBoolConfig, GsListConfig, GsStrConfig]
-] = {
+CONIFG_DEFAULT: Dict[str, GSC] = {
     'proxy': GsStrConfig('设置代理', '设置国际服的代理地址', ''),
     '_pass_API': GsStrConfig('神奇API', '设置某种神奇的API', ''),
     'random_pic_API': GsStrConfig(
@@ -17,7 +21,7 @@ CONIFG_DEFAULT: Dict[
         '原神公告推送群组',
         {},
     ),
-    'Ann_Ids': GsListConfig(
+    'Ann_Ids': GsListIntConfig(
         '推送公告ID',
         '原神公告推送ID列表',
         [],

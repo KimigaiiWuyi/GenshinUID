@@ -18,7 +18,9 @@ class SQLA:
         self.bot_id = bot_id
         self.url = f'sqlite+aiosqlite:///{url}'
         self.engine = create_async_engine(self.url, pool_recycle=1500)
-        self.session = sessionmaker(self.engine, class_=AsyncSession)()
+        self.session = sessionmaker(
+            self.engine, expire_on_commit=False, class_=AsyncSession
+        )()
 
     def create_all(self):
         asyncio.create_task(self._create_all())

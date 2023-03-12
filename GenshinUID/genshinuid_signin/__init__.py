@@ -52,12 +52,13 @@ async def send_daily_sign():
     # 执行私聊推送
     for qid in private_msg_list:
         try:
-            for single in private_msg_list[qid]:
-                await gss.active_bot['bot_id'].target_send(
-                    single['msg'], 'direct', qid
-                )
-        except Exception:
-            logger.warning(f'[每日全部签到] QQ {qid} 私聊推送失败!')
+            for bot_id in gss.active_bot:
+                for single in private_msg_list[qid]:
+                    await gss.active_bot[bot_id].target_send(
+                        single['msg'], 'direct', qid, single['bot_id'], ''
+                    )
+        except Exception as e:
+            logger.warning(f'[每日全部签到] QQ {qid} 私聊推送失败!错误信息:{e}')
         await asyncio.sleep(0.5)
     logger.info('[每日全部签到]私聊推送完成')
 
@@ -79,8 +80,11 @@ async def send_daily_sign():
             msg_title = group_msg_list[gid]['push_message']
         # 发送群消息
         try:
-            await gss.active_bot['bot_id'].target_send(msg_title, 'group', gid)
-        except Exception:
-            logger.warning(f'[每日全部签到]群 {gid} 推送失败!')
+            for bot_id in gss.active_bot:
+                await gss.active_bot[bot_id].target_send(
+                    msg_title, 'group', gid, group_msg_list[gid]['bot_id'], ''
+                )
+        except Exception as e:
+            logger.warning(f'[每日全部签到]群 {gid} 推送失败!错误信息:{e}')
         await asyncio.sleep(0.5 + random.randint(1, 3))
     logger.info('[每日全部签到]群聊推送完成')

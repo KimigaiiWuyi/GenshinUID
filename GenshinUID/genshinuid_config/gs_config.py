@@ -4,10 +4,18 @@ from msgspec import json as msgjson
 
 from .config_default import CONIFG_DEFAULT
 from ..utils.resource.RESOURCE_PATH import CONFIG_PATH
-from .models import GSC, GsStrConfig, GsBoolConfig, GsDictConfig, GsListConfig
+from .models import (
+    GSC,
+    GsStrConfig,
+    GsBoolConfig,
+    GsDictConfig,
+    GsListIntConfig,
+    GsListStrConfig,
+)
 
 STR_CONFIG = Literal['proxy', '_pass_API', 'random_pic_API']
-LIST_CONFIG = Literal['Ann_Ids']
+LIST_INT_CONFIG = Literal['Ann_Ids']
+LIST_STR_CONFIG = Literal['']
 DICT_CONFIG = Literal['Ann_Groups']
 
 
@@ -61,7 +69,11 @@ class StringConfig:
         ...
 
     @overload
-    def get_config(self, key: LIST_CONFIG) -> GsListConfig:
+    def get_config(self, key: LIST_INT_CONFIG) -> GsListIntConfig:
+        ...
+
+    @overload
+    def get_config(self, key: LIST_STR_CONFIG) -> GsListStrConfig:
         ...
 
     @overload
@@ -86,7 +98,11 @@ class StringConfig:
         ...
 
     @overload
-    def set_config(self, key: LIST_CONFIG, value: List) -> bool:
+    def set_config(self, key: LIST_INT_CONFIG, value: List[int]) -> bool:
+        ...
+
+    @overload
+    def set_config(self, key: LIST_STR_CONFIG, value: List[str]) -> bool:
         ...
 
     @overload

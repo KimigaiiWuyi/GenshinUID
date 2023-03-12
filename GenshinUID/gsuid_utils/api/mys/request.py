@@ -209,7 +209,7 @@ class MysApi:
             HEADER = copy.deepcopy(_HEADER)
             HEADER['Cookie'] = ck
             HEADER['x-rpc-device_id'] = random_hex(32)
-            HEADER['x-rpc-app_version'] = '2.35.2'
+            HEADER['x-rpc-app_version'] = '2.44.1'
             HEADER['x-rpc-client_type'] = '5'
             HEADER['X_Requested_With'] = 'com.mihoyo.hyperion'
             HEADER['DS'] = get_web_ds_token(True)
@@ -824,7 +824,13 @@ class MysApi:
                 timeout=300,
             ) as resp:
                 raw_data = await resp.json()
-                retcode: int = raw_data['retcode']
+                print(raw_data)
+                if 'retcode' in raw_data:
+                    retcode: int = raw_data['retcode']
+                elif 'code' in raw_data:
+                    retcode: int = raw_data['code']
+                else:
+                    retcode = 0
                 if retcode == 1034:
                     await self._upass(header)
                     return retcode

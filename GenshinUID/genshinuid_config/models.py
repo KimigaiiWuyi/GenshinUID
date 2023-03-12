@@ -20,8 +20,14 @@ class GsDictConfig(GsConfig, tag=True):
     data: Dict[str, List]
 
 
-class GsListConfig(GsConfig, tag=True):
+class GsListStrConfig(GsConfig, tag=True):
     data: List[str]
 
 
-GSC = Union[GsDictConfig, GsBoolConfig, GsListConfig, GsStrConfig]
+class GsListIntConfig(GsConfig, tag=True):
+    data: List[int]
+
+
+GSC = Union[
+    GsDictConfig, GsBoolConfig, GsListIntConfig, GsListStrConfig, GsStrConfig
+]

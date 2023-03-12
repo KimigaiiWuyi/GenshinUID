@@ -90,7 +90,6 @@ async def sign_in(uid: str) -> str:
     if isinstance(sign_list, int) or isinstance(new_sign_info, int):
         logger.warning(f'[签到] {uid} 出错, 请检查Cookies是否过期！')
         return '签到失败...请检查Cookies是否过期！'
-    status = sign_data['message']
     # 获取签到奖励物品，拿旧的总签到天数 + 1 为新的签到天数，再 -1 即为今日奖励物品的下标
     getitem = sign_list['awards'][int(sign_info['total_sign_day']) + 1 - 1]
     get_im = f'本次签到获得{getitem["name"]}x{getitem["cnt"]}'
@@ -100,7 +99,7 @@ async def sign_in(uid: str) -> str:
     if new_sign_info['is_sign']:
         mes_im = '签到成功'
     else:
-        mes_im = f'签到失败, 状态为:{status}'
+        mes_im = '签到失败...'
         sign_missed -= 1
     sign_missed = sign_info.get('sign_cnt_missed') or sign_missed
     im = f'{mes_im}!\n{get_im}\n本月漏签次数：{sign_missed}'
@@ -141,22 +140,6 @@ async def single_daily_sign(bot_id: str, uid: str, gid: str, qid: str):
 
 
 async def daily_sign():
-    """
-    :说明:
-      将数据库中全部Status不为`off`的用户进行签到,
-      并返回签到信息private_msg_list, group_msg_list,
-      private_msg_list = [{'qid': 'msg'}, ...],
-      group_msg_list = [
-        {'gid': {'success': 0, 'failed': 0, 'push_message': ''}}, ...
-      ],
-      如开启简洁签到,
-      success = 签到成功数,
-      failed = 签到失败数,
-      不开启简洁签到,
-      success将为负数,
-    :返回:
-      * {'private_msg_list': ..., 'group_msg_list': ...} (dict): 要发送的私聊消息和群聊消息
-    """
     global already
     tasks = []
     for bot_id in gss.active_bot:
@@ -166,7 +149,7 @@ async def daily_sign():
             if user.sign_switch != 'off':
                 tasks.append(
                     single_daily_sign(
-                        bot_id, user.uid, user.sign_switch, user.user_id
+                        user.bot_id, user.uid, user.sign_switch, user.user_id
                     )
                 )
             if len(tasks) >= 1:

@@ -11,16 +11,17 @@ def font(size: int) -> ImageFont.FreeTypeFont:
     """Pillow 绘制字体设置"""
     return ImageFont.truetype(str(FONT_ORIGIN_PATH), size=size)
 
+
 # 支付宝充值图片绘制
 async def draw_ali(
-    uid, 
-    item_info: str, 
-    item_price: str, 
-    item_order_no: str, 
-    qrcode, 
-    item_icon: str, 
+    uid,
+    item_info: str,
+    item_price: str,
+    item_order_no: str,
+    qrcode,
+    item_icon: str,
     item_create_time: int,
-    item_id: str
+    item_id: str,
 ) -> bytes:
     """充值图片绘制"""
     async with AsyncClient() as client:
@@ -34,8 +35,9 @@ async def draw_ali(
     resample = getattr(Image, "Resampling", Image).LANCZOS
 
     # 头部矩形背景
-    drawer.rectangle((75, 50 - warning, 375 - 1, 150 -
-                     warning), fill="#E5F9FF", width=0)
+    drawer.rectangle(
+        (75, 50 - warning, 375 - 1, 150 - warning), fill="#E5F9FF", width=0
+    )
     # 商品图片
     item = itemImg.resize((90, 90), resample=resample)
     res.paste(item, (80, 55 - warning), item)
@@ -67,8 +69,11 @@ async def draw_ali(
     drawer.text(
         (
             int((460 - font(15).getlength(f"充值到 UID{uid}")) / 2),
-            int(155 + warning +
-                (20 - font(15).getbbox(f"充值到 UID{uid}")[-1]) / 2),
+            int(
+                155
+                + warning
+                + (20 - font(15).getbbox(f"充值到 UID{uid}")[-1]) / 2
+            ),
         ),
         f"充值到 UID{uid}",
         fill="#333333",
@@ -107,32 +112,41 @@ async def draw_ali(
     )
     # 免责声明
     drawer.text(
-        (int((410 - font(15).getlength("免责声明：该充值接口由米游社提供，不对充值结果负责。\n请在充值前仔细阅读米哈游的充值条款。") / 2)), 
-        490 + warning
-    ),
-    "免责声明：该充值接口由米游社提供，不对充值结果负责。\n          请在充值前仔细阅读米哈游的充值条款。",
-    fill="#FFA500",
-    font=font(12),
+        (
+            int(
+                (
+                    410
+                    - font(15).getlength(
+                        "免责声明：该充值接口由米游社提供，不对充值结果负责。\n请在充值前仔细阅读米哈游的充值条款。"
+                    )
+                    / 2
+                )
+            ),
+            490 + warning,
+        ),
+        "免责声明：该充值接口由米游社提供，不对充值结果负责。\n          请在充值前仔细阅读米哈游的充值条款。",
+        fill="#FFA500",
+        font=font(12),
     )
     buf = BytesIO()
     res.convert("RGB").save(buf, format="PNG")
     return buf.getvalue()
 
+
 # 微信充值图片绘制
 async def draw_wx(
-    uid, 
-    item_info: str, 
-    item_price: str, 
-    item_order_no: str, 
-    item_icon: str, 
+    uid,
+    item_info: str,
+    item_price: str,
+    item_order_no: str,
+    item_icon: str,
     item_create_time: int,
-    item_id: str
+    item_id: str,
 ) -> bytes:
     """充值图片绘制"""
     async with AsyncClient() as client:
         _img = await client.get(item_icon, timeout=10.0)
         itemImg = Image.open(BytesIO(_img.content)).convert("RGBA")
-
 
     themeColor = "#29ac66"
     warning = 20 if item_id == 'ys_chn_blessofmoon_tier5' else 0
@@ -142,10 +156,16 @@ async def draw_wx(
     left = (450 - 370) / 2  # (图片宽度 - 矩形宽度) / 2
     top = (200 - 130) / 2  # (图片高度 - 矩形高度) / 2
     # 头部矩形背景
-    drawer.rectangle((left, top - warning, left + 370, top + 130 - warning),  # 使用新的左上角和右下角的坐标
-                     fill="#E5F9FF",  # 保留原有的填充色
-                     width=0,  # 保留原有的边框宽度
-                     )
+    drawer.rectangle(
+        (
+            left,
+            top - warning,
+            left + 370,
+            top + 130 - warning,
+        ),  # 使用新的左上角和右下角的坐标
+        fill="#E5F9FF",  # 保留原有的填充色
+        width=0,  # 保留原有的边框宽度
+    )
 
     # 商品图片
     item = itemImg.resize((110, 110), resample=resample)
@@ -174,8 +194,11 @@ async def draw_wx(
     drawer.text(
         (
             int(185 + (195 - font(15).getlength(f"充值到 UID{uid}")) / 2),
-            int(120 - warning +
-                (20 - font(15).getbbox(f"充值到 UID{uid}")[-1]) / 2),
+            int(
+                120
+                - warning
+                + (20 - font(15).getbbox(f"充值到 UID{uid}")[-1]) / 2
+            ),
         ),
         f"充值到 UID{uid}",
         fill="#000000",
@@ -191,8 +214,9 @@ async def draw_wx(
     )
     if warning:
         # 首部矩形背景
-        drawer.rectangle((left, top + 110, left + 370,
-                         top + 130), fill="#eeeeee", width=0)
+        drawer.rectangle(
+            (left, top + 110, left + 370, top + 130), fill="#eeeeee", width=0
+        )
         # 转换警告文字
         warning_text = "特殊情况将直接返还 330 创世结晶"
         drawer.text(

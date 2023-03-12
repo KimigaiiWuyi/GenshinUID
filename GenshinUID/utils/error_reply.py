@@ -12,6 +12,10 @@ VERIFY_HINT = '''出现验证码!
 如未绑定CK: 可联系管理员使用[gs清除缓存]命令
 '''
 SK_HINT = '你还没有绑定过Stoken或者Stoken已失效~\n请加好友私聊Bot\n [扫码登陆] 或 [添加]后跟SK格式 以绑定SK'
+UPDATE_HINT = '''更新失败!更多错误信息请查看控制台...
+>> 可以尝试使用
+>> [gs强制更新](危险)
+>> [gs强行强制更新](超级危险)!'''
 
 
 def get_error(retcode: Union[int, str]) -> str:

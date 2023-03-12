@@ -34,21 +34,22 @@ async def notice_job():
     # 执行私聊推送
 
     for bot_id in result:
-        bot = gss.active_bot[bot_id]
-        for user_id in result[bot_id]['direct']:
-            msg = result[bot_id]['direct'][user_id]
-            await bot.target_send(msg, 'direct', user_id, bot_id)
-            await asyncio.sleep(0.5)
-        logger.info('[推送检查] 私聊推送完成')
-        for gid in result[bot_id]['group']:
-            msg_list = []
-            for user_id in result[bot_id]['group'][gid]:
-                msg_list.append(MessageSegment.at(user_id))
-                msg = result[bot_id]['group'][gid][user_id]
-                msg_list.append(MessageSegment.text(msg))
-            await bot.target_send(msg_list, 'group', gid, bot_id)
-            await asyncio.sleep(0.5)
-        logger.info('[推送检查] 群聊推送完成')
+        for BOT_ID in gss.active_bot:
+            bot = gss.active_bot[BOT_ID]
+            for user_id in result[bot_id]['direct']:
+                msg = result[bot_id]['direct'][user_id]
+                await bot.target_send(msg, 'direct', user_id, bot_id, '')
+                await asyncio.sleep(0.5)
+            logger.info('[推送检查] 私聊推送完成')
+            for gid in result[bot_id]['group']:
+                msg_list = []
+                for user_id in result[bot_id]['group'][gid]:
+                    msg_list.append(MessageSegment.at(user_id))
+                    msg = result[bot_id]['group'][gid][user_id]
+                    msg_list.append(MessageSegment.text(msg))
+                await bot.target_send(msg_list, 'group', gid, bot_id, '')
+                await asyncio.sleep(0.5)
+            logger.info('[推送检查] 群聊推送完成')
 
 
 @SV('查询体力').on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))

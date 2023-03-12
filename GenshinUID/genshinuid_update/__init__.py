@@ -3,9 +3,10 @@ from gsuid_core.bot import Bot
 from gsuid_core.gss import gss
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.segment import MessageSegment
 
-from .draw_update_log import draw_update_log_img
 from .restart import restart_message, restart_genshinuid
+from .draw_update_log import get_all_update_log, draw_update_log_img
 
 
 @gss.on_bot_connect
@@ -50,10 +51,13 @@ async def send_updatelog_msg(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('Core管理', pm=1).on_fullmatch(('gs更新', 'gs强制更新', 'gs强行强制更新'))
+@SV('Core管理', pm=1).on_fullmatch(('gs更新', 'gs强制更新', 'gs强行强制更新', 'gs全部更新'))
 async def send_update_msg(bot: Bot, ev: Event):
     await bot.logger.info('[gs更新] 正在执行 ...')
     level = 2
+    if '全部' in ev.command:
+        im = await get_all_update_log()
+        return await bot.send(MessageSegment.node(im))
     if '强制' not in ev.command:
         level -= 1
     if '强行' not in ev.command:

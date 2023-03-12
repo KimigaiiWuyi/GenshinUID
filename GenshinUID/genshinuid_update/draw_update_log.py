@@ -1,9 +1,10 @@
 from pathlib import Path
-from typing import Union
+from typing import List, Union
 
 from PIL import Image, ImageDraw
 
 from .update import update_from_git
+from ..utils.error_reply import UPDATE_HINT
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import get_color_bg
 from ..utils.fonts.genshin_fonts import genshin_font_origin
@@ -22,6 +23,33 @@ log_config = {
 log_map = {'✨': 'feat', '🐛': 'bug', '🍱': 'bento', '⚡️': 'zap', '🎨': 'art'}
 
 
+async def get_all_update_log() -> List:
+    v4_repo_path = Path(__file__).parents[2]
+    core_repo_path = Path(__file__).parents[5]
+    log_list1 = await update_from_git(0, v4_repo_path, log_config, True)
+    log_list2 = await update_from_git(0, core_repo_path, log_config, True)
+    im = []
+    if len(log_list1) == 0:
+        im.append('gsuid_v4更新失败!更多消息请查看控制台...以下为记录:')
+        im.append(UPDATE_HINT)
+    else:
+        im.append('gsuid_v4更新成功!')
+        im.append('最近更新记录如下:')
+        im.append(log_list1[0])
+        if len(log_list1) >= 2:
+            im.append(log_list1[1])
+
+    if len(log_list2) == 0:
+        im.append('gsuid_core更新失败!更多消息请查看控制台...')
+    else:
+        im.append('gsuid_core更新成功!')
+        im.append(log_list2[0])
+        if len(log_list2) >= 2:
+            im.append(log_list2[1])
+
+    return im
+
+
 async def draw_update_log_img(
     level: int = 0,
     repo_path: Union[str, Path, None] = None,
@@ -29,12 +57,7 @@ async def draw_update_log_img(
 ) -> Union[bytes, str]:
     log_list = await update_from_git(level, repo_path, log_config, is_update)
     if len(log_list) == 0:
-        return (
-            '更新失败!更多错误信息请查看控制台...\n '
-            '>> 可以尝试使用\n '
-            '>> [gs强制更新](危险)\n '
-            '>> [gs强行强制更新](超级危险)!'
-        )
+        return UPDATE_HINT
 
     log_title = Image.open(TEXT_PATH / 'log_title.png')
 

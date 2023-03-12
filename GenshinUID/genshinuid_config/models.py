@@ -24,10 +24,10 @@ class GsListStrConfig(GsConfig, tag=True):
     data: List[str]
 
 
-class GsListIntConfig(GsConfig, tag=True):
+class GsListConfig(GsConfig, tag=True):
     data: List[int]
 
 
 GSC = Union[
-    GsDictConfig, GsBoolConfig, GsListIntConfig, GsListStrConfig, GsStrConfig
+    GsDictConfig, GsBoolConfig, GsListConfig, GsListStrConfig, GsStrConfig
 ]

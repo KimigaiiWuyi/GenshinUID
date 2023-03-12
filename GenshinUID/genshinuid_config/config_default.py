@@ -1,12 +1,6 @@
 from typing import Dict
 
-from .models import (
-    GSC,
-    GsStrConfig,
-    GsBoolConfig,
-    GsDictConfig,
-    GsListIntConfig,
-)
+from .models import GSC, GsStrConfig, GsBoolConfig, GsDictConfig, GsListConfig
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
     'proxy': GsStrConfig('设置代理', '设置国际服的代理地址', ''),
@@ -21,7 +15,7 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '原神公告推送群组',
         {},
     ),
-    'Ann_Ids': GsListIntConfig(
+    'Ann_Ids': GsListConfig(
         '推送公告ID',
         '原神公告推送ID列表',
         [],

@@ -9,7 +9,7 @@ from .models import (
     GsStrConfig,
     GsBoolConfig,
     GsDictConfig,
-    GsListIntConfig,
+    GsListConfig,
     GsListStrConfig,
 )
 
@@ -69,7 +69,7 @@ class StringConfig:
         ...
 
     @overload
-    def get_config(self, key: LIST_INT_CONFIG) -> GsListIntConfig:
+    def get_config(self, key: LIST_INT_CONFIG) -> GsListConfig:
         ...
 
     @overload

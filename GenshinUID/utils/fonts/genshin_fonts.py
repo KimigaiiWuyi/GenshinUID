@@ -9,10 +9,13 @@ def genshin_font_origin(size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(FONT_ORIGIN_PATH), size=size)
 
 
+gs_font_12 = genshin_font_origin(12)
+gs_font_15 = genshin_font_origin(15)
 gs_font_18 = genshin_font_origin(18)
 gs_font_20 = genshin_font_origin(20)
 gs_font_22 = genshin_font_origin(22)
 gs_font_24 = genshin_font_origin(24)
+gs_font_25 = genshin_font_origin(25)
 gs_font_26 = genshin_font_origin(26)
 gs_font_28 = genshin_font_origin(28)
 gs_font_30 = genshin_font_origin(30)

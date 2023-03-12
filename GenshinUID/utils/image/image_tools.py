@@ -286,7 +286,6 @@ class CustomizeImage:
     def __init__(
         self, image: Union[str, Image.Image], based_w: int, based_h: int
     ) -> None:
-
         self.bg_img = self.get_image(image, based_w, based_h)
         self.bg_color = self.get_bg_color(self.bg_img, is_light=True)
         self.text_color = self.get_text_color(self.bg_color)
@@ -340,7 +339,7 @@ class CustomizeImage:
                 ]
             )
             light_value = bg[0] * 0.3 + bg[1] * 0.6 + bg[2] * 0.1
-            if abs(light_value - based_light) < temp:
+            if abs(light_value - based_light) < temp:  # noqa:E203
                 bg_color = bg
                 temp = abs(light_value - based_light)
         return bg_color

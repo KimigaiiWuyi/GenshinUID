@@ -628,7 +628,7 @@ class MysOrderCheck(TypedDict):
     goods_title: str
     goods_num: str
     order_no: str
-    pay_plat: Literal['alipay']
+    pay_plat: Literal['alipay', 'weixin']
 
 
 class MysOrder(TypedDict):

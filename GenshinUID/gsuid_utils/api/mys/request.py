@@ -663,7 +663,12 @@ class MysApi:
             return resp
         return cast(List[MysGoods], resp['data']['goods_list'])
 
-    async def topup(self, uid: str, goods: MysGoods) -> Union[int, MysOrder]:
+    async def topup(
+        self,
+        uid: str,
+        goods: MysGoods,
+        method: Literal['weixin', 'alipay'] = 'alipay',
+    ) -> Union[int, MysOrder]:
         device_id = str(uuid.uuid4())
         HEADER = copy.deepcopy(_HEADER)
         ck = await self.get_ck(uid, 'OWNER')
@@ -691,7 +696,7 @@ class MysApi:
             'price_tier': goods['tier_id'],
             # 'price_tier': 'Tier_1',
             'currency': 'CNY',
-            'pay_plat': 'alipay',
+            'pay_plat': method,
         }
         data = {'order': order, 'sign': gen_payment_sign(order)}
         HEADER['x-rpc-device_id'] = device_id

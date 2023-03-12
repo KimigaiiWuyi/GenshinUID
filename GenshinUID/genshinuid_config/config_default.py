@@ -80,4 +80,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '该选项已经无效且可能有一定危险性...',
         False,
     ),
+    'DefaultPayWX': GsBoolConfig(
+        '支付默认微信',
+        '开启后使用gsrc命令将会以微信作为优先付款方式',
+        False,
+    ),
 }

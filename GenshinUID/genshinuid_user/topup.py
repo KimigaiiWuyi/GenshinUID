@@ -112,7 +112,8 @@ async def topup_(matcher: Matcher, qid, group_id, goods_id, method):
         item_pay_url:str = order['encode_order'] #支付链接
         item_name_full = f"{goods_data['goods_name']}×{str(goods_data['goods_unit'])}"
         #物品名字(非月卡)
-        item_name: str = item_name_full if int(goods_data['goods_unit']) > 0 else goods_data["goods_name"] #物品名字
+        item_name: str = item_name_full if int(goods_data['goods_unit']) > 0 else goods_data["goods_name"]
+        #物品名字
         item_price: str = order["currency"] + str(int(order["amount"])/100) #价格
         item_order_no: str = order['order_no']   #订单号
         item_create_time: int = order['create_time'] #创建时间

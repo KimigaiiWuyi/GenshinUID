@@ -45,6 +45,7 @@ class GsClient:
     async def recv_msg(self):
         try:
             global bots
+            await asyncio.sleep(5)
             _bots = get_bots()
             for bot_real_id in _bots:
                 bot = _bots[bot_real_id]
@@ -105,6 +106,23 @@ class GsClient:
                             msg.target_id,
                             msg.target_type,
                             msg.msg_id,
+                        )
+                    elif msg.bot_id == 'telegram':
+                        await telegram_send(
+                            bot,
+                            content,
+                            image,
+                            node,
+                            msg.target_id,
+                        )
+                    elif msg.bot_id == 'kaiheila':
+                        await kaiheila_send(
+                            bot,
+                            content,
+                            image,
+                            node,
+                            msg.target_id,
+                            msg.target_type,
                         )
                 except Exception as e:
                     logger.error(e)
@@ -257,6 +275,72 @@ async def ntchat_send(
                 to_wxid=target_id,
                 file_path=image,
             )
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                await _send(None, _msg['data'])
+            else:
+                await _send(_msg['data'], None)
+    else:
+        await _send(content, image)
+
+
+async def kaiheila_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[str]):
+        result = {}
+        result['type'] = 1
+        if image:
+            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            url = await bot.upload_file(img_bytes, 'GSUID-TEMP')  # type:ignore
+            result['type'] = 2
+            result['content'] = url
+        else:
+            result['content'] = content
+
+        if target_type == 'group':
+            api = 'message/create'
+            result['channel_id'] = target_id
+        else:
+            api = 'direct-message/create'
+            result['target_id'] = target_id
+        await bot.call_api(api, **result)
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                await _send(None, _msg['data'])
+            else:
+                await _send(_msg['data'], None)
+    else:
+        await _send(content, image)
+
+
+async def telegram_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    target_id: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[str]):
+        result = {}
+        if image:
+            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            result['photo'] = img_bytes
+        if content:
+            result['text'] = content
+        if content:
+            await bot.call_api('send_message', chat_id=target_id, **result)
+        if image:
+            await bot.call_api('send_photo', chat_id=target_id, **result)
 
     if node:
         for _msg in node:

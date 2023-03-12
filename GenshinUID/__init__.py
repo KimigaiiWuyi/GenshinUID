@@ -33,6 +33,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     group_id = sessions[-2] if len(sessions) >= 2 else None
     message: List[Message] = []
     msg_id = ''
+    sp_bot_id: Optional[str] = None
     sp_user_type: Optional[
         Literal['group', 'direct', 'channel', 'sub_channel']
     ] = None
@@ -50,6 +51,30 @@ async def send_char_adv(bot: Bot, ev: Event):
         else:
             group_id = str(raw_data['channel_id'])
         msg_id = raw_data['id']
+    # telegram
+    elif 'telegram_model' in raw_data:
+        messages = raw_data['message']
+        # message.append(Message(type='text', data=text))
+        if raw_data['chat'].type == 'group':
+            sp_user_type = 'group'
+            group_id = str(raw_data['chat'].id)
+
+        else:
+            sp_user_type = 'direct'
+            group_id = None
+        user_id = str(raw_data['from_'].id)
+    # kaiheila
+    elif 'channel_type' in raw_data:
+        sp_bot_id = 'kaiheila'
+        messages = raw_data['event'].content
+        if raw_data['channel_type'] == 'GROUP':
+            sp_user_type = 'group'
+            group_id = raw_data['target_id']
+        else:
+            sp_user_type = 'direct'
+            group_id = None
+        user_id = raw_data['author_id']
+        msg_id = raw_data['message_id']
     # ntchat
     elif not messages and 'message' in raw_data:
         messages = raw_data['message']
@@ -65,7 +90,11 @@ async def send_char_adv(bot: Bot, ev: Event):
             _at_list = raw_data['data']['at_user_list']
             at_list = [Message('at', i) for i in _at_list]
             message.extend(at_list)
-    bot_id = messages.__class__.__module__.split('.')[2]
+
+    if sp_bot_id:
+        bot_id = sp_bot_id
+    else:
+        bot_id = messages.__class__.__module__.split('.')[2]
 
     # 处理消息
     for _msg in messages:
@@ -73,9 +102,9 @@ async def send_char_adv(bot: Bot, ev: Event):
             message.append(
                 Message(
                     'text',
-                    _msg.data['text']
+                    _msg.data['text'].replace('/', '')
                     if 'text' in _msg.data
-                    else _msg.data['content'],
+                    else _msg.data['content'].replace('/', ''),
                 )
             )
         elif _msg.type == 'image':

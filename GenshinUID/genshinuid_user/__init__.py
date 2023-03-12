@@ -15,8 +15,8 @@ from nonebot.adapters.ntchat import (
     TextMessageEvent,
 )
 
-from .topup import topup_
 from ..config import priority
+from .topup import GOODS, topup_
 from .qrlogin import qrcode_login
 from .draw_user_card import get_user_card
 from ..genshinuid_meta import register_menu
@@ -65,22 +65,38 @@ get_qrcode_login = on_command(
     aliases={'扫码登陆', '扫码登入'},
     rule=FullCommand(),
 )
-get_topup = on_command('gsrc', priority=priority, block=True, aliases={'原神充值'})
+get_topup = on_command('gsrc', priority=priority, block=True, aliases={'原神充值', 'pay'})
 
 
 @get_topup.handle()
 async def send_topup(
     matcher: Matcher,
     event: TextMessageEvent,
+    args: Message = CommandArg()
 ):
+    # 获取被@的Wxid，排除""
     qid = event.from_wxid
-    goods_id = event.msg.replace('原神充值', '').replace('gsrc', '')
-    if goods_id == "":
-        goods_id = 0
-    else:
-        goods_id = int(goods_id)
+    if event.at_user_list:
+        for user in event.at_user_list:
+            user = user.strip()
+            if user != "":
+                qid = user
+
+    goods_id, method = 0, "alipay"
+    for s in str(args).split():
+        # 支持指定支付方式
+        if "微信" in s or "wx" in s:
+            method = "weixin"
+            continue
+        if "支付宝" in s or "zfb" in s:
+            method = "alipay"
+        # 输入物品别名识别
+        for gId, gData in GOODS.items():
+            if (s == gId) or (s in gData["aliases"]):
+                goods_id = gId
+                break
     group_id = event.room_wxid
-    await topup_(matcher, qid, group_id, goods_id)
+    await matcher.finish(await topup_(matcher, qid, group_id, goods_id, method))
 
 
 @refresh_all_ck.handle()

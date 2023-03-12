@@ -877,7 +877,7 @@ async def fetchgoods():
     return goodslist["data"]["goods_list"]
 
 
-async def topup(uid, goods):
+async def topup(uid, goods, method):
     device_id = str(uuid.uuid4())
     HEADER = copy.deepcopy(_HEADER)
     HEADER["Cookie"] = await owner_cookies(uid)
@@ -902,7 +902,7 @@ async def topup(uid, goods):
         "price_tier": goods["tier_id"],
         # "price_tier": "Tier_1",
         "currency": "CNY",
-        "pay_plat": "alipay",
+        "pay_plat": method,
     }
     data = {"order": order, "sign": gen_payment_sign(order)}
     HEADER["x-rpc-device_id"] = device_id

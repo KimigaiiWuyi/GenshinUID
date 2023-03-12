@@ -22,7 +22,6 @@ async def draw_ali(
     item_create_time: int,
     item_id: str
 ) -> bytes:
-    #    itemId: str, item: Image.Image, qrcode: Image.Image, info: Dict[str, str]
     """充值图片绘制"""
     async with AsyncClient() as client:
         _img = await client.get(item_icon, timeout=10.0)
@@ -80,7 +79,7 @@ async def draw_ali(
         # 首部矩形背景
         drawer.rectangle((75, 130, 375 - 1, 170), fill="#eeeeee", width=0)
         # 转换警告文字
-        warning_text = f"特殊情况将直接返还 330 创世结晶"
+        warning_text = "特殊情况将直接返还 330 创世结晶"
         drawer.text(
             (
                 int((450 - font(15).getlength(warning_text)) / 2),
@@ -195,7 +194,7 @@ async def draw_wx(
         drawer.rectangle((left, top + 110, left + 370,
                          top + 130), fill="#eeeeee", width=0)
         # 转换警告文字
-        warning_text = f"特殊情况将直接返还 330 创世结晶"
+        warning_text = "特殊情况将直接返还 330 创世结晶"
         drawer.text(
             (
                 int((450 - font(15).getlength(warning_text)) / 2),

@@ -110,7 +110,8 @@ async def topup_(matcher: Matcher, qid, group_id, goods_id, method):
         item_icon_url: str = goods_data['goods_icon'] #图标
         item_id:str = goods_data['goods_id'] #商品内部id
         item_pay_url:str = order['encode_order'] #支付链接
-        item_name_full = f"{goods_data['goods_name']}×{str(goods_data['goods_unit'])}" #物品名字(非月卡)
+        item_name_full = f"{goods_data['goods_name']}×{str(goods_data['goods_unit'])}"
+        #物品名字(非月卡)
         item_name: str = item_name_full if int(goods_data['goods_unit']) > 0 else goods_data["goods_name"] #物品名字
         item_price: str = order["currency"] + str(int(order["amount"])/100) #价格
         item_order_no: str = order['order_no']   #订单号
@@ -134,8 +135,9 @@ async def topup_(matcher: Matcher, qid, group_id, goods_id, method):
                                     item_icon_url, 
                                     item_create_time,
                                     item_id)
-            msg_text = '{$@}'+f' UID：{uid}\n{item_name}\n{item_create_time}\n\nZF：{item_pay_url}\n\n{disnote}'
-            at_msg = MessageSegment.room_at_msg(content=msg_text, at_list= wxid_list)
+            msg_text = '{$@}'+f' UID：{uid}\n{item_name}\n{item_create_time}'
+            msg_text2 = msg_text + f'\n\nZF：{item_pay_url}\n\n{disnote}'
+            at_msg = MessageSegment.room_at_msg(content=msg_text2, at_list= wxid_list)
             return MessageSegment.image(img_data) + at_msg
             
     except Exception as e:

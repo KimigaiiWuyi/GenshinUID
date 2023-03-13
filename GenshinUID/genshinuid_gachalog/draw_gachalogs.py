@@ -5,8 +5,8 @@ import datetime
 from pathlib import Path
 from typing import List, Tuple, Union
 
-from nonebot.log import logger
 from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
 
 from ..utils.image.convert import convert_img
 from ..utils.map.name_covert import name_to_avatar_id

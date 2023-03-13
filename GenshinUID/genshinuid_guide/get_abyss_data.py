@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Union
 
-from nonebot.log import logger
+from gsuid_core.logger import logger
 
 from .abyss_history import history_data
 from ..gsuid_utils.api.hhw.request import (

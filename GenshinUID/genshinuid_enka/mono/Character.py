@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 
-from nonebot.log import logger
+from gsuid_core.logger import logger
 
 from .Power import sp_prop
 from ..etc.get_buff_list import get_buff_list

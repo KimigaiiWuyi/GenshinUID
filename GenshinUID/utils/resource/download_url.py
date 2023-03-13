@@ -1,7 +1,7 @@
 from typing import Tuple, Optional
 
 import aiofiles
-from nonebot.log import logger
+from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 

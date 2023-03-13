@@ -2,8 +2,8 @@ from pathlib import Path
 from typing import List, Union
 
 import git
-from nonebot.log import logger
 from git.exc import GitCommandError
+from gsuid_core.logger import logger
 
 
 async def update_from_git(

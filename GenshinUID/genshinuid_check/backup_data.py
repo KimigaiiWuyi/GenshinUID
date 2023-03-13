@@ -2,10 +2,14 @@ import os
 import datetime
 from shutil import copyfile
 
-from nonebot.log import logger
+from gsuid_core.logger import logger
+from gsuid_core.data_store import get_res_path
 
-from ..utils.database import get_sqla
+from ..utils.database import db_url, get_sqla
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
+
+DB = get_res_path().parent / 'GsData.db'
+DB_BACKUP = get_res_path() / 'GenshinUID'
 
 
 async def data_backup():
@@ -14,9 +18,11 @@ async def data_backup():
         endday = today - datetime.timedelta(days=5)
         date_format = today.strftime("%Y_%d_%b")
         endday_format = endday.strftime("%Y_%d_%b")
-        copyfile('ID_DATA.db', f'ID_DATA_BAK_{date_format}.db')
-        if os.path.exists(f'ID_DATA_BAK_{endday_format}.db'):
-            os.remove(f'ID_DATA_BAK_{endday_format}.db')
+        backup = DB_BACKUP / f'GsData_BAK_{date_format}.db'
+        end_day_backup = DB_BACKUP / f'GsData_BAK_{endday_format}.db'
+        copyfile(db_url, backup)
+        if os.path.exists(end_day_backup):
+            os.remove(end_day_backup)
             logger.info(f'————已删除数据库备份{endday_format}————')
         logger.info('————数据库成功备份————')
         for f in TEMP_PATH.glob('*.jpg'):

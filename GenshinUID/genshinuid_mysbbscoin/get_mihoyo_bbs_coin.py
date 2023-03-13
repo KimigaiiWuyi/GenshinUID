@@ -4,7 +4,7 @@ from copy import deepcopy
 from typing import Dict, Literal
 
 from httpx import AsyncClient
-from nonebot.log import logger
+from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
 from ..gsuid_utils.api.mys.tools import (

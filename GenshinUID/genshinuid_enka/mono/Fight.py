@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 
-from nonebot.log import logger
+from gsuid_core.logger import logger
 
 from .Enemy import Enemy
 from .Power import Power

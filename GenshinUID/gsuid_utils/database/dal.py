@@ -233,6 +233,16 @@ class SQLA:
             return True
         return False
 
+    async def update_user_cookie(
+        self, uid: str, cookie: Optional[str]
+    ) -> bool:
+        if await self.user_exists(uid):
+            sql = update(GsUser).where(GsUser.uid == uid).values(cookie=cookie)
+            await self.session.execute(sql)
+            await self.session.commit()
+            return True
+        return False
+
     async def update_switch_status(self, uid: str, data: Dict) -> bool:
         if await self.user_exists(uid):
             sql = update(GsUser).where(GsUser.uid == uid).values(**data)

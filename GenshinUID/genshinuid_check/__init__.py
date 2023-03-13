@@ -13,7 +13,7 @@ from ..utils.database import get_sqla
 from ..gsuid_utils.database.models import GsUser
 
 
-@scheduler.scheduled_job('cron', hour=0)
+@scheduler.scheduled_job('cron', hour=0, minute=6)
 async def daily_refresh_charData():
     await data_backup()
 
@@ -36,7 +36,7 @@ async def send_check_cookie(bot: Bot, ev: Event):
                 True if int(user.uid[0]) > 5 else False,
             )
             if isinstance(mys_data, int):
-                await get_sqla(bot.bot_id).delete_user_data(user.uid)
+                await get_sqla(bot.bot_id).update_user_cookie(user.uid, None)
                 invalid_user.append(user)
                 continue
             for i in mys_data:
@@ -81,8 +81,7 @@ async def send_check_stoken(bot: Bot, ev: Event):
     for user in user_list:
         if user.stoken and user.mys_id:
             mys_data = await mys_api.get_cookie_token_by_stoken(
-                user.stoken,
-                user.mys_id,
+                '', user.mys_id, user.stoken
             )
             if isinstance(mys_data, int):
                 await get_sqla(bot.bot_id).update_user_stoken(user.uid, None)

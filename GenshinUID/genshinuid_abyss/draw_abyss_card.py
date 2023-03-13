@@ -3,8 +3,8 @@ import asyncio
 from pathlib import Path
 from typing import Union, Optional
 
-from nonebot.log import logger
 from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
 
 from ..utils.convert import GsCookie
 from ..utils.error_reply import get_error

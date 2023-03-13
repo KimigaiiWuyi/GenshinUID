@@ -2,8 +2,8 @@ import asyncio
 from pathlib import Path
 from typing import Union
 
-from nonebot.log import logger
 from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
 
 from .gs_config import gsconfig
 from ..utils.database import get_sqla

@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 from bs4 import BeautifulSoup
-from nonebot.log import logger
+from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 
 from .download_url import PATH_MAP, download_file

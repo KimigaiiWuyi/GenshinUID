@@ -1,6 +1,6 @@
 from typing import Optional
 
-from nonebot.log import logger
+from gsuid_core.logger import logger
 
 from .gs_config import gsconfig
 from ..utils.database import get_sqla

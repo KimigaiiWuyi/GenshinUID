@@ -1,8 +1,8 @@
 import asyncio
 from pathlib import Path
 
-from nonebot.log import logger
 from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
 from ..utils.convert import GsCookie

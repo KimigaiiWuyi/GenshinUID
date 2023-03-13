@@ -6,8 +6,8 @@ from typing import Literal
 
 import qrcode
 from gsuid_core.bot import Bot
-from nonebot.log import logger
 from qrcode import ERROR_CORRECT_L
+from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla

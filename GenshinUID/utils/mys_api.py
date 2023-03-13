@@ -30,8 +30,11 @@ class _MysApi(MysApi):
 
         return validate, ch
 
-    async def _upass(self, header: Dict):
-        raw_data = await self.get_upass_link(header)
+    async def _upass(self, header: Dict, is_bbs: bool = False):
+        if is_bbs:
+            raw_data = await self.get_bbs_upass_link(header)
+        else:
+            raw_data = await self.get_upass_link(header)
         if isinstance(raw_data, int):
             return False
         gt = raw_data['data']['gt']

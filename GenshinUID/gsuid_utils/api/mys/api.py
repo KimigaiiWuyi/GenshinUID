@@ -3,6 +3,7 @@ OLD_URL = 'https://api-takumi.mihoyo.com'
 NEW_URL = 'https://api-takumi-record.mihoyo.com'
 BBS_URL = 'https://bbs-api.mihoyo.com'
 HK4_URL = 'https://hk4e-api.mihoyo.com'
+NEW_BBS_URL = 'https://bbs-api.miyoushe.com'
 
 OLD_URL_OS = 'https://api-os-takumi.mihoyo.com'
 NEW_URL_OS = 'https://bbs-api-os.hoyolab.com'
@@ -16,8 +17,8 @@ HK4E_LOGIN_URL_OS = f'{OLD_URL_OS}/common/badge/v1/login/account'
 
 BBS_TASKLIST = f'{BBS_URL}/apihub/sapi/getUserMissionsState'
 
-PASSPORT_URL = "https://passport-api.mihoyo.com"
-HK4_SDK_URL = "https://hk4e-sdk.mihoyo.com"
+PASSPORT_URL = 'https://passport-api.mihoyo.com'
+HK4_SDK_URL = 'https://hk4e-sdk.mihoyo.com'
 
 '''GT'''
 # AJAX 无感验证
@@ -32,6 +33,9 @@ GT_TPYE_URL = 'https://api.geetest.com/gettype.php?gt={}'
 VERIFICATION_URL = (
     f'{NEW_URL}/game_record/app/card/wapi/createVerification?is_high=false'
 )
+BBS_VERIFICATION_URL = (
+    f'{NEW_BBS_URL}/game_record/app/card/wapi/createVerification?is_high=false'
+)
 VERIFY_URL = f'{NEW_URL}/game_record/app/card/wapi/verifyVerification'
 
 '''账号相关'''
@@ -45,14 +49,14 @@ GET_AUTHKEY_URL = f'{OLD_URL}/binding/api/genAuthKey'
 GET_GACHA_LOG_URL = f'{HK4_URL}/event/gacha_info/api/getGachaLog'
 GET_GACHA_LOG_URL_OS = f'{HK4_URL_OS}/event/gacha_info/api/getGachaLog'
 # 通过GameToken获取Stoken
-GET_STOKEN = f"{PASSPORT_URL}/account/ma-cn-session/app/getTokenByGameToken"
+GET_STOKEN = f'{PASSPORT_URL}/account/ma-cn-session/app/getTokenByGameToken'
 # 创建登录URL
-CREATE_QRCODE = f"{HK4_SDK_URL}/hk4e_cn/combo/panda/qrcode/fetch"
+CREATE_QRCODE = f'{HK4_SDK_URL}/hk4e_cn/combo/panda/qrcode/fetch'
 # 检查二维码扫描状态
-CHECK_QRCODE = f"{HK4_SDK_URL}/hk4e_cn/combo/panda/qrcode/query"
+CHECK_QRCODE = f'{HK4_SDK_URL}/hk4e_cn/combo/panda/qrcode/query'
 # 通过GameToken获取Cookie_token
 GET_COOKIE_TOKEN_BY_GAME_TOKEN = (
-    f"{OLD_URL}/auth/api/getCookieAccountInfoByGameToken"
+    f'{OLD_URL}/auth/api/getCookieAccountInfoByGameToken'
 )
 
 '''米游社相关'''
@@ -106,20 +110,20 @@ REG_TIME = f'{HK4_URL}/event/e20220928anniversary/game_data?'
 REG_TIME_OS = f'{ACT_URL_OS}/event/e20220928anniversary/game_data?'
 
 # 米游社的API列表
-bbs_Taskslist = f'{BBS_URL}/apihub/sapi/getUserMissionsState'
-bbs_Signurl = f'{BBS_URL}/apihub/app/api/signIn'
-bbs_Listurl = (
+BBS_TASKS_LIST = f'{BBS_URL}/apihub/sapi/getUserMissionsState'
+BBS_SIGN_URL = f'{BBS_URL}/apihub/app/api/signIn'
+BBS_LIST_URL = (
     BBS_URL + '/post/api/getForumPostList?'
     'forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1'
 )
-bbs_Detailurl = BBS_URL + '/post/api/getPostFull?post_id={}'
-bbs_Shareurl = BBS_URL + '/apihub/api/getShareConf?entity_id={}&entity_type=1'
-bbs_Likeurl = f'{BBS_URL}/apihub/sapi/upvotePost'
+BBS_DETAIL_URL = BBS_URL + '/post/api/getPostFull?post_id={}'
+BBS_SHARE_URL = BBS_URL + '/apihub/api/getShareConf?entity_id={}&entity_type=1'
+BBS_LIKE_URL = f'{BBS_URL}/apihub/sapi/upvotePost'
 
 # 原神充值中心
-fetchGoodsurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/fetchGoods"
-CreateOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/createOrder"
-CheckOrderurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/checkOrder"
-PriceTierurl = f"{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/listPriceTier"
+fetchGoodsurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/fetchGoods'
+CreateOrderurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/createOrder'
+CheckOrderurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/checkOrder'
+PriceTierurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/listPriceTier'
 
 _API = locals()

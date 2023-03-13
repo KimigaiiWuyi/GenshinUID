@@ -103,6 +103,14 @@ class MysApi:
             header=header,
         )
 
+    async def get_bbs_upass_link(self, header: Dict) -> Union[int, Dict]:
+        header['DS'] = get_ds_token('is_high=false')
+        return await self._mys_request(
+            url=_API['BBS_VERIFICATION_URL'],
+            method='GET',
+            header=header,
+        )
+
     async def get_header_and_vl(self, header: Dict, ch, vl):
         header['DS'] = get_ds_token(
             '',
@@ -645,6 +653,8 @@ class MysApi:
             return cast(RegTime, data['data'])
         else:
             return data
+
+    '''充值相关'''
 
     async def get_fetchgoods(self) -> Union[int, List[MysGoods]]:
         data = {

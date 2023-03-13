@@ -1,3 +1,5 @@
+import os
+
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.gss import gss
@@ -42,6 +44,13 @@ async def send_restart_msg(bot: Bot, ev: Event):
         send_type = 'direct'
     await bot.send('正在执行[gs重启]...')
     await restart_genshinuid(bot.bot_id, send_type, str(send_id))
+
+
+@SV('Core管理', pm=1).on_fullmatch(('gs关闭core', 'gs关闭Core'))
+async def send_shutdown_msg(bot: Bot, ev: Event):
+    await bot.logger.warning('开始执行[关闭]')
+    await bot.send('正在执行[gs关闭Core]...')
+    os._exit(0)
 
 
 @SV('Core更新记录').on_fullmatch(('更新记录'))

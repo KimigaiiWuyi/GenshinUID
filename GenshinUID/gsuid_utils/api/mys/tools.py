@@ -10,6 +10,7 @@ _S = {
     '2.44.1': {
         'LK2': 'IEIZiKYaput2OCKQprNuGsog1NZc1FkS',
         'K2': 'dZAwGk4e9aC0MXXItkwnHamjA1x30IYw',
+        '22': 't0qEgfub6cvueAPgR5m9aQWWVciEer7v',
         '25': 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs',
     },
     'os': '6cqshh5dhw73bzxn20oexa9k516chk7s',
@@ -62,8 +63,9 @@ def _random_int_ds(salt: str, q: str = '', b: Optional[Dict[str, Any]] = None):
 def get_ds_token(
     q: str = '',
     b: Optional[Dict[str, Any]] = None,
-    salt: str = _S['2.44.1']['25'],
+    salt_id: str = '25',
 ):
+    salt = _S['2.44.1'][salt_id]
     return _random_int_ds(salt, q, b)
 
 

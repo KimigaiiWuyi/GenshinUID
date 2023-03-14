@@ -1,0 +1,6 @@
+first_color = (29, 29, 29)
+sec_color = (35, 35, 35)
+brown_color = (41, 25, 0)
+light_color = (255, 233, 201)
+red_color = (255, 66, 66)
+green_color = (74, 189, 119)

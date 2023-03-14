@@ -104,6 +104,8 @@ MIHOYO_BBS_PLAYER_INFO_URL_OS = (
 # 获取七圣召唤相关信息
 GCG_INFO = f'{NEW_URL}/game_record/app/genshin/api/gcg/basicInfo'
 GCG_INFO_OS = f'{NEW_URL_OS}/game_record/genshin/api/gcg/basicInfo'
+GCG_DECK_URL = f'{NEW_URL}/game_record/app/genshin/api/gcg/deckList'
+GCG_DECK_URL_OS = f'{NEW_URL_OS}/game_record/app/genshin/api/gcg/deckList'
 
 # 获取注册时间API 绘忆星辰
 REG_TIME = f'{HK4_URL}/event/e20220928anniversary/game_data?'

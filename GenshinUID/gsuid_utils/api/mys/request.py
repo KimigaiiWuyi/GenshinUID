@@ -36,6 +36,7 @@ from .models import (
     AbyssData,
     IndexData,
     AuthKeyInfo,
+    GcgDeckInfo,
     MonthlyAward,
     QrCodeStatus,
     CalculateInfo,
@@ -150,6 +151,12 @@ class MysApi:
         data = await self.simple_mys_req('GCG_INFO', uid)
         if isinstance(data, Dict):
             data = cast(GcgInfo, data['data'])
+        return data
+
+    async def get_gcg_deck(self, uid: str) -> Union[GcgDeckInfo, int]:
+        data = await self.simple_mys_req('GCG_DECK_URL', uid)
+        if isinstance(data, Dict):
+            data = cast(GcgDeckInfo, data['data'])
         return data
 
     async def get_cookie_token(

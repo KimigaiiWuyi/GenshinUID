@@ -31,5 +31,7 @@ def get_error(retcode: Union[int, str]) -> str:
         return VERIFY_HINT
     elif retcode == -10001:
         return '请求体出错, 请检查具体实现代码...'
+    elif retcode == 10104:
+        return CK_HINT
     else:
         return f'API报错, 错误码为{retcode}!'

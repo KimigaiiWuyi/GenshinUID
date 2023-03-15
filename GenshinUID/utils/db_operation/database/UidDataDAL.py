@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from sqlalchemy import update
 from sqlalchemy.orm import Session
@@ -27,6 +27,15 @@ class UidDataDAL:
             return data[0]
         else:
             return None
+
+    async def get_all_bind(self) -> List[Dict]:
+        sql = select(UidData).where(UidData.UID)
+        result = await self.db_session.execute(sql)  # type: ignore
+        data = result.scalars().all()
+        bind_list = []
+        for item in data:
+            bind_list.append(item.__dict__)
+        return bind_list
 
     async def user_exists(self, userid: int) -> bool:
         """

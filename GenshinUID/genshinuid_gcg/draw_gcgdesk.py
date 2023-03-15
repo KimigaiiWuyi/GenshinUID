@@ -62,6 +62,11 @@ async def draw_deck_img(
     img_draw.text((475, 466), deck_name, first_color, gs_font_36, 'mm')
 
     action_card = raw_data['action_cards']
+    
+    action_cards=[]
+    for action in action_card:
+        for _ in range(action['num']):
+            action_cards.append(action)
 
     same = Image.open(TEXT_PATH / 'same.png')
     void = Image.open(TEXT_PATH / 'void.png')
@@ -71,7 +76,7 @@ async def draw_deck_img(
         _cc = _c + 6
         bg = Image.open(TEXT_PATH / 'bar.png')
         bg_draw = ImageDraw.Draw(bg)
-        for index, action in enumerate(action_card[_c:_cc]):
+        for index, action in enumerate(action_cards[_c:_cc]):
             path = CARD_PATH / f'{action["id"]}.png'
             if not path.exists():
                 await download(action['image'], 9, f'{action["id"]}.png')

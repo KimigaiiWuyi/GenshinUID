@@ -14,6 +14,7 @@ from nonebot.adapters.onebot.v11 import (
     GroupMessageEvent,
 )
 
+from .topup import topup_
 from ..config import priority
 from .qrlogin import qrcode_login
 from .get_ck_help_msg import get_ck_help
@@ -57,6 +58,19 @@ get_qrcode_login = on_command(
     aliases={'扫码登陆', '扫码登入'},
     rule=FullCommand(),
 )
+get_topup = on_command('gsrc', priority=priority, block=True, aliases={'原神充值'})
+
+
+@get_topup.handle()
+async def send_topup(bot: Bot, event: GroupMessageEvent):
+    qid = event.user_id
+    goods_id = event.raw_message.replace('原神充值', '').replace('gsrc', '')
+    if goods_id == "":
+        goods_id = 0
+    else:
+        goods_id = int(goods_id)
+    group_id = event.group_id
+    await topup_(bot, qid, group_id, goods_id)
 
 
 @refresh_all_ck.handle()

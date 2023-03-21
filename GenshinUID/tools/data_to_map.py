@@ -48,6 +48,8 @@ BETA_CHAR = {
     '10000077': '瑶瑶',
     '10000079': '迪希雅',
     '10000080': '米卡',
+    '10000081': '卡维',
+    '10000082': '白术',
 }
 
 
@@ -102,9 +104,9 @@ async def avatarName2ElementJson() -> None:
         data = httpx.get(
             f'https://info.minigg.cn/characters?query={name}'
         ).json()
-        if 'errcode' in data:
+        if 'retcode' in data:
             data = await convert_ambr_to_minigg(_id)
-        if data is not None and 'code' not in data:
+        if data is not None and 'retcode' not in data:
             temp[name] = elementMap[data['element']]
             enName = data['images']['namesideicon'].split('_')[-1]
             enName2Id_result[enName] = _id

@@ -6690,6 +6690,169 @@
         "globalValueKey": ""
     },
     {
+        "id": 10791,
+        "nameTextMapHash": 804739701,
+        "abilityName": "Avatar_Dehya_ExtraAttack",
+        "descTextMapHash": 3808525952,
+        "skillIcon": "Skill_A_04",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7931,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10792,
+        "nameTextMapHash": 588248229,
+        "abilityName": "",
+        "descTextMapHash": 2962089080,
+        "skillIcon": "Skill_S_Dehya_01",
+        "cdTime": 20.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7932,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10793,
+        "nameTextMapHash": 2706644389,
+        "abilityName": "",
+        "descTextMapHash": 1664359640,
+        "skillIcon": "Skill_S_Dehya_02",
+        "maxChargeNum": 1,
+        "triggerID": 3,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10794,
+        "nameTextMapHash": 3699125269,
+        "abilityName": "Avatar_Dehya_ElementalBurst_Controller",
+        "descTextMapHash": 3743246560,
+        "skillIcon": "Skill_E_Dehya_02",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR8H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.8999999761581421,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 10795,
+        "nameTextMapHash": 594609117,
+        "abilityName": "",
+        "descTextMapHash": 2917310896,
+        "skillIcon": "Skill_E_Dehya_01",
+        "cdTime": 18.0,
+        "costElemType": "Fire",
+        "costElemVal": 70.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR15H10HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 7939,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10801,
+        "nameTextMapHash": 2556517,
+        "abilityName": "Avatar_Mika_ExtraAttack",
+        "descTextMapHash": 3680931736,
+        "skillIcon": "Skill_A_03",
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 8031,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10802,
+        "nameTextMapHash": 3335717533,
+        "abilityName": "Avatar_Mika_ElementalArt",
+        "descTextMapHash": 2280652960,
+        "skillIcon": "Skill_S_Mika_01",
+        "cdTime": 15.0,
+        "maxChargeNum": 1,
+        "triggerID": 2,
+        "lockShape": "CircleLockEnemyR10H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 8032,
+        "globalValueKey": ""
+    },
+    {
+        "id": 10805,
+        "nameTextMapHash": 3170404421,
+        "abilityName": "",
+        "descTextMapHash": 1265120456,
+        "skillIcon": "Skill_E_Mika_01",
+        "cdTime": 18.0,
+        "costElemType": "Ice",
+        "costElemVal": 70.0,
+        "maxChargeNum": 1,
+        "triggerID": 5,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "proudSkillGroupId": 8039,
+        "globalValueKey": ""
+    },
+    {
         "id": 20001,
         "nameTextMapHash": 1936482797,
         "abilityName": "Dvalin_S01_AirGun",
@@ -7185,7 +7348,7 @@
         "isAttackCameraLock": true,
         "buffIcon": "",
         "globalValueKey": "",
-        "BDIHDCLIHDM": 3
+        "IDPGANBPIGN": 3
     },
     {
         "id": 20043,
@@ -8477,6 +8640,27 @@
         "globalValueKey": "AVATAR_LANV3RACE_ENERGY",
         "energyMin": 100.0,
         "cdSlot": 2
+    },
+    {
+        "id": 20345,
+        "nameTextMapHash": 1316655253,
+        "abilityName": "Avatar_PacMan_Skill_Antikill",
+        "descTextMapHash": 4000896536,
+        "skillIcon": "Btn_PacMan",
+        "cdTime": 7.0,
+        "ignoreCDMinusRatio": true,
+        "maxChargeNum": 1,
+        "lockShape": "CircleLockEnemyR10",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": "TEAM_ANTI_KILL_ENERGY",
+        "energyMin": 1.0
     },
     {
         "id": 10384,
@@ -10268,6 +10452,44 @@
         "abilityName": "",
         "descTextMapHash": 1082186432,
         "skillIcon": "Skill_A_01",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5079010,
+        "nameTextMapHash": 2895358061,
+        "abilityName": "",
+        "descTextMapHash": 3280353768,
+        "skillIcon": "Skill_A_04",
+        "maxChargeNum": 1,
+        "triggerID": 30,
+        "lockShape": "CircleLockEnemyR5H6HC",
+        "lockWeightParams": [
+            1.0,
+            1.0,
+            0.30000001192092896,
+            0.0
+        ],
+        "isAttackCameraLock": true,
+        "buffIcon": "",
+        "globalValueKey": ""
+    },
+    {
+        "id": 5080010,
+        "nameTextMapHash": 886703661,
+        "abilityName": "",
+        "descTextMapHash": 2979519296,
+        "skillIcon": "Skill_A_03",
         "maxChargeNum": 1,
         "triggerID": 30,
         "lockShape": "CircleLockEnemyR5H6HC",

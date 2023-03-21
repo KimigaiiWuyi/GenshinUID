@@ -11,7 +11,7 @@ from abc import abstractmethod
 from string import digits, ascii_letters
 from typing import Any, Dict, List, Union, Literal, Optional, cast
 
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ContentTypeError
 
 from .api import _API
 from .tools import (
@@ -845,7 +845,11 @@ class MysApi:
                 proxy=self.proxy_url if use_proxy else None,
                 timeout=300,
             ) as resp:
-                raw_data = await resp.json()
+                try:
+                    raw_data = await resp.json()
+                except ContentTypeError:
+                    _raw_data = await resp.text()
+                    raw_data = {'retcode': -999, 'data': _raw_data}
                 print(raw_data)
                 if 'retcode' in raw_data:
                     retcode: int = raw_data['retcode']

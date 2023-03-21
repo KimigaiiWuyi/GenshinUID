@@ -33,5 +33,7 @@ def get_error(retcode: Union[int, str]) -> str:
         return '请求体出错, 请检查具体实现代码...'
     elif retcode == 10104:
         return CK_HINT
+    elif retcode == -201:
+        return '你的账号可能已被封禁, 请联系米游社客服...'
     else:
         return f'API报错, 错误码为{retcode}!'

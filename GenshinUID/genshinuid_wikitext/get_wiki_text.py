@@ -306,9 +306,9 @@ async def talent_wiki(name: str, level: int) -> Union[List[Message], str]:
         im = '该角色不存在。'
     else:
         if int(level) <= 3:
-            if level == '1':
+            if level == 1:
                 data = data['combat1']
-            elif level == '2':
+            elif level == 2:
                 data = data['combat2']
             else:
                 data = data['combat3']
@@ -380,11 +380,11 @@ async def talent_wiki(name: str, level: int) -> Union[List[Message], str]:
                 mes_list.append(MessageSegment.text(f'lv.{index + 1}\n{mes}'))
             im = mes_list
         else:
-            if level == '4':
+            if level == 4:
                 data = data['passive1']
-            elif level == '5':
+            elif level == 5:
                 data = data['passive2']
-            elif level == '6':
+            elif level == 6:
                 data = data['passive3']
             else:
                 if 'passive4' in data:

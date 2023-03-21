@@ -326,14 +326,14 @@ typecheck = ["mypy"]
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.11.2"
+version = "4.12.0"
 description = "Screen-scraping library"
 category = "main"
 optional = false
 python-versions = ">=3.6.0"
 files = [
-    {file = "beautifulsoup4-4.11.2-py3-none-any.whl", hash = "sha256:0e79446b10b3ecb499c1556f7e228a53e64a2bfcebd455f370d8927cb5b59e39"},
-    {file = "beautifulsoup4-4.11.2.tar.gz", hash = "sha256:bc4bdda6717de5a2987436fb8d72f45dc90dd856bdfd512a1314ce90349a0106"},
+    {file = "beautifulsoup4-4.12.0-py3-none-any.whl", hash = "sha256:2130a5ad7f513200fae61a17abb5e338ca980fa28c439c0571014bc0217e9591"},
+    {file = "beautifulsoup4-4.12.0.tar.gz", hash = "sha256:c5fceeaec29d09c84970e47c65f2f0efe57872f7cff494c9691a26ec0ff13234"},
 ]
 
 [package.dependencies]
@@ -593,14 +593,14 @@ test = ["pytest (>=6)"]
 
 [[package]]
 name = "fastapi"
-version = "0.94.1"
+version = "0.95.0"
 description = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fastapi-0.94.1-py3-none-any.whl", hash = "sha256:451387550c2d25a972193f22e408a82e75a8e7867c834a03076704fe20df3256"},
-    {file = "fastapi-0.94.1.tar.gz", hash = "sha256:4a75936dbf9eb74be5eb0d41a793adefe9f3fc6ba66dbdabd160120fd3c2d9cd"},
+    {file = "fastapi-0.95.0-py3-none-any.whl", hash = "sha256:daf73bbe844180200be7966f68e8ec9fd8be57079dff1bacb366db32729e6eb5"},
+    {file = "fastapi-0.95.0.tar.gz", hash = "sha256:99d4fdb10e9dd9a24027ac1d0bd4b56702652056ca17a6c8721eec4ad2f14e18"},
 ]
 
 [package.dependencies]
@@ -615,14 +615,14 @@ test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==23.1.0)", "coverage[toml] (>=6
 
 [[package]]
 name = "fastapi-amis-admin"
-version = "0.5.0"
+version = "0.5.1"
 description = "FastAPI-Amis-Admin is a high-performance, efficient and easily extensible FastAPI admin framework. Inspired by Django-admin, and has as many powerful functions as Django-admin. "
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fastapi_amis_admin-0.5.0-py3-none-any.whl", hash = "sha256:82f232c27b277d83f8829c1be07ec64ebbc94acf6bfd6fadf30c1f9fc9ed2704"},
-    {file = "fastapi_amis_admin-0.5.0.tar.gz", hash = "sha256:f17d9cba8e2b32374d5a6f6576b98867d5777668a92885663a01b7a0faf206ff"},
+    {file = "fastapi_amis_admin-0.5.1-py3-none-any.whl", hash = "sha256:7cb65e6389c8f132152fd185cb8832d63a2401689db92b2e0fc2cb9d8d22969c"},
+    {file = "fastapi_amis_admin-0.5.1.tar.gz", hash = "sha256:da4d11fc1f68bb48c817e02b477b5673e4d8e42dfec28e29eabd3937f2b35a36"},
 ]
 
 [package.dependencies]
@@ -668,14 +668,14 @@ test = ["aiosqlite (>=0.15.0)", "jinja2 (>=2.11.2,<4.0.0)", "pytest (>=6.2.4)", 
 
 [[package]]
 name = "filelock"
-version = "3.9.1"
+version = "3.10.0"
 description = "A platform independent file lock."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "filelock-3.9.1-py3-none-any.whl", hash = "sha256:4427cdda14a1c68e264845142842d6de2d0fa2c15ba31571a3d9c9a1ec9d191c"},
-    {file = "filelock-3.9.1.tar.gz", hash = "sha256:e393782f76abea324dee598d2ea145b857a20df0e0ee4f80fcf35e72a341d2c7"},
+    {file = "filelock-3.10.0-py3-none-any.whl", hash = "sha256:e90b34656470756edf8b19656785c5fea73afa1953f3e1b0d645cef11cab3182"},
+    {file = "filelock-3.10.0.tar.gz", hash = "sha256:3199fd0d3faea8b911be52b663dfccceb84c95949dd13179aa21436d1a79c4ce"},
 ]
 
 [package.extras]
@@ -947,14 +947,14 @@ socks = ["socksio (>=1.0.0,<2.0.0)"]
 
 [[package]]
 name = "identify"
-version = "2.5.20"
+version = "2.5.21"
 description = "File identification library for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "identify-2.5.20-py2.py3-none-any.whl", hash = "sha256:5dfef8a745ca4f2c95f27e9db74cb4c8b6d9916383988e8791f3595868f78a33"},
-    {file = "identify-2.5.20.tar.gz", hash = "sha256:c8b288552bc5f05a08aff09af2f58e6976bf8ac87beb38498a0e3d98ba64eb18"},
+    {file = "identify-2.5.21-py2.py3-none-any.whl", hash = "sha256:69edcaffa8e91ae0f77d397af60f148b6b45a8044b2cc6d99cafa5b04793ff00"},
+    {file = "identify-2.5.21.tar.gz", hash = "sha256:7671a05ef9cfaf8ff63b15d45a91a1147a03aaccb2976d4e9bd047cbbc508471"},
 ]
 
 [package.extras]
@@ -2246,14 +2246,14 @@ files = [
 
 [[package]]
 name = "tzlocal"
-version = "4.2"
+version = "4.3"
 description = "tzinfo object for the local timezone"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "tzlocal-4.2-py3-none-any.whl", hash = "sha256:89885494684c929d9191c57aa27502afc87a579be5cdd3225c77c463ea043745"},
-    {file = "tzlocal-4.2.tar.gz", hash = "sha256:ee5842fa3a795f023514ac2d801c4a81d1743bbe642e3940143326b3a00addd7"},
+    {file = "tzlocal-4.3-py3-none-any.whl", hash = "sha256:b44c4388f3d34f25862cfbb387578a4d70fec417649da694a132f628a23367e2"},
+    {file = "tzlocal-4.3.tar.gz", hash = "sha256:3f21d09e1b2aa9f2dacca12da240ca37de3ba5237a93addfd6d593afe9073355"},
 ]
 
 [package.dependencies]
@@ -2262,8 +2262,7 @@ pytz-deprecation-shim = "*"
 tzdata = {version = "*", markers = "platform_system == \"Windows\""}
 
 [package.extras]
-devenv = ["black", "pyroma", "pytest-cov", "zest.releaser"]
-test = ["pytest (>=4.3)", "pytest-mock (>=3.3)"]
+devenv = ["black", "check-manifest", "flake8", "pyroma", "pytest (>=4.3)", "pytest-cov", "pytest-mock (>=3.3)", "zest.releaser"]
 
 [[package]]
 name = "urllib3"

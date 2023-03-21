@@ -18,12 +18,17 @@ class SQLA:
         self.bot_id = bot_id
         self.url = f'sqlite+aiosqlite:///{url}'
         self.engine = create_async_engine(self.url, pool_recycle=1500)
-        self.session = sessionmaker(
+        self.async_session = sessionmaker(
             self.engine, expire_on_commit=False, class_=AsyncSession
-        )()
+        )
 
     def create_all(self):
-        asyncio.create_task(self._create_all())
+        try:
+            asyncio.create_task(self._create_all())
+        except RuntimeError:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self._create_all())
+            loop.close()
 
     async def _create_all(self):
         async with self.engine.begin() as conn:
@@ -33,67 +38,80 @@ class SQLA:
     # GsBind 部分 #
     #####################
     async def select_bind_data(self, user_id: str) -> Optional[GsBind]:
-        result = await self.session.execute(
-            select(GsBind).where(
-                GsBind.user_id == user_id and GsBind.bot_id == self.bot_id
-            )
-        )
-        data = result.scalars().all()
-        return data[0] if data else None
+        async with self.async_session() as session:
+            async with session.begin():
+                result = await session.execute(
+                    select(GsBind).where(
+                        GsBind.user_id == user_id
+                        and GsBind.bot_id == self.bot_id
+                    )
+                )
+                data = result.scalars().all()
+                return data[0] if data else None
 
     async def insert_bind_data(self, user_id: str, **data) -> int:
-        new_uid = data['uid'] if 'uid' in data else ''
-        if len(new_uid) != 9:
-            return -1
-        if await self.bind_exists(user_id):
-            uid_list = await self.get_bind_uid_list(user_id)
-            if uid_list and new_uid not in uid_list:
-                uid_list.append(new_uid)
-            else:
-                return -2
-            data['uid'] = '_'.join(uid_list)
-            await self.update_bind_data(user_id, data)
-        else:
-            new_data = GsBind(user_id=user_id, bot_id=self.bot_id, **data)
-            self.session.add(new_data)
-        await self.session.commit()
-        return 0
+        async with self.async_session() as session:
+            async with session.begin():
+                new_uid = data['uid'] if 'uid' in data else ''
+                if len(new_uid) != 9:
+                    return -1
+                if await self.bind_exists(user_id):
+                    uid_list = await self.get_bind_uid_list(user_id)
+                    if uid_list and new_uid not in uid_list:
+                        uid_list.append(new_uid)
+                    else:
+                        return -2
+                    data['uid'] = '_'.join(uid_list)
+                    await self.update_bind_data(user_id, data)
+                else:
+                    new_data = GsBind(
+                        user_id=user_id, bot_id=self.bot_id, **data
+                    )
+                    session.add(new_data)
+                await session.commit()
+                return 0
 
     async def delete_bind_data(self, user_id: str, **data) -> int:
-        _uid = data['uid'] if 'uid' in data else ''
-        if await self.bind_exists(user_id):
-            uid_list = await self.get_bind_uid_list(user_id)
-            if uid_list and _uid in uid_list:
-                uid_list.remove(_uid)
-            else:
-                return -1
-            data['uid'] = '_'.join(uid_list)
-            await self.update_bind_data(user_id, data)
-            await self.session.commit()
-            return 0
-        else:
-            return -1
+        async with self.async_session() as session:
+            async with session.begin():
+                _uid = data['uid'] if 'uid' in data else ''
+                if await self.bind_exists(user_id):
+                    uid_list = await self.get_bind_uid_list(user_id)
+                    if uid_list and _uid in uid_list:
+                        uid_list.remove(_uid)
+                    else:
+                        return -1
+                    data['uid'] = '_'.join(uid_list)
+                    await self.update_bind_data(user_id, data)
+                    await session.commit()
+                    return 0
+                else:
+                    return -1
 
     async def update_bind_data(self, user_id: str, data: Optional[Dict]):
-        sql = update(GsBind).where(
-            GsBind.user_id == user_id and GsBind.bot_id == self.bot_id
-        )
-        if data is not None:
-            query = sql.values(**data)
-            query.execution_options(synchronize_session='fetch')
-            await self.session.execute(query)
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = update(GsBind).where(
+                    GsBind.user_id == user_id and GsBind.bot_id == self.bot_id
+                )
+                if data is not None:
+                    query = sql.values(**data)
+                    query.execution_options(synchronize_session='fetch')
+                    await session.execute(query)
 
     async def bind_exists(self, user_id: str) -> bool:
         return bool(await self.select_bind_data(user_id))
 
     async def get_all_uid_list(self) -> List[str]:
-        sql = select(GsBind).where(GsBind.bot_id == self.bot_id)
-        result = await self.session.execute(sql)
-        data: List[GsBind] = result.scalars().all()
-        uid_list: List[str] = []
-        for item in data:
-            uid_list.extend(item.uid.split("_") if item.uid else [])
-        return uid_list
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = select(GsBind).where(GsBind.bot_id == self.bot_id)
+                result = await session.execute(sql)
+                data: List[GsBind] = result.scalars().all()
+                uid_list: List[str] = []
+                for item in data:
+                    uid_list.extend(item.uid.split("_") if item.uid else [])
+                return uid_list
 
     async def get_bind_uid_list(self, user_id: str) -> List[str]:
         data = await self.select_bind_data(user_id)
@@ -126,22 +144,28 @@ class SQLA:
     #####################
 
     async def select_user_data(self, uid: str) -> Optional[GsUser]:
-        sql = select(GsUser).where(GsUser.uid == uid)
-        result = await self.session.execute(sql)
-        return data[0] if (data := result.scalars().all()) else None
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = select(GsUser).where(GsUser.uid == uid)
+                result = await session.execute(sql)
+                return data[0] if (data := result.scalars().all()) else None
 
     async def select_cache_cookie(self, uid: str) -> Optional[str]:
-        sql = select(GsCache).where(GsCache.uid == uid)
-        result = await self.session.execute(sql)
-        data: List[GsCache] = result.scalars().all()
-        return data[0].cookie if len(data) >= 1 else None
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = select(GsCache).where(GsCache.uid == uid)
+                result = await session.execute(sql)
+                data: List[GsCache] = result.scalars().all()
+                return data[0].cookie if len(data) >= 1 else None
 
     async def delete_error_cache(self) -> bool:
-        data = await self.get_all_error_cookie()
-        for cookie in data:
-            sql = delete(GsCache).where(GsCache.cookie == cookie)
-            await self.session.execute(sql)
-        return True
+        async with self.async_session() as session:
+            async with session.begin():
+                data = await self.get_all_error_cookie()
+                for cookie in data:
+                    sql = delete(GsCache).where(GsCache.cookie == cookie)
+                    await session.execute(sql)
+                return True
 
     async def insert_cache_data(
         self,
@@ -149,75 +173,91 @@ class SQLA:
         uid: Optional[str] = None,
         mys_id: Optional[str] = None,
     ) -> bool:
-        new_data = GsCache(cookie=cookie, uid=uid, mys_id=mys_id)
-        self.session.add(new_data)
-        await self.session.commit()
-        return True
+        async with self.async_session() as session:
+            async with session.begin():
+                new_data = GsCache(cookie=cookie, uid=uid, mys_id=mys_id)
+                session.add(new_data)
+                await session.commit()
+                return True
 
     async def insert_user_data(
         self, user_id: str, uid: str, cookie: str, stoken: Optional[str] = None
     ) -> bool:
-        if await self.user_exists(uid):
-            sql = (
-                update(GsUser)
-                .where(GsUser.uid == uid)
-                .values(cookie=cookie, status=None, stoken=stoken)
-            )
-            await self.session.execute(sql)
-        else:
-            account_id = re.search(r'account_id=(\d*)', cookie)
-            assert account_id is not None
-            account_id = str(account_id.group(1))
+        async with self.async_session() as session:
+            async with session.begin():
+                if await self.user_exists(uid):
+                    sql = (
+                        update(GsUser)
+                        .where(GsUser.uid == uid)
+                        .values(cookie=cookie, status=None, stoken=stoken)
+                    )
+                    await session.execute(sql)
+                else:
+                    account_id = re.search(r'account_id=(\d*)', cookie)
+                    assert account_id is not None
+                    account_id = str(account_id.group(1))
 
-            user_data = GsUser(
-                uid=uid,
-                mys_id=account_id,
-                cookie=cookie,
-                stoken=stoken if stoken else None,
-                user_id=user_id,
-                bot_id=self.bot_id,
-                sign_switch='off',
-                push_switch='off',
-                bbs_switch='off',
-                region=SERVER.get(uid[0], 'cn_gf01'),
-            )
-            self.session.add(user_data)
-        await self.session.commit()
-        return True
+                    user_data = GsUser(
+                        uid=uid,
+                        mys_id=account_id,
+                        cookie=cookie,
+                        stoken=stoken if stoken else None,
+                        user_id=user_id,
+                        bot_id=self.bot_id,
+                        sign_switch='off',
+                        push_switch='off',
+                        bbs_switch='off',
+                        region=SERVER.get(uid[0], 'cn_gf01'),
+                    )
+                    session.add(user_data)
+                await session.commit()
+                return True
 
     async def update_user_data(self, uid: str, data: Optional[Dict]):
-        sql = update(GsUser).where(
-            GsUser.uid == uid and GsUser.bot_id == self.bot_id
-        )
-        if data is not None:
-            query = sql.values(**data)
-            query.execution_options(synchronize_session='fetch')
-            await self.session.execute(query)
-            await self.session.commit()
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = update(GsUser).where(
+                    GsUser.uid == uid and GsUser.bot_id == self.bot_id
+                )
+                if data is not None:
+                    query = sql.values(**data)
+                    query.execution_options(synchronize_session='fetch')
+                    await session.execute(query)
+                    await session.commit()
 
     async def delete_user_data(self, uid: str):
-        if await self.user_exists(uid):
-            sql = delete(GsUser).where(GsUser.uid == uid)
-            await self.session.execute(sql)
-            await self.session.commit()
-            return True
-        return False
+        async with self.async_session() as session:
+            async with session.begin():
+                if await self.user_exists(uid):
+                    sql = delete(GsUser).where(GsUser.uid == uid)
+                    await session.execute(sql)
+                    await session.commit()
+                    return True
+                return False
 
     async def delete_cache(self):
-        sql = (
-            update(GsUser)
-            .where(GsUser.status == 'limit30')
-            .values(status=None)
-        )
-        empty_sql = delete(GsCache)
-        await self.session.execute(sql)
-        await self.session.execute(empty_sql)
-        await self.session.commit()
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = (
+                    update(GsUser)
+                    .where(GsUser.status == 'limit30')
+                    .values(status=None)
+                )
+                empty_sql = delete(GsCache)
+                await session.execute(sql)
+                await session.execute(empty_sql)
+                await session.commit()
 
     async def mark_invalid(self, cookie: str, mark: str):
-        sql = update(GsUser).where(GsUser.cookie == cookie).values(status=mark)
-        await self.session.execute(sql)
-        await self.session.commit()
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = (
+                    update(GsUser)
+                    .where(GsUser.cookie == cookie)
+                    .values(status=mark)
+                )
+                await session.execute(sql)
+                await session.commit()
 
     async def user_exists(self, uid: str) -> bool:
         data = await self.select_user_data(uid)
@@ -226,36 +266,58 @@ class SQLA:
     async def update_user_stoken(
         self, uid: str, stoken: Optional[str]
     ) -> bool:
-        if await self.user_exists(uid):
-            sql = update(GsUser).where(GsUser.uid == uid).values(stoken=stoken)
-            await self.session.execute(sql)
-            await self.session.commit()
-            return True
-        return False
+        async with self.async_session() as session:
+            async with session.begin():
+                if await self.user_exists(uid):
+                    sql = (
+                        update(GsUser)
+                        .where(GsUser.uid == uid)
+                        .values(stoken=stoken)
+                    )
+                    await session.execute(sql)
+                    await session.commit()
+                    return True
+                return False
 
     async def update_user_cookie(
         self, uid: str, cookie: Optional[str]
     ) -> bool:
-        if await self.user_exists(uid):
-            sql = update(GsUser).where(GsUser.uid == uid).values(cookie=cookie)
-            await self.session.execute(sql)
-            await self.session.commit()
-            return True
-        return False
+        async with self.async_session() as session:
+            async with session.begin():
+                if await self.user_exists(uid):
+                    sql = (
+                        update(GsUser)
+                        .where(GsUser.uid == uid)
+                        .values(cookie=cookie)
+                    )
+                    await session.execute(sql)
+                    await session.commit()
+                    return True
+                return False
 
     async def update_switch_status(self, uid: str, data: Dict) -> bool:
-        if await self.user_exists(uid):
-            sql = update(GsUser).where(GsUser.uid == uid).values(**data)
-            await self.session.execute(sql)
-            await self.session.commit()
-            return True
-        return False
+        async with self.async_session() as session:
+            async with session.begin():
+                if await self.user_exists(uid):
+                    sql = (
+                        update(GsUser).where(GsUser.uid == uid).values(**data)
+                    )
+                    await session.execute(sql)
+                    await session.commit()
+                    return True
+                return False
 
     async def update_error_status(self, cookie: str, err: str) -> bool:
-        sql = update(GsUser).where(GsUser.cookie == cookie).values(status=err)
-        await self.session.execute(sql)
-        await self.session.commit()
-        return True
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = (
+                    update(GsUser)
+                    .where(GsUser.cookie == cookie)
+                    .values(status=err)
+                )
+                await session.execute(sql)
+                await session.commit()
+                return True
 
     async def get_user_cookie(self, uid: str) -> Optional[str]:
         data = await self.select_user_data(uid)
@@ -270,12 +332,14 @@ class SQLA:
         return data.stoken if data and data.stoken else None
 
     async def get_all_user(self) -> List[GsUser]:
-        sql = select(GsUser).where(
-            GsUser.cookie is not None and GsUser.cookie != ''
-        )
-        result = await self.session.execute(sql)
-        data: List[GsUser] = result.scalars().all()
-        return data
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = select(GsUser).where(
+                    GsUser.cookie is not None and GsUser.cookie != ''
+                )
+                result = await session.execute(sql)
+                data: List[GsUser] = result.scalars().all()
+                return data
 
     async def get_all_cookie(self) -> List[str]:
         data = await self.get_all_user()
@@ -294,74 +358,84 @@ class SQLA:
         return [user for user in data if user.push_switch != 'off']
 
     async def get_random_cookie(self, uid: str) -> Optional[str]:
-        # 有绑定自己CK 并且该CK有效的前提下，优先使用自己CK
-        if await self.user_exists(uid) and await self.cookie_validate(uid):
-            return await self.get_user_cookie(uid)
-        # 自动刷新缓存
-        await self.delete_error_cache()
-        # 获得缓存库Ck
-        cache_data = await self.select_cache_cookie(uid)
-        if cache_data is not None:
-            return cache_data
-        # 随机取CK
-        server = SERVER.get(uid[0], 'cn_gf01')
-        sql = (
-            select(GsUser)
-            .where(GsUser.region == server)
-            .order_by(func.random())
-        )
-        data = await self.session.execute(sql)
-        user_list: List[GsUser] = data.scalars().all()
-        for user in user_list:
-            if not user.status and user.cookie:
-                await self.insert_cache_data(user.cookie, uid)  # 进入缓存
-                return user.cookie
-            continue
-        else:
-            return None
+        async with self.async_session() as session:
+            async with session.begin():
+                # 有绑定自己CK 并且该CK有效的前提下，优先使用自己CK
+                if await self.user_exists(uid) and await self.cookie_validate(
+                    uid
+                ):
+                    return await self.get_user_cookie(uid)
+                # 自动刷新缓存
+                await self.delete_error_cache()
+                # 获得缓存库Ck
+                cache_data = await self.select_cache_cookie(uid)
+                if cache_data is not None:
+                    return cache_data
+                # 随机取CK
+                server = SERVER.get(uid[0], 'cn_gf01')
+                sql = (
+                    select(GsUser)
+                    .where(GsUser.region == server)
+                    .order_by(func.random())
+                )
+                data = await session.execute(sql)
+                user_list: List[GsUser] = data.scalars().all()
+                for user in user_list:
+                    if not user.status and user.cookie:
+                        await self.insert_cache_data(user.cookie, uid)  # 进入缓存
+                        return user.cookie
+                    continue
+                else:
+                    return None
 
     async def get_switch_status_list(
         self, switch: Literal['push', 'sign', 'bbs']
     ) -> List[GsUser]:
-        _switch = getattr(GsUser, switch, GsUser.push_switch)
-        sql = select(GsUser).filter(_switch != 'off')
-        data = await self.session.execute(sql)
-        data_list: List[GsUser] = data.scalars().all()
-        return [user for user in data_list]
+        async with self.async_session() as session:
+            async with session.begin():
+                _switch = getattr(GsUser, switch, GsUser.push_switch)
+                sql = select(GsUser).filter(_switch != 'off')
+                data = await session.execute(sql)
+                data_list: List[GsUser] = data.scalars().all()
+                return [user for user in data_list]
 
     #####################
     # GsPush 部分 #
     #####################
     async def insert_push_data(self, uid: str):
-        push_data = GsPush(
-            bot_id=self.bot_id,
-            uid=uid,
-            coin_push='off',
-            coin_value=2100,
-            coin_is_push='off',
-            resin_push='on',
-            resin_value=140,
-            resin_is_push='off',
-            go_push='off',
-            go_value=120,
-            go_is_push='off',
-            transform_push='off',
-            transform_value=140,
-            transform_is_push='off',
-        )
-        self.session.add(push_data)
-        await self.session.commit()
+        async with self.async_session() as session:
+            async with session.begin():
+                push_data = GsPush(
+                    bot_id=self.bot_id,
+                    uid=uid,
+                    coin_push='off',
+                    coin_value=2100,
+                    coin_is_push='off',
+                    resin_push='on',
+                    resin_value=140,
+                    resin_is_push='off',
+                    go_push='off',
+                    go_value=120,
+                    go_is_push='off',
+                    transform_push='off',
+                    transform_value=140,
+                    transform_is_push='off',
+                )
+                session.add(push_data)
+                await session.commit()
 
     async def update_push_data(self, uid: str, data: dict) -> bool:
-        await self.push_exists(uid)
-        sql = (
-            update(GsPush)
-            .where(GsPush.uid == uid and GsPush.bot_id == self.bot_id)
-            .values(**data)
-        )
-        await self.session.execute(sql)
-        await self.session.commit()
-        return True
+        async with self.async_session() as session:
+            async with session.begin():
+                await self.push_exists(uid)
+                sql = (
+                    update(GsPush)
+                    .where(GsPush.uid == uid and GsPush.bot_id == self.bot_id)
+                    .values(**data)
+                )
+                await session.execute(sql)
+                await session.commit()
+                return True
 
     async def change_push_status(
         self,
@@ -372,42 +446,54 @@ class SQLA:
         await self.update_push_data(uid, {f'{mode}_is_push': status})
 
     async def select_push_data(self, uid: str) -> Optional[GsPush]:
-        await self.push_exists(uid)
-        sql = select(GsPush).where(
-            GsPush.uid == uid and GsPush.bot_id == self.bot_id
-        )
-        result = await self.session.execute(sql)
-        data = result.scalars().all()
-        return data[0] if len(data) >= 1 else None
+        async with self.async_session() as session:
+            async with session.begin():
+                await self.push_exists(uid)
+                sql = select(GsPush).where(
+                    GsPush.uid == uid and GsPush.bot_id == self.bot_id
+                )
+                result = await session.execute(sql)
+                data = result.scalars().all()
+                return data[0] if len(data) >= 1 else None
 
     async def push_exists(self, uid: str) -> bool:
-        sql = select(GsPush).where(
-            GsPush.uid == uid and GsPush.bot_id == self.bot_id
-        )
-        result = await self.session.execute(sql)
-        data = result.scalars().all()
-        if not data:
-            await self.insert_push_data(uid)
-        return True
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = select(GsPush).where(
+                    GsPush.uid == uid and GsPush.bot_id == self.bot_id
+                )
+                result = await session.execute(sql)
+                data = result.scalars().all()
+                if not data:
+                    await self.insert_push_data(uid)
+                return True
 
     #####################
     # 杂项部分 #
     #####################
 
     async def refresh_cache(self, uid: str):
-        sql = delete(GsCache).where(GsCache.uid == uid)
-        await self.session.execute(sql)
-        return True
+        async with self.async_session() as session:
+            async with session.begin():
+                sql = delete(GsCache).where(GsCache.uid == uid)
+                await session.execute(sql)
+                return True
 
     async def close(self):
-        await self.session.close()
+        async with self.async_session() as session:
+            async with session.begin():
+                await session.close()
 
     async def insert_new_bind(self, **kwargs):
-        new_data = GsBind(**kwargs)
-        self.session.add(new_data)
-        await self.session.commit()
+        async with self.async_session() as session:
+            async with session.begin():
+                new_data = GsBind(**kwargs)
+                session.add(new_data)
+                await session.commit()
 
     async def insert_new_user(self, **kwargs):
-        new_data = GsUser(**kwargs)
-        self.session.add(new_data)
-        await self.session.commit()
+        async with self.async_session() as session:
+            async with session.begin():
+                new_data = GsUser(**kwargs)
+                session.add(new_data)
+                await session.commit()

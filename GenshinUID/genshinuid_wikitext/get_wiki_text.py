@@ -254,7 +254,7 @@ async def char_wiki(name, mode='char', level=None):
 
             talent_temp = {}
             talent_cost = data[1]
-            for i in talent_cost.values():
+            for i in talent_cost['costs'].values():
                 for j in i:
                     if j['name'] not in talent_temp:
                         talent_temp[j['name']] = j['count']

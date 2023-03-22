@@ -47,7 +47,7 @@ async def unsub_ann_(bot: Bot, ev: Event):
     await bot.send(unsub_ann(bot.bot_id, ev.group_id))
 
 
-@SV('原神公告红点').on_fullmatch('取消原神公告红点')
+@SV('原神公告红点').on_fullmatch(('取消原神公告红点', '清除原神公告红点'))
 async def consume_remind_(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

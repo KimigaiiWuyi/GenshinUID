@@ -18,15 +18,23 @@ async def check_msg():
         update_log = await restart_message()
         if update_log == {}:
             return
-        if update_log['bot_id'] in gss.active_bot:
-            bot = gss.active_bot[update_log['bot_id']]
+        for BOT in gss.active_bot:
+            bot = gss.active_bot[BOT]
             if update_log['send_type'] == 'group':
                 await bot.target_send(
-                    update_log['msg'], 'group', update_log['send_to']
+                    update_log['msg'],
+                    'group',
+                    update_log['send_to'],
+                    update_log['bot_id'],
+                    '',
                 )
             else:
                 await bot.target_send(
-                    update_log['msg'], 'direct', update_log['send_to']
+                    update_log['msg'],
+                    'direct',
+                    update_log['send_to'],
+                    update_log['bot_id'],
+                    '',
                 )
         logger.info('遗留信息检查完毕!')
     except Exception:

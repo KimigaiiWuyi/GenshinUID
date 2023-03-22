@@ -56,7 +56,7 @@ async def export_gachalogs(uid: str) -> dict:
                 'export_app': 'GenshinUID',
                 'export_app_version': '4.0',
                 'export_timestamp': round(now.timestamp()),
-                'uigf_version': '2.2',
+                'uigf_version': 'v2.2',
             },
             'list': [],
         }

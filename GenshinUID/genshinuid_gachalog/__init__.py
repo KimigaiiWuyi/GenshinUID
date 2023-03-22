@@ -35,7 +35,7 @@ async def send_refresh_gacha_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('抽卡记录').on_fullmatch(('导出抽卡记录'))
+@SV('导出抽卡记录').on_fullmatch(('导出抽卡记录'))
 async def send_export_gacha_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[导出抽卡记录]')
     sqla = get_sqla(ev.bot_id)

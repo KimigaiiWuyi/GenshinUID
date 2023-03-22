@@ -39,9 +39,7 @@ async def get_new_gachalog(uid: str, full_data: Dict, is_force: bool):
                     temp = []
                     break
                 if len(full_data[gacha_name]) >= 1:
-                    if int(data[-1]['id']) <= int(
-                        full_data[gacha_name][0]['id']
-                    ):
+                    if int(data[-1]['id']) <= int(full_data[gacha_name][0]['id']):
                         full_data[gacha_name].extend(data)
                     else:
                         full_data[gacha_name][0:0] = data
@@ -78,6 +76,13 @@ async def save_gachalogs(
         old_normal_gacha_num = len(gachalogs_history['常驻祈愿'])
         old_char_gacha_num = len(gachalogs_history['角色祈愿'])
         old_weapon_gacha_num = len(gachalogs_history['武器祈愿'])
+    else:
+        gachalogs_history = {
+            '新手祈愿': [],
+            '常驻祈愿': [],
+            '角色祈愿': [],
+            '武器祈愿': [],
+        }
 
     # 获取新抽卡记录
     if raw_data is None:
@@ -87,10 +92,7 @@ async def save_gachalogs(
         if gachalogs_history:
             for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
                 for item in raw_data[i]:
-                    if (
-                        item not in gachalogs_history[i]
-                        and item not in new_data[i]
-                    ):
+                    if item not in gachalogs_history[i] and item not in new_data[i]:
                         new_data[i].append(item)
             raw_data = new_data
             for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:

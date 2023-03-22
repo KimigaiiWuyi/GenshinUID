@@ -1,5 +1,7 @@
+import os
 import base64
 import asyncio
+from pathlib import Path
 from typing import Any, Dict, List, Union, Optional
 
 import websockets.client
@@ -65,6 +67,7 @@ class GsClient:
                     content = ''
                     image: Optional[str] = None
                     node = []
+                    file = ''
                     if msg.content:
                         for _c in msg.content:
                             if _c.data:
@@ -77,6 +80,8 @@ class GsClient:
                                     getattr(logger, _type)(_c.data)
                                 elif _c.type == 'node':
                                     node = _c.data
+                                elif _c.type == 'file':
+                                    file = _c.data
                     else:
                         pass
 
@@ -88,13 +93,14 @@ class GsClient:
                             content,
                             image,
                             node,
+                            file,
                             msg.target_id,
                             msg.target_type,
                         )
                     # ntchat
                     elif msg.bot_id == 'ntchat':
                         await ntchat_send(
-                            bot, content, image, node, msg.target_id
+                            bot, content, image, file, node, msg.target_id
                         )
                     # 频道
                     elif msg.bot_id == 'qqguild':
@@ -112,6 +118,7 @@ class GsClient:
                             bot,
                             content,
                             image,
+                            file,
                             node,
                             msg.target_id,
                         )
@@ -120,6 +127,7 @@ class GsClient:
                             bot,
                             content,
                             image,
+                            file,
                             node,
                             msg.target_id,
                             msg.target_type,
@@ -157,11 +165,23 @@ def to_json(msg: str, name: str, uin: int):
     }
 
 
+def store_file(path: Path, file: str):
+    file_content = base64.b64decode(file).decode()
+    with open(path, 'w') as f:
+        f.write(file_content)
+
+
+def del_file(path: Path):
+    if path.exists():
+        os.remove(path)
+
+
 async def onebot_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[str],
     node: Optional[List[Dict]],
+    file: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -169,18 +189,39 @@ async def onebot_send(
         result_image = f'[CQ:image,file={image}]' if image else ''
         content = content if content else ''
         result_msg = content + result_image
-        if target_type == 'group':
-            await bot.call_api(
-                'send_group_msg',
-                group_id=target_id,
-                message=result_msg,
-            )
+
+        if file:
+            file_name, file_content = file.split('|')
+            path = Path(__file__).resolve().parent / file_name
+            store_file(path, file_content)
+            if target_type == 'group':
+                await bot.call_api(
+                    'upload_group_file',
+                    file=str(path.absolute()),
+                    name=file_name,
+                    group_id=target_id,
+                )
+            else:
+                await bot.call_api(
+                    'upload_private_file',
+                    file=str(path.absolute()),
+                    name=file_name,
+                    user_id=target_id,
+                )
+            del_file(path)
         else:
-            await bot.call_api(
-                'send_private_msg',
-                user_id=target_id,
-                message=result_msg,
-            )
+            if target_type == 'group':
+                await bot.call_api(
+                    'send_group_msg',
+                    group_id=target_id,
+                    message=result_msg,
+                )
+            else:
+                await bot.call_api(
+                    'send_private_msg',
+                    user_id=target_id,
+                    message=result_msg,
+                )
 
     async def _send_node(messages):
         if target_type == 'group':
@@ -259,6 +300,7 @@ async def ntchat_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[str],
+    file: Optional[str],
     node: Optional[List[Dict]],
     target_id: Optional[str],
 ):
@@ -275,6 +317,16 @@ async def ntchat_send(
                 to_wxid=target_id,
                 file_path=image,
             )
+        if file:
+            file_name, file_content = file.split('|')
+            path = Path(__file__).resolve().parent / file_name
+            store_file(path, file_content)
+            await bot.call_api(
+                'send_file',
+                to_wxid=target_id,
+                file_path=str(path.absolute()),
+            )
+            del_file(path)
 
     if node:
         for _msg in node:
@@ -290,6 +342,7 @@ async def kaiheila_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[str],
+    file: Optional[str],
     node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
@@ -301,6 +354,14 @@ async def kaiheila_send(
             img_bytes = base64.b64decode(image.replace('base64://', ''))
             url = await bot.upload_file(img_bytes, 'GSUID-TEMP')  # type:ignore
             result['type'] = 2
+            result['content'] = url
+        elif file:
+            file_name, file_content = file.split('|')
+            path = Path(__file__).resolve().parent / file_name
+            store_file(path, file_content)
+            with open(path, 'rb') as f:
+                doc = f.read()
+            url = await bot.upload_file(doc, file_name)  # type:ignore
             result['content'] = url
         else:
             result['content'] = content
@@ -327,6 +388,7 @@ async def telegram_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[str],
+    file: Optional[str],
     node: Optional[List[Dict]],
     target_id: Optional[str],
 ):
@@ -337,10 +399,20 @@ async def telegram_send(
             result['photo'] = img_bytes
         if content:
             result['text'] = content
+        if file:
+            file_name, file_content = file.split('|')
+            path = Path(__file__).resolve().parent / file_name
+            store_file(path, file_content)
+            with open(path, 'rb') as f:
+                doc = f.read()
+            result['document'] = doc
+
         if content:
             await bot.call_api('send_message', chat_id=target_id, **result)
         if image:
             await bot.call_api('send_photo', chat_id=target_id, **result)
+        if file:
+            await bot.call_api('send_document', chat_id=target_id, **result)
 
     if node:
         for _msg in node:

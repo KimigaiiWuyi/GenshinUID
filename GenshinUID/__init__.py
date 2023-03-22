@@ -8,11 +8,12 @@ from nonebot.internal.adapter import Event
 from nonebot import get_driver, on_message, on_fullmatch
 
 from .client import GsClient
-from .auto_install import install
+from .auto_install import start, install
 from .models import Message, MessageReceive
 
 get_message = on_message(priority=999)
 install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
+start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
 connect_core = on_fullmatch(
     ('连接core', '链接core'), permission=SUPERUSER, block=True
 )
@@ -135,9 +136,14 @@ async def send_install_msg(matcher: Matcher):
 
 
 @connect_core.handle()
-async def send_start_msg(matcher: Matcher):
+async def send_connect_msg(matcher: Matcher):
     await connect()
     await matcher.send('链接成功！')
+
+
+@start_core.handle()
+async def send_start_msg(matcher: Matcher):
+    await matcher.send(await start())
 
 
 @driver.on_bot_connect

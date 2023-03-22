@@ -10,7 +10,7 @@ from ..utils.error_reply import UID_HINT
 from .draw_roleinfo_card import draw_pic
 
 
-@SV('查询注册时间').on_command(('原神注册时间', '注册时间'))
+@SV('查询注册时间').on_command(('原神注册时间', '注册时间', '查询注册时间'), block=True)
 async def regtime(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询注册时间]')
     uid = await get_uid(bot, ev)

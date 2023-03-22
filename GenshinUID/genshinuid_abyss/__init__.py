@@ -7,7 +7,7 @@ from ..utils.error_reply import UID_HINT
 from .draw_abyss_card import draw_abyss_img
 
 
-@SV('查询深渊').on_command(('查询深渊', 'sy', '查询上期深渊', 'sqsy'))
+@SV('查询深渊').on_command(('查询深渊', 'sy', '查询上期深渊', 'sqsy'), block=True)
 async def send_abyss_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询深渊信息]')
     uid = await get_uid(bot, ev)

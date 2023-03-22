@@ -615,14 +615,14 @@ test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==23.1.0)", "coverage[toml] (>=6
 
 [[package]]
 name = "fastapi-amis-admin"
-version = "0.5.1"
+version = "0.5.2"
 description = "FastAPI-Amis-Admin is a high-performance, efficient and easily extensible FastAPI admin framework. Inspired by Django-admin, and has as many powerful functions as Django-admin. "
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fastapi_amis_admin-0.5.1-py3-none-any.whl", hash = "sha256:7cb65e6389c8f132152fd185cb8832d63a2401689db92b2e0fc2cb9d8d22969c"},
-    {file = "fastapi_amis_admin-0.5.1.tar.gz", hash = "sha256:da4d11fc1f68bb48c817e02b477b5673e4d8e42dfec28e29eabd3937f2b35a36"},
+    {file = "fastapi_amis_admin-0.5.2-py3-none-any.whl", hash = "sha256:d45a7389c2898a5a5e01c8eae080fe5051a20a4d3e26673b8a9ea5a388464a00"},
+    {file = "fastapi_amis_admin-0.5.2.tar.gz", hash = "sha256:b17fa1e5f2f746f1fd5f937405bac07b941a2fca18a2ec6d8cc41756e5f7936b"},
 ]
 
 [package.dependencies]

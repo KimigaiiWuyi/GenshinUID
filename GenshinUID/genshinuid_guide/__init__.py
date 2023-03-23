@@ -1,5 +1,3 @@
-import asyncio
-import threading
 from typing import List
 
 from gsuid_core.sv import SV
@@ -9,9 +7,9 @@ from gsuid_core.segment import MessageSegment
 
 from .get_guide import get_gs_guide
 from ..version import Genshin_version
+from .get_abyss_data import get_review
 from ..utils.image.convert import convert_img
 from ..utils.resource.RESOURCE_PATH import REF_PATH
-from .get_abyss_data import get_review, generate_data
 from ..utils.map.name_covert import alias_to_char_name
 
 
@@ -41,7 +39,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
         await bot.logger.warning('未找到{}参考面板图片'.format(name))
 
 
-@SV('查询深渊阵容').on_command(('版本深渊'))
+@SV('查询深渊阵容').on_command(('版本深渊', '深渊阵容'))
 async def send_abyss_review(bot: Bot, ev: Event):
     if not ev.text:
         version = Genshin_version[:-2]
@@ -55,8 +53,3 @@ async def send_abyss_review(bot: Bot, ev: Event):
         await bot.send(MessageSegment.node(mes))
     elif isinstance(im, str):
         await bot.send(im)
-
-
-threading.Thread(
-    target=lambda: asyncio.run(generate_data()), daemon=True
-).start()

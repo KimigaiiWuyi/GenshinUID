@@ -6,6 +6,7 @@ from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 
 from .RESOURCE_PATH import (
+    REF_PATH,
     REL_PATH,
     CARD_PATH,
     CHAR_PATH,
@@ -31,6 +32,7 @@ PATH_MAP = {
     9: CARD_PATH,
     10: GUIDE_PATH,
     11: WIKI_PATH,
+    12: REF_PATH,
 }
 
 

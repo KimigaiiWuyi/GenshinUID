@@ -15,7 +15,7 @@ from .models import (
 
 STR_CONFIG = Literal['proxy', '_pass_API', 'random_pic_API']
 LIST_INT_CONFIG = Literal['Ann_Ids']
-LIST_STR_CONFIG = Literal['']
+LIST_STR_CONFIG = Literal['SignTime', 'BBSTaskTime']
 DICT_CONFIG = Literal['Ann_Groups']
 
 

@@ -47,6 +47,7 @@ def init_dir():
         GUIDE_PATH,
         CU_BG_PATH,
         CU_CHBG_PATH,
+        REF_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

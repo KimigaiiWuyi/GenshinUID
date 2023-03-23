@@ -1,6 +1,13 @@
 from typing import Dict
 
-from .models import GSC, GsStrConfig, GsBoolConfig, GsDictConfig, GsListConfig
+from .models import (
+    GSC,
+    GsStrConfig,
+    GsBoolConfig,
+    GsDictConfig,
+    GsListConfig,
+    GsListStrConfig,
+)
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
     'proxy': GsStrConfig('设置代理', '设置国际服的代理地址', ''),
@@ -19,6 +26,10 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '推送公告ID',
         '原神公告推送ID列表',
         [],
+    ),
+    'SignTime': GsListStrConfig('每晚签到时间设置', '每晚米游社签到时间设置（时，分）', ['0', '38']),
+    'BBSTaskTime': GsListStrConfig(
+        '每晚米游社任务时间设置', '每晚米游社任务时间设置（时，分）', ['1', '41']
     ),
     'MhyBBSCoinReport': GsBoolConfig(
         '米游币推送',
@@ -58,11 +69,6 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
     'OldPanle': GsBoolConfig(
         '旧面板',
         '会稍微增加面板访问速度,但会损失很多功能',
-        False,
-    ),
-    'OpenWeb': GsBoolConfig(
-        '网页控制台',
-        '开启后重启生效,地址位于Bot所处端口下/genshinuid',
         False,
     ),
     'ColorBG': GsBoolConfig(

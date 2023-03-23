@@ -13,9 +13,11 @@ from .sign import sign_in, daily_sign
 from ..utils.error_reply import UID_HINT
 from ..genshinuid_config.gs_config import gsconfig
 
+SIGN_TIME = gsconfig.get_config('SignTime').data
+
 
 # 每日零点半执行米游社原神签到
-@scheduler.scheduled_job('cron', hour='0', minute='38')
+@scheduler.scheduled_job('cron', hour=SIGN_TIME[0], minute=SIGN_TIME[1])
 async def sign_at_night():
     if gsconfig.get_config('SchedSignin').data:
         await send_daily_sign()

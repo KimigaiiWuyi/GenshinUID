@@ -130,7 +130,7 @@ async def draw_cahrcard_list(
     tasks = []
     for index, char in enumerate(char_done_list):
         tasks.append(draw_single_rank(img, char, index))
-    await asyncio.wait(tasks)
+    await asyncio.gather(*tasks)
 
     res = await convert_img(img)
     return res

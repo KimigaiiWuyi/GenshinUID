@@ -14,6 +14,8 @@ from ..utils.error_reply import CK_HINT, SK_HINT
 from ..genshinuid_config.gs_config import gsconfig
 from .daily_get import mihoyo_coin, all_daily_mihoyo_bbs_coin
 
+BBS_TASK_TIME = gsconfig.get_config('BBSTaskTime').data
+
 
 # 获取米游币
 @SV('米游币获取').on_fullmatch('开始获取米游币')
@@ -38,7 +40,9 @@ async def bbs_recheck(bot: Bot, ev: Event):
 
 
 # 每日一点十六分进行米游币获取
-@scheduler.scheduled_job('cron', hour='1', minute='16')
+@scheduler.scheduled_job(
+    'cron', hour=BBS_TASK_TIME[0], minute=BBS_TASK_TIME[1]
+)
 async def sign_at_night():
     if gsconfig.get_config('SchedMhyBBSCoin').data:
         await send_daily_mihoyo_bbs_sign()

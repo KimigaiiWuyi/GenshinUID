@@ -19,6 +19,7 @@ ICON_FILE = MINIGG_FILE + 'icon'
 REL_FILE = MINIGG_FILE + 'reliquaries'
 WEAPON_FILE = MINIGG_FILE + 'weapon'
 GUIDE_FILE = MINIGG_FILE + 'guide'
+REF_FILE = MINIGG_FILE + 'ref_image'
 
 FILE_TO_PATH = {
     NAMECARD_FILE: 6,
@@ -30,6 +31,7 @@ FILE_TO_PATH = {
     REL_FILE: 7,
     WEAPON_FILE: 5,
     GUIDE_FILE: 10,
+    REF_FILE: 12,
 }
 
 FILE_TO_NAME = {
@@ -42,6 +44,7 @@ FILE_TO_NAME = {
     REL_FILE: '圣遗物',
     WEAPON_FILE: '武器',
     GUIDE_FILE: '攻略',
+    REF_FILE: '参考面板',
 }
 
 
@@ -71,6 +74,7 @@ async def download_all_file_from_miniggicu():
             REL_FILE,
             WEAPON_FILE,
             GUIDE_FILE,
+            REF_FILE,
         ]:
             base_data = await _get_url(file, sess)
             content_bs = BeautifulSoup(base_data, 'lxml')

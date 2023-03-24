@@ -12,22 +12,29 @@ from ..utils.message import send_diff_msg
 from .draw_user_card import get_user_card
 from .add_ck import deal_ck, get_ck_by_stoken, get_ck_by_all_stoken
 
+sv_user_config = SV('用户管理', pm=2)
+sv_user_add = SV('用户添加')
+sv_user_qrcode_login = SV('扫码登陆')
+sv_user_addck = SV('添加CK', area='DIRECT')
+sv_user_info = SV('用户信息')
+sv_user_help = SV('绑定帮助')
 
-@SV('用户管理', pm=2).on_fullmatch(('刷新全部CK', '刷新全部ck'))
+
+@sv_user_config.on_fullmatch(('刷新全部CK', '刷新全部ck'))
 async def send_refresh_all_ck_msg(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[刷新全部CK]')
     im = await get_ck_by_all_stoken(ev.bot_id)
     await bot.send(im)
 
 
-@SV('用户添加').on_fullmatch(('刷新CK', '刷新ck'))
+@sv_user_add.on_fullmatch(('刷新CK', '刷新ck'))
 async def send_refresh_ck_msg(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[刷新CK]')
     im = await get_ck_by_stoken(ev.bot_id, ev.user_id)
     await bot.send(im)
 
 
-@SV('扫码登陆').on_fullmatch(('扫码登陆', '扫码登录'))
+@sv_user_qrcode_login.on_fullmatch(('扫码登陆', '扫码登录'))
 async def send_qrcode_login(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[扫码登陆]')
     im = await qrcode_login(bot, ev, ev.user_id)
@@ -37,7 +44,7 @@ async def send_qrcode_login(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('用户信息').on_fullmatch(('绑定信息'))
+@sv_user_info.on_fullmatch(('绑定信息'))
 async def send_bind_card(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询用户绑定状态]')
     im = await get_user_card(ev.bot_id, ev.user_id)
@@ -45,13 +52,13 @@ async def send_bind_card(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('添加CK', area='DIRECT').on_prefix(('添加'))
+@sv_user_addck.on_prefix(('添加'))
 async def send_add_ck_msg(bot: Bot, ev: Event):
     im = await deal_ck(ev.bot_id, ev.text, ev.user_id)
     await bot.send(im)
 
 
-@SV('用户信息').on_prefix(('绑定uid', '切换uid', '删除uid', '解绑uid'))
+@sv_user_info.on_prefix(('绑定uid', '切换uid', '删除uid', '解绑uid'))
 async def send_link_uid_msg(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[绑定/解绑用户信息]')
     qid = ev.user_id
@@ -89,7 +96,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
         )
 
 
-@SV('帮助').on_fullmatch(('ck帮助', '绑定帮助'))
+@sv_user_help.on_fullmatch(('ck帮助', '绑定帮助'))
 async def send_ck_help(bot: Bot, ev: Event):
     msg_list = await get_ck_help()
     await bot.send(MessageSegment.node(msg_list))

@@ -4,8 +4,10 @@ from gsuid_core.models import Event
 
 from .import_data import import_v3_data
 
+sv_v3_data = SV('数据备份恢复', pm=2)
 
-@SV('数据备份恢复', pm=2).on_fullmatch(('导入v3数据'))
+
+@sv_v3_data.on_fullmatch(('导入v3数据'))
 async def send_import_data_msg(bot: Bot, ev: Event):
     await bot.send('开始导入v3数据...可能会比较久...')
     await bot.send(await import_v3_data())

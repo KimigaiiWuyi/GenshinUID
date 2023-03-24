@@ -16,8 +16,12 @@ from ..utils.image.convert import convert_img
 from ..genshinuid_config.gs_config import gsconfig
 from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card
 
+sv_ann = SV('原神公告')
+sv_ann_sub = SV('原神公告订阅', pm=2)
+sv_ann_hint = SV('原神公告红点')
 
-@SV('原神公告').on_command(('原神公告'))
+
+@sv_ann.on_command(('原神公告'))
 async def ann_(bot: Bot, ev: Event):
     ann_id = ev.text
     if not ann_id:
@@ -33,21 +37,21 @@ async def ann_(bot: Bot, ev: Event):
     await bot.send(img)
 
 
-@SV('原神公告订阅', pm=2).on_fullmatch('订阅原神公告')
+@sv_ann_sub.on_fullmatch('订阅原神公告')
 async def sub_ann_(bot: Bot, ev: Event):
     if ev.group_id is None:
         return await bot.send('请在群聊中订阅')
     await bot.send(sub_ann(bot.bot_id, ev.group_id))
 
 
-@SV('原神公告订阅', pm=2).on_fullmatch(('取消订阅原神公告', '取消原神公告', '退订原神公告'))
+@sv_ann_sub.on_fullmatch(('取消订阅原神公告', '取消原神公告', '退订原神公告'))
 async def unsub_ann_(bot: Bot, ev: Event):
     if ev.group_id is None:
         return await bot.send('请在群聊中取消订阅')
     await bot.send(unsub_ann(bot.bot_id, ev.group_id))
 
 
-@SV('原神公告红点').on_fullmatch(('取消原神公告红点', '清除原神公告红点'))
+@sv_ann_hint.on_fullmatch(('取消原神公告红点', '清除原神公告红点'))
 async def consume_remind_(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

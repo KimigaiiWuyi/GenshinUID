@@ -10,8 +10,12 @@ from .get_gachalogs import save_gachalogs
 from .draw_gachalogs import draw_gachalogs_img
 from .export_and_import import export_gachalogs
 
+sv_gacha_log = SV('抽卡记录')
+sv_refresh_gacha_log = SV('刷新抽卡记录')
+sv_export_gacha_log = SV('导出抽卡记录')
 
-@SV('抽卡记录').on_fullmatch(('抽卡记录'))
+
+@sv_gacha_log.on_fullmatch(('抽卡记录'))
 async def send_gacha_log_card_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[抽卡记录]')
     uid = await get_uid(bot, ev)
@@ -21,7 +25,7 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('抽卡记录').on_fullmatch(('刷新抽卡记录', '强制刷新抽卡记录'))
+@sv_refresh_gacha_log.on_fullmatch(('刷新抽卡记录', '强制刷新抽卡记录'))
 async def send_refresh_gacha_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[刷新抽卡记录]')
     uid = await get_uid(bot, ev)
@@ -36,7 +40,7 @@ async def send_refresh_gacha_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('导出抽卡记录').on_fullmatch(('导出抽卡记录'))
+@sv_export_gacha_log.on_fullmatch(('导出抽卡记录'))
 async def send_export_gacha_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[导出抽卡记录]')
     sqla = get_sqla(ev.bot_id)

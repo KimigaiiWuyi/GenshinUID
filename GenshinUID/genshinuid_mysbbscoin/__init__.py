@@ -16,9 +16,12 @@ from .daily_get import mihoyo_coin, all_daily_mihoyo_bbs_coin
 
 BBS_TASK_TIME = gsconfig.get_config('BBSTaskTime').data
 
+sv_mysbbs_config = SV('米游币获取管理', pm=2)
+sv_get_mysbbs = SV('米游币获取')
+
 
 # 获取米游币
-@SV('米游币获取').on_fullmatch('开始获取米游币')
+@sv_get_mysbbs.on_fullmatch('开始获取米游币')
 async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send('开始操作……')
     sqla = get_sqla(ev.bot_id)
@@ -32,7 +35,7 @@ async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('米游币获取管理', pm=2).on_fullmatch('全部重获取')
+@sv_mysbbs_config.on_fullmatch('全部重获取')
 async def bbs_recheck(bot: Bot, ev: Event):
     await bot.send('已开始执行!可能需要较久时间!')
     await send_daily_mihoyo_bbs_sign(ev)

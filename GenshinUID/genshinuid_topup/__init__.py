@@ -5,8 +5,10 @@ from gsuid_core.models import Event
 from .gs_topup import GOODS, topup_
 from ..genshinuid_config.gs_config import gsconfig
 
+sv_topup = SV('原神充值')
 
-@SV('原神充值').on_command(('gsrc', '原神充值', 'pay'))
+
+@sv_topup.on_command(('gsrc', '原神充值', 'pay'))
 async def send_qrcode_login(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[原神充值]')
     value = ev.text
@@ -36,4 +38,9 @@ async def send_qrcode_login(bot: Bot, ev: Event):
     if goods_id is None:
         return await bot.send('请输入正确的商品编号(1~6), 例如原神充值6!')
 
-    await topup_(bot, ev.bot_id, ev.user_id, ev.group_id, goods_id, method)
+    if ev.group_id is None:
+        gid = 'direct'
+    else:
+        gid = ev.group_id
+
+    await topup_(bot, ev.bot_id, ev.user_id, gid, goods_id, method)

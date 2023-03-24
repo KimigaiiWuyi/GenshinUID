@@ -8,9 +8,11 @@ from ..utils.database import get_sqla
 from ..utils.error_reply import UID_HINT
 from .draw_note_card import draw_note_img
 
+sv_get_monthly_data = SV('查询札记')
+
 
 # 群聊内 每月统计 功能
-@SV('查询札记').on_fullmatch(('每月统计'))
+@sv_get_monthly_data.on_fullmatch(('每月统计'))
 async def send_monthly_data(bot: Bot, ev: Event):
     sqla = get_sqla(ev.bot_id)
     uid = await sqla.get_bind_uid(ev.user_id)
@@ -19,7 +21,7 @@ async def send_monthly_data(bot: Bot, ev: Event):
     await bot.send(await award(uid))
 
 
-@SV('查询札记').on_fullmatch(('当前信息', 'zj', '札记'))
+@sv_get_monthly_data.on_fullmatch(('当前信息', 'zj', '札记'))
 async def send_monthly_pic(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[每日信息]')
     uid = await get_uid(bot, ev)

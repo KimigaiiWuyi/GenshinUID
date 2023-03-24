@@ -7,8 +7,10 @@ from .draw_gcgdesk import draw_deck_img
 from .draw_gcginfo import draw_gcg_info
 from ..utils.error_reply import UID_HINT
 
+sv_gcg = SV('查询七圣')
 
-@SV('查询七圣').on_command(('七圣召唤', 'qszh'))
+
+@sv_gcg.on_command(('七圣召唤', 'qszh'))
 async def send_gcg_pic(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
@@ -19,7 +21,7 @@ async def send_gcg_pic(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('查询七圣').on_command(('我的卡组', '我的牌组'))
+@sv_gcg.on_command(('我的卡组', '我的牌组'))
 async def send_deck_pic(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

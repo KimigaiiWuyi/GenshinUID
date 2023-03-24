@@ -9,8 +9,11 @@ from .get_lots_data import get_lots_msg
 from .get_meme_card import get_meme_img
 from .get_mys_data import get_region_task, get_task_detail
 
+sv_find_task = SV('查询游戏攻略')
+sv_fun = SV('娱乐功能')
 
-@SV('查询游戏攻略').on_prefix(('原神任务', '任务详情', 'qszh'))
+
+@sv_find_task.on_prefix(('原神任务', '任务详情', 'qszh'))
 async def send_task_adv(bot: Bot, ev: Event):
     if ev.text in ['须弥', '层岩', '海岛']:
         im = await get_region_task(ev.text)
@@ -24,13 +27,13 @@ async def send_task_adv(bot: Bot, ev: Event):
         await bot.send(im)
 
 
-@SV('娱乐功能').on_fullmatch(('抽表情'))
+@sv_fun.on_fullmatch(('抽表情'))
 async def send_meme_card(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[抽表情]')
     await bot.send(await get_meme_img())
 
 
-@SV('娱乐功能').on_fullmatch(('御神签'))
+@sv_fun.on_fullmatch(('御神签'))
 async def send_lots_data(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[御神签]')
     await bot.send(await get_lots_msg(ev.user_id))

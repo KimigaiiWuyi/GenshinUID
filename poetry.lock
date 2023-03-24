@@ -668,14 +668,14 @@ test = ["aiosqlite (>=0.15.0)", "jinja2 (>=2.11.2,<4.0.0)", "pytest (>=6.2.4)", 
 
 [[package]]
 name = "filelock"
-version = "3.10.2"
+version = "3.10.4"
 description = "A platform independent file lock."
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "filelock-3.10.2-py3-none-any.whl", hash = "sha256:eb8f0f2d37ed68223ea63e3bddf2fac99667e4362c88b3f762e434d160190d18"},
-    {file = "filelock-3.10.2.tar.gz", hash = "sha256:75997740323c5f12e18f10b494bc11c03e42843129f980f17c04352cc7b09d40"},
+    {file = "filelock-3.10.4-py3-none-any.whl", hash = "sha256:6d332dc5c896f18ba93a21d987155e97c434a96d3fe4042ca70d0b3b46e3b470"},
+    {file = "filelock-3.10.4.tar.gz", hash = "sha256:9fc1734dbddcdcd4aaa02c160dd94db5272b92dfa859b44ec8df28e160b751f0"},
 ]
 
 [package.extras]
@@ -2234,14 +2234,14 @@ typing-extensions = ">=3.7.4"
 
 [[package]]
 name = "tzdata"
-version = "2022.7"
+version = "2023.2"
 description = "Provider of IANA time zone data"
 category = "main"
 optional = false
 python-versions = ">=2"
 files = [
-    {file = "tzdata-2022.7-py2.py3-none-any.whl", hash = "sha256:2b88858b0e3120792a3c0635c23daf36a7d7eeeca657c323da299d2094402a0d"},
-    {file = "tzdata-2022.7.tar.gz", hash = "sha256:fe5f866eddd8b96e9fcba978f8e503c909b19ea7efda11e52e39494bad3a7bfa"},
+    {file = "tzdata-2023.2-py2.py3-none-any.whl", hash = "sha256:905ae9e6744dd9ef5ce94d2aaa2dd00282fee38b670b2133407f23c388f110a1"},
+    {file = "tzdata-2023.2.tar.gz", hash = "sha256:c3b51b235b07f9f1889089c2264bcbeaaba260a63f89bea09e350ea4205eb95f"},
 ]
 
 [[package]]

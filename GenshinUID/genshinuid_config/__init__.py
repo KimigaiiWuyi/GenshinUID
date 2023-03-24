@@ -9,15 +9,17 @@ from ..utils.error_reply import UID_HINT
 from .draw_config_card import draw_config_img
 from .set_config import set_push_value, set_config_func
 
+sv_self_config = SV('原神配置')
 
-@SV('原神配置').on_fullmatch(('gs配置', '原神配置'))
+
+@sv_self_config.on_fullmatch(('gs配置', '原神配置'))
 async def send_config_card(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[gs配置]')
     im = await draw_config_img(ev.bot_id)
     await bot.send(im)
 
 
-@SV('原神配置').on_prefix(('gs设置'))
+@sv_self_config.on_prefix(('gs设置'))
 async def send_config_ev(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[设置阈值信息]')
 
@@ -39,7 +41,7 @@ async def send_config_ev(bot: Bot, ev: Event):
 
 
 # 开启 自动签到 和 推送树脂提醒 功能
-@SV('原神配置').on_prefix(('gs开启', 'gs关闭'))
+@sv_self_config.on_prefix(('gs开启', 'gs关闭'))
 async def open_switch_func(bot: Bot, ev: Event):
     sqla = get_sqla(ev.bot_id)
     user_id = ev.user_id

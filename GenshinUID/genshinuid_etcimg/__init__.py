@@ -10,8 +10,11 @@ from ..utils.image.convert import convert_img
 PRIMOGEMS_DATA_PATH = Path(__file__).parent / 'primogems_data'
 IMG_PATH = Path(__file__).parent / 'img_data'
 
+sv_primogems_data = SV('版本规划')
+sv_etc_img = SV('杂图')
 
-@SV('版本规划').on_command(('版本规划', '原石预估'))
+
+@sv_primogems_data.on_command(('版本规划', '原石预估'))
 async def send_primogems_data(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[图片][版本规划]')
     if ev.text:
@@ -28,7 +31,7 @@ async def send_primogems_data(bot: Bot, ev: Event):
     await bot.send(primogems_img)
 
 
-@SV('杂图').on_fullmatch(('伤害乘区', '血量表', '抗性表', '血量排行'))
+@sv_etc_img.on_fullmatch(('伤害乘区', '血量表', '抗性表', '血量排行'))
 async def send_img_data(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[图片][杂图]')
     img = IMG_PATH / f'{ev.command}.jpg'

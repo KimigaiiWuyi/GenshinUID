@@ -12,13 +12,16 @@ from .get_enka_img import draw_enka_img
 from ..utils.error_reply import UID_HINT
 from .draw_char_rank import draw_cahrcard_list
 
+sv_enka_config = SV('面板设置', pm=2)
+sv_get_enka = SV('面板查询', priority=10)
 
-@SV('面板设置', pm=2).on_fullmatch('切换api')
+
+@sv_enka_config.on_fullmatch('切换api')
 async def send_change_api_info(bot: Bot, ev: Event):
     await bot.send(await switch_api())
 
 
-@SV('面板查询', priority=10).on_prefix('查询')
+@sv_get_enka.on_prefix('查询')
 async def send_char_info(bot: Bot, ev: Event):
     # 获取角色名
     msg = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
@@ -40,7 +43,7 @@ async def send_char_info(bot: Bot, ev: Event):
         await bot.send('发生未知错误')
 
 
-@SV('面板查询', priority=10).on_command('强制刷新')
+@sv_get_enka.on_command('强制刷新')
 async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
@@ -51,7 +54,7 @@ async def send_card_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@SV('面板查询', priority=10).on_command('毕业度统计')
+@sv_get_enka.on_command('毕业度统计')
 async def send_charcard_list(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     user_id = ev.at if ev.at else ev.user_id

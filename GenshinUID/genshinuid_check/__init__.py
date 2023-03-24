@@ -12,19 +12,21 @@ from .backup_data import data_backup
 from ..utils.database import get_sqla
 from ..gsuid_utils.database.models import GsUser
 
+sv_data_manger = SV('数据管理', pm=2)
+
 
 @scheduler.scheduled_job('cron', hour=0, minute=6)
 async def daily_refresh_charData():
     await data_backup()
 
 
-@SV('数据管理', pm=2).on_fullmatch(('gs清除缓存'))
+@sv_data_manger.on_fullmatch(('gs清除缓存'))
 async def send_backup_msg(bot: Bot, ev: Event):
     await data_backup()
     await bot.send('操作成功完成!')
 
 
-@SV('数据管理', pm=2).on_fullmatch(('校验全部Cookies'))
+@sv_data_manger.on_fullmatch(('校验全部Cookies'))
 async def send_check_cookie(bot: Bot, ev: Event):
     user_list = await get_sqla(bot.bot_id).get_all_user()
     invalid_user: List[GsUser] = []
@@ -74,7 +76,7 @@ async def send_check_cookie(bot: Bot, ev: Event):
         await asyncio.sleep(3 + random.randint(1, 3))
 
 
-@SV('数据管理', pm=2).on_fullmatch(('校验全部Stoken'))
+@sv_data_manger.on_fullmatch(('校验全部Stoken'))
 async def send_check_stoken(bot: Bot, ev: Event):
     user_list = await get_sqla(bot.bot_id).get_all_user()
     invalid_user: List[GsUser] = []

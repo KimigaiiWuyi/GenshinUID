@@ -18,8 +18,11 @@ MAP_CHN_NAME = {
     # MapID.golden_apple_archipelago: '金苹果群岛',
 }
 
+sv_find_map_config = SV('查询地图设置', pm=2)
+sv_find_map = SV('查询地图', pm=2)
 
-@SV('查询地图设置', pm=2).on_fullmatch(('切换地图'))
+
+@sv_find_map_config.on_fullmatch(('切换地图'))
 async def send_change_map_msg(bot: Bot, ev: Event):
     await bot.logger.info('[切换地图]正在执行...')
     MAP_ID_LIST.append(MAP_ID_LIST[0])
@@ -30,7 +33,7 @@ async def send_change_map_msg(bot: Bot, ev: Event):
     await bot.send(f'切换到{chn}地图')
 
 
-@SV('查询地图').on_prefix(('哪里有', '哪儿有', '哪有'))
+@sv_find_map.on_prefix(('哪里有', '哪儿有', '哪有'))
 async def send_find_map_msg(bot: Bot, ev: Event):
     map_id = MAP_ID_LIST[0]
     map_name = MAP_CHN_NAME[map_id]

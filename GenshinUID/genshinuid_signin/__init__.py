@@ -15,6 +15,9 @@ from ..genshinuid_config.gs_config import gsconfig
 
 SIGN_TIME = gsconfig.get_config('SignTime').data
 
+sv_sign = SV('原神签到')
+sv_sign_config = SV('原神签到', pm=2)
+
 
 # 每日零点半执行米游社原神签到
 @scheduler.scheduled_job('cron', hour=SIGN_TIME[0], minute=SIGN_TIME[1])
@@ -24,7 +27,7 @@ async def sign_at_night():
 
 
 # 群聊内 签到 功能
-@SV('原神签到').on_fullmatch('签到')
+@sv_sign.on_fullmatch('签到')
 async def get_sign_func(bot: Bot, ev: Event):
     await bot.logger.info('[签到]QQ号: {}'.format(ev.user_id))
     sqla = get_sqla(ev.bot_id)
@@ -35,7 +38,7 @@ async def get_sign_func(bot: Bot, ev: Event):
     await bot.send(await sign_in(uid))
 
 
-@SV('原神签到', pm=2).on_fullmatch('全部重签')
+@sv_sign_config.on_fullmatch('全部重签')
 async def recheck(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[全部重签]')
     await bot.send('已开始执行')

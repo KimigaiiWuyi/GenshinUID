@@ -14,8 +14,10 @@ from .resin_text import get_resin_text
 from ..utils.error_reply import UID_HINT
 from .draw_resin_card import get_resin_img
 
+sv_get_resin = SV('查询体力')
 
-@SV('查询体力').on_fullmatch(('当前状态'))
+
+@sv_get_resin.on_fullmatch(('当前状态'))
 async def send_daily_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[每日信息文字版]')
     uid = await get_uid(bot, ev)
@@ -52,7 +54,7 @@ async def notice_job():
             logger.info('[推送检查] 群聊推送完成')
 
 
-@SV('查询体力').on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
+@sv_get_resin.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))
 async def send_daily_info_pic(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[每日信息]')
     user_id = ev.at if ev.at else ev.user_id

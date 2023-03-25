@@ -62,8 +62,8 @@ async def draw_deck_img(
     img_draw.text((475, 466), deck_name, first_color, gs_font_36, 'mm')
 
     action_card = raw_data['action_cards']
-    
-    action_cards=[]
+
+    action_cards = []
     for action in action_card:
         for _ in range(action['num']):
             action_cards.append(action)

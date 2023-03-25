@@ -1,0 +1,43 @@
+ci:
+  autofix_commit_msg: "🚨 `pre-commit-ci`修复格式错误"
+  skip:
+    - "poetry-lock"
+  autofix_prs: true
+  autoupdate_branch: v4-nonebot2
+  autoupdate_schedule: monthly
+  autoupdate_commit_msg: "⬆️ `pre-commit-ci`自动升级"
+repos:
+  - repo: https://github.com/pycqa/isort
+    rev: 5.11.5
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 5.0.4
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/hadialqattan/pycln
+    rev: v2.1.2
+    hooks:
+      - id: pycln
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/python-poetry/poetry
+    rev: 1.3.1
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock
+      - id: poetry-export
+        args: ["-f", "requirements.txt", "--without-hashes", "-o", "requirements.txt"]
+        verbose: true

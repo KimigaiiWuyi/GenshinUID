@@ -1,0 +1,5 @@
+gitdb==4.0.10 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+gitpython==3.1.31 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+msgspec==0.13.1 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+pillow==9.4.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+smmap==5.0.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"

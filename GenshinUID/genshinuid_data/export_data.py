@@ -5,7 +5,7 @@ from ..utils.download_resource.RESOURCE_PATH import MAIN_PATH
 from ..utils.db_operation.db_operation import get_all_bind, get_user_bind_data
 
 DATA_PATH = MAIN_PATH / 'v3_data.json'
-BOT_ID = 'hoshino'
+BOT_ID = 'onebot'
 RECOGNIZE_SERVER = {
     '1': 'cn_gf01',
     '2': 'cn_gf01',

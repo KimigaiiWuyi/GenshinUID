@@ -81,7 +81,7 @@ async def _ambr_request(
     params: Optional[AnyDict] = None,
     data: Optional[AnyDict] = None,
 ) -> Optional[AnyDict]:
-    async with AsyncClient() as client:
+    async with AsyncClient(timeout=None) as client:
         req = await client.request(
             method, url=url, headers=header, params=params, json=data
         )

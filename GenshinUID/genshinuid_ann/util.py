@@ -57,7 +57,7 @@ def cache(ttl=datetime.timedelta(hours=1), **kwargs):
 
 @cache(ttl=datetime.timedelta(minutes=30), arg_key='url')
 async def cache_request_json(url):
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=None) as client:
         res = await client.get(url, timeout=10)
         return res.json(object_hook=_Dict)
 

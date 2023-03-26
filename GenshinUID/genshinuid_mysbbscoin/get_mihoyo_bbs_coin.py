@@ -294,7 +294,7 @@ class MihoyoBBSCoin:
         data: Dict = {},
     ) -> Dict:
         for _ in range(2):
-            async with AsyncClient() as client:
+            async with AsyncClient(timeout=None) as client:
                 req = await client.request(
                     method=method,
                     url=url,

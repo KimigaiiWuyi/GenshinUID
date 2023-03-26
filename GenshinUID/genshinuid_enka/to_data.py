@@ -2,6 +2,8 @@ import json
 import time
 from typing import List, Union, Literal, Optional
 
+from httpx import ReadTimeout
+
 from ..utils.error_reply import UID_HINT
 from ..gsuid_utils.api.enka.models import EnkaData
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -59,7 +61,10 @@ async def enka_to_dict(
     if enka_data:
         pass
     else:
-        enka_data = await get_enka_info(uid, ENKA_API[0])
+        try:
+            enka_data = await get_enka_info(uid, ENKA_API[0])
+        except ReadTimeout:
+            return '网络不太稳定...'
     if isinstance(enka_data, str):
         return []
     if isinstance(enka_data, dict):

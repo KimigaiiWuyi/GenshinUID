@@ -48,7 +48,7 @@ async def get_abyss_review(
 
 async def get_abyss_review_raw() -> bytes:
     async with AsyncClient(
-        headers={'User-Agent': f'gsuid-utils/{__version__}'},
+        headers={'User-Agent': f'gsuid-utils/{__version__}'}, timeout=None
     ) as client:
         req = await client.get(url=HHW_ABYSS)
         return req.read()

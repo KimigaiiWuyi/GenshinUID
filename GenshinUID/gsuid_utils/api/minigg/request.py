@@ -92,7 +92,7 @@ async def get_map_data(
     Returns:
         bytes: 图片。
     '''
-    async with AsyncClient() as client:
+    async with AsyncClient(timeout=None) as client:
         req = await client.get(
             url=MINIGG_MAP_URL,
             params={
@@ -121,7 +121,7 @@ async def get_audio_info(
         str: 语音 URL。
     '''
     warnings.warn('Audio API is already deprecated.', DeprecationWarning)
-    async with AsyncClient() as client:
+    async with AsyncClient(timeout=None) as client:
         req = await client.get(
             url=MINIGG_AUDIO_URL,
             params={
@@ -166,7 +166,7 @@ async def minigg_request(
     }
     if match_categories:
         params['matchCategories'] = '1'
-    async with AsyncClient(base_url=MINIGG_URL) as client:
+    async with AsyncClient(base_url=MINIGG_URL, timeout=None) as client:
         req = await client.get(endpoint, params=params)
         data = req.json()
         if 'retcode' in data:

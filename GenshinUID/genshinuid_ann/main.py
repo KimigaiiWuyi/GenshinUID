@@ -89,7 +89,8 @@ async def consume_remind(uid):
     msg = f'取消公告红点完毕! 一共取消了{len(ids)}个'
 
     async with httpx.AsyncClient(
-        base_url="https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api"
+        base_url='https://hk4e-api.mihoyo.com/common/hk4e_cn/announcement/api',
+        timeout=None,
     ) as client:
         for ann_id in ids:
             for p in platform:

@@ -34,7 +34,7 @@ async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
     """
     从网络获取图片，格式化为RGBA格式的指定尺寸
     """
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=None) as client:
         resp = await client.get(url=url)
         if resp.status_code != 200:
             if size is None:

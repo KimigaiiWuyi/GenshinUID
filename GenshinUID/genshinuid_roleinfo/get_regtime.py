@@ -22,4 +22,4 @@ async def calc_reg_time(uid: str) -> str:
         return f'UID{uid} 的注册时间为\n{regtime_date}'
     except Exception as e:
         logger.error(e)
-        return '数据获取错误, 可尝试使用“刷新ck”功能。'
+        return '数据获取错误, 可尝试使用【刷新ck】或者发送【扫码登陆】以绑定CK。'

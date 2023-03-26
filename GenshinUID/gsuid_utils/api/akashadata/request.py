@@ -22,7 +22,9 @@ async def get_akasha_abyss_info() -> AkashaAbyssData:
         AkashaAbyssData: 虚空数据库 API 深渊出场数据响应数据
     '''  # noqa: E501
     async with AsyncClient(
-        headers={'User-Agent': f'gsuid-utils/{__version__}'}, verify=False
+        headers={'User-Agent': f'gsuid-utils/{__version__}'},
+        verify=False,
+        timeout=None,
     ) as client:
         req = await client.get(url=AKASHA_ABYSS_URL)
         raw = req.text.lstrip('var static_abyss_total =')

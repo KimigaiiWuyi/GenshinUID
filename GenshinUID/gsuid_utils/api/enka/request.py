@@ -31,6 +31,7 @@ async def get_enka_info(
     async with AsyncClient(
         base_url=ADDRESS[address],
         headers={'User-Agent': f'gsuid-utils/{__version__}'},
+        timeout=None,
     ) as client:
         req = await client.get(url=f'/api/uid/{uid}')
         return req.json()

@@ -59,13 +59,17 @@ async def send_daily_mihoyo_bbs_sign(ev: Optional[Event] = None):
             for bot_id in im_private:
                 for user_id in im_private[bot_id]:
                     msg = im_private[bot_id][user_id]
-                    await bot.target_send(msg, 'direct', user_id, bot_id, '')
+                    await bot.target_send(
+                        msg, 'direct', user_id, bot_id, '', ''
+                    )
                 await asyncio.sleep(5 + random.randint(1, 3))
     if ev:
         target_type = 'group' if ev.group_id else 'direct'
         target_id = ev.group_id if ev.group_id else ev.user_id
         for BOT_ID in gss.active_bot:
             bot = gss.active_bot[BOT_ID]
-            await bot.target_send(im, target_type, target_id, ev.bot_id, '')
+            await bot.target_send(
+                im, target_type, target_id, ev.bot_id, '', ''
+            )
         await asyncio.sleep(5 + random.randint(1, 3))
     logger.info('米游币获取已结束。')

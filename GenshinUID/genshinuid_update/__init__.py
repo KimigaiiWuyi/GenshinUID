@@ -30,6 +30,7 @@ async def check_msg():
                     update_log['send_to'],
                     update_log['bot_id'],
                     '',
+                    '',
                 )
             else:
                 await bot.target_send(
@@ -37,6 +38,7 @@ async def check_msg():
                     'direct',
                     update_log['send_to'],
                     update_log['bot_id'],
+                    '',
                     '',
                 )
         logger.info('遗留信息检查完毕!')

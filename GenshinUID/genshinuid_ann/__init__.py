@@ -101,7 +101,7 @@ async def check_ann_state():
                         bot = gss.active_bot[BOT_ID]
                         for group_id in sub_list[bot_id]:
                             await bot.target_send(
-                                img, 'group', group_id, bot_id, ''
+                                img, 'group', group_id, bot_id, '', ''
                             )
                             await asyncio.sleep(random.uniform(1, 3))
                 except Exception as e:

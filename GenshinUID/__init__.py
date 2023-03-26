@@ -1,7 +1,6 @@
 from typing import List, Literal, Optional
 
 from hoshino import priv
-from nonebot import on_startup
 from hoshino.typing import CQEvent, HoshinoBot
 
 from .client import GsClient
@@ -106,9 +105,3 @@ async def send_connect_msg(bot: HoshinoBot, ev: CQEvent):
 async def send_start_msg(bot: HoshinoBot, ev: CQEvent):
     if priv.check_priv(ev, priv.ADMIN):
         await bot.send(ev, await start())
-
-
-@on_startup
-async def start_client():
-    if gsclient is None:
-        await connect()

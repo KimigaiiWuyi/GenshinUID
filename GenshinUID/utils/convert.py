@@ -1,5 +1,5 @@
 import re
-from typing import Union, Optional
+from typing import Tuple, Union, Optional, overload
 
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
@@ -10,14 +10,30 @@ from .error_reply import VERIFY_HINT
 from ..gsuid_utils.api.mys.models import AbyssData, IndexData
 
 
-async def get_uid(bot: Bot, ev: Event):
-    uid = re.findall(r'\d{9}', ev.text)
+@overload
+async def get_uid(bot: Bot, ev: Event) -> Optional[str]:
+    ...
+
+
+@overload
+async def get_uid(
+    bot: Bot, ev: Event, get_user_id: bool = True
+) -> Tuple[Optional[str], str]:
+    ...
+
+
+async def get_uid(
+    bot: Bot, ev: Event, get_user_id: bool = False
+) -> Union[Optional[str], Tuple[Optional[str], str]]:
+    uid_data = re.findall(r'\d{9}', ev.text)
     user_id = ev.at if ev.at else ev.user_id
-    if uid:
-        uid = uid[0]
+    if uid_data:
+        uid: Optional[str] = uid_data[0]
     else:
         sqla = get_sqla(ev.bot_id)
         uid = await sqla.get_bind_uid(user_id)
+    if get_user_id:
+        return uid, user_id
     return uid
 
 

@@ -18,10 +18,10 @@ sv_export_gacha_log = SV('导出抽卡记录')
 @sv_gacha_log.on_fullmatch(('抽卡记录'))
 async def send_gacha_log_card_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[抽卡记录]')
-    uid = await get_uid(bot, ev)
+    uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    im = await draw_gachalogs_img(uid, ev.user_id)
+    im = await draw_gachalogs_img(uid, user_id)
     await bot.send(im)
 
 

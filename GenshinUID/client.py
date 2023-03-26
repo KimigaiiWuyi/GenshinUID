@@ -5,29 +5,16 @@ from pathlib import Path
 from typing import Any, Dict, List, Union, Optional
 
 import websockets.client
+from nonebot import get_bots
 from nonebot.log import logger
 from nonebot.adapters import Bot
 from msgspec import json as msgjson
-from nonebot import get_bot, get_bots
 from websockets.exceptions import ConnectionClosedError
 
 from .models import MessageSend, MessageReceive
 
 BOT_ID = 'NoneBot2'
 bots: Dict[str, str] = {}
-
-
-def _get_bot(bot_id: str) -> Bot:
-    if 'onebot' in bot_id:
-        bot_id = 'onebot'
-    if bot_id not in bots:
-        for _bot_id in bots.keys():
-            if bot_id in _bot_id:
-                bot_id = _bot_id
-                break
-    bot_real_id = bots[bot_id]
-    bot = get_bot(bot_real_id)
-    return bot
 
 
 class GsClient:
@@ -55,15 +42,21 @@ class GsClient:
                 bots[bot_id] = bot_real_id
             async for message in self.ws:
                 try:
+                    _bots = get_bots()
                     msg = msgjson.decode(message, type=MessageSend)
                     logger.info(
                         f'【接收】[gsuid-core]: '
                         f'{msg.bot_id} - {msg.target_type} - {msg.target_id}'
                     )
+                    if msg.bot_self_id in _bots:
+                        bot = _bots[msg.bot_self_id]
+                    else:
+                        continue
+
                     # 解析消息
                     if msg.bot_id == 'NoneBot2':
                         continue
-                    bot = _get_bot(msg.bot_id)
+
                     content = ''
                     image: Optional[str] = None
                     node = []
@@ -134,6 +127,8 @@ class GsClient:
                         )
                 except Exception as e:
                     logger.error(e)
+        except RuntimeError:
+            pass
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
             self.is_alive = False
@@ -421,4 +416,5 @@ async def telegram_send(
             else:
                 await _send(_msg['data'], None)
     else:
+        await _send(content, image)
         await _send(content, image)

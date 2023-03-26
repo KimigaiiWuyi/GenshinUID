@@ -32,6 +32,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     messages = ev.get_message()
     raw_data = ev.__dict__
     group_id = sessions[-2] if len(sessions) >= 2 else None
+    self_id = str(bot.self_id)
     message: List[Message] = []
     msg_id = ''
     sp_bot_id: Optional[str] = None
@@ -118,6 +119,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     user_type = 'group' if group_id else 'direct'
     msg = MessageReceive(
         bot_id=bot_id,
+        bot_self_id=self_id,
         user_type=sp_user_type if sp_user_type else user_type,
         group_id=group_id,
         user_id=user_id,

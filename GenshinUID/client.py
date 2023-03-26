@@ -5,16 +5,29 @@ from pathlib import Path
 from typing import Any, Dict, List, Union, Optional
 
 import websockets.client
-from nonebot import get_bots
 from nonebot.log import logger
 from nonebot.adapters import Bot
 from msgspec import json as msgjson
+from nonebot import get_bot, get_bots
 from websockets.exceptions import ConnectionClosedError
 
 from .models import MessageSend, MessageReceive
 
 BOT_ID = 'NoneBot2'
 bots: Dict[str, str] = {}
+
+
+def _get_bot(bot_id: str) -> Bot:
+    if 'onebot' in bot_id:
+        bot_id = 'onebot'
+    if bot_id not in bots:
+        for _bot_id in bots.keys():
+            if bot_id in _bot_id:
+                bot_id = _bot_id
+                break
+    bot_real_id = bots[bot_id]
+    bot = get_bot(bot_real_id)
+    return bot
 
 
 class GsClient:
@@ -48,8 +61,11 @@ class GsClient:
                         f'【接收】[gsuid-core]: '
                         f'{msg.bot_id} - {msg.target_type} - {msg.target_id}'
                     )
+                    bot_list = []
                     if msg.bot_self_id in _bots:
-                        bot = _bots[msg.bot_self_id]
+                        bot_list.append(_bots[msg.bot_self_id])
+                    elif not msg.bot_self_id:
+                        bot_list.append(_get_bot(msg.bot_id))
                     else:
                         continue
 
@@ -80,51 +96,52 @@ class GsClient:
 
                     # 根据bot_id字段发送消息
                     # OneBot v11 & v12
-                    if msg.bot_id == 'onebot':
-                        await onebot_send(
-                            bot,
-                            content,
-                            image,
-                            node,
-                            file,
-                            msg.target_id,
-                            msg.target_type,
-                        )
-                    # ntchat
-                    elif msg.bot_id == 'ntchat':
-                        await ntchat_send(
-                            bot, content, image, file, node, msg.target_id
-                        )
-                    # 频道
-                    elif msg.bot_id == 'qqguild':
-                        await guild_send(
-                            bot,
-                            content,
-                            image,
-                            node,
-                            msg.target_id,
-                            msg.target_type,
-                            msg.msg_id,
-                        )
-                    elif msg.bot_id == 'telegram':
-                        await telegram_send(
-                            bot,
-                            content,
-                            image,
-                            file,
-                            node,
-                            msg.target_id,
-                        )
-                    elif msg.bot_id == 'kaiheila':
-                        await kaiheila_send(
-                            bot,
-                            content,
-                            image,
-                            file,
-                            node,
-                            msg.target_id,
-                            msg.target_type,
-                        )
+                    for bot in bot_list:
+                        if msg.bot_id == 'onebot':
+                            await onebot_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                file,
+                                msg.target_id,
+                                msg.target_type,
+                            )
+                        # ntchat
+                        elif msg.bot_id == 'ntchat':
+                            await ntchat_send(
+                                bot, content, image, file, node, msg.target_id
+                            )
+                        # 频道
+                        elif msg.bot_id == 'qqguild':
+                            await guild_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                msg.target_id,
+                                msg.target_type,
+                                msg.msg_id,
+                            )
+                        elif msg.bot_id == 'telegram':
+                            await telegram_send(
+                                bot,
+                                content,
+                                image,
+                                file,
+                                node,
+                                msg.target_id,
+                            )
+                        elif msg.bot_id == 'kaiheila':
+                            await kaiheila_send(
+                                bot,
+                                content,
+                                image,
+                                file,
+                                node,
+                                msg.target_id,
+                                msg.target_type,
+                            )
                 except Exception as e:
                     logger.error(e)
         except RuntimeError:

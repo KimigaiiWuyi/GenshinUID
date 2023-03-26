@@ -21,7 +21,9 @@ UPDATE_HINT = '''更新失败!更多错误信息请查看控制台...
 def get_error(retcode: Union[int, str]) -> str:
     if retcode == -51:
         return CK_HINT
-    if retcode == 10001:
+    elif retcode == -100:
+        return '您的cookie已经失效, 请重新获取!'
+    elif retcode == 10001:
         return '您的cookie已经失效, 请重新获取!'
     elif retcode == 10101:
         return '当前查询CK已超过每日30次上限!'
@@ -33,6 +35,8 @@ def get_error(retcode: Union[int, str]) -> str:
         return '请求体出错, 请检查具体实现代码...'
     elif retcode == 10104:
         return CK_HINT
+    elif retcode == -512009:
+        return '已经获取过该内容~!'
     elif retcode == -201:
         return '你的账号可能已被封禁, 请联系米游社客服...'
     else:

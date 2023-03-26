@@ -128,4 +128,10 @@ CreateOrderurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/createOrder'
 CheckOrderurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/atropos/api/checkOrder'
 PriceTierurl = f'{HK4_SDK_URL}/hk4e_cn/mdk/shopwindow/shopwindow/listPriceTier'
 
+# 留影叙佳期
+DRAW_BASE_URL = f'{HK4_URL}/event/birthdaystar/account'
+CALENDAR_URL = f'{DRAW_BASE_URL}/calendar'
+RECEIVE_URL = f'{DRAW_BASE_URL}/post_my_draw'
+BS_INDEX_URL = f'{DRAW_BASE_URL}/index'
+
 _API = locals()

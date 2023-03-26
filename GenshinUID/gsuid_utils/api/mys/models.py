@@ -717,3 +717,64 @@ class GcgAction(TypedDict):
     rank_id: int
     deck_recommend: str
     card_wiki: str
+
+
+# 留影叙佳期
+class GsRoleBirthDay(TypedDict):
+    role_id: int
+    name: str
+    jump_tpye: str
+    jump_target: str
+    jump_start_time: str
+    jump_end_time: str
+    role_gender: int
+    take_picture: str
+    gal_xml: str
+    gal_resource: str
+    is_partake: bool
+    bgm: str
+
+
+class BsIndex(TypedDict):
+    nick_name: str
+    uid: int
+    region: str
+    role: List[GsRoleBirthDay]
+    draw_notice: bool
+    CurrentTime: str
+    gender: int
+    is_show_remind: bool
+
+
+class RolesCalendar(TypedDict):
+    calendar_role_infos: MonthlyRoleCalendar
+    is_pre: bool
+    is_next: bool
+    is_year_subscribe: bool
+
+
+class RoleCalendar(TypedDict):
+    role_id: int
+    name: str
+    role_birthday: str
+    head_icon: str
+    is_subscribe: bool
+
+
+MonthlyRoleCalendar = TypedDict(
+    'MonthlyRoleCalendar',
+    {
+        '1': List[RoleCalendar],
+        '2': List[RoleCalendar],
+        '3': List[RoleCalendar],
+        '4': List[RoleCalendar],
+        '5': List[RoleCalendar],
+        '6': List[RoleCalendar],
+        '7': List[RoleCalendar],
+        '8': List[RoleCalendar],
+        '9': List[RoleCalendar],
+        '10': List[RoleCalendar],
+        '11': List[RoleCalendar],
+        '12': List[RoleCalendar],
+    },
+)

@@ -24,6 +24,7 @@ from .tools import (
     generate_passport_ds,
 )
 from .models import (
+    BsIndex,
     GcgInfo,
     MysGame,
     MysSign,
@@ -43,6 +44,7 @@ from .models import (
     DailyNoteData,
     GameTokenInfo,
     MysOrderCheck,
+    RolesCalendar,
     CharDetailData,
     CookieTokenInfo,
     LoginTicketInfo,
@@ -311,6 +313,81 @@ class MysApi:
         if isinstance(data, Dict):
             data = cast(MonthlyAward, data['data'])
         return data
+
+    async def get_draw_calendar(self, uid: str) -> Union[int, RolesCalendar]:
+        server_id = RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        hk4e_token = await self.get_hk4e_token(uid)
+        header = {}
+        header['Cookie'] = f'{ck};{hk4e_token}'
+        params = {
+            'lang': 'zh-cn',
+            'badge_uid': uid,
+            'badge_region': server_id,
+            'game_biz': 'hk4e_cn',
+            'activity_id': 20220301153521,
+            'year': 2023,
+        }
+        data = await self._mys_request(
+            _API['CALENDAR_URL'], 'GET', header, params
+        )
+        if isinstance(data, Dict):
+            return cast(RolesCalendar, data['data'])
+        return data
+
+    async def get_bs_index(self, uid: str) -> Union[int, BsIndex]:
+        server_id = RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        hk4e_token = await self.get_hk4e_token(uid)
+        header = {}
+        header['Cookie'] = f'{ck};{hk4e_token}'
+        data = await self._mys_request(
+            _API['BS_INDEX_URL'],
+            'GET',
+            header,
+            {
+                'lang': 'zh-cn',
+                'badge_uid': uid,
+                'badge_region': server_id,
+                'game_biz': 'hk4e_cn',
+                'activity_id': 20220301153521,
+            },
+        )
+        if isinstance(data, Dict):
+            return cast(BsIndex, data['data'])
+        return data
+
+    async def post_draw(self, uid: str, role_id: int) -> Union[int, Dict]:
+        server_id = RECOGNIZE_SERVER.get(uid[0])
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        hk4e_token = await self.get_hk4e_token(uid)
+        header = {}
+        header['Cookie'] = f'{ck};{hk4e_token}'
+        data = await self._mys_request(
+            _API['RECEIVE_URL'],
+            'POST',
+            header,
+            {
+                'lang': 'zh-cn',
+                'badge_uid': uid,
+                'badge_region': server_id,
+                'game_biz': 'hk4e_cn',
+                'activity_id': 20220301153521,
+            },
+            {'role_id': role_id},
+        )
+        if isinstance(data, Dict):
+            return data
+        elif data == -512009:
+            return {'data': None, 'message': '这张画片已经被收录啦~', 'retcode': -512009}
+        else:
+            return -999
 
     async def get_spiral_abyss_info(
         self, uid: str, schedule_type='1', ck: Optional[str] = None

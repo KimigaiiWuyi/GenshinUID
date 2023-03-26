@@ -27,6 +27,7 @@ async def get_gs_msg(ev):
     user_id = str(ev.user_id)
     msg_id = str(ev.message_id)
     group_id = str(ev.group_id)
+    self_id = str(ev.self_id)
     messages = ev.message
     message: List[Message] = []
     msg_id = ''
@@ -65,6 +66,7 @@ async def get_gs_msg(ev):
     user_type = 'group' if group_id else 'direct'
     msg = MessageReceive(
         bot_id=bot_id,
+        bot_self_id=self_id,
         user_type=sp_user_type if sp_user_type else user_type,
         group_id=group_id,
         user_id=user_id,

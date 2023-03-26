@@ -43,7 +43,10 @@ class GsClient:
                     # 解析消息
                     if msg.bot_id == 'NoneBot2':
                         continue
+
                     bot = hoshino_bot
+                    # self_ids = hoshino.get_self_ids()
+
                     content = ''
                     image: Optional[str] = None
                     node = []
@@ -74,11 +77,14 @@ class GsClient:
                             image,
                             node,
                             file,
+                            msg.bot_self_id,
                             msg.target_id,
                             msg.target_type,
                         )
                 except Exception as e:
                     logger.error(e)
+        except RuntimeError:
+            pass
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
             self.is_alive = False
@@ -127,6 +133,7 @@ async def onebot_send(
     image: Optional[str],
     node: Optional[List[Dict]],
     file: Optional[str],
+    bot_self_id: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -156,14 +163,14 @@ async def onebot_send(
             del_file(path)
         else:
             if target_type == 'group':
-                await bot.call_action(
-                    'send_group_msg',
+                await bot.send_group_msg(
+                    self_id=bot_self_id,
                     group_id=target_id,
                     message=result_msg,
                 )
             else:
-                await bot.call_action(
-                    'send_private_msg',
+                await bot.send_private_msg(
+                    self_id=bot_self_id,
                     user_id=target_id,
                     message=result_msg,
                 )

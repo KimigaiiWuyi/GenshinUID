@@ -4,6 +4,7 @@ import asyncio
 from pathlib import Path
 from typing import Dict, List, Union, Optional
 
+import hoshino
 import websockets.client
 from msgspec import json as msgjson
 from websockets.exceptions import ConnectionClosedError
@@ -45,7 +46,6 @@ class GsClient:
                         continue
 
                     bot = hoshino_bot
-                    # self_ids = hoshino.get_self_ids()
 
                     content = ''
                     image: Optional[str] = None
@@ -70,17 +70,23 @@ class GsClient:
 
                     # 根据bot_id字段发送消息
                     # OneBot v11 & v12
-                    if msg.bot_id == 'onebot':
-                        await onebot_send(
-                            bot,
-                            content,
-                            image,
-                            node,
-                            file,
-                            msg.bot_self_id,
-                            msg.target_id,
-                            msg.target_type,
-                        )
+                    if not msg.bot_self_id:
+                        self_ids = hoshino.get_self_ids()
+                    else:
+                        self_ids = [msg.bot_self_id]
+
+                    for ids in self_ids:
+                        if msg.bot_id == 'onebot':
+                            await onebot_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                file,
+                                ids,
+                                msg.target_id,
+                                msg.target_type,
+                            )
                 except Exception as e:
                     logger.error(e)
         except RuntimeError:

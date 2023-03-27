@@ -16,7 +16,7 @@ from ..genshinuid_config.gs_config import gsconfig
 SIGN_TIME = gsconfig.get_config('SignTime').data
 
 sv_sign = SV('原神签到')
-sv_sign_config = SV('原神签到', pm=2)
+sv_sign_config = SV('原神签到管理', pm=2)
 
 
 # 每日零点半执行米游社原神签到

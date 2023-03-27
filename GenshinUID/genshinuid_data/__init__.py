@@ -4,7 +4,7 @@ from gsuid_core.models import Event
 
 from .import_data import import_v3_data
 
-sv_v3_data = SV('数据备份恢复', pm=2)
+sv_v3_data = SV('数据备份恢复', pm=1)
 
 
 @sv_v3_data.on_fullmatch(('导入v3数据'))

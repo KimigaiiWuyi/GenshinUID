@@ -19,7 +19,7 @@ MAP_CHN_NAME = {
 }
 
 sv_find_map_config = SV('查询地图设置', pm=2)
-sv_find_map = SV('查询地图', pm=2)
+sv_find_map = SV('查询地图')
 
 
 @sv_find_map_config.on_fullmatch(('切换地图'))

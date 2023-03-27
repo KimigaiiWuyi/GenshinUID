@@ -90,8 +90,10 @@ async def send_char_adv(bot: Bot, ev: Event):
             user_id = raw_data['data']['from_wxid']
         if 'at_user_list' in raw_data['data']:
             _at_list = raw_data['data']['at_user_list']
-            at_list = [Message('at', i) for i in _at_list]
-            message.extend(at_list)
+            if _at_list:
+                at_list = [Message('at', i) for i in _at_list]
+                at_list.pop(0)
+                message.extend(at_list)
 
     if sp_bot_id:
         bot_id = sp_bot_id

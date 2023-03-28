@@ -92,7 +92,7 @@ async def send_char_adv(bot: Bot, ev: Event):
             or raw_data['sender'].role == 'admin'
         ):
             pm = 2
-        msg_id = raw_data['message_id']
+        msg_id = str(raw_data['message_id'])
     # feishu
     elif 'schema_' in raw_data:
         messages = raw_data['event'].message.content

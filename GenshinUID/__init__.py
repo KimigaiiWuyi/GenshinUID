@@ -41,9 +41,6 @@ async def send_char_adv(bot: Bot, ev: Event):
     ] = None
     pm = 3
 
-    if await SUPERUSER(bot, ev):
-        pm = 1
-
     # qqguild
     if '_message' in raw_data:
         messages = raw_data['_message']
@@ -53,8 +50,13 @@ async def send_char_adv(bot: Bot, ev: Event):
         else:
             group_id = str(raw_data['channel_id'])
         msg_id = raw_data['id']
+        if 4 in raw_data['roles'] or 2 in raw_data['roles']:
+            pm = 2
     # telegram
     elif 'telegram_model' in raw_data:
+        # 如果发送者是个Bot，不响应
+        if raw_data['from_'].is_bot:
+            return
         messages = raw_data['message']
         # message.append(Message(type='text', data=text))
         if raw_data['chat'].type == 'group':
@@ -67,6 +69,9 @@ async def send_char_adv(bot: Bot, ev: Event):
         user_id = str(raw_data['from_'].id)
     # kaiheila
     elif 'channel_type' in raw_data:
+        # 如果发送者是个Bot，不响应
+        if raw_data['event'].author.bot:
+            return
         sp_bot_id = 'kaiheila'
         messages = raw_data['event'].content
         if raw_data['channel_type'] == 'GROUP':
@@ -80,6 +85,27 @@ async def send_char_adv(bot: Bot, ev: Event):
     # ntchat
     elif not messages and 'message' in raw_data:
         messages = raw_data['message']
+    # onebot
+    elif 'sender' in raw_data:
+        if (
+            raw_data['sender'].role == 'owner'
+            or raw_data['sender'].role == 'admin'
+        ):
+            pm = 2
+        msg_id = raw_data['message_id']
+    # feishu
+    elif 'schema_' in raw_data:
+        messages = raw_data['event'].message.content
+        for feishu_msg in messages:
+            if 'image_key' in feishu_msg.data:
+                feishu_msg.data['url'] = feishu_msg.data['image_key']
+        if raw_data['event'].message.chat_type == 'group':
+            sp_user_type = 'group'
+            group_id = raw_data['event'].message.chat_id
+        else:
+            sp_user_type = 'direct'
+            group_id = None
+        user_id = raw_data['event'].sender.sender_id.union_id
     # ntchat
     if 'data' in raw_data:
         if 'chatroom' in raw_data['data']['to_wxid']:
@@ -100,6 +126,9 @@ async def send_char_adv(bot: Bot, ev: Event):
     else:
         bot_id = messages.__class__.__module__.split('.')[2]
 
+    if await SUPERUSER(bot, ev):
+        pm = 1
+
     # 处理消息
     for _msg in messages:
         if _msg.type == 'text':
@@ -115,6 +144,8 @@ async def send_char_adv(bot: Bot, ev: Event):
             message.append(Message('image', _msg.data['url']))
         elif _msg.type == 'at':
             message.append(Message('at', _msg.data['qq']))
+        elif _msg.type == 'reply':
+            message.append(Message('reply', _msg.data['id']))
     if not message:
         return
 

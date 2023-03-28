@@ -1,4 +1,5 @@
 import os
+import json
 import base64
 import asyncio
 from pathlib import Path
@@ -142,10 +143,20 @@ class GsClient:
                                 msg.target_id,
                                 msg.target_type,
                             )
+                        elif msg.bot_id == 'feishu':
+                            await feishu_send(
+                                bot,
+                                content,
+                                image,
+                                file,
+                                node,
+                                msg.target_id,
+                                msg.target_type,
+                            )
                 except Exception as e:
                     logger.error(e)
-        except RuntimeError:
-            pass
+        except RuntimeError as e:
+            logger.error(e)
         except ConnectionClosedError:
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
             self.is_alive = False
@@ -434,4 +445,69 @@ async def telegram_send(
                 await _send(_msg['data'], None)
     else:
         await _send(content, image)
+        await _send(content, image)
+
+
+async def feishu_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    file: Optional[str],
+    node: Optional[List[Dict]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[str]):
+        if file:
+            file_name, file_content = file.split('|')
+            path = Path(__file__).resolve().parent / file_name
+            store_file(path, file_content)
+            with open(path, 'rb') as f:
+                doc = f.read()
+            msg = await bot.call_api(
+                'im/v1/files',
+                method='POST',
+                data={'file_type': 'stream', 'file_name': file_name},
+                files={'file': doc},
+            )
+            del_file(path)
+            _type = 'file'
+        elif content:
+            msg = {'text': content}
+            _type = 'text'
+        elif image:
+            data = {"image_type": "message"}
+            files = {"image": base64.b64decode(image.replace('base64://', ''))}
+            params = {
+                "method": "POST",
+                "data": data,
+                "files": files,
+            }
+            msg = await bot.call_api('im/v1/images', **params)
+            _type = 'image'
+        else:
+            return
+
+        params = {
+            "method": "POST",
+            "query": {
+                "receive_id_type": 'union_id'
+                if target_type == 'direct'
+                else 'chat_id'
+            },
+            "body": {
+                "receive_id": target_id,
+                "content": json.dumps(msg),
+                "msg_type": _type,
+            },
+        }
+        await bot.call_api('im/v1/messages', **params)
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                await _send(None, _msg['data'])
+            else:
+                await _send(_msg['data'], None)
+    else:
         await _send(content, image)

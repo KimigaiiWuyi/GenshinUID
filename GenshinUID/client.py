@@ -44,7 +44,7 @@ class GsClient:
                         f'{msg.bot_id} - {msg.target_type} - {msg.target_id}'
                     )
                     # 解析消息
-                    if msg.bot_id == 'NoneBot2':
+                    if msg.bot_id == 'NoneBot2' or msg.bot_id == 'HoshinoBot':
                         if msg.content:
                             _data = msg.content[0]
                             if _data.type and _data.type.startswith('log'):

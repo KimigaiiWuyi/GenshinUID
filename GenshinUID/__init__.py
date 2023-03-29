@@ -52,6 +52,9 @@ async def get_gs_msg(ev):
         logger.warning(e)
         pm = 3
 
+    if ev.to_me:
+        message.append(Message('at', self_id))
+
     # 处理消息
     for _msg in messages:
         if _msg.type == 'text':

@@ -366,15 +366,13 @@ async def ntchat_send(
 ):
     async def _send(content: Optional[str], image: Optional[str]):
         if content:
+            result = {}
             if at_list and target_type == 'group':
                 for _ in at_list:
                     content += '{$@}'
-            await bot.call_api(
-                'send_text',
-                to_wxid=target_id,
-                content=content,
-                at_list=at_list,
-            )
+                result['at_list'] = at_list
+            result['content'] = content
+            await bot.call_api('send_text', to_wxid=target_id, **result)
         if image:
             await bot.call_api(
                 'send_image',

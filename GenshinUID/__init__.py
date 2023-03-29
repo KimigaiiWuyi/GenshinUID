@@ -45,6 +45,13 @@ async def get_gs_msg(ev):
     else:
         bot_id = 'onebot'
 
+    try:
+        if ev.sender['role'] == 'owner' or ev.sender['role'] == 'admin':
+            pm = 2
+    except Exception as e:
+        logger.warning(e)
+        pm = 3
+
     # 处理消息
     for _msg in messages:
         if _msg.type == 'text':
@@ -60,6 +67,8 @@ async def get_gs_msg(ev):
             message.append(Message('image', _msg.data['url']))
         elif _msg.type == 'at':
             message.append(Message('at', _msg.data['qq']))
+        elif _msg.type == 'reply':
+            message.append(Message('reply', _msg.data['id']))
     if not message:
         return
 

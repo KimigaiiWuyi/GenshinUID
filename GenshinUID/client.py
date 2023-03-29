@@ -25,7 +25,9 @@ class GsClient:
         cls.is_alive = True
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
-        cls.ws = await websockets.client.connect(cls.ws_url, max_size=2**26)
+        cls.ws = await websockets.client.connect(
+            cls.ws_url, max_size=2**26, open_timeout=60, ping_timeout=60
+        )
         logger.info(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
         return self
@@ -43,6 +45,11 @@ class GsClient:
                     )
                     # 解析消息
                     if msg.bot_id == 'NoneBot2':
+                        if msg.content:
+                            _data = msg.content[0]
+                            if _data.type and _data.type.startswith('log'):
+                                _type = _data.type.split('_')[-1].lower()
+                                getattr(logger, _type)(_data.data)
                         continue
 
                     bot = hoshino_bot
@@ -51,6 +58,7 @@ class GsClient:
                     image: Optional[str] = None
                     node = []
                     file = ''
+                    at_list = []
                     if msg.content:
                         for _c in msg.content:
                             if _c.data:
@@ -58,13 +66,12 @@ class GsClient:
                                     content += _c.data
                                 elif _c.type == 'image':
                                     image = _c.data
-                                elif _c.type and _c.type.startswith('log'):
-                                    _type = _c.type.split('_')[-1].lower()
-                                    getattr(logger, _type)(_c.data)
                                 elif _c.type == 'node':
                                     node = _c.data
                                 elif _c.type == 'file':
                                     file = _c.data
+                                elif _c.type == 'at':
+                                    at_list.append(_c.data)
                     else:
                         pass
 
@@ -84,6 +91,7 @@ class GsClient:
                                 node,
                                 file,
                                 ids,
+                                at_list,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -140,6 +148,7 @@ async def onebot_send(
     node: Optional[List[Dict]],
     file: Optional[str],
     bot_self_id: Optional[str],
+    at_list: Optional[List[str]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -147,6 +156,9 @@ async def onebot_send(
         result_image = f'[CQ:image,file={image}]' if image else ''
         content = content if content else ''
         result_msg = content + result_image
+        if at_list and target_type == 'group':
+            for at in at_list:
+                result_msg += f'[CQ:at,qq={at}]'
 
         if file:
             file_name, file_content = file.split('|')

@@ -67,6 +67,7 @@ async def send_char_adv(bot: Bot, ev: Event):
             sp_user_type = 'direct'
             group_id = None
         user_id = str(raw_data['from_'].id)
+        msg_id = str(raw_data['message_id'])
     # kaiheila
     elif 'channel_type' in raw_data:
         # 如果发送者是个Bot，不响应
@@ -85,6 +86,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     # ntchat
     elif not messages and 'message' in raw_data:
         messages = raw_data['message']
+        msg_id = str(raw_data['data']['msgid'])
     # onebot
     elif 'sender' in raw_data:
         if (
@@ -106,6 +108,7 @@ async def send_char_adv(bot: Bot, ev: Event):
             sp_user_type = 'direct'
             group_id = None
         user_id = raw_data['event'].sender.sender_id.union_id
+        msg_id = str(raw_data['event'].message.message_id)
     # ntchat
     if 'data' in raw_data:
         if 'chatroom' in raw_data['data']['to_wxid']:

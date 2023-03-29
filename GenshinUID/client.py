@@ -9,13 +9,24 @@ import websockets.client
 from nonebot.log import logger
 from nonebot.adapters import Bot
 from msgspec import json as msgjson
-from nonebot import get_bot, get_bots
+from nonebot import get_bot, get_bots, get_driver
 from websockets.exceptions import ConnectionClosedError
 
 from .models import MessageSend, MessageReceive
 
 BOT_ID = 'NoneBot2'
 bots: Dict[str, str] = {}
+driver = get_driver()
+
+if hasattr(driver.config, 'gsuid_core_host'):
+    HOST = driver.config.gsuid_core_host
+else:
+    HOST = 'localhost'
+
+if hasattr(driver.config, 'gsuid_core_port'):
+    PORT = driver.config.gsuid_core_port
+else:
+    PORT = '8765'
 
 
 def _get_bot(bot_id: str) -> Bot:
@@ -33,14 +44,14 @@ def _get_bot(bot_id: str) -> Bot:
 
 class GsClient:
     @classmethod
-    async def async_connect(
-        cls, IP: str = 'localhost', PORT: Union[str, int] = '8765'
-    ):
+    async def async_connect(cls, IP: str = HOST, PORT: Union[str, int] = PORT):
         self = GsClient()
         cls.is_alive = True
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
-        cls.ws = await websockets.client.connect(cls.ws_url, max_size=2**26)
+        cls.ws = await websockets.client.connect(
+            cls.ws_url, max_size=2**26, open_timeout=60, ping_timeout=60
+        )
         logger.success(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
         return self
@@ -63,6 +74,16 @@ class GsClient:
                         f'{msg.bot_id} - {msg.target_type} - {msg.target_id}'
                     )
                     bot_list = []
+
+                    # 解析消息
+                    if msg.bot_id == 'NoneBot2':
+                        if msg.content:
+                            _data = msg.content[0]
+                            if _data.type and _data.type.startswith('log'):
+                                _type = _data.type.split('_')[-1].lower()
+                                getattr(logger, _type)(_data.data)
+                        continue
+
                     if msg.bot_self_id in _bots:
                         bot_list.append(_bots[msg.bot_self_id])
                     elif not msg.bot_self_id:
@@ -70,14 +91,11 @@ class GsClient:
                     else:
                         continue
 
-                    # 解析消息
-                    if msg.bot_id == 'NoneBot2':
-                        continue
-
                     content = ''
                     image: Optional[str] = None
                     node = []
                     file = ''
+                    at_list = []
                     if msg.content:
                         for _c in msg.content:
                             if _c.data:
@@ -85,13 +103,12 @@ class GsClient:
                                     content += _c.data
                                 elif _c.type == 'image':
                                     image = _c.data
-                                elif _c.type and _c.type.startswith('log'):
-                                    _type = _c.type.split('_')[-1].lower()
-                                    getattr(logger, _type)(_c.data)
                                 elif _c.type == 'node':
                                     node = _c.data
                                 elif _c.type == 'file':
                                     file = _c.data
+                                elif _c.type == 'at':
+                                    at_list.append(_c.data)
                     else:
                         pass
 
@@ -105,13 +122,21 @@ class GsClient:
                                 image,
                                 node,
                                 file,
+                                at_list,
                                 msg.target_id,
                                 msg.target_type,
                             )
                         # ntchat
                         elif msg.bot_id == 'ntchat':
                             await ntchat_send(
-                                bot, content, image, file, node, msg.target_id
+                                bot,
+                                content,
+                                image,
+                                file,
+                                node,
+                                at_list,
+                                msg.target_id,
+                                msg.target_type,
                             )
                         # 频道
                         elif msg.bot_id == 'qqguild':
@@ -120,6 +145,7 @@ class GsClient:
                                 content,
                                 image,
                                 node,
+                                at_list,
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
@@ -150,6 +176,7 @@ class GsClient:
                                 image,
                                 file,
                                 node,
+                                at_list,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -205,6 +232,7 @@ async def onebot_send(
     image: Optional[str],
     node: Optional[List[Dict]],
     file: Optional[str],
+    at_list: Optional[List[str]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -212,6 +240,9 @@ async def onebot_send(
         result_image = f'[CQ:image,file={image}]' if image else ''
         content = content if content else ''
         result_msg = content + result_image
+        if at_list and target_type == 'group':
+            for at in at_list:
+                result_msg += f'[CQ:at,qq={at}]'
 
         if file:
             file_name, file_content = file.split('|')
@@ -282,6 +313,7 @@ async def guild_send(
     content: Optional[str],
     image: Optional[str],
     node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
@@ -293,6 +325,9 @@ async def guild_send(
             result['file_image'] = img_bytes
         if content:
             result['content'] = content
+            if at_list and target_type == 'group':
+                for at in at_list:
+                    result['content'] += f'<@{at}>'
         if target_type == 'group':
             await bot.call_api(
                 'post_messages',
@@ -325,14 +360,20 @@ async def ntchat_send(
     image: Optional[str],
     file: Optional[str],
     node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
     target_id: Optional[str],
+    target_type: Optional[str],
 ):
     async def _send(content: Optional[str], image: Optional[str]):
         if content:
+            if at_list and target_type == 'group':
+                for _ in at_list:
+                    content += '{$@}'
             await bot.call_api(
                 'send_text',
                 to_wxid=target_id,
                 content=content,
+                at_list=at_list,
             )
         if image:
             await bot.call_api(
@@ -454,6 +495,7 @@ async def feishu_send(
     image: Optional[str],
     file: Optional[str],
     node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -473,6 +515,21 @@ async def feishu_send(
             del_file(path)
             _type = 'file'
         elif content:
+            if at_list and target_type == 'group':
+                for at in at_list:
+                    try:
+                        name_data = await bot.call_api(
+                            'contact/v3/users',
+                            method='GET',
+                            query={'user_id': at},
+                            body={'user_id_type', 'union_id'},
+                        )
+                        name = name_data['user']['name']
+                    except Exception as e:
+                        logger.warning(f'获取用户名称失败...{e}')
+                        name = at[:3]
+
+                    content += f'<at user_id="{at}">{name}</at>'
             msg = {'text': content}
             _type = 'text'
         elif image:

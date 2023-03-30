@@ -4,6 +4,7 @@ from typing import Tuple
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 
 from .to_data import switch_api
 from .to_card import enka_to_card
@@ -11,9 +12,21 @@ from ..utils.convert import get_uid
 from .get_enka_img import draw_enka_img
 from ..utils.error_reply import UID_HINT
 from .draw_char_rank import draw_cahrcard_list
+from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 
 sv_enka_config = SV('面板设置', pm=2)
 sv_get_enka = SV('面板查询', priority=10)
+sv_get_original_pic = SV('查看面板原图', priority=5)
+
+
+@sv_get_original_pic.on_fullmatch(('原图'))
+async def sned_original_pic(bot: Bot, ev: Event):
+    if ev.reply:
+        path = TEMP_PATH / f'{ev.reply}.jpg'
+        if path.exists():
+            logger.info('[原图]访问图片: {}'.format(path))
+            with open(path, 'rb') as f:
+                await bot.send(f.read())
 
 
 @sv_enka_config.on_fullmatch('切换api')
@@ -39,6 +52,9 @@ async def send_char_info(bot: Bot, ev: Event):
         await bot.send(im)
     elif isinstance(im, Tuple):
         await bot.send(im[0])
+        if im[1]:
+            with open(TEMP_PATH / f'{ev.msg_id}.jpg', 'wb') as f:
+                f.write(im[1])
     else:
         await bot.send('发生未知错误')
 

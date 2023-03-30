@@ -1,4 +1,4 @@
-from typing import List, Literal, Optional
+from typing import Any, List, Literal, Optional
 
 from nonebot.log import logger
 from nonebot.adapters import Bot
@@ -31,6 +31,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     user_id = str(ev.get_user_id())
     messages = ev.get_message()
     raw_data = ev.__dict__
+    logger.debug(raw_data)
     group_id = sessions[-2] if len(sessions) >= 2 else None
     self_id = str(bot.self_id)
     message: List[Message] = []
@@ -50,7 +51,7 @@ async def send_char_adv(bot: Bot, ev: Event):
         else:
             group_id = str(raw_data['channel_id'])
         msg_id = raw_data['id']
-        if 4 in raw_data['roles'] or 2 in raw_data['roles']:
+        if 4 in raw_data['member'].roles or 2 in raw_data['member'].roles:
             pm = 2
     # telegram
     elif 'telegram_model' in raw_data:
@@ -138,21 +139,8 @@ async def send_char_adv(bot: Bot, ev: Event):
 
     # 处理消息
     for _msg in messages:
-        if _msg.type == 'text':
-            message.append(
-                Message(
-                    'text',
-                    _msg.data['text'].replace('/', '')
-                    if 'text' in _msg.data
-                    else _msg.data['content'].replace('/', ''),
-                )
-            )
-        elif _msg.type == 'image':
-            message.append(Message('image', _msg.data['url']))
-        elif _msg.type == 'at':
-            message.append(Message('at', _msg.data['qq']))
-        elif _msg.type == 'reply':
-            message.append(Message('reply', _msg.data['id']))
+        message = convert_message(_msg, message)
+
     if not message:
         return
 
@@ -201,3 +189,22 @@ async def connect():
         await gsclient.start()
     except ConnectionRefusedError:
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
+
+
+def convert_message(_msg: Any, message: List[Message]):
+    if _msg.type == 'text':
+        message.append(
+            Message(
+                'text',
+                _msg.data['text'].replace('/', '')
+                if 'text' in _msg.data
+                else _msg.data['content'].replace('/', ''),
+            )
+        )
+    elif _msg.type == 'image':
+        message.append(Message('image', _msg.data['url']))
+    elif _msg.type == 'at':
+        message.append(Message('at', _msg.data['qq']))
+    elif _msg.type == 'reply':
+        message.append(Message('reply', _msg.data['id']))
+    return message

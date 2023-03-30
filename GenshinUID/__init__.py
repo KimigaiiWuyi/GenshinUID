@@ -132,7 +132,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     if await SUPERUSER(bot, ev):
         pm = 1
 
-    if ev.is_tome:
+    if ev.is_tome():
         message.append(Message('at', self_id))
 
     # 处理消息

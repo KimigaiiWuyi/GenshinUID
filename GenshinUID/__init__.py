@@ -1,3 +1,4 @@
+import re
 from typing import Any, List, Literal, Optional
 
 from nonebot.log import logger
@@ -85,9 +86,18 @@ async def send_char_adv(bot: Bot, ev: Event):
         user_id = raw_data['author_id']
         msg_id = raw_data['message_id']
     # ntchat
-    elif not messages and 'message' in raw_data:
+    elif 'data' in raw_data and 'from_wxid' in raw_data['data']:
         messages = raw_data['message']
         msg_id = str(raw_data['data']['msgid'])
+        if (
+            'raw_msg' in raw_data['data']
+            and 'xml' in raw_data['data']['raw_msg']
+        ):
+            match = re.search(
+                r'<svrid>(\d+)</svrid>', raw_data['data']['raw_msg']
+            )
+            if match:
+                message.append(Message('reply', match.group(1)))
     # onebot
     elif 'sender' in raw_data:
         if (

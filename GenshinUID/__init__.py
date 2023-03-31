@@ -92,7 +92,7 @@ async def send_char_adv(bot: Bot, ev: Event):
         if 'raw_msg' in raw_data['data'] and 'xml' in raw_data['data']['raw_msg']:
             match = re.search(r'<svrid>(\d+)</svrid>', raw_data['data']['raw_msg'])
             if match:
-                message.append(Message('reply', svrid))
+                message.append(Message('reply', match.group(1)))
     # onebot
     elif 'sender' in raw_data:
         if (

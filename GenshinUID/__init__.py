@@ -41,7 +41,7 @@ async def get_gs_msg(ev):
         pm = 1
     elif priv.check_priv(ev, priv.ADMIN):
         pm = 2
-    
+
     if sp_bot_id:
         bot_id = sp_bot_id
     else:

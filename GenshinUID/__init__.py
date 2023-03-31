@@ -89,8 +89,13 @@ async def send_char_adv(bot: Bot, ev: Event):
     elif 'data' in raw_data and 'from_wxid' in raw_data['data']:
         messages = raw_data['message']
         msg_id = str(raw_data['data']['msgid'])
-        if 'raw_msg' in raw_data['data'] and 'xml' in raw_data['data']['raw_msg']:
-            match = re.search(r'<svrid>(\d+)</svrid>', raw_data['data']['raw_msg'])
+        if (
+            'raw_msg' in raw_data['data']
+            and 'xml' in raw_data['data']['raw_msg']
+        ):
+            match = re.search(
+                r'<svrid>(\d+)</svrid>', raw_data['data']['raw_msg']
+            )
             if match:
                 message.append(Message('reply', match.group(1)))
     # onebot

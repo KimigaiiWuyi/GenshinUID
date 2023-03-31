@@ -17,6 +17,7 @@ REF = {
         '罗莎莉亚': 1,
         '埃洛伊': 1,
         '莱依拉': 1,
+        '米卡': 2,
     },
     '草': {'艾尔海森': 3, '瑶瑶': 2, '纳西妲': 4, '提纳里': 4, '柯莱': 4, '旅行者草': 3},
     '风': {
@@ -86,7 +87,10 @@ for ELE in REF:
     TITLE = 110
     SIG = 197
     END = 31
-    image = Image.open(path / f'{ELE}.jpg')
+    _path = path / f'{ELE}.jpg'
+    if not _path.exists():
+        continue
+    image = Image.open(_path)
 
     if ELE == '草':
         _MOV = 65

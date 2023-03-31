@@ -9,7 +9,9 @@ from .draw_abyss_card import draw_abyss_img
 sv_abyss = SV('查询深渊')
 
 
-@sv_abyss.on_command(('查询深渊', 'sy', '查询上期深渊', 'sqsy', '上期深渊'), block=True)
+@sv_abyss.on_command(
+    ('查询深渊', 'sy', '查询上期深渊', 'sqsy', '上期深渊', '深渊'), block=True
+)
 async def send_abyss_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询深渊信息]')
     uid = await get_uid(bot, ev)

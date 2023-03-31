@@ -25,7 +25,7 @@ async def regtime(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_get_info.on_command(('查询'))
+@sv_get_info.on_command(('查询', 'uid', 'UID'))
 async def send_role_info(bot: Bot, ev: Event):
     name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
     if name:

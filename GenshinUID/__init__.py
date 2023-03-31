@@ -37,20 +37,15 @@ async def get_gs_msg(ev):
     ] = None
     pm = 3
 
-    if priv.check_priv(ev, priv.ADMIN):
+    if priv.check_priv(ev, priv.SUPERUSER):
         pm = 1
+    elif priv.check_priv(ev, priv.ADMIN):
+        pm = 2
 
     if sp_bot_id:
         bot_id = sp_bot_id
     else:
         bot_id = 'onebot'
-
-    try:
-        if ev.sender['role'] == 'owner' or ev.sender['role'] == 'admin':
-            pm = 2
-    except Exception as e:
-        logger.warning(e)
-        pm = 3
 
     if ev.to_me:
         message.append(Message('at', self_id))

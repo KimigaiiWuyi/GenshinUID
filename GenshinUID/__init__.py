@@ -141,14 +141,12 @@ async def send_char_adv(bot: Bot, ev: Event):
         # time = raw_data['time']  # 返回格式 2023-04-01 16:38:51+00:00
 
         messages = raw_data['original_message']
-        logger.debug(f'MEESSAGE: {messages}')
-
         self = raw_data['self']  # 返回 platform='xxx' user_id='wxid_xxxxx'
         platform = self.platform  # 机器人平台
         self_id = bot.self_id  # 机器人账号ID
         msg_id = raw_data['message_id']  # 消息ID
-        # sp_user_type = raw_data['detail_type']  # 消息类型  private\group\chanel\……
         sp_bot_id = f'OnebotV12_{platform}'
+        # sp_user_type = raw_data['detail_type']  # 消息类型  private\group\chanel\……
 
         if 'group_id' in raw_data:
             group_id = raw_data['group_id']

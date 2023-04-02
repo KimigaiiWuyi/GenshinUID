@@ -91,4 +91,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后使用gsrc命令将会以微信作为优先付款方式',
         False,
     ),
+    'DefaultBaseBG': GsBoolConfig(
+        '固定背景',
+        '开启后部分功能的背景图将固定为特定背景',
+        False,
+    ),
 }

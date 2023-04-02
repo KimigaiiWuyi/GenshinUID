@@ -15,6 +15,7 @@ GACHA_IMG_PATH = RESOURCE_PATH / 'gacha_img'
 CHAR_PATH = RESOURCE_PATH / 'chars'
 CHAR_STAND_PATH = RESOURCE_PATH / 'char_stand'
 CHAR_SIDE_PATH = RESOURCE_PATH / 'char_side'
+CHAR_CARD_PATH = RESOURCE_PATH / 'char_card'
 CHAR_NAMECARD_PATH = RESOURCE_PATH / 'char_namecard'
 REL_PATH = RESOURCE_PATH / 'reliquaries'
 ICON_PATH = RESOURCE_PATH / 'icon'
@@ -48,6 +49,7 @@ def init_dir():
         CU_BG_PATH,
         CU_CHBG_PATH,
         REF_PATH,
+        CHAR_CARD_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

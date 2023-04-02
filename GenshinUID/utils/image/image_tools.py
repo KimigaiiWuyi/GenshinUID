@@ -9,6 +9,7 @@ from httpx import get
 from PIL import Image, ImageDraw, ImageFont
 
 from ..fonts.genshin_fonts import gs_font_32
+from ...genshinuid_config.gs_config import gsconfig
 from ..resource.RESOURCE_PATH import CU_BG_PATH, TEXT2D_PATH
 
 FETTER_PATH = TEXT2D_PATH / 'fetter'
@@ -252,9 +253,12 @@ async def get_color_bg(
     based_w: int, based_h: int, bg: Optional[str] = None
 ) -> Image.Image:
     image = ''
-    if bg:
+    if bg and gsconfig.get_config('DefaultBaseBG').data:
         path = SP_BG_PATH / f'{bg}.jpg'
-        if path.exists():
+        path2 = CU_BG_PATH / f'{bg}.jpg'
+        if path2.exists():
+            image = Image.open(path2)
+        elif path.exists():
             image = Image.open(path)
     CI_img = CustomizeImage(image, based_w, based_h)
     img = CI_img.bg_img

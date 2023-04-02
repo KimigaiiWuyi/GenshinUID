@@ -34,12 +34,12 @@ async def send_abyss_info(bot: Bot, ev: Event):
         )
     else:
         floor = ev.text
-    if floor:
+    if floor and floor.isdigit():
         floor = int(floor)
     else:
         floor = None
 
     await bot.logger.info('[查询深渊信息]深渊层数: {}'.format(floor))
 
-    im = await draw_abyss_img(uid, floor, schedule_type)
+    im = await draw_abyss_img(ev.user_id, uid, floor, schedule_type)
     await bot.send(im)

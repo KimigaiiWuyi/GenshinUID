@@ -11,50 +11,37 @@ from ..utils.error_reply import get_error
 from ..utils.image.convert import convert_img
 from ..utils.resource.download_url import download_file
 from ..gsuid_utils.api.mys.models import AbyssBattleAvatar
-from ..utils.image.image_tools import get_simple_bg, get_talent_pic
-from ..utils.fonts.genshin_fonts import gs_font_28, gs_font_32, gs_font_70
-from ..utils.resource.RESOURCE_PATH import (
-    CHAR_PATH,
-    CHAR_SIDE_PATH,
-    CHAR_STAND_PATH,
+from ..utils.resource.generate_char_card import create_single_char_card
+from ..utils.resource.RESOURCE_PATH import CHAR_CARD_PATH, CHAR_SIDE_PATH
+from ..utils.image.image_tools import (
+    get_color_bg,
+    get_qq_avatar,
+    get_talent_pic,
+    draw_pic_with_ring,
+)
+from ..utils.colors import (
+    red_color,
+    sec_color,
+    blue_color,
+    gray_color,
+    first_color,
+    white_color,
+)
+from ..utils.fonts.genshin_fonts import (
+    gs_font_20,
+    gs_font_22,
+    gs_font_26,
+    gs_font_32,
+    gs_font_36,
+    gs_font_40,
 )
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
-
-abyss_title_pic = Image.open(TEXT_PATH / 'abyss_title.png')
-char_mask = Image.open(TEXT_PATH / 'char_mask.png')
-char_frame = Image.open(TEXT_PATH / 'char_frame.png')
-
-text_title_color = (29, 29, 29)
-text_floor_color = (30, 31, 25)
 
 
 async def get_abyss_star_pic(star: int) -> Image.Image:
     star_pic = Image.open(TEXT_PATH / f'star{star}.png')
     return star_pic
-
-
-async def get_rarity_pic(rarity: int) -> Image.Image:
-    rarity_pic = Image.open(TEXT_PATH / f'rarity{rarity}.png')
-    return rarity_pic
-
-
-async def get_rank_data(data, path):
-    char_id = data[0]['avatar_id']
-    # 只下载侧视图
-    if path == CHAR_SIDE_PATH:
-        # 确认角色头像路径
-        char_side_path = CHAR_PATH / f'{char_id}.png'
-        # 不存在自动下载
-        if not char_side_path.exists():
-            await download_file(data[0]['avatar_icon'], 3, f'{char_id}.png')
-    char_pic = Image.open(path / f'{char_id}.png').convert('RGBA')
-    if path == CHAR_STAND_PATH:
-        char_pic = char_pic.resize((862, 528), Image.Resampling.BICUBIC)
-    elif path == CHAR_SIDE_PATH:
-        char_pic = char_pic.resize((60, 60), Image.Resampling.BICUBIC)
-    rank_value = str(data[0]['value'])
-    return char_pic, rank_value
 
 
 async def _draw_abyss_card(
@@ -64,37 +51,28 @@ async def _draw_abyss_card(
     index_char: int,
     index_part: int,
 ):
-    char_card = Image.new('RGBA', (150, 190), (0, 0, 0, 0))
-    # 根据稀有度获取背景
-    char_bg = await get_rarity_pic(char['rarity'])
+    char_id = char['id']
     # 确认角色头像路径
-    char_pic_path = CHAR_PATH / f'{char["id"]}.png'
+    char_pic_path = CHAR_CARD_PATH / f'{char_id}.png'
     # 不存在自动下载
     if not char_pic_path.exists():
-        await download_file(char['icon'], 1, f'{char["id"]}.png')
-    char_pic = (
-        Image.open(char_pic_path)
-        .convert('RGBA')
-        .resize((150, 150), Image.Resampling.LANCZOS)  # type: ignore
-    )
-    char_img = Image.new('RGBA', (150, 190), (0, 0, 0, 0))
-    char_img.paste(char_pic, (0, 3), char_pic)
-    char_bg = Image.alpha_composite(char_bg, char_img)
-    char_card.paste(char_bg, (0, 0), char_mask)
-    char_card = Image.alpha_composite(char_card, char_frame)
+        await create_single_char_card(char_id)
+    char_card = Image.open(char_pic_path).convert('RGBA')
     talent_pic = await get_talent_pic(int(talent_num))
-    char_card.paste(talent_pic, (83, 156), talent_pic)
+    talent_pic = talent_pic.resize((90, 45))
+    char_card.paste(talent_pic, (137, 260), talent_pic)
     char_card_draw = ImageDraw.Draw(char_card)
     char_card_draw.text(
-        (9, 172),
+        (77, 280),
         f'Lv.{char["level"]}',
-        font=gs_font_28,
-        fill=text_floor_color,
-        anchor='lm',
+        font=gs_font_40,
+        fill=first_color,
+        anchor='mm',
     )
+    char_card = char_card.resize((128, 160), Image.Resampling.LANCZOS)
     floor_pic.paste(
         char_card,
-        (0 + 155 * index_char, 50 + index_part * 195),
+        (70 + 147 * index_char, 39 + index_part * 170),
         char_card,
     )
 
@@ -102,24 +80,35 @@ async def _draw_abyss_card(
 async def _draw_floor_card(
     level_star: int,
     floor_pic: Image.Image,
-    bg_img: Image.Image,
+    img: Image.Image,
     time_str: str,
     index_floor: int,
+    floor_num: int,
 ):
     star_pic = await get_abyss_star_pic(level_star)
-    floor_pic.paste(star_pic, (420, -5), star_pic)
+    floor_pic.paste(star_pic, (690, 170), star_pic)
     floor_pic_draw = ImageDraw.Draw(floor_pic)
+    time_list = time_str.split(' ')
     floor_pic_draw.text(
-        (31, 25),
-        time_str,
-        font=gs_font_28,
-        fill=text_floor_color,
+        (652, 71),
+        f'第{floor_num}层第{index_floor+1}间',
+        font=gs_font_32,
+        fill=first_color,
         anchor='lm',
     )
-    bg_img.paste(floor_pic, (5, 415 + index_floor * 440), floor_pic)
+    for index, _time in enumerate(time_list):
+        floor_pic_draw.text(
+            (655, 102 + index * 22),
+            _time,
+            font=gs_font_22,
+            fill=first_color,
+            anchor='lm',
+        )
+    img.paste(floor_pic, (0, 818 + index_floor * 391), floor_pic)
 
 
 async def draw_abyss_img(
+    qid: Union[str, int],
     uid: str,
     floor: Optional[int] = None,
     schedule_type: str = '1',
@@ -142,7 +131,6 @@ async def draw_abyss_img(
     char_temp = {}
 
     # 获取查询者数据
-    is_unfull = False
     if floor:
         floor = floor - 9
         if floor < 0:
@@ -155,117 +143,104 @@ async def draw_abyss_img(
         if len(raw_abyss_data['floors']) == 0:
             return '你还没有挑战本期深渊!\n可以使用[上期深渊]命令查询上期~'
         floors_data = raw_abyss_data['floors'][-1]
-    levels_num = len(floors_data['levels'])
-    if floors_data['levels'][0]['battles']:
-        floors_title = str(floors_data['index']) + '层'
+
+    if floors_data['levels'][-1]['battles']:
+        is_unfull = False
     else:
-        floors_title = '统计'
         is_unfull = True
 
     # 获取背景图片各项参数
-    based_w = 625
-    based_h = 415 if is_unfull else 415 + levels_num * 440
-    white_overlay = Image.new('RGBA', (based_w, based_h), (255, 255, 255, 188))
+    based_w = 950
+    based_h = 900 if is_unfull else 2000
+    img = await get_color_bg(based_w, based_h, '_abyss')
+    abyss_title = Image.open(TEXT_PATH / 'abyss_title.png')
+    img.paste(abyss_title, (0, 0), abyss_title)
 
-    bg_img = await get_simple_bg(based_w, based_h)
-    bg_img.paste(white_overlay, (0, 0), white_overlay)
+    # 获取头像
+    _id = str(qid)
+    if _id.startswith('http'):
+        char_pic = await get_qq_avatar(avatar_url=_id)
+    else:
+        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await draw_pic_with_ring(char_pic, 320)
 
-    abyss_title = Image.new('RGBA', (625, 415), (0, 0, 0, 0))
+    img.paste(char_pic, (315, 70), char_pic)
 
+    # 解析数据
     damage_rank = raw_abyss_data['damage_rank']
     defeat_rank = raw_abyss_data['defeat_rank']
     take_damage_rank = raw_abyss_data['take_damage_rank']
-    normal_skill_rank = raw_abyss_data['normal_skill_rank']
+    # normal_skill_rank = raw_abyss_data['normal_skill_rank']
     energy_skill_rank = raw_abyss_data['energy_skill_rank']
+    # 挑战次数 raw_abyss_data['total_battle_times']
 
-    dmg_pic, dmg_val = await get_rank_data(damage_rank, CHAR_STAND_PATH)
-    defeat_pic, defeat_val = await get_rank_data(defeat_rank, CHAR_SIDE_PATH)
-    (
-        take_damage_pic,
-        take_damage_val,
-    ) = await get_rank_data(take_damage_rank, CHAR_SIDE_PATH)
-    (
-        normal_skill_pic,
-        normal_skill_val,
-    ) = await get_rank_data(normal_skill_rank, CHAR_SIDE_PATH)
-    (
-        energy_skill_pic,
-        energy_skill_val,
-    ) = await get_rank_data(energy_skill_rank, CHAR_SIDE_PATH)
+    # 绘制抬头
+    img_draw = ImageDraw.Draw(img)
+    img_draw.text((475, 461), f'UID {uid}', first_color, gs_font_36, 'mm')
+    title_data = {
+        '最强一击!': damage_rank[0],
+        '最多击破!': defeat_rank[0],
+        '承受伤害': take_damage_rank[0],
+        '元素战技': energy_skill_rank[0],
+    }
+    for _index, _name in enumerate(title_data):
+        _char = title_data[_name]
+        _char_id = _char['avatar_id']
+        char_side_path = CHAR_SIDE_PATH / f'{_char_id}.png'
+        if not char_side_path.exists():
+            await download_file(_char['avatar_icon'], 3, f'{_char_id}.png')
+        char_side = Image.open(char_side_path)
+        char_side = char_side.resize((75, 75))
+        intent = _index * 224
+        title_xy = (115 + intent, 523)
+        val_xy = (115 + intent, 545)
+        _val = str(_char['value'])
+        img.paste(char_side, (43 + intent, 484), char_side)
+        img_draw.text(title_xy, _name, first_color, gs_font_20, 'lm')
+        img_draw.text(val_xy, _val, first_color, gs_font_26, 'lm')
 
-    abyss_title.paste(dmg_pic, (13, -42), dmg_pic)
-    abyss_title = Image.alpha_composite(abyss_title, abyss_title_pic)
-    abyss_title.paste(defeat_pic, (5, 171), defeat_pic)
-    abyss_title.paste(take_damage_pic, (5, 171 + 54), take_damage_pic)
-    abyss_title.paste(normal_skill_pic, (5, 171 + 54 * 2), normal_skill_pic)
-    abyss_title.paste(energy_skill_pic, (5, 171 + 54 * 3), energy_skill_pic)
+    # 绘制缩略信息
+    for num in range(4):
+        omit_bg = Image.open(TEXT_PATH / 'abyss_omit.png')
+        omit_draw = ImageDraw.Draw(omit_bg)
+        omit_draw.text((56, 34), f'第{num+9}层', first_color, gs_font_32, 'lm')
+        omit_draw.rounded_rectangle((165, 19, 225, 49), 20, red_color)
+        if len(raw_abyss_data['floors']) - 1 >= num:
+            _floor = raw_abyss_data['floors'][num]
+            if _floor['star'] == _floor['max_star']:
+                _color = red_color
+                _text = '全满星'
+            else:
+                _gap = _floor['max_star'] - _floor['star']
+                _color = blue_color
+                _text = f'差{_gap}颗'
+            if not is_unfull:
+                _timestamp = int(
+                    _floor['levels'][-1]['battles'][-1]['timestamp']
+                )
+                _time_array = time.localtime(_timestamp)
+                _time_str = time.strftime('%Y-%m-%d %H:%M:%S', _time_array)
+            else:
+                _time_str = '20**-**-** 23:59:**'
+        else:
+            _color = gray_color
+            _text = '未解锁'
+            _time_str = '20**-**-** 23:59:**'
+        omit_draw.rounded_rectangle((165, 19, 255, 49), 20, _color)
+        omit_draw.text((210, 34), _text, white_color, gs_font_26, 'mm')
+        omit_draw.text((54, 65), _time_str, sec_color, gs_font_22, 'lm')
+        pos = (20 + 459 * (num % 2), 613 + 106 * (num // 2))
+        img.paste(omit_bg, pos, omit_bg)
 
-    abyss_title_draw = ImageDraw.Draw(abyss_title)
-    abyss_title_draw.text(
-        (41, 95),
-        f'深渊{floors_title}',
-        font=gs_font_70,
-        fill=text_title_color,
-        anchor='lm',
-    )
-    abyss_title_draw.text(
-        (41, 139),
-        f'UID{uid}',
-        font=gs_font_28,
-        fill=text_title_color,
-        anchor='lm',
-    )
-    abyss_title_draw.text(
-        (610, 282),
-        dmg_val,
-        font=gs_font_32,
-        fill=text_title_color,
-        anchor='rm',
-    )
-    abyss_title_draw.text(
-        (610, 357),
-        str(raw_abyss_data['total_battle_times']),
-        font=gs_font_32,
-        fill=text_title_color,
-        anchor='rm',
-    )
-    abyss_title_draw.text(
-        (64, 217),
-        defeat_val,
-        font=gs_font_28,
-        fill=text_title_color,
-        anchor='lm',
-    )
-    abyss_title_draw.text(
-        (64, 217 + 54),
-        take_damage_val,
-        font=gs_font_28,
-        fill=text_title_color,
-        anchor='lm',
-    )
-    abyss_title_draw.text(
-        (64, 217 + 54 * 2),
-        normal_skill_val,
-        font=gs_font_28,
-        fill=text_title_color,
-        anchor='lm',
-    )
-    abyss_title_draw.text(
-        (64, 217 + 54 * 3),
-        energy_skill_val,
-        font=gs_font_28,
-        fill=text_title_color,
-        anchor='lm',
-    )
-
-    bg_img.paste(abyss_title, (0, 0), abyss_title)
     if is_unfull:
-        pass
+        hint = Image.open(TEXT_PATH / 'hint.png')
+        img.paste(hint, (0, 830), hint)
     else:
         task = []
         for index_floor, level in enumerate(floors_data['levels']):
-            floor_pic = Image.new('RGBA', (615, 440), (0, 0, 0, 0))
+            floor_pic = Image.open(TEXT_PATH / 'abyss_floor.png')
             level_star = level['star']
+            floor_num = level['index']
             timestamp = int(level['battles'][0]['timestamp'])
             time_array = time.localtime(timestamp)
             time_str = time.strftime('%Y-%m-%d %H:%M:%S', time_array)
@@ -295,11 +270,16 @@ async def draw_abyss_img(
             task.clear()
             task.append(
                 _draw_floor_card(
-                    level_star, floor_pic, bg_img, time_str, index_floor
+                    level_star,
+                    floor_pic,
+                    img,
+                    time_str,
+                    index_floor,
+                    floor_num,
                 )
             )
         await asyncio.gather(*task)
 
-    res = await convert_img(bg_img)
+    res = await convert_img(img)
     logger.info('[查询深渊信息]绘图已完成,等待发送!')
     return res

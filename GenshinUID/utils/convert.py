@@ -29,6 +29,8 @@ async def get_uid(
     user_id = ev.at if ev.at else ev.user_id
     if uid_data:
         uid: Optional[str] = uid_data[0]
+        if uid:
+            ev.text = ev.text.replace(uid, '')
     else:
         sqla = get_sqla(ev.bot_id)
         uid = await sqla.get_bind_uid(user_id)

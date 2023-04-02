@@ -35,12 +35,14 @@ async def get_gs_msg(ev):
     sp_user_type: Optional[
         Literal['group', 'direct', 'channel', 'sub_channel']
     ] = None
-    pm = 3
+    pm = 6
 
     if priv.check_priv(ev, priv.SUPERUSER):
         pm = 1
-    elif priv.check_priv(ev, priv.ADMIN):
+    elif priv.check_priv(ev, priv.OWNER):
         pm = 2
+    elif priv.check_priv(ev, priv.ADMIN):
+        pm = 3
 
     if sp_bot_id:
         bot_id = sp_bot_id
@@ -56,9 +58,9 @@ async def get_gs_msg(ev):
             message.append(
                 Message(
                     'text',
-                    _msg.data['text'].replace('/', '')
+                    _msg.data['text']
                     if 'text' in _msg.data
-                    else _msg.data['content'].replace('/', ''),
+                    else _msg.data['content'],
                 )
             )
         elif _msg.type == 'image':

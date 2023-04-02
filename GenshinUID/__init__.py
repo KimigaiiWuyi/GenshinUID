@@ -145,8 +145,7 @@ async def send_char_adv(bot: Bot, ev: Event):
         # platform = self.platform  # 机器人平台
         self_id = bot.self_id  # 机器人账号ID
         msg_id = raw_data['message_id']  # 消息ID
-        sp_bot_id = f'onebot_v12'
-        # sp_user_type = raw_data['detail_type']  # 消息类型  private\group\chanel\……
+        sp_bot_id = 'onebot_v12'
 
         if 'group_id' in raw_data:
             group_id = raw_data['group_id']

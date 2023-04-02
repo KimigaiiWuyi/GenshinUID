@@ -55,7 +55,7 @@ async def send_char_adv(bot: Bot, ev: Event):
         if 4 in raw_data['member'].roles:
             pm = 2
         elif 2 in raw_data['member'].roles:
-            pm = 4
+            pm = 3
         elif 5 in raw_data['member'].roles:
             pm = 5
     # telegram

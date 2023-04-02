@@ -135,6 +135,26 @@ async def send_char_adv(bot: Bot, ev: Event):
                 at_list = [Message('at', i) for i in _at_list]
                 at_list.pop(0)
                 message.extend(at_list)
+    # OneBot V12 (仅在 ComWechatClient 测试)
+    if bot.adapter.get_name() == 'OneBot V12':
+        # v12msgid = raw_data['id']  # V12的消息id
+        # time = raw_data['time']  # 返回格式 2023-04-01 16:38:51+00:00
+
+        messages = raw_data['original_message']
+        # self = raw_data['self']  # 返回 platform='xxx' user_id='wxid_xxxxx'
+        # platform = self.platform  # 机器人平台
+        self_id = bot.self_id  # 机器人账号ID
+        msg_id = raw_data['message_id']  # 消息ID
+        sp_bot_id = 'onebot_v12'
+
+        if 'group_id' in raw_data:
+            group_id = raw_data['group_id']
+            user_id = raw_data['user_id']
+            sp_user_type = 'group'
+        else:
+            user_id = raw_data['user_id']
+            sp_user_type = 'direct'
+        # V12还支持频道等其他平台，速速Pr！
 
     if sp_bot_id:
         bot_id = sp_bot_id
@@ -206,15 +226,26 @@ def convert_message(_msg: Any, message: List[Message]):
         message.append(
             Message(
                 'text',
-                _msg.data['text'].replace('/', '')
+                _msg.data['text']
                 if 'text' in _msg.data
-                else _msg.data['content'].replace('/', ''),
+                else _msg.data['content'],
             )
         )
     elif _msg.type == 'image':
-        message.append(Message('image', _msg.data['url']))
+        file_id = _msg.data.get('file_id')
+        if file_id in _msg.data.values():
+            message.append(Message('image', _msg.data['file_id']))
+            logger.debug(_msg.data["file_id"])
+        else:
+            message.append(Message('image', _msg.data['url']))
     elif _msg.type == 'at':
         message.append(Message('at', _msg.data['qq']))
     elif _msg.type == 'reply':
-        message.append(Message('reply', _msg.data['id']))
+        message_id = _msg.data.get('message_id')
+        if message_id in _msg.data.values():
+            message.append(Message('reply', _msg.data['message_id']))
+        else:
+            message.append(Message('reply', _msg.data['id']))
+    elif _msg.type == 'mention':
+        message.append(Message('at', _msg.data['user_id']))
     return message

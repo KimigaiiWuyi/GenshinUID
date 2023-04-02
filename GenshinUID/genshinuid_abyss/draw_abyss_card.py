@@ -164,7 +164,7 @@ async def draw_abyss_img(
         char_pic = await get_qq_avatar(qid=qid)
     char_pic = await draw_pic_with_ring(char_pic, 320)
 
-    img.paste(char_pic, (315, 70), char_pic)
+    img.paste(char_pic, (320, 50), char_pic)
 
     # 解析数据
     damage_rank = raw_abyss_data['damage_rank']
@@ -176,7 +176,14 @@ async def draw_abyss_img(
 
     # 绘制抬头
     img_draw = ImageDraw.Draw(img)
-    img_draw.text((475, 461), f'UID {uid}', first_color, gs_font_36, 'mm')
+    img_draw.text((475, 475), f'UID {uid}', first_color, gs_font_36, 'mm')
+    img_draw.text(
+        (475, 413),
+        f'挑战次数 - {raw_abyss_data["total_battle_times"]}',
+        first_color,
+        gs_font_26,
+        'mm',
+    )
     title_data = {
         '最强一击!': damage_rank[0],
         '最多击破!': defeat_rank[0],
@@ -221,11 +228,11 @@ async def draw_abyss_img(
                 _time_array = time.localtime(_timestamp)
                 _time_str = time.strftime('%Y-%m-%d %H:%M:%S', _time_array)
             else:
-                _time_str = '20**-**-** 23:59:**'
+                _time_str = '请挑战后查看时间数据!'
         else:
             _color = gray_color
             _text = '未解锁'
-            _time_str = '20**-**-** 23:59:**'
+            _time_str = '请挑战后查看时间数据!'
         omit_draw.rounded_rectangle((165, 19, 255, 49), 20, _color)
         omit_draw.text((210, 34), _text, white_color, gs_font_26, 'mm')
         omit_draw.text((54, 65), _time_str, sec_color, gs_font_22, 'lm')
@@ -237,10 +244,10 @@ async def draw_abyss_img(
         img.paste(hint, (0, 830), hint)
     else:
         task = []
+        floor_num = floors_data['index']
         for index_floor, level in enumerate(floors_data['levels']):
             floor_pic = Image.open(TEXT_PATH / 'abyss_floor.png')
             level_star = level['star']
-            floor_num = level['index']
             timestamp = int(level['battles'][0]['timestamp'])
             time_array = time.localtime(timestamp)
             time_str = time.strftime('%Y-%m-%d %H:%M:%S', time_array)

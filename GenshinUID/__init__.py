@@ -41,7 +41,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     sp_user_type: Optional[
         Literal['group', 'direct', 'channel', 'sub_channel']
     ] = None
-    pm = 3
+    pm = 6
 
     # qqguild
     if '_message' in raw_data:
@@ -52,8 +52,12 @@ async def send_char_adv(bot: Bot, ev: Event):
         else:
             group_id = str(raw_data['channel_id'])
         msg_id = raw_data['id']
-        if 4 in raw_data['member'].roles or 2 in raw_data['member'].roles:
+        if 4 in raw_data['member'].roles:
             pm = 2
+        elif 2 in raw_data['member'].roles:
+            pm = 4
+        elif 5 in raw_data['member'].roles:
+            pm = 5
     # telegram
     elif 'telegram_model' in raw_data:
         # 如果发送者是个Bot，不响应
@@ -100,11 +104,10 @@ async def send_char_adv(bot: Bot, ev: Event):
                 message.append(Message('reply', match.group(1)))
     # onebot
     elif 'sender' in raw_data:
-        if (
-            raw_data['sender'].role == 'owner'
-            or raw_data['sender'].role == 'admin'
-        ):
+        if raw_data['sender'].role == 'owner':
             pm = 2
+        elif raw_data['sender'].role == 'admin':
+            pm = 3
         messages = raw_data['original_message']
         msg_id = str(raw_data['message_id'])
     # feishu

@@ -439,6 +439,7 @@ async def kaiheila_send(
                 doc = f.read()
             url = await bot.upload_file(doc, file_name)  # type:ignore
             result['content'] = url
+            del_file(path)
         else:
             result['content'] = content
 
@@ -482,6 +483,7 @@ async def telegram_send(
             with open(path, 'rb') as f:
                 doc = f.read()
             result['document'] = doc
+            del_file(path)
 
         if content:
             await bot.call_api('send_message', chat_id=target_id, **result)
@@ -598,7 +600,6 @@ async def onebot_v12_send(
                 {"type": file_type, "data": {"file_id": file_id}}
             ]
             await bot.call_api('send_message', **params)
-            del_file(path)
 
         if not any([content, image, file]):
             return
@@ -624,25 +625,21 @@ async def onebot_v12_send(
             img_bytes = base64.b64decode(image.replace('base64://', ''))
             timestamp = time.time()
             file_name = f'{target_id}_{timestamp}.png'
-            path = Path(__file__).resolve().parent / file_name
-            with open(path, 'wb') as f:
-                f.write(img_bytes)
             up_data = await bot.call_api(
                 'upload_file',
-                type="path",
-                path=f"{str(path.absolute())}",
+                type="data",
+                data=img_bytes,
                 name=f"{file_name}",
             )
             file_id = up_data['file_id']
             await send_file_message(params, "image", file_id)
         elif file:
             file_name, file_content = file.split('|')
-            path = Path(__file__).resolve().parent / file_name
-            store_file(path, file_content)
+            file_content = base64.b64decode(file)
             up_data = await bot.call_api(
                 'upload_file',
-                type="path",
-                path=f"{str(path.absolute())}",
+                type="data",
+                data=file_content,
                 name=f"{file_name}",
             )
             file_id = up_data['file_id']

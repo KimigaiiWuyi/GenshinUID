@@ -227,9 +227,9 @@ def convert_message(_msg: Any, message: List[Message]):
         message.append(
             Message(
                 'text',
-                _msg.data['text'].replace('/', '')
+                _msg.data['text']
                 if 'text' in _msg.data
-                else _msg.data['content'].replace('/', ''),
+                else _msg.data['content'],
             )
         )
     elif _msg.type == 'image':

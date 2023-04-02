@@ -128,9 +128,9 @@ class GsClient:
                                 msg.target_id,
                                 msg.target_type,
                             )
-                        # OneBot v12 for ComWechatClint
-                        elif msg.bot_id == 'OnebotV12_wechat':
-                            await onebot12_comwechat_send(
+                        # OneBot v12
+                        elif msg.bot_id == 'onebot_v12':
+                            await onebot_v12_send(
                                 bot,
                                 content,
                                 image,
@@ -582,7 +582,7 @@ async def feishu_send(
         await _send(content, image)
 
 
-async def onebot12_comwechat_send(
+async def onebot_v12_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[str],

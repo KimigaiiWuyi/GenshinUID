@@ -250,5 +250,6 @@ def convert_message(_msg: Any, message: List[Message]):
         else:
             message.append(Message('reply', _msg.data['id']))
     elif _msg.type == 'mention':
-        message.append(Message('at', _msg.data['user_id']))
+        if 'user_id' in _msg.data:
+            message.append(Message('at', _msg.data['user_id']))
     return message

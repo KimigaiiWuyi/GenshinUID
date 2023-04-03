@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import base64
 import asyncio
 from pathlib import Path
@@ -113,10 +114,23 @@ class GsClient:
                         pass
 
                     # 根据bot_id字段发送消息
-                    # OneBot v11 & v12
+
                     for bot in bot_list:
+                        # OneBot v11
                         if msg.bot_id == 'onebot':
                             await onebot_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                file,
+                                at_list,
+                                msg.target_id,
+                                msg.target_type,
+                            )
+                        # OneBot v12
+                        elif msg.bot_id == 'onebot_v12':
+                            await onebot_v12_send(
                                 bot,
                                 content,
                                 image,
@@ -425,6 +439,7 @@ async def kaiheila_send(
                 doc = f.read()
             url = await bot.upload_file(doc, file_name)  # type:ignore
             result['content'] = url
+            del_file(path)
         else:
             result['content'] = content
 
@@ -468,6 +483,7 @@ async def telegram_send(
             with open(path, 'rb') as f:
                 doc = f.read()
             result['document'] = doc
+            del_file(path)
 
         if content:
             await bot.call_api('send_message', chat_id=target_id, **result)
@@ -557,6 +573,77 @@ async def feishu_send(
             },
         }
         await bot.call_api('im/v1/messages', **params)
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                await _send(None, _msg['data'])
+            else:
+                await _send(_msg['data'], None)
+    else:
+        await _send(content, image)
+
+
+async def onebot_v12_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    file: Optional[str],
+    at_list: Optional[List[str]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[str]):
+        async def send_file_message(params, file_type, file_id):
+            params["message"] = [
+                {"type": file_type, "data": {"file_id": file_id}}
+            ]
+            await bot.call_api('send_message', **params)
+
+        if not any([content, image, file]):
+            return
+
+        params = {}
+        if target_type == "group":
+            params["detail_type"] = "group"
+            params["group_id"] = target_id
+        elif target_type == "direct":
+            params["detail_type"] = "private"
+            params["user_id"] = target_id
+
+        if content:
+            params["message"] = [
+                {"type": "text", "data": {"text": f"{content}"}}
+            ]
+            if at_list and target_type == "group":
+                params["message"].insert(
+                    0, {"type": "at", "data": {"user_id": f"{at_list[0]}"}}
+                )
+            await bot.call_api('send_message', **params)
+        elif image:
+            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            timestamp = time.time()
+            file_name = f'{target_id}_{timestamp}.png'
+            up_data = await bot.call_api(
+                'upload_file',
+                type="data",
+                data=img_bytes,
+                name=f"{file_name}",
+            )
+            file_id = up_data['file_id']
+            await send_file_message(params, "image", file_id)
+        elif file:
+            file_name, file_content = file.split('|')
+            file_content = base64.b64decode(file)
+            up_data = await bot.call_api(
+                'upload_file',
+                type="data",
+                data=file_content,
+                name=f"{file_name}",
+            )
+            file_id = up_data['file_id']
+            await send_file_message(params, "file", file_id)
 
     if node:
         for _msg in node:

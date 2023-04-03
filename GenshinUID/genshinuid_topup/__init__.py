@@ -7,6 +7,9 @@ from ..genshinuid_config.gs_config import gsconfig
 
 sv_topup = SV('原神充值')
 
+INPUTTIP = '''请输入正确的商品编号(0~6), 如:原神充值6
+也可以直接输入物品名称或价格，如:原神充值月卡 | pay648'''
+
 
 @sv_topup.on_command(('gsrc', '原神充值', 'pay'))
 async def send_qrcode_login(bot: Bot, ev: Event):
@@ -36,7 +39,7 @@ async def send_qrcode_login(bot: Bot, ev: Event):
             break
 
     if goods_id is None:
-        return await bot.send('请输入正确的商品编号(1~6), 例如原神充值6!')
+        return await bot.send(INPUTTIP)
 
     if ev.group_id is None:
         gid = 'direct'

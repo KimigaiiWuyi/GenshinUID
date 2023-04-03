@@ -3,6 +3,7 @@ import base64
 import asyncio
 import traceback
 from typing import Literal
+from time import strftime, localtime
 
 import qrcode
 from gsuid_core.bot import Bot
@@ -17,8 +18,7 @@ from ..gsuid_utils.api.mys.models import MysOrder
 
 disnote = '''免责声明:
 该充值接口由米游社提供,不对充值结果负责。
-请在充值前仔细阅读米哈游的充值条款。
-'''
+请在充值前仔细阅读米哈游的充值条款。'''
 
 GOODS = {
     0: {
@@ -134,7 +134,7 @@ async def topup_(
         qrimage = io.BytesIO(img_b64decode)  # 二维码
         item_icon_url = goods_data['goods_icon']  # 图标
         item_id = goods_data['goods_id']  # 商品内部id
-        # item_pay_url = order['encode_order']  # 支付链接
+        item_pay_url = order['encode_order']  # 支付链接
         item_name_full = (
             f"{goods_data['goods_name']}×{goods_data['goods_unit']}"
         )
@@ -150,6 +150,9 @@ async def topup_(
         )  # 价格
         item_order_no = order['order_no']  # 订单号
         item_create_time = order['create_time']  # 创建时间
+        timestamp = strftime(
+            '%Y-%m-%d %H:%M:%S', localtime(int(item_create_time))
+        )  # 年月日时间
 
         if method == 'alipay':
             img_data = await draw_ali(
@@ -162,6 +165,7 @@ async def topup_(
                 item_create_time,
                 item_id,
             )
+            await bot.send(img_data)
         else:
             img_data = await draw_wx(
                 uid,
@@ -173,7 +177,10 @@ async def topup_(
                 item_create_time,
                 item_id,
             )
-        await bot.send(img_data)
+            msg_text = f'【{item_name}】\nUID: {uid}\n时间: {timestamp}'
+            msg_text2 = msg_text + f'\n\n{item_pay_url}\n\n{disnote}'
+            await bot.send(img_data)
+            await bot.send(msg_text2)
     except Exception:
         traceback.print_exc()
         logger.warning(f'[充值] {group_id} 图片发送失败')

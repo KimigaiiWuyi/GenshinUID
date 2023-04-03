@@ -500,7 +500,6 @@ async def telegram_send(
                 await _send(_msg['data'], None)
     else:
         await _send(content, image)
-        await _send(content, image)
 
 
 async def feishu_send(

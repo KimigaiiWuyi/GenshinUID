@@ -6,13 +6,14 @@ from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.internal.adapter import Event
-from nonebot import get_driver, on_message, on_fullmatch
+from nonebot import on_notice, get_driver, on_message, on_fullmatch
 
 from .client import GsClient
 from .auto_install import start, install
 from .models import Message, MessageReceive
 
 get_message = on_message(priority=999)
+get_notice = on_notice(priority=999)
 install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
 start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
 connect_core = on_fullmatch(
@@ -20,6 +21,66 @@ connect_core = on_fullmatch(
 )
 driver = get_driver()
 gsclient: Optional[GsClient] = None
+
+
+@get_notice.handle()
+async def get_notice_message(bot: Bot, ev: Event):
+    if gsclient is None or not gsclient.is_alive:
+        return await connect()
+
+    raw_data = ev.dict()
+    logger.debug(raw_data)
+
+    try:
+        user_id = str(ev.get_user_id())
+    except ValueError:
+        user_id = '未知'
+
+    group_id = None
+    sp_user_type = None
+    sp_bot_id = None
+    self_id = str(bot.self_id)
+    msg_id = ''
+    pm = 6
+
+    if await SUPERUSER(bot, ev):
+        pm = 1
+
+    if 'group_id' in raw_data:
+        group_id = str(raw_data['group_id'])
+
+    if 'user_id' in raw_data:
+        user_id = str(raw_data['user_id'])
+
+    if sp_bot_id:
+        bot_id = sp_bot_id
+    else:
+        bot_id = ev.__class__.__module__.split('.')[2]
+
+    user_type = 'group' if group_id else 'direct'
+
+    if 'notice_type' in raw_data and raw_data['notice_type'] in [
+        'group_upload',
+        'offline_file',
+    ]:
+        val = raw_data['file']['url']
+        name = raw_data['file']['name']
+        message = [Message('file', f'{name}|{val}')]
+    else:
+        return
+
+    msg = MessageReceive(
+        bot_id=bot_id,
+        bot_self_id=self_id,
+        user_type=sp_user_type if sp_user_type else user_type,
+        group_id=group_id,
+        user_id=user_id,
+        content=message,
+        msg_id=msg_id,
+        user_pm=pm,
+    )
+    logger.info(f'【发送】[gsuid-core]: {msg.bot_id}')
+    await gsclient._input(msg)
 
 
 @get_message.handle()

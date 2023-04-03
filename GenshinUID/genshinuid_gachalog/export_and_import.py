@@ -17,21 +17,24 @@ INT_TO_TYPE = {
 
 async def import_gachalogs(history_url: str, uid: str) -> str:
     history_data: dict = json.loads(get(history_url).text)
-    data_uid = history_data['info']['uid']
-    if data_uid != uid:
-        return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
-    raw_data = history_data['list']
-    result = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
-    for item in raw_data:
-        item['uid'] = uid
-        item['item_id'] = ''
-        item['count'] = '1'
-        item['lang'] = 'zh-cn'
-        item['id'] = str(item['id'])
-        del item['uigf_gacha_type']
-        result[INT_TO_TYPE[item['gacha_type']]].append(item)
-    im = await save_gachalogs(uid, result)
-    return im
+    if 'info' in history_data and 'uid' in history_data['info']:
+        data_uid = history_data['info']['uid']
+        if data_uid != uid:
+            return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
+        raw_data = history_data['list']
+        result = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
+        for item in raw_data:
+            item['uid'] = uid
+            item['item_id'] = ''
+            item['count'] = '1'
+            item['lang'] = 'zh-cn'
+            item['id'] = str(item['id'])
+            del item['uigf_gacha_type']
+            result[INT_TO_TYPE[item['gacha_type']]].append(item)
+        im = await save_gachalogs(uid, result)
+        return im
+    else:
+        return '请传入正确的UIGF文件!'
 
 
 async def export_gachalogs(uid: str) -> dict:

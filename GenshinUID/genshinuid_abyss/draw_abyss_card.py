@@ -176,7 +176,7 @@ async def draw_abyss_img(
 
     # 绘制抬头
     img_draw = ImageDraw.Draw(img)
-    img_draw.text((475, 475), f'UID {uid}', first_color, gs_font_36, 'mm')
+    img_draw.text((475, 469), f'UID {uid}', first_color, gs_font_36, 'mm')
     img_draw.text(
         (475, 413),
         f'挑战次数 - {raw_abyss_data["total_battle_times"]}',

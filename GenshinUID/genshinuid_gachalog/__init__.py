@@ -8,11 +8,23 @@ from ..utils.database import get_sqla
 from ..utils.error_reply import UID_HINT
 from .get_gachalogs import save_gachalogs
 from .draw_gachalogs import draw_gachalogs_img
-from .export_and_import import export_gachalogs
+from .export_and_import import export_gachalogs, import_gachalogs
 
 sv_gacha_log = SV('抽卡记录')
 sv_refresh_gacha_log = SV('刷新抽卡记录')
 sv_export_gacha_log = SV('导出抽卡记录')
+sv_import_gacha_log = SV('导入抽卡记录', area='DIRECT')
+
+
+@sv_import_gacha_log.on_file('json')
+async def send_import_gacha_info(bot: Bot, ev: Event):
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    if ev.file:
+        return await bot.send(await import_gachalogs(ev.file, uid))
+    else:
+        return await bot.send('导入抽卡记录异常...')
 
 
 @sv_gacha_log.on_fullmatch(('抽卡记录'))

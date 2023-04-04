@@ -21,7 +21,6 @@ async def draw_char_img(
     charUrl: Optional[str] = None,
     is_curve: bool = False,
 ) -> Union[str, Tuple[bytes, Optional[bytes]]]:
-
     if is_curve:
         res = await draw_char_curve_card(char, charUrl)
     else:

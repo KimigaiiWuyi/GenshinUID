@@ -89,8 +89,8 @@ async def send_char_adv(bot: Bot, ev: Event):
         return await connect()
 
     # 通用字段获取
-    ev_session = ev.get_session_id().replace('wxid_','%')
-    sessions = [i.replace('%','wxid_') for i in ev_session.split('_')]
+    pattern = r'(?<!wxid)_'
+    sessions = re.split(pattern, ev.get_session_id())
     user_id = str(ev.get_user_id())
     messages = ev.get_message()
     raw_data = ev.__dict__

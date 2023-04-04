@@ -9,6 +9,8 @@ import qrcode
 from gsuid_core.bot import Bot
 from qrcode import ERROR_CORRECT_L
 from gsuid_core.logger import logger
+from gsuid_core.models import Message
+from gsuid_core.segment import MessageSegment
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
@@ -179,8 +181,10 @@ async def topup_(
             )
             msg_text = f'【{item_name}】\nUID: {uid}\n时间: {timestamp}'
             msg_text2 = msg_text + f'\n\n{item_pay_url}\n\n{disnote}'
-            await bot.send(img_data)
-            await bot.send(msg_text2)
+            msg_node = []
+            msg_node.append(Message('text', msg_text2))
+            msg_node.append(Message('image', img_data))
+            await bot.send(MessageSegment.node(msg_node))
     except Exception:
         traceback.print_exc()
         logger.warning(f'[充值] {group_id} 图片发送失败')

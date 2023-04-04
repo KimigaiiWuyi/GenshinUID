@@ -1,7 +1,7 @@
 from typing import List, Literal, Optional
 
 from hoshino import priv
-from hoshino.typing import CQEvent, HoshinoBot
+from hoshino.typing import CQEvent, HoshinoBot, NoticeSession
 
 from .client import GsClient
 from .auto_install import start, install
@@ -96,6 +96,56 @@ async def send_priv_msg(ctx):
 @sv.on_message('group')
 async def send_message(bot, ev: CQEvent):
     await get_gs_msg(ev)
+
+
+@sv.on_notice()
+async def import_gacha_log_info(session: NoticeSession):
+    if gsclient is None or not gsclient.is_alive:
+        return await connect()
+
+    ev = session.event
+
+    user_id = None
+    group_id = None
+    sp_user_type = None
+
+    if 'user_id' in ev:
+        user_id = str(ev['user_id'])
+    if 'group_id' in ev:
+        group_id = str(ev['group_id'])
+
+    self_id = str(ev['self_id'])
+
+    msg_id = ''
+    pm = 6
+
+    if priv.check_priv(ev, priv.SUPERUSER):
+        pm = 1
+
+    user_type = 'group' if group_id else 'direct'
+
+    if 'notice_type' in ev and ev['notice_type'] in [
+        'group_upload',
+        'offline_file',
+    ]:
+        val = ev['file']['url']
+        name = ev['file']['name']
+        message = [Message('file', f'{name}|{val}')]
+    else:
+        return
+
+    msg = MessageReceive(
+        bot_id='onebot',
+        bot_self_id=self_id,
+        user_type=sp_user_type if sp_user_type else user_type,
+        group_id=group_id,
+        user_id=user_id,
+        content=message,
+        msg_id=msg_id,
+        user_pm=pm,
+    )
+    logger.info(f'【发送】[gsuid-core]: {msg.bot_id}')
+    await gsclient._input(msg)
 
 
 @sv.on_fullmatch('gs一键安装')

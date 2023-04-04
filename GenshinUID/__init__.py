@@ -112,13 +112,13 @@ async def send_char_adv(bot: Bot, ev: Event):
             group_id = str(raw_data['guild_id'])
         else:
             group_id = str(raw_data['channel_id'])
+            if 4 in raw_data['member'].roles:
+                pm = 2
+            elif 2 in raw_data['member'].roles:
+                pm = 3
+            elif 5 in raw_data['member'].roles:
+                pm = 5
         msg_id = raw_data['id']
-        if 4 in raw_data['member'].roles:
-            pm = 2
-        elif 2 in raw_data['member'].roles:
-            pm = 3
-        elif 5 in raw_data['member'].roles:
-            pm = 5
     # telegram
     elif 'telegram_model' in raw_data:
         # 如果发送者是个Bot，不响应

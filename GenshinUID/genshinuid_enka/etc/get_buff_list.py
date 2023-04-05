@@ -9,7 +9,6 @@ async def get_buff_list(
     type: Literal['group', 'normal', 'fight'],
     with_talent: bool = True,
 ) -> List[str]:
-
     all_effect: List[str] = []
 
     # 获取初始数据

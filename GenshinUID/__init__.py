@@ -1,6 +1,11 @@
+import os
 import re
-from typing import Any, List, Literal, Optional
+import asyncio
+from pathlib import Path
+from base64 import b64encode
+from typing import Any, List, Union, Literal, Optional
 
+import aiofiles
 from nonebot.log import logger
 from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
@@ -66,6 +71,7 @@ async def get_notice_message(bot: Bot, ev: Event):
         val = raw_data['file']['url']
         name = raw_data['file']['name']
         message = [Message('file', f'{name}|{val}')]
+        # onebot_v11
     else:
         return
 
@@ -150,19 +156,6 @@ async def send_char_adv(bot: Bot, ev: Event):
             group_id = None
         user_id = raw_data['author_id']
         msg_id = raw_data['message_id']
-    # ntchat
-    elif 'data' in raw_data and 'from_wxid' in raw_data['data']:
-        messages = raw_data['message']
-        msg_id = str(raw_data['data']['msgid'])
-        if (
-            'raw_msg' in raw_data['data']
-            and 'xml' in raw_data['data']['raw_msg']
-        ):
-            match = re.search(
-                r'<svrid>(\d+)</svrid>', raw_data['data']['raw_msg']
-            )
-            if match:
-                message.append(Message('reply', match.group(1)))
     # onebot
     elif 'sender' in raw_data:
         if raw_data['sender'].role == 'owner':
@@ -186,30 +179,61 @@ async def send_char_adv(bot: Bot, ev: Event):
         user_id = raw_data['event'].sender.sender_id.union_id
         msg_id = str(raw_data['event'].message.message_id)
     # ntchat
-    if 'data' in raw_data:
+    elif 'data' in raw_data:
         if 'chatroom' in raw_data['data']['to_wxid']:
             group_id = raw_data['data']['to_wxid']
         if 'image' in raw_data['data']:
             message.append(Message('image', raw_data['data']['image']))
         if 'from_wxid' in raw_data['data']:
             user_id = raw_data['data']['from_wxid']
+            messages = raw_data['message']
+            msg_id = str(raw_data['data']['msgid'])
+            if (
+                'raw_msg' in raw_data['data']
+                and 'xml' in raw_data['data']['raw_msg']
+            ):
+                match = re.search(
+                    r'<svrid>(\d+)</svrid>', raw_data['data']['raw_msg']
+                )
+                if match:
+                    message.append(Message('reply', match.group(1)))
         if 'at_user_list' in raw_data['data']:
             _at_list = raw_data['data']['at_user_list']
             if _at_list:
                 at_list = [Message('at', i) for i in _at_list]
                 at_list.pop(0)
                 message.extend(at_list)
+        if 'type' in raw_data and raw_data['type'] == 11055:
+            val = raw_data['file']
+            name = raw_data['file_name']
+            await asyncio.sleep(2)
+            if (
+                os.path.exists(val)
+                and os.path.getsize(val) <= 5 * 1024 * 1024
+                and str(name).endswith(".json")
+            ):
+                message.append(await convert_file(val, name))  # type: ignore
     # OneBot V12 (仅在 ComWechatClient 测试)
     if bot.adapter.get_name() == 'OneBot V12':
         # v12msgid = raw_data['id']  # V12的消息id
-        # time = raw_data['time']  # 返回格式 2023-04-01 16:38:51+00:00
-
-        messages = raw_data['original_message']
         # self = raw_data['self']  # 返回 platform='xxx' user_id='wxid_xxxxx'
         # platform = self.platform  # 机器人平台
+        # V12还支持频道等其他平台，速速Pr！
+
+        messages = raw_data['original_message']  # 消息
         self_id = bot.self_id  # 机器人账号ID
         msg_id = raw_data['message_id']  # 消息ID
         sp_bot_id = 'onebot_v12'
+
+        if 'alt_message' in raw_data and '[文件]' in raw_data['alt_message']:
+            file_id = messages[0].data.get('file_id')
+            print('[OB12文件ID]', file_id)
+            if file_id in messages[0].data.values():
+                data = await get_file(bot, file_id)
+                print('[OB12文件]', data)
+                name = data['name']
+                path = data['path']
+                message.append(await convert_file(path, name))
 
         if 'group_id' in raw_data:
             group_id = raw_data['group_id']
@@ -218,7 +242,6 @@ async def send_char_adv(bot: Bot, ev: Event):
         else:
             user_id = raw_data['user_id']
             sp_user_type = 'direct'
-        # V12还支持频道等其他平台，速速Pr！
 
     if sp_bot_id:
         bot_id = sp_bot_id
@@ -299,7 +322,7 @@ def convert_message(_msg: Any, message: List[Message]):
         file_id = _msg.data.get('file_id')
         if file_id in _msg.data.values():
             message.append(Message('image', _msg.data['file_id']))
-            logger.debug(_msg.data["file_id"])
+            logger.debug('[OB12图片]', _msg.data["file_id"])
         else:
             message.append(Message('image', _msg.data['url']))
     elif _msg.type == 'at':
@@ -314,3 +337,32 @@ def convert_message(_msg: Any, message: List[Message]):
         if 'user_id' in _msg.data:
             message.append(Message('at', _msg.data['user_id']))
     return message
+
+
+# 读取文件为base64
+async def convert_file(
+    content: Union[Path, str, bytes], file_name: str
+) -> Message:
+    if isinstance(content, Path):
+        print(content)
+        async with aiofiles.open(str(content), 'rb') as fp:
+            file = await fp.read()
+    elif isinstance(content, bytes):
+        file = content
+    else:
+        async with aiofiles.open(content, 'rb') as fp:
+            file = await fp.read()
+    return Message(
+        type='file',
+        data=f'{file_name}|{b64encode(file).decode()}',
+    )
+
+
+# 获取文件
+async def get_file(bot: Bot, file_id: str):
+    data = await bot.call_api(
+        api="get_file",
+        file_id=f"{file_id}",
+        type="path",
+    )
+    return data

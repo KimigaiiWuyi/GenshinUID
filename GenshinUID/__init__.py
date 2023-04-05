@@ -99,7 +99,7 @@ async def send_char_adv(bot: Bot, ev: Event):
     user_id = str(ev.get_user_id())
     messages = ev.get_message()
     raw_data = ev.__dict__
-    print(raw_data)
+    logger.debug(raw_data)
     group_id = sessions[-2] if len(sessions) >= 2 else None
     self_id = str(bot.self_id)
     message: List[Message] = []

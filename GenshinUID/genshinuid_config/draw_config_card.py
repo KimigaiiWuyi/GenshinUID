@@ -8,7 +8,6 @@ from gsuid_core.logger import logger
 from .gs_config import gsconfig
 from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
-from ..utils.image.image_tools import CustomizeImage
 from ..utils.resource.RESOURCE_PATH import TEXT2D_PATH
 from ..utils.fonts.genshin_fonts import gs_font_24, gs_font_36, gs_font_40
 
@@ -22,6 +21,8 @@ second_color = (57, 57, 57)
 
 
 async def draw_config_img(bot_id: str) -> Union[bytes, str]:
+    from ..utils.image.image_tools import CustomizeImage
+
     sqla = get_sqla(bot_id)
     # 获取背景图片各项参数
     based_w = 850

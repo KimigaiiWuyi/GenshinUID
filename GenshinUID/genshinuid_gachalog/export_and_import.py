@@ -1,4 +1,5 @@
 import json
+import base64
 from datetime import datetime
 
 from httpx import get
@@ -15,8 +16,12 @@ INT_TO_TYPE = {
 }
 
 
-async def import_gachalogs(history_url: str, uid: str) -> str:
-    history_data: dict = json.loads(get(history_url).text)
+async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
+    if type == 'url':
+        history_data: dict = json.loads(get(history_url).text)
+    else:
+        data_bytes = base64.b64decode(history_url)
+        history_data = json.loads(data_bytes.decode('gbk'))
     if 'info' in history_data and 'uid' in history_data['info']:
         data_uid = history_data['info']['uid']
         if data_uid != uid:

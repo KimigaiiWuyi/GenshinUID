@@ -1,45 +1,53 @@
-from typing import List
 from pathlib import Path
+from typing import List, Tuple, Optional
 
 from PIL import Image, ImageDraw
 
 from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
 from ..gsuid_utils.database.models import GsUser
-from ..utils.image.image_tools import get_simple_bg
-from ..utils.fonts.genshin_fonts import genshin_font_origin
+from ..utils.colors import sec_color, first_color
+from ..utils.fonts.genshin_fonts import gs_font_15, gs_font_30, gs_font_36
+from ..utils.image.image_tools import (
+    get_color_bg,
+    get_qq_avatar,
+    draw_pic_with_ring,
+)
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
-status_s_on = Image.open(TEXT_PATH / 'status_s_on.png')
-status_s_off = Image.open(TEXT_PATH / 'status_s_off.png')
-status_l_off = Image.open(TEXT_PATH / 'status_l_off.png')
-status_l_on = Image.open(TEXT_PATH / 'status_l_on.png')
-uid_hint = Image.open(TEXT_PATH / 'uid_hint.png')
+status_off = Image.open(TEXT_PATH / 'status_off.png')
+status_on = Image.open(TEXT_PATH / 'status_on.png')
 
 EN_MAP = {'coin': '宝钱', 'resin': '体力', 'go': '派遣', 'transform': '质变仪'}
-
-white_color = (254, 243, 231)
-gs_font_20 = genshin_font_origin(20)
-gs_font_15 = genshin_font_origin(15)
-gs_font_26 = genshin_font_origin(26)
 
 
 async def get_user_card(bot_id: str, user_id: str) -> bytes:
     sqla = get_sqla(bot_id)
     uid_list: List = await sqla.get_bind_uid_list(user_id)
-    w, h = 500, len(uid_list) * 210 + 330
-    img = await get_simple_bg(w, h)
-    white_overlay = Image.new('RGBA', (w, h), (244, 244, 244, 200))
-    img.paste(white_overlay, (0, 0), white_overlay)
-    uid_title = Image.open(TEXT_PATH / 'uid_title.png')
-    uid_title_draw = ImageDraw.Draw(uid_title)
-    uid_title_draw.text(
-        (47, 70), f'QQ号{str(user_id)}', (106, 100, 89), font=gs_font_26
+    w, h = 750, len(uid_list) * 750 + 470
+
+    # 获取背景图片各项参数
+    _id = str(user_id)
+    if _id.startswith('http'):
+        char_pic = await get_qq_avatar(avatar_url=_id)
+    else:
+        char_pic = await get_qq_avatar(qid=_id)
+    char_pic = await draw_pic_with_ring(char_pic, 290)
+
+    img = await get_color_bg(w, h)
+    title = Image.open(TEXT_PATH / 'user_title.png')
+    title.paste(char_pic, (241, 40), char_pic)
+
+    title_draw = ImageDraw.Draw(title)
+    title_draw.text(
+        (375, 444), f'{bot_id} - {user_id}', first_color, gs_font_30, 'mm'
     )
-    img.paste(uid_title, (0, 50), uid_title)
-    img.paste(uid_hint, (0, 145 + len(uid_list) * 210), uid_hint)
-    for uid_index, uid in enumerate(uid_list):
+    img.paste(title, (0, 0), title)
+
+    for index, uid in enumerate(uid_list):
+        user_card = Image.open(TEXT_PATH / 'user_bg.png')
+        user_draw = ImageDraw.Draw(user_card)
         user_push_data = await sqla.select_push_data(uid)
         user_data = await sqla.select_user_data(uid)
         if user_data is None:
@@ -53,71 +61,50 @@ async def get_user_card(bot_id: str, user_id: str) -> bytes:
                 bbs_switch='off',
                 push_switch='off',
             )
-        uid_img = Image.open(TEXT_PATH / 'uid_part.png')
-        uid_img_draw = ImageDraw.Draw(uid_img)
-        uid_img_draw.text(
-            (112, 45),
-            f'UID{uid}',
-            white_color,
-            font=gs_font_20,
+
+        user_draw.text(
+            (375, 62),
+            f'UID {uid}',
+            first_color,
+            font=gs_font_36,
             anchor='mm',
         )
-        uid_img_draw.text(
-            (390, 17),
-            f'user_id{user_data.user_id}',
-            white_color,
-            font=gs_font_20,
-            anchor='mm',
-        )
-        if user_data.cookie:
-            uid_img.paste(status_s_on, (292, 41), status_s_on)
-        else:
-            uid_img.paste(status_s_off, (292, 41), status_s_off)
 
-        if user_data.stoken:
-            uid_img.paste(status_s_on, (428, 41), status_s_on)
-        else:
-            uid_img.paste(status_s_off, (428, 41), status_s_off)
+        x, y = 331, 112
+        paste_switch(user_card, user_data.cookie, (241, 128))
+        paste_switch(user_card, user_data.stoken, (241 + x, 128))
+        paste_switch(user_card, user_data.sign_switch, (241, 128 + y))
+        paste_switch(user_card, user_data.bbs_switch, (241 + x, 128 + y))
+        paste_switch(user_card, user_data.push_switch, (241, 128 + 2 * y))
+        paste_switch(user_card, user_data.status, (241 + x, 128 + 2 * y), True)
 
-        if user_data.push_switch != 'off':
-            uid_img.paste(status_s_on, (135, 76), status_s_on)
-        else:
-            uid_img.paste(status_s_off, (135, 76), status_s_off)
-
-        if user_data.sign_switch != 'off':
-            uid_img.paste(status_s_on, (270, 76), status_s_on)
-        else:
-            uid_img.paste(status_s_off, (270, 76), status_s_off)
-
-        if user_data.bbs_switch != 'off':
-            uid_img.paste(status_s_on, (428, 76), status_s_on)
-        else:
-            uid_img.paste(status_s_off, (428, 76), status_s_off)
-
-        for index, mode in enumerate(['coin', 'resin', 'go', 'transform']):
+        for _index, mode in enumerate(['coin', 'resin', 'go', 'transform']):
+            paste_switch(
+                user_card,
+                getattr(user_push_data, f'{mode}_push'),
+                (241 + _index % 2 * x, 128 + (_index // 2 + 3) * y),
+            )
             if getattr(user_push_data, f'{mode}_push') != 'off':
-                uid_img.paste(
-                    status_l_on, (25 + index * 115, 112), status_l_on
+                user_draw.text(
+                    (268 + _index % 2 * x, 168 + (_index // 2 + 3) * y),
+                    f'{getattr(user_push_data, f"{mode}_value")}',
+                    sec_color,
+                    font=gs_font_15,
+                    anchor='lm',
                 )
-
-            else:
-                uid_img.paste(
-                    status_l_off, (25 + index * 115, 112), status_l_off
-                )
-            uid_img_draw.text(
-                (78 + index * 115, 141),
-                f'{EN_MAP[mode]}推送',
-                white_color,
-                font=gs_font_20,
-                anchor='mm',
-            )
-            uid_img_draw.text(
-                (78 + index * 115, 164),
-                f'阈值:{getattr(user_push_data, f"{mode}_value")}',
-                white_color,
-                font=gs_font_15,
-                anchor='mm',
-            )
-        img.paste(uid_img, (0, 150 + uid_index * 210), uid_img)
+        img.paste(user_card, (0, 500 + index * 690), user_card)
 
     return await convert_img(img)
+
+
+def paste_switch(
+    card: Image.Image,
+    status: Optional[str],
+    pos: Tuple[int, int],
+    is_status: bool = False,
+):
+    if is_status:
+        pic = status_off if status else status_on
+    else:
+        pic = status_on if status != 'off' and status else status_off
+    card.paste(pic, pos, pic)

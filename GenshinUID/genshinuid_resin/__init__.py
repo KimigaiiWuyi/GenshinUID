@@ -15,6 +15,7 @@ from ..utils.error_reply import UID_HINT
 from .draw_resin_card import get_resin_img
 
 sv_get_resin = SV('查询体力')
+sv_get_resin_admin = SV('强制推送', pm=1)
 
 
 @sv_get_resin.on_fullmatch(('当前状态'))
@@ -29,12 +30,19 @@ async def send_daily_info(bot: Bot, ev: Event):
     await bot.send(im)
 
 
+@sv_get_resin_admin.on_fullmatch(('强制推送体力提醒'))
+async def force_notice_job(bot: Bot, ev: Event):
+    await bot.logger.info('开始执行[强制推送体力信息]')
+    await notice_job()
+
+
 @scheduler.scheduled_job('cron', minute='*/30')
 async def notice_job():
     result = await get_notice_list()
     logger.info('[推送检查]完成!等待消息推送中...')
-    # 执行私聊推送
+    logger.debug(result)
 
+    # 执行私聊推送
     for bot_id in result:
         for BOT_ID in gss.active_bot:
             bot = gss.active_bot[BOT_ID]

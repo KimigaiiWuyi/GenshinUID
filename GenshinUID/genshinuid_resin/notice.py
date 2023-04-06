@@ -30,7 +30,7 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
                 continue
             push_data = await sqla.select_push_data(user.uid)
             msg_dict = await all_check(
-                bot_id,
+                user.bot_id,
                 raw_data,
                 push_data.__dict__,
                 msg_dict,
@@ -78,16 +78,14 @@ async def all_check(
                 # 群号推送到群聊
                 else:
                     # 初始化
-                    gid = f'{mode}_push'
-                    if push_data[gid] not in msg_dict[bot_id]['group']:
-                        msg_dict[bot_id]['direct'][gid] = {}
+                    gid = push_data[f'{mode}_push']
+                    if gid not in msg_dict[bot_id]['group']:
+                        msg_dict[bot_id]['group'][gid] = {}
 
-                    if user_id not in msg_dict[bot_id]['direct'][gid]:
-                        msg_dict[bot_id]['direct'][gid][user_id] = NOTICE[mode]
+                    if user_id not in msg_dict[bot_id]['group'][gid]:
+                        msg_dict[bot_id]['group'][gid][user_id] = NOTICE[mode]
                     else:
-                        msg_dict[bot_id]['direct'][gid][user_id] += NOTICE[
-                            mode
-                        ]
+                        msg_dict[bot_id]['group'][gid][user_id] += NOTICE[mode]
                     await sqla.update_push_data(uid, {f'{mode}_is_push': 'on'})
     return msg_dict
 

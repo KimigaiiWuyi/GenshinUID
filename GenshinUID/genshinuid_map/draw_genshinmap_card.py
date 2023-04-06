@@ -15,7 +15,7 @@ async def draw_genshin_map(
     try:
         raw_data = await get_map_data(resource_name, map_id)
     except MiniggNotFoundError:
-        return f'未在{map_name}找到{resource_name}...'
+        return f'未在{map_name}找到所需资源...'
     with open(MAP_DATA / f'{map_name}_{resource_name}.jpg', 'wb') as f:
         f.write(raw_data)  # 保存到文件夹中
     return raw_data

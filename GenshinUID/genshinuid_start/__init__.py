@@ -12,10 +12,10 @@ from ..utils.resource.generate_char_card import create_all_char_card
 
 async def all_start():
     try:
+        await draw_help_img()
         await startup()
         await create_all_char_card()
         await draw_xk_abyss_img()
-        await draw_help_img()
         await generate_data()
     except Exception as e:
         logger.exception(e)

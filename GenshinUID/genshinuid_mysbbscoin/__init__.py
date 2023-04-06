@@ -46,7 +46,7 @@ async def bbs_recheck(bot: Bot, ev: Event):
 @scheduler.scheduled_job(
     'cron', hour=BBS_TASK_TIME[0], minute=BBS_TASK_TIME[1]
 )
-async def sign_at_night():
+async def get_coin_at_night():
     if gsconfig.get_config('SchedMhyBBSCoin').data:
         await send_daily_mihoyo_bbs_sign()
 

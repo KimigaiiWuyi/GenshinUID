@@ -617,8 +617,8 @@ async def onebot_v12_send(
             ]
             if at_list and target_type == "group":
                 params["message"].insert(
-                    0, {"type": "mention", "data": {"user_id": 
-f"{at_list[0]}"}}
+                    0,
+                    {"type": "mention", "data": {"user_id": f"{at_list[0]}"}},
                 )
             await bot.call_api('send_message', **params)
         elif image:

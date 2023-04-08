@@ -10,6 +10,7 @@ def genshin_font_origin(size: int) -> ImageFont.FreeTypeFont:
 
 
 gs_font_12 = genshin_font_origin(12)
+gs_font_14 = genshin_font_origin(14)
 gs_font_15 = genshin_font_origin(15)
 gs_font_18 = genshin_font_origin(18)
 gs_font_20 = genshin_font_origin(20)

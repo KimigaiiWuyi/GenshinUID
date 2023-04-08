@@ -38,5 +38,7 @@ def get_error(retcode: Union[int, str]) -> str:
         return '已经获取过该内容~!'
     elif retcode == -201:
         return '你的账号可能已被封禁, 请联系米游社客服...'
+    elif retcode == 400:
+        return '[MINIGG]暂未找到此内容...'
     else:
         return f'API报错, 错误码为{retcode}!'

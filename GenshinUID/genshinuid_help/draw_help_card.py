@@ -12,26 +12,26 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_40,
 )
 
-TEXT_PATH = Path(__file__).parent / 'texture2d'
-help_title = Image.open(TEXT_PATH / 'help_title.png')
-
-first_color = (20, 20, 20)
-second_color = (57, 57, 57)
-
-with open(Path(__file__).parent / 'help.json', "r", encoding='UTF-8') as f:
-    help_data = json.load(f)
-
-all_help_num = 0
-module_row = 0
-help_row = 0
-
-for module in help_data:
-    all_help_num += len(help_data[module]['data'])
-    module_row += 1
-    help_row += (len(help_data[module]['data']) + 2) // 3
-
 
 async def draw_help_img():
+    TEXT_PATH = Path(__file__).parent / 'texture2d'
+    help_title = Image.open(TEXT_PATH / 'help_title.png')
+
+    first_color = (20, 20, 20)
+    second_color = (57, 57, 57)
+
+    with open(Path(__file__).parent / 'help.json', "r", encoding='UTF-8') as f:
+        help_data = json.load(f)
+
+    all_help_num = 0
+    module_row = 0
+    help_row = 0
+
+    for module in help_data:
+        all_help_num += len(help_data[module]['data'])
+        module_row += 1
+        help_row += (len(help_data[module]['data']) + 2) // 3
+
     # 获取背景图片各项参数
     based_w = 850
     based_h = 30 + 720 + 110 * help_row + module_row * 100

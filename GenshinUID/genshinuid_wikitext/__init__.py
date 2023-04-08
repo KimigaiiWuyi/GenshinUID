@@ -5,6 +5,8 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 
+from ..genshinuid_config.gs_config import gsconfig
+from .get_artifacts_pic import get_artifacts_wiki_img
 from .get_wiki_text import (
     char_wiki,
     foods_wiki,
@@ -34,7 +36,11 @@ async def send_food(bot: Bot, ev: Event):
 
 @sv_wiki_text.on_prefix(('圣遗物介绍', '圣遗物资料'))
 async def send_artifacts(bot: Bot, ev: Event):
-    await bot.send(await artifacts_wiki(ev.text))
+    if gsconfig.get_config('PicWiki').data:
+        im = await get_artifacts_wiki_img(ev.text)
+    else:
+        im = await artifacts_wiki(ev.text)
+    await bot.send(im)
 
 
 @sv_wiki_text.on_prefix(('武器介绍', '武器资料'))

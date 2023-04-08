@@ -328,6 +328,7 @@ Artifact = TypedDict(
     {
         'name': str,
         'rarity': List[str],
+        '1pc': str,
         '2pc': str,
         '4pc': str,
         'flower': PieceFlower,

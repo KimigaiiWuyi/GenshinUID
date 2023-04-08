@@ -53,3 +53,26 @@ async def convert_img(
         async with aiofiles.open(img, 'rb') as fp:
             img = await fp.read()
     return f'base64://{b64encode(img).decode()}'
+
+
+async def str_lenth(r: str, size: int, limit: int = 540) -> str:
+    result = ''
+    temp = 0
+    for i in r:
+        if temp >= limit:
+            result += '\n' + i
+            temp = 0
+        else:
+            result += i
+
+        if i.isdigit():
+            temp += round(size / 10 * 6)
+        elif i == '/':
+            temp += round(size / 10 * 2.2)
+        elif i == '.':
+            temp += round(size / 10 * 3)
+        elif i == '%':
+            temp += round(size / 10 * 9.4)
+        else:
+            temp += size
+    return result

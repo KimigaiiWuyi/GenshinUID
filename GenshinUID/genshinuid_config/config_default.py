@@ -96,4 +96,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后部分功能的背景图将固定为特定背景',
         False,
     ),
+    'PicWiki': GsBoolConfig(
+        '图片版WIKI',
+        '开启后支持的WIKI功能将转为图片版',
+        True,
+    ),
 }

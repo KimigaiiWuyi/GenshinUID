@@ -245,6 +245,14 @@
         "need_admin": false
       },
       {
+        "name": "查询xx换xx圣遗物",
+        "desc": "更换角色圣遗物",
+        "eg": "查询白术换公子圣遗物",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "查询xx成长曲线",
         "desc": "输出当前角色成长表",
         "eg": "查询刻晴曲线",
@@ -272,6 +280,14 @@
         "name": "毕业度统计",
         "desc": "查询所有已缓存角色的毕业度",
         "eg": "毕业度统计",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "原图",
+        "desc": "开启随机图API之后可以查看原图",
+        "eg": "回复命令，原图",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -441,7 +457,7 @@
       {
         "name": "圣遗物介绍",
         "desc": "查询圣遗物",
-        "eg": "圣遗物介绍冰封",
+        "eg": "圣遗物介绍乐园",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -562,6 +578,14 @@
         "need_ck": true,
         "need_sk": true,
         "need_admin": true
+      },
+      {
+        "name": "强制推送体力提醒",
+        "desc": "强制推送全部体力信息",
+        "eg": "强制推送体力提醒",
+        "need_ck": true,
+        "need_sk": true,
+        "need_admin": true
       }
     ]
   },
@@ -657,6 +681,14 @@
         "name": "gs一键安装",
         "desc": "能看到这想必不需要这个命令",
         "eg": "gs一键安装",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "重置core配置",
+        "desc": "如果机器人只会响应你的命令",
+        "eg": "重置core配置",
         "need_ck": false,
         "need_sk": false,
         "need_admin": true

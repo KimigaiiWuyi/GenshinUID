@@ -206,6 +206,11 @@ async def draw_abyss_img(
         img_draw.text(title_xy, _name, first_color, gs_font_20, 'lm')
         img_draw.text(val_xy, _val, first_color, gs_font_26, 'lm')
 
+    # 过滤数据
+    raw_abyss_data['floors'] = [
+        i for i in raw_abyss_data['floors'] if i['index'] >= 9
+    ]
+
     # 绘制缩略信息
     for num in range(4):
         omit_bg = Image.open(TEXT_PATH / 'abyss_omit.png')

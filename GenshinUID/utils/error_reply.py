@@ -35,9 +35,11 @@ def get_error(retcode: Union[int, str]) -> str:
     elif retcode == 10104:
         return CK_HINT
     elif retcode == -512009:
-        return '已经获取过该内容~!'
+        return '[留影叙佳期]已经获取过该内容~!'
     elif retcode == -201:
         return '你的账号可能已被封禁, 请联系米游社客服...'
+    elif retcode == -501101:
+        return '当前角色冒险等阶未达到10级, 暂时无法参加此活动...'
     elif retcode == 400:
         return '[MINIGG]暂未找到此内容...'
     else:

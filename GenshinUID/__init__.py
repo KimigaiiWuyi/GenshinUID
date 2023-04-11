@@ -30,7 +30,6 @@ async def get_gs_msg(ev):
     self_id = str(ev.self_id)
     messages = ev.message
     message: List[Message] = []
-    msg_id = ''
     sp_bot_id: Optional[str] = None
     sp_user_type: Optional[
         Literal['group', 'direct', 'channel', 'sub_channel']
@@ -109,6 +108,8 @@ async def import_gacha_log_info(session: NoticeSession):
     group_id = None
     sp_user_type = None
 
+    if 'message_type' not in ev:
+        return
     if 'user_id' in ev:
         user_id = str(ev['user_id'])
     if 'group_id' in ev:

@@ -57,7 +57,7 @@ class SQLA:
                     return -1
                 if await self.bind_exists(user_id):
                     uid_list = await self.get_bind_uid_list(user_id)
-                    if uid_list and new_uid not in uid_list:
+                    if new_uid not in uid_list:
                         uid_list.append(new_uid)
                     else:
                         return -2

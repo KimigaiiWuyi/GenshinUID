@@ -137,9 +137,7 @@ async def topup_(
         item_icon_url = goods_data['goods_icon']  # 图标
         item_id = goods_data['goods_id']  # 商品内部id
         item_pay_url = order['encode_order']  # 支付链接
-        item_name_full = (
-            f"{goods_data['goods_name']}×{goods_data['goods_unit']}"
-        )
+        item_name_full = f"{goods_data['goods_name']}×{goods_data['goods_unit']}"
         # 物品名字(非月卡)
         item_name = (
             item_name_full
@@ -147,9 +145,7 @@ async def topup_(
             else goods_data["goods_name"]
         )
         # 物品名字
-        item_price: str = order["currency"] + str(
-            int(order["amount"]) / 100
-        )  # 价格
+        item_price: str = order["currency"] + str(int(order["amount"]) / 100)  # 价格
         item_order_no = order['order_no']  # 订单号
         item_create_time = order['create_time']  # 创建时间
         timestamp = strftime(
@@ -182,8 +178,8 @@ async def topup_(
             msg_text = f'【{item_name}】\nUID: {uid}\n时间: {timestamp}'
             msg_text2 = msg_text + f'\n\n{item_pay_url}\n\n{disnote}'
             msg_node = []
-            msg_node.append(Message('text', msg_text2))
-            msg_node.append(Message('image', img_data))
+            msg_node.append(MessageSegment.text(msg_text2))
+            msg_node.append(MessageSegment.image(img_data))
             await bot.send(MessageSegment.node(msg_node))
     except Exception:
         traceback.print_exc()

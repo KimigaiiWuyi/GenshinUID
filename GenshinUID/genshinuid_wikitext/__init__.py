@@ -92,8 +92,20 @@ async def send_weapon_cost(bot: Bot, ev: Event):
 
 @sv_wiki_text.on_prefix(('角色命座'))
 async def send_polar(bot: Bot, ev: Event):
-    num = int(re.findall(r'\d+', ev.text)[0])
     m = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    num_re = re.findall(r'\d+', ev.text)
+
+    if num_re:
+        num = int(num_re[0])
+    else:
+        return
+        '''
+        if gsconfig.get_config('PicWiki').data:
+            return await bot.send(await get_constellation_wiki_img(m))
+        else:
+            return await bot.send('请输入正确的命座数,例如 角色命座申鹤2!')
+        '''
+
     if num <= 0 or num > 6:
         return await bot.send('你家{}有{}命？'.format(m, num))
     im = await constellation_wiki(m, num)

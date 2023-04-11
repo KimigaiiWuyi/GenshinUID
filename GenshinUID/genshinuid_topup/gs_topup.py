@@ -9,7 +9,6 @@ import qrcode
 from gsuid_core.bot import Bot
 from qrcode import ERROR_CORRECT_L
 from gsuid_core.logger import logger
-from gsuid_core.models import Message
 from gsuid_core.segment import MessageSegment
 
 from ..utils.mys_api import mys_api
@@ -137,7 +136,9 @@ async def topup_(
         item_icon_url = goods_data['goods_icon']  # 图标
         item_id = goods_data['goods_id']  # 商品内部id
         item_pay_url = order['encode_order']  # 支付链接
-        item_name_full = f"{goods_data['goods_name']}×{goods_data['goods_unit']}"
+        item_name_full = (
+            f"{goods_data['goods_name']}×{goods_data['goods_unit']}"
+        )
         # 物品名字(非月卡)
         item_name = (
             item_name_full
@@ -145,7 +146,9 @@ async def topup_(
             else goods_data["goods_name"]
         )
         # 物品名字
-        item_price: str = order["currency"] + str(int(order["amount"]) / 100)  # 价格
+        item_price: str = order["currency"] + str(
+            int(order["amount"]) / 100
+        )  # 价格
         item_order_no = order['order_no']  # 订单号
         item_create_time = order['create_time']  # 创建时间
         timestamp = strftime(

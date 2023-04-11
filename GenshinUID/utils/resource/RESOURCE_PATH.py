@@ -24,6 +24,7 @@ CARD_PATH = RESOURCE_PATH / 'card'
 GUIDE_PATH = WIKI_PATH / 'guide'
 REF_PATH = WIKI_PATH / 'ref'
 WIKI_REL_PATH = WIKI_PATH / 'artifacts'
+CONSTELLATION_PATH = WIKI_PATH / 'constellation'
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 
 PLAYER_PATH = MAIN_PATH / 'players'
@@ -52,6 +53,7 @@ def init_dir():
         REF_PATH,
         CHAR_CARD_PATH,
         WIKI_REL_PATH,
+        CONSTELLATION_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

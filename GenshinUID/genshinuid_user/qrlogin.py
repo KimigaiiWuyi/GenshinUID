@@ -134,7 +134,7 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
         # 没有在gsuid绑定uid的情况
         if not uid_bind:
             logger.warning('game_token获取失败')
-            im = '你还没有绑定uid，请输入[绑定uid123456]绑定你的uid，再发送[扫码登录]进行绑定'
+            im = '你还没有绑定uid, 请输入[绑定uid123456]绑定你的uid, 再发送[扫码登录]进行绑定'
             return await send_msg(im)
         if isinstance(cookie_token, int):
             return await send_msg('获取CK失败...')
@@ -150,8 +150,11 @@ async def qrcode_login(bot: Bot, ev: Event, user_id: str) -> str:
             ).output(header='', sep=';')
         else:
             logger.warning('game_token获取失败')
-            im = 'game_token获取失败：被非绑定指定uid用户扫取，取消绑定，请重新发送[扫码登录]登录账号'
+            im = (
+                f'检测到扫码登录UID{uid_check}与绑定UID{uid_bind}不同, '
+                'gametoken获取失败, 请重新发送[扫码登录]进行登录！'
+            )
     else:
         logger.warning('game_token获取失败')
-        im = 'game_token获取失败：二维码已过期'
+        im = 'game_token获取失败: 二维码已过期'
     return await send_msg(im)

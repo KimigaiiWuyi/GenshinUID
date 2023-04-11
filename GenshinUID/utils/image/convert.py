@@ -59,6 +59,11 @@ async def str_lenth(r: str, size: int, limit: int = 540) -> str:
     result = ''
     temp = 0
     for i in r:
+        if i == '\n':
+            temp = 0
+            result += i
+            continue
+
         if temp >= limit:
             result += '\n' + i
             temp = 0
@@ -76,3 +81,8 @@ async def str_lenth(r: str, size: int, limit: int = 540) -> str:
         else:
             temp += size
     return result
+
+
+def get_height(content: str, size: int) -> int:
+    line_count = content.count('\n')
+    return (line_count + 1) * size

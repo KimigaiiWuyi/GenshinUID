@@ -4772,5 +4772,36 @@
 
 			}
 		}
+	},
+	"鹮穿之喙": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+80",
+				"2": "elementalMastery+100",
+				"3": "elementalMastery+120",
+				"4": "elementalMastery+140",
+				"5": "elementalMastery+160"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 6,
+			"extra": {
+
+			}
+		}
 	}
 }

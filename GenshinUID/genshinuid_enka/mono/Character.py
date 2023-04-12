@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple, Optional
 from gsuid_core.logger import logger
 
 from .Power import sp_prop
+from ..etc.beta_weapon import beta_weapons
 from ..etc.get_buff_list import get_buff_list
 from ...genshinuid_config.gs_config import gsconfig
 from ..etc.status_change import EXTRA_CHAR_LIST, STATUS_CHAR_LIST
@@ -128,10 +129,15 @@ class Character:
             if isinstance(weapon_raw_data, int) or isinstance(
                 weapon_raw_data, List
             ):
-                weapon_raw_data = await convert_ambr_to_weapon(weapon)
+                if weapon in beta_weapons:
+                    weapon_id = beta_weapons[weapon]
+                else:
+                    return {}
+                weapon_raw_data = await convert_ambr_to_weapon(weapon_id)
                 if not weapon_raw_data:
                     return {}
                 else:
+                    weapon_info['weaponStar'] = int(weapon_raw_data['rarity'])
                     weapon_level_data = weapon_raw_data
                     weapon_info['weaponLevel'] = 90
                     weapon_info['promoteLevel'] = 6

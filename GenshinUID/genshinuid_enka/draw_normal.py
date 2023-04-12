@@ -390,7 +390,7 @@ async def get_char_img(
                 char.char_bytes = await f.read()
         else:
             char_data = get(char_url, follow_redirects=True)
-            if char_data.headers['Content-Type'] == 'application/json':
+            if 'application/json' in char_data.headers['Content-Type']:
                 char_url = None
             else:
                 char.char_bytes = char_data.content

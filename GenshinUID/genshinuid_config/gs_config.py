@@ -13,7 +13,7 @@ from .models import (
     GsListStrConfig,
 )
 
-STR_CONFIG = Literal['proxy', '_pass_API', 'random_pic_API']
+STR_CONFIG = Literal['proxy', '_pass_API', 'random_pic_API', 'restart_command']
 LIST_INT_CONFIG = Literal['Ann_Ids']
 LIST_STR_CONFIG = Literal['SignTime', 'BBSTaskTime']
 DICT_CONFIG = Literal['Ann_Groups']

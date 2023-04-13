@@ -13,6 +13,34 @@
       "4": ""
     }
   },
+  "水仙之梦": {
+    "normal_effect": {
+      "2": "HydroDmgBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addAtk+25;HydroDmgBonus+15"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "花海甘露之光": {
+    "normal_effect": {
+      "2": "addHp+20",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "EQ:dmgBonus+50"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "沙上楼阁史话": {
     "normal_effect": {
       "2": "AnemoDmgBonus+15",

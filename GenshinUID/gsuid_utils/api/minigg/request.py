@@ -166,7 +166,7 @@ async def minigg_request(
     }
     if match_categories:
         params['matchCategories'] = '1'
-    async with AsyncClient(base_url=MINIGG_URL, timeout=None) as client:
+    async with AsyncClient(base_url=MINIGG_URL, timeout=1.3) as client:
         req = await client.get(endpoint, params=params)
         data = req.json()
         if 'retcode' in data:

@@ -1,6 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 
+from httpx import ConnectTimeout
 from gsuid_core.logger import logger
 
 from .Power import sp_prop
@@ -125,7 +126,10 @@ class Character:
         # 创造一个假武器
         if weapon:
             weapon_info = deepcopy(baseWeaponInfo)
-            weapon_raw_data = await get_weapon_info(weapon)
+            try:
+                weapon_raw_data = await get_weapon_info(weapon)
+            except ConnectTimeout:
+                weapon_raw_data = -1
             if isinstance(weapon_raw_data, int) or isinstance(
                 weapon_raw_data, List
             ):
@@ -259,8 +263,12 @@ class Character:
         if char_name == '旅行者':
             char_name_covert = '荧'
 
-        char_raw = await get_character_info(name=char_name_covert)
         self.char_id = await name_to_avatar_id(char_name_covert)
+        try:
+            char_raw = await get_character_info(name=char_name_covert)
+        except ConnectTimeout:
+            char_raw = -1
+
         if not self.char_id and char_name != '旅行者':
             return {}
         if isinstance(char_raw, int) or isinstance(char_raw, List):

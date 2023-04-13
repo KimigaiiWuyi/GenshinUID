@@ -2,12 +2,13 @@ import json
 import time
 from typing import List, Union, Literal, Optional
 
-from httpx import ReadTimeout
+from httpx import ReadTimeout, ConnectTimeout
 
 from ..utils.error_reply import UID_HINT
 from ..gsuid_utils.api.enka.models import EnkaData
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..gsuid_utils.api.enka.request import get_enka_info
+from ..utils.ambr_to_minigg import convert_ambr_to_weapon
 from ..gsuid_utils.api.minigg.request import get_weapon_info
 from ..utils.map.GS_MAP_PATH import (
     icon2Name,
@@ -256,7 +257,10 @@ async def enka_to_dict(
             weapon_prop_temp['statValue'] = k['statValue']
             weapon_info['weaponStats'].append(weapon_prop_temp)
         # 武器特效，须请求API
-        effect_raw = await get_weapon_info(weapon_info['weaponName'])
+        try:
+            effect_raw = await get_weapon_info(weapon_info['weaponName'])
+        except ConnectTimeout:
+            effect_raw = await convert_ambr_to_weapon(weapon_info['itemId'])
         if not isinstance(effect_raw, List) and not isinstance(
             effect_raw, int
         ):

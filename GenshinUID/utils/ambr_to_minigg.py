@@ -116,18 +116,34 @@ async def convert_ambr_to_weapon(
     raw_data = await get_ambr_weapon_data(weapon_id)
     if raw_data is None:
         return None
-    effect = list(raw_data['affix'].values())[0]
+    if raw_data['affix'] is None:
+        effect = {
+            'name': '无特效',
+            'upgrade': {
+                '0': '无特效',
+                '1': '无特效',
+                '2': '无特效',
+                '3': '无特效',
+                '4': '无特效',
+            },
+        }
+    else:
+        effect = list(raw_data['affix'].values())[0]
     effect_name = effect['name']
     effect_up = effect['upgrade']
     upgrade = raw_data['upgrade']
     baseatk = upgrade['prop'][0]['initValue']
     basesp = upgrade['prop'][-1]['initValue']
+    if 'propType' in upgrade['prop'][1]:
+        substat = PROP_MAP[upgrade['prop'][1]['propType']]
+    else:
+        substat = '无副词条'
     result = {
         'name': raw_data['name'],
         'weapontype': raw_data['type'],
         'rarity': str(raw_data['rank']),
         'baseatk': baseatk,
-        'substat': PROP_MAP[upgrade['prop'][1]['propType']],
+        'substat': substat,
         'effectname': effect_name,
         'level': 90,
         'ascension': 6,

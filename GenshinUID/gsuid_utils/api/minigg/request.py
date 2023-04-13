@@ -10,7 +10,7 @@ from enum import Enum
 from typing import Any, Dict, List, Union, Literal, Optional, cast, overload
 
 from httpx import AsyncClient
-
+import json
 from ..types import AnyDict
 from .exception import MiniggNotFoundError
 from .models import (
@@ -168,7 +168,10 @@ async def minigg_request(
         params['matchCategories'] = '1'
     async with AsyncClient(base_url=MINIGG_URL, timeout=1.3) as client:
         req = await client.get(endpoint, params=params)
-        data = req.json()
+        try:
+            data = req.json()
+        except json.decoder.JSONDecodeError:
+            return -11
         if 'retcode' in data:
             retcode: int = data['retcode']
             return retcode

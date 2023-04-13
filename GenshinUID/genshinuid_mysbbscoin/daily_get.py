@@ -10,13 +10,13 @@ from ..genshinuid_config.gs_config import gsconfig
 
 async def all_daily_mihoyo_bbs_coin():
     sqla = get_sqla('TEMP')
-    user_list = await sqla.get_all_user()
-    vaild_user_list = [_u for _u in user_list if _u.bbs_switch and _u.stoken]
+    users = await sqla.get_all_user()
+    vaild_list = [_u for _u in users if _u.bbs_switch != 'off' and _u.stoken]
     im_success = 0
     im_failed = 0
     im_failed_str = ''
     im_private = {}
-    for user in vaild_user_list:
+    for user in vaild_list:
         logger.info(f'[米游币任务]正在执行{user.uid}')
         await asyncio.sleep(5 + random.randint(1, 3))
         if user.stoken is None:

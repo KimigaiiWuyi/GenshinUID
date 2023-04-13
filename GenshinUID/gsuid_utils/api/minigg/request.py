@@ -5,12 +5,13 @@ MiniGG Enka 加速服务不在此模块内。
 '''
 from __future__ import annotations
 
+import json
 import warnings
 from enum import Enum
 from typing import Any, Dict, List, Union, Literal, Optional, cast, overload
 
 from httpx import AsyncClient
-import json
+
 from ..types import AnyDict
 from .exception import MiniggNotFoundError
 from .models import (

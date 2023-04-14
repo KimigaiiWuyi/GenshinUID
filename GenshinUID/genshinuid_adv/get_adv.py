@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from ..utils.map.name_covert import alias_to_char_name
+
 with open(
     Path(__file__).parent / 'char_adv_list.json', "r", encoding='UTF-8'
 ) as f:
@@ -48,7 +50,8 @@ async def weapon_adv(name):
     return im
 
 
-async def char_adv(name):
+async def char_adv(name: str):
+    name = await alias_to_char_name(name)
     for char, info in adv_lst.items():
         if name in char:
             im = [f'「{char}」', '-=-=-=-=-=-=-=-=-=-']

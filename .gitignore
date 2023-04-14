@@ -685,6 +685,7 @@ help.png
 review.json
 gs_data
 *.xlsx
+GenshinUID Help.xlsx
 
 ### Debug ###
 testnb2/

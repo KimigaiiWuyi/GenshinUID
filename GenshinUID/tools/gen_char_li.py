@@ -13,11 +13,17 @@ sample = {
 char_json = {}
 
 path = Path(__file__).parents[1] / 'genshinuid_adv'
+data_path = Path(__file__).parent / 'help_data'
 
-wb = load_workbook(str(path / 'Genshin All Char.xlsx'))
+wb = load_workbook(str(data_path / 'Genshin All Char.xlsx'))
 ws = wb.active
-for char_i in range(2, 336, 5):  # 角色行
+for char_i in range(2, 1700, 5):  # 角色行
     char = ws.cell(char_i, 1).value
+    if char is None:
+        for _i in range(5):
+            val = ws.cell(char_i + _i, 1).value
+            if val is not None:
+                char = val
     if not isinstance(char, str):
         continue
     char_name = char.replace('\n', '')

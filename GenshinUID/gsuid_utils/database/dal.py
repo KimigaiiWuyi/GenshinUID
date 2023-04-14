@@ -52,9 +52,12 @@ class SQLA:
     async def insert_bind_data(self, user_id: str, **data) -> int:
         async with self.async_session() as session:
             async with session.begin():
-                new_uid = data['uid'] if 'uid' in data else ''
+                new_uid: str = data['uid'] if 'uid' in data else ''
+                new_uid = new_uid.strip()
                 if len(new_uid) != 9:
                     return -1
+                elif not new_uid.isdigit():
+                    return -3
                 if await self.bind_exists(user_id):
                     uid_list = await self.get_bind_uid_list(user_id)
                     if new_uid not in uid_list:

@@ -76,6 +76,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 0: f'绑定UID{uid}成功！',
                 -1: f'UID{uid}的位数不正确！',
                 -2: f'UID{uid}已经绑定过了！',
+                -3: '你输入了错误的格式!',
             },
         )
     elif ev.command.startswith('切换'):

@@ -26,7 +26,7 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
     sqla = get_sqla(bot_id)
     # 获取背景图片各项参数
     based_w = 850
-    based_h = 850 + 155 * (len(gsconfig) - 5)
+    based_h = 850 + 155 * (len(gsconfig) - 8)
 
     CI_img = CustomizeImage('', based_w, based_h)
     img = CI_img.bg_img

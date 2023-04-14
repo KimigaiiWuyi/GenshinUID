@@ -37,7 +37,7 @@ async def send_change_api_info(bot: Bot, ev: Event):
 @sv_get_enka.on_prefix('查询')
 async def send_char_info(bot: Bot, ev: Event):
     # 获取角色名
-    msg = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
     if not msg:
         return
     await bot.logger.info('开始执行[查询角色面板]')

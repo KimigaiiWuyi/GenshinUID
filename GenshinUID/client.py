@@ -251,12 +251,13 @@ async def onebot_send(
     target_type: Optional[str],
 ):
     async def _send(content: Optional[str], image: Optional[str]):
-        result_image = f'[CQ:image,file={image}]' if image else ''
-        content = content if content else ''
+        from nonebot.adapters.onebot.v11 import MessageSegment
+        result_image = MessageSegment.image(image) if image else ''
+        content = MessageSegment.text(content) if content else ''
         result_msg = content + result_image
         if at_list and target_type == 'group':
             for at in at_list:
-                result_msg += f'[CQ:at,qq={at}]'
+                result_msg += MessageSegment.at(at)
 
         if file:
             file_name, file_content = file.split('|')

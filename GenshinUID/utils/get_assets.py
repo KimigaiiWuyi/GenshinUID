@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import Literal, Optional
 
 import aiofiles
@@ -26,7 +27,7 @@ async def _get_assets(
                 content = await res.read()
                 async with aiofiles.open(path, 'wb') as f:
                     await f.write(content)
-                return Image.open(content)
+                return Image.open(BytesIO(content))
             else:
                 return None
 

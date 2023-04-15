@@ -4,7 +4,7 @@ from base64 import b64encode
 from typing import Union, overload
 
 import aiofiles
-from PIL import Image
+from PIL import Image, ImageFont
 
 
 @overload
@@ -80,6 +80,22 @@ async def str_lenth(r: str, size: int, limit: int = 540) -> str:
             temp += round(size / 10 * 9.4)
         else:
             temp += size
+    return result
+
+
+def get_str_size(
+    r: str, font: ImageFont.FreeTypeFont, limit: int = 540
+) -> str:
+    result = ''
+    line = ''
+    for i in r:
+        line += i
+        size, _ = font.getsize(line)
+        if size >= limit:
+            result += f'{line}\n'
+            line = ''
+    else:
+        result += line
     return result
 
 

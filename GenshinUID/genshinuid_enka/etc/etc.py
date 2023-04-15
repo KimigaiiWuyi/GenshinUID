@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from PIL import Image
-
 from .MAP_PATH import ATTR_MAP, dmgMap
 
 R_PATH = Path(__file__).parents[1]
@@ -29,11 +27,6 @@ VALUE_MAP = {
     '暴击率': 3.3,
     '暴击伤害': 6.6,
 }
-
-
-def get_star_png(star: int) -> Image.Image:
-    png = Image.open(TEXT_PATH / 's-{}.png'.format(str(star)))
-    return png
 
 
 def strLenth(r: str, size: int, limit: int = 540) -> str:

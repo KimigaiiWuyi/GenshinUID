@@ -1,10 +1,10 @@
-from pathlib import Path
 from textwrap import fill
 from typing import Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
 
+from .path import TEXT_PATH
 from ..utils.error_reply import get_error
 from ..utils.image.image_tools import get_pic
 from ..gsuid_utils.api.minigg.models import Artifact
@@ -17,9 +17,6 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_26,
     gs_font_40,
 )
-
-R_PATH = Path(__file__).parents[0]
-TEXT_PATH = R_PATH / 'texture2D'
 
 img1 = Image.open(TEXT_PATH / 'wiki_artifacts_bg1.png')
 img2 = Image.open(TEXT_PATH / 'wiki_artifacts_bg2.png')

@@ -11,8 +11,12 @@ from .mono.Character import Character
 from ..genshinuid_config.gs_config import gsconfig
 from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
 from ..utils.fonts.genshin_fonts import genshin_font_origin
-from ..utils.image.image_tools import CustomizeImage, get_weapon_affix_pic
-from .etc.etc import TEXT_PATH, strLenth, get_star_png, get_artifacts_value
+from .etc.etc import TEXT_PATH, strLenth, get_artifacts_value
+from ..utils.image.image_tools import (
+    CustomizeImage,
+    get_star_png,
+    get_weapon_affix_pic,
+)
 from ..utils.resource.RESOURCE_PATH import (
     REL_PATH,
     ICON_PATH,

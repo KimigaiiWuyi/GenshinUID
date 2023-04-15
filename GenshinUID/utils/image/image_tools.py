@@ -182,6 +182,19 @@ async def get_level_pic(level: int) -> Image.Image:
     return Image.open(LEVEL_PATH / f'level_{level}.png')
 
 
+def get_star_png(star: Union[int, str]) -> Image.Image:
+    path = TEXT_PATH / 'weapon_star' / f's-{star}.png'
+    if path.exists():
+        png = Image.open(path)
+    else:
+        png = Image.open(TEXT_PATH / 'weapon_star' / 's-1.png')
+    return png
+
+
+def get_unknown_png() -> Image.Image:
+    return Image.open(TEXT_PATH / 'unknown.png')
+
+
 async def get_qq_avatar(
     qid: Optional[Union[int, str]] = None, avatar_url: Optional[str] = None
 ) -> Image.Image:
@@ -250,7 +263,10 @@ def crop_center_img(
 
 
 async def get_color_bg(
-    based_w: int, based_h: int, bg: Optional[str] = None
+    based_w: int,
+    based_h: int,
+    bg: Optional[str] = None,
+    without_mask: bool = False,
 ) -> Image.Image:
     image = ''
     if bg and gsconfig.get_config('DefaultBaseBG').data:
@@ -263,9 +279,12 @@ async def get_color_bg(
     CI_img = CustomizeImage(image, based_w, based_h)
     img = CI_img.bg_img
     color = CI_img.bg_color
-    color_mask = Image.new('RGBA', (based_w, based_h), color)
-    enka_mask = Image.open(TEXT2D_PATH / 'mask.png').resize((based_w, based_h))
-    img.paste(color_mask, (0, 0), enka_mask)
+    if not without_mask:
+        color_mask = Image.new('RGBA', (based_w, based_h), color)
+        enka_mask = Image.open(TEXT2D_PATH / 'mask.png').resize(
+            (based_w, based_h)
+        )
+        img.paste(color_mask, (0, 0), enka_mask)
     return img
 
 

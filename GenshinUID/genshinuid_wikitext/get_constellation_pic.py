@@ -1,8 +1,8 @@
-from pathlib import Path
 from typing import Dict, Tuple, Union
 
 from PIL import Image, ImageDraw
 
+from .path import TEXT_PATH
 from ..utils.colors import first_color
 from ..utils.error_reply import get_error
 from ..utils.resource.download_url import download
@@ -22,8 +22,6 @@ from ..gsuid_utils.api.minigg.models import (
     CharacterConstellations,
 )
 
-R_PATH = Path(__file__).parents[0]
-TEXT_PATH = R_PATH / 'texture2D'
 COLOR_MAP = {
     'Anemo': (0, 145, 137),
     'Cryo': (4, 126, 152),

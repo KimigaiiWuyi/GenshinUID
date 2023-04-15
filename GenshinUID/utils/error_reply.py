@@ -42,5 +42,7 @@ def get_error(retcode: Union[int, str]) -> str:
         return '当前角色冒险等阶未达到10级, 暂时无法参加此活动...'
     elif retcode == 400:
         return '[MINIGG]暂未找到此内容...'
+    elif retcode == -400:
+        return '请输入更详细的名称...'
     else:
         return f'API报错, 错误码为{retcode}!'

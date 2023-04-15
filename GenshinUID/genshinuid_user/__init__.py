@@ -65,7 +65,9 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     await bot.logger.info('[绑定/解绑]UserID: {}'.format(qid))
 
     sqla = get_sqla(ev.bot_id)
-    uid = ev.text
+    uid = ev.text.strip()
+    if not uid.isdigit():
+        return '你输入了错误的格式!'
 
     if ev.command.startswith('绑定'):
         data = await sqla.insert_bind_data(qid, uid=uid)

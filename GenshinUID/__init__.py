@@ -11,11 +11,16 @@ from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.internal.adapter import Event
-from nonebot import on_notice, get_driver, on_message, on_fullmatch
+from websockets.exceptions import ConnectionClosed
+from nonebot import require, on_notice, on_message, on_fullmatch
 
-from .client import GsClient
-from .auto_install import start, install
-from .models import Message, MessageReceive
+require('nonebot_plugin_apscheduler')
+
+from nonebot_plugin_apscheduler import scheduler  # noqa:E402
+
+from .client import GsClient, driver  # noqa:E402
+from .auto_install import start, install  # noqa:E402
+from .models import Message, MessageReceive  # noqa:E402
 
 get_message = on_message(priority=999)
 get_notice = on_notice(priority=999)
@@ -24,15 +29,24 @@ start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
 connect_core = on_fullmatch(
     ('连接core', '链接core'), permission=SUPERUSER, block=True
 )
-driver = get_driver()
-gsclient: Optional[GsClient] = None
 
+gsclient: Optional[GsClient] = None
 command_start = driver.config.command_start
+
+if hasattr(driver.config, 'gsuid_core_repeat'):
+    is_repeat = True
+else:
+    is_repeat = False
 
 
 @get_notice.handle()
 async def get_notice_message(bot: Bot, ev: Event):
-    if gsclient is None or not gsclient.is_alive:
+    if gsclient is None:
+        return await connect()
+
+    try:
+        await gsclient.ws.ping()
+    except ConnectionClosed:
         return await connect()
 
     raw_data = ev.dict()
@@ -377,9 +391,22 @@ async def connect():
     global gsclient
     try:
         gsclient = await GsClient().async_connect()
-        await gsclient.start()
     except ConnectionRefusedError:
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
+
+
+@scheduler.scheduled_job('cron', second='*/10')
+async def repeat_connect():
+    if is_repeat:
+        global gsclient
+        if gsclient is None:
+            await connect()
+        else:
+            try:
+                await gsclient.ws.ensure_open()
+            except ConnectionClosed:
+                return await connect()
+        return
 
 
 def convert_message(_msg: Any, message: List[Message], index: int):

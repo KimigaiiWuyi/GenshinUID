@@ -183,11 +183,11 @@ async def get_level_pic(level: int) -> Image.Image:
 
 
 def get_star_png(star: Union[int, str]) -> Image.Image:
-    path = TEXT_PATH / 'weapon_star' / f's-{star}.png'
+    path = TEXT2D_PATH / 'weapon_star' / f's-{star}.png'
     if path.exists():
         png = Image.open(path)
     else:
-        png = Image.open(TEXT_PATH / 'weapon_star' / 's-1.png')
+        png = Image.open(TEXT2D_PATH / 'weapon_star' / 's-1.png')
     return png
 
 

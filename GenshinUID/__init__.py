@@ -1,6 +1,7 @@
 from typing import List, Literal, Optional
 
 from hoshino import priv
+from websockets.exceptions import ConnectionClosed
 from hoshino.typing import CQEvent, HoshinoBot, NoticeSession
 
 from .client import GsClient
@@ -15,14 +16,19 @@ async def connect():
     global gsclient
     try:
         gsclient = await GsClient().async_connect()
-        await gsclient.start()
     except ConnectionRefusedError:
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
 
 
 async def get_gs_msg(ev):
-    if gsclient is None or not gsclient.is_alive:
+    if gsclient is None:
         return await connect()
+
+    try:
+        await gsclient.ws.ping()
+    except ConnectionClosed:
+        return await connect()
+
     # 通用字段获取
     user_id = str(ev.user_id)
     msg_id = str(ev.message_id)

@@ -17,6 +17,8 @@ bots: Dict[str, str] = {}
 
 
 class GsClient:
+    _instance = None
+
     @classmethod
     async def async_connect(
         cls, IP: str = 'localhost', PORT: Union[str, int] = '8765'
@@ -30,7 +32,15 @@ class GsClient:
         )
         logger.info(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
+        cls.pending = []
+        await self.start()
         return self
+
+    def __new__(cls, *args, **kwargs):
+        # 判断sv是否已经被初始化
+        if cls._instance is None:
+            cls._instance = super(GsClient, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
 
     async def recv_msg(self):
         try:
@@ -100,8 +110,17 @@ class GsClient:
         except RuntimeError:
             pass
         except ConnectionClosedError:
+            for task in self.pending:
+                task.cancel()
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
             self.is_alive = False
+            for _ in range(30):
+                await asyncio.sleep(5)
+                try:
+                    await self.async_connect()
+                    break
+                except:  # noqa
+                    logger.debug('自动连接core服务器失败...五秒后重新连接...')
 
     async def _input(self, msg: MessageReceive):
         await self.msg_list.put(msg)
@@ -115,12 +134,10 @@ class GsClient:
     async def start(self):
         recv_task = asyncio.create_task(self.recv_msg())
         send_task = asyncio.create_task(self.send_msg())
-        _, pending = await asyncio.wait(
+        _, self.pending = await asyncio.wait(
             [recv_task, send_task],
             return_when=asyncio.FIRST_COMPLETED,
         )
-        for task in pending:
-            task.cancel()
 
 
 def to_json(msg: str, name: str, uin: int):

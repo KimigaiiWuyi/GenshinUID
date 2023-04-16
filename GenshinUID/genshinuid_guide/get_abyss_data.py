@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Union
 
+import aiofiles
 from gsuid_core.logger import logger
 
 from .abyss_history import history_data
@@ -10,10 +11,10 @@ from ..gsuid_utils.api.hhw.request import (
     get_abyss_review_raw,
 )
 
-REVIEW_PATH = Path(__file__).parent / "review.json"
+REVIEW_PATH = Path(__file__).parent / 'review.json'
 
 
-async def generate_data():
+async def _generate_data():
     raw_data = await get_abyss_review_raw()
     result = {}
     for version in history_data:
@@ -28,6 +29,16 @@ async def generate_data():
         json.dump(result, file, ensure_ascii=False)
 
     logger.info('[深渊预览] 数据已刷新！')
+
+
+async def generate_data():
+    if REVIEW_PATH.exists():
+        async with aiofiles.open(REVIEW_PATH, 'r', encoding='UTF-8') as file:
+            data: Dict = json.loads(await file.read())
+        if list(data.keys())[0] != list(history_data.keys())[0]:
+            await _generate_data()
+    else:
+        await _generate_data()
 
 
 async def get_review(version: Union[str, float]) -> Union[List, str]:

@@ -26,6 +26,10 @@ REF_PATH = WIKI_PATH / 'ref'
 WIKI_REL_PATH = WIKI_PATH / 'artifacts'
 CONSTELLATION_PATH = WIKI_PATH / 'constellation'
 WIKI_WEAPON_PATH = WIKI_PATH / 'weapon'
+WIKI_FOOD_PATH = WIKI_PATH / 'food'
+WIKI_TALENT_PATH = WIKI_PATH / 'talent'
+WIKI_ENEMY_PATH = WIKI_PATH / 'enemy'
+WIKI_CHAR_PATH = WIKI_PATH / 'char'
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 
 PLAYER_PATH = MAIN_PATH / 'players'
@@ -56,6 +60,10 @@ def init_dir():
         WIKI_REL_PATH,
         CONSTELLATION_PATH,
         WIKI_WEAPON_PATH,
+        WIKI_FOOD_PATH,
+        WIKI_TALENT_PATH,
+        WIKI_ENEMY_PATH,
+        WIKI_CHAR_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

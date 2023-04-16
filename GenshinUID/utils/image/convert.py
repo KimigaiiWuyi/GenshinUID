@@ -89,6 +89,11 @@ def get_str_size(
     result = ''
     line = ''
     for i in r:
+        if i == '\n':
+            result += f'{line}\n'
+            line = ''
+            continue
+
         line += i
         size, _ = font.getsize(line)
         if size >= limit:

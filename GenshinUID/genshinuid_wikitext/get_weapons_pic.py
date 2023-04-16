@@ -57,6 +57,7 @@ async def get_weapons_wiki_img(name: str) -> Union[str, bytes]:
 
 
 async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
+    spec_rank = ['孢囊晶尘', '荧光孢粉', '蕈兽孢子']
     gray_color = (214, 214, 214)
     img_test = Image.new('RGBA', (1, 1))
     img_test_draw = ImageDraw.Draw(img_test)
@@ -153,8 +154,17 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
                         _i = name_temp[k].index(j['name'])
                         temp[k][_i] += j['count']
                     break
+                elif j['name'] in spec_rank:
+                    if spec_rank[0] in temp:
+                        if j['name'] not in name_temp[spec_rank[0]]:
+                            name_temp[spec_rank[0]].append(j['name'])
+                            temp[spec_rank[0]].append(j['count'])
+                        else:
+                            _i = name_temp[spec_rank[0]].index(j['name'])
+                            temp[spec_rank[0]][_i] += j['count']
+                        break
             else:
-                name_temp[j['name']] = [j['count']]
+                name_temp[j['name']] = [j['name']]
                 temp[j['name']] = [j['count']]
 
     if data['rarity'] == '5':

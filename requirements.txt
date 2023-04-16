@@ -5,7 +5,7 @@ aiosqlite==0.18.0 ; python_full_version >= "3.8.1" and python_full_version < "4.
 anyio==3.6.2 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 apscheduler==3.10.1 ; python_full_version >= "3.8.1" and python_version < "4.0"
 async-timeout==4.0.2 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
-attrs==22.2.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+attrs==23.1.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 backports-zoneinfo==0.2.1 ; python_full_version >= "3.8.1" and python_version < "3.9"
 bcrypt==4.0.1 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 beautifulsoup4==4.12.2 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"

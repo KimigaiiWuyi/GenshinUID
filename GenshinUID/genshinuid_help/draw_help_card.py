@@ -75,11 +75,11 @@ async def draw_help_img():
                 ),
             )
         module_temp += 100 + 110 * ((len(help_data[module]['data']) + 2) // 3)
-    img = Image.alpha_composite(img, alpha_img)
+    img = Image.alpha_composite(img, alpha_img).convert('RGB')
 
     img.save(
-        Path(__file__).parent / 'help.png',
-        format='PNG',
+        Path(__file__).parent / 'help.jpg',
+        format='JPEG',
         quality=80,
         subsampling=0,
     )

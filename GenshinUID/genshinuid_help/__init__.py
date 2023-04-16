@@ -6,7 +6,7 @@ from gsuid_core.models import Event
 
 from ..utils.image.convert import convert_img
 
-HELP_IMG = Path(__file__).parent / 'help.png'
+HELP_IMG = Path(__file__).parent / 'help.jpg'
 
 sv_gsuid_help = SV('原神帮助')
 

@@ -36,13 +36,18 @@ else:
 
 
 def _get_bot(bot_id: str) -> Bot:
-    if 'onebot' in bot_id:
-        bot_id = 'onebot'
+    if 'v12' in bot_id:
+        bot_id = 'onebotv12'
+    # bots: Dict[str, str] 以适配器名称为键、bot_self_id为值的字典
     if bot_id not in bots:
         for _bot_id in bots.keys():
             if bot_id in _bot_id:
                 bot_id = _bot_id
                 break
+        else:
+            logger.warning('未获取到正确的Bot实例,将使用默认Bot...')
+            logger.warning(f'当前bot_id: {bot_id}, bots: {bots}')
+            return get_bot()
     bot_real_id = bots[bot_id]
     bot = get_bot(bot_real_id)
     return bot

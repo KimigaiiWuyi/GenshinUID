@@ -1,7 +1,6 @@
 from typing import List, Literal, Optional
 
 from hoshino import priv
-from websockets.exceptions import ConnectionClosed
 from hoshino.typing import CQEvent, HoshinoBot, NoticeSession
 
 from .client import GsClient
@@ -21,13 +20,8 @@ async def connect():
 
 
 async def get_gs_msg(ev):
-    if gsclient is None:
-        return await connect()
-
-    try:
-        await gsclient.ws.ping()
-    except ConnectionClosed:
-        return await connect()
+    if gsclient is None or not gsclient.is_alive:
+        await connect()
 
     # 通用字段获取
     user_id = str(ev.user_id)

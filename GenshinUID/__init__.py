@@ -107,7 +107,12 @@ async def get_notice_message(bot: Bot, ev: Event):
 
 @get_message.handle()
 async def get_all_message(bot: Bot, ev: Event):
-    if gsclient is None or not gsclient.is_alive:
+    if gsclient is None:
+        return await connect()
+
+    try:
+        await gsclient.ws.ping()
+    except ConnectionClosed:
         return await connect()
 
     # 通用字段获取
@@ -150,6 +155,10 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 QQ Guild 事件...')
             return
+
+        if ev.message_reference:
+            reply_msg_id = ev.message_reference.message_id
+            message.append(Message('reply', reply_msg_id))
     # telegram
     elif bot.adapter.get_name() == 'Telegram':
         from nonebot.adapters.telegram.event import (
@@ -391,6 +400,7 @@ async def connect():
     global gsclient
     try:
         gsclient = await GsClient().async_connect()
+        await gsclient.start()
     except ConnectionRefusedError:
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
 

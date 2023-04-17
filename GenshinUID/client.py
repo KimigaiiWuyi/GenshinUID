@@ -68,7 +68,6 @@ class GsClient:
         logger.success(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
         cls.pending = []
-        await self.start()
         return self
 
     def __new__(cls, *args, **kwargs):

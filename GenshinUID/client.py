@@ -33,7 +33,6 @@ class GsClient:
         logger.info(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
         cls.pending = []
-        await self.start()
         return self
 
     def __new__(cls, *args, **kwargs):
@@ -118,6 +117,7 @@ class GsClient:
                 await asyncio.sleep(5)
                 try:
                     await self.async_connect()
+                    await self.start()
                     break
                 except:  # noqa
                     logger.debug('自动连接core服务器失败...五秒后重新连接...')

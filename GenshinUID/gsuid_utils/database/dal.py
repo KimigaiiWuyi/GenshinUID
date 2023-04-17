@@ -184,7 +184,11 @@ class SQLA:
                 return True
 
     async def insert_user_data(
-        self, user_id: str, uid: str, cookie: str, stoken: Optional[str] = None
+        self,
+        user_id: str,
+        uid: str,
+        cookie: str,
+        stoken: Optional[str] = None,
     ) -> bool:
         async with self.async_session() as session:
             async with session.begin():
@@ -192,7 +196,12 @@ class SQLA:
                     sql = (
                         update(GsUser)
                         .where(GsUser.uid == uid)
-                        .values(cookie=cookie, status=None, stoken=stoken)
+                        .values(
+                            cookie=cookie,
+                            status=None,
+                            stoken=stoken,
+                            bot_id=self.bot_id,
+                        )
                     )
                     await session.execute(sql)
                 else:

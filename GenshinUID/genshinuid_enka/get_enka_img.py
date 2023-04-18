@@ -2,6 +2,7 @@ import re
 import json
 from typing import Dict, List, Tuple, Union, Optional
 
+from PIL import Image
 from gsuid_core.logger import logger
 
 from .to_card import draw_enka_card
@@ -38,9 +39,22 @@ WEAPON_TO_INT = {
 }
 
 
+async def get_full_char(raw_mes: str, uid: str) -> Union[str, Dict]:
+    # 获取角色名
+    msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
+    _args = await get_char_args(msg, uid)
+    if isinstance(_args, Tuple):
+        char = await get_char(*_args)
+        if isinstance(char, str):
+            return char
+        return char.card_prop
+    else:
+        return _args
+
+
 async def draw_enka_img(
     raw_mes: str, uid: str, url: Optional[str]
-) -> Union[str, Tuple[Union[bytes, str], Optional[bytes]]]:
+) -> Union[str, Tuple[Union[bytes, Image.Image, str], Optional[bytes]]]:
     # 获取角色名
     msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
     # msg = raw_mes.strip()

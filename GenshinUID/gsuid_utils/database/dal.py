@@ -201,6 +201,7 @@ class SQLA:
                             status=None,
                             stoken=stoken,
                             bot_id=self.bot_id,
+                            user_id=user_id
                         )
                     )
                     await session.execute(sql)

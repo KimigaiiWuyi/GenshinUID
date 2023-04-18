@@ -2066,14 +2066,14 @@ test = ["aiosqlite", "fastapi", "httpx", "pytest (>=6.2.4,<7.0.0)", "pytest-asyn
 
 [[package]]
 name = "sqlalchemy2-stubs"
-version = "0.0.2a33"
+version = "0.0.2a34"
 description = "Typing Stubs for SQLAlchemy 1.4"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "sqlalchemy2-stubs-0.0.2a33.tar.gz", hash = "sha256:5a35a096964dfd985651662b7f175fe1ddcbf5ed4f2d0203e637cec38bed64b4"},
-    {file = "sqlalchemy2_stubs-0.0.2a33-py3-none-any.whl", hash = "sha256:9809e7d8ea72cd92ac35aca4b43f588ae24b20376c55a0ef0112a08a6b537180"},
+    {file = "sqlalchemy2-stubs-0.0.2a34.tar.gz", hash = "sha256:2432137ab2fde1a608df4544f6712427b0b7ff25990cfbbc5a9d1db6c8c6f489"},
+    {file = "sqlalchemy2_stubs-0.0.2a34-py3-none-any.whl", hash = "sha256:a313220ac793404349899faf1272e821a62dbe1d3a029bd444faa8d3e966cd07"},
 ]
 
 [package.dependencies]

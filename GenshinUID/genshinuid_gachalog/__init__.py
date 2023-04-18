@@ -21,7 +21,7 @@ async def send_import_gacha_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    if ev.file:
+    if ev.file and ev.file_type:
         await bot.send('正在尝试导入抽卡记录中，请耐心等待……')
         return await bot.send(
             await import_gachalogs(ev.file, ev.file_type, uid)

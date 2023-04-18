@@ -52,6 +52,12 @@ NORMAL_LIST = [
     '天空之刃',
 ]
 
+UP_LIST = {
+    '刻晴': [(2022, 8, 24, 11, 0, 0), (2022, 9, 9, 17, 59, 59)],
+    '提纳里': [(2022, 8, 24, 11, 0, 0), (2022, 9, 9, 17, 59, 59)],
+    '迪希雅': [(2023, 3, 1, 11, 0, 0), (2023, 3, 21, 17, 59, 59)],
+}
+
 
 async def _draw_card(
     img: Image.Image,
@@ -109,6 +115,21 @@ async def get_level_from_list(ast: int, lst: List) -> int:
     else:
         level = 1
     return level
+
+
+def check_up(name: str, _time: str) -> bool:
+    for char in UP_LIST:
+        if char == name:
+            time = UP_LIST[char]
+            s_time = datetime.datetime(*time[0])
+            e_time = datetime.datetime(*time[1])
+            gacha_time = datetime.datetime.strptime(_time, '%Y-%m-%d %H:%M:%S')
+            if gacha_time < s_time or gacha_time > e_time:
+                return False
+            else:
+                return True
+    else:
+        return False
 
 
 async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
@@ -186,28 +207,8 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
                 # 判断是否是UP
                 if data['name'] in NORMAL_LIST:
                     data['is_up'] = False
-                # 判断刻晴时间
-                elif data['name'] == '刻晴':
-                    s_time = datetime.datetime(2021, 2, 17, 18, 0, 0)
-                    e_time = datetime.datetime(2021, 3, 2, 15, 59, 59)
-                    gacha_time = datetime.datetime.strptime(
-                        data['time'], '%Y-%m-%d %H:%M:%S'
-                    )
-                    if gacha_time < s_time or gacha_time > e_time:
-                        data['is_up'] = False
-                    else:
-                        data['is_up'] = True
-                # 判断提哪里时间
-                elif data['name'] == '提纳里':
-                    s_time = datetime.datetime(2022, 8, 24, 11, 0, 0)
-                    e_time = datetime.datetime(2022, 9, 9, 17, 59, 59)
-                    gacha_time = datetime.datetime.strptime(
-                        data['time'], '%Y-%m-%d %H:%M:%S'
-                    )
-                    if gacha_time < s_time or gacha_time > e_time:
-                        data['is_up'] = False
-                    else:
-                        data['is_up'] = True
+                elif data['name'] in UP_LIST:
+                    data['is_up'] = check_up(data['name'], data['time'])
                 else:
                     data['is_up'] = True
 

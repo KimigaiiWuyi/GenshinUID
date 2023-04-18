@@ -39,6 +39,7 @@ def _get_bot(bot_id: str) -> Bot:
     if 'v12' in bot_id:
         bot_id = 'onebotv12'
     # bots: Dict[str, str] 以适配器名称为键、bot_self_id为值的字典
+    _refresh_bots()
     if bot_id not in bots:
         for _bot_id in bots.keys():
             if bot_id in _bot_id:
@@ -51,6 +52,15 @@ def _get_bot(bot_id: str) -> Bot:
     bot_real_id = bots[bot_id]
     bot = get_bot(bot_real_id)
     return bot
+
+
+def _refresh_bots():
+    global bots
+    _bots = get_bots()
+    for bot_real_id in _bots:
+        bot = _bots[bot_real_id]
+        bot_id = bot.type.lower().replace(' ', '')
+        bots[bot_id] = bot_real_id
 
 
 class GsClient:
@@ -78,13 +88,8 @@ class GsClient:
 
     async def recv_msg(self):
         try:
-            global bots
             await asyncio.sleep(5)
-            _bots = get_bots()
-            for bot_real_id in _bots:
-                bot = _bots[bot_real_id]
-                bot_id = bot.type.lower().replace(' ', '')
-                bots[bot_id] = bot_real_id
+            _refresh_bots()
             async for message in self.ws:
                 try:
                     _bots = get_bots()

@@ -619,14 +619,14 @@ test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==23.1.0)", "coverage[toml] (>=6
 
 [[package]]
 name = "fastapi-amis-admin"
-version = "0.5.4"
+version = "0.5.5"
 description = "FastAPI-Amis-Admin is a high-performance, efficient and easily extensible FastAPI admin framework. Inspired by Django-admin, and has as many powerful functions as Django-admin. "
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "fastapi_amis_admin-0.5.4-py3-none-any.whl", hash = "sha256:1cacef8681c35dbaa12a9ee7136161eca57b3f449cba18a885410ede00ced9d7"},
-    {file = "fastapi_amis_admin-0.5.4.tar.gz", hash = "sha256:0d56c53a8766672b54de0e779b02c321bdd6fd09c754a1a99212bf5da24fc04f"},
+    {file = "fastapi_amis_admin-0.5.5-py3-none-any.whl", hash = "sha256:8faeece0962a7db0f807e68c09fa45ed75e79ba55c9990e734de486ee6bbf4c1"},
+    {file = "fastapi_amis_admin-0.5.5.tar.gz", hash = "sha256:b3c57f42fad800906cb39e0d1ea67d597747c09875ae74f20fda1d516e8b2580"},
 ]
 
 [package.dependencies]
@@ -639,7 +639,7 @@ sqlmodel = ">=0.0.7"
 [package.extras]
 all = ["fastapi-amis-admin[dev]"]
 cli = ["fastapi-amis-admin-cli (>=0.1.0,<0.2.0)"]
-dev = ["fastapi-amis-admin[test]", "pre-commit (>=2.20.0)"]
+dev = ["fastapi-amis-admin[test]", "pre-commit (>=2.20.0)", "ruff (>=0.0.261)"]
 standard = ["fastapi-amis-admin-cli (>=0.1.0,<0.2.0)", "uvicorn[standard] (>=0.19.0,<1.0)"]
 test = ["aiosqlite (>=0.15.0)", "fastapi-amis-admin[standard]", "httpx (>=0.23.0,<1.0)", "jinja2 (>=2.11.2,<4.0.0)", "pytest (>=6.2.4,<7.0.0)", "pytest-asyncio (>=0.17)", "requests (>=2.28.1)", "ujson (>=4.0.1)"]
 

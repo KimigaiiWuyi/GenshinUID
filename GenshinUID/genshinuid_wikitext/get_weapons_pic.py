@@ -214,7 +214,7 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
     img.save(
         WIKI_WEAPON_PATH / '{}.jpg'.format(data['name']),
         format='JPEG',
-        quality=100,
+        quality=95,
         subsampling=0,
     )
     return await convert_img(img)

@@ -19,6 +19,10 @@ INT_TO_TYPE = {
 async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
     if type == 'url':
         history_data: dict = json.loads(get(history_url).text)
+    elif type == 'json':
+        history_data: dict = json.loads(history_url)
+        if history_data.get('code') == 300:
+            return "[提瓦特小助手]抽卡记录不存在"
     else:
         data_bytes = base64.b64decode(history_url)
         try:

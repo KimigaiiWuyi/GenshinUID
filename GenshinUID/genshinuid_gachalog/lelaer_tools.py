@@ -1,6 +1,7 @@
 import time
 from urllib.parse import quote
 
+import aiofiles
 from httpx import post
 from gsuid_core.logger import logger
 
@@ -50,8 +51,8 @@ async def export_gachalog_to_lelaer(uid: str):
         file_path = export['url']
     else:
         return '导出抽卡记录失败...'
-    with open(file_path, 'r', encoding='utf-8') as f:
-        file_data = {'upload': f.read()}
+    async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
+        file_data = {'upload': await f.read()}
         data = {'gachaurl': gachalog_url, 'importType': 'uigf'}
         history_data = post(
             'https://www.lelaer.com/uigf.php',

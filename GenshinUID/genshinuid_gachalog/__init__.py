@@ -21,7 +21,7 @@ sv_export_gacha_log = SV('导出抽卡记录')
 sv_import_gacha_log = SV('导入抽卡记录', area='DIRECT')
 sv_import_lelaer_gachalog = SV('从小助手导入抽卡记录')
 sv_export_lelaer_gachalog = SV('导出抽卡记录到小助手')
-sv_export_gachalogurl = SV('导出抽卡记录链接')
+sv_export_gachalogurl = SV('导出抽卡记录链接', area='DIRECT')
 
 
 @sv_import_gacha_log.on_file('json')

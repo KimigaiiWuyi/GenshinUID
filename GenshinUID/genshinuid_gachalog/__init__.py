@@ -102,7 +102,7 @@ async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
 
 
 @sv_export_gachalogurl.on_fullmatch(('导出抽卡记录链接'))
-async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
+async def export_gachalogurl(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[导出抽卡记录链接]')
     sqla = get_sqla(ev.bot_id)
     uid = await sqla.get_bind_uid(ev.user_id)

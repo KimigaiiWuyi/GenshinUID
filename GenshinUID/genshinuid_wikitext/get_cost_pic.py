@@ -16,18 +16,18 @@ from ..gsuid_utils.api.minigg.request import (
     get_talent_info,
     get_character_info,
 )
-from ..utils.image.image_tools import (
-    get_star_png,
-    get_simple_bg,
-    get_unknown_png,
-    draw_pic_with_ring,
-)
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_26,
     gs_font_30,
     gs_font_36,
     gs_font_44,
+)
+from ..utils.image.image_tools import (
+    get_star_png,
+    get_simple_bg,
+    get_unknown_png,
+    draw_pic_with_ring,
 )
 
 
@@ -95,15 +95,6 @@ async def draw_single_cost(title: str, data: Dict) -> Tuple[Image.Image, str]:
         tent_y = 23
         img.paste(cost_pic, (67 + tent_x + t, 61 + tent_y + y), cost_pic)
         val = str(data[cost_name])
-        '''
-        img_draw.text(
-            (114 + tent_x + t, 45 + tent_y + y),
-            cost_pos,
-            white_color,
-            gs_font_20,
-            'mm',
-        )
-        '''
         img_draw.text(
             (114 + tent_x + t, 175 + tent_y + y),
             val,

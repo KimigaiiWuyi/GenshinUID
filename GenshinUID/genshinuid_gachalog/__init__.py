@@ -101,7 +101,7 @@ async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_export_gachalogurl.on_fullmatch(('导出抽卡记录链接'))
+@sv_export_gachalogurl.on_fullmatch(('导出抽卡记录链接', '导出抽卡记录连接'))
 async def export_gachalogurl(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[导出抽卡记录链接]')
     sqla = get_sqla(ev.bot_id)
@@ -109,4 +109,4 @@ async def export_gachalogurl(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     im = await get_gachaurl(uid)
-    await bot.send(im)
+    await bot.send(MessageSegment.node([MessageSegment.text(im)]))

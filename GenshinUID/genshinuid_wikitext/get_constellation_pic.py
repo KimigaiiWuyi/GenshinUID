@@ -170,7 +170,7 @@ async def draw_constellation_wiki_img(
     img = await get_simple_bg(600, 280 + y, bg)
     img_draw = ImageDraw.Draw(img)
 
-    desc = await str_lenth(char_data['description'], 18, 341)
+    desc = await str_lenth(char_data['description'], 18, 350)
 
     avatar_id = await name_to_avatar_id(data['name'])
     char_img = Image.open(CHAR_PATH / f'{avatar_id}.png')
@@ -205,7 +205,7 @@ async def draw_constellation_wiki_img(
     img.save(
         CONSTELLATION_PATH / '{}.jpg'.format(data['name']),
         format='JPEG',
-        quality=95,
+        quality=96,
         subsampling=0,
     )
     return await convert_img(img)

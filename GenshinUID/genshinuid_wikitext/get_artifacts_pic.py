@@ -170,7 +170,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
     result_img.save(
         WIKI_REL_PATH / '{}.jpg'.format(data['name']),
         format='JPEG',
-        quality=95,
+        quality=96,
         subsampling=0,
     )
     return await convert_img(result_img)

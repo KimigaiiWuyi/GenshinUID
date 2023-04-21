@@ -6,6 +6,7 @@ from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 
 from .get_foods_pic import get_foods_wiki_img
+from .get_cost_pic import get_char_cost_wiki_img
 from .get_weapons_pic import get_weapons_wiki_img
 from ..genshinuid_config.gs_config import gsconfig
 from .get_artifacts_pic import get_artifacts_wiki_img
@@ -97,7 +98,10 @@ async def send_char(bot: Bot, ev: Event):
 @sv_wiki_text.on_prefix(('角色材料'))
 async def send_char_cost(bot: Bot, ev: Event):
     name = await alias_to_char_name(ev.text)
-    im = await char_costs_wiki(name)
+    if gsconfig.get_config('PicWiki').data:
+        im = await get_char_cost_wiki_img(name)
+    else:
+        im = await char_costs_wiki(name)
     await bot.send(im)
 
 

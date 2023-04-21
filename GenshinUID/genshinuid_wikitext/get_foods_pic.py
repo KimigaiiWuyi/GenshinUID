@@ -123,7 +123,7 @@ async def draw_foods_wiki_img(data: Food):
     img.save(
         WIKI_FOOD_PATH / '{}.jpg'.format(data['name']),
         format='JPEG',
-        quality=95,
+        quality=96,
         subsampling=0,
     )
     return await convert_img(img)

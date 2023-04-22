@@ -668,11 +668,11 @@ async def onebot_v12_send(
             await send_file_message(params, "image", file_id)
         elif file:
             file_name, file_content = file.split('|')
-            file_content = base64.b64decode(file)
+            file_data = base64.b64decode(file_content)
             up_data = await bot.call_api(
                 'upload_file',
                 type="data",
-                data=file_content,
+                data=file_data,
                 name=f"{file_name}",
             )
             file_id = up_data['file_id']

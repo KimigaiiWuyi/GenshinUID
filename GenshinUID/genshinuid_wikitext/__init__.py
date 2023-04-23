@@ -107,7 +107,10 @@ async def send_char_cost(bot: Bot, ev: Event):
 
 @sv_wiki_text.on_prefix(('武器材料'))
 async def send_weapon_cost(bot: Bot, ev: Event):
-    im = await weapon_costs_wiki(ev.text)
+    if gsconfig.get_config('PicWiki').data:
+        im = await get_weapons_wiki_img(ev.text)
+    else:
+        im = await weapon_costs_wiki(ev.text)
     await bot.send(im)
 
 

@@ -32,7 +32,7 @@ connect_core = on_fullmatch(
 
 gsclient: Optional[GsClient] = None
 command_start = driver.config.command_start
-command_start.remove('')
+command_start.discard('')
 
 if hasattr(driver.config, 'gsuid_core_repeat'):
     is_repeat = True

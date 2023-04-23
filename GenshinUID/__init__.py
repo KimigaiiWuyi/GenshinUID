@@ -32,6 +32,7 @@ connect_core = on_fullmatch(
 
 gsclient: Optional[GsClient] = None
 command_start = driver.config.command_start
+command_start.discard('')
 
 if hasattr(driver.config, 'gsuid_core_repeat'):
     is_repeat = True
@@ -424,10 +425,12 @@ def convert_message(_msg: Any, message: List[Message], index: int):
         data: str = (
             _msg.data['text'] if 'text' in _msg.data else _msg.data['content']
         )
+
         if index == 0:
-            if data.startswith(tuple(command_start)):
-                for word in command_start:
-                    data = data.replace(word, '', 1)
+            for word in command_start:
+                if data.startswith(word):
+                    data = data[len(word) :]  # noqa:E203
+                    break
         message.append(Message('text', data))
     elif _msg.type == 'image':
         file_id = _msg.data.get('file_id')
@@ -455,7 +458,6 @@ async def convert_file(
     content: Union[Path, str, bytes], file_name: str
 ) -> Message:
     if isinstance(content, Path):
-        print(content)
         async with aiofiles.open(str(content), 'rb') as fp:
             file = await fp.read()
     elif isinstance(content, bytes):

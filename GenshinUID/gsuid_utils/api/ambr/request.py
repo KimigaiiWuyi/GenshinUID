@@ -13,14 +13,22 @@ from .models import (
     AmbrBook,
     AmbrEvent,
     AmbrWeapon,
+    AmbrGCGList,
+    AmbrMonster,
     AmbrCharacter,
+    AmbrGCGDetail,
     AmbrBookDetail,
+    AmbrMonsterList,
 )
 from .api import (
     AMBR_BOOK_URL,
     AMBR_CHAR_URL,
     AMBR_EVENT_URL,
+    AMBR_GCG_DETAIL,
     AMBR_WEAPON_URL,
+    AMBR_MONSTER_URL,
+    AMBR_GCG_LIST_URL,
+    AMBR_MONSTER_LIST,
     AMBR_BOOK_DATA_URL,
     AMBR_BOOK_DETAILS_URL,
 )
@@ -40,6 +48,38 @@ async def get_ambr_char_data(id: Union[int, str]) -> Optional[AmbrCharacter]:
     if isinstance(data, Dict) and data['response'] == 200:
         data = data['data']
         return cast(AmbrCharacter, data)
+    return None
+
+
+async def get_ambr_monster_data(id: Union[int, str]) -> Optional[AmbrMonster]:
+    data = await _ambr_request(url=AMBR_MONSTER_URL.format(id))
+    if isinstance(data, Dict) and data['response'] == 200:
+        data = data['data']
+        return cast(AmbrMonster, data)
+    return None
+
+
+async def get_ambr_gcg_detail(id: Union[int, str]) -> Optional[AmbrGCGDetail]:
+    data = await _ambr_request(url=AMBR_GCG_DETAIL.format(id))
+    if isinstance(data, Dict) and data['response'] == 200:
+        data = data['data']
+        return cast(AmbrGCGDetail, data)
+    return None
+
+
+async def get_ambr_gcg_list() -> Optional[AmbrGCGList]:
+    data = await _ambr_request(url=AMBR_GCG_LIST_URL)
+    if isinstance(data, Dict) and data['response'] == 200:
+        data = data['data']
+        return cast(AmbrGCGList, data)
+    return None
+
+
+async def get_ambr_monster_list() -> Optional[AmbrMonsterList]:
+    data = await _ambr_request(url=AMBR_MONSTER_LIST)
+    if isinstance(data, Dict) and data['response'] == 200:
+        data = data['data']
+        return cast(AmbrMonsterList, data)
     return None
 
 

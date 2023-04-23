@@ -11,11 +11,16 @@ from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.internal.adapter import Event
-from nonebot import on_notice, get_driver, on_message, on_fullmatch
+from websockets.exceptions import ConnectionClosed
+from nonebot import require, on_notice, on_message, on_fullmatch
 
-from .client import GsClient
-from .auto_install import start, install
-from .models import Message, MessageReceive
+require('nonebot_plugin_apscheduler')
+
+from nonebot_plugin_apscheduler import scheduler  # noqa:E402
+
+from .client import GsClient, driver  # noqa:E402
+from .auto_install import start, install  # noqa:E402
+from .models import Message, MessageReceive  # noqa:E402
 
 get_message = on_message(priority=999)
 get_notice = on_notice(priority=999)
@@ -24,15 +29,25 @@ start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
 connect_core = on_fullmatch(
     ('连接core', '链接core'), permission=SUPERUSER, block=True
 )
-driver = get_driver()
-gsclient: Optional[GsClient] = None
 
+gsclient: Optional[GsClient] = None
 command_start = driver.config.command_start
+command_start.remove('')
+
+if hasattr(driver.config, 'gsuid_core_repeat'):
+    is_repeat = True
+else:
+    is_repeat = False
 
 
 @get_notice.handle()
 async def get_notice_message(bot: Bot, ev: Event):
-    if gsclient is None or not gsclient.is_alive:
+    if gsclient is None:
+        return await connect()
+
+    try:
+        await gsclient.ws.ping()
+    except ConnectionClosed:
         return await connect()
 
     raw_data = ev.dict()
@@ -93,7 +108,12 @@ async def get_notice_message(bot: Bot, ev: Event):
 
 @get_message.handle()
 async def get_all_message(bot: Bot, ev: Event):
-    if gsclient is None or not gsclient.is_alive:
+    if gsclient is None:
+        return await connect()
+
+    try:
+        await gsclient.ws.ping()
+    except ConnectionClosed:
         return await connect()
 
     # 通用字段获取
@@ -136,6 +156,10 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 QQ Guild 事件...')
             return
+
+        if ev.message_reference:
+            reply_msg_id = ev.message_reference.message_id
+            message.append(Message('reply', reply_msg_id))
     # telegram
     elif bot.adapter.get_name() == 'Telegram':
         from nonebot.adapters.telegram.event import (
@@ -382,15 +406,31 @@ async def connect():
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
 
 
+@scheduler.scheduled_job('cron', second='*/10')
+async def repeat_connect():
+    if is_repeat:
+        global gsclient
+        if gsclient is None:
+            await connect()
+        else:
+            try:
+                await gsclient.ws.ensure_open()
+            except ConnectionClosed:
+                return await connect()
+        return
+
+
 def convert_message(_msg: Any, message: List[Message], index: int):
     if _msg.type == 'text':
         data: str = (
             _msg.data['text'] if 'text' in _msg.data else _msg.data['content']
         )
+
         if index == 0:
-            if data.startswith(tuple(command_start)):
-                for word in command_start:
-                    data = data.replace(word, '', 1)
+            for word in command_start:
+                if data.startswith(word):
+                    data = data[len(word):]
+                    break
         message.append(Message('text', data))
     elif _msg.type == 'image':
         file_id = _msg.data.get('file_id')
@@ -418,7 +458,6 @@ async def convert_file(
     content: Union[Path, str, bytes], file_name: str
 ) -> Message:
     if isinstance(content, Path):
-        print(content)
         async with aiofiles.open(str(content), 'rb') as fp:
             file = await fp.read()
     elif isinstance(content, bytes):
@@ -440,3 +479,4 @@ async def get_file(bot: Bot, file_id: str):
         type='path',
     )
     return data
+

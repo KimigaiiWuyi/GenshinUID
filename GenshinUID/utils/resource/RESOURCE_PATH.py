@@ -30,6 +30,8 @@ WIKI_FOOD_PATH = WIKI_PATH / 'food'
 WIKI_TALENT_PATH = WIKI_PATH / 'talent'
 WIKI_ENEMY_PATH = WIKI_PATH / 'enemy'
 WIKI_CHAR_PATH = WIKI_PATH / 'char'
+WIKI_COST_CHAR_PATH = WIKI_PATH / 'cost_char'
+WIKI_COST_WEAPON_PATH = WIKI_PATH / 'cost_weapon'
 TEXT2D_PATH = Path(__file__).parent / 'texture2d'
 
 PLAYER_PATH = MAIN_PATH / 'players'
@@ -64,6 +66,8 @@ def init_dir():
         WIKI_TALENT_PATH,
         WIKI_ENEMY_PATH,
         WIKI_CHAR_PATH,
+        WIKI_COST_CHAR_PATH,
+        WIKI_COST_WEAPON_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

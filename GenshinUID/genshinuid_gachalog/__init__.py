@@ -9,11 +9,19 @@ from ..utils.error_reply import UID_HINT
 from .get_gachalogs import save_gachalogs
 from .draw_gachalogs import draw_gachalogs_img
 from .export_and_import import export_gachalogs, import_gachalogs
+from .lelaer_tools import (
+    get_gachaurl,
+    get_lelaer_gachalog,
+    export_gachalog_to_lelaer,
+)
 
 sv_gacha_log = SV('抽卡记录')
 sv_refresh_gacha_log = SV('刷新抽卡记录')
 sv_export_gacha_log = SV('导出抽卡记录')
 sv_import_gacha_log = SV('导入抽卡记录', area='DIRECT')
+sv_import_lelaer_gachalog = SV('从小助手导入抽卡记录')
+sv_export_lelaer_gachalog = SV('导出抽卡记录到小助手')
+sv_export_gachalogurl = SV('导出抽卡记录链接', area='DIRECT')
 
 
 @sv_import_gacha_log.on_file('json')
@@ -21,7 +29,7 @@ async def send_import_gacha_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    if ev.file:
+    if ev.file and ev.file_type:
         await bot.send('正在尝试导入抽卡记录中，请耐心等待……')
         return await bot.send(
             await import_gachalogs(ev.file, ev.file_type, uid)
@@ -69,3 +77,36 @@ async def send_export_gacha_info(bot: Bot, ev: Event):
         return await bot.send(MessageSegment.file(file_path, file_name))
     else:
         return await bot.send('导出抽卡记录失败...')
+
+
+@sv_import_lelaer_gachalog.on_fullmatch(('从小助手导入抽卡记录'))
+async def import_lelaer_gachalog(bot: Bot, ev: Event):
+    await bot.logger.info('开始执行[从小助手导入抽卡记录]')
+    sqla = get_sqla(ev.bot_id)
+    uid = await sqla.get_bind_uid(ev.user_id)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    im = await get_lelaer_gachalog(uid)
+    await bot.send(im)
+
+
+@sv_export_lelaer_gachalog.on_fullmatch(('导出抽卡记录到小助手'))
+async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
+    await bot.logger.info('开始执行[导出抽卡记录到小助手]')
+    sqla = get_sqla(ev.bot_id)
+    uid = await sqla.get_bind_uid(ev.user_id)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    im = await export_gachalog_to_lelaer(uid)
+    await bot.send(im)
+
+
+@sv_export_gachalogurl.on_fullmatch(('导出抽卡记录链接', '导出抽卡记录连接'))
+async def export_gachalogurl(bot: Bot, ev: Event):
+    await bot.logger.info('开始执行[导出抽卡记录链接]')
+    sqla = get_sqla(ev.bot_id)
+    uid = await sqla.get_bind_uid(ev.user_id)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    im = await get_gachaurl(uid)
+    await bot.send(MessageSegment.node([MessageSegment.text(im)]))

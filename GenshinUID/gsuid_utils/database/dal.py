@@ -42,8 +42,7 @@ class SQLA:
             async with session.begin():
                 result = await session.execute(
                     select(GsBind).where(
-                        GsBind.user_id == user_id
-                        and GsBind.bot_id == self.bot_id
+                        GsBind.user_id == user_id, GsBind.bot_id == self.bot_id
                     )
                 )
                 data = result.scalars().all()
@@ -95,7 +94,7 @@ class SQLA:
         async with self.async_session() as session:
             async with session.begin():
                 sql = update(GsBind).where(
-                    GsBind.user_id == user_id and GsBind.bot_id == self.bot_id
+                    GsBind.user_id == user_id, GsBind.bot_id == self.bot_id
                 )
                 if data is not None:
                     query = sql.values(**data)
@@ -230,7 +229,7 @@ class SQLA:
         async with self.async_session() as session:
             async with session.begin():
                 sql = update(GsUser).where(
-                    GsUser.uid == uid and GsUser.bot_id == self.bot_id
+                    GsUser.uid == uid, GsUser.bot_id == self.bot_id
                 )
                 if data is not None:
                     query = sql.values(**data)
@@ -348,7 +347,7 @@ class SQLA:
         async with self.async_session() as session:
             async with session.begin():
                 sql = select(GsUser).where(
-                    GsUser.cookie is not None and GsUser.cookie != ''
+                    GsUser.cookie is not None, GsUser.cookie != ''
                 )
                 result = await session.execute(sql)
                 data: List[GsUser] = result.scalars().all()
@@ -443,7 +442,7 @@ class SQLA:
                 await self.push_exists(uid)
                 sql = (
                     update(GsPush)
-                    .where(GsPush.uid == uid and GsPush.bot_id == self.bot_id)
+                    .where(GsPush.uid == uid, GsPush.bot_id == self.bot_id)
                     .values(**data)
                 )
                 await session.execute(sql)
@@ -463,7 +462,7 @@ class SQLA:
             async with session.begin():
                 await self.push_exists(uid)
                 sql = select(GsPush).where(
-                    GsPush.uid == uid and GsPush.bot_id == self.bot_id
+                    GsPush.uid == uid, GsPush.bot_id == self.bot_id
                 )
                 result = await session.execute(sql)
                 data = result.scalars().all()
@@ -473,7 +472,7 @@ class SQLA:
         async with self.async_session() as session:
             async with session.begin():
                 sql = select(GsPush).where(
-                    GsPush.uid == uid and GsPush.bot_id == self.bot_id
+                    GsPush.uid == uid, GsPush.bot_id == self.bot_id
                 )
                 result = await session.execute(sql)
                 data = result.scalars().all()

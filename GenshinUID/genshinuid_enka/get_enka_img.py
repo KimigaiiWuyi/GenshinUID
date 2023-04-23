@@ -2,6 +2,7 @@ import re
 import json
 from typing import Dict, List, Tuple, Union, Optional
 
+from PIL import Image
 from gsuid_core.logger import logger
 
 from .to_card import draw_enka_card
@@ -38,9 +39,22 @@ WEAPON_TO_INT = {
 }
 
 
+async def get_full_char(raw_mes: str, uid: str) -> Union[str, Dict]:
+    # 获取角色名
+    msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
+    _args = await get_char_args(msg, uid)
+    if isinstance(_args, Tuple):
+        char = await get_char(*_args)
+        if isinstance(char, str):
+            return char
+        return char.card_prop
+    else:
+        return _args
+
+
 async def draw_enka_img(
     raw_mes: str, uid: str, url: Optional[str]
-) -> Union[str, Tuple[Union[bytes, str], Optional[bytes]]]:
+) -> Union[str, Tuple[Union[bytes, Image.Image, str], Optional[bytes]]]:
     # 获取角色名
     msg = ' '.join(re.findall('[\u4e00-\u9fa5]+', raw_mes))
     # msg = raw_mes.strip()
@@ -92,18 +106,28 @@ async def draw_enka_img(
     return im
 
 
-async def get_char_data(uid: str, char_name: str) -> Union[Dict, str]:
+async def get_char_data(
+    uid: str, char_name: str, enable_self: bool = True
+) -> Union[Dict, str]:
     player_path = PLAYER_PATH / str(uid)
+    SELF_PATH = player_path / 'SELF'
     if '旅行者' in char_name:
         char_name = '旅行者'
     else:
         char_name = await alias_to_char_name(char_name)
+
     char_path = player_path / f'{char_name}.json'
+    char_self_path = SELF_PATH / f'{char_name}.json'
+
     if char_path.exists():
-        with open(char_path, 'r', encoding='utf8') as fp:
-            char_data = json.load(fp)
+        path = char_path
+    elif enable_self and char_self_path.exists():
+        path = char_self_path
     else:
         return CHAR_HINT.format(char_name)
+
+    with open(path, 'r', encoding='utf8') as fp:
+        char_data = json.load(fp)
     return char_data
 
 
@@ -233,6 +257,7 @@ async def get_fake_char_data(
     original_data = await get_char_data(uid, fake_name)
     if isinstance(original_data, Dict):
         char_data['weaponInfo'] = original_data['weaponInfo']
+        char_data['talentList'] = original_data['talentList']
     char_data['avatarName'] = fake_name
     char_data['avatarId'] = await name_to_avatar_id(fake_name)
     en_name = await avatarId_to_enName(char_data['avatarId'])

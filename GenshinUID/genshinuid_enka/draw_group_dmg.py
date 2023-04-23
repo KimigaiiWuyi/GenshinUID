@@ -7,7 +7,6 @@ from .mono.Fight import Fight
 from .etc.etc import TEXT_PATH
 from .mono.Character import Character
 from .mono.SEQ import ALL_SEQ, SEQ_ARG
-from ..utils.image.convert import convert_img
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.image_tools import get_color_bg, draw_pic_with_ring
@@ -60,7 +59,7 @@ def _p(value: float) -> str:
 
 async def draw_group_dmg_img(
     uid: str, char_list: List[Character]
-) -> Union[bytes, str]:
+) -> Union[Image.Image, str]:
     # 获取数据
     dmg_data = await get_group_dmg_data(char_list)
     if isinstance(dmg_data, str):
@@ -163,5 +162,5 @@ async def draw_group_dmg_img(
     img_draw.text((390, 333), f'{_f(avg_dps)}', 'white', gs_font_44, 'lm')
     img_draw.text((650, 333), f'{_f(all_time)}秒内', 'white', gs_font_44, 'lm')
 
-    img = await convert_img(img)
+    # img = await convert_img(img)
     return img

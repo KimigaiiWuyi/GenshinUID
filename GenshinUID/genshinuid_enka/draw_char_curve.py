@@ -1,4 +1,3 @@
-from io import BytesIO
 from typing import Optional
 
 from PIL import Image, ImageDraw
@@ -22,7 +21,7 @@ async def get_adv_card() -> Image.Image:
 
 async def draw_char_curve_card(
     char: Character, char_url: Optional[str]
-) -> bytes:
+) -> Image.Image:
     await get_artifacts_card(char, Image.new('RGB', (1, 1)))
     curve_img, curve_len = await draw_char_curve_data(
         char.char_name, char.card_prop
@@ -74,7 +73,9 @@ async def draw_char_curve_card(
     )
 
     img = img.convert('RGB')
+    '''
     result_buffer = BytesIO()
     img.save(result_buffer, format='JPEG', subsampling=0, quality=90)
     res = result_buffer.getvalue()
-    return res
+    '''
+    return img

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Union, Literal, Optional, TypedDict, NotRequired
+from typing import Dict, List, Union, Literal, Optional, TypedDict
 
 
 class AmbrLanguageData(TypedDict):
@@ -180,7 +180,7 @@ class AmbrHpDrop(TypedDict):
 class AmbrReward(TypedDict):
     rank: int
     icon: str
-    count: NotRequired[str]
+    count: str
 
 
 class AmbrEntry(TypedDict):

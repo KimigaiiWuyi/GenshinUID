@@ -429,7 +429,7 @@ def convert_message(_msg: Any, message: List[Message], index: int):
         if index == 0:
             for word in command_start:
                 if data.startswith(word):
-                    data = data[len(word) :]
+                    data = data[len(word) :] # noqa:E203
                     break
         message.append(Message('text', data))
     elif _msg.type == 'image':

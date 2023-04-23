@@ -1,6 +1,7 @@
 import os
 import json
 import time
+import uuid
 import base64
 import asyncio
 from pathlib import Path
@@ -15,9 +16,13 @@ from websockets.exceptions import ConnectionClosedError
 
 from .models import MessageSend, MessageReceive
 
-BOT_ID = 'NoneBot2'
 bots: Dict[str, str] = {}
 driver = get_driver()
+
+if hasattr(driver.config, 'gsuid_core_botid'):
+    BOT_ID = str(uuid.uuid4())[:10]
+else:
+    BOT_ID = 'NoneBot2'
 
 if hasattr(driver.config, 'gsuid_core_host'):
     HOST = driver.config.gsuid_core_host
@@ -31,19 +36,36 @@ else:
 
 
 def _get_bot(bot_id: str) -> Bot:
-    if 'onebot' in bot_id:
-        bot_id = 'onebot'
+    if 'v12' in bot_id:
+        bot_id = 'onebotv12'
+    # bots: Dict[str, str] 以适配器名称为键、bot_self_id为值的字典
+    _refresh_bots()
     if bot_id not in bots:
         for _bot_id in bots.keys():
             if bot_id in _bot_id:
                 bot_id = _bot_id
                 break
+        else:
+            logger.warning('未获取到正确的Bot实例,将使用默认Bot...')
+            logger.warning(f'当前bot_id: {bot_id}, bots: {bots}')
+            return get_bot()
     bot_real_id = bots[bot_id]
     bot = get_bot(bot_real_id)
     return bot
 
 
+def _refresh_bots():
+    global bots
+    _bots = get_bots()
+    for bot_real_id in _bots:
+        bot = _bots[bot_real_id]
+        bot_id = bot.type.lower().replace(' ', '')
+        bots[bot_id] = bot_real_id
+
+
 class GsClient:
+    _instance = None
+
     @classmethod
     async def async_connect(cls, IP: str = HOST, PORT: Union[str, int] = PORT):
         self = GsClient()
@@ -55,17 +77,19 @@ class GsClient:
         )
         logger.success(f'与[gsuid-core]成功连接! Bot_ID: {BOT_ID}')
         cls.msg_list = asyncio.queues.Queue()
+        cls.pending = []
         return self
+
+    def __new__(cls, *args, **kwargs):
+        # 判断sv是否已经被初始化
+        if cls._instance is None:
+            cls._instance = super(GsClient, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
 
     async def recv_msg(self):
         try:
-            global bots
             await asyncio.sleep(5)
-            _bots = get_bots()
-            for bot_real_id in _bots:
-                bot = _bots[bot_real_id]
-                bot_id = bot.type.lower().replace(' ', '')
-                bots[bot_id] = bot_real_id
+            _refresh_bots()
             async for message in self.ws:
                 try:
                     _bots = get_bots()
@@ -199,8 +223,17 @@ class GsClient:
         except RuntimeError as e:
             logger.error(e)
         except ConnectionClosedError:
+            for task in self.pending:
+                task.cancel()
             logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
-            self.is_alive = False
+            for _ in range(30):
+                await asyncio.sleep(5)
+                try:
+                    await self.async_connect()
+                    await self.start()
+                    break
+                except:  # noqa
+                    logger.debug('自动连接core服务器失败...五秒后重新连接...')
 
     async def _input(self, msg: MessageReceive):
         await self.msg_list.put(msg)
@@ -214,12 +247,10 @@ class GsClient:
     async def start(self):
         recv_task = asyncio.create_task(self.recv_msg())
         send_task = asyncio.create_task(self.send_msg())
-        _, pending = await asyncio.wait(
+        _, self.pending = await asyncio.wait(
             [recv_task, send_task],
             return_when=asyncio.FIRST_COMPLETED,
         )
-        for task in pending:
-            task.cancel()
 
 
 def to_json(msg: str, name: str, uin: int):
@@ -251,12 +282,14 @@ async def onebot_send(
     target_type: Optional[str],
 ):
     async def _send(content: Optional[str], image: Optional[str]):
-        result_image = f'[CQ:image,file={image}]' if image else ''
-        content = content if content else ''
-        result_msg = content + result_image
+        from nonebot.adapters.onebot.v11 import MessageSegment
+
+        result_image = MessageSegment.image(image) if image else ''
+        _content = MessageSegment.text(content) if content else ''
+        result_msg = _content + result_image
         if at_list and target_type == 'group':
             for at in at_list:
-                result_msg += f'[CQ:at,qq={at}]'
+                result_msg += MessageSegment.at(at)
 
         if file:
             file_name, file_content = file.split('|')
@@ -635,11 +668,11 @@ async def onebot_v12_send(
             await send_file_message(params, "image", file_id)
         elif file:
             file_name, file_content = file.split('|')
-            file_content = base64.b64decode(file)
+            file_data = base64.b64decode(file_content)
             up_data = await bot.call_api(
                 'upload_file',
                 type="data",
-                data=file_content,
+                data=file_data,
                 name=f"{file_name}",
             )
             file_id = up_data['file_id']

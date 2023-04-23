@@ -22,15 +22,15 @@ requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "GenshinUID"
-version = "4.0.0"
-description = "基于HoshinoBot/NoneBot2/QQ官方频道/微信Bot的原神面板查询/原神Wiki/米社签到/树脂提醒插件"
+name = "nonebot-plugin-genshinuid"
+version = "4.0.5"
+description = "支持OneBot(QQ)、OneBotV12、QQ频道、微信、KOOK（开黑啦）、Telegram（电报）、FeiShu（飞书）的全功能NoneBot2原神插件"
 authors = ["KimigaiiWuyi <444835641@qq.com>"]
 license = "GPL-3.0-or-later"
 readme = "README.md"
 homepage = "https://github.com/KimigaiiWuyi/GenshinUID/tree/v4.0-nonebot2"
 repository = "https://github.com/KimigaiiWuyi/GenshinUID"
-documentation = "https://github.com/KimigaiiWuyi/GenshinUID/wiki"
+documentation = "https://docs.gsuid.gbots.work/#/"
 packages = [
     { include = "GenshinUID" }
 ]
@@ -45,6 +45,9 @@ nonebot2 = ">=2.0.0b4"
 pillow = ">=9.2.0"
 gitpython = ">=3.1.27"
 msgspec = ">=0.13.1"
+aiofiles = ">=23.1.0"
+websockets = ">=11.0.1"
+nonebot-plugin-apscheduler = "^0.2.0"
 
 [[tool.poetry.source]]
 name = "USTC"

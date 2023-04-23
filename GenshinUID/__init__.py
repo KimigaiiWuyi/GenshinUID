@@ -39,6 +39,11 @@ if hasattr(driver.config, 'gsuid_core_repeat'):
 else:
     is_repeat = False
 
+if hasattr(driver.config, 'gsuid_core_repeat'):
+    is_repeat = True
+else:
+    is_repeat = False
+
 
 @get_notice.handle()
 async def get_notice_message(bot: Bot, ev: Event):

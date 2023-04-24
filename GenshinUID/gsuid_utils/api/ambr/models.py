@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Literal, Optional, TypedDict
+from typing import Dict, List, Union, Literal, Optional, TypedDict
 
 
 class AmbrLanguageData(TypedDict):
@@ -163,3 +163,104 @@ class AmbrBookDetail(TypedDict):
     icon: str
     volume: List[AmbrVolume]
     route: str
+
+
+class AmbrMonsterAffix(TypedDict):
+    name: str
+    description: str
+    abilityName: List[str]
+    isCommon: bool
+
+
+class AmbrHpDrop(TypedDict):
+    id: int
+    hpPercent: int
+
+
+class AmbrReward(TypedDict):
+    rank: int
+    icon: str
+    count: str
+
+
+class AmbrEntry(TypedDict):
+    id: str
+    type: str
+    affix: List[AmbrMonsterAffix]
+    hpDrops: List[AmbrHpDrop]
+    prop: List[AmbrProp]
+    resistance: Dict[str, float]
+    reward: Dict[str, AmbrReward]
+
+
+class AmbrMonster(TypedDict):
+    id: int
+    name: str
+    icon: str
+    route: str
+    title: str
+    specialName: str
+    description: str
+    entries: Dict[str, AmbrEntry]
+    tips: Optional[str]
+
+
+class AmbrMonsterSimple(TypedDict):
+    id: int
+    name: str
+    icon: str
+    route: str
+    type: str
+
+
+class AmbrGCGList(TypedDict):
+    types: Dict[str, Literal['characterCard', 'actionCard']]
+    items: Dict[str, AmbrGCGCard]
+
+
+class AmbrGCGCard(TypedDict):
+    id: int
+    name: str
+    type: Literal['characterCard', 'actionCard']
+    tags: Dict[str, str]
+    props: Dict[str, int]
+    icon: str
+    route: str
+    sortOrder: int
+
+
+class AmbrGCGDict(TypedDict):
+    name: str
+    description: str
+
+
+class AmbrGCGTalent(TypedDict):
+    name: str
+    description: str
+    cost: Dict[str, int]
+    params: Dict[str, Union[int, str]]
+    tags: Dict[str, str]
+    icon: str
+    subSkills: Optional[str]
+    keywords: Dict[str, str]
+
+
+class AmbrGCGEntry(TypedDict):
+    id: int
+    name: str
+    type: Literal['gcg']
+    icon: str
+
+
+class AmbrGCGDetail(AmbrGCGCard):
+    storyTitle: str
+    storyDetail: str
+    source: str
+    dictionary: Dict[str, AmbrGCGDict]
+    talent: Dict[str, AmbrGCGTalent]
+    relatedEntries: List[AmbrGCGCard]
+
+
+class AmbrMonsterList(TypedDict):
+    types: Dict[str, str]
+    items: Dict[str, AmbrMonsterSimple]

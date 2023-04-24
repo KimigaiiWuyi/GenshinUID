@@ -67,7 +67,9 @@ async def export_gachalog_to_lelaer(uid: str):
         headers = {"Content-Type": header}
         async with httpx.AsyncClient(verify=False, timeout=30) as client:
             history_data = await client.post(
-                'https://www.lelaer.com/uigf.php', content=body, headers=headers
+                'https://www.lelaer.com/uigf.php',
+                content=body,
+                headers=headers,
             )
             status_code = history_data.status_code
             history_res = history_data.text

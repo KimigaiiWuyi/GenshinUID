@@ -1,12 +1,10 @@
 import time
-import random
-import string
 from urllib.parse import quote
 
+import httpx
 import aiofiles
-from httpx import post
 from gsuid_core.logger import logger
-from requests_toolbelt import MultipartEncoder
+from urllib3 import encode_multipart_formdata
 
 from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
@@ -37,14 +35,15 @@ async def get_gachaurl(uid: str):
 async def get_lelaer_gachalog(uid: str):
     gachalog_url = await get_gachaurl(uid)
     data = {'uid': uid, 'gachaurl': gachalog_url, 'lang': 'zh-Hans'}
-    history_data = post(
-        'https://www.lelaer.com/outputGacha.php',
-        data=data,
+    async with httpx.AsyncClient(
         verify=False,
         timeout=30,
-    ).text
-    logger.info(history_data)
-    return await import_gachalogs(history_data, 'json', uid)
+    ) as client:
+        history_data = await client.post(
+            'https://www.lelaer.com/outputGacha.php', data=data
+        )
+        history_log = history_data.text
+        return await import_gachalogs(history_log, 'json', uid)
 
 
 async def export_gachalog_to_lelaer(uid: str):
@@ -57,28 +56,22 @@ async def export_gachalog_to_lelaer(uid: str):
     async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
         record_data = await f.read()
 
-        fields = {
+        data = {
             'upload': ('data.json', record_data, 'application/json'),
-            "importType": "uigf",
+            'importType': 'uigf',
             "gachaurl": gachalog_url,
         }
-        boundary = '----WebKitFormBoundary' + ''.join(
-            random.sample(string.ascii_letters + string.digits, 16)
-        )
-        data = MultipartEncoder(fields=fields, boundary=boundary)
-        headers = {
-            "Content-Type": data.content_type,
-        }
-        history_data = post(
-            'https://www.lelaer.com/uigf.php',
-            content=data.to_string(),
-            headers=headers,
-            verify=False,
-            timeout=30,
-        )
-        status_code = history_data.status_code
 
-        if status_code == 200 and '导入成功' in history_data.text:
-            return '[提瓦特小助手]抽卡记录上传成功，请前往小程序查看'
-        else:
-            return '[提瓦特小助手]上传失败'
+        body, header = encode_multipart_formdata(data)
+
+        headers = {"Content-Type": header}
+        async with httpx.AsyncClient(verify=False, timeout=30) as client:
+            history_data = await client.post(
+                'https://www.lelaer.com/uigf.php', content=body, headers=headers
+            )
+            status_code = history_data.status_code
+            history_res = history_data.text
+            if status_code == 200 and '导入成功' in history_res:
+                return '[提瓦特小助手]抽卡记录上传成功，请前往小程序查看'
+            else:
+                return '[提瓦特小助手]上传失败'

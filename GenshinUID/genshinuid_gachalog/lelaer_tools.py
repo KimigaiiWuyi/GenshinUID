@@ -1,9 +1,12 @@
 import time
+import random
+import string
 from urllib.parse import quote
 
 import aiofiles
 from httpx import post
 from gsuid_core.logger import logger
+from requests_toolbelt import MultipartEncoder
 
 from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
@@ -52,16 +55,30 @@ async def export_gachalog_to_lelaer(uid: str):
     else:
         return '导出抽卡记录失败...'
     async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
-        file_data = {'upload': await f.read()}
-        data = {'gachaurl': gachalog_url, 'importType': 'uigf'}
+        record_data = await f.read()
+
+        fields = {
+            'upload': ('data.json', record_data, 'application/json'),
+            "importType": "uigf",
+            "gachaurl": gachalog_url,
+        }
+        boundary = '----WebKitFormBoundary' + ''.join(
+            random.sample(string.ascii_letters + string.digits, 16)
+        )
+        data = MultipartEncoder(fields=fields, boundary=boundary)
+        headers = {
+            "Content-Type": data.content_type,
+        }
         history_data = post(
             'https://www.lelaer.com/uigf.php',
-            files=file_data,
-            data=data,
+            content=data.to_string(),
+            headers=headers,
             verify=False,
             timeout=30,
-        ).status_code
-        if history_data == 200:
+        )
+        status_code = history_data.status_code
+
+        if status_code == 200 and '导入成功' in history_data.text:
             return '[提瓦特小助手]抽卡记录上传成功，请前往小程序查看'
         else:
             return '[提瓦特小助手]上传失败'

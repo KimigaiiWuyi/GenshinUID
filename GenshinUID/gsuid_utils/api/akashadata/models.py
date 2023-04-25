@@ -99,3 +99,36 @@ class AKaShaRank(TypedDict):
     usage_list: List[AKaShaUsage]
     maxrate_list: List[AKaShaUsage]
     out_list: List[AKaShaUsage]
+
+
+class AKaShaWeaponRate(TypedDict):
+    name: str
+    id: int
+    weapon_icon: str
+    rarity: int
+    rate: str
+
+
+class AKaShaOneEquipRate(TypedDict):
+    set: str
+    name: str
+    count: str
+
+
+class AKaShaEquipRate(TypedDict):
+    rate: str
+    set_list: List[AKaShaOneEquipRate]
+
+
+class AKaShaAbyssChar(TypedDict):
+    use_rate: str
+    maxstar_rate: str
+    come_rate: float
+    avg_level: float
+    avg_constellation: float
+
+
+class AKaShaCharData(TypedDict):
+    weapons: List[AKaShaWeaponRate]
+    equips: List[AKaShaEquipRate]
+    abyss: AKaShaAbyssChar

@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 import json
-from typing import Literal, Optional
+from typing import Dict, Literal, Optional
 
 from httpx import AsyncClient
 
 from ..types import AnyDict
 from ...version import __version__
-from .models import AKaShaRank, AkashaAbyssData
-from .api import AKASHA_RANK_URL, AKASHA_ABYSS_URL
+from .models import AKaShaRank, AKaShaCharData, AkashaAbyssData
+from .api import AKASHA_CHAR_URL, AKASHA_RANK_URL, AKASHA_ABYSS_URL
 
 _HEADER = {'User-Agent': f'gsuid-utils/{__version__}'}
 
@@ -24,6 +24,20 @@ async def get_akasha_abyss_info() -> AkashaAbyssData:
     '''  # noqa: E501
     raw_data = await _akasha_request(AKASHA_ABYSS_URL)
     raw_data = raw_data.lstrip('var static_abyss_total =')
+    data = json.loads(raw_data)
+    return data
+
+
+async def get_akasha_all_char_info() -> Dict[str, AKaShaCharData]:
+    raw_data = await _akasha_request(AKASHA_CHAR_URL)
+    raw_data = (
+        raw_data.replace('\\', '')
+        .lstrip('var static_card_details =')
+        .replace('"[', '[')
+        .replace(']"', ']')
+        .replace('"{', '{')
+        .replace('}"', '}')
+    )
     data = json.loads(raw_data)
     return data
 

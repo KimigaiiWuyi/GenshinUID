@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TypedDict
+from typing import List, TypedDict
 
 
 class TeamListItem(TypedDict):
@@ -86,3 +86,16 @@ class AkashaAbyssData(TypedDict):
     last_rate: LastRate
     level_data: LevelData
     character_used_list: list[CharacterUsedListItem]
+
+
+class AKaShaUsage(TypedDict):
+    i: int
+    v: str
+    d: str
+    r: int
+
+
+class AKaShaRank(TypedDict):
+    usage_list: List[AKaShaUsage]
+    maxrate_list: List[AKaShaUsage]
+    out_list: List[AKaShaUsage]

@@ -66,15 +66,15 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
 
 async def _draw_config_line(img: Image.Image, name: str, index: int):
     detail = gsconfig[name].desc
-    if name == '定时签到':
+    if gsconfig[name].title == '定时签到':
         detail = f'开启后每晚{gsconfig[name].data}将开始自动签到任务'
-    elif name == '定时米游币':
+    elif gsconfig[name].title == '定时米游币':
         detail = f'开启后每晚{gsconfig[name].data}将开始自动米游币任务'
     config_line = Image.open(TEXT_PATH / 'config_line.png')
     config_line_draw = ImageDraw.Draw(config_line)
-    if name.startswith('定时'):
-        name += '(全部)'
     title = gsconfig[name].title
+    if gsconfig[name].title.startswith('定时'):
+        title += '(全部)'
     config_line_draw.text((52, 46), title, first_color, gs_font_36, 'lm')
     config_line_draw.text((52, 80), detail, second_color, gs_font_24, 'lm')
     if gsconfig[name].data:

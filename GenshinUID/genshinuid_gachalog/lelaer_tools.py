@@ -1,9 +1,10 @@
 import time
 from urllib.parse import quote
 
+import httpx
 import aiofiles
-from httpx import post
 from gsuid_core.logger import logger
+from urllib3 import encode_multipart_formdata
 
 from ..utils.mys_api import mys_api
 from ..utils.error_reply import get_error
@@ -34,14 +35,15 @@ async def get_gachaurl(uid: str):
 async def get_lelaer_gachalog(uid: str):
     gachalog_url = await get_gachaurl(uid)
     data = {'uid': uid, 'gachaurl': gachalog_url, 'lang': 'zh-Hans'}
-    history_data = post(
-        'https://www.lelaer.com/outputGacha.php',
-        data=data,
+    async with httpx.AsyncClient(
         verify=False,
         timeout=30,
-    ).text
-    logger.info(history_data)
-    return await import_gachalogs(history_data, 'json', uid)
+    ) as client:
+        history_data = await client.post(
+            'https://www.lelaer.com/outputGacha.php', data=data
+        )
+        history_log = history_data.text
+        return await import_gachalogs(history_log, 'json', uid)
 
 
 async def export_gachalog_to_lelaer(uid: str):
@@ -52,16 +54,26 @@ async def export_gachalog_to_lelaer(uid: str):
     else:
         return '导出抽卡记录失败...'
     async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
-        file_data = {'upload': await f.read()}
-        data = {'gachaurl': gachalog_url, 'importType': 'uigf'}
-        history_data = post(
-            'https://www.lelaer.com/uigf.php',
-            files=file_data,
-            data=data,
-            verify=False,
-            timeout=30,
-        ).status_code
-        if history_data == 200:
-            return '[提瓦特小助手]抽卡记录上传成功，请前往小程序查看'
-        else:
-            return '[提瓦特小助手]上传失败'
+        record_data = await f.read()
+
+        data = {
+            'upload': ('data.json', record_data, 'application/json'),
+            'importType': 'uigf',
+            "gachaurl": gachalog_url,
+        }
+
+        body, header = encode_multipart_formdata(data)
+
+        headers = {"Content-Type": header}
+        async with httpx.AsyncClient(verify=False, timeout=30) as client:
+            history_data = await client.post(
+                'https://www.lelaer.com/uigf.php',
+                content=body,
+                headers=headers,
+            )
+            status_code = history_data.status_code
+            history_res = history_data.text
+            if status_code == 200 and '导入成功' in history_res:
+                return '[提瓦特小助手]抽卡记录上传成功，请前往小程序查看'
+            else:
+                return '[提瓦特小助手]上传失败'

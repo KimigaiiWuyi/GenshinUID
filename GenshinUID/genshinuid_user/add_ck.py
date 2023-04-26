@@ -116,8 +116,14 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
     sqla = get_sqla(bot_id)
     simp_dict = SimpleCookie(mes)
     uid = await sqla.get_bind_uid(user_id)
-    if uid is None:
-        return UID_HINT
+    sr_uid = await sqla.get_bind_sruid(user_id)
+
+    if uid is None and sr_uid is None:
+        if uid is None:
+            return UID_HINT
+        elif sr_uid is None:
+            return '请绑定星穹铁道UID...'
+
     im_list = []
     is_add_stoken = False
     status = True
@@ -193,7 +199,7 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
     account_cookie = f'account_id={account_id};cookie_token={cookie_token}'
 
     try:
-        if int(uid[0]) < 6:
+        if sr_uid or (uid and int(uid[0]) < 6):
             mys_data = await mys_api.get_mihoyo_bbs_info(
                 account_id, account_cookie
             )
@@ -206,9 +212,13 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
             for i in mys_data:
                 if i['game_id'] == 2:
                     uid = i['game_role_id']
+                elif i['game_id'] == 6:
+                    sr_uid = i['game_role_id']
+                if uid and sr_uid:
                     break
             else:
-                return f'你的米游社账号{account_id}尚未绑定原神账号,请前往米游社操作！'
+                if not (uid or sr_uid):
+                    return f'你的米游社账号{account_id}尚未绑定原神/星铁账号,请前往米游社操作！'
     except Exception:
         pass
 
@@ -218,7 +228,9 @@ async def _deal_ck(bot_id: str, mes: str, user_id: str) -> str:
     await sqla.refresh_cache(uid)
     if is_add_stoken:
         im_list.append(f'添加Stoken成功,stuid={account_id},stoken={stoken}')
-    await sqla.insert_user_data(user_id, uid, account_cookie, app_cookie)
+    await sqla.insert_user_data(
+        user_id, uid, sr_uid, account_cookie, app_cookie
+    )
 
     im_list.append(
         f'添加Cookies成功,account_id={account_id},cookie_token={cookie_token}'

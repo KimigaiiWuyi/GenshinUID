@@ -3,6 +3,12 @@ from typing import Dict, List, Tuple, Optional
 
 from httpx import ConnectTimeout
 from gsuid_core.logger import logger
+from gsuid_core.utils.api.minigg.request import (
+    get_weapon_info,
+    get_weapon_stats,
+    get_character_info,
+    get_character_stats,
+)
 
 from .Power import sp_prop
 from ..etc.beta_weapon import beta_weapons
@@ -23,12 +29,6 @@ from ..etc.base_info import (
     PERCENT_ATTR,
     baseFightProp,
     baseWeaponInfo,
-)
-from ...gsuid_utils.api.minigg.request import (
-    get_weapon_info,
-    get_weapon_stats,
-    get_character_info,
-    get_character_stats,
 )
 
 

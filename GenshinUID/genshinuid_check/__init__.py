@@ -6,11 +6,11 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
+from gsuid_core.utils.database.models import GsUser
 
 from ..utils.mys_api import mys_api
 from .backup_data import data_backup
 from ..utils.database import get_sqla
-from ..gsuid_utils.database.models import GsUser
 
 sv_data_manger = SV('数据管理', pm=2)
 

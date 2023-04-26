@@ -1,7 +1,8 @@
 from typing import Dict, Literal, Optional
 
+from gsuid_core.utils.api.mys import MysApi
+
 from .database import get_sqla
-from ..gsuid_utils.api.mys import MysApi
 from ..genshinuid_config.gs_config import gsconfig
 
 

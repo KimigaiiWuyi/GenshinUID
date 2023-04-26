@@ -2,11 +2,11 @@ from pathlib import Path
 from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.mys.models import IndexData
 
 from ..utils.convert import GsCookie
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import avatarId2Name
-from ..gsuid_utils.api.mys.models import IndexData
 from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
 from ..utils.image.image_tools import (
     draw_bar,

@@ -3,10 +3,10 @@ from pathlib import Path
 from typing import List, Union, Optional
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.enka.models import EnkaData
 
 from .to_data import enka_to_dict
 from ..utils.image.convert import convert_img
-from ..gsuid_utils.api.enka.models import EnkaData
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH
 from ..utils.fonts.genshin_fonts import gs_font_18, gs_font_58
 from ..utils.map.name_covert import name_to_avatar_id, avatar_id_to_char_star

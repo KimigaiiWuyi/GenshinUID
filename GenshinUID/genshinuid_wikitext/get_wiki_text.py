@@ -4,9 +4,7 @@ from typing import List, Union
 
 from gsuid_core.models import Message
 from gsuid_core.segment import MessageSegment
-
-from .get_wiki_template import food_im, weapon_im, artifacts_im, char_info_im
-from ..gsuid_utils.api.minigg.request import (
+from gsuid_core.utils.api.minigg.request import (
     get_others_info,
     get_talent_info,
     get_weapon_info,
@@ -17,6 +15,8 @@ from ..gsuid_utils.api.minigg.request import (
     get_character_stats,
     get_constellation_info,
 )
+
+from .get_wiki_template import food_im, weapon_im, artifacts_im, char_info_im
 
 
 async def artifacts_wiki(name: str) -> str:

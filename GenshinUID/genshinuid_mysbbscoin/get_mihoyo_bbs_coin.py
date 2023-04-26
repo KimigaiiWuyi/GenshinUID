@@ -5,15 +5,13 @@ from typing import Dict, Literal
 
 from httpx import AsyncClient
 from gsuid_core.logger import logger
-
-from ..utils.mys_api import mys_api
-from ..gsuid_utils.api.mys.tools import (
+from gsuid_core.utils.api.mys.tools import (
     random_hex,
     random_text,
     get_ds_token,
     get_web_ds_token,
 )
-from ..gsuid_utils.api.mys.api import (
+from gsuid_core.utils.api.mys.api import (
     BBS_LIKE_URL,
     BBS_LIST_URL,
     BBS_SIGN_URL,
@@ -21,6 +19,8 @@ from ..gsuid_utils.api.mys.api import (
     BBS_DETAIL_URL,
     BBS_TASKS_LIST,
 )
+
+from ..utils.mys_api import mys_api
 
 mihoyobbs_List = [
     {

@@ -5,12 +5,12 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from gsuid_core.utils.api.mys.models import Expedition
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
 from ..genshinuid_enka.to_data import get_enka_info
-from ..gsuid_utils.api.mys.models import Expedition
 from ..utils.image.image_tools import get_simple_bg
 from ..utils.map.name_covert import enName_to_avatarId
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_PATH

@@ -5,12 +5,12 @@ from typing import List, Literal
 
 from httpx import get
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.ambr.request import get_ambr_event_info
 
 from ..version import Genshin_version
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import get_color_bg
 from ..utils.fonts.genshin_fonts import genshin_font_origin
-from ..gsuid_utils.api.ambr.request import get_ambr_event_info
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 EVENT_IMG_PATH = Path(__file__).parent / 'event.jpg'

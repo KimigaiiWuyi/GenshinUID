@@ -4,12 +4,12 @@ from typing import Dict, List, Union
 
 import aiofiles
 from gsuid_core.logger import logger
-
-from .abyss_history import history_data
-from ..gsuid_utils.api.hhw.request import (
+from gsuid_core.utils.api.hhw.request import (
     get_abyss_review,
     get_abyss_review_raw,
 )
+
+from .abyss_history import history_data
 
 REVIEW_PATH = Path(__file__).parent / 'review.json'
 

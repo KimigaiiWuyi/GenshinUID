@@ -53,6 +53,8 @@ async def send_char_info(bot: Bot, ev: Event):
         if im[1]:
             with open(TEMP_PATH / f'{ev.msg_id}.jpg', 'wb') as f:
                 f.write(im[1])
+    elif im is None:
+        return
     else:
         await bot.send('发生未知错误')
 

@@ -1,12 +1,13 @@
 import re
 from typing import List, Union, Optional, TypedDict, cast
 
-from ..gsuid_utils.api.minigg.models import CharacterTalents
-from .map.grow_curve import GROW_CURVE_LIST, WEAPON_GROW_CURVE
-from ..gsuid_utils.api.ambr.request import (
+from gsuid_core.utils.api.minigg.models import CharacterTalents
+from gsuid_core.utils.api.ambr.request import (
     get_ambr_char_data,
     get_ambr_weapon_data,
 )
+
+from .map.grow_curve import GROW_CURVE_LIST, WEAPON_GROW_CURVE
 
 PROP_MAP = {
     'FIGHT_PROP_BASE_HP': '基础生命值',

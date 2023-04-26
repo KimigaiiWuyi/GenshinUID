@@ -3,13 +3,13 @@ import time
 from typing import List, Union, Literal, Optional
 
 from httpx import ReadTimeout, ConnectTimeout
+from gsuid_core.utils.api.enka.models import EnkaData
+from gsuid_core.utils.api.enka.request import get_enka_info
+from gsuid_core.utils.api.minigg.request import get_weapon_info
 
 from ..utils.error_reply import UID_HINT
-from ..gsuid_utils.api.enka.models import EnkaData
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from ..gsuid_utils.api.enka.request import get_enka_info
 from ..utils.ambr_to_minigg import convert_ambr_to_weapon
-from ..gsuid_utils.api.minigg.request import get_weapon_info
 from ..utils.map.GS_MAP_PATH import (
     icon2Name,
     propId2Name,
@@ -264,10 +264,10 @@ async def enka_to_dict(
         if not isinstance(effect_raw, List) and not isinstance(
             effect_raw, int
         ):
-            effect = effect_raw['effect'].format(
-                *effect_raw[
+            effect = effect_raw['effect'].format(  # type:ignore
+                *effect_raw[  # type:ignore
                     'r{}'.format(str(weapon_info['weaponAffix']))
-                ]  # type:ignore
+                ]
             )
         else:
             effect = '无特效。'

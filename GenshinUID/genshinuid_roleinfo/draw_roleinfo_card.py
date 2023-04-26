@@ -3,12 +3,12 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from gsuid_core.utils.api.mys.models import MihoyoAvatar
 
 from ..utils.mys_api import mys_api
 from ..utils.convert import GsCookie
 from ..utils.error_reply import get_error
 from ..utils.image.convert import convert_img
-from ..gsuid_utils.api.mys.models import MihoyoAvatar
 from ..utils.resource.download_url import download_file
 from ..utils.fonts.genshin_fonts import genshin_font_origin
 from ..utils.resource.RESOURCE_PATH import (

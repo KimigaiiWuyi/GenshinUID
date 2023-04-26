@@ -2,10 +2,10 @@ from pathlib import Path
 from typing import List, Tuple, Optional
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.database.models import GsUser
 
 from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
-from ..gsuid_utils.database.models import GsUser
 from ..utils.colors import sec_color, first_color
 from ..utils.fonts.genshin_fonts import gs_font_15, gs_font_30, gs_font_36
 from ..utils.image.image_tools import (

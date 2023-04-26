@@ -2,10 +2,10 @@ from pathlib import Path
 from typing import Tuple
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.akashadata.request import get_akasha_abyss_info
 
 from ..utils.image.image_tools import get_color_bg
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH
-from ..gsuid_utils.api.akashadata.request import get_akasha_abyss_info
 from ..utils.fonts.genshin_fonts import gs_font_24, gs_font_26, gs_font_30
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'

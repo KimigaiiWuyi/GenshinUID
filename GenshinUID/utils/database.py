@@ -2,8 +2,7 @@ from typing import Dict
 
 from sqlalchemy import event
 from gsuid_core.data_store import get_res_path
-
-from ..gsuid_utils.database.dal import SQLA
+from gsuid_core.utils.database.dal import SQLA
 
 is_wal = False
 

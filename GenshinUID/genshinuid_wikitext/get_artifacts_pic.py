@@ -3,13 +3,13 @@ from typing import Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.minigg.models import Artifact
+from gsuid_core.utils.api.minigg.request import get_others_info
 
 from .path import TEXT_PATH
 from ..utils.error_reply import get_error
 from ..utils.image.image_tools import get_pic
-from ..gsuid_utils.api.minigg.models import Artifact
 from ..utils.image.convert import str_lenth, convert_img
-from ..gsuid_utils.api.minigg.request import get_others_info
 from ..utils.resource.RESOURCE_PATH import REL_PATH, WIKI_REL_PATH
 from ..utils.fonts.genshin_fonts import (
     gs_font_14,

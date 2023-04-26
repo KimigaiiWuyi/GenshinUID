@@ -2,6 +2,12 @@ from typing import Dict, List, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.minigg.models import Character, CharacterTalents
+from gsuid_core.utils.api.minigg.request import (
+    get_others_info,
+    get_talent_info,
+    get_character_info,
+)
 
 from .path import TEXT_PATH
 from ..utils.colors import white_color
@@ -9,12 +15,12 @@ from ..utils.error_reply import get_error
 from ..utils.get_assets import get_assets_from_ambr
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img
-from ..gsuid_utils.api.minigg.models import Character, CharacterTalents
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, WIKI_COST_CHAR_PATH
-from ..gsuid_utils.api.minigg.request import (
-    get_others_info,
-    get_talent_info,
-    get_character_info,
+from ..utils.image.image_tools import (
+    get_star_png,
+    get_simple_bg,
+    get_unknown_png,
+    draw_pic_with_ring,
 )
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
@@ -22,12 +28,6 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_30,
     gs_font_36,
     gs_font_44,
-)
-from ..utils.image.image_tools import (
-    get_star_png,
-    get_simple_bg,
-    get_unknown_png,
-    draw_pic_with_ring,
 )
 
 

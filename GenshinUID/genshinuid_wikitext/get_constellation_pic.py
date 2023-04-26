@@ -2,16 +2,21 @@ from typing import Dict, List, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.minigg.request import (
+    get_character_info,
+    get_constellation_info,
+)
+from gsuid_core.utils.api.minigg.models import (
+    Character,
+    CharacterConstellation,
+    CharacterConstellations,
+)
 
 from .path import TEXT_PATH
 from ..utils.error_reply import get_error
 from ..utils.resource.download_url import download
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img
-from ..gsuid_utils.api.minigg.request import (
-    get_character_info,
-    get_constellation_info,
-)
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,
     ICON_PATH,
@@ -22,11 +27,6 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_20,
     gs_font_28,
     gs_font_32,
-)
-from ..gsuid_utils.api.minigg.models import (
-    Character,
-    CharacterConstellation,
-    CharacterConstellations,
 )
 from ..utils.image.image_tools import (
     get_star_png,

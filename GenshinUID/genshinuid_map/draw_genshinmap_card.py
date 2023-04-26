@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Union
 
-from ..gsuid_utils.api.minigg.request import get_map_data
-from ..gsuid_utils.api.minigg.exception import MiniggNotFoundError
+from gsuid_core.utils.api.minigg.request import get_map_data
+from gsuid_core.utils.api.minigg.exception import MiniggNotFoundError
 
 MAP_DATA = Path(__file__).parent / 'map_data'
 

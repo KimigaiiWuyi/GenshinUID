@@ -10,12 +10,12 @@ from gsuid_core.bot import Bot
 from qrcode import ERROR_CORRECT_L
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
+from gsuid_core.utils.api.mys.models import MysOrder
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
 from ..utils.error_reply import get_error
 from .draw_topup_img import draw_wx, draw_ali
-from ..gsuid_utils.api.mys.models import MysOrder
 
 disnote = '''免责声明:
 该充值接口由米游社提供,不对充值结果负责。

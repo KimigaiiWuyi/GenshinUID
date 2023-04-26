@@ -3,6 +3,12 @@ from typing import Dict, List, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.minigg.models import Weapon, WeaponStats
+from gsuid_core.utils.api.minigg.request import (
+    get_others_info,
+    get_weapon_info,
+    get_weapon_stats,
+)
 
 from .path import TEXT_PATH
 from ..utils.colors import white_color
@@ -10,16 +16,10 @@ from ..utils.error_reply import get_error
 from ..utils.get_assets import get_assets_from_ambr
 from ..utils.image.convert import convert_img, get_str_size
 from ..utils.resource.RESOURCE_PATH import WIKI_WEAPON_PATH
-from ..gsuid_utils.api.minigg.models import Weapon, WeaponStats
 from ..utils.image.image_tools import (
     get_star_png,
     get_simple_bg,
     get_unknown_png,
-)
-from ..gsuid_utils.api.minigg.request import (
-    get_others_info,
-    get_weapon_info,
-    get_weapon_stats,
 )
 from ..utils.fonts.genshin_fonts import (
     gs_font_18,

@@ -2,15 +2,15 @@ from typing import List, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.minigg.models import Food
+from gsuid_core.utils.api.minigg.request import get_others_info
 
 from .path import TEXT_PATH
 from ..utils.colors import white_color
 from ..utils.error_reply import get_error
-from ..gsuid_utils.api.minigg.models import Food
 from ..utils.get_assets import get_assets_from_ambr
 from ..utils.resource.RESOURCE_PATH import WIKI_FOOD_PATH
 from ..utils.image.convert import convert_img, get_str_size
-from ..gsuid_utils.api.minigg.request import get_others_info
 from ..utils.image.image_tools import (
     get_star_png,
     get_simple_bg,

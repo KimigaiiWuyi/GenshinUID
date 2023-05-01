@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .models import (
+from gsuid_core.utils.plugins_config.models import (
     GSC,
     GsStrConfig,
     GsBoolConfig,
@@ -10,17 +10,10 @@ from .models import (
 )
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
-    'proxy': GsStrConfig('设置代理', '设置国际服的代理地址', ''),
-    '_pass_API': GsStrConfig('神奇API', '设置某种神奇的API', ''),
     'random_pic_API': GsStrConfig(
         '随机图API',
         '用于面板查询的随机图API',
         'https://genshin-res.cherishmoon.fun/img?name=',
-    ),
-    'restart_command': GsStrConfig(
-        '重启命令',
-        '自定义使用gs重启时触发的控制台命令(看不懂勿改)',
-        'poetry run python',
     ),
     'Ann_Groups': GsDictConfig(
         '推送公告群组',
@@ -79,16 +72,6 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
     'ColorBG': GsBoolConfig(
         '多彩面板',
         '面板颜色不按照属性来渲染,而按照自定义颜色',
-        False,
-    ),
-    'CaptchaPass': GsBoolConfig(
-        '失效项',
-        '该选项已经无效且可能有一定危险性...',
-        False,
-    ),
-    'MysPass': GsBoolConfig(
-        '无效项',
-        '该选项已经无效且可能有一定危险性...',
         False,
     ),
     'DefaultPayWX': GsBoolConfig(

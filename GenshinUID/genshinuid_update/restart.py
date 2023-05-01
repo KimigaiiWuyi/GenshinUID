@@ -5,7 +5,7 @@ import platform
 import subprocess
 from pathlib import Path
 
-from ..genshinuid_config.gs_config import gsconfig
+from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 bot_start = Path(__file__).parents[4] / 'core.py'
 restart_sh_path = Path().cwd() / 'gs_restart.sh'
@@ -15,7 +15,7 @@ _restart_sh = '''#!/bin/bash
 kill -9 {}
 {} &'''
 
-restart_command = gsconfig.get_config('restart_command').data
+restart_command = core_plugins_config.get_config('restart_command').data
 
 
 async def get_restart_sh() -> str:

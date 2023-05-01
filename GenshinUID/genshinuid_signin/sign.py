@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
+from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
@@ -45,7 +46,7 @@ async def sign_in(uid: str) -> str:
         if 'risk_code' in sign_data:
             # 出现校验码
             if sign_data['risk_code'] == 375:
-                if gsconfig.get_config('CaptchaPass').data:
+                if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']
                     vl, ch = await mys_api._pass(gt, ch, Header)

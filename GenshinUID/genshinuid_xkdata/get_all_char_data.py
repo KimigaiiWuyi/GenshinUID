@@ -22,13 +22,13 @@ abyss_rank_path = DATA_PATH / 'abyss_rank.json'
 async def save_all_char_info():
     all_char_info = await get_akasha_all_char_info()
     async with aiofiles.open(all_char_info_path, 'w') as f:
-        await f.write(str(all_char_info))
+        await f.write(json.dumps(all_char_info))
 
 
 async def save_all_abyss_rank():
     abyss_rank = await get_akasha_abyss_rank()
     async with aiofiles.open(abyss_rank_path, 'w') as f:
-        await f.write(str(abyss_rank))
+        await f.write(json.dumps(abyss_rank))
 
 
 async def get_akasha_char_data(
@@ -52,7 +52,7 @@ async def get_akasha_char_data(
     if not char_id:
         return None
 
-    _char_id = char_id.lstrip('100000').strip('0')
+    _char_id = char_id.lstrip('1').lstrip('0')
     if _char_id not in all_char_info:
         return None
 

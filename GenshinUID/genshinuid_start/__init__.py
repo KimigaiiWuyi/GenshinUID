@@ -9,6 +9,10 @@ from ..genshinuid_xkdata import draw_xk_abyss_img
 from ..genshinuid_help.draw_help_card import draw_help_img
 from ..genshinuid_guide.get_abyss_data import generate_data
 from ..utils.resource.generate_char_card import create_all_char_card
+from ..genshinuid_xkdata.get_all_char_data import (
+    save_all_char_info,
+    save_all_abyss_rank,
+)
 
 
 async def all_start():
@@ -19,6 +23,8 @@ async def all_start():
         await create_all_char_card()
         await draw_xk_abyss_img()
         await generate_data()
+        await save_all_char_info()
+        await save_all_abyss_rank()
     except Exception as e:
         logger.exception(e)
 

@@ -7,6 +7,7 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 
 from ..utils.image.convert import convert_img
+from .draw_char_abyss import draw_char_abyss_info
 from .draw_abyss_total import TOTAL_IMG, draw_xk_abyss_img
 from .get_all_char_data import save_all_char_info, save_all_abyss_rank
 
@@ -32,3 +33,9 @@ async def send_abyss_pic(bot: Bot, ev: Event):
     img = await convert_img(TOTAL_IMG)
     await bot.logger.info('获得深渊概览图片成功!')
     await bot.send(img)
+
+
+@sv_get_abyss_database.on_prefix(('角色深渊详情', '角色深渊'), block=True)
+async def send_char_abyss_pic(bot: Bot, ev: Event):
+    im = await draw_char_abyss_info(ev.text)
+    await bot.send(im)

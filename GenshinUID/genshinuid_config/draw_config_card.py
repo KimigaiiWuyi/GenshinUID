@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Union
 
 from PIL import Image, ImageDraw
-
 from gsuid_core.logger import logger
 
 from .gs_config import gsconfig

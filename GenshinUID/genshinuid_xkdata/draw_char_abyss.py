@@ -5,9 +5,9 @@ from PIL import Image, ImageDraw
 
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import artifact2attr
-from .get_all_char_data import get_akasha_char_data
 from ..utils.image.image_tools import get_color_bg, draw_pic_with_ring
 from ..utils.resource.generate_char_card import create_single_item_card
+from .get_all_char_data import get_abyssinfo_data, get_akasha_char_data
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH, WEAPON_PATH
 from ..utils.fonts.genshin_fonts import (
@@ -31,13 +31,15 @@ rank_dict = {
     60: (95, 64, 189),
     40: (64, 140, 189),
     20: (64, 189, 125),
-    0: (200, 200, 200),
+    0: (134, 107, 71),
 }
 
 
 async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
     char_name = await alias_to_char_name(char_name)
     char_id = await name_to_avatar_id(char_name)
+    abyss_info = await get_abyssinfo_data()
+
     # _char_id = char_id[1:].lstrip('0')
     char_useage_rank = []
     char_img = Image.open(CHAR_PATH / f'{char_id}.png')
@@ -122,10 +124,18 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
         img_draw.rounded_rectangle((108, y1, 108 + _pixel, y2), r, fill)
 
         value = f'{rank["d"]}% / {rank["r"]}名'
-        img_draw.text(
-            (37, 16 + _intent), f'版本{rank["v"]}', 'Black', gs_font_20, 'lm'
-        )
-        img_draw.text((730, 16 + _intent), value, 'Black', gs_font_20, 'lm')
+        if rank['v'] in abyss_info:
+            version = abyss_info[rank['v']]['version']
+        else:
+            version = f'版本{rank["v"]}'
+
+        if version == '版本0':
+            version = '平均'
+
+        version = version.replace('-', ' - ')
+
+        img_draw.text((95, 16 + _intent), version, 'Black', gs_font_20, 'rm')
+        img_draw.text((726, 16 + _intent), value, 'Black', gs_font_20, 'lm')
 
     img.paste(_img, (0, 0), _img)
 

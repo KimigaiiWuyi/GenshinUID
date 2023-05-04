@@ -6,11 +6,16 @@ from PIL import Image, ImageDraw
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import artifact2attr
 from .get_all_char_data import get_akasha_char_data
-from ..utils.fonts.genshin_fonts import gs_font_20, gs_font_40
 from ..utils.image.image_tools import get_color_bg, draw_pic_with_ring
 from ..utils.resource.generate_char_card import create_single_item_card
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH, WEAPON_PATH
+from ..utils.fonts.genshin_fonts import (
+    gs_font_20,
+    gs_font_30,
+    gs_font_40,
+    gs_font_44,
+)
 
 black = (10, 10, 10)
 grey = (40, 40, 40)
@@ -49,7 +54,7 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
     title_bg = Image.open(TEXT_PATH / 'title_bg.png')
 
     # 计算宽高
-    h = 1080 + len(char_useage_rank) * 30
+    h = 1230 + len(char_useage_rank) * 30
 
     # 开始绘图
     img = await get_color_bg(900, h, '_abyss_char')
@@ -64,15 +69,45 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
     # 绘图
     r = 20
     bg_color = (255, 255, 255, 120)
-    img_draw.rounded_rectangle((24, 538, 876, 746), r, bg_color)
-    img_draw.rounded_rectangle((24, 761, 876, 969), r, bg_color)
-    img_draw.rounded_rectangle((24, 988, 876, h - 40), r, bg_color)
+    h0 = 653
+    h1 = 208
+    # h2 = h - 1028
 
-    _start = 1020
+    img_draw.rounded_rectangle((24, 518, 876, h0), r, bg_color)
+
+    xy1 = (24, h0 + 20, 876, h0 + 20 + h1)
+    xy2 = (24, h0 + 20 + h1 + 20, 876, h0 + 20 + h1 * 2 + 20)
+    xy3 = (24, h0 + 20 + h1 * 2 + 40, 876, h - 40)
+
+    img_draw.rounded_rectangle(xy1, r, bg_color)
+    img_draw.rounded_rectangle(xy2, r, bg_color)
+    img_draw.rounded_rectangle(xy3, r, bg_color)
+
+    char_data_list = []
+    char_data_list.append(
+        '{:.1f}%'.format(float(all_char_info['abyss']['use_rate']) * 100)
+    )
+    char_data_list.append(
+        '{:.1f}%'.format(float(all_char_info['abyss']['maxstar_rate']) * 100)
+    )
+    char_data_list.append(
+        '{:.1f}%'.format(all_char_info['abyss']['come_rate'])
+    )
+    char_data_list.append(str(all_char_info['abyss']['avg_level']))
+    char_data_list.append(str(all_char_info['abyss']['avg_constellation']))
+
+    for index, i in enumerate(['使用率', '满星率', '出场率', '平均等级', '平均命座']):
+        _it = index * 161
+        img_draw.text((127 + _it, 618), i, (67, 46, 26), gs_font_30, 'mm')
+        img_draw.text(
+            (127 + _it, 566), char_data_list[index], 'Black', gs_font_44, 'mm'
+        )
+
+    _start = 1135
     bar_bg = (0, 0, 0, 128)
 
     for index, rank in enumerate(char_useage_rank):
-        _intent = _start + index * 30
+        _intent = _start + index * 30 + 20
         y1, y2 = _intent + 9, _intent + 23
         img_draw.rounded_rectangle((108, y1, 708, y2), r, bar_bg)
 
@@ -106,7 +141,7 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
         weapon_rate = weapon['rate'] + '%'
         item_draw.text((128, 280), weapon_rate, 'Black', gs_font_40, 'mm')
         item = item.resize((128, 155))
-        img.paste(item, (47 + 135 * index, 565), item)
+        img.paste(item, (47 + 135 * index, xy1[1] + 25), item)
         if index >= 5:
             break
 
@@ -134,7 +169,7 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
         item_draw.text((220, 40), f'{item_type}', 'Black', gs_font_40, 'mm')
 
         item = item.resize((128, 155))
-        img.paste(item, (47 + 135 * index, 788), item)
+        img.paste(item, (47 + 135 * index, xy2[1] + 25), item)
         if index >= 5:
             break
     return await convert_img(img)

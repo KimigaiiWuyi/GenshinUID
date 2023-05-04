@@ -10,7 +10,7 @@ from gsuid_core.segment import MessageSegment
 from .restart import restart_message, restart_genshinuid
 from .draw_update_log import get_all_update_log, draw_update_log_img
 
-sv_core_config = SV('Core管理', pm=1)
+sv_gs_config = SV('GS管理', pm=1)
 sv_update_history = SV('Core更新记录')
 
 
@@ -46,7 +46,7 @@ async def check_msg():
         logger.warning('遗留信息检查失败!')
 
 
-@sv_core_config.on_fullmatch(('gs重启'))
+@sv_gs_config.on_fullmatch(('gs重启'))
 async def send_restart_msg(bot: Bot, ev: Event):
     await bot.logger.warning('开始执行[重启]')
     if ev.group_id:
@@ -59,7 +59,7 @@ async def send_restart_msg(bot: Bot, ev: Event):
     await restart_genshinuid(bot.bot_id, send_type, str(send_id))
 
 
-@sv_core_config.on_fullmatch(('gs关闭core', 'gs关闭Core'))
+@sv_gs_config.on_fullmatch(('GS关闭core', 'GS关闭Core'))
 async def send_shutdown_msg(bot: Bot, ev: Event):
     await bot.logger.warning('开始执行[关闭]')
     await bot.send('正在执行[gs关闭Core]...')
@@ -73,7 +73,7 @@ async def send_updatelog_msg(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_core_config.on_fullmatch(('gs更新', 'gs强制更新', 'gs强行强制更新', 'gs全部更新'))
+@sv_gs_config.on_fullmatch(('gs更新', 'gs强制更新', 'gs强行强制更新', 'gs全部更新'))
 async def send_update_msg(bot: Bot, ev: Event):
     await bot.logger.info('[gs更新] 正在执行 ...')
     level = 2

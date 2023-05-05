@@ -112,8 +112,13 @@ async def import_gacha_log_info(session: NoticeSession):
     group_id = None
     sp_user_type = None
 
-    if 'message_type' not in ev:
+    if (
+        'message_type' not in ev
+        and 'notice_type' not in ev
+        and ev['notice_type'] != 'offline_file'
+    ):
         return
+
     if 'user_id' in ev:
         user_id = str(ev['user_id'])
     if 'group_id' in ev:

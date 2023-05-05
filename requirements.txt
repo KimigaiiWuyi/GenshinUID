@@ -3,3 +3,4 @@ gitpython==3.1.31 ; python_full_version >= "3.8.1" and python_full_version < "4.
 msgspec==0.14.2 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 pillow==9.5.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
 smmap==5.0.0 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"
+websockets==11.0.2 ; python_full_version >= "3.8.1" and python_full_version < "4.0.0"

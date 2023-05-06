@@ -5,10 +5,10 @@ from typing import Union, Optional
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
 
 from ..utils.convert import GsCookie
-from ..utils.error_reply import get_error
 from ..utils.image.convert import convert_img
 from ..utils.resource.download_url import download_file
 from ..utils.resource.generate_char_card import create_single_char_card

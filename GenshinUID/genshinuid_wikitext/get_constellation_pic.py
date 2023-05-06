@@ -2,6 +2,7 @@ from typing import Dict, List, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.minigg.request import (
     get_character_info,
     get_constellation_info,
@@ -13,7 +14,6 @@ from gsuid_core.utils.api.minigg.models import (
 )
 
 from .path import TEXT_PATH
-from ..utils.error_reply import get_error
 from ..utils.resource.download_url import download
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img

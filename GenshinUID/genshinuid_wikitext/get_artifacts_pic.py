@@ -3,11 +3,11 @@ from typing import Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.minigg.models import Artifact
 from gsuid_core.utils.api.minigg.request import get_others_info
 
 from .path import TEXT_PATH
-from ..utils.error_reply import get_error
 from ..utils.image.image_tools import get_pic
 from ..utils.image.convert import str_lenth, convert_img
 from ..utils.resource.RESOURCE_PATH import REL_PATH, WIKI_REL_PATH

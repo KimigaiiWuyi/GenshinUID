@@ -7,11 +7,11 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
+from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
 from .notice import get_notice_list
 from .resin_text import get_resin_text
-from ..utils.error_reply import UID_HINT
 from .draw_resin_card import get_resin_img
 
 sv_get_resin = SV('查询体力')

@@ -1,11 +1,11 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.utils.error_reply import UID_HINT
 
 from .note_text import award
 from ..utils.convert import get_uid
 from ..utils.database import get_sqla
-from ..utils.error_reply import UID_HINT
 from .draw_note_card import draw_note_img
 
 sv_get_monthly_data = SV('查询札记')

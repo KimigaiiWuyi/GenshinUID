@@ -2,9 +2,9 @@ import json
 import time
 
 from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import get_error
 
 from ..utils.mys_api import mys_api
-from ..utils.error_reply import get_error
 
 
 async def calc_reg_time(uid: str) -> str:

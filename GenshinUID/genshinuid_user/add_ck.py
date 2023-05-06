@@ -2,9 +2,10 @@ from pathlib import Path
 from typing import Dict, List
 from http.cookies import SimpleCookie
 
+from gsuid_core.utils.error_reply import UID_HINT
+
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
-from ..utils.error_reply import UID_HINT
 
 pic_path = Path(__file__).parent / 'pic'
 id_list = [

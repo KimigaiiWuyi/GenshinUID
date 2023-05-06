@@ -4,9 +4,9 @@ from typing import Dict, List, Tuple, Union, Optional
 
 from PIL import Image
 from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import CHAR_HINT
 
 from .to_card import draw_enka_card
-from ..utils.error_reply import CHAR_HINT
 from .draw_char_card import draw_char_img
 from .draw_group_dmg import draw_group_dmg_img
 from .mono.Character import Character, get_char

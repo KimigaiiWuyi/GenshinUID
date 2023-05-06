@@ -1,9 +1,11 @@
+import re
+
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
-from ..utils.error_reply import UID_HINT
 from .draw_abyss_card import draw_abyss_img
 
 sv_abyss = SV('查询深渊')
@@ -13,6 +15,10 @@ sv_abyss = SV('查询深渊')
     ('查询深渊', 'sy', '查询上期深渊', 'sqsy', '上期深渊', '深渊'), block=True
 )
 async def send_abyss_info(bot: Bot, ev: Event):
+    name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    if name:
+        return
+
     await bot.logger.info('开始执行[查询深渊信息]')
     uid = await get_uid(bot, ev)
     if uid is None:

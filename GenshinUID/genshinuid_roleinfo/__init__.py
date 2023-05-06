@@ -3,10 +3,10 @@ import re
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
 from .get_regtime import calc_reg_time
-from ..utils.error_reply import UID_HINT
 from .draw_roleinfo_card import draw_pic
 
 sv_get_regtime = SV('查询注册时间')

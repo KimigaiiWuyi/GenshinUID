@@ -3,11 +3,11 @@ import time
 from typing import List, Union, Literal, Optional
 
 from httpx import ReadTimeout, ConnectTimeout
+from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.api.enka.models import EnkaData
 from gsuid_core.utils.api.enka.request import get_enka_info
 from gsuid_core.utils.api.minigg.request import get_weapon_info
 
-from ..utils.error_reply import UID_HINT
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.ambr_to_minigg import convert_ambr_to_weapon
 from ..utils.map.GS_MAP_PATH import (

@@ -7,11 +7,11 @@ from gsuid_core.gss import gss
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import UID_HINT
 
 from .util import black_ids
 from ..utils.convert import get_uid
 from .main import ann, consume_remind
-from ..utils.error_reply import UID_HINT
 from ..utils.image.convert import convert_img
 from ..genshinuid_config.gs_config import gsconfig
 from .ann_card import sub_ann, unsub_ann, ann_list_card, ann_detail_card

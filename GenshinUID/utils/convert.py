@@ -3,11 +3,11 @@ from typing import Tuple, Union, Optional, overload
 
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.utils.error_reply import VERIFY_HINT
 from gsuid_core.utils.api.mys.models import AbyssData, IndexData
 
 from .mys_api import mys_api
 from .database import get_sqla
-from .error_reply import VERIFY_HINT
 
 
 @overload

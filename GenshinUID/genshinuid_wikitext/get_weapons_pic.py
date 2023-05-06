@@ -3,6 +3,7 @@ from typing import Dict, List, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.minigg.models import Weapon, WeaponStats
 from gsuid_core.utils.api.minigg.request import (
     get_others_info,
@@ -12,7 +13,6 @@ from gsuid_core.utils.api.minigg.request import (
 
 from .path import TEXT_PATH
 from ..utils.colors import white_color
-from ..utils.error_reply import get_error
 from ..utils.get_assets import get_assets_from_ambr
 from ..utils.image.convert import convert_img, get_str_size
 from ..utils.resource.RESOURCE_PATH import WIKI_WEAPON_PATH

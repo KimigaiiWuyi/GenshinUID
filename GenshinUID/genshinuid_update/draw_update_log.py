@@ -2,9 +2,9 @@ from pathlib import Path
 from typing import List, Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.error_reply import UPDATE_HINT
 
 from .update import update_from_git
-from ..utils.error_reply import UPDATE_HINT
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import get_color_bg
 from ..utils.fonts.genshin_fonts import genshin_font_origin

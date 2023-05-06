@@ -128,9 +128,14 @@ async def import_gacha_log_info(session: NoticeSession):
 
     msg_id = ''
     pm = 6
-
-    if priv.check_priv(ev, priv.SUPERUSER):
-        pm = 1
+    
+    if 'message_type' in ev:
+        if priv.check_priv(ev, priv.SUPERUSER):
+            pm = 1
+        elif priv.check_priv(ev, priv.OWNER):
+            pm = 2
+        elif priv.check_priv(ev, priv.ADMIN):
+            pm = 3
 
     user_type = 'group' if group_id else 'direct'
 

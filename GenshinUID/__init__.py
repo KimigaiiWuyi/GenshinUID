@@ -2,6 +2,7 @@ import os
 import re
 import asyncio
 from pathlib import Path
+from copy import deepcopy
 from base64 import b64encode
 from typing import Any, List, Union, Optional
 
@@ -31,7 +32,7 @@ connect_core = on_fullmatch(
 )
 
 gsclient: Optional[GsClient] = None
-command_start = driver.config.command_start
+command_start = deepcopy(driver.config.command_start)
 command_start.discard('')
 
 if hasattr(driver.config, 'gsuid_core_repeat'):

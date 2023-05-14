@@ -12,10 +12,11 @@ from .models import Message, MessageReceive
 gsclient: Optional[GsClient] = None
 gsconnecting = False
 
+
 async def connect():
     global gsclient
     global gsconnecting
-    if not gsconnecting :
+    if not gsconnecting:
         gsconnecting = True
         try:
             gsclient = await GsClient().async_connect()
@@ -134,7 +135,7 @@ async def import_gacha_log_info(session: NoticeSession):
 
     msg_id = ''
     pm = 6
-    
+
     if 'message_type' in ev:
         if priv.check_priv(ev, priv.SUPERUSER):
             pm = 1

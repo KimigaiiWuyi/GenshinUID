@@ -655,26 +655,44 @@ async def onebot_v12_send(
                 )
             await bot.call_api('send_message', **params)
         elif image:
-            img_bytes = base64.b64decode(image.replace('base64://', ''))
             timestamp = time.time()
             file_name = f'{target_id}_{timestamp}.png'
-            up_data = await bot.call_api(
-                'upload_file',
-                type="data",
-                data=img_bytes,
-                name=f"{file_name}",
-            )
+            if image.startswith('link://'):
+                link = image.replace('link://', '')
+                up_data = await bot.call_api(
+                    'upload_file',
+                    type="url",
+                    url=link,
+                    name=f"{file_name}",
+                )
+            else:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
+                up_data = await bot.call_api(
+                    'upload_file',
+                    type="data",
+                    data=img_bytes,
+                    name=f"{file_name}",
+                )
             file_id = up_data['file_id']
             await send_file_message(params, "image", file_id)
         elif file:
             file_name, file_content = file.split('|')
-            file_data = base64.b64decode(file_content)
-            up_data = await bot.call_api(
-                'upload_file',
-                type="data",
-                data=file_data,
-                name=f"{file_name}",
-            )
+            if file_content.startswith('link://'):
+                link = file_content.replace('link://', '')
+                up_data = await bot.call_api(
+                    'upload_file',
+                    type="url",
+                    url=link,
+                    name=f"{file_name}",
+                )
+            else:
+                file_data = base64.b64decode(file_content)
+                up_data = await bot.call_api(
+                    'upload_file',
+                    type="data",
+                    data=file_data,
+                    name=f"{file_name}",
+                )
             file_id = up_data['file_id']
             await send_file_message(params, "file", file_id)
 

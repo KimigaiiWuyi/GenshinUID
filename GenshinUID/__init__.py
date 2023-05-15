@@ -10,15 +10,22 @@ from .base import sv, logger, hoshino_bot
 from .models import Message, MessageReceive
 
 gsclient: Optional[GsClient] = None
+gsconnecting = False
 
 
 async def connect():
     global gsclient
-    try:
-        gsclient = await GsClient().async_connect()
-        await gsclient.start()
-    except ConnectionRefusedError:
-        logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
+    global gsconnecting
+    if not gsconnecting:
+        gsconnecting = True
+        try:
+            gsclient = await GsClient().async_connect()
+            logger.info('[gsuid-core]: 发起一次连接')
+            await gsclient.start()
+            gsconnecting = False
+        except ConnectionRefusedError:
+            gsconnecting = False
+            logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
 
 
 async def get_gs_msg(ev):
@@ -128,7 +135,7 @@ async def import_gacha_log_info(session: NoticeSession):
 
     msg_id = ''
     pm = 6
-    
+
     if 'message_type' in ev:
         if priv.check_priv(ev, priv.SUPERUSER):
             pm = 1

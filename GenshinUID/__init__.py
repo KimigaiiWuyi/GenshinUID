@@ -454,9 +454,6 @@ def convert_message(_msg: Any, message: List[Message], index: int):
     elif _msg.type == 'wx.link':
         data: str = f"title: {_msg.data['title']} url: {_msg.data['url']}"
         message.append(Message('text', data))
-    elif _msg.type == 'wx.link':
-        data: str = f"title: {_msg.data['title']} url: {_msg.data['url']}"
-        message.append(Message('text', data))
     return message
 
 

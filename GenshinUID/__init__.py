@@ -451,6 +451,9 @@ def convert_message(_msg: Any, message: List[Message], index: int):
     elif _msg.type == 'mention':
         if 'user_id' in _msg.data:
             message.append(Message('at', _msg.data['user_id']))
+    elif _msg.type == 'wx.link':
+        data: str = f"title: {_msg.data['title']} url: {_msg.data['url']}"
+        message.append(Message('text', data))
     return message
 
 

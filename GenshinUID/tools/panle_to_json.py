@@ -77,6 +77,8 @@ SAMPLE = {
     '艾尔海森': 'E1枚光幕攻击伤害(蔓激化)',
     '瑶瑶': 'E白玉萝卜治疗量',
     '米卡': 'Q施放治疗量',
+    '迪希雅': 'E剑域炽焰伤害',
+    '白术': 'E治疗量',
 }
 
 
@@ -114,7 +116,7 @@ async def panle2Json() -> None:
     :说明:
       访问DATA_PATH并转换数据为dmgMap.json。
     '''
-    wb = openpyxl.load_workbook(str(R_PATH / '参考面板3.5B.xlsx'), data_only=True)
+    wb = openpyxl.load_workbook(str(DATA_PATH / '参考面板.xlsx'), data_only=True)
     sheet = wb.active
 
     result = {}
@@ -202,7 +204,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 354:
+            if row == 361:
                 print('ok!')
                 result[char_temp] = char_result
         else:

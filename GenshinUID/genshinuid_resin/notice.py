@@ -24,6 +24,8 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
         sqla = get_sqla(bot_id)
         user_list = await sqla.get_all_push_user_list()
         for user in user_list:
+            if user.uid is None:
+                continue
             raw_data = await mys_api.get_daily_data(user.uid)
             if isinstance(raw_data, int):
                 logger.error(f'[推送提醒]获取{user.uid}的数据失败!')

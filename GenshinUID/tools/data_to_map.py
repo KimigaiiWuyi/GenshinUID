@@ -5,6 +5,7 @@ from pathlib import Path
 
 import httpx
 
+sys.path.append(str(Path(__file__).parents[5]))
 sys.path.append(str(Path(__file__).parents[2]))
 __package__ = 'GenshinUID.tools'
 from ..version import Genshin_version  # noqa: E402
@@ -108,7 +109,7 @@ async def avatarName2ElementJson() -> None:
             data = await convert_ambr_to_minigg(_id)
         if data is not None and 'code' not in data:
             temp[name] = elementMap[data['element']]
-            enName = data['images']['namesideicon'].split('_')[-1]
+            enName = data['images']['namesideicon'].split('_')[-1]  # type: ignore
             enName2Id_result[enName] = _id
             avatarId2Star_result[int(_id)] = str(data['rarity'])
             avatarName2Weapon_result[data['name']] = data['weapontype']

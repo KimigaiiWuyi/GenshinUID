@@ -687,6 +687,7 @@ help.webp
 review.json
 gs_data
 *.xlsx
+help_data
 GenshinUID Help.xlsx
 
 ### Debug ###

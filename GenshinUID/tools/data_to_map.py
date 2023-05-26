@@ -109,7 +109,8 @@ async def avatarName2ElementJson() -> None:
             data = await convert_ambr_to_minigg(_id)
         if data is not None and 'code' not in data:
             temp[name] = elementMap[data['element']]
-            enName = data['images']['namesideicon'].split('_')[-1]  # type: ignore
+            nameicon = data['images']['namesideicon']  # type: ignore
+            enName = nameicon.split('_')[-1]
             enName2Id_result[enName] = _id
             avatarId2Star_result[int(_id)] = str(data['rarity'])
             avatarName2Weapon_result[data['name']] = data['weapontype']

@@ -8,18 +8,9 @@ from gsuid_core.segment import MessageSegment
 from ..utils.database import get_sqla
 from .get_ck_help_msg import get_ck_help
 from ..utils.message import send_diff_msg
-from .draw_user_card import get_user_card
 
 sv_user_info = SV('用户信息')
 sv_user_help = SV('绑定帮助')
-
-
-@sv_user_info.on_fullmatch(('绑定信息'))
-async def send_bind_card(bot: Bot, ev: Event):
-    await bot.logger.info('开始执行[查询用户绑定状态]')
-    im = await get_user_card(ev.bot_id, ev.user_id)
-    await bot.logger.info('[查询用户绑定状态]完成!等待图片发送中...')
-    await bot.send(im)
 
 
 @sv_user_info.on_command(('绑定uid', '切换uid', '删除uid', '解绑uid'))
@@ -33,7 +24,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     if uid and not uid.isdigit():
         return await bot.send('你输入了错误的格式!')
 
-    if ev.command.startswith('绑定'):
+    if '绑定' in ev.command:
         data = await sqla.insert_bind_data(qid, uid=uid)
         return await send_diff_msg(
             bot,
@@ -45,7 +36,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 -3: '你输入了错误的格式!',
             },
         )
-    elif ev.command.startswith('切换'):
+    elif '切换' in ev.command:
         data = await sqla.switch_uid(qid, uid=uid)
         if isinstance(data, List):
             return await bot.send(f'切换UID{uid}成功！')

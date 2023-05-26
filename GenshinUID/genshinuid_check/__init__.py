@@ -31,7 +31,7 @@ async def send_check_cookie(bot: Bot, ev: Event):
     user_list = await get_sqla(bot.bot_id).get_all_user()
     invalid_user: List[GsUser] = []
     for user in user_list:
-        if user.cookie and user.mys_id:
+        if user.cookie and user.mys_id and user.uid:
             mys_data = await mys_api.get_mihoyo_bbs_info(
                 user.mys_id,
                 user.cookie,
@@ -85,7 +85,7 @@ async def send_check_stoken(bot: Bot, ev: Event):
             mys_data = await mys_api.get_cookie_token_by_stoken(
                 '', user.mys_id, user.stoken
             )
-            if isinstance(mys_data, int):
+            if isinstance(mys_data, int) and user.uid:
                 await get_sqla(bot.bot_id).update_user_stoken(user.uid, None)
                 invalid_user.append(user)
                 continue

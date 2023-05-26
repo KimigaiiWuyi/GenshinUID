@@ -11,6 +11,8 @@
 <p align="center">
   <a><img src="https://s2.loli.net/2023/03/26/76oWuYJwg18aXL2.jpg"></a>
 </p>
+> [!WARNING]
+> 该分支并不是Nonebot2的插件，也不是任何一个其他Bot的插件，具体安装方法请参考[文档](https://docs.gsuid.gbots.work/#/)
 
 ## 丨感谢
 

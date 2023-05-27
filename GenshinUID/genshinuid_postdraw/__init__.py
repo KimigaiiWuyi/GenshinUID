@@ -10,7 +10,7 @@ sv_post_my_draw = SV('留影叙佳期')
 
 
 # 群聊内 每月统计 功能
-@sv_post_my_draw.on_fullmatch(('留影叙佳期','原神画片'))
+@sv_post_my_draw.on_fullmatch(('留影叙佳期', '原神画片'))
 async def send_postdraw_data(bot: Bot, ev: Event):
     sqla = get_sqla(ev.bot_id)
     uid = await sqla.get_bind_uid(ev.user_id)

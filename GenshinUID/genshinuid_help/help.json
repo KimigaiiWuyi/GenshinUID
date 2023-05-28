@@ -1,4 +1,89 @@
 {
+  "个人服务": {
+    "desc": "一些和其他账号相关的",
+    "data": [
+      {
+        "name": "清除原神公告红点",
+        "desc": "清除自己的原神公告红点",
+        "eg": "清除原神公告红点",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "留影叙佳期",
+        "desc": "获取当天的留影叙佳期画片",
+        "eg": "留影叙佳期",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "扫码登陆",
+        "desc": "私聊扫码登陆，米游社扫码即可",
+        "eg": "扫码登陆",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "刷新抽卡记录",
+        "desc": "更新抽卡记录，需要SK",
+        "eg": "刷新抽卡记录",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "抽卡记录",
+        "desc": "查询你的抽卡记录",
+        "eg": "抽卡记录",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "导出抽卡记录",
+        "desc": "仅限群聊，导出UIGF",
+        "eg": "导出抽卡记录",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "导入抽卡记录",
+        "desc": "导入符合UIGF格式的文件",
+        "eg": "私聊直接发Json文件",
+        "need_ck": false,
+        "need_sk": true,
+        "need_admin": false
+      },
+      {
+        "name": "从小助手导入抽卡记录",
+        "desc": "直接从小助手导入抽卡记录",
+        "eg": "从小助手导入抽卡记录",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "导出抽卡记录到小助手",
+        "desc": "直接导出抽卡记录进入小助手",
+        "eg": "导出抽卡记录到小助手",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "导出抽卡记录链接",
+        "desc": "直接获取最新的抽卡记录链接",
+        "eg": "导出抽卡记录链接",
+        "need_ck": true,
+        "need_sk": true,
+        "need_admin": false
+      }
+    ]
+  },
   "私人服务": {
     "desc": "需要加 [gs开启/设置] 前缀",
     "data": [
@@ -38,62 +123,6 @@
         "name": "[推送项]阈值",
         "desc": "设置推送的阈值",
         "eg": "gs设置体力阈值140",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "刷新抽卡记录",
-        "desc": "更新抽卡记录，需要SK",
-        "eg": "刷新抽卡记录",
-        "need_ck": false,
-        "need_sk": true,
-        "need_admin": false
-      },
-      {
-        "name": "抽卡记录",
-        "desc": "查询你的抽卡记录",
-        "eg": "抽卡记录",
-        "need_ck": false,
-        "need_sk": true,
-        "need_admin": false
-      },
-      {
-        "name": "导出抽卡记录",
-        "desc": "仅限群聊，导出UIGF",
-        "eg": "导出抽卡记录",
-        "need_ck": false,
-        "need_sk": true,
-        "need_admin": false
-      },
-      {
-        "name": "导入抽卡记录",
-        "desc": "导入符合UIGF格式的文件",
-        "eg": "私聊直接发Json文件",
-        "need_ck": false,
-        "need_sk": true,
-        "need_admin": false
-      },
-      {
-        "name": "扫码登陆",
-        "desc": "私聊扫码登陆，米游社扫码即可",
-        "eg": "扫码登陆",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "清除原神公告红点",
-        "desc": "清除自己的原神公告红点",
-        "eg": "清除原神公告红点",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "留影叙佳期",
-        "desc": "获取当天的留影叙佳期画片",
-        "eg": "留影叙佳期",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -463,15 +492,15 @@
         "need_admin": false
       },
       {
-        "name": "食物介绍、原魔介绍",
-        "desc": "查询食物和怪物信息",
-        "eg": "食物鸡、原魔公子",
+        "name": "食物介绍",
+        "desc": "查询食物信息",
+        "eg": "食物介绍鸡",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "武器材料、角色材料",
+        "name": "角色材料",
         "desc": "查询材料消耗",
         "eg": "角色材料可莉",
         "need_ck": false,
@@ -490,6 +519,22 @@
         "name": "哪里有xx",
         "desc": "查找地图资源点",
         "eg": "哪里有甜甜花",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "原魔介绍",
+        "desc": "查询怪物信息",
+        "eg": "原魔介绍公子",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "武器材料",
+        "desc": "查询武器材料消耗",
+        "eg": "武器材料天空",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

@@ -1,18 +1,15 @@
-from pathlib import Path
-
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 
-from ..utils.image.convert import convert_img
+from .get_help import get_core_help
 
-HELP_IMG = Path(__file__).parent / 'help.jpg'
-
-sv_gsuid_help = SV('原神帮助')
+sv_gs_help = SV('gs帮助')
 
 
-@sv_gsuid_help.on_fullmatch('gs帮助')
-async def send_guide_pic(bot: Bot, ev: Event):
-    img = await convert_img(HELP_IMG)
-    await bot.logger.info('获得gs帮助图片成功！')
-    await bot.send(img)
+@sv_gs_help.on_fullmatch(('gs帮助'))
+async def send_help_img(bot: Bot, ev: Event):
+    logger.info('开始执行[gs帮助]')
+    im = await get_core_help()
+    await bot.send(im)

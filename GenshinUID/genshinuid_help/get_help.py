@@ -12,7 +12,7 @@ from ..utils.image.image_tools import get_color_bg
 from ..utils.fonts.genshin_fonts import genshin_font_origin
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
-HELP_DATA = Path(__file__).parent / 'Help.json'
+HELP_DATA = Path(__file__).parent / 'help.json'
 
 
 async def get_help_data() -> Optional[Dict[str, PluginHelp]]:

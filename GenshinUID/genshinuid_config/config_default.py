@@ -89,4 +89,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后支持的WIKI功能将转为图片版',
         True,
     ),
+    'WidgetResin': GsBoolConfig(
+        '体力使用组件API',
+        '开启后mr功能将转为调用组件API, 可能缺失数据、数据不准',
+        True,
+    ),
 }

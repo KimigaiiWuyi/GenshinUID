@@ -1,7 +1,7 @@
 import json
 import asyncio
-from typing import List
 from pathlib import Path
+from typing import List, Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
@@ -9,11 +9,15 @@ from gsuid_core.utils.api.mys.models import Expedition
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
+from ..utils.api.mys.models import FakeResin
 from ..utils.image.convert import convert_img
+from ..genshinuid_config.gs_config import gsconfig
 from ..genshinuid_enka.to_data import get_enka_info
 from ..utils.image.image_tools import get_simple_bg
 from ..utils.map.name_covert import enName_to_avatarId
+from ..utils.api.mys.models import Expedition as WidgetExpedition
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_PATH
+from ..utils.api.mys.models import Transformer, WidgetResin, RecoveryTime
 from ..utils.fonts.genshin_fonts import (
     gs_font_20,
     gs_font_26,
@@ -38,12 +42,14 @@ green_color = (15, 196, 35)
 orange_color = (237, 115, 61)
 red_color = (235, 61, 75)
 
+use_widget = gsconfig.get_config('WidgetResin').data
+
 
 async def _draw_task_img(
     img: Image.Image,
     img_draw: ImageDraw.ImageDraw,
     index: int,
-    char: Expedition,
+    char: Union[Expedition, WidgetExpedition],
 ):
     char_en_name = char['avatar_side_icon'].split('_')[-1].split('.')[0]
     avatar_id = await enName_to_avatarId(char_en_name)
@@ -110,33 +116,60 @@ async def seconds2hours(seconds: int) -> str:
     return '%02d小时%02d分' % (h, m)
 
 
-async def draw_resin_img(uid: str) -> Image.Image:
-    # 获取数据
-    daily_data = await mys_api.get_daily_data(uid)
+def transform_fake_resin(data: WidgetResin) -> FakeResin:
+    return FakeResin(
+        **data,
+        remain_resin_discount_num=0,
+        resin_discount_num_limit=0,
+        transformer=Transformer(
+            obtained=True,
+            recovery_time=RecoveryTime(
+                Day=1, Hour=1, Minute=1, Second=1, reached=False
+            ),
+            wiki='',
+            noticed=False,
+            latest_job_id='123',
+        ),
+    )
 
+
+def get_error(img: Image.Image, uid: str, daily_data: int):
+    img_draw = ImageDraw.Draw(img)
+    img.paste(warn_pic, (0, 0), warn_pic)
+    # 写UID
+    img_draw.text(
+        (250, 553),
+        f'UID{uid}',
+        font=gs_font_26,
+        fill=first_color,
+        anchor='mm',
+    )
+    img_draw.text(
+        (250, 518),
+        f'错误码 {daily_data}',
+        font=gs_font_26,
+        fill=red_color,
+        anchor='mm',
+    )
+    return img
+
+
+async def draw_resin_img(uid: str) -> Image.Image:
     # 获取背景图片各项参数
     img = await get_simple_bg(based_w, based_h)
     img.paste(white_overlay, (0, 0), white_overlay)
 
+    # 获取数据
+    if use_widget and int(str(uid)[0]) <= 5:
+        _daily_data = await mys_api.get_widget_resin_data(uid)
+        if isinstance(_daily_data, int):
+            return get_error(img, uid, _daily_data)
+        daily_data = transform_fake_resin(_daily_data)
+    else:
+        daily_data = await mys_api.get_daily_data(uid)
+
     if isinstance(daily_data, int):
-        img_draw = ImageDraw.Draw(img)
-        img.paste(warn_pic, (0, 0), warn_pic)
-        # 写UID
-        img_draw.text(
-            (250, 553),
-            f'UID{uid}',
-            font=gs_font_26,
-            fill=first_color,
-            anchor='mm',
-        )
-        img_draw.text(
-            (250, 518),
-            f'错误码 {daily_data}',
-            font=gs_font_26,
-            fill=red_color,
-            anchor='mm',
-        )
-        return img
+        return get_error(img, uid, daily_data)
 
     enta_data_path = PLAYER_PATH / uid / 'rawData.json'
     if enta_data_path.exists():
@@ -172,7 +205,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     else:
         resin_color = second_color
     resin_recovery_time = await seconds2hours(
-        daily_data['resin_recovery_time']
+        int(daily_data['resin_recovery_time'])
     )
 
     delay = 53

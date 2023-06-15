@@ -1,3 +1,3 @@
-from gsuid_core.utils.api.mys_api import _MysApi
+from .api.mys.mys_api import GsMysAPI
 
-mys_api = _MysApi()
+mys_api = GsMysAPI()

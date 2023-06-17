@@ -3,7 +3,7 @@ from typing import Dict, List, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.minigg.models import Weapon, WeaponStats
 from gsuid_core.utils.api.minigg.request import (
     get_others_info,
@@ -33,9 +33,9 @@ from ..utils.fonts.genshin_fonts import (
 async def get_weapons_wiki_img(name: str) -> Union[str, bytes]:
     data = await get_weapon_info(name)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     elif isinstance(data, List):
-        return get_error(-400)
+        return await get_error_img(-400)
     else:
         if int(data['rarity']) < 3:
             stats = await get_weapon_stats(name, 70)
@@ -43,9 +43,9 @@ async def get_weapons_wiki_img(name: str) -> Union[str, bytes]:
             stats = await get_weapon_stats(name, 90)
 
     if isinstance(stats, int):
-        return get_error(stats)
+        return await get_error_img(stats)
     elif isinstance(stats, List):
-        return get_error(-400)
+        return await get_error_img(-400)
     else:
         weapon_name = data['name']
         path = WIKI_WEAPON_PATH / f'{weapon_name}.jpg'

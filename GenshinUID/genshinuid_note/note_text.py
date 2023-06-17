@@ -1,4 +1,6 @@
-from gsuid_core.utils.error_reply import get_error
+from typing import Union
+
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 
@@ -23,10 +25,10 @@ UID：{}
 {}=============="""
 
 
-async def award(uid) -> str:
+async def award(uid) -> Union[str, bytes]:
     data = await mys_api.get_award(uid)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     nickname = data['nickname']
     day_stone = data['day_data']['current_primogems']
     day_mora = data['day_data']['current_mora']

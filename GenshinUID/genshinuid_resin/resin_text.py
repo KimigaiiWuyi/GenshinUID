@@ -1,8 +1,8 @@
 import math
-from typing import List
+from typing import List, Union
 
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.map.name_covert import avatar_id_to_name, enName_to_avatarId
@@ -25,11 +25,11 @@ def seconds2hours(seconds: int) -> str:
     return '%02d:%02d:%02d' % (h, m, s)
 
 
-async def get_resin_text(uid: str) -> str:
+async def get_resin_text(uid: str) -> Union[str, bytes]:
     try:
         dailydata = await mys_api.get_daily_data(uid)
         if isinstance(dailydata, int):
-            return get_error(dailydata)
+            return await get_error_img(dailydata)
         max_resin = dailydata['max_resin']
         rec_time = ''
         current_resin = dailydata['current_resin']

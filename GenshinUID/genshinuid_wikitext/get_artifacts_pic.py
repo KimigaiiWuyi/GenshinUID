@@ -3,7 +3,7 @@ from typing import Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.minigg.models import Artifact
 from gsuid_core.utils.api.minigg.request import get_others_info
 
@@ -41,7 +41,7 @@ async def get_base_img(y1: int, y2: int) -> Tuple[Image.Image, int]:
 async def get_artifacts_wiki_img(name: str) -> Union[str, bytes]:
     data = await get_others_info('artifacts', name)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     else:
         art_name = data['name']
         path = WIKI_REL_PATH / f'{art_name}.jpg'

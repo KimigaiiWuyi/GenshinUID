@@ -2,7 +2,7 @@ import io
 import base64
 import asyncio
 import traceback
-from typing import Literal
+from typing import Union, Literal
 from time import strftime, localtime
 
 import qrcode
@@ -10,8 +10,8 @@ from gsuid_core.bot import Bot
 from qrcode import ERROR_CORRECT_L
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
-from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.mys.models import MysOrder
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.database import get_sqla
@@ -90,13 +90,15 @@ def get_qrcode_base64(url: str):
     return base64.b64encode(img_byte).decode()
 
 
-async def refresh(order: MysOrder, uid: str, order_id: str) -> str:
+async def refresh(
+    order: MysOrder, uid: str, order_id: str
+) -> Union[str, bytes]:
     times = 0
     while True:
         await asyncio.sleep(5)
         order_status = await mys_api.check_order(order, uid)
         if isinstance(order_status, int):
-            return get_error(order_status)
+            return await get_error_img(order_status)
         if order_status['status'] != 900:
             pass
         else:
@@ -120,7 +122,7 @@ async def topup_(
         return await bot.send('未绑定米游社账号')
     fetchgoods_data = await mys_api.get_fetchgoods()
     if isinstance(fetchgoods_data, int):
-        return await bot.send(get_error(fetchgoods_data))
+        return await bot.send(await get_error_img(fetchgoods_data))
     if goods_id < len(fetchgoods_data):
         goods_data = fetchgoods_data[goods_id]
     else:
@@ -128,7 +130,7 @@ async def topup_(
     order = await mys_api.topup(uid, goods_data, method)
     if isinstance(order, int):
         logger.warning(f'[充值] {group_id} {user_id} 出错！')
-        return await bot.send(get_error(order))
+        return await bot.send(await get_error_img(order))
     try:
         b64_data = get_qrcode_base64(order['encode_order'])
         img_b64decode = base64.b64decode(b64_data)

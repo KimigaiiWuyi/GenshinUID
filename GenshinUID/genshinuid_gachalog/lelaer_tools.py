@@ -5,7 +5,7 @@ import httpx
 import aiofiles
 from gsuid_core.logger import logger
 from urllib3 import encode_multipart_formdata
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.request import RECOGNIZE_SERVER
 
 from ..utils.mys_api import mys_api
@@ -16,7 +16,7 @@ async def get_gachaurl(uid: str):
     server_id = RECOGNIZE_SERVER.get(str(uid)[0])
     authkey_rawdata = await mys_api.get_authkey_by_cookie(uid)
     if isinstance(authkey_rawdata, int):
-        return get_error(authkey_rawdata)
+        return await get_error_img(authkey_rawdata)
     authkey = authkey_rawdata['authkey']
     now = time.time()
     url = (

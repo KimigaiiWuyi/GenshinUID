@@ -3,7 +3,7 @@ from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
@@ -41,7 +41,7 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
     # 获取数据
     data = await mys_api.get_award(uid)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     # nickname = data['nickname']
     day_stone = data['day_data']['current_primogems']
     day_mora = data['day_data']['current_mora']

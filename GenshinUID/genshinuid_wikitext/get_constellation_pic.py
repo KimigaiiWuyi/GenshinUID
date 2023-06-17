@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.minigg.request import (
     get_character_info,
     get_constellation_info,
@@ -50,11 +50,11 @@ async def get_constellation_wiki_img(name: str) -> Union[str, bytes]:
     data = await get_constellation_info(name)
     char_data = await get_character_info(name)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     elif isinstance(char_data, int):
-        return get_error(char_data)
+        return await get_error_img(char_data)
     elif isinstance(char_data, List):
-        return get_error(-400)
+        return await get_error_img(-400)
     else:
         full_name = data['name']
         path = CONSTELLATION_PATH / f'{full_name}.jpg'
@@ -70,7 +70,7 @@ async def get_single_constellation_img(
 ) -> Union[str, bytes]:
     data = await get_constellation_info(name)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     else:
         full_name = data['name']
         path = CONSTELLATION_PATH / f'{full_name}_{num}.jpg'

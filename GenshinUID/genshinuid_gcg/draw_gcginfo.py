@@ -3,7 +3,7 @@ from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
@@ -31,7 +31,7 @@ async def draw_gcg_info(uid: str) -> Union[bytes, str]:
     # 获得数据
     raw_data = await mys_api.get_gcg_info(uid)
     if isinstance(raw_data, int):
-        return get_error(raw_data)
+        return await get_error_img(raw_data)
 
     if raw_data['covers'] == []:
         return f'UID{uid}还没有开启七圣召唤玩法 或 未去米游社激活数据！'

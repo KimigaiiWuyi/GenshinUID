@@ -3,7 +3,7 @@ from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
@@ -26,7 +26,7 @@ async def draw_deck_img(
     # 获取数据
     raw_data = await mys_api.get_gcg_deck(uid)
     if isinstance(raw_data, int):
-        return get_error(raw_data)
+        return await get_error_img(raw_data)
     if len(raw_data['deck_list']) < deck_id:
         return f'你没有第{deck_id}套卡组！'
     raw_data = raw_data['deck_list'][deck_id - 1]

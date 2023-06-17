@@ -5,7 +5,7 @@ from typing import Union, Optional
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
 
 from ..utils.convert import GsCookie
@@ -123,7 +123,7 @@ async def draw_abyss_img(
 
     # 获取数据
     if isinstance(raw_abyss_data, int):
-        return get_error(raw_abyss_data)
+        return await get_error_img(raw_abyss_data)
     if raw_data:
         char_data = raw_data['avatars']
     else:

@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.minigg.models import Character, CharacterTalents
 from gsuid_core.utils.api.minigg.request import (
     get_others_info,
@@ -16,6 +16,12 @@ from ..utils.get_assets import get_assets_from_ambr
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, WIKI_COST_CHAR_PATH
+from ..utils.image.image_tools import (
+    get_star_png,
+    get_simple_bg,
+    get_unknown_png,
+    draw_pic_with_ring,
+)
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_26,
@@ -23,23 +29,17 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_36,
     gs_font_44,
 )
-from ..utils.image.image_tools import (
-    get_star_png,
-    get_simple_bg,
-    get_unknown_png,
-    draw_pic_with_ring,
-)
 
 
 async def get_char_cost_wiki_img(name: str) -> Union[str, bytes]:
     data = await get_character_info(name)
     talent_data = await get_talent_info(name)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     elif isinstance(data, List):
-        return get_error(-400)
+        return await get_error_img(-400)
     elif isinstance(talent_data, int):
-        return get_error(talent_data)
+        return await get_error_img(talent_data)
     else:
         char_name = talent_data['name']
         path = WIKI_COST_CHAR_PATH / f'{char_name}.jpg'

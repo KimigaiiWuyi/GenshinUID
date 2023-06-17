@@ -2,8 +2,8 @@ from typing import List, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
-from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.minigg.models import Food
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.minigg.request import get_others_info
 
 from .path import TEXT_PATH
@@ -27,9 +27,9 @@ from ..utils.fonts.genshin_fonts import (
 async def get_foods_wiki_img(name: str) -> Union[str, bytes]:
     data = await get_others_info('foods', name)
     if isinstance(data, int):
-        return get_error(data)
+        return await get_error_img(data)
     elif isinstance(data, List):
-        return get_error(-400)
+        return await get_error_img(-400)
     else:
         food_name = data['name']
         path = WIKI_FOOD_PATH / f'{food_name}.jpg'

@@ -1,17 +1,19 @@
-from gsuid_core.utils.error_reply import get_error
+from typing import Union
+
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 
 
-async def post_my_draw(uid) -> str:
+async def post_my_draw(uid) -> Union[str, bytes]:
     bs_index = await mys_api.get_bs_index(uid)
     calendar = await mys_api.get_draw_calendar(uid)
 
     # 错误检查
     if isinstance(bs_index, int):
-        return get_error(bs_index)
+        return await get_error_img(bs_index)
     if isinstance(calendar, int):
-        return get_error(calendar)
+        return await get_error_img(calendar)
 
     im_list = []
 
@@ -19,7 +21,7 @@ async def post_my_draw(uid) -> str:
         if not role['is_partake']:
             data = await mys_api.post_draw(uid, role['role_id'])
             if isinstance(data, int):
-                im_list.append(get_error(data))
+                im_list.append(await get_error_img(data))
             else:
                 retcode = data['retcode']
                 if retcode != 0:

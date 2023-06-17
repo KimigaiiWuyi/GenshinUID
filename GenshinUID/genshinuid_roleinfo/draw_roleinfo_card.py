@@ -3,7 +3,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import MihoyoAvatar
 
 from ..utils.mys_api import mys_api
@@ -145,7 +145,7 @@ async def draw_pic(uid: str):
 
     char_rawdata = await mys_api.get_character(uid, char_ids, use_cookies)
     if isinstance(char_rawdata, int):
-        return get_error(char_rawdata)
+        return await get_error_img(char_rawdata)
     char_datas = char_rawdata['avatars']
 
     for index, i in enumerate(char_datas):

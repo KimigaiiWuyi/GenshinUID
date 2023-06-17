@@ -1,18 +1,19 @@
 import json
 import time
+from typing import Union
 
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 
 
-async def calc_reg_time(uid: str) -> str:
+async def calc_reg_time(uid: str) -> Union[str, bytes]:
     # 获得原始数据
     try:
         raw_data = await mys_api.get_regtime_data(uid)
         if isinstance(raw_data, int):
-            return get_error(raw_data)
+            return await get_error_img(raw_data)
         # 获取时间戳
         reg_time = json.loads(raw_data['data'])['1']
         # 转换为日期

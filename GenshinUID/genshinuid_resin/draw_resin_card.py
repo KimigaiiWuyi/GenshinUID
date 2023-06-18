@@ -110,7 +110,7 @@ async def get_resin_img(bot_id: str, user_id: str):
 
 async def _draw_all_resin_img(img: Image.Image, uid: str, index: int):
     resin_img = await draw_resin_img(uid)
-    img.paste(resin_img, (500 * index, 0), resin_img)
+    img.paste(resin_img, (700 * index, 0), resin_img)
 
 
 async def seconds2hours(seconds: int) -> str:

@@ -263,7 +263,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
         trans_status = 'no'
     else:
         trans_status = 'ok'
-    trans_bar = await draw_bar(trans_status, '周本减半', transformer_str)
+    trans_bar = await draw_bar(trans_status, '参量质变', transformer_str)
 
     img_draw = ImageDraw.Draw(img)
 

@@ -48,6 +48,7 @@ async def bbs_recheck(bot: Bot, ev: Event):
 )
 async def get_coin_at_night():
     if gsconfig.get_config('SchedMhyBBSCoin').data:
+        await asyncio.sleep(random.randint(2, 60))
         await send_daily_mihoyo_bbs_sign()
 
 

@@ -88,9 +88,9 @@ class MihoyoBBSCoin:
         self.Task_do = {
             'bbs_Sign': False,
             'bbs_Read_posts': False,
-            'bbs_Read_posts_num': 3,
+            'bbs_Read_posts_num': 4,
             'bbs_Like_posts': False,
-            'bbs_Like_posts_num': 5,
+            'bbs_Like_posts_num': 6,
             'bbs_Share': False,
         }
         self.mihoyobbs_List_Use = []
@@ -103,8 +103,8 @@ class MihoyoBBSCoin:
         start = await self.get_tasks_list()
         self.postsList = await self.get_list()
         read = await self.read_posts()
-        like = await self.like_posts()
         share = await self.share_post()
+        like = await self.like_posts()
         sign = await self.signing()
         if start and sign and read and like and share:
             im = '\n'.join([start, sign, read, like, share])
@@ -184,13 +184,20 @@ class MihoyoBBSCoin:
             BBS_LIST_URL.format(self.mihoyobbs_List_Use[0]['forumId']),
             self.headers,
         )
-        for n in range(5):
+
+        if len(data['data']['list']) >= 10:
+            limit = 10
+        else:
+            limit = len(data['data']['list'])
+
+        for n in range(limit):
             temp_list.append(
                 [
                     data['data']['list'][n]['post']['post_id'],
                     data['data']['list'][n]['post']['subject'],
                 ]
             )
+
         logger.info('已获取{}个帖子'.format(len(temp_list)))
         return temp_list
 
@@ -232,7 +239,7 @@ class MihoyoBBSCoin:
                 )
                 if data['message'] == 'OK':
                     num_ok += 1
-                await asyncio.sleep(random.randint(2, 8))
+                await asyncio.sleep(random.randint(4, 13))
             return 'ReadM:成功!Read:{}!'.format(str(num_ok))
 
     # 点赞
@@ -257,7 +264,7 @@ class MihoyoBBSCoin:
                     num_ok += 1
                 # 判断取消点赞是否打开
                 if True:
-                    await asyncio.sleep(random.randint(2, 8))
+                    await asyncio.sleep(random.randint(4, 13))
                     data = await self._request(
                         'POST',
                         BBS_LIKE_URL,
@@ -269,7 +276,7 @@ class MihoyoBBSCoin:
                     )
                     if data['message'] == 'OK':
                         num_cancel += 1
-                await asyncio.sleep(random.randint(2, 8))
+                await asyncio.sleep(random.randint(4, 13))
             return f'LikeM:完成!like:{num_ok}, dislike:{num_cancel}!'
 
     # 分享操作
@@ -278,7 +285,7 @@ class MihoyoBBSCoin:
             return 'ShareM已经完成过了~'
         else:
             logger.info('开始执行米游社分享......')
-            for _ in range(3):
+            for _ in range(4):
                 data = await self._request(
                     'GET',
                     BBS_SHARE_URL.format(self.postsList[0][0]),
@@ -287,8 +294,8 @@ class MihoyoBBSCoin:
                 if data['message'] == 'OK':
                     return 'ShareM:完成!'
                 else:
-                    await asyncio.sleep(random.randint(2, 8))
-            await asyncio.sleep(random.randint(2, 8))
+                    await asyncio.sleep(random.randint(4, 13))
+            await asyncio.sleep(random.randint(5, 15))
 
     async def _request(
         self,

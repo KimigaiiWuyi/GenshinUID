@@ -5,15 +5,12 @@ from gsuid_core.utils.error_reply import get_error_img
 from ..utils.mys_api import mys_api
 
 
-async def post_my_draw(uid) -> Union[str, bytes]:
+async def post_my_draw(uid: str) -> Union[str, bytes]:
     bs_index = await mys_api.get_bs_index(uid)
-    calendar = await mys_api.get_draw_calendar(uid)
 
     # 错误检查
     if isinstance(bs_index, int):
         return await get_error_img(bs_index)
-    if isinstance(calendar, int):
-        return await get_error_img(calendar)
 
     im_list = []
 
@@ -32,7 +29,7 @@ async def post_my_draw(uid) -> Union[str, bytes]:
                     )
                     im_list.append(message)
                 else:
-                    im_list.append(f'UID{uid}成功获取{role["name"]}的画片!')
+                    im_list.append(f'[留影叙佳期] UID{uid}成功获取{role["name"]}的画片!')
     if im_list == []:
-        im_list.append(f'UID{uid}没有需要获取的画片了~')
+        im_list.append(f'[留影叙佳期]UID{uid}没有需要获取的画片了~')
     return '\n'.join(im_list)

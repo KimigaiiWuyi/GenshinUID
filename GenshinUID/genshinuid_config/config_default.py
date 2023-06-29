@@ -29,6 +29,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
     'BBSTaskTime': GsListStrConfig(
         '每晚米游社任务时间设置', '每晚米游社任务时间设置（时，分）', ['1', '41']
     ),
+    'GetDrawTaskTime': GsListStrConfig(
+        '每晚留影叙佳期任务时间设置', '每晚留影叙佳期任务时间设置（时，分）', ['3', '25']
+    ),
     'MhyBBSCoinReport': GsBoolConfig(
         '米游币推送',
         '开启后会私聊每个用户当前米游币任务完成情况',
@@ -57,6 +60,11 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
     'SchedMhyBBSCoin': GsBoolConfig(
         '定时米游币',
         '开启后每晚01:16将开始自动米游币任务',
+        True,
+    ),
+    'SchedGetDraw': GsBoolConfig(
+        '定时留影叙佳期',
+        '开启后每晚03:25将开始自动米游币任务',
         True,
     ),
     'CrazyNotice': GsBoolConfig(

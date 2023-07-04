@@ -241,7 +241,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     # 周本减半
     weekly_half = daily_data['remain_resin_discount_num']
     max_weekly_half = daily_data['resin_discount_num_limit']
-    weekly_half_str = f'{weekly_half}/{max_weekly_half}'
+    weekly_half_str = f'{weekly_half} / {max_weekly_half}'
     if weekly_half == -99:
         weekly_status = 'un'
         weekly_half_str = warn

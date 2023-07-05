@@ -1,7 +1,9 @@
 import json
 import time
-from typing import List, Union, Literal, Optional
+from copy import deepcopy
+from typing import Dict, List, Union, Literal, Optional
 
+import aiofiles
 from httpx import ReadTimeout, ConnectTimeout
 from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.api.enka.models import EnkaData
@@ -34,6 +36,22 @@ PROP_ATTR_MAP = {
 }
 
 ENKA_API: List[Literal['enka', 'microgg']] = ['enka', 'microgg']
+ARTIFACT_DATA = {
+    'data': {
+        'flower': [],
+        'plume': [],
+        'sands': [],
+        'goblet': [],
+        'circlet': [],
+    },
+    'tag': {
+        'flower': [],
+        'plume': [],
+        'sands': [],
+        'goblet': [],
+        'circlet': [],
+    },
+}
 
 
 async def switch_api():
@@ -83,17 +101,34 @@ async def enka_to_dict(
     playerInfo = enka_data['playerInfo']
     path = PLAYER_PATH / str(uid)
     path.mkdir(parents=True, exist_ok=True)
-    with open(
-        path / '{}.json'.format(str(uid)), 'w', encoding='UTF-8'
+
+    # 保存基本玩家信息
+    async with aiofiles.open(
+        path / f'{uid}.json', 'w', encoding='UTF-8'
     ) as file:
-        json.dump(playerInfo, file, ensure_ascii=False)
-    with open(path / 'rawData.json', 'w', encoding='UTF-8') as file:
-        json.dump(enka_data, file, ensure_ascii=False)
+        await file.write(json.dumps(playerInfo, indent=4, ensure_ascii=False))
+
+    # 保存原始数据
+    async with aiofiles.open(
+        path / 'rawData.json', 'w', encoding='UTF-8'
+    ) as file:
+        await file.write(json.dumps(enka_data, indent=4, ensure_ascii=False))
 
     if 'avatarInfoList' not in enka_data:
         return f'UID{uid}刷新失败！未打开角色展柜!'
 
     char_dict_list = []
+
+    # 确认是否存在圣遗物列表
+    all_artifacts_path = path / 'artifacts.json'
+    if not all_artifacts_path.exists():
+        all_artifacts_data = deepcopy(ARTIFACT_DATA)
+    else:
+        async with aiofiles.open(
+            all_artifacts_path, 'r', encoding='UTF-8'
+        ) as file:
+            all_artifacts_data = json.loads(await file.read())
+
     for char in enka_data['avatarInfoList']:
         # 处理基本信息
         char_data = {}
@@ -278,6 +313,7 @@ async def enka_to_dict(
         artifacts_info = []
         artifacts_data = char['equipList'][:-1]
         artifact_set_list = []
+
         for artifact in artifacts_data:
             artifact_temp = {}
             artifact_temp['itemId'] = artifact['itemId']
@@ -295,6 +331,7 @@ async def enka_to_dict(
             artifact_temp['aritifactSetPiece'] = artifactId2Piece[
                 artifact_temp['icon'].split('_')[-1]
             ][0]
+
             artifact_temp['aritifactPieceName'] = artifactId2Piece[
                 artifact_temp['icon'].split('_')[-1]
             ][1]
@@ -319,7 +356,21 @@ async def enka_to_dict(
                 artifact_temp['reliquarySubstats'] = []
             for sub in artifact_temp['reliquarySubstats']:
                 sub['statName'] = propId2Name[sub['appendPropId']]
+
+            await input_artifacts_data(
+                artifact_temp, all_artifacts_data, avatarId
+            )
+
+            # 加入单个圣遗物部件
             artifacts_info.append(artifact_temp)
+
+        # 保存原始数据
+        async with aiofiles.open(
+            path / 'artifacts.json', 'w', encoding='UTF-8'
+        ) as file:
+            await file.write(
+                json.dumps(all_artifacts_data, indent=4, ensure_ascii=False)
+            )
 
         equipSetList = set(artifact_set_list)
         char_data['equipSets'] = {'type': '', 'set': ''}
@@ -339,10 +390,13 @@ async def enka_to_dict(
             char_data['equipSets']['set'] = char_data['equipSets']['set'][1:]
 
         char_dict_list.append(char_data)
-        with open(
+        async with aiofiles.open(
             path / '{}.json'.format(avatarName), 'w', encoding='UTF-8'
         ) as file:
-            json.dump(char_data, file, ensure_ascii=False)
+            await file.write(
+                json.dumps(char_data, indent=4, ensure_ascii=False)
+            )
+
     return char_dict_list
 
 
@@ -358,3 +412,33 @@ async def enka_to_data(
         char_name_list.append(char_data['avatarName'])
     char_name_list_str = ','.join(char_name_list)
     return f'UID{uid}刷新完成！\n本次缓存：{char_name_list_str}'
+
+
+async def input_artifacts_data(
+    artifact_temp: Dict, all_artifacts_data: Dict, avatarId: int
+):
+    # 加入圣遗物数据列表
+    if (
+        artifact_temp
+        not in all_artifacts_data['data'][artifact_temp['aritifactSetPiece']]
+    ):
+        all_artifacts_data['data'][artifact_temp['aritifactSetPiece']].append(
+            artifact_temp
+        )
+        all_artifacts_data['tag'][artifact_temp['aritifactSetPiece']].append(
+            [avatarId]
+        )
+    elif (
+        avatarId
+        not in all_artifacts_data['tag'][artifact_temp['aritifactSetPiece']][
+            all_artifacts_data['data'][
+                artifact_temp['aritifactSetPiece']
+            ].index(artifact_temp)
+        ]
+    ):
+        all_artifacts_data['tag'][artifact_temp['aritifactSetPiece']][
+            all_artifacts_data['data'][
+                artifact_temp['aritifactSetPiece']
+            ].index(artifact_temp)
+        ].append(avatarId)
+    return all_artifacts_data

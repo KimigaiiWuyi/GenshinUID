@@ -14,10 +14,10 @@ from ..utils.api.mys.models import FakeResin
 from ..utils.image.convert import convert_img
 from ..genshinuid_config.gs_config import gsconfig
 from ..genshinuid_enka.to_data import get_enka_info
-from ..utils.map.name_covert import enName_to_avatarId
+from ..utils.resource.download_url import download_file
 from ..utils.api.mys.models import Expedition as WidgetExpedition
-from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_PATH
 from ..utils.api.mys.models import Transformer, WidgetResin, RecoveryTime
+from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_TEMP_PATH
 from ..utils.fonts.genshin_fonts import (
     gs_font_20,
     gs_font_26,
@@ -49,10 +49,17 @@ async def _draw_task_img(
     if not char['avatar_side_icon']:
         return go_img
 
-    char_en_name = char['avatar_side_icon'].split('_')[-1].split('.')[0]
-    avatar_id = await enName_to_avatarId(char_en_name)
+    char_temp = char['avatar_side_icon'].split('/')[-1]
+    side_path = CHAR_SIDE_TEMP_PATH / char_temp
+    if not side_path.exists():
+        await download_file(
+            char['avatar_side_icon'],
+            13,
+            char_temp,
+        )
+    # avatar_id = await enName_to_avatarId(char_en_name)
     char_pic = (
-        Image.open(CHAR_SIDE_PATH / f'{avatar_id}.png')
+        Image.open(side_path)
         .convert('RGBA')
         .resize((115, 115), Image.Resampling.LANCZOS)  # type: ignore
     )

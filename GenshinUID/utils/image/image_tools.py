@@ -44,7 +44,7 @@ async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
         pic = Image.open(BytesIO(resp.read()))
         pic = pic.convert("RGBA")
         if size is not None:
-            pic = pic.resize(size, Image.LANCZOS)
+            pic = pic.resize(size, Image.Resampling.LANCZOS)
         return pic
 
 

@@ -18,6 +18,7 @@ from .RESOURCE_PATH import (
     GACHA_IMG_PATH,
     CHAR_STAND_PATH,
     CHAR_NAMECARD_PATH,
+    CHAR_SIDE_TEMP_PATH,
 )
 
 PATH_MAP = {
@@ -33,6 +34,7 @@ PATH_MAP = {
     10: GUIDE_PATH,
     11: WIKI_PATH,
     12: REF_PATH,
+    13: CHAR_SIDE_TEMP_PATH,
 }
 
 

@@ -15,6 +15,7 @@ GACHA_IMG_PATH = RESOURCE_PATH / 'gacha_img'
 CHAR_PATH = RESOURCE_PATH / 'chars'
 CHAR_STAND_PATH = RESOURCE_PATH / 'char_stand'
 CHAR_SIDE_PATH = RESOURCE_PATH / 'char_side'
+CHAR_SIDE_TEMP_PATH = RESOURCE_PATH / 'char_side_temp'
 CHAR_CARD_PATH = RESOURCE_PATH / 'char_card'
 CHAR_NAMECARD_PATH = RESOURCE_PATH / 'char_namecard'
 REL_PATH = RESOURCE_PATH / 'reliquaries'
@@ -69,6 +70,7 @@ def init_dir():
         WIKI_COST_CHAR_PATH,
         WIKI_COST_WEAPON_PATH,
         DATA_PATH,
+        CHAR_SIDE_TEMP_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

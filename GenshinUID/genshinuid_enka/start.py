@@ -12,7 +12,7 @@ from .to_data import ARTIFACT_DATA, input_artifacts_data
 pattern = r'^[\u4e00-\u9fa5]'
 
 
-async def refresh_player_list(uid: str) -> str:
+async def refresh_player_list(uid: str, is_force: bool = False) -> str:
     player = PLAYER_PATH / uid
     path = player / 'artifacts.json'
     all_artifacts = deepcopy(ARTIFACT_DATA)
@@ -26,7 +26,7 @@ async def refresh_player_list(uid: str) -> str:
 
     if len(all_list) >= 1 and 'cv_score' not in all_list[0]:
         path.unlink()
-    elif len(all_list) >= 1:
+    elif not is_force and len(all_list) >= 1:
         return '无需刷新圣遗物列表'
         # return '删除旧数据中...请重新刷新!'
 

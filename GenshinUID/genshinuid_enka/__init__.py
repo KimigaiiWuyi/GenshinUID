@@ -35,7 +35,7 @@ async def sned_fresh_all_list(bot: Bot, ev: Event):
     await bot.send('执行完成!')
 
 
-@sv_get_enka.on_fullmatch('刷新圣遗物仓库')
+@sv_get_enka.on_fullmatch(('刷新圣遗物仓库', '强制刷新圣遗物仓库'))
 async def sned_fresh_list(bot: Bot, ev: Event):
     # 获取uid
     uid = await get_uid(bot, ev)
@@ -43,7 +43,11 @@ async def sned_fresh_list(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     logger.info(f'[刷新圣遗物仓库]uid: {uid}')
     await bot.send(f'UID{uid}开始刷新, 请勿重复触发!')
-    await bot.send(await refresh_player_list(uid))
+    if ev.command.startswith('强制'):
+        is_force = True
+    else:
+        is_force = False
+    await bot.send(await refresh_player_list(uid, is_force))
 
 
 @sv_get_enka.on_fullmatch('圣遗物仓库')

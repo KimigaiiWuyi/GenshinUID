@@ -13,6 +13,8 @@ from gsuid_core.utils.error_reply import UID_HINT
 from .to_data import switch_api
 from .to_card import enka_to_card
 from ..utils.convert import get_uid
+from .start import refresh_player_list
+from .draw_artifacts_lib import draw_lib
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import alias_data
 from .draw_char_rank import draw_cahrcard_list
@@ -22,6 +24,28 @@ from ..utils.resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
 sv_enka_config = SV('面板设置', pm=2)
 sv_get_enka = SV('面板查询', priority=10)
 sv_get_original_pic = SV('查看面板原图', priority=5)
+
+
+@sv_get_enka.on_fullmatch('刷新圣遗物仓库')
+async def sned_fresh_list(bot: Bot, ev: Event):
+    # 获取uid
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    logger.info(f'[刷新圣遗物仓库]uid: {uid}')
+
+    await bot.send(await refresh_player_list(uid))
+
+
+@sv_get_enka.on_fullmatch('圣遗物仓库')
+async def sned_aritifacts_list(bot: Bot, ev: Event):
+    # 获取uid
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    logger.info(f'[圣遗物仓库]uid: {uid}')
+
+    await bot.send(await draw_lib(ev.user_id, uid))
 
 
 @sv_get_original_pic.on_fullmatch(('原图'))

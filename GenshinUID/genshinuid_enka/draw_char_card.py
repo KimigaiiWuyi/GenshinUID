@@ -39,7 +39,7 @@ async def draw_char_card(
     char_info_2 = Image.open(TEXT_PATH / 'char_info_2.png')
     img.paste(char_info_1, (0, 0), char_info_1)
     img.paste(char_info_2, (0, 1085), char_info_2)
-    img.paste(dmg_img, (0, 1850), dmg_img)
+    img.paste(dmg_img, (0, 1820), dmg_img)
     await get_artifacts_card(char, img)
     img_text = ImageDraw.Draw(img)
     artifacts_all_score = await get_all_artifacts_value(
@@ -51,29 +51,37 @@ async def draw_char_card(
         percent_str = f'{char.percent}%'
     # 角色评分
     img_text.text(
-        (768, 1564),
+        (783, 1570),
         f'{round(artifacts_all_score, 1)}',
         (255, 255, 255),
         gs_font_50,
         anchor='mm',
     )
     img_text.text(
-        (768, 1726),
+        (783, 1730),
         percent_str,
         (255, 255, 255),
         gs_font_50,
         anchor='mm',
     )
     img_text.text(
-        (768, 1673),
+        (783, 1676),
         f'{char.seq_str}',
         (255, 255, 255),
         gs_font_18,
         anchor='mm',
     )
-    '''
-    res = await convert_img(img)
-    if isinstance(res, str):
-        res = b''
-    '''
+
+    img_text.text(
+        (475, img.size[1] - 35),
+        'Power by Wuyi & '
+        'Data by Enka.network & '
+        'Created by GsCore & GenshinUID',
+        (200, 200, 200),
+        gs_font_18,
+        anchor='mm',
+    )
+
+    black = Image.new('RGBA', img.size, (0, 0, 0))
+    img = Image.alpha_composite(black, img)
     return img

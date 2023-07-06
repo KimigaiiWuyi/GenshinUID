@@ -1,5 +1,7 @@
 import json
 import time
+import asyncio
+import threading
 from copy import deepcopy
 from typing import Dict, List, Union, Literal, Optional
 
@@ -10,6 +12,8 @@ from gsuid_core.utils.api.enka.models import EnkaData
 from gsuid_core.utils.api.enka.request import get_enka_info
 from gsuid_core.utils.api.minigg.request import get_weapon_info
 
+from .mono.Character import Character
+from .draw_normal import get_artifact_score_data
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.ambr_to_minigg import convert_ambr_to_weapon
 from ..utils.map.GS_MAP_PATH import (
@@ -357,10 +361,6 @@ async def enka_to_dict(
             for sub in artifact_temp['reliquarySubstats']:
                 sub['statName'] = propId2Name[sub['appendPropId']]
 
-            await input_artifacts_data(
-                artifact_temp, all_artifacts_data, avatarId
-            )
-
             # 加入单个圣遗物部件
             artifacts_info.append(artifact_temp)
 
@@ -389,6 +389,18 @@ async def enka_to_dict(
         if char_data['equipSets']['set'].startswith('|'):
             char_data['equipSets']['set'] = char_data['equipSets']['set'][1:]
 
+        threading.Thread(
+            target=lambda: asyncio.run(
+                _get_data(
+                    artifacts_info,
+                    all_artifacts_data,
+                    avatarId,
+                    char_data,
+                )
+            ),
+            daemon=True,
+        ).start()
+
         char_dict_list.append(char_data)
         async with aiofiles.open(
             path / '{}.json'.format(avatarName), 'w', encoding='UTF-8'
@@ -414,9 +426,27 @@ async def enka_to_data(
     return f'UID{uid}刷新完成！\n本次缓存：{char_name_list_str}'
 
 
-async def input_artifacts_data(
-    artifact_temp: Dict, all_artifacts_data: Dict, avatarId: int
+async def _get_data(
+    artifacts_info: List,
+    all_artifacts_data: Dict,
+    avatarId: int,
+    char_data: Dict,
 ):
+    for _artifact in artifacts_info:
+        await input_artifacts_data(
+            deepcopy(_artifact), all_artifacts_data, avatarId, char_data
+        )
+
+
+async def input_artifacts_data(
+    artifact_temp: Dict,
+    all_artifacts_data: Dict,
+    avatarId: int,
+    char_data: Dict,
+):
+    artifact_temp = await get_artifact_score_data(
+        artifact_temp, Character(char_data)
+    )
     # 加入圣遗物数据列表
     if (
         artifact_temp

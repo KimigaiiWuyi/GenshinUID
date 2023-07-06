@@ -1,7 +1,7 @@
 import math
 import random
 from io import BytesIO
-from typing import Optional
+from typing import Dict, Optional
 
 import aiofiles
 from httpx import get
@@ -26,11 +26,11 @@ from ..utils.resource.RESOURCE_PATH import (
 )
 
 ARTIFACTS_POS = {
-    '生之花': (18, 1075),
-    '死之羽': (318, 1075),
-    '时之沙': (618, 1075),
-    '空之杯': (18, 1447),
-    '理之冠': (318, 1447),
+    '生之花': (13, 1087),
+    '死之羽': (323, 1087),
+    '时之沙': (633, 1087),
+    '空之杯': (13, 1447),
+    '理之冠': (323, 1447),
 }
 PIC_API = gsconfig.get_config('random_pic_API').data
 
@@ -110,14 +110,14 @@ async def get_char_card_base(char: Character) -> Image.Image:
         anchor='lm',
     )
     char_info_text.text(
-        (412, 710),
+        (420, 710),
         weapon_type,
         (255, 255, 255),
         genshin_font_origin(20),
         anchor='lm',
     )
     char_info_text.text(
-        (412, 750),
+        (420, 750),
         '基础攻击力',
         (255, 255, 255),
         genshin_font_origin(32),
@@ -136,7 +136,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
             'statValue'
         ]
         char_info_text.text(
-            (412, 801),
+            (420, 801),
             weapon_sub_info,
             (255, 255, 255),
             genshin_font_origin(32),
@@ -151,7 +151,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
         )
     else:
         char_info_text.text(
-            (412, 801),
+            (420, 801),
             '该武器无副词条',
             (255, 255, 255),
             genshin_font_origin(32),
@@ -222,25 +222,25 @@ async def get_char_card_base(char: Character) -> Image.Image:
         anchor='lm',
     )
     char_info_text.text(
-        (103, 812),
-        f'{str(a_skill_level)}',
+        (103, 820),
+        f'{a_skill_level}',
         (255, 255, 255),
-        genshin_font_origin(30),
+        genshin_font_origin(22),
         anchor='mm',
     )
     char_info_text.text(
-        (103, 915),
-        f'{str(e_skill_level)}',
+        (103, 923),
+        f'{e_skill_level}',
         (255, 255, 255),
-        genshin_font_origin(30),
+        genshin_font_origin(22),
         anchor='mm',
     )
 
     char_info_text.text(
-        (103, 1016),
-        f'{str(q_skill_level)}',
+        (103, 1024),
+        f'{q_skill_level}',
         (255, 255, 255),
-        genshin_font_origin(30),
+        genshin_font_origin(22),
         anchor='mm',
     )
 
@@ -446,154 +446,227 @@ async def get_char_img(
     return char_result
 
 
+async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
+    '''
+    注意这里的aritifact不是原始的数据, 是带了评分的数据
+    '''
+    artifactimg_bg = Image.open(TEXT_PATH / 'char_info_artifacts_bg.png')
+    artifacts_img = Image.open(TEXT_PATH / 'char_info_artifacts.png')
+    artifacts_piece_img = Image.open(
+        REL_PATH / '{}.png'.format(aritifact['aritifactName'])
+    )
+    artifacts_piece_new_img = artifacts_piece_img.resize(
+        (90, 90), Image.Resampling.LANCZOS
+    ).convert('RGBA')
+
+    artifacts_img.paste(
+        artifacts_piece_new_img, (26, 32), artifacts_piece_new_img
+    )
+    aritifactStar_img = get_star_png(aritifact['aritifactStar'])
+    aritifactStar_img = aritifactStar_img.resize((90, 23))
+
+    # 圣遗物星星和名称&位置
+    artifacts_img.paste(aritifactStar_img, (121, 63), aritifactStar_img)
+    artifacts_text = ImageDraw.Draw(artifacts_img)
+    if len(aritifact['aritifactName']) <= 8:
+        main_name = aritifact['aritifactName']
+    else:
+        main_name = (
+            aritifact['aritifactName'][:4] + aritifact['aritifactName'][4:]
+        )
+    artifacts_text.text(
+        (124, 51),
+        main_name,
+        (255, 255, 255),
+        genshin_font_origin(22),
+        anchor='lm',
+    )
+    '''
+    artifacts_text.text(
+        (30, 102),
+        artifactsPos,
+        (255, 255, 255),
+        genshin_font_origin(20),
+        anchor='lm',
+    )
+    '''
+
+    mainValue: float = aritifact['reliquaryMainstat']['statValue']
+    mainName: str = aritifact['reliquaryMainstat']['statName']
+    mainLevel: int = aritifact['aritifactLevel']
+
+    if mainName in ['攻击力', '血量', '防御力', '元素精通']:
+        mainValueStr = str(mainValue)
+    else:
+        mainValueStr = str(mainValue) + '%'
+
+    mainNameNew = (
+        mainName.replace('百分比', '')
+        .replace('伤害加成', '伤加成')
+        .replace('元素', '')
+        .replace('理', '')
+    )
+
+    artifacts_text.text(
+        (38, 150),
+        mainNameNew,
+        (255, 255, 255),
+        genshin_font_origin(28),
+        anchor='lm',
+    )
+    artifacts_text.text(
+        (271, 150),
+        mainValueStr,
+        (255, 255, 255),
+        genshin_font_origin(28),
+        anchor='rm',
+    )
+    artifacts_text.text(
+        (232, 75),
+        f'+{mainLevel}',
+        (255, 255, 255),
+        genshin_font_origin(16),
+        anchor='mm',
+    )
+
+    for index, i in enumerate(aritifact['reliquarySubstats']):
+        subName: str = i['statName']
+        subValue: float = i['statValue']
+        if subName in ['攻击力', '血量', '防御力', '元素精通']:
+            subValueStr = str(subValue)
+        else:
+            subValueStr = str(subValue) + '%'
+        value_temp = i['value_score']
+        subNameStr = subName.replace('百分比', '').replace('元素', '')
+        # 副词条文字颜色
+        if value_temp == 0:
+            artifacts_color = (120, 120, 120)
+        else:
+            artifacts_color = (255, 255, 255)
+
+        # 副词条底色
+        if value_temp >= 3.4:
+            artifacts_bg = (205, 135, 76)
+            if value_temp >= 4.5:
+                artifacts_bg = (158, 39, 39)
+            artifacts_text.rounded_rectangle(
+                (25, 184 + index * 35, 283, 213 + index * 35),
+                fill=artifacts_bg,
+                radius=8,
+            )
+
+        artifacts_text.text(
+            (22, 200 + index * 35),
+            '·{}'.format(subNameStr),
+            artifacts_color,
+            genshin_font_origin(25),
+            anchor='lm',
+        )
+        artifacts_text.text(
+            (266, 200 + index * 35),
+            '{}'.format(subValueStr),
+            artifacts_color,
+            genshin_font_origin(25),
+            anchor='rm',
+        )
+    artifactsScore = aritifact['value_score']
+    cv_score = aritifact['cv_score']
+
+    if artifactsScore >= 8.4:
+        artifactsScore_color = (158, 39, 39)
+    elif artifactsScore >= 6.5:
+        artifactsScore_color = (205, 135, 76)
+    elif artifactsScore >= 5.2:
+        artifactsScore_color = (143, 123, 174)
+    else:
+        artifactsScore_color = (94, 96, 95)
+
+    if cv_score >= 50:
+        cv_color = (158, 39, 39)
+    elif cv_score >= 45:
+        cv_color = (205, 135, 76)
+    elif cv_score >= 39:
+        cv_color = (143, 123, 174)
+    else:
+        cv_color = (94, 96, 95)
+
+    artifacts_text.rounded_rectangle(
+        (121, 99, 193, 119), fill=artifactsScore_color, radius=8
+    )
+    artifacts_text.rounded_rectangle(
+        (200, 99, 272, 119), fill=cv_color, radius=8
+    )
+
+    artifacts_text.text(
+        (156, 109),
+        '{:.2f}'.format(artifactsScore) + '条',
+        (255, 255, 255),
+        genshin_font_origin(18),
+        anchor='mm',
+    )
+
+    artifacts_text.text(
+        (235, 109),
+        '{:.1f}'.format(cv_score) + '分',
+        (255, 255, 255),
+        genshin_font_origin(18),
+        anchor='mm',
+    )
+
+    artifactimg_bg.paste(artifacts_img, (0, 0), artifacts_img)
+    return artifactimg_bg
+
+
+async def get_artifact_score_data(aritifact: Dict, char: Character) -> Dict:
+    all_value_score = 0
+    all_cv_score = 0
+    for i in aritifact['reliquarySubstats']:
+        subName: str = i['statName']
+        subValue: float = i['statValue']
+        if not hasattr(char, 'baseAtk'):
+            await char.new()
+        cv_score = 0
+
+        if subName == '暴击率':
+            cv_score += subValue * 2
+        elif subName == '暴击伤害':
+            cv_score += subValue
+
+        value_temp = await get_artifacts_value(
+            subName,
+            subValue,
+            char.baseAtk,
+            char.baseHp,
+            char.baseDef,
+            char.char_name,
+        )
+
+        i['value_score'] = value_temp
+        i['cv_score'] = cv_score
+
+        all_cv_score += cv_score
+        all_value_score += value_temp
+
+    aritifact['cv_score'] = all_cv_score
+    aritifact['value_score'] = all_value_score
+
+    return aritifact
+
+
+async def get_single_artifact_img(
+    aritifact: Dict, char: Character
+) -> Image.Image:
+    new_aritifact = await get_artifact_score_data(aritifact, char)
+    img = await _get_single_artifact_img(new_aritifact)
+    for i in aritifact['reliquarySubstats']:
+        char.artifacts_all_score += i['value_score']
+    return img
+
+
 async def get_artifacts_card(char: Character, img: Image.Image):
     card_prop = char.card_prop
     # 圣遗物部分
     for aritifact in card_prop['equipList']:
-        artifacts_img = Image.open(TEXT_PATH / 'char_info_artifacts.png')
-        artifacts_piece_img = Image.open(
-            REL_PATH / '{}.png'.format(aritifact['aritifactName'])
-        )
-        artifacts_piece_new_img = artifacts_piece_img.resize(
-            (120, 120), Image.Resampling.LANCZOS
-        ).convert("RGBA")
-
-        artifacts_img.paste(
-            artifacts_piece_new_img, (165, 22), artifacts_piece_new_img
-        )
-        aritifactStar_img = get_star_png(aritifact['aritifactStar'])
         artifactsPos = aritifact['aritifactPieceName']
-
-        # 圣遗物星星和名称&位置
-        artifacts_img.paste(aritifactStar_img, (16, 115), aritifactStar_img)
-        artifacts_text = ImageDraw.Draw(artifacts_img)
-        if len(aritifact['aritifactName']) <= 5:
-            main_name = aritifact['aritifactName']
-        else:
-            main_name = (
-                aritifact['aritifactName'][:2] + aritifact['aritifactName'][4:]
-            )
-        artifacts_text.text(
-            (22, 100),
-            main_name,
-            (255, 255, 255),
-            genshin_font_origin(28),
-            anchor='lm',
-        )
-        '''
-        artifacts_text.text(
-            (30, 102),
-            artifactsPos,
-            (255, 255, 255),
-            genshin_font_origin(20),
-            anchor='lm',
-        )
-        '''
-
-        mainValue: float = aritifact['reliquaryMainstat']['statValue']
-        mainName: str = aritifact['reliquaryMainstat']['statName']
-        mainLevel: int = aritifact['aritifactLevel']
-
-        if mainName in ['攻击力', '血量', '防御力', '元素精通']:
-            mainValueStr = str(mainValue)
-        else:
-            mainValueStr = str(mainValue) + '%'
-
-        mainNameNew = (
-            mainName.replace('百分比', '')
-            .replace('伤害加成', '伤加成')
-            .replace('元素', '')
-            .replace('理', '')
-        )
-
-        artifacts_text.text(
-            (34, 174),
-            mainNameNew,
-            (255, 255, 255),
-            genshin_font_origin(28),
-            anchor='lm',
-        )
-        artifacts_text.text(
-            (266, 174),
-            mainValueStr,
-            (255, 255, 255),
-            genshin_font_origin(28),
-            anchor='rm',
-        )
-        artifacts_text.text(
-            (246, 132),
-            '+{}'.format(str(mainLevel)),
-            (255, 255, 255),
-            genshin_font_origin(23),
-            anchor='mm',
-        )
-
-        artifactsScore = 0
-        for index, i in enumerate(aritifact['reliquarySubstats']):
-            subName: str = i['statName']
-            subValue: float = i['statValue']
-            if subName in ['攻击力', '血量', '防御力', '元素精通']:
-                subValueStr = str(subValue)
-            else:
-                subValueStr = str(subValue) + '%'
-            value_temp = await get_artifacts_value(
-                subName,
-                subValue,
-                char.baseAtk,
-                char.baseHp,
-                char.baseDef,
-                char.char_name,
-            )
-            artifactsScore += value_temp
-            subNameStr = subName.replace('百分比', '').replace('元素', '')
-            # 副词条文字颜色
-            if value_temp == 0:
-                artifacts_color = (160, 160, 160)
-            else:
-                artifacts_color = (255, 255, 255)
-
-            # 副词条底色
-            if value_temp >= 3.4:
-                artifacts_bg = (205, 135, 76)
-                if value_temp >= 4.5:
-                    artifacts_bg = (158, 39, 39)
-                artifacts_text.rounded_rectangle(
-                    (22, 209 + index * 35, 274, 238 + index * 35),
-                    fill=artifacts_bg,
-                    radius=8,
-                )
-
-            artifacts_text.text(
-                (22, 225 + index * 35),
-                '·{}'.format(subNameStr),
-                artifacts_color,
-                genshin_font_origin(25),
-                anchor='lm',
-            )
-            artifacts_text.text(
-                (266, 225 + index * 35),
-                '{}'.format(subValueStr),
-                artifacts_color,
-                genshin_font_origin(25),
-                anchor='rm',
-            )
-        if artifactsScore >= 8.4:
-            artifactsScore_color = (158, 39, 39)
-        elif artifactsScore >= 6.5:
-            artifactsScore_color = (205, 135, 76)
-        elif artifactsScore >= 5.2:
-            artifactsScore_color = (143, 123, 174)
-        else:
-            artifactsScore_color = (94, 96, 95)
-        char.artifacts_all_score += artifactsScore
-        artifacts_text.rounded_rectangle(
-            (21, 45, 104, 75), fill=artifactsScore_color, radius=8
-        )
-        artifacts_text.text(
-            (26, 60),
-            '{:.2f}'.format(artifactsScore) + '条',
-            (255, 255, 255),
-            genshin_font_origin(23),
-            anchor='lm',
-        )
+        artifacts_img = await get_single_artifact_img(aritifact, char)
         img.paste(artifacts_img, ARTIFACTS_POS[artifactsPos], artifacts_img)

@@ -3,8 +3,9 @@ from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
 from gsuid_core.utils.api.mys.models import IndexData
+from gsuid_core.utils.error_reply import get_error_img
 
-from ..utils.convert import GsCookie
+from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import avatarId2Name
 from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
@@ -65,23 +66,19 @@ async def draw_explora_img(
     return await draw_base_img(qid, uid, '探索')
 
 
-async def get_base_data(uid: str) -> Union[str, IndexData]:
+async def get_base_data(uid: str) -> Union[bytes, str, IndexData]:
     # 获取Cookies
-    data_def = GsCookie()
-    retcode = await data_def.get_cookie(uid)
-    if retcode:
-        return retcode
-    raw_data = data_def.raw_data
-    if raw_data is None:
-        return '数据异常！'
+    raw_data = await mys_api.get_info(uid, None)
+    if isinstance(raw_data, int):
+        return await get_error_img(raw_data)
     return raw_data
 
 
 async def get_explore_data(
     uid: str,
-) -> Union[str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
+) -> Union[bytes, str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
     raw_data = await get_base_data(uid)
-    if isinstance(raw_data, str):
+    if isinstance(raw_data, str) or isinstance(raw_data, bytes):
         return raw_data
 
     # 处理数据
@@ -125,9 +122,9 @@ async def get_explore_data(
 
 async def get_collection_data(
     uid: str,
-) -> Union[str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
+) -> Union[bytes, str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
     raw_data = await get_base_data(uid)
-    if isinstance(raw_data, str):
+    if isinstance(raw_data, str) or isinstance(raw_data, bytes):
         return raw_data
     raw_data = raw_data['stats']
 
@@ -172,8 +169,10 @@ async def draw_base_img(
         data = await get_collection_data(uid)
     else:
         data = await get_explore_data(uid)
-    if isinstance(data, str):
+
+    if isinstance(data, str) or isinstance(data, bytes):
         return data
+
     percent_data, value_data = data[0], data[1]
 
     # 获取背景图片各项参数

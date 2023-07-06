@@ -32,6 +32,6 @@ async def send_all_postdraw_data(bot: Bot, ev: Event):
 
 # 执行自动留影叙佳期
 @scheduler.scheduled_job('cron', hour=DRAW_TIME[0], minute=DRAW_TIME[1])
-async def sign_at_night():
+async def postdraw_sign_at_night():
     if gsconfig.get_config('SchedGetDraw').data:
         await daily_get_draw()

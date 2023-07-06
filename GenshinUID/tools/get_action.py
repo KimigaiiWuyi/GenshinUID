@@ -9,6 +9,7 @@ from copy import deepcopy
 import httpx
 
 sys.path.append(str(Path(__file__).parents[2]))
+sys.path.append(str(Path(__file__).parents[5]))
 __package__ = 'GenshinUID.tools'
 from ..utils.ambr_to_minigg import convert_ambr_to_talent  # noqa: E402
 from ..utils.map.GS_MAP_PATH import (  # noqa: E402

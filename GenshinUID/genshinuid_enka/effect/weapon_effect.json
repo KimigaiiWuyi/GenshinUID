@@ -1,4 +1,376 @@
 {
+	"狼牙": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "EQ:dmgBonus+16;EQ:critRate+8",
+				"2": "EQ:dmgBonus+20;EQ:critRate+10",
+				"3": "EQ:dmgBonus+24;EQ:critRate+12",
+				"4": "EQ:dmgBonus+28;EQ:critRate+14",
+				"5": "EQ:dmgBonus+32;EQ:critRate+16"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"海渊终曲": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+12;atk+150",
+				"2": "addAtk+15;atk+187.5",
+				"3": "addAtk+18;atk+225",
+				"4": "addAtk+21;atk+262.5",
+				"5": "addAtk+24;atk+300"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"灰河渡手": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:critRate+8;energyRecharge+16",
+				"2": "E:critRate+10;energyRecharge+20",
+				"3": "E:critRate+12;energyRecharge+24",
+				"4": "E:critRate+14;energyRecharge+28",
+				"5": "E:critRate+16;energyRecharge+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"聊聊棒": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+16;dmgBonus+12",
+				"2": "addAtk+20;dmgBonus+15",
+				"3": "addAtk+24;dmgBonus+18",
+				"4": "addAtk+28;dmgBonus+21",
+				"5": "addAtk+32;dmgBonus+24"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"浪影阔剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+24",
+				"2": "addAtk+30",
+				"3": "addAtk+36",
+				"4": "addAtk+42",
+				"5": "addAtk+48"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 8,
+			"extra": {
+
+			}
+		}
+	},
+	"峡湾长歌": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+120",
+				"2": "elementalMastery+150",
+				"3": "elementalMastery+180",
+				"4": "elementalMastery+210",
+				"5": "elementalMastery+240"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"公义的酬报": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"遗祀玉珑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addHp+20;elementalMastery+80",
+				"2": "addHp+25;elementalMastery+100",
+				"3": "addHp+30;elementalMastery+120",
+				"4": "addHp+35;elementalMastery+140",
+				"5": "addHp+40;elementalMastery+160"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
+	"纯水流华": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+20",
+				"2": "dmgBonus+25",
+				"3": "dmgBonus+30",
+				"4": "dmgBonus+35",
+				"5": "dmgBonus+40"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"烈阳之嗣": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "B:dmgBonus+28",
+				"2": "B:dmgBonus+35",
+				"3": "B:dmgBonus+42",
+				"4": "B:dmgBonus+49",
+				"5": "B:dmgBonus+56"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 12,
+			"extra": {
+
+			}
+		}
+	},
+	"静谧之曲": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+16",
+				"2": "dmgBonus+20",
+				"3": "dmgBonus+24",
+				"4": "dmgBonus+28",
+				"5": "dmgBonus+32"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 8,
+			"extra": {
+
+			}
+		}
+	},
+	"最初的大魔术": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+52",
+				"2": "addAtk+65",
+				"3": "addAtk+78",
+				"4": "addAtk+91",
+				"5": "addAtk+104"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 0,
+			"extra": {
+
+			}
+		}
+	},
 	"恶王丸": {
 		"normal": {
 			"normal_effect": {

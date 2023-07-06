@@ -1,4 +1,32 @@
 {
+  "黄金剧团": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "E:dmgBonus+20",
+      "4": "E:dmgBonus+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "逐影猎人": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "AB:dmgBonus+15",
+      "4": "critRate+33"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "乐园遗落之花": {
     "normal_effect": {
       "2": "elementalMastery+80",

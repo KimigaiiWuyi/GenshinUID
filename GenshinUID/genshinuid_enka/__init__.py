@@ -35,7 +35,7 @@ async def sned_fresh_all_list(bot: Bot, ev: Event):
     await bot.send('执行完成!')
 
 
-@sv_get_enka.on_fullmatch(('刷新圣遗物仓库', '强制刷新圣遗物仓库'))
+@sv_get_enka.on_fullmatch(('刷新圣遗物仓库', '强制刷新圣遗物仓库'), block=True)
 async def sned_fresh_list(bot: Bot, ev: Event):
     # 获取uid
     uid = await get_uid(bot, ev)

@@ -17,7 +17,7 @@ async def refresh_player_list(uid: str) -> str:
     path = player / 'artifacts.json'
     all_artifacts = deepcopy(ARTIFACT_DATA)
     if not path.exists():
-        logger.info(f'UID{player.name} 不存在圣遗物列表,开始生成中...')
+        logger.info(f'UID{uid} 不存在圣遗物列表,开始生成中...')
     else:
         async with aiofiles.open(path, 'r', encoding='UTF-8') as file:
             all_artifacts = json.loads(await file.read())
@@ -26,8 +26,11 @@ async def refresh_player_list(uid: str) -> str:
 
     if len(all_list) >= 1 and 'cv_score' not in all_list[0]:
         path.unlink()
+    elif len(all_list) >= 1:
+        return '无需刷新圣遗物列表'
         # return '删除旧数据中...请重新刷新!'
 
+    logger.info(f'开始刷新UID{uid}圣遗物列表...')
     num = 0
     for char in player.iterdir():
         match = re.match(pattern, char.name)
@@ -44,7 +47,7 @@ async def refresh_player_list(uid: str) -> str:
                 )
                 num += 1
 
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(0.15)
     # 保存原始数据
     async with aiofiles.open(path, 'w', encoding='UTF-8') as file:
         await file.write(

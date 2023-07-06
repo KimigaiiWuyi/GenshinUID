@@ -19,11 +19,20 @@ from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import alias_data
 from .draw_char_rank import draw_cahrcard_list
 from .get_enka_img import draw_enka_img, get_full_char
+from ..genshinuid_enka.start import check_artifacts_list
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
 
+sv_enka_admin = SV('面板管理', pm=1)
 sv_enka_config = SV('面板设置', pm=2)
 sv_get_enka = SV('面板查询', priority=10)
 sv_get_original_pic = SV('查看面板原图', priority=5)
+
+
+@sv_enka_admin.on_fullmatch('刷新全部圣遗物仓库')
+async def sned_fresh_all_list(bot: Bot, ev: Event):
+    await bot.send('开始执行...可能时间较久, 执行完成会有提示, 请勿重复执行!')
+    await check_artifacts_list()
+    await bot.send('执行完成!')
 
 
 @sv_get_enka.on_fullmatch('刷新圣遗物仓库')

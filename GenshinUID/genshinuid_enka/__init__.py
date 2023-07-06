@@ -33,7 +33,7 @@ async def sned_fresh_list(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f'[刷新圣遗物仓库]uid: {uid}')
-
+    await bot.send(f'UID{uid}开始刷新, 请勿重复触发!')
     await bot.send(await refresh_player_list(uid))
 
 

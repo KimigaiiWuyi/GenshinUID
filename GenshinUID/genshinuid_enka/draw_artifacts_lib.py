@@ -38,7 +38,7 @@ async def get_artifacts_lib_data(uid: str) -> Optional[Dict]:
 async def draw_lib(user_id: str, uid: str) -> Union[bytes, str]:
     data = await get_artifacts_lib_data(uid)
     if data is None:
-        return '你还没有圣遗物数据...请尝试使用[强制刷新]获取数据!'
+        return '你还没有圣遗物数据...请尝试使用[刷新圣遗物仓库]获取数据!'
 
     all_list = [x for v in data['data'].values() for x in v]
     all_list.sort(key=lambda x: x['cv_score'], reverse=True)

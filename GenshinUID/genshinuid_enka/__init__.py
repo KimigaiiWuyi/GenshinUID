@@ -50,7 +50,7 @@ async def sned_fresh_list(bot: Bot, ev: Event):
     await bot.send(await refresh_player_list(uid, is_force))
 
 
-@sv_get_enka.on_fullmatch('圣遗物仓库')
+@sv_get_enka.on_command('圣遗物仓库')
 async def sned_aritifacts_list(bot: Bot, ev: Event):
     # 获取uid
     uid = await get_uid(bot, ev)
@@ -58,7 +58,14 @@ async def sned_aritifacts_list(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     logger.info(f'[圣遗物仓库]uid: {uid}')
 
-    await bot.send(await draw_lib(ev.user_id, uid))
+    if ev.text and ev.text.isdigit():
+        num = int(ev.text)
+        if num == 0:
+            num = 1
+    else:
+        num = 1
+
+    await bot.send(await draw_lib(ev.user_id, uid, num))
 
 
 @sv_get_original_pic.on_fullmatch(('原图'))

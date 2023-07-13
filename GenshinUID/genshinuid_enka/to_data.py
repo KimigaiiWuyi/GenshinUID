@@ -13,6 +13,7 @@ from gsuid_core.utils.api.enka.request import get_enka_info
 from gsuid_core.utils.api.minigg.request import get_weapon_info
 
 from .mono.Character import Character
+from ..utils.api.cv.request import _CvApi
 from .draw_normal import get_artifact_score_data
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.ambr_to_minigg import convert_ambr_to_weapon
@@ -409,7 +410,35 @@ async def enka_to_dict(
                 json.dumps(char_data, indent=4, ensure_ascii=False)
             )
 
+    if 0:
+        threading.Thread(
+            target=lambda: asyncio.run(_restore_cv_data(uid, now)),
+            daemon=True,
+        ).start()
+
     return char_dict_list
+
+
+async def _restore_cv_data(uid: str, now: str):
+    cv_api = _CvApi()
+    data = await cv_api.get_rank_data(uid)
+    path = PLAYER_PATH / str(uid) / 'rank.json'
+    if path.exists():
+        async with aiofiles.open(path, 'r', encoding='UTF-8') as file:
+            rank_data = json.loads(await file.read())
+    else:
+        rank_data = {}
+    if not isinstance(data, int):
+        for i in data['data']:
+            rank_data[i['characterId']] = {
+                'calculations': i['calculations'],
+                'time': now,
+            }
+        async with aiofiles.open(path, 'w', encoding='UTF-8') as file:
+            await file.write(
+                json.dumps(rank_data, indent=4, ensure_ascii=False)
+            )
+    await cv_api.close()
 
 
 async def enka_to_data(

@@ -103,7 +103,7 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         True,
     ),
     'EnableAkasha': GsBoolConfig(
-        '开启排名系统',
+        '排名系统',
         '开启后强制刷新将同时刷新AkashaSystem',
         False,
     ),

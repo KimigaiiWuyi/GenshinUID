@@ -102,4 +102,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后mr功能将转为调用组件API, 可能缺失数据、数据不准',
         True,
     ),
+    'EnableAkasha': GsBoolConfig(
+        '开启排名系统',
+        '开启后强制刷新将同时刷新AkashaSystem',
+        False,
+    ),
 }

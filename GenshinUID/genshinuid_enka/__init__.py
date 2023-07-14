@@ -13,6 +13,7 @@ from gsuid_core.utils.error_reply import UID_HINT
 from .to_data import switch_api
 from .to_card import enka_to_card
 from ..utils.convert import get_uid
+from .get_akasha_data import get_rank
 from .start import refresh_player_list
 from .draw_artifacts_lib import draw_lib
 from ..utils.image.convert import convert_img
@@ -24,8 +25,19 @@ from ..utils.resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
 
 sv_enka_admin = SV('面板管理', pm=1)
 sv_enka_config = SV('面板设置', pm=2)
+sv_akasha = SV('排名查询', priority=10)
 sv_get_enka = SV('面板查询', priority=10)
 sv_get_original_pic = SV('查看面板原图', priority=5)
+
+
+@sv_akasha.on_fullmatch('排名统计')
+async def sned_rank_data(bot: Bot, ev: Event):
+    # 获取uid
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    logger.info(f'[排名统计]uid: {uid}')
+    await bot.send(await get_rank(uid))
 
 
 @sv_enka_admin.on_fullmatch('刷新全部圣遗物仓库')

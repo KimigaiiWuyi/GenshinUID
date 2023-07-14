@@ -15,6 +15,7 @@ from gsuid_core.utils.api.minigg.request import get_weapon_info
 from .mono.Character import Character
 from ..utils.api.cv.request import _CvApi
 from .draw_normal import get_artifact_score_data
+from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from ..utils.ambr_to_minigg import convert_ambr_to_weapon
 from ..utils.map.GS_MAP_PATH import (
@@ -41,6 +42,7 @@ PROP_ATTR_MAP = {
 }
 
 ENKA_API: List[Literal['enka', 'microgg']] = ['enka', 'microgg']
+is_enable_akasha = gsconfig.get_config('EnableAkasha').data
 ARTIFACT_DATA = {
     'data': {
         'flower': [],
@@ -410,7 +412,7 @@ async def enka_to_dict(
                 json.dumps(char_data, indent=4, ensure_ascii=False)
             )
 
-    if 0:
+    if is_enable_akasha:
         threading.Thread(
             target=lambda: asyncio.run(_restore_cv_data(uid, now)),
             daemon=True,

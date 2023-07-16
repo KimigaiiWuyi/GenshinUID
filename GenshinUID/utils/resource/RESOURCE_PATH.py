@@ -22,6 +22,7 @@ REL_PATH = RESOURCE_PATH / 'reliquaries'
 ICON_PATH = RESOURCE_PATH / 'icon'
 TEMP_PATH = RESOURCE_PATH / 'temp'
 CARD_PATH = RESOURCE_PATH / 'card'
+MONSTER_ICON_PATH = RESOURCE_PATH / 'monster_icon'
 GUIDE_PATH = WIKI_PATH / 'guide'
 REF_PATH = WIKI_PATH / 'ref'
 WIKI_REL_PATH = WIKI_PATH / 'artifacts'
@@ -71,6 +72,7 @@ def init_dir():
         WIKI_COST_WEAPON_PATH,
         DATA_PATH,
         CHAR_SIDE_TEMP_PATH,
+        MONSTER_ICON_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

@@ -8,7 +8,7 @@ from ..genshinuid_resource import startup
 from ..genshinuid_xkdata import draw_xk_abyss_img
 
 # from ..genshinuid_enka.start import check_artifacts_list
-from ..genshinuid_guide.get_abyss_data import generate_data
+# from ..genshinuid_guide.get_abyss_data import generate_data
 from ..utils.resource.generate_char_card import create_all_char_card
 from ..genshinuid_xkdata.get_all_char_data import (
     save_all_char_info,
@@ -23,7 +23,7 @@ async def all_start():
         # await check_artifacts_list()
         await create_all_char_card()
         await draw_xk_abyss_img()
-        await generate_data()
+        # await generate_data()
         await save_all_char_info()
         await save_all_abyss_rank()
     except Exception as e:

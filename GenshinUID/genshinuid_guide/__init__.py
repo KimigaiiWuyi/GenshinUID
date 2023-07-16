@@ -9,6 +9,8 @@ from .get_guide import get_gs_guide
 from ..version import Genshin_version
 from .get_abyss_data import get_review
 from ..utils.image.convert import convert_img
+from .get_new_abyss_data import get_review_data
+from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import REF_PATH
 from ..utils.map.name_covert import alias_to_char_name
 
@@ -49,9 +51,14 @@ async def send_abyss_review(bot: Bot, ev: Event):
     else:
         version = ev.text
 
-    im = await get_review(version)
+    if gsconfig.get_config('PicWiki').data:
+        im = await get_review_data(version)
+    else:
+        im = await get_review(version)
 
-    if isinstance(im, List):
+    if isinstance(im, bytes):
+        await bot.send(im)
+    elif isinstance(im, List):
         mes = [MessageSegment.text(msg) for msg in im]
         await bot.send(MessageSegment.node(mes))
     elif isinstance(im, str):

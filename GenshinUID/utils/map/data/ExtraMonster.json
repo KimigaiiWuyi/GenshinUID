@@ -1,0 +1,226 @@
+{
+  "22100101": {
+    "id": 22100101,
+    "name": "深罪浸礼者·火冰雷",
+    "type": "ABYSS",
+    "icon": "UI_MonsterIcon_Invoker_Archdeacon",
+    "route": "Iniquitous Baptist"
+  },
+  "22100201": {
+    "id": 22100201,
+    "name": "深罪浸礼者·冰水火",
+    "type": "ABYSS",
+    "icon": "UI_MonsterIcon_Invoker_Archdeacon",
+    "route": "Iniquitous Baptist"
+  },
+  "22100301": {
+    "id": 22100301,
+    "name": "深罪浸礼者·雷火水",
+    "type": "ABYSS",
+    "icon": "UI_MonsterIcon_Invoker_Archdeacon",
+    "route": "Iniquitous Baptist"
+  },
+  "22100401": {
+    "id": 22100401,
+    "name": "深罪浸礼者·水冰雷",
+    "type": "ABYSS",
+    "icon": "UI_MonsterIcon_Invoker_Archdeacon",
+    "route": "Iniquitous Baptist"
+  },
+  "26040101": {
+    "id": 26040101,
+    "name": "岩龙蜥·水",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Rock",
+    "route": "Geovishap"
+  },
+  "26040201": {
+    "id": 26040201,
+    "name": "岩龙蜥·火",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Rock",
+    "route": "Geovishap"
+  },
+  "26040301": {
+    "id": 26040301,
+    "name": "岩龙蜥·雷",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Rock",
+    "route": "Geovishap"
+  },
+  "26040401": {
+    "id": 26040401,
+    "name": "岩龙蜥·冰",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Rock",
+    "route": "Geovishap"
+  },
+  "26050101": {
+    "id": 26040101,
+    "name": "古岩龙蜥·水",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Primo_Rock",
+    "route": "Primo Geovishap"
+  },
+  "26050201": {
+    "id": 26040201,
+    "name": "古岩龙蜥·火",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Primo_Rock",
+    "route": "Primo Geovishap"
+  },
+  "26050301": {
+    "id": 26040301,
+    "name": "古岩龙蜥·雷",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Primo_Rock",
+    "route": "Primo Geovishap"
+  },
+  "26050401": {
+    "id": 26040401,
+    "name": "古岩龙蜥·冰",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Primo_Rock",
+    "route": "Primo Geovishap"
+  },
+  "20502001": {
+    "id": 20502001,
+    "name": "水幻形猪",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20502101": {
+    "id": 20502101,
+    "name": "水幻形猪·强化",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20050301": {
+    "id": 20050301,
+    "name": "水幻形鹤",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20504001": {
+    "id": 20504001,
+    "name": "水幻形蟹",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20504101": {
+    "id": 20504101,
+    "name": "水幻形蟹·强化",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20050501": {
+    "id": 20050501,
+    "name": "水幻形雀",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20050601": {
+    "id": 20050601,
+    "name": "水幻形鸭",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20507001": {
+    "id": 20507001,
+    "name": "水幻形鼠",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20507101": {
+    "id": 20507101,
+    "name": "水幻形鼠·强化",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20050801": {
+    "id": 20050801,
+    "name": "水幻形蛙",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "20050901": {
+    "id": 20050901,
+    "name": "水幻形鹰",
+    "type": "ELEMENTAL",
+    "icon": "UI_MonsterIcon_Oceanid_Underling",
+    "route": "Water-Splitting Phantasm"
+  },
+  "26050901": {
+    "id": 26050901,
+    "name": "深海龙蜥幼体·原种",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Deepsea_Water",
+    "route": "Primordial Bathysmal Vishap"
+  },
+  "26051001": {
+    "id": 26051001,
+    "name": "深海龙蜥幼体·啮冰",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Deepsea_Ice",
+    "route": "Rimebiter Bathysmal Vishap"
+  },
+  "26051101": {
+    "id": 26051101,
+    "name": "深海龙蜥幼体·吞雷",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_Drake_Deepsea_Electric",
+    "route": "Bolteater Bathysmal Vishap"
+  },
+  "24065901": {
+    "id": 24065901,
+    "name": "压制特化型机关·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_02",
+    "route": "Suppression Specialist Mek"
+  },
+  "24066201": {
+    "id": 24066201,
+    "name": "建造特化型机关·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Excavator",
+    "route": "Suppression Specialist Mek"
+  },
+  "24061201": {
+    "id": 24061201,
+    "name": "建造特化型机关·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Excavator",
+    "route": "Suppression Specialist Mek"
+  },
+  "24061001": {
+    "id": 24061201,
+    "name": "歼灭特化型机关·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Bradamante",
+    "route": "Suppression Specialist Mek"
+  },
+  "26170101": {
+    "id": 26170101,
+    "name": "铁甲熔火帝皇",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_HermitCrab_Primo",
+    "route": "Suppression Specialist Mek"
+  },
+  "24070101": {
+    "id": 24070101,
+    "name": "冰风组曲",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Nutcracker",
+    "route": "Suppression Specialist Mek"
+  }
+}

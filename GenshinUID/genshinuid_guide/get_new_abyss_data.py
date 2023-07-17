@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import List, Literal
 
+import httpx
+import aiofiles
 from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.ambr.request import get_ambr_icon
@@ -8,8 +10,8 @@ from gsuid_core.utils.image.image_tools import get_color_bg
 
 from ..version import Genshin_version
 from .abyss_new_history import history_data
-from ..utils.map.GS_MAP_PATH import abyss_data, monster_data
 from ..utils.resource.RESOURCE_PATH import TEXT2D_PATH, MONSTER_ICON_PATH
+from ..utils.map.GS_MAP_PATH import abyss_data, monster_data, ex_monster_data
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_28,
@@ -21,6 +23,18 @@ TEXT_PATH = Path(__file__).parent / 'texture2d'
 monster_fg = Image.open(TEXT_PATH / 'monster_fg.png')
 upper_tag = Image.open(TEXT_PATH / 'upper_tag.png')
 lower_tag = Image.open(TEXT_PATH / 'lower_tag.png')
+
+
+async def download_Oceanid():
+    path = MONSTER_ICON_PATH / 'UI_MonsterIcon_Oceanid_Underling.png'
+    if path.exists():
+        return
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            'https://enka.network/ui/UI_MonsterIcon_Oceanid_Underling.png'
+        )
+        async with aiofiles.open(path, 'wb') as file:
+            await file.write(response.content)
 
 
 async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
@@ -48,8 +62,14 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
                 real_id = '0' + real_id
             real_id = '2' + real_id + '01'
             monster_num = monster['Num']
-            monster_name = monster_data[real_id]['name']
-            icon_name = monster_data[real_id]['icon']
+
+            if real_id not in monster_data:
+                monster_name = ex_monster_data[real_id]['name']
+                icon_name = ex_monster_data[real_id]['icon']
+            else:
+                monster_name = monster_data[real_id]['name']
+                icon_name = monster_data[real_id]['icon']
+
             monster_icon = await get_ambr_icon(
                 'monster', icon_name, MONSTER_ICON_PATH
             )
@@ -74,7 +94,7 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
                 (5 + (m_index % 3) * 360, 83 + (m_index // 3) * 110 + temp),
                 monster_img,
             )
-        temp = wave_monster_uh
+        temp += wave_monster_uh
 
     tag = upper_tag if half == 'Upper' else lower_tag
     half_img.paste(tag, (0, 0), tag)

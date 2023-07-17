@@ -22,6 +22,7 @@ icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
 monster_fileName = f'monster_{version}.json'
 SAConfig_fileName = 'SpiralAbyssFloorConfig.json'
+EXMonster_fileName = 'ExtraMonster.json'
 
 
 class TS(TypedDict):
@@ -79,3 +80,6 @@ with open(MAP / monster_fileName, 'r', encoding='utf8') as f:
 
 with open(MAP / SAConfig_fileName, 'r', encoding='utf8') as f:
     abyss_data = msgjson.decode(f.read(), type=Dict[str, Dict])
+
+with open(MAP / EXMonster_fileName, 'r', encoding='utf8') as f:
+    ex_monster_data = msgjson.decode(f.read(), type=Dict[str, Dict])

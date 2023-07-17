@@ -14,6 +14,7 @@ from ..utils.resource.RESOURCE_PATH import TEXT2D_PATH, MONSTER_ICON_PATH
 from ..utils.map.GS_MAP_PATH import abyss_data, monster_data, ex_monster_data
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
+    gs_font_26,
     gs_font_28,
     gs_font_36,
     gs_font_84,
@@ -113,7 +114,7 @@ async def get_review_data(
 ):
     floor_data = history_data[version][floor]
     data = abyss_data[floor_data]
-    # floor_buff = data['Disorder']['CH']
+    floor_buff = data['Disorder']['CH']
     floor_monster = data['Chambers']
 
     icon = Image.open(TEXT2D_PATH / 'icon.png')
@@ -121,8 +122,13 @@ async def get_review_data(
     img_draw = ImageDraw.Draw(img)
 
     img_draw.rounded_rectangle((421, 272, 548, 310), 10, (144, 0, 0))
-    img_draw.text((430, 175), f'深境螺旋 {floor}层', 'white', gs_font_84, 'lm')
+    img_draw.rounded_rectangle((570, 272, 772, 310), 10, (27, 82, 155))
+
+    img_draw.text((429, 239), floor_buff, (215, 215, 215), gs_font_26, 'lm')
+    img_draw.text((425, 175), f'深境螺旋 {floor}层', 'white', gs_font_84, 'lm')
+
     img_draw.text((485, 291), f'版本{version}', 'white', gs_font_28, 'mm')
+    img_draw.text((670, 291), '数据 妮可少年', 'white', gs_font_28, 'mm')
 
     img.paste(icon, (45, 80), icon)
 

@@ -188,6 +188,13 @@
     "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_02",
     "route": "Suppression Specialist Mek"
   },
+  "24060901": {
+    "id": 24060901,
+    "name": "压制特化型机关·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_02",
+    "route": "Suppression Specialist Mek"
+  },
   "24066201": {
     "id": 24066201,
     "name": "建造特化型机关·芒",
@@ -207,6 +214,76 @@
     "name": "歼灭特化型机关·荒",
     "type": "BEAST",
     "icon": "UI_MonsterIcon_MachinaIustitia_Bradamante",
+    "route": "Suppression Specialist Mek"
+  },
+  "24066001": {
+    "id": 24066001,
+    "name": "歼灭特化型机关·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Bradamante",
+    "route": "Suppression Specialist Mek"
+  },
+  "24060801": {
+    "id": 24060801,
+    "name": "攻坚特化型机关·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_01",
+    "route": "Suppression Specialist Mek"
+  },
+  "24065801": {
+    "id": 24065801,
+    "name": "攻坚特化型机关·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_01",
+    "route": "Suppression Specialist Mek"
+  },
+  "24060101": {
+    "id": 24060101,
+    "name": "机关·侦察记录型·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Sentry",
+    "route": "Suppression Specialist Mek"
+  },
+  "24065101": {
+    "id": 24065101,
+    "name": "机关·侦察记录型·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Sentry",
+    "route": "Suppression Specialist Mek"
+  },
+  "24060701": {
+    "id": 24060701,
+    "name": "机关·灵活采集型·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Assimilator",
+    "route": "Suppression Specialist Mek"
+  },
+  "24065701": {
+    "id": 24065701,
+    "name": "机关·灵活采集型·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Assimilator",
+    "route": "Suppression Specialist Mek"
+  },
+  "24060201": {
+    "id": 24060201,
+    "name": "机关·算力增幅器·荒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Pylon",
+    "route": "Suppression Specialist Mek"
+  },
+  "24065201": {
+    "id": 24065201,
+    "name": "机关·算力增幅器·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Pylon",
+    "route": "Suppression Specialist Mek"
+  },
+  "24065401": {
+    "id": 24065401,
+    "name": "机关地质勘探型·芒",
+    "type": "BEAST",
+    "icon": "UI_MonsterIcon_MachinaIustitia_Probe",
     "route": "Suppression Specialist Mek"
   },
   "26170101": {

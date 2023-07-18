@@ -40,12 +40,10 @@ async def download_Oceanid():
 
 async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
     half_img = Image.new('RGBA', (1100, 3000), (0, 0, 0, 0))
+    half_draw = ImageDraw.Draw(half_img)
     upper_h = 60
     temp = 0
     for index, wave in enumerate(data):
-        if 'ExtraDesc' in wave:
-            pass
-            # ExtraDesc = wave['ExtraDesc']['CH']
         monsters = wave['Monsters']
         wave_monster_uh = (((len(monsters) - 1) // 3) + 1) * 125 + 40
         upper_h += wave_monster_uh
@@ -55,6 +53,14 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
         wave_tag_draw.text(
             (36, 20), f'第{index+1}波', (210, 210, 210), gs_font_24, 'lm'
         )
+        if 'ExtraDesc' in wave:
+            ExtraDesc: str = wave['ExtraDesc']['CH']
+            ExtraDesc = ' > ' + ExtraDesc.replace('<b>', '').replace(
+                '</b>', ''
+            )
+            half_draw.text(
+                (150, 65 + temp), ExtraDesc, (210, 210, 210), gs_font_24, 'lm'
+            )
         half_img.paste(wave_tag, (53, 45 + temp), wave_tag)
         for m_index, monster in enumerate(monsters):
             monster_id = monster['ID']
@@ -71,6 +77,10 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
                 monster_name = monster_data[real_id]['name']
                 icon_name = monster_data[real_id]['icon']
 
+            if 'Mark' in monster:
+                if monster['Mark']:
+                    monster_name = '*' + monster_name
+
             monster_icon = await get_ambr_icon(
                 'monster', icon_name, MONSTER_ICON_PATH
             )
@@ -81,7 +91,7 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
 
             monster_draw = ImageDraw.Draw(monster_img)
             monster_draw.text(
-                (137, 52), monster_name[:8], 'white', gs_font_24, 'lm'
+                (137, 52), monster_name[:10], 'white', gs_font_24, 'lm'
             )
             monster_draw.text(
                 (137, 82),
@@ -114,7 +124,7 @@ async def get_review_data(
 ):
     floor_data = history_data[version][floor]
     data = abyss_data[floor_data]
-    floor_buff = data['Disorder']['CH']
+    floor_buff = data['Disorder']['CH'].replace('<b>', '').replace('</b>', '')
     floor_monster = data['Chambers']
 
     icon = Image.open(TEXT2D_PATH / 'icon.png')

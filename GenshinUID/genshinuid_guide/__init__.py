@@ -1,3 +1,4 @@
+import re
 from typing import List
 
 from gsuid_core.sv import SV
@@ -46,13 +47,22 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
 
 @sv_abyss_review.on_command(('版本深渊', '深渊阵容'))
 async def send_abyss_review(bot: Bot, ev: Event):
+    floor = '12'
     if not ev.text:
         version = Genshin_version[:-2]
     else:
-        version = ev.text
+        if '.' in ev.text:
+            num = ev.text.index('.')
+            version = ev.text[num - 1 : num + 2]  # noqa:E203
+            _deal = ev.text.replace(version, '').strip()
+            if _deal:
+                floor = re.findall(r'[0-9]+', _deal)[0]
+        else:
+            floor = ev.text
+            version = Genshin_version[:-2]
 
     if gsconfig.get_config('PicWiki').data:
-        im = await get_review_data(version)
+        im = await get_review_data(version, floor)
     else:
         im = await get_review(version)
 

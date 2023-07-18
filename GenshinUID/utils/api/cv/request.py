@@ -20,10 +20,11 @@ class _CvApi:
         async with self.session.get(MAIN_API) as resp:
             cookies = resp.cookies
             cookies_dict = dict(cookies)
-            sid = cookies_dict.get(
-                "connect.sid",
-                {"connect.sid": "NVybrjSdSZISA0JRuKFoZIndoCfDWdA2"},
-            ).get("connect.sid", "NVybrjSdSZISA0JRuKFoZIndoCfDWdA2")
+            sid = cookies_dict.get('connect.sid', None)
+            if sid is not None:
+                sid = sid.value
+            else:
+                sid = 'NVybrjSdSZISA0JRuKFoZIndoCfDWdA2'
             sid = unquote(str(sid))
             sessionID = sid.split(".")[0].split(":")[-1]
             return sessionID

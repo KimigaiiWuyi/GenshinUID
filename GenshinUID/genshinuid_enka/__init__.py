@@ -30,7 +30,7 @@ sv_get_enka = SV('面板查询', priority=10)
 sv_get_original_pic = SV('查看面板原图', priority=5)
 
 
-@sv_akasha.on_fullmatch('排名统计')
+@sv_akasha.on_command('排名统计')
 async def sned_rank_data(bot: Bot, ev: Event):
     # 获取uid
     uid = await get_uid(bot, ev)

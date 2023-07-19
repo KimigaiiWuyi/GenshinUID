@@ -4,7 +4,7 @@ from typing import Any, Dict, Union, Literal, Optional
 from gsuid_core.logger import logger
 from aiohttp import TCPConnector, ClientSession, ContentTypeError
 
-from .api import DATA_API, MAIN_API, RANK_API
+from .api import DATA_API, MAIN_API, RANK_API, REFRESH_API
 
 
 class _CvApi:
@@ -15,6 +15,7 @@ class _CvApi:
         self.session = ClientSession(
             connector=TCPConnector(verify_ssl=self.ssl_verify)
         )
+        self.sessionID = None
 
     async def get_session_id(self) -> str:
         async with self.session.get(MAIN_API) as resp:
@@ -27,6 +28,7 @@ class _CvApi:
                 sid = 'NVybrjSdSZISA0JRuKFoZIndoCfDWdA2'
             sid = unquote(str(sid))
             sessionID = sid.split(".")[0].split(":")[-1]
+            self.sessionID = sessionID
             return sessionID
 
     async def get_base_data(self, uid: str) -> Union[Dict, int]:
@@ -35,8 +37,17 @@ class _CvApi:
             DATA_API.format(uid), 'GET', self._HEADER, {'sessionID': sessionID}
         )
 
+    async def get_refresh_data(self, uid: str) -> Union[Dict, int]:
+        return await self._cv_request(
+            REFRESH_API.format(uid),
+            'GET',
+            self._HEADER,
+            {'sessionID': self.sessionID},
+        )
+
     async def get_rank_data(self, uid: str) -> Union[Dict, int]:
         await self.get_base_data(uid)
+        await self.get_refresh_data(uid)
         return await self._cv_request(
             RANK_API.format(uid), 'GET', self._HEADER
         )

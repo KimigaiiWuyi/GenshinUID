@@ -22,7 +22,7 @@ async def get_rank(uid: str) -> str:
     if len(rank_data) == 0:
         return '你还没有排名缓存, 请使用[强制刷新]生成/刷新数据！'
 
-    im_list = []
+    im_list = [f'UID {uid}']
 
     for char in rank_data:
         raw_data = rank_data[char]

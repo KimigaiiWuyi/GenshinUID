@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 from ..utils.mys_api import mys_api
@@ -22,8 +23,7 @@ async def sign_in(uid: str) -> str:
     sign_info = await mys_api.get_sign_info(uid)
     # 初步校验数据
     if isinstance(sign_info, int):
-        logger.warning(f'[签到] {uid} 出错, 请检查Cookies是否过期！')
-        return '签到失败...请检查Cookies是否过期！'
+        return await sign_error(uid, sign_info)
     # 检测是否已签到
     if sign_info['is_sign']:
         logger.info(f'[签到] {uid} 该用户今日已签到,跳过...')
@@ -41,8 +41,7 @@ async def sign_in(uid: str) -> str:
         sign_data = await mys_api.mys_sign(uid=uid, header=Header)
         # 检测数据
         if isinstance(sign_data, int):
-            logger.warning(f'[签到] {uid} 出错, 请检查Cookies是否过期！')
-            return '签到失败...请检查Cookies是否过期！'
+            return await sign_error(uid, sign_data)
         if 'risk_code' in sign_data:
             # 出现校验码
             if sign_data['risk_code'] == 375:
@@ -88,9 +87,12 @@ async def sign_in(uid: str) -> str:
     # 获取签到列表
     sign_list = await mys_api.get_sign_list(uid)
     new_sign_info = await mys_api.get_sign_info(uid)
-    if isinstance(sign_list, int) or isinstance(new_sign_info, int):
-        logger.warning(f'[签到] {uid} 出错, 请检查Cookies是否过期！')
-        return '签到失败...请检查Cookies是否过期！'
+
+    if isinstance(sign_list, int):
+        return await sign_error(uid, sign_list)
+    elif isinstance(new_sign_info, int):
+        return await sign_error(uid, new_sign_info)
+
     # 获取签到奖励物品，拿旧的总签到天数 + 1 为新的签到天数，再 -1 即为今日奖励物品的下标
     getitem = sign_list['awards'][int(sign_info['total_sign_day']) + 1 - 1]
     get_im = f'本次签到获得{getitem["name"]}x{getitem["cnt"]}'
@@ -106,6 +108,17 @@ async def sign_in(uid: str) -> str:
     im = f'{mes_im}!\n{get_im}\n本月漏签次数：{sign_missed}'
     logger.info(f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
     return im
+
+
+async def sign_error(uid: str, retcode: int) -> str:
+    error_msg = get_error(retcode)
+    logger.warning(f'[签到] {uid} 出错, 错误码{retcode}, 错误消息{error_msg}!')
+    if retcode == 10001 or retcode == -100:
+        sqla = get_sqla('TEMP')
+        ck = await sqla.get_user_cookie(uid)
+        if ck:
+            await sqla.update_error_status(ck, 'error')
+    return f'签到失败!{error_msg}'
 
 
 async def single_daily_sign(bot_id: str, uid: str, gid: str, qid: str):
@@ -146,6 +159,12 @@ async def daily_sign():
     for bot_id in gss.active_bot:
         sqla = get_sqla(bot_id)
         user_list = await sqla.get_all_user()
+        uid_list = [
+            user.uid
+            for user in user_list
+            if user.sign_switch != 'off' and not user.status
+        ]
+        logger.info(f'[全部重签][UID列表] {uid_list}')
         for user in user_list:
             if user.sign_switch != 'off' and not user.status and user.uid:
                 tasks.append(

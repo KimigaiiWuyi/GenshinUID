@@ -147,7 +147,7 @@ async def daily_sign():
         sqla = get_sqla(bot_id)
         user_list = await sqla.get_all_user()
         for user in user_list:
-            if user.sign_switch != 'off':
+            if user.sign_switch != 'off' and not user.status and user.uid:
                 tasks.append(
                     single_daily_sign(
                         user.bot_id, user.uid, user.sign_switch, user.user_id

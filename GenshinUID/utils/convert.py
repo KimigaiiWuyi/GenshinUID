@@ -33,6 +33,18 @@ async def get_uid(
             ev.text = ev.text.replace(uid, '')
     else:
         sqla = get_sqla(ev.bot_id)
+        data = await sqla.select_bind_data(user_id)
+        if data is not None:
+            if not data.group_id:
+                await sqla.update_bind_data(user_id, {'group_id': ev.group_id})
+            else:
+                new_group_list = data.group_id.split('|')
+                if ev.group_id and ev.group_id not in new_group_list:
+                    new_group_list.append(ev.group_id)
+                    new_group = '|'.join(new_group_list)
+                    await sqla.update_bind_data(
+                        user_id, {'group_id': new_group}
+                    )
         uid = await sqla.get_bind_uid(user_id)
     if get_user_id:
         return uid, user_id

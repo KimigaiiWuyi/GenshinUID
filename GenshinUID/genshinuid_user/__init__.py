@@ -25,7 +25,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
         return await bot.send('你输入了错误的格式!')
 
     if '绑定' in ev.command:
-        data = await sqla.insert_bind_data(qid, uid=uid)
+        data = await sqla.insert_bind_data(qid, uid=uid, group_id=ev.group_id)
         return await send_diff_msg(
             bot,
             data,

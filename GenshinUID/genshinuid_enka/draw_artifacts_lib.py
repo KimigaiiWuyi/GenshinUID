@@ -56,12 +56,12 @@ async def draw_lib(user_id: str, uid: str, num: int) -> Union[bytes, str]:
         all_cv_score += art['cv_score']
         if art['aritifactLevel'] == 20:
             full_rank += 1
-        if art['value_score'] >= 5.5 or art['cv_score'] >= 39:
+        if art['value_score'] >= 5.2 or art['cv_score'] >= 35.5:
             can_use += 1
 
-        if art['value_score'] >= 6.6:
+        if art['value_score'] >= 6.5:
             high_value += 1
-        if art['cv_score'] >= 49.5:
+        if art['cv_score'] >= 44.5:
             high_cv += 1
 
     avg_value = round(all_value_score / all_num, 2)

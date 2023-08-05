@@ -29,6 +29,7 @@
 - [@音尘绝LiuSXwww](https://bbs.mihoyo.com/ys/accountCenter/postList?id=271681956) - 怪物数据表的**授权**使用
 - [@Asgater](https://www.miyoushe.com/ys/accountCenter/postList?id=79695828) - 原牌图鉴的**授权**使用
 - [虚空数据库](https://akashadata.com/) - 深渊出场数据的**授权**使用
+- [玉衡杯深渊数据库](http://www.yuhengcup.top/abyss) - `版本深渊`功能数据提供
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@lulu666lulu](https://github.com/lulu666lulu) - DS算法提供和验证码方案提供
 - [@Monst.x](https://github.com/monsterxcn) - [fastapi-genshin-map](https://github.com/KimigaiiWuyi/fastapi_genshin_map)的内容填充和本体的修复

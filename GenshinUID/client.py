@@ -121,6 +121,7 @@ class GsClient:
                     node = []
                     file = ''
                     at_list = []
+                    group_id = ''
                     if msg.content:
                         for _c in msg.content:
                             if _c.data:
@@ -134,6 +135,8 @@ class GsClient:
                                     file = _c.data
                                 elif _c.type == 'at':
                                     at_list.append(_c.data)
+                                elif _c.type == 'group':
+                                    group_id = _c.data
                     else:
                         pass
 
@@ -187,6 +190,7 @@ class GsClient:
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
+                                group_id,
                             )
                         elif msg.bot_id == 'telegram':
                             await telegram_send(
@@ -364,6 +368,7 @@ async def guild_send(
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
+    guild_id: Optional[str],
 ):
     async def _send(content: Optional[str], image: Optional[str]):
         result: Dict[str, Any] = {'msg_id': msg_id}
@@ -382,9 +387,14 @@ async def guild_send(
                 **result,
             )
         else:
+            dms = await bot.call_api(
+                'post_dms',
+                recipient_id=str(target_id),
+                source_guild_id=str(guild_id),
+            )
             await bot.call_api(
                 'post_dms_messages',
-                guild_id=int(target_id) if target_id else 0,
+                guild_id=dms.guild_id,
                 **result,
             )
 

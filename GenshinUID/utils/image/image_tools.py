@@ -253,7 +253,7 @@ def crop_center_img(
         x2 = int(new_w / 2 + based_w / 2)
         y2 = based_h
     else:
-        resize_img = img.resize((based_w, new_h), Image.LANCZOS)
+        resize_img = img.resize((based_w, new_h), Image.Resampling.LANCZOS)
         x1 = 0
         y1 = int(new_h / 2 - based_h / 2)
         x2 = based_w

@@ -30,6 +30,7 @@ async def scheduled_get_xk_data():
 
 @sv_get_abyss_database.on_fullmatch(('深渊概览', '深渊统计', '深渊使用率'), block=True)
 async def send_abyss_pic(bot: Bot, ev: Event):
+    await draw_xk_abyss_img()
     img = await convert_img(TOTAL_IMG)
     await bot.logger.info('获得深渊概览图片成功!')
     await bot.send(img)

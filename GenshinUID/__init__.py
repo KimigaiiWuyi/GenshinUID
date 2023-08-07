@@ -172,19 +172,19 @@ async def import_gacha_log_info(session: NoticeSession):
 
 @sv.on_fullmatch('gs一键安装')
 async def send_install_msg(bot: HoshinoBot, ev: CQEvent):
-    if priv.check_priv(ev, priv.ADMIN):
+    if priv.check_priv(ev, priv.SUPERUSER):
         await bot.send(ev, '即将开始安装...会持续一段时间, 且期间无法使用Bot!')
         await bot.send(ev, await install())
 
 
 @sv.on_fullmatch(('连接core', '链接core'))
 async def send_connect_msg(bot: HoshinoBot, ev: CQEvent):
-    if priv.check_priv(ev, priv.ADMIN):
+    if priv.check_priv(ev, priv.SUPERUSER):
         await connect()
         await bot.send(ev, '链接成功！')
 
 
 @sv.on_fullmatch(('启动core'))
 async def send_start_msg(bot: HoshinoBot, ev: CQEvent):
-    if priv.check_priv(ev, priv.ADMIN):
+    if priv.check_priv(ev, priv.SUPERUSER):
         await bot.send(ev, await start())

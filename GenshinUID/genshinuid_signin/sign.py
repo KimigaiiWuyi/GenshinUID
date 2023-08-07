@@ -162,7 +162,7 @@ async def daily_sign():
         uid_list = [
             user.uid
             for user in user_list
-            if user.sign_switch != 'off' and not user.status
+            if user.sign_switch != 'off' and not user.status and user.uid
         ]
         logger.info(f'[全部重签][UID列表] {uid_list}')
         for user in user_list:

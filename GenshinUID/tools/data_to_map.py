@@ -15,14 +15,15 @@ R_PATH = Path(__file__).parents[0]
 MAP_PATH = Path(__file__).parents[1] / 'utils' / 'map' / 'data'
 DATA_PATH = R_PATH / 'gs_data'
 WEAPON_TYPE = {
-    "WEAPON_POLE": "长柄武器",
-    "WEAPON_BOW": "弓",
-    "WEAPON_SWORD_ONE_HAND": "单手剑",
-    "WEAPON_CLAYMORE": "双手剑",
-    "WEAPON_CATALYST": "法器",
+    'WEAPON_POLE': '长柄武器',
+    'WEAPON_BOW': '弓',
+    'WEAPON_SWORD_ONE_HAND': '单手剑',
+    'WEAPON_CLAYMORE': '双手剑',
+    'WEAPON_CATALYST': '法器',
 }
 
 version = Genshin_version
+raw_data = {}
 
 avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
 weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
@@ -37,11 +38,6 @@ avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
 artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
 icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 
-try:
-    with open(DATA_PATH / 'textMap.json', "r", encoding='UTF-8') as f:
-        raw_data = json.load(f)
-except FileNotFoundError:
-    pass
 
 BETA_CHAR = {
     '10000078': '艾尔海森',
@@ -57,9 +53,34 @@ BETA_CHAR = {
 }
 
 
+async def download_new_file():
+    base_url = 'https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master'
+    url_list = [
+        f'{base_url}/ExcelBinOutput/AvatarExcelConfigData.json',
+        f'{base_url}/ExcelBinOutput/WeaponExcelConfigData.json',
+        f'{base_url}/ExcelBinOutput/AvatarSkillExcelConfigData.json',
+        f'{base_url}/ExcelBinOutput/AvatarTalentExcelConfigData.json',
+        f'{base_url}/ExcelBinOutput/ReliquaryExcelConfigData.json',
+        f'{base_url}/ExcelBinOutput/DisplayItemExcelConfigData.json',
+        f'{base_url}/TextMap/TextMapCHS.json',
+    ]
+
+    async with httpx.AsyncClient() as client:
+        for url in url_list:
+            file_name = url.split('/')[-1]
+            response = await client.get(url)
+            if response.status_code == 200:
+                data = response.json()
+                with open(DATA_PATH / file_name, 'w') as f:
+                    json.dump(data, f, indent=4)
+                print(f'文件已成功下载并保存为{DATA_PATH / file_name}')
+            else:
+                print(f'下载失败，状态码为{response.status_code}')
+
+
 async def avatarId2NameJson() -> None:
     with open(
-        DATA_PATH / 'AvatarExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'AvatarExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         avatar_data = json.load(f)
 
@@ -84,7 +105,7 @@ async def avatarId2NameJson() -> None:
 
 
 async def avatarName2ElementJson() -> None:
-    with open(MAP_PATH / avatarId2Name_fileName, "r", encoding='UTF-8') as f:
+    with open(MAP_PATH / avatarId2Name_fileName, 'r', encoding='UTF-8') as f:
         avatarId2Name = json.load(f)
 
     temp = {}
@@ -143,7 +164,7 @@ async def avatarName2ElementJson() -> None:
 
 async def weaponHash2NameJson() -> None:
     with open(
-        DATA_PATH / 'WeaponExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'WeaponExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         weapon_data = json.load(f)
     temp = {
@@ -160,11 +181,11 @@ async def weaponHash2NameJson() -> None:
 
 async def weaponHash2TypeJson() -> None:
     with open(
-        DATA_PATH / 'WeaponExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'WeaponExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         weapon_data = json.load(f)
     temp = {
-        str(i['nameTextMapHash']): WEAPON_TYPE.get(i['weaponType'], "")
+        str(i['nameTextMapHash']): WEAPON_TYPE.get(i['weaponType'], '')
         for i in weapon_data
     }
 
@@ -176,7 +197,7 @@ async def weaponHash2TypeJson() -> None:
 
 async def skillId2NameJson() -> None:
     with open(
-        DATA_PATH / 'AvatarSkillExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'AvatarSkillExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         skill_data = json.load(f)
 
@@ -192,7 +213,7 @@ async def skillId2NameJson() -> None:
 
 async def talentId2NameJson() -> None:
     with open(
-        DATA_PATH / 'AvatarTalentExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'AvatarTalentExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         talent_data = json.load(f)
 
@@ -209,12 +230,12 @@ async def talentId2NameJson() -> None:
 
 async def artifact2attrJson() -> None:
     with open(
-        DATA_PATH / 'ReliquaryExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'ReliquaryExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         reliquary_data = json.load(f)
 
     with open(
-        DATA_PATH / 'DisplayItemExcelConfigData.json', "r", encoding='UTF-8'
+        DATA_PATH / 'DisplayItemExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
         Display_data = json.load(f)
 
@@ -256,6 +277,13 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
+    await download_new_file()
+    global raw_data
+    try:
+        with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:
+            raw_data = json.load(f)
+    except FileNotFoundError:
+        pass
     await avatarId2NameJson()
     await avatarName2ElementJson()
     await weaponHash2NameJson()

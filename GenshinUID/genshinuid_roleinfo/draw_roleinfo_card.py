@@ -1,5 +1,6 @@
 import asyncio
 from pathlib import Path
+from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
@@ -7,7 +8,6 @@ from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import MihoyoAvatar
 
 from ..utils.mys_api import mys_api
-from ..utils.convert import GsCookie
 from ..utils.image.convert import convert_img
 from ..utils.resource.download_url import download_file
 from ..utils.fonts.genshin_fonts import genshin_font_origin
@@ -119,19 +119,16 @@ async def _draw_char_full_pic(
     result.paste(char_card_img, (0, 0), char_card_mask)
     img.paste(
         result,
-        (15 + (index % 4) * 265, 1199 + (index // 4) * 160),
+        (15 + (index % 4) * 265, 1345 + (index // 4) * 160),
         result,
     )
 
 
-async def draw_pic(uid: str):
-    # 获取Cookies# 获取Cookies
-    data_def = GsCookie()
-    retcode = await data_def.get_cookie(uid)
-    if retcode:
-        return retcode
-    use_cookies = data_def.cookie
-    raw_data = data_def.raw_data
+async def draw_pic(uid: str) -> Union[str, bytes]:
+    raw_data = await mys_api.get_info(uid, None)
+
+    if isinstance(raw_data, int):
+        return await get_error_img(raw_data)
 
     # 记录数据
     if raw_data:
@@ -143,7 +140,7 @@ async def draw_pic(uid: str):
     for i in char_data:
         char_ids.append(i['id'])
 
-    char_rawdata = await mys_api.get_character(uid, char_ids, use_cookies)
+    char_rawdata = await mys_api.get_character(uid, char_ids)
     if isinstance(char_rawdata, int):
         return await get_error_img(char_rawdata)
     char_datas = char_rawdata['avatars']
@@ -169,12 +166,15 @@ async def draw_pic(uid: str):
         else (char_num // 2) + (char_num % 2)
     )
 
+    up_lenth = 1320
+
     # 获取背景图片各项参数
     based_w = 1080
     if char_num > 8:
-        based_h = 1165 + char_hang * 160 + 50
+        based_h = up_lenth + char_hang * 160 + 50
     else:
-        based_h = 1165 + char_hang * 260 + 50
+        based_h = up_lenth + char_hang * 260 + 50
+
     img = await get_simple_bg(based_w, based_h)
     white_overlay = Image.new('RGBA', (based_w, based_h), (255, 251, 242, 211))
     img.paste(white_overlay, (0, 0), white_overlay)
@@ -224,7 +224,7 @@ async def draw_pic(uid: str):
     world_exp = raw_data['world_explorations']
     world_list = []
     # 须弥占坑 & 城市补足
-    for city_index in range(1, 9):
+    for city_index in range(1, 10):
         world_list.append(
             {
                 'id': city_index,
@@ -244,7 +244,15 @@ async def draw_pic(uid: str):
             temp['extra'].append(
                 {'name': offering['name'], 'level': offering['level']}
             )
+
+        # 岚丹特色怪物计数
+        for offering in world_part['boss_list']:
+            temp['extra'].append(
+                {'name': offering['name'], 'level': offering['kill_num']}
+            )
+
         world_list[world_part['id'] - 1] = temp
+
     world_list.sort(key=lambda x: (-x['id']), reverse=True)
     # 令层岩地下和地上合并
     world_list[5]['exp'].append(world_list[6]['exp'][0])
@@ -252,12 +260,13 @@ async def draw_pic(uid: str):
     world_list.pop(6)
     # 添加宝箱信息和锚点
     chest_data = [
-        'magic_chest_number',
         'common_chest_number',
         'exquisite_chest_number',
         'precious_chest_number',
         'luxurious_chest_number',
-        # 'way_point_number',
+        'magic_chest_number',
+        'way_point_number',
+        'domain_number',
     ]
     for status_index, status in enumerate(chest_data):
         world_list.append(
@@ -268,6 +277,20 @@ async def draw_pic(uid: str):
             }
         )
     task = []
+
+    if (
+        'homes' in raw_data
+        and raw_data['homes']
+        and 'comfort_num' in raw_data['homes'][0]
+    ):
+        world_list.append(
+            {
+                'id': 1000,
+                'exp': [str(raw_data['homes'][0]['comfort_num'])],
+                'extra': [],
+            }
+        )
+
     for world_index, world in enumerate(world_list):
         task.append(_draw_world_exp_pic(img, text_draw, world, world_index))
     await asyncio.gather(*task)
@@ -307,14 +330,20 @@ async def _draw_world_exp_pic(
     offset_x = 258
     offset_y = 171
     for world_exp_index, world_exp in enumerate(world['exp']):
+        if world['extra']:
+            size = gs_font_28
+            pos_y = 694
+        else:
+            size = gs_font_40
+            pos_y = 708
         text_draw.text(
             (
                 260 + world_index % 4 * offset_x,
-                700 + world_index // 4 * offset_y + world_exp_index * 28,
+                pos_y + world_index // 4 * offset_y + world_exp_index * 28,
             ),
             world_exp,
             text_color,
-            gs_font_28,
+            size,
             anchor='rm',
         )
     for offering_index, offering in enumerate(world['extra']):
@@ -333,7 +362,7 @@ async def _draw_world_exp_pic(
                 (
                     260 + world_index % 4 * offset_x,
                     (len(world['exp']) - 1) * 28
-                    + 711
+                    + 696
                     + world_index // 4 * offset_y
                     + offering_index * 23,
                 ),
@@ -438,6 +467,6 @@ async def _draw_char_8_pic(
     result.paste(char_card_img, (0, 0), char_card8_mask)
     img.paste(
         result,
-        (15 + (index % 2) * 520, 1199 + (index // 2) * 250),
+        (15 + (index % 2) * 520, 1345 + (index // 2) * 250),
         result,
     )

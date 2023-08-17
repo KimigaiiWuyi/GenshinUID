@@ -1,4 +1,221 @@
 {
+	"万世流涌大典": {
+		"normal": {
+			"normal_effect": {
+				"1": "addHp+16",
+				"2": "addHp+20",
+				"3": "addHp+24",
+				"4": "addHp+28",
+				"5": "addHp+32"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "B:dmgBonus+36",
+				"2": "B:dmgBonus+48",
+				"3": "B:dmgBonus+60",
+				"4": "B:dmgBonus+72",
+				"5": "B:dmgBonus+84"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 4,
+			"extra": {
+
+			}
+		}
+	},
+	"金流监督": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+12",
+				"2": "addAtk+15",
+				"3": "addAtk+18",
+				"4": "addAtk+21",
+				"5": "addAtk+24"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+42;B:dmgBonus+36",
+				"2": "A:dmgBonus+52.5;B:dmgBonus+45",
+				"3": "A:dmgBonus+63;B:dmgBonus+54",
+				"4": "A:dmgBonus+73.5;B:dmgBonus+63",
+				"5": "A:dmgBonus+84;B:dmgBonus+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 4,
+			"extra": {
+
+			}
+		}
+	},
+	"测距规": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+9;dmgBonus+21",
+				"2": "addAtk+12;dmgBonus+25.5",
+				"3": "addAtk+15;dmgBonus+30",
+				"4": "addAtk+18;dmgBonus+34.5",
+				"5": "addAtk+21;dmgBonus+39"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"无垠蔚蓝之歌": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "A:dmgBonus+24;B:dmgBonus+18",
+				"2": "A:dmgBonus+30;B:dmgBonus+22.5",
+				"3": "A:dmgBonus+36;B:dmgBonus+27",
+				"4": "A:dmgBonus+42;B:dmgBonus+31.5",
+				"5": "A:dmgBonus+48;B:dmgBonus+36"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"勘探钻机": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "addAtk+9;dmgBonus+21",
+				"2": "addAtk+12;dmgBonus+25.5",
+				"3": "addAtk+15;dmgBonus+30",
+				"4": "addAtk+18;dmgBonus+34.5",
+				"5": "addAtk+21;dmgBonus+39"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"便携动力锯": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+120",
+				"2": "elementalMastery+150",
+				"3": "elementalMastery+180",
+				"4": "elementalMastery+210",
+				"5": "elementalMastery+240"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
+	"船坞长剑": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "elementalMastery+120",
+				"2": "elementalMastery+150",
+				"3": "elementalMastery+180",
+				"4": "elementalMastery+210",
+				"5": "elementalMastery+240"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 10,
+			"extra": {
+
+			}
+		}
+	},
 	"狼牙": {
 		"normal": {
 			"normal_effect": {

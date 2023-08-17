@@ -187,6 +187,8 @@ class Fight:
         if char.char_name == '宵宫' and power_name == 'A一段伤害':
             power_plus = 1
 
+        power_plus += real_prop[f'{power_name[0]}_powerPlus'] - 1
+
         # 拿到百分比和固定值,百分比为float,形如2.2 也就是202%
         power_percent, power_value = await p2v(power, power_plus)
 

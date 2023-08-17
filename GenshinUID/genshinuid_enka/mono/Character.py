@@ -338,6 +338,7 @@ class Character:
             prop['k'] = 1
             prop['sp'] = []
             prop['baseArea'] = 1
+            prop['powerPlus'] = 1
             if prop['baseHp'] + prop['addHp'] == prop['hp']:
                 prop['exHp'] = prop['addHp']
                 prop['exAtk'] = prop['addAtk']

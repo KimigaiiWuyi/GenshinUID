@@ -48,9 +48,11 @@ class _CvApi:
     async def get_rank_data(self, uid: str) -> Union[Dict, int]:
         await self.get_base_data(uid)
         await self.get_refresh_data(uid)
-        return await self._cv_request(
+        data = await self._cv_request(
             RANK_API.format(uid), 'GET', self._HEADER
         )
+        await self.session.close()
+        return data
 
     async def close(self):
         # 调用session对象的close方法关闭会话

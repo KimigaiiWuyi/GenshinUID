@@ -80,6 +80,8 @@ async def get_char_card_base(char: Character) -> Image.Image:
                 e_skill_level += 3
             elif skill_add[skillAdd_index] == 'Q':
                 q_skill_level += 3
+            elif skill_add[skillAdd_index] == 'A':
+                a_skill_level += 3
 
     for skill_num, skill in enumerate(skillList[0:2] + [skillList[-1]]):
         skill_img = Image.open(ICON_PATH / '{}.png'.format(skill['skillIcon']))

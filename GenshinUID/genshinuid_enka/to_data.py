@@ -440,7 +440,6 @@ async def _restore_cv_data(uid: str, now: str):
             await file.write(
                 json.dumps(rank_data, indent=4, ensure_ascii=False)
             )
-    await cv_api.close()
 
 
 async def enka_to_data(

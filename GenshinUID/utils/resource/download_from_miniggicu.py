@@ -4,12 +4,30 @@ from pathlib import Path
 from typing import List, Tuple
 
 from bs4 import BeautifulSoup
+from aiohttp import TCPConnector
 from gsuid_core.logger import logger
 from aiohttp.client import ClientSession
 
 from .download_url import PATH_MAP, download_file
 
-MINIGG_FILE = 'http://file.microgg.cn/KimigaiiWuyi/resource/'
+# MINIGG_FILE = 'http://file.microgg.cn/KimigaiiWuyi/resource/'
+BASE_TAG = '[HKFRP]'
+BASE_URL = 'http://hk-1.5gbps-2.lcf.icu:10200'
+RESOURCE_FILE = f'{BASE_URL}/resource/'
+WIKI_FILE = f'{BASE_URL}/wiki/'
+
+NAMECARD_FILE = RESOURCE_FILE + 'char_namecard'
+SIDE_FILE = RESOURCE_FILE + 'char_side'
+STAND_FILE = RESOURCE_FILE + 'char_stand'
+CHARS_FILE = RESOURCE_FILE + 'chars'
+GACHA_FILE = RESOURCE_FILE + 'gacha_img'
+ICON_FILE = RESOURCE_FILE + 'icon'
+REL_FILE = RESOURCE_FILE + 'reliquaries'
+WEAPON_FILE = RESOURCE_FILE + 'weapon'
+GUIDE_FILE = WIKI_FILE + 'guide'
+REF_FILE = WIKI_FILE + 'ref'
+
+'''
 NAMECARD_FILE = MINIGG_FILE + 'char_namecard'
 SIDE_FILE = MINIGG_FILE + 'char_side'
 STAND_FILE = MINIGG_FILE + 'char_stand'
@@ -20,6 +38,8 @@ REL_FILE = MINIGG_FILE + 'reliquaries'
 WEAPON_FILE = MINIGG_FILE + 'weapon'
 GUIDE_FILE = MINIGG_FILE + 'guide'
 REF_FILE = MINIGG_FILE + 'ref_image'
+'''
+
 
 FILE_TO_PATH = {
     NAMECARD_FILE: 6,
@@ -59,11 +79,11 @@ async def download_all_file_from_miniggicu():
             list(filter(lambda x: x is not None, await asyncio.gather(*tasks)))
         )
         tasks.clear()
-        logger.info('[minigg.icu]下载完成!')
+        logger.info(f'{BASE_TAG}下载完成!')
 
     failed_list: List[Tuple[str, int, str]] = []
     TASKS = []
-    async with ClientSession() as sess:
+    async with ClientSession(connector=TCPConnector(verify_ssl=False)) as sess:
         for file in [
             NAMECARD_FILE,
             SIDE_FILE,
@@ -82,7 +102,7 @@ async def download_all_file_from_miniggicu():
             data_list = pre_data.find_all('a')
             size_list = [i for i in content_bs.strings]
             logger.info(
-                f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]中存在{len(data_list)}个内容!'
+                f'{BASE_TAG}数据库[{FILE_TO_NAME[file]}]中存在{len(data_list)}个内容!'
             )
             temp_num = 0
             for index, data in enumerate(data_list):
@@ -103,7 +123,7 @@ async def download_all_file_from_miniggicu():
                     or not is_diff
                 ):
                     logger.info(
-                        f'[minigg.icu]开始下载[{FILE_TO_NAME[file]}]_[{name}]...'
+                        f'{BASE_TAG}开始下载[{FILE_TO_NAME[file]}]_[{name}]...'
                     )
                     temp_num += 1
                     TASKS.append(
@@ -118,13 +138,13 @@ async def download_all_file_from_miniggicu():
             else:
                 await _download(TASKS)
             if temp_num == 0:
-                im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]无需下载!'
+                im = f'{BASE_TAG}数据库[{FILE_TO_NAME[file]}]无需下载!'
             else:
-                im = f'[minigg.icu]数据库[{FILE_TO_NAME[file]}]已下载{temp_num}个内容!'
+                im = f'{BASE_TAG}数据库[{FILE_TO_NAME[file]}]已下载{temp_num}个内容!'
             temp_num = 0
             logger.info(im)
     if failed_list:
-        logger.info(f'[minigg.icu]开始重新下载失败的{len(failed_list)}个文件...')
+        logger.info(f'{BASE_TAG}开始重新下载失败的{len(failed_list)}个文件...')
         for url, file, name in failed_list:
             TASKS.append(
                 asyncio.wait_for(
@@ -137,4 +157,4 @@ async def download_all_file_from_miniggicu():
         else:
             await _download(TASKS)
         if count := len(failed_list):
-            logger.error(f'[minigg.icu]仍有{count}个文件未下载，请使用命令 `下载全部资源` 重新下载')
+            logger.error(f'{BASE_TAG}仍有{count}个文件未下载，请使用命令 `下载全部资源` 重新下载')

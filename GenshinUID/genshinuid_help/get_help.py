@@ -8,6 +8,7 @@ from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_plugin_help import get_help
 
 from ..version import GenshinUID_version
+from ..genshinuid_config.gs_config import gsconfig
 from ..utils.image.image_tools import get_color_bg
 from ..utils.fonts.genshin_fonts import genshin_font_origin
 
@@ -28,6 +29,12 @@ async def get_core_help() -> Union[bytes, str]:
     if help_data is None:
         return '暂未找到帮助数据...'
 
+    column_str: str = gsconfig.get_config('help_column').data
+    if column_str.isdigit():
+        column = int(column_str)
+    else:
+        column = 6
+
     img = await get_help(
         'GenshinUID',
         f'版本号：{GenshinUID_version}',
@@ -40,5 +47,6 @@ async def get_core_help() -> Union[bytes, str]:
         genshin_font_origin,
         False,
         (5, 5, 5),
+        column=column,
     )
     return img

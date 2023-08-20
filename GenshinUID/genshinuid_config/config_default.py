@@ -107,4 +107,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后强制刷新将同时刷新AkashaSystem',
         False,
     ),
+    'help_column': GsStrConfig(
+        '帮助图列数',
+        '修改帮助图有多少列',
+        '6',
+    ),
 }

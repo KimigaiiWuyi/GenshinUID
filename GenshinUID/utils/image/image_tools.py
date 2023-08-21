@@ -64,7 +64,7 @@ def draw_text_by_line(
     line_space  行间距, 单位像素, 默认是字体高度的0.3倍
     """
     x, y = pos
-    _, h = font.getsize('X')
+    _, h = font.getsize('X')  # type: ignore
     if line_space is None:
         y_add = math.ceil(1.3 * h)
     else:
@@ -73,14 +73,15 @@ def draw_text_by_line(
     row = ""  # 存储本行文字
     length = 0  # 记录本行长度
     for character in text:
-        w, h = font.getsize(character)  # 获取当前字符的宽度
+        # 获取当前字符的宽度
+        w, h = font.getsize(character)  # type: ignore
         if length + w * 2 <= max_length:
             row += character
             length += w
         else:
             row += character
             if center:
-                font_size = font.getsize(row)
+                font_size = font.getsize(row)  # type: ignore
                 x = math.ceil((img.size[0] - font_size[0]) / 2)
             draw.text((x, y), row, font=font, fill=fill)
             row = ""
@@ -88,7 +89,7 @@ def draw_text_by_line(
             y += y_add
     if row != "":
         if center:
-            font_size = font.getsize(row)
+            font_size = font.getsize(row)  # type: ignore
             x = math.ceil((img.size[0] - font_size[0]) / 2)
         draw.text((x, y), row, font=font, fill=fill)
 

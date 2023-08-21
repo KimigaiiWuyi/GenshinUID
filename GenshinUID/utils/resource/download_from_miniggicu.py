@@ -12,7 +12,7 @@ from .download_url import PATH_MAP, download_file
 
 # MINIGG_FILE = 'http://file.microgg.cn/KimigaiiWuyi/resource/'
 BASE_TAG = '[HKFRP]'
-BASE_URL = 'http://hk-1.5gbps-2.lcf.icu:10200'
+BASE_URL = 'http://jp-iij-1.lcf.icu:10200'
 RESOURCE_FILE = f'{BASE_URL}/resource/'
 WIKI_FILE = f'{BASE_URL}/wiki/'
 

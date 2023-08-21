@@ -141,6 +141,7 @@ async def draw_daily_cost_img() -> Union[str, bytes]:
     all_black = Image.new('RGBA', img.size, (255, 255, 255))
     img = Image.alpha_composite(all_black, img)
 
+    img = img.convert('RGB')
     img.save(
         TEMP_PATH / 'daily_cost.jpg',
         'JPEG',

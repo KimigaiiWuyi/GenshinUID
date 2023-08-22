@@ -19,4 +19,4 @@ async def send_collection_info(bot: Bot, ev: Event):
 # 每日四点出头执行刷新材料图
 @scheduler.scheduled_job('cron', hour=4, minute=1)
 async def refresh_daily_cost():
-    await draw_daily_cost_img()
+    await draw_daily_cost_img(True)

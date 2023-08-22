@@ -20,10 +20,20 @@ from ..utils.resource.RESOURCE_PATH import (
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
 
-async def draw_daily_cost_img() -> Union[str, bytes]:
-    path = TEMP_PATH / 'daily_cost.jpg'
-    if path.exists():
+async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
+    weekdays = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+
+    timestamp = time.time()
+    timestamp -= 14400
+    _t = time.localtime(timestamp)
+    wk = time.strftime(weekdays[_t.tm_wday], _t)
+
+    path = TEMP_PATH / f'daily_cost_{wk}.jpg'
+    if not is_force and path.exists():
         return await convert_img(Image.open(path))
+
+    if wk == '周日':
+        return '今天是周日, 所有材料都能获得噢！'
 
     data = await generate_daily_data()
     if data is None:
@@ -37,17 +47,11 @@ async def draw_daily_cost_img() -> Union[str, bytes]:
 
     img = await get_color_bg(w, h)
 
-    weekdays = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
-
-    timestamp = time.time()
-    timestamp -= 14400
-    _t = time.localtime(timestamp)
-
     title = Image.open(TEXT_PATH / 'title.png')
     title_draw = ImageDraw.Draw(title)
     title_draw.text(
         (475, 474),
-        f'今天是{time.strftime(weekdays[_t.tm_wday], _t)}哦!',
+        f'今天是{wk}哦!',
         'black',
         gs_font_36,
         'mm',

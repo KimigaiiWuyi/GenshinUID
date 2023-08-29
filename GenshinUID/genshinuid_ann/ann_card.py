@@ -148,7 +148,12 @@ async def ann_detail_card(ann_id):
                 draw.text((x, y), duanluo, fill=(0, 0, 0), font=gs_font_26)
                 y += drow_line_height * line_count
 
-    _x, _y = gs_font_26.getsize('囗')
+    if hasattr(gs_font_26, 'getsize'):
+        _x, _y = gs_font_26.getsize('囗')  # type: ignore
+    else:
+        bbox = gs_font_26.getbbox('囗')
+        _x, _y = bbox[2] - bbox[0], bbox[3] - bbox[1]
+
     padding = (_x, _y, _x, _y)
     im = ImageOps.expand(im, padding, '#f9f6f2')
 
@@ -183,7 +188,8 @@ def get_duanluo(text: str):
     # 行高
     line_height = 0
     for char in text:
-        width, height = draw.textsize(char, gs_font_26)
+        left, top, right, bottom = draw.textbbox((0, 0), char, gs_font_26)
+        width, height = (right - left, bottom - top)
         sum_width += width
         if sum_width > max_width:  # 超过预设宽度就修改段落 以及当前行数
             line_count += 1

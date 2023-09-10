@@ -135,11 +135,23 @@ async def avatarName2ElementJson() -> None:
             data = await convert_ambr_to_minigg(_id)
         if data is not None and 'code' not in data:
             temp[name] = elementMap[data['element']]
-            nameicon = data['images']['namesideicon']  # type: ignore
-            enName = nameicon.split('_')[-1]
-            enName2Id_result[enName] = _id
-            avatarId2Star_result[int(_id)] = str(data['rarity'])
-            avatarName2Weapon_result[data['name']] = data['weapontype']
+            try:
+                nameicon = data['images']['namesideicon']  # type: ignore
+                enName = nameicon.split('_')[-1]
+                enName2Id_result[enName] = _id
+                avatarId2Star_result[int(_id)] = str(data['rarity'])
+                avatarName2Weapon_result[data['name']] = data['weapontype']
+            except:  # noqa: E722
+                adata = httpx.get(
+                    f'https://api.ambr.top/v2/chs/avatar/{_id}?vh=40F8'
+                ).json()
+                adata = adata['data']
+                enName = adata['route']
+                enName2Id_result[enName] = _id
+                avatarId2Star_result[int(_id)] = str(adata['rank'])
+                avatarName2Weapon_result[data['name']] = WEAPON_TYPE[
+                    adata['weaponType']
+                ]
 
     avatarId2Star_result['10000005'] = '5'
     avatarId2Star_result['10000007'] = '5'

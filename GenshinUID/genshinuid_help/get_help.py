@@ -4,6 +4,7 @@ from typing import Dict, Union, Optional
 import aiofiles
 from PIL import Image
 from msgspec import json as msgjson
+
 from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_plugin_help import get_help
 
@@ -48,5 +49,6 @@ async def get_core_help() -> Union[bytes, str]:
         False,
         (5, 5, 5),
         column=column,
+        extra_message=['版本号测试', '数据版本 2.55'],
     )
     return img

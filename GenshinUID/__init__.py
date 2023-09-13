@@ -134,6 +134,8 @@ async def get_all_message(bot: Bot, ev: Event):
     if bot.adapter.get_name() == 'QQ Guild':
         from nonebot.adapters.qqguild.event import (
             MessageEvent,
+            C2CMessageCreate,
+            GroupAtMessageCreate,
             DirectMessageCreateEvent,
         )
 
@@ -141,6 +143,16 @@ async def get_all_message(bot: Bot, ev: Event):
         if isinstance(ev, DirectMessageCreateEvent):
             user_type = 'direct'
             group_id = str(ev.guild_id)
+            msg_id = ev.id
+        elif isinstance(ev, GroupAtMessageCreate):
+            sp_bot_id = 'qqgroup'
+            user_type = 'group'
+            group_id = str(ev.group_id)
+            msg_id = ev.id
+        elif isinstance(ev, C2CMessageCreate):
+            sp_bot_id = 'qqgroup'
+            user_type = 'direct'
+            group_id = None
             msg_id = ev.id
         # 群聊
         elif isinstance(ev, MessageEvent):

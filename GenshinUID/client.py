@@ -211,6 +211,17 @@ class GsClient:
                                 msg.target_id,
                                 msg.target_type,
                             )
+                        elif msg.bot_id == 'qqgroup':
+                            await group_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                at_list,
+                                msg.target_id,
+                                msg.target_type,
+                                msg.msg_id,
+                            )
                         elif msg.bot_id == 'feishu':
                             await feishu_send(
                                 bot,
@@ -395,6 +406,50 @@ async def guild_send(
             await bot.call_api(
                 'post_dms_messages',
                 guild_id=dms.guild_id,
+                **result,
+            )
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                image = _msg['data']
+                content = None
+            else:
+                image = None
+                content = _msg['data']
+            await _send(content, image)
+    else:
+        await _send(content, image)
+
+
+async def group_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+    msg_id: Optional[str],
+):
+    async def _send(content: Optional[str], image: Optional[str]):
+        result: Dict[str, Any] = {}
+        if content:
+            result['content'] = content
+        if image:
+            result['image'] = image
+        if target_type == 'group':
+            await bot.post_group_message(
+                group_id=target_id,
+                msg_id=msg_id,
+                event_id=msg_id,
+                **result,
+            )
+        else:
+            await bot.post_c2c_message(
+                user_id=target_id,
+                msg_id=msg_id,
+                event_id=msg_id,
                 **result,
             )
 

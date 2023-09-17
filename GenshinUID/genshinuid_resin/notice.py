@@ -57,7 +57,7 @@ async def all_check(
             if gsconfig.get_config('CrazyNotice').data:
                 if not await check(mode, raw_data, push_data[f'{mode}_value']):
                     await sqla.update_push_data(
-                        uid, {f'{mode}_is_push': 'off'}
+                        uid, bot_id, {f'{mode}_is_push': 'off'}
                     )
                 continue
         # 准备推送
@@ -76,7 +76,9 @@ async def all_check(
                         msg_dict[bot_id]['direct'][user_id] = NOTICE[mode]
                     else:
                         msg_dict[bot_id]['direct'][user_id] += NOTICE[mode]
-                    await sqla.update_push_data(uid, {f'{mode}_is_push': 'on'})
+                    await sqla.update_push_data(
+                        uid, bot_id, {f'{mode}_is_push': 'on'}
+                    )
                 # 群号推送到群聊
                 else:
                     # 初始化
@@ -88,7 +90,9 @@ async def all_check(
                         msg_dict[bot_id]['group'][gid][user_id] = NOTICE[mode]
                     else:
                         msg_dict[bot_id]['group'][gid][user_id] += NOTICE[mode]
-                    await sqla.update_push_data(uid, {f'{mode}_is_push': 'on'})
+                    await sqla.update_push_data(
+                        uid, bot_id, {f'{mode}_is_push': 'on'}
+                    )
     return msg_dict
 
 

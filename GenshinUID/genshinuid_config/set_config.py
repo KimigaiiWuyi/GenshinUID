@@ -27,7 +27,7 @@ async def set_push_value(bot_id: str, func: str, uid: str, value: int):
     else:
         return '该配置项不存在!'
     logger.info('[设置推送阈值]func: {}, value: {}'.format(status, value))
-    if await sqla.update_push_data(uid, {f'{status}_value': value}):
+    if await sqla.update_push_data(uid, bot_id, {f'{status}_value': value}):
         return f'设置成功!\n当前{func}推送阈值:{value}'
     else:
         return '设置失败!\n请检查参数是否正确!'
@@ -64,6 +64,7 @@ async def set_config_func(
         elif config_name.replace('推送', '') in PUSH_MAP:
             await sqla.update_push_data(
                 uid,
+                bot_id,
                 {
                     f'{PUSH_MAP[config_name.replace("推送", "")]}_push': option,
                 },

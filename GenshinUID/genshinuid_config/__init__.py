@@ -3,6 +3,7 @@ import re
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.database import get_sqla
@@ -14,14 +15,14 @@ sv_self_config = SV('原神配置')
 
 @sv_self_config.on_fullmatch(('gs配置', '原神配置'))
 async def send_config_card(bot: Bot, ev: Event):
-    await bot.logger.info('开始执行[gs配置]')
+    logger.info('开始执行[gs配置]')
     im = await draw_config_img(ev.bot_id)
     await bot.send(im)
 
 
 @sv_self_config.on_prefix(('gs设置'))
 async def send_config_ev(bot: Bot, ev: Event):
-    await bot.logger.info('开始执行[设置阈值信息]')
+    logger.info('开始执行[设置阈值信息]')
 
     sqla = get_sqla(ev.bot_id)
     uid = await sqla.get_bind_uid(ev.user_id)
@@ -35,7 +36,7 @@ async def send_config_ev(bot: Bot, ev: Event):
     if value is None:
         return await bot.send('请输入正确的阈值数字...')
 
-    await bot.logger.info('[设置阈值信息]func: {}, value: {}'.format(func, value))
+    logger.info('[设置阈值信息]func: {}, value: {}'.format(func, value))
     im = await set_push_value(ev.bot_id, func, uid, int(value))
     await bot.send(im)
 
@@ -47,7 +48,7 @@ async def open_switch_func(bot: Bot, ev: Event):
     user_id = ev.user_id
     config_name = ev.text
 
-    await bot.logger.info(f'[{user_id}]尝试[{ev.command[2:]}]了[{ev.text}]功能')
+    logger.info(f'[{user_id}]尝试[{ev.command[2:]}]了[{ev.text}]功能')
 
     if ev.command == 'gs开启':
         query = True

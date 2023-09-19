@@ -8,7 +8,7 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
 
-from ..utils.convert import GsCookie
+from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..utils.resource.download_url import download_file
 from ..utils.resource.generate_char_card import create_single_char_card
@@ -113,17 +113,15 @@ async def draw_abyss_img(
     floor: Optional[int] = None,
     schedule_type: str = '1',
 ) -> Union[bytes, str]:
-    # 获取Cookies
-    data = GsCookie()
-    retcode = await data.get_cookie(uid)
-    if retcode:
-        return retcode
-    raw_data = data.raw_data
-    raw_abyss_data = await data.get_spiral_abyss_data(schedule_type)
+    raw_abyss_data = await mys_api.get_spiral_abyss_info(schedule_type)
+    raw_data = await mys_api.get_info(uid)
 
     # 获取数据
     if isinstance(raw_abyss_data, int):
         return await get_error_img(raw_abyss_data)
+    if isinstance(raw_data, int):
+        return await get_error_img(raw_data)
+
     if raw_data:
         char_data = raw_data['avatars']
     else:

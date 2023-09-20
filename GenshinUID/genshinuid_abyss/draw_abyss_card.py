@@ -113,7 +113,7 @@ async def draw_abyss_img(
     floor: Optional[int] = None,
     schedule_type: str = '1',
 ) -> Union[bytes, str]:
-    raw_abyss_data = await mys_api.get_spiral_abyss_info(schedule_type)
+    raw_abyss_data = await mys_api.get_spiral_abyss_info(uid, schedule_type)
     raw_data = await mys_api.get_info(uid)
 
     # 获取数据

@@ -266,6 +266,27 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 Feishu 事件...')
             return
+    # RedProtocol
+    elif bot.adapter.get_name() == 'RedProtocol':
+        from nonebot.adapters.red.event import (
+            GroupMessageEvent,
+            PrivateMessageEvent,
+        )
+
+        sp_bot_id = 'onebot:red'
+        if isinstance(ev, GroupMessageEvent) or isinstance(
+            ev, PrivateMessageEvent
+        ):
+            user_id = ev.get_user_id()
+            msg_id = ev.msgId
+            if isinstance(ev, GroupMessageEvent):
+                user_type = 'group'
+                group_id = str(ev.peerUid)
+            else:
+                user_type = 'direct'
+        else:
+            logger.debug('[gsuid] 不支持该 RedProtocol 事件...')
+            return
     # ntchat
     elif bot.adapter.get_name() == 'ntchat':
         from nonebot.adapters.ntchat.event import (
@@ -450,6 +471,8 @@ def convert_message(_msg: Any, message: List[Message], index: int):
         if file_id in _msg.data.values():
             message.append(Message('image', _msg.data['file_id']))
             logger.debug('[OB12图片]', _msg.data['file_id'])
+        elif 'path' in _msg.data:
+            message.append(Message('image', _msg.data['path']))
         else:
             message.append(Message('image', _msg.data['url']))
     elif _msg.type == 'at':

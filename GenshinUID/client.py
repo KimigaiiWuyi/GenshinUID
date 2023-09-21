@@ -38,6 +38,8 @@ else:
 def _get_bot(bot_id: str) -> Bot:
     if 'v12' in bot_id:
         bot_id = 'onebotv12'
+    elif 'red' in bot_id:
+        bot_id = 'RedProtocol'
     # bots: Dict[str, str] 以适配器名称为键、bot_self_id为值的字典
     _refresh_bots()
     if bot_id not in bots:
@@ -158,6 +160,18 @@ class GsClient:
                         # OneBot v12
                         elif msg.bot_id == 'onebot_v12':
                             await onebot_v12_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                file,
+                                at_list,
+                                msg.target_id,
+                                msg.target_type,
+                            )
+                        # RedProtocol
+                        elif msg.bot_id == 'onebot:red':
+                            await onebot_red_send(
                                 bot,
                                 content,
                                 image,
@@ -366,6 +380,61 @@ async def onebot_send(
             if 'data' in _msg
         ]
         await _send_node(messages)
+    else:
+        await _send(content, image)
+
+
+async def onebot_red_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    file: Optional[str],
+    at_list: Optional[List[str]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    from nonebot.adapters.red.bot import Bot
+    from nonebot.adapters.red.message import Message, MessageSegment
+
+    assert isinstance(bot, Bot)
+
+    chat_type = 'group' if target_type == 'group' else 'friend'
+
+    async def _send(content: Optional[str], image: Optional[str]):
+        result_msg: Message = Message()
+        if image:
+            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            result_msg.append(MessageSegment.image(img_bytes))
+
+        if content:
+            result_msg.append(MessageSegment.text(content))
+
+        if at_list and target_type == 'group':
+            for at in at_list:
+                result_msg += MessageSegment.at(at)
+
+        if file:
+            file_name, file_content = file.split('|')
+            path = Path(__file__).resolve().parent / file_name
+            store_file(path, file_content)
+            result_msg += MessageSegment.file(path)
+
+        if target_id:
+            await bot.send_message(chat_type, target_id, result_msg)
+
+        if file:
+            del_file(path)  # type: ignore
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                image = _msg['data']
+                content = None
+            else:
+                image = None
+                content = _msg['data']
+            await _send(content, image)
     else:
         await _send(content, image)
 

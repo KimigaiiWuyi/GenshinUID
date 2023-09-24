@@ -6,15 +6,15 @@ from typing import List, Optional
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsUser
 from gsuid_core.utils.api.mys.models import RoleCalendar, RolesCalendar
 
 from .get_draw import post_my_draw
 from ..utils.mys_api import mys_api
-from ..utils.database import get_sqla
 
 private_msg_list = {}
 group_msg_list = {}
-calendar: RolesCalendar = None
+calendar: Optional[RolesCalendar] = None
 is_got: Optional[bool] = None
 today = datetime.datetime.now().day
 
@@ -24,7 +24,11 @@ async def check_today(uid: str) -> bool:
     global is_got
     global today
     if calendar is None:
-        calendar = await mys_api.get_draw_calendar(uid)
+        _calendar = await mys_api.get_draw_calendar(uid)
+        if not isinstance(_calendar, int):
+            calendar = _calendar
+        else:
+            return False
 
     now = datetime.datetime.now()
 
@@ -62,6 +66,9 @@ async def single_get_draw(bot_id: str, uid: str, gid: str, qid: str):
 
     im = await post_my_draw(uid)
 
+    if isinstance(im, bytes):
+        return
+
     if '没有需要获取' in im:
         return
 
@@ -88,8 +95,7 @@ async def single_get_draw(bot_id: str, uid: str, gid: str, qid: str):
 async def daily_get_draw():
     tasks = []
     for bot_id in gss.active_bot:
-        sqla = get_sqla(bot_id)
-        user_list = await sqla.get_all_user()
+        user_list = await GsUser.get_all_user()
         for user in user_list:
             if user.draw_switch != 'off':
                 tasks.append(

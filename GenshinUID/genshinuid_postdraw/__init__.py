@@ -3,9 +3,9 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
 from .get_draw import post_my_draw
-from ..utils.database import get_sqla
 from .daily_check_draw import daily_get_draw
 from ..genshinuid_config.gs_config import gsconfig
 
@@ -18,8 +18,7 @@ DRAW_TIME = gsconfig.get_config('GetDrawTaskTime').data
 # 群聊内 每月统计 功能
 @sv_post_my_draw.on_fullmatch(('留影叙佳期', '原神画片'))
 async def send_postdraw_data(bot: Bot, ev: Event):
-    sqla = get_sqla(ev.bot_id)
-    uid = await sqla.get_bind_uid(ev.user_id)
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return UID_HINT
     await bot.send(await post_my_draw(uid))

@@ -2,15 +2,14 @@ import random
 import asyncio
 
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsUser
 
-from ..utils.database import get_sqla
 from .get_mihoyo_bbs_coin import MihoyoBBSCoin
 from ..genshinuid_config.gs_config import gsconfig
 
 
 async def all_daily_mihoyo_bbs_coin():
-    sqla = get_sqla('TEMP')
-    users = await sqla.get_all_user()
+    users = await GsUser.get_all_user()
     vaild_list = [_u for _u in users if _u.bbs_switch != 'off' and _u.stoken]
     im_success = 0
     im_failed = 0

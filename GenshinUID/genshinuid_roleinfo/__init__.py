@@ -33,7 +33,7 @@ async def send_role_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询角色信息]')
     uid = await get_uid(bot, ev)
     if uid is None:
-        return bot.send(UID_HINT)
+        return await bot.send(UID_HINT)
     await bot.logger.info('[查询角色信息]uid: {}'.format(uid))
 
     im = await draw_pic(uid)

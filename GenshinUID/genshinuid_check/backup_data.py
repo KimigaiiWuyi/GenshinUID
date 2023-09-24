@@ -4,8 +4,9 @@ from shutil import copyfile
 
 from gsuid_core.logger import logger
 from gsuid_core.data_store import get_res_path
+from gsuid_core.utils.database.models import GsUser, GsCache
 
-from ..utils.database import db_url, get_sqla
+from ..utils.database import db_url
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 
 DB = get_res_path().parent / 'GsData.db'
@@ -30,10 +31,7 @@ async def data_backup():
                 f.unlink()
             except OSError as e:
                 print("Error: %s : %s" % (f, e.strerror))
-        sqla = get_sqla('TEMP')
-        await sqla.delete_cache()
-        await sqla.close()
-        del sqla
+        await GsCache.delete_all_cache(GsUser)
         logger.info('————缓存成功清除————')
     except Exception:
         logger.info('————数据库备份失败————')

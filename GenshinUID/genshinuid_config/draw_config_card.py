@@ -4,9 +4,9 @@ from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsBind, GsUser
 
 from .gs_config import gsconfig
-from ..utils.database import get_sqla
 from ..utils.image.convert import convert_img
 from ..utils.resource.RESOURCE_PATH import TEXT2D_PATH
 from ..utils.fonts.genshin_fonts import gs_font_24, gs_font_36, gs_font_40
@@ -23,7 +23,6 @@ second_color = (57, 57, 57)
 async def draw_config_img(bot_id: str) -> Union[bytes, str]:
     from ..utils.image.image_tools import CustomizeImage
 
-    sqla = get_sqla(bot_id)
     # 获取背景图片各项参数
     based_w = 850
     based_h = 850 + 155 * (len(gsconfig) - 8)
@@ -40,9 +39,9 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
     img_draw = ImageDraw.Draw(img)
 
     # 获取数据
-    uid_list = await sqla.get_all_uid_list()
-    cookie_list = await sqla.get_all_cookie()
-    stoken_list = await sqla.get_all_stoken()
+    uid_list = await GsBind.get_all_uid_list_by_game(bot_id)
+    cookie_list = await GsUser.get_all_cookie()
+    stoken_list = await GsUser.get_all_stoken()
 
     uid_num = len(uid_list)
     cookie_num = len(cookie_list)

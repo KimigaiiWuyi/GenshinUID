@@ -9,8 +9,8 @@ from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import CK_HINT, SK_HINT
+from gsuid_core.utils.database.models import GsBind, GsUser
 
-from ..utils.database import get_sqla
 from ..genshinuid_config.gs_config import gsconfig
 from .daily_get import mihoyo_coin, all_daily_mihoyo_bbs_coin
 
@@ -24,11 +24,10 @@ sv_get_mysbbs = SV('米游币获取')
 @sv_get_mysbbs.on_fullmatch('开始获取米游币')
 async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send('开始操作……')
-    sqla = get_sqla(ev.bot_id)
-    uid = await sqla.get_bind_uid(ev.user_id)
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(CK_HINT)
-    stoken = await sqla.get_user_stoken(uid)
+    stoken = await GsUser.get_user_stoken_by_uid(uid)
     if stoken is None:
         return await bot.send(SK_HINT)
     im = await mihoyo_coin(stoken)

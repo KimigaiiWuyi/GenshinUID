@@ -1,15 +1,15 @@
 import json
 import asyncio
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.models import Expedition
 from gsuid_core.utils.error_reply import get_error_img
+from gsuid_core.utils.database.models import GsBind, GsUser
 
 from ..utils.mys_api import mys_api
-from ..utils.database import get_sqla
 from ..utils.api.mys.models import FakeResin
 from ..utils.image.convert import convert_img
 from ..genshinuid_config.gs_config import gsconfig
@@ -86,13 +86,14 @@ async def _draw_task_img(
 
 async def get_resin_img(bot_id: str, user_id: str):
     try:
-        sqla = get_sqla(bot_id)
-        uid_list: List = await sqla.get_bind_uid_list(user_id)
+        uid_list = await GsBind.get_uid_list_by_game(user_id, bot_id)
         logger.info('[每日信息]UID: {}'.format(uid_list))
+        if uid_list is None:
+            return
         # 进行校验UID是否绑定CK
         useable_uid_list = []
         for uid in uid_list:
-            status = await sqla.get_user_cookie(uid)
+            status = await GsUser.get_user_cookie_by_uid(uid)
             if status is not None:
                 useable_uid_list.append(uid)
         logger.info('[每日信息]可用UID: {}'.format(useable_uid_list))

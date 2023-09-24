@@ -5,8 +5,8 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
-from ..utils.database import get_sqla
 from .draw_config_card import draw_config_img
 from .set_config import set_push_value, set_config_func
 
@@ -23,9 +23,7 @@ async def send_config_card(bot: Bot, ev: Event):
 @sv_self_config.on_prefix(('gs设置'))
 async def send_config_ev(bot: Bot, ev: Event):
     logger.info('开始执行[设置阈值信息]')
-
-    sqla = get_sqla(ev.bot_id)
-    uid = await sqla.get_bind_uid(ev.user_id)
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
 
@@ -44,7 +42,6 @@ async def send_config_ev(bot: Bot, ev: Event):
 # 开启 自动签到 和 推送树脂提醒 功能
 @sv_self_config.on_prefix(('gs开启', 'gs关闭'))
 async def open_switch_func(bot: Bot, ev: Event):
-    sqla = get_sqla(ev.bot_id)
     user_id = ev.user_id
     config_name = ev.text
 
@@ -63,7 +60,7 @@ async def open_switch_func(bot: Bot, ev: Event):
     elif ev.at:
         return await bot.send('你没有权限...')
 
-    uid = await sqla.get_bind_uid(ev.user_id)
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
 

@@ -1,9 +1,9 @@
 from typing import Optional
 
 from gsuid_core.logger import logger
+from gsuid_core.utils.database.models import GsPush, GsUser
 
 from .gs_config import gsconfig
-from ..utils.database import get_sqla
 from .config_default import CONIFG_DEFAULT
 
 PUSH_MAP = {
@@ -21,13 +21,17 @@ PRIV_MAP = {
 
 
 async def set_push_value(bot_id: str, func: str, uid: str, value: int):
-    sqla = get_sqla(bot_id)
     if func in PUSH_MAP:
         status = PUSH_MAP[func]
     else:
         return '该配置项不存在!'
     logger.info('[设置推送阈值]func: {}, value: {}'.format(status, value))
-    if await sqla.update_push_data(uid, bot_id, {f'{status}_value': value}):
+    if (
+        await GsPush.update_data_by_uid(
+            uid, bot_id, None, **{f'{status}_value': value}
+        )
+        == 0
+    ):
         return f'设置成功!\n当前{func}推送阈值:{value}'
     else:
         return '设置失败!\n请检查参数是否正确!'
@@ -42,7 +46,6 @@ async def set_config_func(
     query: Optional[bool] = None,
     is_admin: bool = False,
 ):
-    sqla = get_sqla(bot_id)
     # 这里将传入的中文config_name转换为英文status
     for _name in CONIFG_DEFAULT:
         config = CONIFG_DEFAULT[_name]
@@ -55,17 +58,20 @@ async def set_config_func(
         )
         if config_name in PRIV_MAP:
             # 执行设置
-            await sqla.update_user_data(
+            await GsUser.update_data_by_uid(
                 uid,
-                {
+                bot_id,
+                None,
+                **{
                     f'{PRIV_MAP[config_name]}_switch': option,
                 },
             )
         elif config_name.replace('推送', '') in PUSH_MAP:
-            await sqla.update_push_data(
+            await GsUser.update_data_by_uid(
                 uid,
                 bot_id,
-                {
+                None,
+                **{
                     f'{PUSH_MAP[config_name.replace("推送", "")]}_push': option,
                 },
             )

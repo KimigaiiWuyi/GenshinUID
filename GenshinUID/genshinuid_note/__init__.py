@@ -2,10 +2,10 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import UID_HINT
+from gsuid_core.utils.database.models import GsBind
 
 from .note_text import award
 from ..utils.convert import get_uid
-from ..utils.database import get_sqla
 from .draw_note_card import draw_note_img
 
 sv_get_monthly_data = SV('查询札记')
@@ -14,8 +14,7 @@ sv_get_monthly_data = SV('查询札记')
 # 群聊内 每月统计 功能
 @sv_get_monthly_data.on_fullmatch(('每月统计'))
 async def send_monthly_data(bot: Bot, ev: Event):
-    sqla = get_sqla(ev.bot_id)
-    uid = await sqla.get_bind_uid(ev.user_id)
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return UID_HINT
     await bot.send(await award(uid))

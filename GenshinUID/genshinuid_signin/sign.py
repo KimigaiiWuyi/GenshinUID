@@ -5,10 +5,10 @@ from copy import deepcopy
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.utils.database.models import GsUser
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 from ..utils.mys_api import mys_api
-from ..utils.database import get_sqla
 from ..genshinuid_config.gs_config import gsconfig
 
 private_msg_list = {}
@@ -114,10 +114,9 @@ async def sign_error(uid: str, retcode: int) -> str:
     error_msg = get_error(retcode)
     logger.warning(f'[签到] {uid} 出错, 错误码{retcode}, 错误消息{error_msg}!')
     if retcode == 10001 or retcode == -100:
-        sqla = get_sqla('TEMP')
-        ck = await sqla.get_user_cookie(uid)
+        ck = await GsUser.get_user_cookie_by_uid(uid)
         if ck:
-            await sqla.update_error_status(ck, 'error')
+            await GsUser.update_data_by_uid_without_bot_id(uid, status='error')
     return f'签到失败!{error_msg}'
 
 
@@ -156,9 +155,8 @@ async def single_daily_sign(bot_id: str, uid: str, gid: str, qid: str):
 async def daily_sign():
     global already
     tasks = []
-    for bot_id in gss.active_bot:
-        sqla = get_sqla(bot_id)
-        user_list = await sqla.get_all_user()
+    for BOT_ID in gss.active_bot:
+        user_list = await GsUser.get_all_user()
         uid_list = [
             user.uid
             for user in user_list

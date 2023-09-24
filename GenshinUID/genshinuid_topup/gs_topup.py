@@ -10,11 +10,11 @@ from gsuid_core.bot import Bot
 from qrcode import ERROR_CORRECT_L
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
+from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.api.mys.models import MysOrder
 from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
-from ..utils.database import get_sqla
 from .draw_topup_img import draw_wx, draw_ali
 
 disnote = '''免责声明:
@@ -75,7 +75,7 @@ GOODS = {
 
 
 def get_qrcode_base64(url: str):
-    qr = qrcode.QRCode(
+    qr = qrcode.QRCode(  # type: ignore
         version=1,
         error_correction=ERROR_CORRECT_L,
         box_size=10,
@@ -116,8 +116,7 @@ async def topup_(
     goods_id: int,
     method: Literal['weixin', 'alipay'],
 ):
-    sqla = get_sqla(bot_id)
-    uid = await sqla.get_bind_uid(user_id)
+    uid = await GsBind.get_uid_by_game(user_id, bot_id)
     if uid is None:
         return await bot.send('未绑定米游社账号')
     fetchgoods_data = await mys_api.get_fetchgoods()

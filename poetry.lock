@@ -455,13 +455,13 @@ reference = "USTC"
 
 [[package]]
 name = "casbin"
-version = "1.28.0"
+version = "1.31.0"
 description = "An authorization library that supports access control models like ACL, RBAC, ABAC in Python"
 optional = false
 python-versions = ">=3.3"
 files = [
-    {file = "casbin-1.28.0-py3-none-any.whl", hash = "sha256:8a261f0029331a2b97f9cadd96714535fc277fc539a3d3075b1c1255df7ed35b"},
-    {file = "casbin-1.28.0.tar.gz", hash = "sha256:5cd048597f0d927ba24f17f97ba8e62ac53ff9d1e19bbc2d4a0a9a01f3ba92e3"},
+    {file = "casbin-1.31.0-py3-none-any.whl", hash = "sha256:84847025ac5df625ef43c18493a8120dd98079afb7b542c15f1d7f4274f0f0dd"},
+    {file = "casbin-1.31.0.tar.gz", hash = "sha256:06dca31aba90bf2627745bf30744259674951fb38d625428c0cf9983649d0104"},
 ]
 
 [package.dependencies]
@@ -947,20 +947,20 @@ reference = "USTC"
 
 [[package]]
 name = "gitpython"
-version = "3.1.36"
+version = "3.1.37"
 description = "GitPython is a Python library used to interact with Git repositories"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GitPython-3.1.36-py3-none-any.whl", hash = "sha256:8d22b5cfefd17c79914226982bb7851d6ade47545b1735a9d010a2a4c26d8388"},
-    {file = "GitPython-3.1.36.tar.gz", hash = "sha256:4bb0c2a6995e85064140d31a33289aa5dce80133a23d36fcd372d716c54d3ebf"},
+    {file = "GitPython-3.1.37-py3-none-any.whl", hash = "sha256:5f4c4187de49616d710a77e98ddf17b4782060a1788df441846bddefbb89ab33"},
+    {file = "GitPython-3.1.37.tar.gz", hash = "sha256:f9b9ddc0761c125d5780eab2d64be4873fc6817c2899cbcb34b02344bdc7bc54"},
 ]
 
 [package.dependencies]
 gitdb = ">=4.0.1,<5"
 
 [package.extras]
-test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mypy", "pre-commit", "pytest", "pytest-cov", "pytest-sugar", "virtualenv"]
+test = ["black", "coverage[toml]", "ddt (>=1.1.1,!=1.4.3)", "mypy", "pre-commit", "pytest", "pytest-cov", "pytest-sugar"]
 
 [package.source]
 type = "legacy"

@@ -10,7 +10,6 @@ from gsuid_core.utils.database.models import GsUser
 
 from ..utils.mys_api import mys_api
 from .backup_data import data_backup
-from ..utils.database import get_sqla
 
 sv_data_manger = SV('数据管理', pm=2)
 
@@ -28,7 +27,7 @@ async def send_backup_msg(bot: Bot, ev: Event):
 
 @sv_data_manger.on_fullmatch(('校验全部Cookies'))
 async def send_check_cookie(bot: Bot, ev: Event):
-    user_list = await get_sqla(bot.bot_id).get_all_user()
+    user_list = await GsUser.get_all_user()
     invalid_user: List[GsUser] = []
     for user in user_list:
         if user.cookie and user.mys_id and user.uid:
@@ -38,7 +37,9 @@ async def send_check_cookie(bot: Bot, ev: Event):
                 True if int(user.uid[0]) > 5 else False,
             )
             if isinstance(mys_data, int):
-                await get_sqla(bot.bot_id).update_user_cookie(user.uid, None)
+                await GsUser.update_data_by_uid(
+                    user.uid, ev.bot_id, cookie=None
+                )
                 invalid_user.append(user)
                 continue
             for i in mys_data:
@@ -78,7 +79,7 @@ async def send_check_cookie(bot: Bot, ev: Event):
 
 @sv_data_manger.on_fullmatch(('校验全部Stoken'))
 async def send_check_stoken(bot: Bot, ev: Event):
-    user_list = await get_sqla(bot.bot_id).get_all_user()
+    user_list = await GsUser.get_all_user()
     invalid_user: List[GsUser] = []
     for user in user_list:
         if user.stoken and user.mys_id:
@@ -86,7 +87,9 @@ async def send_check_stoken(bot: Bot, ev: Event):
                 '', user.mys_id, user.stoken
             )
             if isinstance(mys_data, int) and user.uid:
-                await get_sqla(bot.bot_id).update_user_stoken(user.uid, None)
+                await GsUser.update_data_by_uid(
+                    user.uid, ev.bot_id, stoken=None
+                )
                 invalid_user.append(user)
                 continue
     if len(user_list) > 4:

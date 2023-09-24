@@ -1,11 +1,9 @@
-from typing import List
-
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
+from gsuid_core.utils.database.models import GsBind
 
-from ..utils.database import get_sqla
 from .get_ck_help_msg import get_ck_help
 from ..utils.message import send_diff_msg
 
@@ -19,14 +17,13 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     qid = ev.user_id
     await bot.logger.info('[绑定/解绑]UserID: {}'.format(qid))
 
-    sqla = get_sqla(ev.bot_id)
     uid = ev.text.strip()
     if uid and not uid.isdigit():
         return await bot.send('你输入了错误的格式!')
 
     if '绑定' in ev.command:
-        data = await sqla.insert_bind_data(qid, uid=uid, group_id=ev.group_id)
-        return await send_diff_msg(
+        data = await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, 9)
+        return send_diff_msg(
             bot,
             data,
             {
@@ -37,13 +34,19 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
             },
         )
     elif '切换' in ev.command:
-        data = await sqla.switch_uid(qid, uid=uid)
-        if isinstance(data, List):
-            return await bot.send(f'切换UID{uid}成功！')
-        else:
-            return await bot.send(f'尚未绑定该UID{uid}')
+        data = await GsBind.switch_uid_by_game(qid, ev.bot_id, uid)
+        return send_diff_msg(
+            bot,
+            data,
+            {
+                0: f'切换UID{uid}成功！',
+                -1: f'不存在UID{uid}的绑定记录！',
+                -2: f'UID{uid}不在绑定列表中！',
+                -3: '请绑定大于等于两个UID以进行切换!',
+            },
+        )
     else:
-        data = await sqla.delete_bind_data(qid, uid=uid)
+        data = await GsBind.delete_uid(qid, ev.bot_id, uid)
         return await send_diff_msg(
             bot,
             data,

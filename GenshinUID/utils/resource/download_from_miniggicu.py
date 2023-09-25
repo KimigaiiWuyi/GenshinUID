@@ -1,8 +1,10 @@
 import os
+import time
 import asyncio
 from pathlib import Path
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
+import aiohttp
 from bs4 import BeautifulSoup
 from aiohttp import TCPConnector
 from gsuid_core.logger import logger
@@ -13,59 +15,59 @@ from .download_url import PATH_MAP, download_file
 # MINIGG_FILE = 'http://file.microgg.cn/KimigaiiWuyi/resource/'
 BASE_TAG = '[HKFRP]'
 BASE_URL = 'http://hk-1.5gbps-2.lcf.icu:10200/'
-RESOURCE_FILE = f'{BASE_URL}/resource/'
-WIKI_FILE = f'{BASE_URL}/wiki/'
-
-NAMECARD_FILE = RESOURCE_FILE + 'char_namecard'
-SIDE_FILE = RESOURCE_FILE + 'char_side'
-STAND_FILE = RESOURCE_FILE + 'char_stand'
-CHARS_FILE = RESOURCE_FILE + 'chars'
-GACHA_FILE = RESOURCE_FILE + 'gacha_img'
-ICON_FILE = RESOURCE_FILE + 'icon'
-REL_FILE = RESOURCE_FILE + 'reliquaries'
-WEAPON_FILE = RESOURCE_FILE + 'weapon'
-GUIDE_FILE = WIKI_FILE + 'guide'
-REF_FILE = WIKI_FILE + 'ref'
-
-'''
-NAMECARD_FILE = MINIGG_FILE + 'char_namecard'
-SIDE_FILE = MINIGG_FILE + 'char_side'
-STAND_FILE = MINIGG_FILE + 'char_stand'
-CHARS_FILE = MINIGG_FILE + 'chars'
-GACHA_FILE = MINIGG_FILE + 'gacha_img'
-ICON_FILE = MINIGG_FILE + 'icon'
-REL_FILE = MINIGG_FILE + 'reliquaries'
-WEAPON_FILE = MINIGG_FILE + 'weapon'
-GUIDE_FILE = MINIGG_FILE + 'guide'
-REF_FILE = MINIGG_FILE + 'ref_image'
-'''
 
 
-FILE_TO_PATH = {
-    NAMECARD_FILE: 6,
-    SIDE_FILE: 3,
-    STAND_FILE: 2,
-    CHARS_FILE: 1,
-    GACHA_FILE: 4,
-    ICON_FILE: 8,
-    REL_FILE: 7,
-    WEAPON_FILE: 5,
-    GUIDE_FILE: 10,
-    REF_FILE: 12,
-}
+async def check_url(tag: str, url: str):
+    async with aiohttp.ClientSession() as session:
+        try:
+            start_time = time.time()
+            async with session.get(url) as response:
+                elapsed_time = time.time() - start_time
+                if response.status == 200:
+                    logger.info(f'{tag} {url} {elapsed_time}')
+                    return tag, url, elapsed_time
+                else:
+                    logger.info(f'{tag} {url} 超时...')
+                    return tag, url, float('inf')
+        except aiohttp.ClientError:
+            logger.info(f'{tag} {url} 超时...')
+            return tag, url, float('inf')
 
-FILE_TO_NAME = {
-    NAMECARD_FILE: '角色名片',
-    SIDE_FILE: '角色侧视图',
-    STAND_FILE: '角色半身照',
-    CHARS_FILE: '角色头像',
-    GACHA_FILE: '角色立绘',
-    ICON_FILE: '图标',
-    REL_FILE: '圣遗物',
-    WEAPON_FILE: '武器',
-    GUIDE_FILE: '攻略',
-    REF_FILE: '参考面板',
-}
+
+async def find_fastest_url(urls: Dict[str, str]):
+    tasks = []
+    for tag in urls:
+        tasks.append(asyncio.create_task(check_url(tag, urls[tag])))
+
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    fastest_tag = None
+    fastest_url = None
+    fastest_time = float('inf')
+
+    for result in results:
+        if isinstance(result, Exception):
+            continue
+        tag, url, elapsed_time = result
+        if elapsed_time < fastest_time:
+            fastest_url = url
+            fastest_time = elapsed_time
+            fastest_tag = tag
+
+    return fastest_tag, fastest_url
+
+
+async def check_speed():
+    logger.info('[gsuid资源下载]测速中...')
+
+    URL_LIB = {
+        '[HKFRP]': 'http://hk-1.5gbps-2.lcf.icu:10200/',
+        '[qxqx]': 'https://kr-arm.qxqx.me/GenshinUID/',
+    }
+
+    global BASE_TAG
+    global BASE_URL
+    BASE_TAG, BASE_URL = await find_fastest_url(URL_LIB)
+    logger.info(f"最快资源站: {BASE_TAG} {BASE_URL}")
 
 
 async def _get_url(url: str, sess: ClientSession):
@@ -74,6 +76,47 @@ async def _get_url(url: str, sess: ClientSession):
 
 
 async def download_all_file_from_miniggicu():
+    await check_speed()
+    RESOURCE_FILE = f'{BASE_URL}/resource/'
+    WIKI_FILE = f'{BASE_URL}/wiki/'
+
+    NAMECARD_FILE = RESOURCE_FILE + 'char_namecard'
+    SIDE_FILE = RESOURCE_FILE + 'char_side'
+    STAND_FILE = RESOURCE_FILE + 'char_stand'
+    CHARS_FILE = RESOURCE_FILE + 'chars'
+    GACHA_FILE = RESOURCE_FILE + 'gacha_img'
+    ICON_FILE = RESOURCE_FILE + 'icon'
+    REL_FILE = RESOURCE_FILE + 'reliquaries'
+    WEAPON_FILE = RESOURCE_FILE + 'weapon'
+    GUIDE_FILE = WIKI_FILE + 'guide'
+    REF_FILE = WIKI_FILE + 'ref'
+
+    FILE_TO_PATH = {
+        NAMECARD_FILE: 6,
+        SIDE_FILE: 3,
+        STAND_FILE: 2,
+        CHARS_FILE: 1,
+        GACHA_FILE: 4,
+        ICON_FILE: 8,
+        REL_FILE: 7,
+        WEAPON_FILE: 5,
+        GUIDE_FILE: 10,
+        REF_FILE: 12,
+    }
+
+    FILE_TO_NAME = {
+        NAMECARD_FILE: '角色名片',
+        SIDE_FILE: '角色侧视图',
+        STAND_FILE: '角色半身照',
+        CHARS_FILE: '角色头像',
+        GACHA_FILE: '角色立绘',
+        ICON_FILE: '图标',
+        REL_FILE: '圣遗物',
+        WEAPON_FILE: '武器',
+        GUIDE_FILE: '攻略',
+        REF_FILE: '参考面板',
+    }
+
     async def _download(tasks: List[asyncio.Task]):
         failed_list.extend(
             list(filter(lambda x: x is not None, await asyncio.gather(*tasks)))

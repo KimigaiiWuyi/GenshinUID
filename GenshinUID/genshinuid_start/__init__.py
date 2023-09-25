@@ -3,7 +3,6 @@ import threading
 
 from gsuid_core.logger import logger
 
-from ..utils.database import get_sqla
 from ..genshinuid_resource import startup
 from ..genshinuid_xkdata import draw_xk_abyss_img
 from ..genshinuid_guide.get_new_abyss_data import download_Oceanid
@@ -19,7 +18,6 @@ from ..genshinuid_xkdata.get_all_char_data import (
 
 async def all_start():
     try:
-        get_sqla('TEMP')
         await download_Oceanid()
         await startup()
         # await check_artifacts_list()

@@ -23,7 +23,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
 
     if '绑定' in ev.command:
         data = await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, 9)
-        return send_diff_msg(
+        return await send_diff_msg(
             bot,
             data,
             {
@@ -35,7 +35,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
         )
     elif '切换' in ev.command:
         data = await GsBind.switch_uid_by_game(qid, ev.bot_id, uid)
-        return send_diff_msg(
+        return await send_diff_msg(
             bot,
             data,
             {

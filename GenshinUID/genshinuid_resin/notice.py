@@ -52,12 +52,12 @@ async def all_check(
     for mode in NOTICE.keys():
         # 检查条件
         if push_data[f'{mode}_is_push'] == 'on':
-            if gsconfig.get_config('CrazyNotice').data:
+            if not gsconfig.get_config('CrazyNotice').data:
                 if not await check(mode, raw_data, push_data[f'{mode}_value']):
                     await GsPush.update_data_by_uid(
                         uid, bot_id, None, **{f'{mode}_is_push': 'off'}
                     )
-                continue
+            continue
         # 准备推送
         if await check(mode, raw_data, push_data[f'{mode}_value']):
             if push_data[f'{mode}_push'] == 'off':

@@ -96,7 +96,6 @@ async def draw_enka_card(
     for index, char_data in enumerate(char_data_list):
         tasks.append(draw_enka_char(index, img, char_data))
     await asyncio.gather(*tasks)
-    img = img.resize((500, 340))
     img = await convert_img(img)
     return img
 

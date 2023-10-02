@@ -131,12 +131,13 @@ async def get_all_message(bot: Bot, ev: Event):
     msg_id = ''
 
     # qqguild
-    if bot.adapter.get_name() == 'QQ Guild':
-        from nonebot.adapters.qqguild.event import (
-            MessageEvent,
-            C2CMessageCreate,
-            GroupAtMessageCreate,
+    if bot.adapter.get_name() == 'QQ':
+        sp_bot_id = 'qqguild'
+        from nonebot.adapters.qq.event import (
+            GuildMessageEvent,
+            C2CMessageCreateEvent,
             DirectMessageCreateEvent,
+            GroupAtMessageCreateEvent,
         )
 
         # 私聊
@@ -144,18 +145,18 @@ async def get_all_message(bot: Bot, ev: Event):
             user_type = 'direct'
             group_id = str(ev.guild_id)
             msg_id = ev.id
-        elif isinstance(ev, GroupAtMessageCreate):
+        elif isinstance(ev, GroupAtMessageCreateEvent):
             sp_bot_id = 'qqgroup'
             user_type = 'group'
             group_id = str(ev.group_id)
             msg_id = ev.id
-        elif isinstance(ev, C2CMessageCreate):
+        elif isinstance(ev, C2CMessageCreateEvent):
             sp_bot_id = 'qqgroup'
             user_type = 'direct'
             group_id = None
             msg_id = ev.id
         # 群聊
-        elif isinstance(ev, MessageEvent):
+        elif isinstance(ev, GuildMessageEvent):
             user_type = 'group'
             group_id = str(ev.channel_id)
             if ev.member and ev.member.roles:
@@ -170,8 +171,11 @@ async def get_all_message(bot: Bot, ev: Event):
             logger.debug('[gsuid] 不支持该 QQ Guild 事件...')
             return
 
-        if ev.message_reference:
-            reply_msg_id = ev.message_reference.message_id
+        if (
+            hasattr(ev, 'message_reference')
+            and ev.message_reference  # type: ignore
+        ):
+            reply_msg_id = ev.message_reference.message_id  # type: ignore
             message.append(Message('reply', reply_msg_id))
     # telegram
     elif bot.adapter.get_name() == 'Telegram':

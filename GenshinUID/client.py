@@ -124,6 +124,9 @@ class GsClient:
                     file = ''
                     at_list = []
                     group_id = ''
+                    markdown = ''
+                    buttons = []
+
                     if msg.content:
                         for _c in msg.content:
                             if _c.data:
@@ -139,6 +142,10 @@ class GsClient:
                                     at_list.append(_c.data)
                                 elif _c.type == 'group':
                                     group_id = _c.data
+                                elif _c.type == 'markdown':
+                                    markdown = _c.data
+                                elif _c.type == 'buttons':
+                                    buttons = _c.data
                     else:
                         pass
 
@@ -231,7 +238,8 @@ class GsClient:
                                 content,
                                 image,
                                 node,
-                                at_list,
+                                markdown,
+                                buttons,
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
@@ -496,30 +504,80 @@ async def group_send(
     content: Optional[str],
     image: Optional[str],
     node: Optional[List[Dict]],
-    at_list: Optional[List[str]],
+    markdown: Optional[str],
+    buttons: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
 ):
+    from nonebot.adapters.qq.bot import Bot as qqbot
+    from nonebot.adapters.qq.message import Message, MessageSegment
+    from nonebot.adapters.qq.models import (
+        Action,
+        Button,
+        Permission,
+        RenderData,
+        InlineKeyboard,
+        MessageKeyboard,
+        InlineKeyboardRow,
+    )
+
+    assert isinstance(bot, qqbot)
+    assert isinstance(target_id, str)
+
     async def _send(content: Optional[str], image: Optional[str]):
-        result: Dict[str, Any] = {}
+        message = Message()
         if content:
-            result['content'] = content
+            message.append(MessageSegment.text(content))
         if image:
-            result['image'] = image
+            message.append(MessageSegment.image(image))
+        if markdown:
+            message.append(MessageSegment.markdown(markdown))
+        if buttons:
+            _rows = []
+            _buttons = []
+            for button in buttons:
+                bt = Button(
+                    render_data=RenderData(
+                        label=button['text'],
+                        visited_label=button['pressed_text'],
+                        style=button['style'],
+                    ),
+                    action=Action(
+                        type=button['action'],
+                        permission=Permission(
+                            type=button['permisson'],
+                            specify_role_ids=button['specify_role_ids'],
+                            specify_user_ids=button['specify_user_ids'],
+                        ),
+                        unsupport_tips=button['unsupport_tips'],
+                        data=button['data'],
+                    ),
+                )
+                _buttons.append(bt)
+                if len(_buttons) >= 2:
+                    _rows.append(InlineKeyboardRow(buttons=_buttons))
+                    _buttons = []
+            if _buttons:
+                _rows.append(InlineKeyboardRow(buttons=_buttons))
+
+            kb = MessageKeyboard(content=InlineKeyboard(rows=_rows))
+
+            message.append(MessageSegment.keyboard(kb))
+
         if target_type == 'group':
-            await bot.post_group_message(
+            await bot.send_to_group(
                 group_id=target_id,
                 msg_id=msg_id,
                 event_id=msg_id,
-                **result,
+                message=message,
             )
         else:
-            await bot.post_c2c_message(
+            await bot.send_to_c2c(
                 user_id=target_id,
                 msg_id=msg_id,
                 event_id=msg_id,
-                **result,
+                message=message,
             )
 
     if node:

@@ -216,10 +216,14 @@ async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[强制刷新]uid: {}'.format(uid))
+    logger.info('[强制刷新]uid: {}'.format(uid))
     im = await enka_to_card(uid)
-    await bot.logger.info(f'UID{uid}获取角色数据成功！')
-    await bot.send(im)
+    logger.info(f'UID{uid}获取角色数据成功！')
+
+    if isinstance(im, Tuple):
+        await bot.send_option(im[0], [f'查询{i["avatarName"]}' for i in im[1]])
+    else:
+        await bot.send(im)
 
 
 @sv_get_enka.on_command('毕业度统计')

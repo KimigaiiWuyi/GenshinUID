@@ -1,6 +1,6 @@
 import asyncio
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import Dict, List, Tuple, Union, Optional
 
 from PIL import Image, ImageDraw
 from gsuid_core.utils.api.enka.models import EnkaData
@@ -27,7 +27,7 @@ pic_204 = Image.open(TEXT_PATH / '204.png')
 
 async def enka_to_card(
     uid: str, enka_data: Optional[EnkaData] = None
-) -> Union[str, bytes]:
+) -> Union[str, bytes, Tuple[bytes, List[Dict]]]:
     char_data_list = await enka_to_dict(uid, enka_data)
     if isinstance(char_data_list, str):
         if '服务器正在维护或者关闭中' in char_data_list:
@@ -41,7 +41,7 @@ async def enka_to_card(
             return await convert_img(pic_500)
 
     img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
-    return img
+    return img, char_data_list
 
 
 async def draw_enka_card(
@@ -96,6 +96,7 @@ async def draw_enka_card(
     for index, char_data in enumerate(char_data_list):
         tasks.append(draw_enka_char(index, img, char_data))
     await asyncio.gather(*tasks)
+    img = img.resize((500, 340))
     img = await convert_img(img)
     return img
 

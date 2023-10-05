@@ -1,4 +1,5 @@
 import json
+from typing import Dict, Union
 
 import aiofiles
 
@@ -9,7 +10,7 @@ from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 is_enable_akasha = gsconfig.get_config('EnableAkasha').data
 
 
-async def get_rank(uid: str) -> str:
+async def _get_rank(uid: str) -> Union[Dict, str]:
     if not is_enable_akasha:
         return '未开启排名系统...'
     path = PLAYER_PATH / uid / 'rank.json'
@@ -21,6 +22,14 @@ async def get_rank(uid: str) -> str:
 
     if len(rank_data) == 0:
         return '你还没有排名缓存, 请使用[强制刷新]生成/刷新数据！'
+
+    return rank_data
+
+
+async def get_rank(uid: str) -> str:
+    rank_data = await _get_rank(uid)
+    if isinstance(rank_data, str):
+        return rank_data
 
     im_list = [f'UID {uid}']
 

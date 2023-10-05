@@ -7,8 +7,9 @@ from gsuid_core.utils.api.enka.models import EnkaData
 
 from .to_data import enka_to_dict
 from ..utils.image.convert import convert_img
-from ..utils.resource.RESOURCE_PATH import CHAR_PATH
+from ..utils.resource.download_url import download
 from ..utils.fonts.genshin_fonts import gs_font_18, gs_font_58
+from ..utils.resource.RESOURCE_PATH import CHAR_PATH, ICON_PATH
 from ..utils.map.name_covert import name_to_avatar_id, avatar_id_to_char_star
 
 half_color = (255, 255, 255, 120)
@@ -100,18 +101,35 @@ async def draw_enka_card(
     return img
 
 
-async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
-    char_id = char_data['avatarId']
+async def draw_char_card(char_id: str) -> Image.Image:
     char_star = await avatar_id_to_char_star(str(char_id))
     char_card = Image.open(TEXT_PATH / f'char_card_{char_star}.png')
     char_img = (
-        Image.open(str(CHAR_PATH / f'{char_id}.png'))
+        Image.open(CHAR_PATH / f'{char_id}.png')
         .convert('RGBA')
         .resize((204, 204))
     )
     char_temp = Image.new('RGBA', (220, 220))
     char_temp.paste(char_img, (8, 8), char_img)
     char_card.paste(char_temp, (0, 0), char_mask)
+    return char_card
+
+
+async def draw_weapon_card(icon_url: str, rarity: str) -> Image.Image:
+    weapon_card = Image.open(TEXT_PATH / f'char_card_{rarity}.png')
+    weapon_icon_name = icon_url.split('/')[-1]
+    path = ICON_PATH / weapon_icon_name
+    if not path.exists():
+        await download(icon_url, 8, weapon_icon_name)
+    weapon_img = Image.open(path).convert('RGBA').resize((204, 204))
+    weapon_temp = Image.new('RGBA', (220, 220))
+    weapon_temp.paste(weapon_img, (8, 8), weapon_img)
+    weapon_card.paste(weapon_temp, (0, 0), char_mask)
+    return weapon_card
+
+
+async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
+    char_card = await draw_char_card(char_data['avatarId'])
     if index <= 7:
         if img.size[0] <= 1100:
             x = 60 + (index % 4) * 220

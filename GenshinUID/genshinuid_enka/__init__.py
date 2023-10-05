@@ -16,6 +16,7 @@ from ..utils.convert import get_uid
 from .get_akasha_data import get_rank
 from .start import refresh_player_list
 from .draw_artifacts_lib import draw_lib
+from .draw_rank_list import draw_rank_img
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import alias_data
 from .draw_char_rank import draw_cahrcard_list
@@ -38,6 +39,16 @@ async def sned_rank_data(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     logger.info(f'[排名统计]uid: {uid}')
     await bot.send(await get_rank(uid))
+
+
+@sv_akasha.on_command('排名列表')
+async def sned_rank_pic(bot: Bot, ev: Event):
+    # 获取uid
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    logger.info(f'[排名列表]uid: {uid}')
+    await bot.send(await draw_rank_img(ev.user_id, uid))
 
 
 @sv_enka_admin.on_fullmatch('刷新全部圣遗物仓库')

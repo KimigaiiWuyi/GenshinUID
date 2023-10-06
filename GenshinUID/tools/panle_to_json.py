@@ -79,6 +79,11 @@ SAMPLE = {
     '米卡': 'Q施放治疗量',
     '迪希雅': 'E剑域炽焰伤害',
     '白术': 'E治疗量',
+    '绮良良': 'E护盾吸收量上限',
+    '琳妮特': 'E谜影突刺伤害',
+    '林尼': 'A隐具魔术箭伤害',
+    '菲米尼': 'E四阶高压粉碎伤害',
+    '那维莱特': 'A重击·衡平推裁持续伤害',
 }
 
 
@@ -204,7 +209,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 361:
+            if row == 391:
                 print('ok!')
                 result[char_temp] = char_result
         else:

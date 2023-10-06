@@ -224,7 +224,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
         # 提升指提升百分比 例如  E:dmgBouns+50%
         # 提高指提高固定值 例如  Q:addDmg+40%defense
 
-        label_keyword_hurt_list = ['一段', '壹阶', '贰阶', '叁阶', '肆阶']
+        label_keyword_hurt_list = ['一段', '壹阶', '贰阶', '叁阶', '肆阶', '四阶高压粉碎']
 
         if '炽焰箭' in label_name:
             continue

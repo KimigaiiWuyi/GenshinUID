@@ -2,7 +2,7 @@ from pathlib import Path
 
 import httpx
 
-char_list = ['Charlotte', 'Furina']
+char_list = ['lynette']
 title = 'https://api.ambr.top/assets/UI/{}'
 # title = 'https://enka.network/ui/{}'
 icon_list = [

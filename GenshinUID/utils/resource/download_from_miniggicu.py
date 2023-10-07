@@ -8,8 +8,9 @@ import aiohttp
 from bs4 import BeautifulSoup
 from aiohttp import TCPConnector
 from gsuid_core.logger import logger
-from aiohttp.client import ClientSession
+from aiohttp.client import ClientSession, ClientTimeout
 
+from .RESOURCE_PATH import CHAR_PATH
 from .download_url import PATH_MAP, download_file
 
 # MINIGG_FILE = 'http://file.microgg.cn/KimigaiiWuyi/resource/'
@@ -126,7 +127,10 @@ async def download_all_file_from_miniggicu():
 
     failed_list: List[Tuple[str, int, str]] = []
     TASKS = []
-    async with ClientSession(connector=TCPConnector(verify_ssl=False)) as sess:
+    async with ClientSession(
+        connector=TCPConnector(verify_ssl=False),
+        timeout=ClientTimeout(total=None, sock_connect=20, sock_read=200),
+    ) as sess:
         for file in [
             NAMECARD_FILE,
             SIDE_FILE,
@@ -201,3 +205,8 @@ async def download_all_file_from_miniggicu():
             await _download(TASKS)
         if count := len(failed_list):
             logger.error(f'{BASE_TAG}仍有{count}个文件未下载，请使用命令 `下载全部资源` 重新下载')
+
+    for d_files in ['100000067.png', '100000068.png']:
+        path = CHAR_PATH / d_files
+        if path.exists():
+            path.unlink()

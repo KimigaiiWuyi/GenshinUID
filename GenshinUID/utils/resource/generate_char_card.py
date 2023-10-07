@@ -43,7 +43,7 @@ async def create_single_char_card(char_id: Union[str, int]) -> Image.Image:
     if not path.exists():
         logger.warning(f'资源文件夹未发现图片{char_id}....忽略加载...')
         return Image.new('RGBA', (256, 310))
-    char_img = Image.open(path)
+    char_img = Image.open(path).convert('RGBA')
     char_star = avatarId2Star_data[str(char_id)]
     char_frame = Image.open(texture2d_path / 'frame.png')
     char_bg = Image.open(texture2d_path / f'star{char_star}bg.png')

@@ -1,6 +1,6 @@
 import re
 import json
-from typing import List, Tuple
+from typing import Tuple
 
 import aiofiles
 from PIL import Image
@@ -150,20 +150,22 @@ async def contrast_char_info(bot: Bot, ev: Event):
     elif len(contrast_list) >= 4:
         return await bot.send('不支持对比四个及以上的面板...')
 
-    img_list: List[Image.Image] = []
+    img_list = []
     max_y = 0
     for i in contrast_list:
         im = await _get_char_info(bot, ev, i)
         if isinstance(im, str):
             return await bot.send(im)
         elif isinstance(im, Tuple):
-            if isinstance(im[0], bytes):
+            data = im[0]
+            if isinstance(data, bytes):
                 return await bot.send('输入了错误的格式...参考格式: 对比面板 公子 公子换可莉圣遗物')
-            elif isinstance(im[0], str):
-                return await bot.send(im[0])
+            elif isinstance(data, str):
+                return await bot.send(data)
             else:
-                img_list.append(im[0])
-                max_y = max(max_y, im[0].size[1])
+                assert isinstance(data, Image.Image)
+                img_list.append(data)
+                max_y = max(max_y, data.size[1])
 
     base_img = Image.new('RGBA', (950 * len(img_list), max_y))
     for index, img in enumerate(img_list):

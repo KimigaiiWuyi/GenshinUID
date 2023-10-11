@@ -208,6 +208,8 @@ class GsClient:
                                 image,
                                 node,
                                 at_list,
+                                markdown,
+                                buttons,
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
@@ -429,7 +431,11 @@ async def onebot_red_send(
             result_msg += MessageSegment.file(path)
 
         if target_id:
-            await bot.send_message(chat_type, target_id, result_msg)
+            await bot.send_message(
+                chat_type,  # type: ignore
+                target_id,
+                result_msg,
+            )
 
         if file:
             del_file(path)  # type: ignore
@@ -453,6 +459,8 @@ async def guild_send(
     image: Optional[str],
     node: Optional[List[Dict]],
     at_list: Optional[List[str]],
+    markdown: Optional[str],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
@@ -468,6 +476,11 @@ async def guild_send(
             if at_list and target_type == 'group':
                 for at in at_list:
                     result['content'] += f'<@{at}>'
+        if markdown:
+            logger.warning('[gscore] qqguild暂不支持发送markdown消息')
+        if buttons:
+            logger.warning('[gscore] qqguild暂不支持发送buttons消息')
+
         if target_type == 'group':
             await bot.call_api(
                 'post_messages',
@@ -499,28 +512,73 @@ async def guild_send(
         await _send(content, image)
 
 
+def _bt(button: Dict):
+    from nonebot.adapters.qq.models import (
+        Action,
+        Button,
+        Permission,
+        RenderData,
+    )
+
+    return Button(
+        render_data=RenderData(
+            label=button['text'],
+            visited_label=button['pressed_text'],
+            style=button['style'],
+        ),
+        action=Action(
+            type=button['action'],
+            permission=Permission(
+                type=button['permisson'],
+                specify_role_ids=button['specify_role_ids'],
+                specify_user_ids=button['specify_user_ids'],
+            ),
+            unsupport_tips=button['unsupport_tips'],
+            data=button['data'],
+        ),
+    )
+
+
+def _kb(buttons: Union[List[Dict], List[List[Dict]]]):
+    from nonebot.adapters.qq.models import (
+        InlineKeyboard,
+        MessageKeyboard,
+        InlineKeyboardRow,
+    )
+
+    _rows = []
+    _buttons = []
+    _buttons_rows = []
+    for button in buttons:
+        if isinstance(button, Dict):
+            _buttons.append(_bt(button))
+            if len(_buttons) >= 2:
+                _rows.append(InlineKeyboardRow(buttons=_buttons))
+                _buttons = []
+        else:
+            _buttons_rows.append([_bt(b) for b in button])
+
+    if _buttons:
+        _rows.append(InlineKeyboardRow(buttons=_buttons))
+    if _buttons_rows:
+        _rows.extend([InlineKeyboardRow(buttons=b) for b in _buttons_rows])
+
+    return MessageKeyboard(content=InlineKeyboard(rows=_rows))
+
+
 async def group_send(
     bot: Bot,
     content: Optional[str],
     image: Optional[str],
     node: Optional[List[Dict]],
     markdown: Optional[str],
-    buttons: Optional[List[Dict]],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
 ):
     from nonebot.adapters.qq.bot import Bot as qqbot
     from nonebot.adapters.qq.message import Message, MessageSegment
-    from nonebot.adapters.qq.models import (
-        Action,
-        Button,
-        Permission,
-        RenderData,
-        InlineKeyboard,
-        MessageKeyboard,
-        InlineKeyboardRow,
-    )
 
     assert isinstance(bot, qqbot)
     assert isinstance(target_id, str)
@@ -534,36 +592,7 @@ async def group_send(
         if markdown:
             message.append(MessageSegment.markdown(markdown))
         if buttons:
-            _rows = []
-            _buttons = []
-            for button in buttons:
-                bt = Button(
-                    render_data=RenderData(
-                        label=button['text'],
-                        visited_label=button['pressed_text'],
-                        style=button['style'],
-                    ),
-                    action=Action(
-                        type=button['action'],
-                        permission=Permission(
-                            type=button['permisson'],
-                            specify_role_ids=button['specify_role_ids'],
-                            specify_user_ids=button['specify_user_ids'],
-                        ),
-                        unsupport_tips=button['unsupport_tips'],
-                        data=button['data'],
-                    ),
-                )
-                _buttons.append(bt)
-                if len(_buttons) >= 2:
-                    _rows.append(InlineKeyboardRow(buttons=_buttons))
-                    _buttons = []
-            if _buttons:
-                _rows.append(InlineKeyboardRow(buttons=_buttons))
-
-            kb = MessageKeyboard(content=InlineKeyboard(rows=_rows))
-
-            message.append(MessageSegment.keyboard(kb))
+            message.append(MessageSegment.keyboard(_kb(buttons)))
 
         if target_type == 'group':
             await bot.send_to_group(

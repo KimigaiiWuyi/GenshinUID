@@ -407,7 +407,7 @@ async def onebot_red_send(
 
     assert isinstance(bot, Bot)
 
-    chat_type = 'group' if target_type == 'group' else 'friend'
+    chat_type = 2 if target_type == 'group' else 1
 
     async def _send(content: Optional[str], image: Optional[str]):
         result_msg: Message = Message()

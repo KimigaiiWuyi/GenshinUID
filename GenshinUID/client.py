@@ -405,8 +405,8 @@ async def onebot_red_send(
     target_type: Optional[str],
 ):
     from nonebot.adapters.red.bot import Bot
-    from nonebot.adapters.red.message import Message, MessageSegment
     from nonebot.adapters.red.api.model import ChatType
+    from nonebot.adapters.red.message import Message, MessageSegment
 
     assert isinstance(bot, Bot)
 

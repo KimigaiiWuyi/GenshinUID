@@ -46,7 +46,7 @@ async def get_weapons_wiki_img(name: str) -> Union[str, bytes]:
     if isinstance(stats, int):
         return await get_error_img(stats)
     elif isinstance(stats, List):
-        return await get_error_img(-400)
+        return ', '.join(stats)
     else:
         weapon_name = data['name']
         path = WIKI_WEAPON_PATH / f'{weapon_name}.jpg'

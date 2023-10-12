@@ -406,10 +406,11 @@ async def onebot_red_send(
 ):
     from nonebot.adapters.red.bot import Bot
     from nonebot.adapters.red.message import Message, MessageSegment
+    from nonebot.adapters.red.api.model import ChatType
 
     assert isinstance(bot, Bot)
 
-    chat_type = 2 if target_type == 'group' else 1
+    chat_type = ChatType.GROUP if target_type == 'group' else ChatType.FRIEND
 
     async def _send(content: Optional[str], image: Optional[str]):
         result_msg: Message = Message()
@@ -431,11 +432,7 @@ async def onebot_red_send(
             result_msg += MessageSegment.file(path)
 
         if target_id:
-            await bot.send_message(
-                chat_type,  # type: ignore
-                target_id,
-                result_msg,
-            )
+            await bot.send_message(chat_type, target_id, result_msg)
 
         if file:
             del_file(path)  # type: ignore

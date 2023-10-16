@@ -10,6 +10,7 @@ from gsuid_core.utils.database.models import GsUser
 
 from ..utils.mys_api import mys_api
 from .backup_data import data_backup
+from ..genshinuid_map.draw_genshinmap_card import MAP_DATA
 
 sv_data_manger = SV('数据管理', pm=2)
 
@@ -22,6 +23,9 @@ async def daily_refresh_charData():
 @sv_data_manger.on_fullmatch(('gs清除缓存'))
 async def send_backup_msg(bot: Bot, ev: Event):
     await data_backup()
+    for item in MAP_DATA.glob('*'):
+        if item.is_file():
+            item.unlink()
     await bot.send('操作成功完成!')
 
 

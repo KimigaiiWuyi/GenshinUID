@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Union
 
+import aiofiles
 from gsuid_core.utils.api.minigg.request import get_map_data
 from gsuid_core.utils.api.minigg.exception import MiniggNotFoundError
 
@@ -16,6 +17,8 @@ async def draw_genshin_map(
         raw_data = await get_map_data(resource_name, map_id)
     except MiniggNotFoundError:
         return f'未在{map_name}找到所需资源...'
-    with open(MAP_DATA / f'{map_name}_{resource_name}.jpg', 'wb') as f:
-        f.write(raw_data)  # 保存到文件夹中
+    async with aiofiles.open(
+        MAP_DATA / f'{map_name}_{resource_name}.jpg', 'wb'
+    ) as f:
+        await f.write(raw_data)  # 保存到文件夹中
     return raw_data

@@ -19,8 +19,10 @@ async def _get_assets(
         return Image.open(path)
     if type == 'AMBR':
         URL = AMBR_UI
+        EURL = ENKA_UI
     else:
         URL = ENKA_UI
+        EURL = AMBR_UI
     async with ClientSession() as sess:
         async with sess.get(URL.format(name)) as res:
             if res.status == 200:
@@ -29,7 +31,14 @@ async def _get_assets(
                     await f.write(content)
                 return Image.open(BytesIO(content))
             else:
-                return None
+                async with sess.get(EURL.format(name)) as res:
+                    if res.status == 200:
+                        content = await res.read()
+                        async with aiofiles.open(path, 'wb') as f:
+                            await f.write(content)
+                        return Image.open(BytesIO(content))
+                    else:
+                        return None
 
 
 async def get_assets_from_enka(name: str) -> Optional[Image.Image]:

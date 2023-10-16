@@ -195,7 +195,7 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
             if _cost_pic is None:
                 cost_pic = get_unknown_png()
             else:
-                cost_pic = _cost_pic.resize((64, 64))
+                cost_pic = _cost_pic.convert('RGBA').resize((64, 64))
 
             if not cost_pos and material['materialtype'] == '武器突破素材':
                 pos = material['dropdomain']

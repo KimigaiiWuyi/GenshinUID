@@ -4,9 +4,11 @@ from copy import deepcopy
 from typing import Dict, Literal
 
 from httpx import AsyncClient
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
+    mys_version,
     random_text,
     get_ds_token,
     get_web_ds_token,
@@ -75,7 +77,7 @@ class MihoyoBBSCoin:
             'DS': get_web_ds_token(),
             'cookie': stoken,
             'x-rpc-client_type': '2',
-            'x-rpc-app_version': '2.44.1',
+            'x-rpc-app_version': mys_version,
             'x-rpc-sys_version': '6.0.1',
             'x-rpc-channel': 'miyousheluodi',
             'x-rpc-device_id': random_hex(32),
@@ -313,6 +315,7 @@ class MihoyoBBSCoin:
                     headers=header,
                 )
                 data = req.json()
+                logger.debug(data)
             if data['retcode'] == 1034:
                 await mys_api._upass(self.headers, True)
             else:

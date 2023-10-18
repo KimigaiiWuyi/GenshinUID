@@ -1,10 +1,17 @@
 from urllib.parse import unquote
-from typing import Any, Dict, Union, Literal, Optional
+from typing import Any, Dict, List, Tuple, Union, Literal, Optional
 
 from gsuid_core.logger import logger
 from aiohttp import TCPConnector, ClientSession, ContentTypeError
 
-from .api import DATA_API, MAIN_API, RANK_API, REFRESH_API
+from .api import (
+    DATA_API,
+    MAIN_API,
+    RANK_API,
+    SORT_API,
+    REFRESH_API,
+    LEADERBOARD_API,
+)
 
 
 class _CvApi:
@@ -16,6 +23,44 @@ class _CvApi:
             connector=TCPConnector(verify_ssl=self.ssl_verify)
         )
         self.sessionID = None
+
+    async def get_leaderboard_id_list(
+        self, char_id: str
+    ) -> Optional[List[Dict]]:
+        raw_data = await self._cv_request(
+            LEADERBOARD_API.format(char_id),
+            'GET',
+            self._HEADER,
+        )
+        if isinstance(raw_data, Dict) and 'data' in raw_data:
+            if raw_data['data']:
+                return raw_data['data']
+            else:
+                return None
+
+    async def get_calculation_info(
+        self, char_id: str
+    ) -> Optional[Tuple[str, int]]:
+        raw_data = await self.get_leaderboard_id_list(char_id)
+        if raw_data is not None:
+            return (
+                raw_data[0]['weapons'][0]['calculationId'],
+                raw_data[0]['count'],
+            )
+
+    async def get_sort_list(
+        self, char_id: str
+    ) -> Optional[Tuple[List[Dict], int]]:
+        _raw_data = await self.get_calculation_info(char_id)
+        if _raw_data is not None:
+            calculation_id, count = _raw_data
+            raw_data = await self._cv_request(
+                SORT_API.format(calculation_id),
+                'GET',
+                self._HEADER,
+            )
+            if isinstance(raw_data, Dict) and 'data' in raw_data:
+                return raw_data['data'], count
 
     async def get_session_id(self) -> str:
         async with self.session.get(MAIN_API) as resp:

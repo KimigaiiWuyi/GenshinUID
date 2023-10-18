@@ -4,6 +4,7 @@ from copy import deepcopy
 from typing import Dict, Literal
 
 from httpx import AsyncClient
+
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
@@ -306,6 +307,7 @@ class MihoyoBBSCoin:
     ) -> Dict:
         for _ in range(2):
             if BBS_SIGN_URL in url:
+
                 header['DS'] = get_ds_token('', data, '22')
             async with AsyncClient(timeout=None) as client:
                 req = await client.request(

@@ -211,7 +211,6 @@ class MihoyoBBSCoin:
             logger.info('开始执行米游社签到......')
             header = deepcopy(self.headers)
             for i in self.mihoyobbs_List_Use:
-                header['DS'] = get_ds_token('', {'gids': i['id']}, '22')
                 data = await self._request(
                     'POST',
                     BBS_SIGN_URL,
@@ -307,6 +306,7 @@ class MihoyoBBSCoin:
         data: Dict = {},
     ) -> Dict:
         for _ in range(2):
+            header['DS'] = get_ds_token('', data, '22')
             async with AsyncClient(timeout=None) as client:
                 req = await client.request(
                     method=method,

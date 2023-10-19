@@ -481,7 +481,7 @@ async def guild_send(
         if target_type == 'group':
             await bot.call_api(
                 'post_messages',
-                channel_id=int(target_id) if target_id else 0,
+                channel_id=str(target_id) if target_id else 0,
                 **result,
             )
         else:

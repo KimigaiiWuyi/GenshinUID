@@ -268,7 +268,7 @@
       {
         "name": "查询xx带xx换xx",
         "desc": "查询不存在的角色",
-        "eg": "查询莱依拉带月光换公子",
+        "eg": "查询莱依拉带护摩换公子圣遗物",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -317,6 +317,51 @@
         "name": "原图",
         "desc": "开启随机图API之后可以查看原图",
         "eg": "回复命令，原图",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "圣遗物仓库",
+        "desc": "查看自己已缓存的圣遗物列表",
+        "eg": "圣遗物仓库",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
+  "排名服务": {
+    "desc": "数据源由AKACV提供",
+    "data": [
+      {
+        "name": "gs开启排名系统",
+        "desc": "开启排名系统之后可正常使用",
+        "eg": "gs开启排名系统",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": true
+      },
+      {
+        "name": "排名列表",
+        "desc": "查看自己的排名图片",
+        "eg": "排名列表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "排名统计",
+        "desc": "查看自己的排名文字",
+        "eg": "排名统计",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色排名",
+        "desc": "查看该角色的全球排名",
+        "eg": "角色排名雷神",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -442,6 +487,14 @@
         "name": "查委托",
         "desc": "查询当天的委托有没有成就",
         "eg": "查委托这本小说",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "今日素材",
+        "desc": "查看今天的副本掉落素材",
+        "eg": "今日材料",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

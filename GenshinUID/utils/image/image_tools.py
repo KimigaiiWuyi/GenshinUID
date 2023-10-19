@@ -350,7 +350,7 @@ class CustomizeImage:
         # 获取背景主色
         color = 8
         q = edit_bg.quantize(colors=color, method=2)
-        bg_color = (0, 0, 0)
+        bg_color: Tuple[int, int, int] = (0, 0, 0)
         if is_light:
             based_light = 195
         else:
@@ -364,7 +364,7 @@ class CustomizeImage:
             )
             light_value = bg[0] * 0.3 + bg[1] * 0.6 + bg[2] * 0.1
             if abs(light_value - based_light) < temp:  # noqa:E203
-                bg_color = bg
+                bg_color = bg  # type:ignore
                 temp = abs(light_value - based_light)
         return bg_color
 

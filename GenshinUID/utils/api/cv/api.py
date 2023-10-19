@@ -1,15 +1,14 @@
-BASE = 'https://akasha.cv'
+BASE = 'https://akasha.cv/api'
 
-MAIN_API = BASE + '/api/filters/accounts/'
-RANK_API = BASE + '/api/getCalculationsForUser/{}'
-DATA_API = BASE + '/api/user/{}'
-REFRESH_API = BASE + '/api/user/refresh/{}'
-LEADERBOARD_API = BASE + '/api/v2/leaderboards/categories?characterId={}'
+MAIN_API = BASE + '/filters/accounts/'
+RANK_API = BASE + '/getCalculationsForUser/{}'
+DATA_API = BASE + '/user/{}'
+REFRESH_API = BASE + '/user/refresh/{}'
+LEADERBOARD_API = BASE + '/v2/leaderboards/categories?characterId={}'
 
-SORT_PROMOT = 'sort=calculation.result&order=-1&size=20'
+SORT_PROMOT = 'sort=calculation.result&'
+UNI_PROMOT = 'order=-1&size=20&page=1&filter=&uids=&fromId='
 SORT_API = (
-    BASE
-    + '/api/leaderboards?'
-    + SORT_PROMOT
-    + '&page=1&filter=&uids=&p=&fromId=&calculationId={}'
+    BASE + '/leaderboards?' + SORT_PROMOT + 'p=&calculationId={}' + UNI_PROMOT
 )
+ARTI_SORT_API = BASE + '/artifacts?sort={}&p=' + UNI_PROMOT

@@ -7,9 +7,9 @@ from msgspec import json as msgjson
 from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_plugin_help import get_help
 
-from ..version import GenshinUID_version
 from ..genshinuid_config.gs_config import gsconfig
 from ..utils.image.image_tools import get_color_bg
+from ..version import Genshin_version, GenshinUID_version
 from ..utils.fonts.genshin_fonts import genshin_font_origin
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
@@ -48,6 +48,6 @@ async def get_core_help() -> Union[bytes, str]:
         False,
         (5, 5, 5),
         column=column,
-        extra_message=['版本号测试', '数据版本 2.55'],
+        extra_message=[f'数据版本 {Genshin_version}'],
     )
     return img

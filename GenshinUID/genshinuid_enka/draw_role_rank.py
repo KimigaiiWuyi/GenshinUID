@@ -152,5 +152,5 @@ async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
         gs_font_18,
         anchor='mm',
     )
-
+    await cv_api.close()
     return await convert_img(img)

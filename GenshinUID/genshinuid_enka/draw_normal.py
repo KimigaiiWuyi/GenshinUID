@@ -619,13 +619,17 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
     return artifactimg_bg
 
 
-async def get_artifact_score_data(aritifact: Dict, char: Character) -> Dict:
+async def get_artifact_score_data(
+    aritifact: Dict,
+    char: Optional[Character] = None,
+    char_name: Optional[str] = None,
+) -> Dict:
     all_value_score = 0
     all_cv_score = 0
     for i in aritifact['reliquarySubstats']:
         subName: str = i['statName']
         subValue: float = i['statValue']
-        if not hasattr(char, 'baseAtk'):
+        if char is not None and not hasattr(char, 'baseAtk'):
             await char.new()
         cv_score = 0
 
@@ -634,13 +638,26 @@ async def get_artifact_score_data(aritifact: Dict, char: Character) -> Dict:
         elif subName == '暴击伤害':
             cv_score += subValue
 
+        if char is None:
+            _atk = 750
+            _hp = 12000
+            _def = 700
+            if char_name is None:
+                return {}
+            _char_name = char_name
+        else:
+            _atk = char.baseAtk
+            _hp = char.baseHp
+            _def = char.baseDef
+            _char_name = char.char_name
+
         value_temp = await get_artifacts_value(
             subName,
             subValue,
-            char.baseAtk,
-            char.baseHp,
-            char.baseDef,
-            char.char_name,
+            _atk,
+            _hp,
+            _def,
+            _char_name,
         )
 
         i['value_score'] = value_temp

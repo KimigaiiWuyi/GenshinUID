@@ -19,6 +19,7 @@ from .draw_artifacts_lib import draw_lib
 from .draw_rank_list import draw_rank_img
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import alias_data
+from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_rank import draw_cahrcard_list
 from .draw_role_rank import draw_role_rank_img
 from .get_enka_img import draw_enka_img, get_full_char
@@ -60,6 +61,14 @@ async def sned_role_rank_pic(bot: Bot, ev: Event):
         return
     logger.info(f'[角色排名]角色: {msg}')
     await bot.send(await draw_role_rank_img(msg))
+
+
+@sv_akasha.on_command('圣遗物排名')
+async def sned_arti_rank_pic(bot: Bot, ev: Event):
+    # 获取排序名
+    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
+    logger.info(f'[圣遗物排名]排序: {msg}')
+    await bot.send(await draw_arti_rank_img(msg))
 
 
 @sv_enka_admin.on_fullmatch('刷新全部圣遗物仓库')

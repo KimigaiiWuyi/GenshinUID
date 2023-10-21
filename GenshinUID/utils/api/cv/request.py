@@ -16,12 +16,13 @@ from .api import (
 
 SUBSTAT_MAP = {
     '双爆': 'critValue',
-    '攻击力': 'substats.Flat ATK',
-    '血量': 'substats.Flat HP',
-    '防御力': 'substats.Flat DEF',
     '百分比攻击力': 'substats.ATK%',
     '百分比血量': 'substats.HP%',
     '百分比防御': 'substats.DEF%',
+    '固定攻击力': 'substats.Flat ATK',
+    '固定血量': 'substats.Flat HP',
+    '固定生命': 'substats.Flat HP',
+    '固定防御力': 'substats.Flat DEF',
     '元素精通': 'substats.Elemental Mastery',
     '元素充能效率': 'substats.Energy Recharge',
     '暴击率': 'substats.Crit RATE',
@@ -56,8 +57,11 @@ class _CvApi:
                 'substats.Crit DMG',
             ],
             str,
+            None,
         ] = 'critValue',
     ) -> Optional[List[Dict]]:
+        if sort_by is None or not sort_by:
+            sort_by = 'critValue'
         if not sort_by.startswith(('c', 's')):
             for i in SUBSTAT_MAP:
                 if sort_by in i:

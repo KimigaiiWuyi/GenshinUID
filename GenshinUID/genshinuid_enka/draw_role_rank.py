@@ -32,11 +32,14 @@ CV_MAP = {
 
 REGION_MAP = {
     'CN': (255, 58, 58),
-    'ASIA': (255, 255, 127),
+    'ASIA': (169, 109, 57),
     'NA': (255, 165, 0),
     'EU': (80, 98, 255),
     'TW': (37, 37, 37),
+    'B': (128, 35, 151),
 }
+
+grey = (170, 170, 170)
 
 
 async def _get_color(
@@ -117,9 +120,8 @@ async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
                     icon_list.append(icon_img.resize((51, 51)))
 
         bar_draw.rounded_rectangle((47, 30, 150, 70), 10, region_color)
-        bar_draw.text((99, 50), region, 'black', gs_font_30, 'mm')
+        bar_draw.text((99, 50), region, 'white', gs_font_30, 'mm')
 
-        grey = (170, 170, 170)
         bar_draw.text((162, 41), nickname, 'white', gs_font_26, 'lm')
         bar_draw.text((162, 66), f'UID {uid}', grey, gs_font_20, 'lm')
         bar_draw.text((398, 42), f'{cr}: {cd}', 'white', gs_font_26, 'lm')

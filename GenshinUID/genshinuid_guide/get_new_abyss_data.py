@@ -59,7 +59,8 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
             ver = up['Vers'][0]
             continue
 
-    for index, wave in enumerate(data):
+    index = 0
+    for wave in data:
         if ver is not None and wave['Vers'][0] != ver:
             continue
         monsters = wave['Monsters']
@@ -146,6 +147,7 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
                 (5 + (m_index % 3) * 360, 83 + (m_index // 3) * 110 + temp),
                 monster_img,
             )
+        index += 1
         temp += wave_monster_uh
 
     tag = upper_tag if half == 'Upper' else lower_tag

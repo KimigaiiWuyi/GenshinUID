@@ -7,7 +7,13 @@ import httpx
 
 sys.path.append(str(Path(__file__).parents[5]))
 sys.path.append(str(Path(__file__).parents[2]))
+
 __package__ = 'GenshinUID.tools'
+from gsuid_core.utils.api.ambr.request import (  # noqa: E402
+    get_ambr_monster_data,
+    get_ambr_monster_list,
+)
+
 from ..version import Genshin_version  # noqa: E402
 from ..utils.ambr_to_minigg import convert_ambr_to_minigg  # noqa: E402
 
@@ -35,6 +41,8 @@ enName2Id_fileName = f'enName2AvatarID_mapping_{version}.json'
 avatarId2Star_fileName = f'avatarId2Star_mapping_{version}.json'
 avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
 
+monster2entry_fileName = f'monster2entry_mapping_{version}.json'
+
 artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
 icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 
@@ -55,6 +63,24 @@ BETA_CHAR = {
     '10000088': '夏洛蒂',
     '10000089': '芙宁娜',
 }
+
+
+async def monster2map():
+    monster_list = await get_ambr_monster_list()
+    result = {}
+    if monster_list:
+        for monster_main_id in monster_list['items']:
+            if not monster_main_id.startswith('28'):
+                data = await get_ambr_monster_data(monster_main_id)
+                if data:
+                    for entry_id in data['entries']:
+                        entry: dict = data['entries'][entry_id]  # type: ignore
+                        entry['name'] = data['name']
+                        entry['route'] = data['route']
+                        entry['icon'] = data['icon']
+                        result[entry_id] = entry
+    with open(MAP_PATH / monster2entry_fileName, 'w', encoding='UTF-8') as f:
+        json.dump(result, f, indent=4, ensure_ascii=False)
 
 
 async def download_new_file():
@@ -293,6 +319,8 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
+    await monster2map()
+    '''
     await download_new_file()
     global raw_data
     try:
@@ -307,6 +335,7 @@ async def main():
     await talentId2NameJson()
     await weaponHash2TypeJson()
     await artifact2attrJson()
+    '''
 
 
 asyncio.run(main())

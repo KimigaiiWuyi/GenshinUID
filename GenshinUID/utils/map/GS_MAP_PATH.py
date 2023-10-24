@@ -20,8 +20,7 @@ artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
 enName2Id_fileName = f'enName2AvatarID_mapping_{version}.json'
 icon2Name_fileName = f'icon2Name_mapping_{version}.json'
 avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
-monster_fileName = f'monster_{version}.json'
-SAConfig_fileName = 'SpiralAbyssFloorConfig.json'
+monster2entry_fileName = f'monster2entry_mapping_{version}.json'
 EXMonster_fileName = 'ExtraMonster.json'
 
 
@@ -75,11 +74,8 @@ with open(MAP / avatarId2Star_fileName, 'r', encoding='utf8') as f:
 with open(MAP / enName2Id_fileName, 'r', encoding='utf8') as f:
     enName_to_avatarId_data = msgjson.decode(f.read(), type=Dict[str, str])
 
-with open(MAP / monster_fileName, 'r', encoding='utf8') as f:
-    monster_data = msgjson.decode(f.read(), type=Dict[str, Dict])
-
-with open(MAP / SAConfig_fileName, 'r', encoding='utf8') as f:
-    abyss_data = msgjson.decode(f.read(), type=Dict[str, Dict])
-
 with open(MAP / EXMonster_fileName, 'r', encoding='utf8') as f:
     ex_monster_data = msgjson.decode(f.read(), type=Dict[str, Dict])
+
+with open(MAP / monster2entry_fileName, 'r', encoding='utf8') as f:
+    monster2entry_data = msgjson.decode(f.read(), type=Dict[str, Dict])

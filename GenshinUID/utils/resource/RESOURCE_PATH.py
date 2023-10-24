@@ -23,6 +23,7 @@ ICON_PATH = RESOURCE_PATH / 'icon'
 TEMP_PATH = RESOURCE_PATH / 'temp'
 CARD_PATH = RESOURCE_PATH / 'card'
 MONSTER_ICON_PATH = RESOURCE_PATH / 'monster_icon'
+ABYSS_PATH = WIKI_PATH / 'abyss_review'
 GUIDE_PATH = WIKI_PATH / 'guide'
 REF_PATH = WIKI_PATH / 'ref'
 WIKI_REL_PATH = WIKI_PATH / 'artifacts'
@@ -73,6 +74,7 @@ def init_dir():
         DATA_PATH,
         CHAR_SIDE_TEMP_PATH,
         MONSTER_ICON_PATH,
+        ABYSS_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

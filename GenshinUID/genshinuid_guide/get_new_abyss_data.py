@@ -1,5 +1,6 @@
+import json
 from pathlib import Path
-from typing import List, Literal
+from typing import Dict, List, Literal
 
 import httpx
 import aiofiles
@@ -9,9 +10,12 @@ from gsuid_core.utils.api.ambr.request import get_ambr_icon
 from gsuid_core.utils.image.image_tools import get_color_bg
 
 from ..version import Genshin_version
-from .abyss_new_history import history_data
-from ..utils.resource.RESOURCE_PATH import TEXT2D_PATH, MONSTER_ICON_PATH
-from ..utils.map.GS_MAP_PATH import abyss_data, monster_data, ex_monster_data
+from ..utils.map.GS_MAP_PATH import ex_monster_data, monster2entry_data
+from ..utils.resource.RESOURCE_PATH import (
+    ABYSS_PATH,
+    TEXT2D_PATH,
+    MONSTER_ICON_PATH,
+)
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_26,
@@ -24,6 +28,8 @@ TEXT_PATH = Path(__file__).parent / 'texture2d'
 monster_fg = Image.open(TEXT_PATH / 'monster_fg.png')
 upper_tag = Image.open(TEXT_PATH / 'upper_tag.png')
 lower_tag = Image.open(TEXT_PATH / 'lower_tag.png')
+
+schedule_path = ABYSS_PATH / 'schedule.json'
 
 
 async def download_Oceanid():
@@ -43,7 +49,19 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
     half_draw = ImageDraw.Draw(half_img)
     upper_h = 60
     temp = 0
+
+    ver = None
+    for up in data:
+        if 'Vers' not in up:
+            break
+
+        if (ver is None) or (ver and up['Vers'][0] >= ver):
+            ver = up['Vers'][0]
+            continue
+
     for index, wave in enumerate(data):
+        if ver is not None and wave['Vers'][0] != ver:
+            continue
         monsters = wave['Monsters']
         wave_monster_uh = (((len(monsters) - 1) // 3) + 1) * 125 + 40
         upper_h += wave_monster_uh
@@ -64,18 +82,41 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
         half_img.paste(wave_tag, (53, 45 + temp), wave_tag)
         for m_index, monster in enumerate(monsters):
             monster_id = monster['ID']
+
             real_id = str(monster_id)
             while len(real_id) < 5:
                 real_id = '0' + real_id
+
+            real_id2 = '2' + real_id + '02'
             real_id = '2' + real_id + '01'
             monster_num = monster['Num']
 
-            if real_id not in monster_data:
+            if wave['WaveDesc'] > 1000:
+                wave_desc = str(int(real_id) - 400)
+            else:
+                wave_desc = str(wave['WaveDesc'])
+
+            if real_id in monster2entry_data:
+                monster_name = monster2entry_data[real_id]['name']
+                icon_name = monster2entry_data[real_id]['icon']
+            elif 'Name' in monster:
+                monster_name = monster['Name']['CH']
+                if wave_desc in monster2entry_data:
+                    icon_name = monster2entry_data[wave_desc]['icon']
+                else:
+                    icon_name = 'UI_AnimalIcon_Inu_Tanuki_01'
+            elif real_id in ex_monster_data:
                 monster_name = ex_monster_data[real_id]['name']
                 icon_name = ex_monster_data[real_id]['icon']
+            elif wave_desc in monster2entry_data:
+                monster_name = monster2entry_data[wave_desc]['name']
+                icon_name = monster2entry_data[wave_desc]['icon']
+            elif real_id2 in monster2entry_data:
+                monster_name = monster2entry_data[real_id2]['name']
+                icon_name = monster2entry_data[real_id2]['icon']
             else:
-                monster_name = monster_data[real_id]['name']
-                icon_name = monster_data[real_id]['icon']
+                monster_name = '未知怪物'
+                icon_name = 'UI_AnimalIcon_Inu_Tanuki_01'
 
             if 'Mark' in monster:
                 if monster['Mark']:
@@ -84,7 +125,7 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
             monster_icon = await get_ambr_icon(
                 'monster', icon_name, MONSTER_ICON_PATH
             )
-            monster_icon = monster_icon.resize((89, 89))
+            monster_icon = monster_icon.resize((89, 89)).convert('RGBA')
             monster_img = Image.open(TEXT_PATH / 'monster_bg.png')
             monster_img.paste(monster_icon, (31, 19), monster_icon)
             monster_img.paste(monster_fg, (0, 0), monster_fg)
@@ -119,11 +160,45 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
     return half_img
 
 
+async def _get_data_from_url(url: str, path: Path) -> Dict:
+    if not path.exists():
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            data = response.json()
+            async with aiofiles.open(path, 'w', encoding='UTF-8') as file:
+                await file.write(
+                    json.dumps(data, indent=4, ensure_ascii=False)
+                )
+    else:
+        async with aiofiles.open(path, 'r', encoding='UTF-8') as file:
+            data = json.loads(await file.read())
+    return data
+
+
 async def get_review_data(
     version: str = Genshin_version[:3], floor: str = '12'
 ):
-    floor_data = history_data[version][floor]
-    data = abyss_data[floor_data]
+    schedule_data = await _get_data_from_url(
+        'http://www.yuhengcup.top/api/get_DatabaseSchedule', schedule_path
+    )
+
+    schedule: List = schedule_data['SpiralAbyssSchedule']
+    for i in schedule:
+        if version in i['Name']:
+            floors_data = i
+            break
+    else:
+        return None
+
+    floor_id = floors_data['Floors'][int(floor) - 9]
+
+    floor_data_path = ABYSS_PATH / f'{floor_id}.json'
+    floor_data = await _get_data_from_url(
+        f'http://www.yuhengcup.top/api/get_Floor?_id={floor_id}',
+        floor_data_path,
+    )
+
+    data = floor_data['_data']
     floor_buff = data['Disorder']['CH'].replace('<b>', '').replace('</b>', '')
     floor_monster = data['Chambers']
 

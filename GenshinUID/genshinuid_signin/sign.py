@@ -45,6 +45,9 @@ async def sign_in(uid: str) -> str:
         if 'risk_code' in sign_data:
             # 出现校验码
             if sign_data['risk_code'] == 375:
+                if index == 0:
+                    await mys_api.ck_in_new_device(uid)
+                    continue
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']
@@ -62,7 +65,7 @@ async def sign_in(uid: str) -> str:
                         await asyncio.sleep(delay)
                     continue
                 else:
-                    logger.info('配置文件暂未开启[跳过无感验证],结束本次任务...')
+                    logger.info('配置文件暂未开启[跳过无感验证],跳过本次签到任务...')
                 return '签到失败...出现验证码!'
             # 成功签到!
             else:

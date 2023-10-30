@@ -13,8 +13,7 @@
 </p>
 
 > [!WARNING]
-> 该分支并不是Nonebot2的插件，也不是任何一个其他Bot的插件，具体安装方法请参考[文档](https://docs.gsuid.gbots.work/#/)
-
+> 该分支并不是Nonebot2的插件，也不是任何一个其他Bot的插件，具体安装方法请参考[文档](https://docs.sayu-bot.com/)
 ## 丨感谢
 
 - [PaimonBot](https://github.com/XiaoMiku01/PaimonBot) - 插件原始代码来自于它

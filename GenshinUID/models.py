@@ -15,7 +15,7 @@ class MessageReceive(Struct):
     user_type: Literal['group', 'direct', 'channel', 'sub_channel'] = 'group'
     group_id: Optional[str] = None
     user_id: Optional[str] = None
-    sender: Optional[Dict[str, Any]] = None
+    sender: Dict[str, Any] = {}
     user_pm: int = 3
     content: List[Message] = []
 

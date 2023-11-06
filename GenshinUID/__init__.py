@@ -43,7 +43,7 @@ async def get_gs_msg(ev):
     group_id = str(ev.group_id)
     self_id = str(ev.self_id)
     sender = ev.sender
-    sender['avater'] = f'http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640'
+    sender['avatar'] = f'http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640'
     messages = ev.message
     message: List[Message] = []
     sp_bot_id: Optional[str] = None

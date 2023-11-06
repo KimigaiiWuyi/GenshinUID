@@ -1,4 +1,4 @@
-from typing import Any, List, Literal, Optional, Dict
+from typing import Any, Dict, List, Literal, Optional
 
 from msgspec import Struct
 

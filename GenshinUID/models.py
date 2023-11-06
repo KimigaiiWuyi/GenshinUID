@@ -1,4 +1,4 @@
-from typing import Any, List, Literal, Optional
+from typing import Any, List, Literal, Optional, Dict
 
 from msgspec import Struct
 
@@ -15,6 +15,7 @@ class MessageReceive(Struct):
     user_type: Literal['group', 'direct', 'channel', 'sub_channel'] = 'group'
     group_id: Optional[str] = None
     user_id: Optional[str] = None
+    sender: Optional[Dict[str, Any]] = None
     user_pm: int = 3
     content: List[Message] = []
 

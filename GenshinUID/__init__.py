@@ -145,20 +145,26 @@ async def get_all_message(bot: Bot, ev: Event):
             user_type = 'direct'
             group_id = str(ev.guild_id)
             msg_id = ev.id
+            sender = ev.author.dict()
+            sender['nickname'] = ev.author.username
         elif isinstance(ev, GroupAtMessageCreateEvent):
             sp_bot_id = 'qqgroup'
             user_type = 'group'
             group_id = str(ev.group_id)
             msg_id = ev.id
+            sender = ev.author.dict()
         elif isinstance(ev, C2CMessageCreateEvent):
             sp_bot_id = 'qqgroup'
             user_type = 'direct'
             group_id = None
             msg_id = ev.id
+            sender = ev.author.dict()
         # 群聊
         elif isinstance(ev, GuildMessageEvent):
             user_type = 'group'
             group_id = str(ev.channel_id)
+            sender = ev.author.dict()
+            sender['nickname'] = ev.author.username
             if ev.member and ev.member.roles:
                 if 4 in ev.member.roles:
                     pm = 2
@@ -192,6 +198,7 @@ async def get_all_message(bot: Bot, ev: Event):
 
             user_id = str(ev.from_.id)
             msg_id = str(ev.message_id)
+            sender = ev.from_.dict()
             if isinstance(ev, GroupMessageEvent):
                 user_type = 'group'
                 group_id = str(ev.chat.id)
@@ -215,6 +222,14 @@ async def get_all_message(bot: Bot, ev: Event):
 
             user_id = ev.author_id
             msg_id = ev.msg_id
+            sender = ev.event.author.dict()
+            sender.update(
+                {
+                    'name': ev.event.author.username,
+                    'nickname': ev.event.author.nickname,
+                    'avatar': ev.event.author.avatar,
+                }
+            )
             if isinstance(ev, ChannelMessageEvent):
                 user_type = 'group'
                 group_id = ev.target_id
@@ -240,6 +255,9 @@ async def get_all_message(bot: Bot, ev: Event):
             elif ev.sender.role == 'admin':
                 pm = 3
 
+            sender = ev.sender.dict(exclude_none=True)
+            sender['avatar'] = f'http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640'
+
             if isinstance(ev, GroupMessageEvent):
                 user_type = 'group'
                 group_id = str(ev.group_id)
@@ -262,6 +280,7 @@ async def get_all_message(bot: Bot, ev: Event):
                     feishu_msg.data['url'] = feishu_msg.data['image_key']
             user_id = ev.get_user_id()
             msg_id = ev.message_id
+            sender = {}
             if isinstance(ev, GroupEventMessage):
                 user_type = 'group'
                 group_id = ev.chat_id
@@ -281,8 +300,12 @@ async def get_all_message(bot: Bot, ev: Event):
         if isinstance(ev, GroupMessageEvent) or isinstance(
             ev, PrivateMessageEvent
         ):
-            user_id = ev.get_user_id()
             msg_id = ev.msgId
+            sender = {
+                'name': ev.sendMemberName,
+                'nickname': ev.sendNickName,
+                'avatar': f'http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640',
+            }
             if isinstance(ev, GroupMessageEvent):
                 user_type = 'group'
                 group_id = str(ev.peerUid)
@@ -298,6 +321,7 @@ async def get_all_message(bot: Bot, ev: Event):
             TextMessageEvent,
         )
 
+        sender = {}
         if isinstance(ev, TextMessageEvent):
             user_id = ev.from_wxid
             msg_id = ev.msgid
@@ -348,7 +372,7 @@ async def get_all_message(bot: Bot, ev: Event):
         # self = raw_data['self']  # 返回 platform='xxx' user_id='wxid_xxxxx'
         # platform = self.platform  # 机器人平台
         # V12还支持频道等其他平台，速速Pr！
-
+        sender = {}
         if isinstance(ev, GroupMessageEvent) or isinstance(
             ev, PrivateMessageEvent
         ):
@@ -374,6 +398,35 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 onebotv12 事件...')
             return
+    elif bot.adapter.get_name() == 'Villa':
+        from nonebot.adapters.villa import SendMessageEvent
+
+        sender = {}
+        if isinstance(ev, SendMessageEvent):
+            user_type = 'group'
+            msg_id = ev.msg_uid
+            group_id = f'{ev.villa_id}-{ev.room_id}'
+        else:
+            logger.debug('[gsuid] 不支持该 Villa 事件...')
+            return
+    elif bot.adapter.get_name() == 'Discord':
+        from nonebot.adapters.discord import (
+            GuildMessageCreateEvent,
+            DirectMessageCreateEvent,
+        )
+
+        sender = {}
+        if isinstance(ev, GuildMessageCreateEvent):
+            user_type = 'group'
+            msg_id = str(ev.message_id)
+            group_id = str(int(ev.channel_id))
+        elif isinstance(ev, DirectMessageCreateEvent):
+            msg_id = str(ev.message_id)
+            user_type = 'direct'
+        else:
+            logger.debug('[gsuid] 不支持该 Discord 事件...')
+            return
+
     else:
         logger.debug(f'[gsuid] 不支持该 {bot.adapter.get_name()} 事件...')
         return
@@ -404,6 +457,7 @@ async def get_all_message(bot: Bot, ev: Event):
         user_type=user_type,
         group_id=group_id,
         user_id=user_id,
+        sender=sender,
         content=message,
         msg_id=msg_id if msg_id else '',
         user_pm=pm,

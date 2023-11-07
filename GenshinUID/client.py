@@ -14,6 +14,7 @@ from msgspec import json as msgjson
 from nonebot import get_bot, get_bots, get_driver
 from websockets.exceptions import ConnectionClosedError
 
+from .utils import download_image
 from .models import MessageSend, MessageReceive
 
 bots: Dict[str, str] = {}
@@ -246,6 +247,18 @@ class GsClient:
                                 msg.target_type,
                                 msg.msg_id,
                             )
+                        elif msg.bot_id == 'villa':
+                            await villa_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                at_list,
+                                markdown,
+                                buttons,
+                                msg.target_id,
+                                msg.target_type,
+                            )
                         elif msg.bot_id == 'feishu':
                             await feishu_send(
                                 bot,
@@ -310,6 +323,77 @@ def del_file(path: Path):
         os.remove(path)
 
 
+async def villa_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
+    markdown: Optional[str],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    from nonebot.adapters.villa import Bot, Message, MessageSegment
+    from nonebot.adapters.villa.api import (
+        PostMessageContent,
+        ImageMessageContent,
+    )
+
+    assert isinstance(bot, Bot)
+
+    async def _send(content: Optional[str], image: Optional[str]):
+        if target_type == 'group' and target_id:
+            msg = Message()
+            villa_id, room_id = target_id.split('-')
+
+            if image:
+                msg += MessageSegment.image(image)
+            if content:
+                msg += MessageSegment.text(content)
+
+            if at_list and target_type == 'group':
+                for at in at_list:
+                    msg += MessageSegment.mention_user(
+                        int(at), villa_id=int(villa_id)
+                    )
+
+            if markdown:
+                logger.warning('[gscore] villa暂不支持发送markdown消息')
+            if buttons:
+                logger.warning('[gscore] villa暂不支持发送buttons消息')
+
+            content_info = await bot.parse_message_content(msg)
+
+            if isinstance(content_info.content, PostMessageContent):
+                object_name = "MHY:Post"
+            elif isinstance(content_info.content, ImageMessageContent):
+                object_name = "MHY:Image"
+            else:
+                object_name = "MHY:Text"
+
+            await bot.send_message(
+                villa_id=int(villa_id),
+                room_id=int(room_id),
+                object_name=object_name,
+                msg_content=content_info.json(
+                    by_alias=True, exclude_none=True
+                ),
+            )
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                image = _msg['data']
+                content = None
+            else:
+                image = None
+                content = _msg['data']
+            await _send(content, image)
+    else:
+        await _send(content, image)
+
+
 async def onebot_send(
     bot: Bot,
     content: Optional[str],
@@ -323,7 +407,9 @@ async def onebot_send(
     async def _send(content: Optional[str], image: Optional[str]):
         from nonebot.adapters.onebot.v11 import MessageSegment
 
-        result_image = MessageSegment.image(image) if image else ''
+        result_image = (
+            MessageSegment.image(image.replace('link://', '')) if image else ''
+        )
         _content = MessageSegment.text(content) if content else ''
         result_msg = _content + result_image
         if at_list and target_type == 'group':
@@ -415,7 +501,10 @@ async def onebot_red_send(
     async def _send(content: Optional[str], image: Optional[str]):
         result_msg: Message = Message()
         if image:
-            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            if image.startswith('link://'):
+                img_bytes = await download_image(image.replace('link://', ''))
+            else:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
             result_msg.append(MessageSegment.image(img_bytes))
 
         if content:
@@ -436,6 +525,64 @@ async def onebot_red_send(
 
         if file:
             del_file(path)  # type: ignore
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                image = _msg['data']
+                content = None
+            else:
+                image = None
+                content = _msg['data']
+            await _send(content, image)
+    else:
+        await _send(content, image)
+
+
+async def discord_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
+    markdown: Optional[str],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    from nonebot.adapters.discord.message import parse_message
+    from nonebot.adapters.discord import Bot, Message, MessageSegment
+
+    assert isinstance(bot, Bot)
+
+    async def _send(content: Optional[str], image: Optional[str]):
+        if target_id:
+            message = Message()
+            if image:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
+                message.append(
+                    MessageSegment.attachment('temp.jpg', content=img_bytes)
+                )
+            if content:
+                message.append(MessageSegment.text(content))
+
+            if at_list and target_type == 'group':
+                for at in at_list:
+                    message.append(MessageSegment.mention_user(int(at)))
+
+            if markdown:
+                logger.warning('[gscore] discord暂不支持发送markdown消息')
+            if buttons:
+                logger.warning('[gscore] discord暂不支持发送markdown消息')
+
+            message_data = parse_message(message)
+            await bot.create_message(
+                channel_id=int(target_id),
+                nonce=None,
+                tts=False,
+                allowed_mentions=None,
+                **message_data,
+            )
 
     if node:
         for _msg in node:
@@ -584,6 +731,8 @@ async def group_send(
         message = Message()
         if image:
             _image = image.replace('link://', '')
+        else:
+            _image = ''
 
         if content and image:
             data = f'{content}\n{_image}'
@@ -682,12 +831,20 @@ async def kaiheila_send(
     target_id: Optional[str],
     target_type: Optional[str],
 ):
+    from nonebot.adapters.kaiheila import Bot
+
+    assert isinstance(bot, Bot)
+
     async def _send(content: Optional[str], image: Optional[str]):
         result = {}
         result['type'] = 1
         if image:
-            img_bytes = base64.b64decode(image.replace('base64://', ''))
-            url = await bot.upload_file(img_bytes, 'GSUID-TEMP')  # type:ignore
+            if image.startswith('link://'):
+                img_bytes = await download_image(image.replace('link://', ''))
+            else:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
+
+            url = await bot.upload_file(img_bytes, 'GSUID-TEMP')
             result['type'] = 2
             result['content'] = url
         elif file:
@@ -696,7 +853,7 @@ async def kaiheila_send(
             store_file(path, file_content)
             with open(path, 'rb') as f:
                 doc = f.read()
-            url = await bot.upload_file(doc, file_name)  # type:ignore
+            url = await bot.upload_file(doc, file_name)
             result['content'] = url
             del_file(path)
         else:
@@ -731,7 +888,10 @@ async def telegram_send(
     async def _send(content: Optional[str], image: Optional[str]):
         result = {}
         if image:
-            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            if image.startswith('link://'):
+                img_bytes = await download_image(image.replace('link://', ''))
+            else:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
             result['photo'] = img_bytes
         if content:
             result['text'] = content
@@ -805,8 +965,12 @@ async def feishu_send(
             msg = {'text': content}
             _type = 'text'
         elif image:
+            if image.startswith('link://'):
+                img_bytes = await download_image(image.replace('link://', ''))
+            else:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
             data = {"image_type": "message"}
-            files = {"image": base64.b64decode(image.replace('base64://', ''))}
+            files = {"image": img_bytes}
             params = {
                 "method": "POST",
                 "data": data,

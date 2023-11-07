@@ -582,12 +582,20 @@ async def group_send(
 
     async def _send(content: Optional[str], image: Optional[str]):
         message = Message()
-        if content:
-            message.append(MessageSegment.text(content))
         if image:
+            _image = image.replace('link://', '')
+
+        if content and image:
+            data = f'{content}\n{_image}'
+            message.append(MessageSegment.markdown(data))
+        elif content:
+            message.append(MessageSegment.text(content))
+        elif image:
             message.append(MessageSegment.image(image))
+
         if markdown:
-            message.append(MessageSegment.markdown(markdown))
+            _markdown = markdown.replace('link://', '')
+            message.append(MessageSegment.markdown(_markdown))
         if buttons:
             message.append(MessageSegment.keyboard(_kb(buttons)))
 

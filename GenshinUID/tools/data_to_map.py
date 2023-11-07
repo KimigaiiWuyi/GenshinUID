@@ -320,7 +320,6 @@ async def artifact2attrJson() -> None:
 
 async def main():
     await monster2map()
-    '''
     await download_new_file()
     global raw_data
     try:
@@ -335,7 +334,6 @@ async def main():
     await talentId2NameJson()
     await weaponHash2TypeJson()
     await artifact2attrJson()
-    '''
 
 
 asyncio.run(main())

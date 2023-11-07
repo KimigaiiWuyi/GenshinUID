@@ -136,6 +136,26 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 1577555119,
+        "rankLevel": 3,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410014,
+        "nameTextMapHash": 2166488977,
+        "descTextMapHash": 4275504642,
+        "icon": "UI_ItemIcon_120701",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 1694223111,
+        "rankLevel": 4,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410015,
+        "nameTextMapHash": 4145280985,
+        "descTextMapHash": 1999759162,
+        "icon": "UI_ItemIcon_120706",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 1010293015,
         "rankLevel": 1,
         "param": 10001,

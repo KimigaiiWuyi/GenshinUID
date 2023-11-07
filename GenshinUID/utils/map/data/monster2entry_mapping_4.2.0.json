@@ -5920,6 +5920,44 @@
         "route": "Hilichurl Fighter",
         "icon": "UI_MonsterIcon_Hili_None_01"
     },
+    "21010299": {
+        "id": 21010299,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 24451.19922,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "打手丘丘人",
+        "route": "Hilichurl Fighter",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
     "21010301": {
         "id": 21010301,
         "type": "MONSTER_ORDINARY",
@@ -7931,6 +7969,53 @@
             {
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 52.752,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "火斧丘丘暴徒",
+        "route": "Blazing Axe Mitachurl",
+        "icon": "UI_MonsterIcon_Brute_None_01"
+    },
+    "21020299": {
+        "id": 21020299,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "点燃免疫",
+                "description": "免疫点燃伤害",
+                "abilityName": [
+                    "MonsterAffix_BurningResist"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 24451.19922,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
                 "type": "GROW_CURVE_ATTACK"
             },
             {
@@ -27822,6 +27907,53 @@
         "route": "Maguu Kenki",
         "icon": "UI_MonsterIcon_Samurai_Ningyo"
     },
+    "25090106": {
+        "id": 25090106,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "傀儡将军强制后撤词缀",
+                "description": "傀儡将军强制后撤词缀",
+                "abilityName": [
+                    "MonsterAffix_Samurai_Ningyo_ForceDodgeAffix"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1097.375,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 180.864,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "魔偶剑鬼",
+        "route": "Maguu Kenki",
+        "icon": "UI_MonsterIcon_Samurai_Ningyo"
+    },
     "25100101": {
         "id": 25100101,
         "type": "MONSTER_ORDINARY",
@@ -37087,6 +37219,14 @@
                     "MonsterAffix_Dvalin_S04_FirstSight"
                 ],
                 "isCommon": null
+            },
+            {
+                "name": "风龙S04-难度调节",
+                "description": "风龙S04-难度调节",
+                "abilityName": [
+                    "Monster_DvalinS04_QuestDungeonDifficultyAdjust"
+                ],
+                "isCommon": null
             }
         ],
         "hpDrops": null,
@@ -37533,6 +37673,14 @@
                 "description": "剧情任务-难度调节标签",
                 "abilityName": [
                     "MonsterAffix_Quest_Adjust"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "公子魔王武装-难度调节",
+                "description": "公子魔王武装-难度调节",
+                "abilityName": [
+                    "Monster_Tartaglia_Harbinger_StoryAdjust"
                 ],
                 "isCommon": null
             }
@@ -38623,6 +38771,14 @@
                     "Monster_Quest_Dahaka_StageControl"
                 ],
                 "isCommon": null
+            },
+            {
+                "name": "若陀龙王-难度调节",
+                "description": "若陀龙王-难度调节",
+                "abilityName": [
+                    "Monster_Dahaka_QuestDungeonDifficultyAdjust"
+                ],
+                "isCommon": null
             }
         ],
         "hpDrops": null,
@@ -38668,6 +38824,14 @@
                 "description": "剧情任务-难度调节标签",
                 "abilityName": [
                     "MonsterAffix_Quest_Adjust"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "女士魔女-难度调节",
+                "description": "女士魔女-难度调节",
+                "abilityName": [
+                    "Monster_LaSignora_Harbinger_StoryAdjust"
                 ],
                 "isCommon": null
             }
@@ -38876,6 +39040,14 @@
                 "description": "雷电将军标记-2.5Quest2",
                 "abilityName": [
                     "Monster_Shougun_Mitakenarukami_HpControl_QuestDungeon_02"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "雷电将军-难度调节2.5",
+                "description": "雷电将军-难度调节2.5",
+                "abilityName": [
+                    "Monster_Shougun_25_QuestDungeonDifficultyAdjust"
                 ],
                 "isCommon": null
             }
@@ -39256,6 +39428,14 @@
                     "Monster_Nada_Stage02_QuestFlag03"
                 ],
                 "isCommon": null
+            },
+            {
+                "name": "散兵-难度调节S1",
+                "description": "散兵-难度调节S1",
+                "abilityName": [
+                    "Monster_Nada_Stage01_QuestDungeonDifficultyAdjust"
+                ],
+                "isCommon": null
             }
         ],
         "hpDrops": null,
@@ -39295,7 +39475,16 @@
     "29080102": {
         "id": 29080102,
         "type": "MONSTER_BOSS",
-        "affix": null,
+        "affix": [
+            {
+                "name": "草龙剧情-本体难度调节",
+                "description": "草龙剧情-本体难度调节",
+                "abilityName": [
+                    "Monster_Apep_StoryAdjust"
+                ],
+                "isCommon": null
+            }
+        ],
         "hpDrops": null,
         "prop": [
             {
@@ -39508,9 +39697,210 @@
             "physicalSubHurt": 0.1
         },
         "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "300"
+            },
+            "105": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "101111": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_101111"
+            },
+            "101112": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_101112"
+            },
+            "101113": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_101113"
+            },
+            "101114": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_101114"
+            },
+            "101115": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_101115"
+            },
+            "104121": {
+                "rank": 2,
+                "icon": "UI_ItemIcon_104121"
+            },
+            "104122": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_104122"
+            },
+            "104123": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_104123"
+            },
+            "104124": {
+                "rank": 5,
+                "icon": "UI_ItemIcon_104124"
+            },
+            "113021": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_113021",
+                "count": "0.33"
+            },
+            "113054": {
+                "rank": 5,
+                "icon": "UI_ItemIcon_113054"
+            },
+            "113055": {
+                "rank": 5,
+                "icon": "UI_ItemIcon_113055"
+            },
+            "113056": {
+                "rank": 5,
+                "icon": "UI_ItemIcon_113056"
+            },
+            "400022": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400088": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            }
+        },
+        "name": "吞星之鲸",
+        "route": "All-Devouring Narwhal",
+        "icon": "UI_MonsterIcon_Ptahur_Devourer"
+    },
+    "29090102": {
+        "id": 29090102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "鲸鱼剧情版本",
+                "description": "鲸鱼剧情版本",
+                "abilityName": [
+                    "MonsterAffix_Monster_Ptahur_Devourer_Story"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 543.35999,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 87.92,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.7,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
         "reward": null,
-        "name": "?????",
-        "route": "?????",
+        "name": "吞星之鲸",
+        "route": "All-Devouring Narwhal",
+        "icon": "UI_MonsterIcon_Ptahur_Devourer"
+    },
+    "29090202": {
+        "id": 29090202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "鲸鱼-黑色幻影剧情版本",
+                "description": "鲸鱼-黑色幻影剧情版本",
+                "abilityName": [
+                    "MonsterAffix_Monster_Ptahur_Phantom_Story"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 326.01599,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 70.336,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.7,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "吞星之鲸",
+        "route": "All-Devouring Narwhal",
         "icon": "UI_MonsterIcon_Ptahur_Devourer"
     }
 }

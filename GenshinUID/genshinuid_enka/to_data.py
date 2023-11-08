@@ -273,10 +273,10 @@ async def enka_to_dict(
         weapon_info['nameTextMapHash'] = weapon_data['flat']['nameTextMapHash']
         weapon_info['weaponIcon'] = weapon_data['flat']['icon']
         weapon_info['weaponType'] = weaponHash2Type[
-            weapon_info['nameTextMapHash']
+            str(weapon_info['nameTextMapHash'])
         ]
         weapon_info['weaponName'] = weaponHash2Name[
-            weapon_info['nameTextMapHash']
+            str(weapon_info['nameTextMapHash'])
         ]
         weapon_info['weaponStar'] = weapon_data['flat']['rankLevel']
         # 防止未精炼

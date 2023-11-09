@@ -1,4 +1,32 @@
 {
+  "昔时之歌": {
+    "normal_effect": {
+      "2": "healBonus+15",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "ABCEQ:addDmg+900"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "回声之林夜话": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "GeoDmgBonus+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "黄金剧团": {
     "normal_effect": {
       "2": "",

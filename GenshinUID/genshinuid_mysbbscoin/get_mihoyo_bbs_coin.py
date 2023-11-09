@@ -114,7 +114,7 @@ class MihoyoBBSCoin:
             return '米游社币任务执行出错了~'
 
     async def load_mihoyo_bbs_list_use(self):
-        for i in range(1, 8):
+        for i in range(1, 10):
             for k in mihoyobbs_List:
                 if i == int(k['id']):
                     self.mihoyobbs_List_Use.append(k)

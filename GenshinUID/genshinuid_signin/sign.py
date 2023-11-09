@@ -45,9 +45,6 @@ async def sign_in(uid: str) -> str:
         if 'risk_code' in sign_data:
             # 出现校验码
             if sign_data['risk_code'] == 375:
-                if index == 0:
-                    await mys_api.ck_in_new_device(uid)
-                    continue
                 if core_plugins_config.get_config('CaptchaPass').data:
                     gt = sign_data['gt']
                     ch = sign_data['challenge']

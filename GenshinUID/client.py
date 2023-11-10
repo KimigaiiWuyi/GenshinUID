@@ -270,8 +270,21 @@ class GsClient:
                                 msg.target_id,
                                 msg.target_type,
                             )
+                        elif msg.bot_id == 'dodo':
+                            await dodo_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                at_list,
+                                markdown,
+                                buttons,
+                                msg.target_id,
+                                msg.target_type,
+                                group_id,
+                            )
                 except Exception as e:
-                    logger.error(e)
+                    logger.exception(e)
         except RuntimeError as e:
             logger.error(e)
         except ConnectionClosedError:
@@ -642,6 +655,73 @@ async def guild_send(
                 guild_id=dms.guild_id,
                 **result,
             )
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                image = _msg['data']
+                content = None
+            else:
+                image = None
+                content = _msg['data']
+            await _send(content, image)
+    else:
+        await _send(content, image)
+
+
+async def dodo_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
+    markdown: Optional[str],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+    group_id: Optional[str],
+):
+    from nonebot.adapters.dodo.bot import Bot as dodobot
+    from nonebot.adapters.dodo.message import Message, MessageSegment
+
+    assert isinstance(bot, dodobot)
+    assert isinstance(target_id, str)
+
+    async def __send(message: Message):
+        if target_type == 'group':
+            await bot.send_to_channel(
+                channel_id=target_id,
+                message=message,
+            )
+        else:
+            if group_id:
+                await bot.send_to_personal(group_id, target_id, message)
+
+    async def _send(content: Optional[str], image: Optional[str]):
+        message = Message()
+        if image:
+            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            image_return = await bot.set_resouce_picture_upload(file=img_bytes)
+            message.append(
+                MessageSegment.picture(
+                    image_return.url, image_return.width, image_return.height
+                )
+            )
+            await __send(message)
+            message = Message()
+
+        if content:
+            message.append(MessageSegment.text(content))
+        if markdown:
+            message.append(MessageSegment.text(markdown))
+        if at_list and target_type == 'group':
+            for at in at_list:
+                message.append(MessageSegment.at_user(at))
+
+        if buttons:
+            logger.warning('[gscore] DoDo暂不支持发送buttons消息')
+
+        await __send(message)
 
     if node:
         for _msg in node:

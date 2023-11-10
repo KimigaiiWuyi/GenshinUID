@@ -426,7 +426,30 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 Discord 事件...')
             return
+    elif bot.adapter.get_name() == 'DoDo':
+        from nonebot.adapters.dodo import (
+            ChannelMessageEvent,
+            PersonalMessageEvent,
+        )
 
+        if isinstance(ev, ChannelMessageEvent):
+            user_type = 'group'
+            msg_id = ev.message_id
+            group_id = ev.channel_id
+            sender = {
+                'nickname': ev.personal.nick_name,
+                'avatar': ev.personal.avatar_url,
+            }
+        elif isinstance(ev, PersonalMessageEvent):
+            msg_id = ev.message_id
+            user_type = 'direct'
+            sender = {
+                'nickname': ev.personal.nick_name,
+                'avatar': ev.personal.avatar_url,
+            }
+        else:
+            logger.debug('[gsuid] 不支持该 DoDo 事件...')
+            return
     else:
         logger.debug(f'[gsuid] 不支持该 {bot.adapter.get_name()} 事件...')
         return

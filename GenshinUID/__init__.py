@@ -443,6 +443,7 @@ async def get_all_message(bot: Bot, ev: Event):
         elif isinstance(ev, PersonalMessageEvent):
             msg_id = ev.message_id
             user_type = 'direct'
+            group_id = ev.island_source_id
             sender = {
                 'nickname': ev.personal.nick_name,
                 'avatar': ev.personal.avatar_url,

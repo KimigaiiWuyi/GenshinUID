@@ -31,6 +31,12 @@ else:
     bg_path = NM_BG_PATH
 
 
+async def _get(url: str):
+    async with httpx.AsyncClient(timeout=None) as client:
+        resp = await client.get(url=url)
+        return resp
+
+
 async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
     """
     从网络获取图片, 格式化为RGBA格式的指定尺寸
@@ -46,6 +52,16 @@ async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
         if size is not None:
             pic = pic.resize(size, Image.Resampling.LANCZOS)
         return pic
+
+
+def get_size(font: ImageFont.FreeTypeFont, character: str):
+    if hasattr(font, 'getsize'):
+        w, h = font.getsize(character)  # type: ignore
+    else:
+        bbox = font.getbbox(character)
+        w, h = bbox[2] - bbox[0], bbox[3] - bbox[1]
+
+    return w, h
 
 
 def draw_text_by_line(
@@ -64,7 +80,7 @@ def draw_text_by_line(
     line_space  行间距, 单位像素, 默认是字体高度的0.3倍
     """
     x, y = pos
-    _, h = font.getsize('X')  # type: ignore
+    _, h = get_size(font, 'X')
     if line_space is None:
         y_add = math.ceil(1.3 * h)
     else:
@@ -74,23 +90,23 @@ def draw_text_by_line(
     length = 0  # 记录本行长度
     for character in text:
         # 获取当前字符的宽度
-        w, h = font.getsize(character)  # type: ignore
+        w, h = get_size(font, character)
         if length + w * 2 <= max_length:
             row += character
             length += w
         else:
             row += character
             if center:
-                font_size = font.getsize(row)  # type: ignore
-                x = math.ceil((img.size[0] - font_size[0]) / 2)
+                fw, _ = get_size(font, row)
+                x = math.ceil((img.size[0] - fw) / 2)
             draw.text((x, y), row, font=font, fill=fill)
             row = ""
             length = 0
             y += y_add
     if row != "":
         if center:
-            font_size = font.getsize(row)  # type: ignore
-            x = math.ceil((img.size[0] - font_size[0]) / 2)
+            fw, _ = get_size(font, row)
+            x = math.ceil((img.size[0] - fw) / 2)
         draw.text((x, y), row, font=font, fill=fill)
 
 
@@ -203,7 +219,9 @@ async def get_qq_avatar(
         avatar_url = f'http://q1.qlogo.cn/g?b=qq&nk={qid}&s=640'
     elif avatar_url is None:
         avatar_url = 'https://q1.qlogo.cn/g?b=qq&nk=3399214199&s=640'
-    char_pic = Image.open(BytesIO(get(avatar_url).content)).convert('RGBA')
+    char_pic = Image.open(BytesIO((await _get(avatar_url)).content)).convert(
+        'RGBA'
+    )
     return char_pic
 
 
@@ -294,7 +312,9 @@ async def get_simple_bg(
 ) -> Image.Image:
     if image:
         if isinstance(image, str):
-            edit_bg = Image.open(BytesIO(get(image).content)).convert('RGBA')
+            edit_bg = Image.open(BytesIO((await _get(image)).content)).convert(
+                'RGBA'
+            )
         elif isinstance(image, Image.Image):
             edit_bg = image.convert('RGBA')
     else:

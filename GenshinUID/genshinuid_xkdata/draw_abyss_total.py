@@ -99,7 +99,11 @@ async def draw_xk_abyss_img():
         # 绘图部分
         char_bg = Image.open(TEXT_PATH / 'char_bg.png')
         charimg = Image.open(CHAR_PATH / f'{char_id}.png').resize((117, 117))
-        char_bg.paste(charimg, (6, 2), charimg)
+        if charimg.mode == 'RGBA':
+            mask = charimg.split()[3]  # 使用alpha通道作为mask
+            char_bg.paste(charimg, (6, 2), mask)
+        else:
+            char_bg.paste(charimg, (6, 2))
         char_bg_draw = ImageDraw.Draw(char_bg)
         if char['rarity'] >= 5:
             text = (193, 123, 0)

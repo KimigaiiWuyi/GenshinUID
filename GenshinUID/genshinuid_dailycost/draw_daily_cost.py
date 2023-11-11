@@ -68,7 +68,11 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
         icon = icon.resize((77, 77))
         bar = Image.open(TEXT_PATH / 'bar.png')
         bar_draw = ImageDraw.Draw(bar)
-        bar.paste(icon, (43, 10), icon)
+        if icon.mode == 'RGBA':
+            mask = icon.split()[3]  # 获取alpha通道作为遮罩
+            bar.paste(icon, (43, 10), mask)
+        else:
+            bar.paste(icon, (43, 10))  # 如果没有alpha通道，不使用遮罩
 
         domain1, domain2 = domain.split('：')
 

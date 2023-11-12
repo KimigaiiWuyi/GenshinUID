@@ -721,7 +721,8 @@ async def dodo_send(
         if buttons:
             logger.warning('[gscore] DoDo暂不支持发送buttons消息')
 
-        await __send(message)
+        if message:
+            await __send(message)
 
     if node:
         for _msg in node:

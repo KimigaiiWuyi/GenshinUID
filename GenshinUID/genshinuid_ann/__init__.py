@@ -29,11 +29,11 @@ async def ann_(bot: Bot, ev: Event):
         img = await convert_img(img)
         return await bot.send(img)
 
+    ann_id = ann_id.replace('#', '')
     if not ann_id.isdigit():
         raise Exception('公告ID不正确')
 
     img = await ann_detail_card(int(ann_id))
-    img = await convert_img(img)
     await bot.send(img)
 
 

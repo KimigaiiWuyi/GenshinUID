@@ -93,15 +93,18 @@ async def ann_detail_card(ann_id):
     for a in soup.find_all('a'):
         a.string = ''
 
-    for img in soup.find_all('img'):
-        img.string = img.get('src')
-
     msg_list = [ann_img]
-    msg_list += [
-        BeautifulSoup(x.get_text('').replace('<<', ''), 'lxml').get_text()
-        + '\n'
-        for x in soup.find_all('p')
-    ]
+    for img in soup.find_all('img'):
+        msg_list.append(img.get('src'))
+        # img.string = img.get('src')
+
+    msg_list.extend(
+        [
+            BeautifulSoup(x.get_text('').replace('<<', ''), 'lxml').get_text()
+            + '\n'
+            for x in soup.find_all('p')
+        ]
+    )
 
     drow_height = 0
     for msg in msg_list:

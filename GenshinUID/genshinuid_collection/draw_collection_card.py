@@ -24,14 +24,14 @@ red_color = (255, 66, 66)
 green_color = (74, 189, 119)
 
 max_data = {
-    '成就': 1030,
-    '华丽的宝箱': 193,
-    '珍贵的宝箱': 510,
-    '精致的宝箱': 1642,
-    '普通的宝箱': 2693,
-    '奇馈宝箱': 161,
-    '解锁传送点': 304,
-    '解锁秘境': 51,
+    '成就': 1136,
+    '华丽的宝箱': 262,
+    '珍贵的宝箱': 631,
+    '精致的宝箱': 2076,
+    '普通的宝箱': 2867,
+    '奇馈宝箱': 221,
+    '解锁传送点': 372,
+    '解锁秘境': 54,
 }
 
 award_data = {
@@ -51,6 +51,7 @@ expmax_data = {
     '岩神瞳': 131,
     '雷神瞳': 181,
     '草神瞳': 271,
+    '水神瞳': 271,
 }
 
 
@@ -88,6 +89,7 @@ async def get_explore_data(
         '岩神瞳': raw_data['stats']['geoculus_number'],
         '雷神瞳': raw_data['stats']['electroculus_number'],
         '草神瞳': raw_data['stats']['dendroculus_number'],
+        '水神瞳': raw_data['stats']['hydroculus_number'],
     }
     for i in raw_data['world_explorations']:
         data[i['name']] = i['exploration_percentage']
@@ -126,6 +128,7 @@ async def get_collection_data(
     raw_data = await get_base_data(uid)
     if isinstance(raw_data, str) or isinstance(raw_data, bytes):
         return raw_data
+
     raw_data = raw_data['stats']
 
     # 处理数据

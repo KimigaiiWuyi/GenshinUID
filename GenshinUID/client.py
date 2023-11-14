@@ -41,6 +41,8 @@ def _get_bot(bot_id: str) -> Bot:
         bot_id = 'onebotv12'
     elif 'red' in bot_id:
         bot_id = 'RedProtocol'
+    elif 'qqguild' in bot_id:
+        bot_id = 'qq'
     # bots: Dict[str, str] 以适配器名称为键、bot_self_id为值的字典
     _refresh_bots()
     if bot_id not in bots:
@@ -623,11 +625,19 @@ async def guild_send(
     msg_id: Optional[str],
     guild_id: Optional[str],
 ):
+    from nonebot.adapters.qq.exception import ActionFailed
+    from nonebot.adapters.qq.bot import Bot as qqbot
+
+    assert isinstance(bot, qqbot)
+
     async def _send(content: Optional[str], image: Optional[str]):
         result: Dict[str, Any] = {'msg_id': msg_id}
         if image:
-            img_bytes = base64.b64decode(image.replace('base64://', ''))
-            result['file_image'] = img_bytes
+            if image.startswith('link://'):
+                result['image'] = image.replace('link://', '')
+            else:
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
+                result['file_image'] = img_bytes
         if content:
             result['content'] = content
             if at_list and target_type == 'group':
@@ -639,22 +649,25 @@ async def guild_send(
             logger.warning('[gscore] qqguild暂不支持发送buttons消息')
 
         if target_type == 'group':
-            await bot.call_api(
-                'post_messages',
+            await bot.post_messages(
                 channel_id=str(target_id) if target_id else 0,
                 **result,
             )
         else:
-            dms = await bot.call_api(
-                'post_dms',
-                recipient_id=str(target_id),
-                source_guild_id=str(guild_id),
-            )
-            await bot.call_api(
-                'post_dms_messages',
-                guild_id=dms.guild_id,
-                **result,
-            )
+            try:
+                await bot.post_dms_messages(
+                    guild_id=str(guild_id),
+                    **result,
+                )
+            except ActionFailed:
+                dms = await bot.post_dms(
+                    recipient_id=str(target_id),
+                    source_guild_id=str(guild_id),
+                )
+                await bot.post_dms_messages(
+                    guild_id=dms.guild_id,
+                    **result,
+                )
 
     if node:
         for _msg in node:

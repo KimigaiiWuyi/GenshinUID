@@ -625,10 +625,13 @@ async def guild_send(
     msg_id: Optional[str],
     guild_id: Optional[str],
 ):
-    from nonebot.adapters.qq.exception import ActionFailed
     from nonebot.adapters.qq.bot import Bot as qqbot
+    from nonebot.adapters.qq.exception import ActionFailed
 
     assert isinstance(bot, qqbot)
+
+    if target_id is None:
+        return
 
     async def _send(content: Optional[str], image: Optional[str]):
         result: Dict[str, Any] = {'msg_id': msg_id}
@@ -650,7 +653,7 @@ async def guild_send(
 
         if target_type == 'group':
             await bot.post_messages(
-                channel_id=str(target_id) if target_id else 0,
+                channel_id=str(target_id),
                 **result,
             )
         else:
@@ -664,10 +667,11 @@ async def guild_send(
                     recipient_id=str(target_id),
                     source_guild_id=str(guild_id),
                 )
-                await bot.post_dms_messages(
-                    guild_id=dms.guild_id,
-                    **result,
-                )
+                if dms.guild_id:
+                    await bot.post_dms_messages(
+                        guild_id=dms.guild_id,
+                        **result,
+                    )
 
     if node:
         for _msg in node:
@@ -824,7 +828,11 @@ async def group_send(
     async def _send(content: Optional[str], image: Optional[str]):
         message = Message()
         if image:
-            _image = image.replace('link://', '')
+            if image.startswith('link://'):
+                _image = image.replace('link://', '')
+            else:
+                logger.warning('[gscore] qqgroup暂不支持发送本地图信息, 请转为URL发送')
+                return
         else:
             _image = ''
 

@@ -833,8 +833,8 @@ async def group_send(
             message.append(MessageSegment.markdown(data))
         elif content:
             message.append(MessageSegment.text(content))
-        elif image:
-            message.append(MessageSegment.image(image))
+        elif _image:
+            message.append(MessageSegment.image(_image))
 
         if markdown:
             _markdown = markdown.replace('link://', '')

@@ -125,7 +125,7 @@ async def get_first_main(mainName: str) -> str:
     return equipMain
 
 
-async def get_char_std(raw_data: dict, char_name: str) -> dmgMap:
+async def get_char_std(raw_data: dict, char_name: str):
     weaponName = raw_data['weaponInfo']['weaponName']
 
     equipMain = ''

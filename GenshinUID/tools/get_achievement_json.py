@@ -21,7 +21,7 @@ result_all = {}
 
 is_first = False
 for row in range(3, 100):
-    task = ws_daily.cell(row, 3).value
+    task: str = ws_daily.cell(row, 3).value  # type: ignore
     achi = ws_daily.cell(row, 4).value
     desc = ws_daily.cell(row, 5).value
     guide = ws_daily.cell(row, 6).value

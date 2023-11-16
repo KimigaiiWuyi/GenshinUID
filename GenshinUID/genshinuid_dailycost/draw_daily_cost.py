@@ -65,15 +65,10 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
         icon_id = data[domain][0]
         icon = await get_ambr_icon('UI', icon_id, ICON_PATH, 'ItemIcon')
 
-        icon = icon.resize((77, 77))
+        icon = icon.resize((77, 77)).convert('RGBA')
         bar = Image.open(TEXT_PATH / 'bar.png')
         bar_draw = ImageDraw.Draw(bar)
-        if icon.mode == 'RGBA':
-            mask = icon.split()[3]  # 获取alpha通道作为遮罩
-            bar.paste(icon, (43, 10), mask)
-        else:
-            bar.paste(icon, (43, 10))  # 如果没有alpha通道，不使用遮罩
-
+        bar.paste(icon, (43, 10), icon)
         domain1, domain2 = domain.split('：')
 
         bar_draw.text((142, 50), domain2, 'black', gs_font_44, 'lm')

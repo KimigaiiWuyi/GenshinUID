@@ -6,8 +6,8 @@ from typing import Union
 from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.models import Expedition
-from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.database.models import GsBind, GsUser
+from gsuid_core.utils.error_reply import UID_HINT, get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.api.mys.models import FakeResin
@@ -89,7 +89,7 @@ async def get_resin_img(bot_id: str, user_id: str):
         uid_list = await GsBind.get_uid_list_by_game(user_id, bot_id)
         logger.info('[每日信息]UID: {}'.format(uid_list))
         if uid_list is None:
-            return
+            return UID_HINT
         # 进行校验UID是否绑定CK
         useable_uid_list = []
         for uid in uid_list:

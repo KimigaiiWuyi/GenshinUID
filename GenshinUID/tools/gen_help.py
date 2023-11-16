@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from openpyxl import load_workbook
+from openpyxl.worksheet.worksheet import Worksheet
 
 sample = {
     'name': '',
@@ -21,7 +22,7 @@ HELP_PATH = Path(__file__).parents[1] / 'genshinuid_help'
 
 # 表格地址: https://kdocs.cn/l/ccpc6z0bZx6u
 wb = load_workbook(str(DATA_PATH / 'GenshinUID Help.xlsx'))
-ws = wb.active
+ws: Worksheet = wb.active  # type: ignore
 
 module_name_str = ''
 for row in range(2, 999):

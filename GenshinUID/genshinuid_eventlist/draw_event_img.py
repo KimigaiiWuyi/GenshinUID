@@ -170,7 +170,7 @@ class DrawEventList:
         if isinstance(base_img, bytes):
             return base_img
         else:
-            return bytes(base_img, 'utf8')
+            return bytes(base_img)
 
     async def get_and_save_gacha_img(self):
         base_h = 100 + len(self.gacha_event) * 480
@@ -247,7 +247,7 @@ class DrawEventList:
         if isinstance(base_img, bytes):
             return base_img
         else:
-            return bytes(base_img, 'utf8')
+            return bytes(base_img)
 
 
 async def get_all_event_img():

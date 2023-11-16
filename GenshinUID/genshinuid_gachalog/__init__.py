@@ -107,4 +107,6 @@ async def export_gachalogurl(bot: Bot, ev: Event):
     im = await get_gachaurl(uid)
     if isinstance(im, bytes):
         return await bot.send(im)
+    if isinstance(im, (bytearray, memoryview)):
+        return await bot.send(bytes(im))
     await bot.send(MessageSegment.node([MessageSegment.text(im)]))

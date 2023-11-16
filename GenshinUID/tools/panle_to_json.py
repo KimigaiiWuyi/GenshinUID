@@ -4,6 +4,7 @@ from pathlib import Path
 
 import httpx
 import openpyxl
+from openpyxl.worksheet.worksheet import Worksheet
 
 R_PATH = Path(__file__).parent
 DATA_PATH = R_PATH / 'blue_data'
@@ -122,7 +123,7 @@ async def panle2Json() -> None:
       访问DATA_PATH并转换数据为dmgMap.json。
     '''
     wb = openpyxl.load_workbook(str(DATA_PATH / '参考面板.xlsx'), data_only=True)
-    sheet = wb.active
+    sheet: Worksheet = wb.active  # type: ignore
 
     result = {}
     char_result = []

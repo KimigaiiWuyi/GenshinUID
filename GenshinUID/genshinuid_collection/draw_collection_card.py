@@ -79,7 +79,7 @@ async def get_explore_data(
     uid: str,
 ) -> Union[bytes, str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
     raw_data = await get_base_data(uid)
-    if isinstance(raw_data, str) or isinstance(raw_data, bytes):
+    if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
         return raw_data
 
     # 处理数据
@@ -126,7 +126,7 @@ async def get_collection_data(
     uid: str,
 ) -> Union[bytes, str, Tuple[Dict[str, float], Dict[str, str], str, str, str]]:
     raw_data = await get_base_data(uid)
-    if isinstance(raw_data, str) or isinstance(raw_data, bytes):
+    if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
         return raw_data
 
     raw_data = raw_data['stats']
@@ -173,7 +173,7 @@ async def draw_base_img(
     else:
         data = await get_explore_data(uid)
 
-    if isinstance(data, str) or isinstance(data, bytes):
+    if isinstance(data, (str, bytes, bytearray, memoryview)):
         return data
 
     percent_data, value_data = data[0], data[1]

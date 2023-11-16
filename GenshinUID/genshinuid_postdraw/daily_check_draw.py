@@ -66,7 +66,7 @@ async def single_get_draw(bot_id: str, uid: str, gid: str, qid: str):
 
     im = await post_my_draw(uid)
 
-    if isinstance(im, bytes):
+    if isinstance(im, (bytes, bytearray, memoryview)):
         return
 
     if '没有需要获取' in im:

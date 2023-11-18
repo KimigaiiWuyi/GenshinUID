@@ -1,5 +1,6 @@
 import json
 import asyncio
+from io import BytesIO
 from pathlib import Path
 from typing import Union
 
@@ -7,7 +8,13 @@ from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.models import Expedition
 from gsuid_core.utils.database.models import GsBind, GsUser
-from gsuid_core.utils.error_reply import UID_HINT, get_error_img
+from gsuid_core.utils.error_reply import (
+    UID_HINT,
+    get_error,
+    get_error_img,
+    draw_error_img,
+    get_error_type,
+)
 
 from ..utils.mys_api import mys_api
 from ..utils.api.mys.models import FakeResin
@@ -160,6 +167,16 @@ async def draw_bar(
     return bar
 
 
+async def _get_error_img(retcode: int):
+    error_img = await get_error_img(retcode)
+    if isinstance(error_img, str):
+        error_message = get_error(retcode)
+        error_type = get_error_type(retcode)
+        error_img = await draw_error_img(retcode, error_message, error_type)
+    bio = BytesIO(error_img)
+    return Image.open(bio)
+
+
 async def draw_resin_img(uid: str) -> Image.Image:
     img = Image.open(TEXT_PATH / 'bg.png')
 
@@ -167,7 +184,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     if use_widget and int(str(uid)[0]) <= 5:
         _daily_data = await mys_api.get_widget_resin_data(uid)
         if isinstance(_daily_data, int):
-            return Image.open(await get_error_img(_daily_data))
+            return await _get_error_img(_daily_data)
         daily_data = transform_fake_resin(_daily_data)
         data_res = '当前数据源：小组件 （可能存在数据不准、数据缺失）'
         warn = '数据未知...'
@@ -176,7 +193,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     else:
         daily_data = await mys_api.get_daily_data(uid)
         if isinstance(daily_data, int):
-            return Image.open(await get_error_img(daily_data))
+            return await _get_error_img(daily_data)
         data_res = '当前数据源：战绩'
         warn = '未知情况'
 

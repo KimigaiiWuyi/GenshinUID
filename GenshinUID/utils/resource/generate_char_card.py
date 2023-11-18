@@ -62,5 +62,5 @@ async def create_all_char_card():
     for char in CHAR_PATH.iterdir():
         char_id = char.stem
         path = CHAR_CARD_PATH / f'{char_id}.png'
-        if not path.exists():
+        if not path.exists() or char_id == '10000087':
             await create_single_char_card(char_id)

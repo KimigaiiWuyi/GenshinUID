@@ -26,7 +26,8 @@ async def send_guide_pic(bot: Bot, ev: Event):
 
     if im:
         await bot.logger.info('获得{}攻略成功！'.format(ev.text))
-        await bot.send_option(im, [Button(f'🎴参考面板{ev.text}', '参考面板{ev.text}')])
+        a = Button(f'🎴参考面板{ev.text}', f'参考面板{ev.text}')
+        await bot.send_option(im, [a])
     else:
         await bot.logger.warning('未找到{}攻略图片'.format(ev.text))
 

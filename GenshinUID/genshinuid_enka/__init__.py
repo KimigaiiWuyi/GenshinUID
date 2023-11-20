@@ -68,7 +68,9 @@ async def sned_role_rank_pic(bot: Bot, ev: Event):
     if not msg:
         return
     logger.info(f'[角色排名]角色: {msg}')
-    await bot.send(await draw_role_rank_img(msg))
+    a = Button('💖排名列表', '排名列表')
+    b = Button(f'✅查询{msg}', f'查询{msg}')
+    await bot.send_option(await draw_role_rank_img(msg), [a, b])
 
 
 @sv_akasha.on_command('圣遗物排名')

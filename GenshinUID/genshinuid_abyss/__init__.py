@@ -3,6 +3,7 @@ import re
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.message_models import Button
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
@@ -48,4 +49,8 @@ async def send_abyss_info(bot: Bot, ev: Event):
     await bot.logger.info('[查询深渊信息]深渊层数: {}'.format(floor))
 
     im = await draw_abyss_img(user_id, uid, floor, schedule_type)
-    await bot.send(im)
+    a = Button('🔍查询深渊11', '查询深渊11')
+    b = Button('🔚查询上期深渊', '查询上期深渊')
+    c = Button('♾️深渊概览', '深渊概览')
+    d = Button('👾怪物阵容', '版本深渊')
+    await bot.send_option(im, [a, b, c, d])

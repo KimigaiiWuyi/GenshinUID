@@ -4,6 +4,7 @@ from typing import List
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 
 from .get_guide import get_gs_guide
@@ -25,7 +26,7 @@ async def send_guide_pic(bot: Bot, ev: Event):
 
     if im:
         await bot.logger.info('获得{}攻略成功！'.format(ev.text))
-        await bot.send(im)
+        await bot.send_option(im, [Button(f'🎴参考面板{ev.text}', '参考面板{ev.text}')])
     else:
         await bot.logger.warning('未找到{}攻略图片'.format(ev.text))
 
@@ -40,7 +41,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
     if img.exists():
         img = await convert_img(img)
         await bot.logger.info('获得{}参考面板图片成功！'.format(name))
-        await bot.send(img)
+        await bot.send_option(img, [Button(f'🎴{name}攻略', f'{name}攻略')])
     else:
         await bot.logger.warning('未找到{}参考面板图片'.format(name))
 

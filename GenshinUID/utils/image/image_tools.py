@@ -31,6 +31,24 @@ else:
     bg_path = NM_BG_PATH
 
 
+async def shift_image_hue(img: Image.Image, angle: float = 30) -> Image.Image:
+    alpha = img.getchannel('A')
+    img = img.convert('HSV')
+
+    pixels = img.load()
+    hue_shift = angle
+
+    for y in range(img.height):
+        for x in range(img.width):
+            h, s, v = pixels[x, y]
+            h = (h + hue_shift) % 360
+            pixels[x, y] = (h, s, v)
+
+    img = img.convert('RGBA')
+    img.putalpha(alpha)
+    return img
+
+
 async def _get(url: str):
     async with httpx.AsyncClient(timeout=None) as client:
         resp = await client.get(url=url)
@@ -38,9 +56,9 @@ async def _get(url: str):
 
 
 async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
-    """
+    '''
     从网络获取图片, 格式化为RGBA格式的指定尺寸
-    """
+    '''
     async with httpx.AsyncClient(timeout=None) as client:
         resp = await client.get(url=url)
         if resp.status_code != 200:
@@ -48,7 +66,7 @@ async def get_pic(url, size: Optional[Tuple[int, int]] = None) -> Image.Image:
                 size = (960, 600)
             return Image.new('RGBA', size)
         pic = Image.open(BytesIO(resp.read()))
-        pic = pic.convert("RGBA")
+        pic = pic.convert('RGBA')
         if size is not None:
             pic = pic.resize(size, Image.Resampling.LANCZOS)
         return pic
@@ -74,11 +92,11 @@ def draw_text_by_line(
     center=False,
     line_space: Optional[float] = None,
 ):
-    """
+    '''
     在图片上写长段文字, 自动换行
     max_length单行最大长度, 单位像素
     line_space  行间距, 单位像素, 默认是字体高度的0.3倍
-    """
+    '''
     x, y = pos
     _, h = get_size(font, 'X')
     if line_space is None:
@@ -86,7 +104,7 @@ def draw_text_by_line(
     else:
         y_add = math.ceil(h + line_space)
     draw = ImageDraw.Draw(img)
-    row = ""  # 存储本行文字
+    row = ''  # 存储本行文字
     length = 0  # 记录本行长度
     for character in text:
         # 获取当前字符的宽度
@@ -100,10 +118,10 @@ def draw_text_by_line(
                 fw, _ = get_size(font, row)
                 x = math.ceil((img.size[0] - fw) / 2)
             draw.text((x, y), row, font=font, fill=fill)
-            row = ""
+            row = ''
             length = 0
             y += y_add
-    if row != "":
+    if row != '':
         if center:
             fw, _ = get_size(font, row)
             x = math.ceil((img.size[0] - fw) / 2)
@@ -111,32 +129,32 @@ def draw_text_by_line(
 
 
 def easy_paste(
-    im: Image.Image, im_paste: Image.Image, pos=(0, 0), direction="lt"
+    im: Image.Image, im_paste: Image.Image, pos=(0, 0), direction='lt'
 ):
-    """
+    '''
     inplace method
     快速粘贴, 自动获取被粘贴图像的坐标。
     pos应当是粘贴点坐标，direction指定粘贴点方位，例如lt为左上
-    """
+    '''
     x, y = pos
     size_x, size_y = im_paste.size
-    if "d" in direction:
+    if 'd' in direction:
         y = y - size_y
-    if "r" in direction:
+    if 'r' in direction:
         x = x - size_x
-    if "c" in direction:
+    if 'c' in direction:
         x = x - int(0.5 * size_x)
         y = y - int(0.5 * size_y)
     im.paste(im_paste, (x, y, x + size_x, y + size_y), im_paste)
 
 
 def easy_alpha_composite(
-    im: Image.Image, im_paste: Image.Image, pos=(0, 0), direction="lt"
+    im: Image.Image, im_paste: Image.Image, pos=(0, 0), direction='lt'
 ) -> Image.Image:
     '''
     透明图像快速粘贴
     '''
-    base = Image.new("RGBA", im.size)
+    base = Image.new('RGBA', im.size)
     easy_paste(base, im_paste, pos, direction)
     base = Image.alpha_composite(im, base)
     return base
@@ -358,7 +376,7 @@ class CustomizeImage:
     @staticmethod
     def get_dominant_color(pil_img: Image.Image) -> Tuple[int, int, int]:
         img = pil_img.copy()
-        img = img.convert("RGBA")
+        img = img.convert('RGBA')
         img = img.resize((1, 1), resample=0)
         dominant_color = img.getpixel((0, 0))
         return dominant_color

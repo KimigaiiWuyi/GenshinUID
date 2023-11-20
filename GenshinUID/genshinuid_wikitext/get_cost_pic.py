@@ -16,18 +16,18 @@ from ..utils.get_assets import get_assets_from_ambr
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, WIKI_COST_CHAR_PATH
+from ..utils.image.image_tools import (
+    get_star_png,
+    get_simple_bg,
+    get_unknown_png,
+    draw_pic_with_ring,
+)
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_26,
     gs_font_30,
     gs_font_36,
     gs_font_44,
-)
-from ..utils.image.image_tools import (
-    get_star_png,
-    get_simple_bg,
-    get_unknown_png,
-    draw_pic_with_ring,
 )
 
 
@@ -93,6 +93,7 @@ async def draw_single_cost(title: str, data: Dict) -> Tuple[Image.Image, str]:
         y = 165 * (index // 5)
         tent_x = 34
         tent_y = 23
+        cost_pic = cost_pic.convert('RGBA')
         img.paste(cost_pic, (67 + tent_x + t, 61 + tent_y + y), cost_pic)
         val = str(data[cost_name])
         img_draw.text(

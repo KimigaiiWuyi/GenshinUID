@@ -8,6 +8,7 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.message_models import Button
 from gsuid_core.utils.error_reply import UID_HINT
 
 from .to_data import switch_api
@@ -50,7 +51,14 @@ async def sned_rank_pic(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f'[排名列表]uid: {uid}')
-    await bot.send(await draw_rank_img(ev.user_id, uid))
+    im = await draw_rank_img(ev.user_id, uid)
+    await bot.send_option(
+        im,
+        [
+            Button('♾️角色排名公子', '角色排名公子'),
+            Button('♾️圣遗物双爆排名', '圣遗物排名双爆'),
+        ],
+    )
 
 
 @sv_akasha.on_prefix('角色排名')
@@ -68,7 +76,16 @@ async def sned_arti_rank_pic(bot: Bot, ev: Event):
     # 获取排序名
     msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
     logger.info(f'[圣遗物排名]排序: {msg}')
-    await bot.send(await draw_arti_rank_img(msg))
+    im = await draw_arti_rank_img(msg)
+    await bot.send_option(
+        im,
+        [
+            Button('♾️双爆排名', '圣遗物排名双爆'),
+            Button('♾️暴击率排名', '圣遗物排名暴击率'),
+            Button('♾️元素精通排名', '圣遗物排名元素精通'),
+            Button('♾️暴击伤害排名', '圣遗物排名暴击伤害'),
+        ],
+    )
 
 
 @sv_enka_admin.on_fullmatch('刷新全部圣遗物仓库')
@@ -108,7 +125,16 @@ async def sned_aritifacts_list(bot: Bot, ev: Event):
     else:
         num = 1
 
-    await bot.send(await draw_lib(ev.user_id, uid, num))
+    im = await draw_lib(ev.user_id, uid, num)
+    await bot.send_option(
+        im,
+        [
+            Button('♾️双爆排名', '圣遗物排名双爆'),
+            Button('♾️暴击率排名', '圣遗物排名暴击率'),
+            Button('♾️元素精通排名', '圣遗物排名元素精通'),
+            Button('♾️暴击伤害排名', '圣遗物排名暴击伤害'),
+        ],
+    )
 
 
 @sv_get_original_pic.on_fullmatch(('原图'))
@@ -128,7 +154,8 @@ async def send_change_api_info(bot: Bot, ev: Event):
 
 @sv_get_enka.on_prefix('查询')
 async def send_char_info(bot: Bot, ev: Event):
-    im = await _get_char_info(bot, ev, ev.text)
+    name = ev.text.strip()
+    im = await _get_char_info(bot, ev, name)
     if isinstance(im, str):
         await bot.send(im)
     elif isinstance(im, Tuple):
@@ -136,7 +163,15 @@ async def send_char_info(bot: Bot, ev: Event):
             img = await convert_img(im[0])
         else:
             img = im[0]
-        await bot.send(img)
+        await bot.send_option(
+            img,
+            [
+                Button('🔄更换武器', f'查询{name}换'),
+                Button('⏫提高命座', f'查询六命{name}'),
+                Button('*️⃣保存面板', f'保存面板{name}为 '),
+                Button('🔀对比面板', f'对比面板 {name} '),
+            ],
+        )
         if im[1]:
             with open(TEMP_PATH / f'{ev.msg_id}.jpg', 'wb') as f:
                 f.write(im[1])
@@ -162,8 +197,10 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     return im
 
 
-@sv_get_enka.on_prefix('对比面板')
+@sv_get_enka.on_command('对比面板')
 async def contrast_char_info(bot: Bot, ev: Event):
+    if not ev.text.strip():
+        return await bot.send('参考格式: 对比面板 公子 公子换可莉圣遗物')
     contrast_list = ev.text.strip().split(' ')
     if len(contrast_list) <= 1:
         return await bot.send('输入格式错误...参考格式: 对比面板 公子 公子换可莉圣遗物')
@@ -194,8 +231,10 @@ async def contrast_char_info(bot: Bot, ev: Event):
     await bot.send(await convert_img(base_img))
 
 
-@sv_get_enka.on_prefix('保存面板')
+@sv_get_enka.on_command('保存面板')
 async def save_char_info(bot: Bot, ev: Event):
+    if not ev.text.strip():
+        return await bot.send('后面需要跟自定义的保存名字\n例如：保存面板公子为核爆公子')
     save_list = ev.text.strip().split('为')
     if len(save_list) <= 1:
         return await bot.send('输入格式错误...参考格式: 保存面板公子为核爆公子')
@@ -241,10 +280,16 @@ async def save_char_info(bot: Bot, ev: Event):
             path = SELF_PATH / f'{save_name}.json'
             async with aiofiles.open(path, 'wb') as file:
                 await file.write(json.dumps(char_data).encode('utf-8'))
-            return await bot.send(f'保存成功!你可以使用[查询{save_name}]调用该面板!')
+            return await bot.send_option(
+                f'保存成功!你可以使用[查询{save_name}]调用该面板!',
+                [
+                    Button(f'✅查询{save_name}', f'查询{save_name}'),
+                    Button('💖刷新面板', '刷新面板'),
+                ],
+            )
 
 
-@sv_get_enka.on_command('强制刷新')
+@sv_get_enka.on_command(('强制刷新', '刷新面板'))
 async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
@@ -254,7 +299,13 @@ async def send_card_info(bot: Bot, ev: Event):
     logger.info(f'UID{uid}获取角色数据成功！')
 
     if isinstance(im, Tuple):
-        await bot.send_option(im[0], [f'查询{i["avatarName"]}' for i in im[1]])
+        buttons = [
+            Button(f'✅查询{i["avatarName"]}', f'查询{i["avatarName"]}')
+            for i in im[1]
+        ]
+        buttons.append(Button('📦圣遗物仓库', '圣遗物仓库'))
+        buttons.append(Button('💖排名列表', '排名列表'))
+        await bot.send_option(im[0], buttons)
     else:
         await bot.send(im)
 

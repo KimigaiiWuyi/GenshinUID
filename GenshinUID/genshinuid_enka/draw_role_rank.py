@@ -1,11 +1,12 @@
-from typing import Dict, Tuple, Union
+from typing import Union
 
 from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 
+from ..utils.colors import get_color
+from .draw_rank_list import RANK_TEXT
 from ..utils.api.cv.request import _CvApi
 from ..utils.map.GS_MAP_PATH import icon2Name
-from .draw_rank_list import COLOR_MAP, RANK_TEXT
 from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
@@ -23,13 +24,6 @@ from ..utils.image.image_tools import (
 
 is_enable_akasha = gsconfig.get_config('EnableAkasha').data
 
-CV_MAP = {
-    260: '1',
-    245: '2',
-    225: '3',
-    180: '4',
-}
-
 REGION_MAP = {
     'CN': (255, 58, 58),
     'ASIA': (169, 109, 57),
@@ -40,16 +34,6 @@ REGION_MAP = {
 }
 
 grey = (170, 170, 170)
-
-
-async def _get_color(
-    cmap: Dict[int, str], value: float
-) -> Tuple[int, int, int]:
-    for i in cmap:
-        if value >= i:
-            return COLOR_MAP[cmap[i]]
-    else:
-        return COLOR_MAP['5']
 
 
 async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
@@ -96,7 +80,7 @@ async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
         cd = '{:.1f}'.format(char['stats']['critDamage']['value'] * 100)
         cv = '{:.1f}'.format(char['critValue'])
 
-        cv_color = await _get_color(CV_MAP, float(cv))
+        cv_color = get_color(float(cv), [260, 245, 225, 180])
 
         affix_pic = await get_weapon_affix_pic(_wc)
         talent_pic = await get_talent_pic(_c)

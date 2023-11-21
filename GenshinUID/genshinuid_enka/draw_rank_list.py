@@ -5,6 +5,7 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
 
 from .etc.etc import TEXT_PATH
+from ..utils.colors import get_color
 from .get_akasha_data import _get_rank
 from ..utils.map.name_covert import avatar_id_to_name
 from .to_card import draw_char_card, draw_weapon_card
@@ -22,13 +23,6 @@ BG_PATH = RANK_TEXT / 'dark_blue.jpg'
 TITLE_PATH = RANK_TEXT / 'title.png'
 
 grey = (191, 191, 191)
-COLOR_MAP = {
-    '1': (200, 12, 12),
-    '2': (200, 100, 12),
-    '3': (200, 12, 194),
-    '4': (33, 142, 212),
-    '5': (47, 107, 56),
-}
 
 
 async def draw_rank_img(user_id: str, uid: str) -> Union[bytes, str]:
@@ -79,27 +73,8 @@ async def draw_rank_img(user_id: str, uid: str) -> Union[bytes, str]:
         )
         weapon_card = weapon_card.resize((110, 110))
 
-        if _pc <= 10:
-            _color = COLOR_MAP['1']
-        elif _pc <= 23:
-            _color = COLOR_MAP['2']
-        elif _pc <= 35:
-            _color = COLOR_MAP['3']
-        elif _pc <= 55:
-            _color = COLOR_MAP['4']
-        else:
-            _color = COLOR_MAP['5']
-
-        if _cv >= 210:
-            cv_color = COLOR_MAP['1']
-        elif _cv >= 185:
-            cv_color = COLOR_MAP['2']
-        elif _cv >= 170:
-            cv_color = COLOR_MAP['3']
-        elif _cv >= 150:
-            cv_color = COLOR_MAP['4']
-        else:
-            cv_color = COLOR_MAP['5']
+        _color = get_color(_pc, [10, 23, 34, 55], True)
+        cv_color = get_color(_cv, [210, 185, 170, 150])
 
         color = Image.new('RGBA', (950, 300), _color)
 

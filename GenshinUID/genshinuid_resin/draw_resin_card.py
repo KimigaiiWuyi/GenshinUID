@@ -125,6 +125,7 @@ async def get_resin_img(bot_id: str, user_id: str):
 
 async def _draw_all_resin_img(img: Image.Image, uid: str, index: int):
     resin_img = await draw_resin_img(uid)
+    resin_img = resin_img.convert('RGBA')
     img.paste(resin_img, (700 * index, 0), resin_img)
 
 

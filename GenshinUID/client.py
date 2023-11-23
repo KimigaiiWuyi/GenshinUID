@@ -825,7 +825,9 @@ async def group_send(
     assert isinstance(bot, qqbot)
     assert isinstance(target_id, str)
 
-    async def _send(content: Optional[str], image: Optional[str]):
+    async def _send(
+        content: Optional[str], image: Optional[str], msg_seq: int
+    ):
         message = Message()
         if image:
             if image.startswith('link://'):
@@ -865,17 +867,19 @@ async def group_send(
                 message=message,
             )
 
+    msg_seq = 1
     if node:
         for _msg in node:
             if _msg['type'] == 'image':
                 image = _msg['data']
                 content = None
-            else:
+            elif _msg['type'] == 'text':
                 image = None
                 content = _msg['data']
-            await _send(content, image)
+            await _send(content, image, msg_seq)
+            msg_seq += 1
     else:
-        await _send(content, image)
+        await _send(content, image, msg_seq)
 
 
 async def ntchat_send(

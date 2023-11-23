@@ -6,7 +6,7 @@ import base64
 import asyncio
 from pathlib import Path
 from typing import Any, Dict, List, Union, Optional
-
+from collections import OrderedDict
 import websockets.client
 from nonebot.log import logger
 from nonebot.adapters import Bot
@@ -17,6 +17,7 @@ from websockets.exceptions import ConnectionClosedError
 from .utils import download_image
 from .models import MessageSend, MessageReceive
 
+msg_id_seq = OrderedDict()
 bots: Dict[str, str] = {}
 driver = get_driver()
 
@@ -825,26 +826,24 @@ async def group_send(
     assert isinstance(bot, qqbot)
     assert isinstance(target_id, str)
 
-    async def _send(
-        content: Optional[str], image: Optional[str], msg_seq: int
-    ):
+    async def _send(text: Optional[str], img: Optional[str], msg_seq: int):
         message = Message()
-        if image:
-            if image.startswith('link://'):
-                _image = image.replace('link://', '')
+        if img:
+            if img.startswith('link://'):
+                _img = img.replace('link://', '')
             else:
                 logger.warning('[gscore] qqgroup暂不支持发送本地图信息, 请转为URL发送')
                 return
         else:
-            _image = ''
+            _img = ''
 
-        if content and image:
-            data = f'{content}\n{_image}'
+        if text and img:
+            data = f'{text}\n{_img}'
             message.append(MessageSegment.markdown(data))
-        elif content:
-            message.append(MessageSegment.text(content))
-        elif _image:
-            message.append(MessageSegment.image(_image))
+        elif text:
+            message.append(MessageSegment.text(text))
+        elif _img:
+            message.append(MessageSegment.image(_img))
 
         if markdown:
             _markdown = markdown.replace('link://', '')
@@ -858,6 +857,7 @@ async def group_send(
                 msg_id=msg_id,
                 event_id=msg_id,
                 message=message,
+                msg_seq=msg_seq,
             )
         else:
             await bot.send_to_c2c(
@@ -865,21 +865,25 @@ async def group_send(
                 msg_id=msg_id,
                 event_id=msg_id,
                 message=message,
+                msg_seq=msg_seq,
             )
 
-    msg_seq = 1
+    msg_id_seq[msg_id] = 1
+
+    if len(msg_id_seq) >= 30:
+        oldest_key = next(iter(msg_id_seq))
+        del msg_id_seq[oldest_key]
+
     if node:
         for _msg in node:
             if _msg['type'] == 'image':
-                image = _msg['data']
-                content = None
+                await _send(None, _msg['data'], msg_id_seq[msg_id])
+                msg_id_seq[msg_id] += 1
             elif _msg['type'] == 'text':
-                image = None
-                content = _msg['data']
-            await _send(content, image, msg_seq)
-            msg_seq += 1
+                await _send(_msg['data'], None, msg_id_seq[msg_id])
+                msg_id_seq[msg_id] += 1
     else:
-        await _send(content, image, msg_seq)
+        await _send(content, image, msg_id_seq[msg_id])
 
 
 async def ntchat_send(

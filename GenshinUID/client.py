@@ -853,7 +853,7 @@ async def group_send(
 
         if target_type == 'group':
             await bot.send_to_group(
-                group_id=target_id,
+                group_openid=target_id,
                 msg_id=msg_id,
                 event_id=msg_id,
                 message=message,
@@ -861,7 +861,7 @@ async def group_send(
             )
         else:
             await bot.send_to_c2c(
-                user_id=target_id,
+                openid=target_id,
                 msg_id=msg_id,
                 event_id=msg_id,
                 message=message,

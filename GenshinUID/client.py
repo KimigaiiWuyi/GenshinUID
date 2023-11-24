@@ -5,8 +5,9 @@ import uuid
 import base64
 import asyncio
 from pathlib import Path
-from typing import Any, Dict, List, Union, Optional
 from collections import OrderedDict
+from typing import Any, Dict, List, Union, Optional
+
 import websockets.client
 from nonebot.log import logger
 from nonebot.adapters import Bot
@@ -826,7 +827,9 @@ async def group_send(
     assert isinstance(bot, qqbot)
     assert isinstance(target_id, str)
 
-    async def _send(text: Optional[str], img: Optional[str], msg_seq: int):
+    async def _send(
+        text: Optional[str], img: Optional[str], mid: Optional[str]
+    ):
         message = Message()
         if img:
             if img.startswith('link://'):
@@ -851,6 +854,11 @@ async def group_send(
         if buttons:
             message.append(MessageSegment.keyboard(_kb(buttons)))
 
+        if mid is None:
+            msg_seq = None
+        else:
+            msg_seq = msg_id_seq[mid]
+
         if target_type == 'group':
             await bot.send_to_group(
                 group_openid=target_id,
@@ -868,7 +876,10 @@ async def group_send(
                 msg_seq=msg_seq,
             )
 
-    msg_id_seq[msg_id] = 1
+        msg_id_seq[mid] += 1
+
+    if msg_id not in msg_id_seq:
+        msg_id_seq[msg_id] = 1
 
     if len(msg_id_seq) >= 30:
         oldest_key = next(iter(msg_id_seq))
@@ -877,13 +888,11 @@ async def group_send(
     if node:
         for _msg in node:
             if _msg['type'] == 'image':
-                await _send(None, _msg['data'], msg_id_seq[msg_id])
-                msg_id_seq[msg_id] += 1
+                await _send(None, _msg['data'], msg_id)
             elif _msg['type'] == 'text':
-                await _send(_msg['data'], None, msg_id_seq[msg_id])
-                msg_id_seq[msg_id] += 1
+                await _send(_msg['data'], None, msg_id)
     else:
-        await _send(content, image, msg_id_seq[msg_id])
+        await _send(content, image, msg_id)
 
 
 async def ntchat_send(

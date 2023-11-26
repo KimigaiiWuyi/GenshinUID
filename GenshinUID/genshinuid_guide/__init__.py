@@ -20,16 +20,18 @@ sv_char_guide = SV('查询角色攻略')
 sv_abyss_review = SV('查询深渊阵容')
 
 
+@sv_char_guide.on_prefix(('参考攻略'))
 @sv_char_guide.on_suffix(('攻略', '推荐'))
 async def send_guide_pic(bot: Bot, ev: Event):
-    im = await get_gs_guide(ev.text)
+    name = ev.text.strip()
+    im = await get_gs_guide(name)
 
     if im:
-        await bot.logger.info('获得{}攻略成功！'.format(ev.text))
-        a = Button(f'🎴参考面板{ev.text}', f'参考面板{ev.text}')
+        await bot.logger.info('获得{}攻略成功！'.format(name))
+        a = Button(f'🎴参考面板{name}', f'参考面板{name}')
         await bot.send_option(im, [a])
     else:
-        await bot.logger.warning('未找到{}攻略图片'.format(ev.text))
+        await bot.logger.warning('未找到{}攻略图片'.format(name))
 
 
 @sv_char_guide.on_prefix(('参考面板'))
@@ -37,7 +39,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
     if ev.text in ['冰', '水', '火', '草', '雷', '风', '岩']:
         name = ev.text
     else:
-        name = await alias_to_char_name(ev.text)
+        name = await alias_to_char_name(ev.text.strip())
     img = REF_PATH / '{}.jpg'.format(name)
     if img.exists():
         img = await convert_img(img)

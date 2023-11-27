@@ -6,7 +6,7 @@ import base64
 import asyncio
 from pathlib import Path
 from collections import OrderedDict
-from typing import Any, Dict, List, Union, Optional
+from typing import Dict, List, Union, Optional
 
 import websockets.client
 from nonebot.log import logger
@@ -629,6 +629,7 @@ async def guild_send(
 ):
     from nonebot.adapters.qq.bot import Bot as qqbot
     from nonebot.adapters.qq.exception import ActionFailed
+    from nonebot.adapters.qq.message import Message, MessageSegment
 
     assert isinstance(bot, qqbot)
 
@@ -636,33 +637,38 @@ async def guild_send(
         return
 
     async def _send(content: Optional[str], image: Optional[str]):
-        result: Dict[str, Any] = {'msg_id': msg_id}
+        message = Message()
         if image:
             if image.startswith('link://'):
-                result['image'] = image.replace('link://', '')
+                message.append(
+                    MessageSegment.image(image.replace('link://', ''))
+                )
             else:
                 img_bytes = base64.b64decode(image.replace('base64://', ''))
-                result['file_image'] = img_bytes
+                message.append(MessageSegment.file_image(img_bytes))
         if content:
-            result['content'] = content
+            message.append(MessageSegment.text(content))
             if at_list and target_type == 'group':
                 for at in at_list:
-                    result['content'] += f'<@{at}>'
+                    message.append(MessageSegment.mention_user(at))
         if markdown:
-            logger.warning('[gscore] qqguild暂不支持发送markdown消息')
+            _markdown = markdown.replace('link://', '')
+            message.append(MessageSegment.markdown(_markdown))
         if buttons:
-            logger.warning('[gscore] qqguild暂不支持发送buttons消息')
+            message.append(MessageSegment.keyboard(_kb(buttons)))
 
         if target_type == 'group':
-            await bot.post_messages(
+            await bot.send_to_channel(
                 channel_id=str(target_id),
-                **result,
+                message=message,
+                msg_id=msg_id,
             )
         else:
             try:
-                await bot.post_dms_messages(
+                await bot.send_to_dms(
                     guild_id=str(guild_id),
-                    **result,
+                    message=message,
+                    msg_id=msg_id,
                 )
             except ActionFailed:
                 dms = await bot.post_dms(
@@ -670,9 +676,10 @@ async def guild_send(
                     source_guild_id=str(guild_id),
                 )
                 if dms.guild_id:
-                    await bot.post_dms_messages(
+                    await bot.send_to_dms(
                         guild_id=dms.guild_id,
-                        **result,
+                        message=message,
+                        msg_id=msg_id,
                     )
 
     if node:

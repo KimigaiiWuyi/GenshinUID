@@ -150,7 +150,7 @@ async def get_all_message(bot: Bot, ev: Event):
         elif isinstance(ev, GroupAtMessageCreateEvent):
             sp_bot_id = 'qqgroup'
             user_type = 'group'
-            group_id = str(ev.group_id)
+            group_id = str(ev.group_openid)
             msg_id = ev.id
             sender = ev.author.dict()
         elif isinstance(ev, C2CMessageCreateEvent):
@@ -542,10 +542,11 @@ def convert_message(_msg: Any, message: List[Message], index: int):
             _msg.data['text'] if 'text' in _msg.data else _msg.data['content']
         )
 
-        if index == 0:
+        if index == 0 or index == 1:
             for word in command_start:
-                if data.startswith(word):
-                    data = data[len(word) :]  # noqa:E203
+                _data = data.strip()
+                if _data.startswith(word):
+                    data = _data[len(word) :]  # noqa:E203
                     break
         message.append(Message('text', data))
     elif _msg.type == 'image':

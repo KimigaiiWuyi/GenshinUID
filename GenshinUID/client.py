@@ -365,7 +365,15 @@ async def villa_send(
             villa_id, room_id = target_id.split('-')
 
             if image:
-                msg += MessageSegment.image(image)
+                if image.startswith('link://'):
+                    img_url = image.replace('link://', '')
+                else:
+                    img_bytes = base64.b64decode(
+                        image.replace('base64://', '')
+                    )
+                    img_upload = await bot.upload_image(img_bytes)
+                    img_url = img_upload.url
+                msg += MessageSegment.image(img_url)
             if content:
                 msg += MessageSegment.text(content)
 

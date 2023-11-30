@@ -235,6 +235,8 @@ class GsClient:
                                 content,
                                 image,
                                 file,
+                                markdown,
+                                buttons,
                                 node,
                                 msg.target_id,
                                 msg.target_type,
@@ -340,7 +342,7 @@ def del_file(path: Path):
         os.remove(path)
 
 
-def _vill_kb(index: int, button: Dict):
+def _villa_kb(index: int, button: Dict):
     from nonebot.adapters.villa.models import InputButton
 
     return InputButton(
@@ -348,6 +350,32 @@ def _vill_kb(index: int, button: Dict):
         text=button['text'],
         input=button['data'],
     )
+
+
+def _dodo_kb(button: Dict):
+    from nonebot.adapters.dodo.models import CardButton, ButtonClickAction
+
+    return CardButton(
+        click=ButtonClickAction(value=button['data'], action='call_back'),
+        name=button['text'],
+    )
+
+
+def _kaiheila_kb(button: Dict):
+    return {
+        "type": "button",
+        "theme": "info",
+        "value": button['data'],
+        "click": "return-val",
+        "text": {"type": "plain-text", "content": button['text']},
+    }
+
+
+def _kaiheila_kb_group(buttons: List[Dict]):
+    return {
+        "type": "action-group",
+        "elements": [button for button in buttons],
+    }
 
 
 async def villa_send(
@@ -397,6 +425,7 @@ async def villa_send(
 
             if markdown:
                 logger.warning('[gscore] villa暂不支持发送markdown消息')
+
             if buttons:
                 bt = []
                 bigc = []
@@ -404,19 +433,19 @@ async def villa_send(
                 smc = []
                 for index, button in enumerate(buttons):
                     if isinstance(button, Dict):
-                        bt.append(_vill_kb(index, button))
+                        bt.append(_villa_kb(index, button))
                     if isinstance(button, List):
                         if len(button) == 1:
-                            bigc.append([_vill_kb(100 + index, button[0])])
+                            bigc.append([_villa_kb(100 + index, button[0])])
                         elif len(button) == 2:
                             _t = []
                             for indexB, btn in enumerate(button):
-                                _t.append(_vill_kb(200 + index + indexB, btn))
+                                _t.append(_villa_kb(200 + index + indexB, btn))
                             midc.append(_t)
                         else:
                             _t = []
                             for indexC, btn in enumerate(button):
-                                _t.append(_vill_kb(300 + index + indexC, btn))
+                                _t.append(_villa_kb(300 + index + indexC, btn))
                                 if len(_t) >= 3:
                                     smc.append(_t)
                                     _t = []
@@ -761,6 +790,12 @@ async def dodo_send(
 ):
     from nonebot.adapters.dodo.bot import Bot as dodobot
     from nonebot.adapters.dodo.message import Message, MessageSegment
+    from nonebot.adapters.dodo.models import (
+        CardText,
+        TextData,
+        CardImage,
+        CardButtonGroup,
+    )
 
     assert isinstance(bot, dodobot)
     assert isinstance(target_id, str)
@@ -776,28 +811,62 @@ async def dodo_send(
                 await bot.send_to_personal(group_id, target_id, message)
 
     async def _send(content: Optional[str], image: Optional[str]):
+        card = []
         message = Message()
         if image:
-            img_bytes = base64.b64decode(image.replace('base64://', ''))
-            image_return = await bot.set_resouce_picture_upload(file=img_bytes)
-            message.append(
-                MessageSegment.picture(
-                    image_return.url, image_return.width, image_return.height
+            if image.startswith('base64://'):
+                img_bytes = base64.b64decode(image.replace('base64://', ''))
+                image_return = await bot.set_resouce_picture_upload(
+                    file=img_bytes
                 )
-            )
-            await __send(message)
-            message = Message()
+                url = image_return.url
+                w, h = image_return.width, image_return.height
+            else:
+                logger.warning('[gscore] dodo可能不支持发送URL图片, 请转为base64发送')
+                url = image.replace('link://', '')
+                w, h = 950, 1500
+
+            if buttons:
+                card.append(CardImage(src=url))
+            else:
+                message.append(MessageSegment.picture(url, w, h))
+                await __send(message)
+                message = Message()
 
         if content:
-            message.append(MessageSegment.text(content))
+            if buttons:
+                card.append(
+                    CardText(text=TextData(type='plain-text', content=content))
+                )
+            else:
+                message.append(MessageSegment.text(content))
         if markdown:
-            message.append(MessageSegment.text(markdown))
+            if buttons:
+                card.append(
+                    CardText(text=TextData(type='dodo-md', content=markdown))
+                )
+            else:
+                message.append(MessageSegment.text(markdown))
         if at_list and target_type == 'group':
             for at in at_list:
                 message.append(MessageSegment.at_user(at))
 
         if buttons:
-            logger.warning('[gscore] DoDo暂不支持发送buttons消息')
+            bt = []
+            for button in buttons:
+                if isinstance(button, Dict):
+                    bt.append(_dodo_kb(button))
+                    if len(bt) >= 2:
+                        card.append(CardButtonGroup(elements=bt))
+                        bt = []
+                if isinstance(button, List):
+                    _t = []
+                    for i in button:
+                        _t.append(_dodo_kb(i))
+                    else:
+                        card.append(CardButtonGroup(elements=_t))
+                        _t = []
+            message.append(MessageSegment.card(components=card))
 
         if message:
             await __send(message)
@@ -1005,15 +1074,24 @@ async def kaiheila_send(
     content: Optional[str],
     image: Optional[str],
     file: Optional[str],
+    markdown: Optional[str],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     node: Optional[List[Dict]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
     from nonebot.adapters.kaiheila import Bot
+    from nonebot.adapters.kaiheila.message import (
+        Message,
+        MessageSegment,
+        _convert_to_card_message,
+    )
 
     assert isinstance(bot, Bot)
+    assert isinstance(target_id, str)
 
     async def _send(content: Optional[str], image: Optional[str]):
+        message = Message()
         result = {}
         result['type'] = 1
         if image:
@@ -1023,27 +1101,58 @@ async def kaiheila_send(
                 img_bytes = base64.b64decode(image.replace('base64://', ''))
 
             url = await bot.upload_file(img_bytes, 'GSUID-TEMP')
-            result['type'] = 2
-            result['content'] = url
-        elif file:
+            message.append(MessageSegment.image(url))
+        if file:
             file_name, file_content = file.split('|')
             path = Path(__file__).resolve().parent / file_name
             store_file(path, file_content)
             with open(path, 'rb') as f:
                 doc = f.read()
             url = await bot.upload_file(doc, file_name)
-            result['content'] = url
+            message.append(MessageSegment.file(url))
             del_file(path)
-        else:
-            result['content'] = content
+        if content:
+            message.append(MessageSegment.text(content))
+        if markdown:
+            message.append(MessageSegment.KMarkdown(markdown))
+        if buttons:
+            if message:
+                card_message = _convert_to_card_message(message)
+                message = Message()
+                card_json = json.loads(card_message.data['content'][1:-1])
+                modules = card_json['modules']
+            else:
+                modules = []
 
+            bt = []
+            for button in buttons:
+                if isinstance(button, Dict):
+                    bt.append(_kaiheila_kb(button))
+                    if len(bt) >= 2:
+                        modules.append(_kaiheila_kb_group(bt))
+                        bt = []
+                if isinstance(button, List):
+                    _t = []
+                    for i in button:
+                        _t.append(_kaiheila_kb(i))
+                    else:
+                        modules.append(_kaiheila_kb_group(_t))
+                        _t = []
+
+            cards = [
+                {
+                    "type": "card",
+                    "theme": "none",
+                    "size": "lg",
+                    "modules": modules,
+                }
+            ]
+            message.append(MessageSegment.Card(cards))
+        print(message)
         if target_type == 'group':
-            api = 'message/create'
-            result['channel_id'] = target_id
+            await bot.send_channel_msg(channel_id=target_id, message=message)
         else:
-            api = 'direct-message/create'
-            result['target_id'] = target_id
-        await bot.call_api(api, **result)
+            await bot.send_private_msg(user_id=target_id, message=message)
 
     if node:
         for _msg in node:

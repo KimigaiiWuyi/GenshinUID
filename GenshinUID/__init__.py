@@ -63,6 +63,7 @@ async def get_notice_message(bot: Bot, ev: Event):
     sp_user_type = None
     sp_bot_id = None
     self_id = str(bot.self_id)
+    sender = {}
     msg_id = ''
     pm = 6
 
@@ -82,14 +83,53 @@ async def get_notice_message(bot: Bot, ev: Event):
 
     user_type = 'group' if group_id else 'direct'
 
-    if 'notice_type' in raw_data and raw_data['notice_type'] in [
-        'group_upload',
-        'offline_file',
-    ]:
-        val = raw_data['file']['url']
-        name = raw_data['file']['name']
-        message = [Message('file', f'{name}|{val}')]
-        # onebot_v11
+    if bot.adapter.get_name() == 'OneBot V11':
+        if 'notice_type' in raw_data and raw_data['notice_type'] in [
+            'group_upload',
+            'offline_file',
+        ]:
+            val = raw_data['file']['url']
+            name = raw_data['file']['name']
+            message = [Message('file', f'{name}|{val}')]
+            # onebot_v11
+        else:
+            return
+    elif bot.adapter.get_name() == 'DoDo':
+        from nonebot.adapters.dodo.event import CardMessageButtonClickEvent
+
+        if isinstance(ev, CardMessageButtonClickEvent):
+            user_id = ev.user_id
+            group_id = ev.channel_id
+            msg_id = ev.event_id
+            bot_id = 'dodo'
+            message = [Message('text', ev.value)]
+            sender = {
+                'nickname': ev.personal.nick_name,
+                'avatar': ev.personal.avatar_url,
+            }
+            user_type = 'group'
+        else:
+            return
+    elif bot.adapter.get_name() == 'Kaiheila':
+        from nonebot.adapters.kaiheila.event import CartBtnClickNoticeEvent
+
+        if isinstance(ev, CartBtnClickNoticeEvent):
+            _ev = ev.extra.body
+            assert _ev is not None
+            user_id = _ev['user_id']
+            group_id = _ev['target_id']
+            msg_id = ev.msg_id
+            bot_id = 'kaiheila'
+            message = [Message('text', _ev['value'])]
+            sender = {
+                'nickname': _ev['user_info']['username'],
+                'avatar': _ev['user_info']['avatar'],
+            }
+            user_type = (
+                'direct' if _ev['channel_type'] == 'PERSON' else 'group'
+            )
+        else:
+            return
     else:
         return
 
@@ -99,6 +139,7 @@ async def get_notice_message(bot: Bot, ev: Event):
         user_type=sp_user_type if sp_user_type else user_type,
         group_id=group_id,
         user_id=user_id,
+        sender=sender,
         content=message,
         msg_id=msg_id,
         user_pm=pm,
@@ -235,6 +276,7 @@ async def get_all_message(bot: Bot, ev: Event):
                 group_id = ev.target_id
             else:
                 user_type = 'direct'
+            print(messages.__dict__)
         else:
             logger.debug('[gsuid] 不支持该 kaiheila 事件...')
             return
@@ -537,7 +579,7 @@ async def repeat_connect():
 
 
 def convert_message(_msg: Any, message: List[Message], index: int):
-    if _msg.type == 'text':
+    if _msg.type == 'text' or _msg.type == 'kmarkdown':
         data: str = (
             _msg.data['text'] if 'text' in _msg.data else _msg.data['content']
         )

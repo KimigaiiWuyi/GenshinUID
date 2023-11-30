@@ -340,6 +340,16 @@ def del_file(path: Path):
         os.remove(path)
 
 
+def _vill_kb(index: int, button: Dict):
+    from nonebot.adapters.villa.models import InputButton
+
+    return InputButton(
+        id=str(index),
+        text=button['text'],
+        input=button['data'],
+    )
+
+
 async def villa_send(
     bot: Bot,
     content: Optional[str],
@@ -351,6 +361,7 @@ async def villa_send(
     target_id: Optional[str],
     target_type: Optional[str],
 ):
+    from nonebot.adapters.villa.models import Panel
     from nonebot.adapters.villa import Bot, Message, MessageSegment
     from nonebot.adapters.villa.api import (
         PostMessageContent,
@@ -367,6 +378,7 @@ async def villa_send(
             if image:
                 if image.startswith('link://'):
                     img_url = image.replace('link://', '')
+                    img_url = await bot.transfer_image(url=img_url)
                 else:
                     img_bytes = base64.b64decode(
                         image.replace('base64://', '')
@@ -386,7 +398,39 @@ async def villa_send(
             if markdown:
                 logger.warning('[gscore] villa暂不支持发送markdown消息')
             if buttons:
-                logger.warning('[gscore] villa暂不支持发送buttons消息')
+                bt = []
+                bigc = []
+                midc = []
+                smc = []
+                for index, button in enumerate(buttons):
+                    if isinstance(button, Dict):
+                        bt.append(_vill_kb(index, button))
+                    if isinstance(button, List):
+                        if len(button) == 1:
+                            bigc.append([_vill_kb(100 + index, button[0])])
+                        elif len(button) == 2:
+                            _t = []
+                            for indexB, btn in enumerate(button):
+                                _t.append(_vill_kb(200 + index + indexB, btn))
+                            midc.append(_t)
+                        else:
+                            _t = []
+                            for indexC, btn in enumerate(button):
+                                _t.append(_vill_kb(300 + index + indexC, btn))
+                                if len(_t) >= 3:
+                                    smc.append(_t)
+                                    _t = []
+                            smc.append(_t)
+                if bt:
+                    msg += MessageSegment.components(*bt)
+                else:
+                    panel = Panel(
+                        mid_component_group_list=midc,
+                        small_component_group_list=smc,
+                        big_component_group_list=bigc,
+                    )
+
+                    msg += MessageSegment.panel(panel)
 
             content_info = await bot.parse_message_content(msg)
 

@@ -67,7 +67,7 @@ async def set_config_func(
                 },
             )
         elif config_name.replace('推送', '') in PUSH_MAP:
-            await GsUser.update_data_by_uid(
+            await GsPush.update_data_by_uid(
                 uid,
                 bot_id,
                 None,

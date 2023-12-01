@@ -6,11 +6,13 @@ from typing import Tuple, Union, Optional
 
 import httpx
 from httpx import get
+from gsuid_core.models import Event
 from PIL import Image, ImageDraw, ImageFont
+from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..fonts.genshin_fonts import gs_font_32
 from ...genshinuid_config.gs_config import gsconfig
-from ..resource.RESOURCE_PATH import CU_BG_PATH, TEXT2D_PATH
+from ..resource.RESOURCE_PATH import CHAR_PATH, CU_BG_PATH, TEXT2D_PATH
 
 FETTER_PATH = TEXT2D_PATH / 'fetter'
 TALENT_PATH = TEXT2D_PATH / 'talent'
@@ -29,6 +31,10 @@ if list(CU_BG_PATH.iterdir()) != []:
     bg_path = CU_BG_PATH
 else:
     bg_path = NM_BG_PATH
+
+
+async def get_avatar(ev: Event, size: int):
+    return await get_avatar_with_ring(ev, size, CHAR_PATH)
 
 
 async def shift_image_hue(img: Image.Image, angle: float = 30) -> Image.Image:

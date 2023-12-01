@@ -1,7 +1,8 @@
 # flake8: noqa
 import random
 
-import httpx
+from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.utils.image.image_tools import get_pic
 
 title = 'https://webstatic.mihoyo.com/upload/event'
 meme_dict = {
@@ -71,5 +72,5 @@ meme_dict = {
 
 async def get_meme_img() -> bytes:
     url = random.choice(list(meme_dict.values()))
-    data = httpx.get(url).content
-    return data
+    data = await get_pic(url)
+    return await convert_img(data)

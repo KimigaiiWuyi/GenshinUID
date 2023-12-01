@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Union, Optional
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
@@ -14,8 +15,8 @@ from ..utils.resource.download_url import download_file
 from ..utils.resource.generate_char_card import create_single_char_card
 from ..utils.resource.RESOURCE_PATH import CHAR_CARD_PATH, CHAR_SIDE_PATH
 from ..utils.image.image_tools import (
+    get_avatar,
     get_color_bg,
-    get_qq_avatar,
     get_talent_pic,
     draw_pic_with_ring,
 )
@@ -108,7 +109,7 @@ async def _draw_floor_card(
 
 
 async def draw_abyss_img(
-    qid: Union[str, int],
+    ev: Event,
     uid: str,
     floor: Optional[int] = None,
     schedule_type: str = '1',
@@ -155,11 +156,7 @@ async def draw_abyss_img(
     img.paste(abyss_title, (0, 0), abyss_title)
 
     # 获取头像
-    _id = str(qid)
-    if _id.startswith('http'):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    else:
-        char_pic = await get_qq_avatar(qid=qid)
+    char_pic = await get_avatar(ev, 320)
     char_pic = await draw_pic_with_ring(char_pic, 320)
 
     img.paste(char_pic, (320, 50), char_pic)

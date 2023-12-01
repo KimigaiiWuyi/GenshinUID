@@ -67,6 +67,11 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后每晚03:25将开始自动米游币任务',
         True,
     ),
+    'SchedResinPush': GsBoolConfig(
+        '定时检查体力',
+        '开启后每隔半小时检查一次开启推送的人的体力状态',
+        True,
+    ),
     'CrazyNotice': GsBoolConfig(
         '催命模式',
         '开启后当达到推送阈值将会一直推送',

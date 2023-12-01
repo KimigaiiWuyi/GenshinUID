@@ -13,9 +13,12 @@ from ..utils.convert import get_uid
 from .notice import get_notice_list
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
+from ..genshinuid_config.gs_config import gsconfig
 
 sv_get_resin = SV('查询体力')
 sv_get_resin_admin = SV('强制推送', pm=1)
+
+is_check_resin = gsconfig.get_config('SchedResinPush').data
 
 
 @sv_get_resin.on_fullmatch(('当前状态'))
@@ -38,28 +41,35 @@ async def force_notice_job(bot: Bot, ev: Event):
 
 @scheduler.scheduled_job('cron', minute='*/30')
 async def notice_job():
-    result = await get_notice_list()
-    logger.info('[推送检查]完成!等待消息推送中...')
-    logger.debug(result)
+    if is_check_resin:
+        result = await get_notice_list()
+        logger.info('[推送检查]完成!等待消息推送中...')
+        logger.debug(result)
 
-    # 执行私聊推送
-    for bot_id in result:
-        for BOT_ID in gss.active_bot:
-            bot = gss.active_bot[BOT_ID]
-            for user_id in result[bot_id]['direct']:
-                msg = result[bot_id]['direct'][user_id]
-                await bot.target_send(msg, 'direct', user_id, bot_id, '', '')
-                await asyncio.sleep(0.5)
-            logger.info('[推送检查] 私聊推送完成')
-            for gid in result[bot_id]['group']:
-                msg_list = []
-                for user_id in result[bot_id]['group'][gid]:
-                    msg_list.append(MessageSegment.at(user_id))
-                    msg = result[bot_id]['group'][gid][user_id]
-                    msg_list.append(MessageSegment.text(msg))
-                await bot.target_send(msg_list, 'group', gid, bot_id, '', '')
-                await asyncio.sleep(0.5)
-            logger.info('[推送检查] 群聊推送完成')
+        # 执行私聊推送
+        for bot_id in result:
+            for BOT_ID in gss.active_bot:
+                bot = gss.active_bot[BOT_ID]
+                for user_id in result[bot_id]['direct']:
+                    msg = result[bot_id]['direct'][user_id]
+                    await bot.target_send(
+                        msg, 'direct', user_id, bot_id, '', ''
+                    )
+                    await asyncio.sleep(0.5)
+                logger.info('[推送检查] 私聊推送完成')
+                for gid in result[bot_id]['group']:
+                    msg_list = []
+                    for user_id in result[bot_id]['group'][gid]:
+                        msg_list.append(MessageSegment.at(user_id))
+                        msg = result[bot_id]['group'][gid][user_id]
+                        msg_list.append(MessageSegment.text(msg))
+                    await bot.target_send(
+                        msg_list, 'group', gid, bot_id, '', ''
+                    )
+                    await asyncio.sleep(0.5)
+                logger.info('[推送检查] 群聊推送完成')
+    else:
+        logger.info('[推送检查] 已关闭全局推送, 停止任务...')
 
 
 @sv_get_resin.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))

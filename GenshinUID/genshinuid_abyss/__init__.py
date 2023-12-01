@@ -48,7 +48,7 @@ async def send_abyss_info(bot: Bot, ev: Event):
 
     await bot.logger.info('[查询深渊信息]深渊层数: {}'.format(floor))
 
-    im = await draw_abyss_img(user_id, uid, floor, schedule_type)
+    im = await draw_abyss_img(ev, uid, floor, schedule_type)
     a = Button('🔍查询深渊11', '查询深渊11')
     b = Button('🔚查询上期深渊', '查询上期深渊')
     c = Button('♾️深渊概览', '深渊概览')

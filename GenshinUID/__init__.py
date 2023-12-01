@@ -130,6 +130,18 @@ async def get_notice_message(bot: Bot, ev: Event):
             )
         else:
             return
+    elif bot.adapter.get_name() == 'Villa':
+        from nonebot.adapters.villa.event import ClickMsgComponentEvent
+
+        if isinstance(ev, ClickMsgComponentEvent):
+            user_id = str(ev.uid)
+            group_id = f'{ev.villa_id}-{ev.room_id}'
+            msg_id = ev.msg_uid
+            bot_id = 'villa'
+            message = [Message('text', ev.extra)]
+            user_type = 'group'
+        else:
+            return
     else:
         return
 

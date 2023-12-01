@@ -342,14 +342,85 @@ def del_file(path: Path):
         os.remove(path)
 
 
-def _villa_kb(index: int, button: Dict):
-    from nonebot.adapters.villa.models import InputButton
-
-    return InputButton(
-        id=str(index),
-        text=button['text'],
-        input=button['data'],
+def _bt(button: Dict):
+    from nonebot.adapters.qq.models import (
+        Action,
+        Button,
+        Permission,
+        RenderData,
     )
+
+    action = button['action']
+    if action == -1:
+        action = 2
+
+    return Button(
+        render_data=RenderData(
+            label=button['text'],
+            visited_label=button['pressed_text'],
+            style=button['style'],
+        ),
+        action=Action(
+            type=button['action'],
+            permission=Permission(
+                type=button['permisson'],
+                specify_role_ids=button['specify_role_ids'],
+                specify_user_ids=button['specify_user_ids'],
+            ),
+            unsupport_tips=button['unsupport_tips'],
+            data=button['data'],
+        ),
+    )
+
+
+def _kb(buttons: Union[List[Dict], List[List[Dict]]]):
+    from nonebot.adapters.qq.models import (
+        InlineKeyboard,
+        MessageKeyboard,
+        InlineKeyboardRow,
+    )
+
+    _rows = []
+    _buttons = []
+    _buttons_rows = []
+    for button in buttons:
+        if isinstance(button, Dict):
+            _buttons.append(_bt(button))
+            if len(_buttons) >= 2:
+                _rows.append(InlineKeyboardRow(buttons=_buttons))
+                _buttons = []
+        else:
+            _buttons_rows.append([_bt(b) for b in button])
+
+    if _buttons:
+        _rows.append(InlineKeyboardRow(buttons=_buttons))
+    if _buttons_rows:
+        _rows.extend([InlineKeyboardRow(buttons=b) for b in _buttons_rows])
+
+    return MessageKeyboard(content=InlineKeyboard(rows=_rows))
+
+
+def _villa_kb(index: int, button: Dict):
+    from nonebot.adapters.villa.models import InputButton, CallbackButton
+
+    if button['action'] == 1:
+        return CallbackButton(
+            id=str(index),
+            text=button['text'],
+            extra=button['data'],
+        )
+    elif button['action'] == 2:
+        return InputButton(
+            id=str(index),
+            text=button['text'],
+            input=button['data'],
+        )
+    else:
+        return CallbackButton(
+            id=str(index),
+            text=button['text'],
+            extra=button['data'],
+        )
 
 
 def _dodo_kb(button: Dict):
@@ -362,11 +433,12 @@ def _dodo_kb(button: Dict):
 
 
 def _kaiheila_kb(button: Dict):
+    action = "return-val"
     return {
         "type": "button",
         "theme": "info",
         "value": button['data'],
-        "click": "return-val",
+        "click": action,
         "text": {"type": "plain-text", "content": button['text']},
     }
 
@@ -884,60 +956,6 @@ async def dodo_send(
         await _send(content, image)
 
 
-def _bt(button: Dict):
-    from nonebot.adapters.qq.models import (
-        Action,
-        Button,
-        Permission,
-        RenderData,
-    )
-
-    return Button(
-        render_data=RenderData(
-            label=button['text'],
-            visited_label=button['pressed_text'],
-            style=button['style'],
-        ),
-        action=Action(
-            type=button['action'],
-            permission=Permission(
-                type=button['permisson'],
-                specify_role_ids=button['specify_role_ids'],
-                specify_user_ids=button['specify_user_ids'],
-            ),
-            unsupport_tips=button['unsupport_tips'],
-            data=button['data'],
-        ),
-    )
-
-
-def _kb(buttons: Union[List[Dict], List[List[Dict]]]):
-    from nonebot.adapters.qq.models import (
-        InlineKeyboard,
-        MessageKeyboard,
-        InlineKeyboardRow,
-    )
-
-    _rows = []
-    _buttons = []
-    _buttons_rows = []
-    for button in buttons:
-        if isinstance(button, Dict):
-            _buttons.append(_bt(button))
-            if len(_buttons) >= 2:
-                _rows.append(InlineKeyboardRow(buttons=_buttons))
-                _buttons = []
-        else:
-            _buttons_rows.append([_bt(b) for b in button])
-
-    if _buttons:
-        _rows.append(InlineKeyboardRow(buttons=_buttons))
-    if _buttons_rows:
-        _rows.extend([InlineKeyboardRow(buttons=b) for b in _buttons_rows])
-
-    return MessageKeyboard(content=InlineKeyboard(rows=_rows))
-
-
 async def group_send(
     bot: Bot,
     content: Optional[str],
@@ -1148,7 +1166,6 @@ async def kaiheila_send(
                 }
             ]
             message.append(MessageSegment.Card(cards))
-        print(message)
         if target_type == 'group':
             await bot.send_channel_msg(channel_id=target_id, message=message)
         else:

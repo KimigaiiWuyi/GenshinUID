@@ -361,7 +361,7 @@ def _bt(button: Dict):
             style=button['style'],
         ),
         action=Action(
-            type=button['action'],
+            type=action,
             permission=Permission(
                 type=button['permisson'],
                 specify_role_ids=button['specify_role_ids'],

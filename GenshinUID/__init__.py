@@ -455,7 +455,9 @@ async def get_all_message(bot: Bot, ev: Event):
     elif bot.adapter.get_name() == 'Villa':
         from nonebot.adapters.villa import SendMessageEvent
 
-        sender = {}
+        sender = {
+            'nickname': ev.nickname,
+        }
         if isinstance(ev, SendMessageEvent):
             user_type = 'group'
             msg_id = ev.msg_uid
@@ -463,6 +465,11 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 Villa 事件...')
             return
+        for contentinfo in ev.content:
+            if contentinfo[0] == 'mentioned_info':
+                if len(contentinfo[1].user_id_list) > 1:
+                    at_list = [Message('at', i) for i in contentinfo[1].user_id_list]
+                    message.extend(at_list)
     elif bot.adapter.get_name() == 'Discord':
         from nonebot.adapters.discord import (
             GuildMessageCreateEvent,

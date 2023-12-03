@@ -3,6 +3,7 @@ import asyncio
 from typing import Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 
 from .mono.Character import Character
 from ..utils.image.convert import convert_img
@@ -12,8 +13,8 @@ from ..utils.map.name_covert import avatar_id_to_char_star
 from ..utils.fonts.genshin_fonts import genshin_font_origin
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, PLAYER_PATH, WEAPON_PATH
 from ..utils.image.image_tools import (
+    get_avatar,
     get_color_bg,
-    get_qq_avatar,
     get_fetter_pic,
     get_talent_pic,
     draw_pic_with_ring,
@@ -63,7 +64,8 @@ value_mask = Image.open(TEXT_PATH / 'value_mask.png')
 
 
 async def draw_cahrcard_list(
-    uid: str, qid: Union[str, int]
+    uid: str,
+    ev: Event,
 ) -> Union[str, bytes]:
     uid_fold = PLAYER_PATH / str(uid)
     char_file_list = uid_fold.glob('*')
@@ -114,12 +116,8 @@ async def draw_cahrcard_list(
 
     # 排序
     char_done_list.sort(key=lambda x: (-x['percent']))
-    qid = str(qid)
-    if qid.startswith('http'):
-        char_pic = await get_qq_avatar(avatar_url=qid)
-    else:
-        char_pic = await get_qq_avatar(qid=qid)
-    char_pic = await draw_pic_with_ring(char_pic, 320)
+
+    char_pic = await get_avatar(ev, 320)
 
     img = await get_color_bg(950, 540 + 100 * len(char_done_list))
     img.paste(char_rank_title, (0, 0), char_rank_title)

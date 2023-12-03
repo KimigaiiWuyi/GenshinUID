@@ -51,7 +51,7 @@ async def sned_rank_pic(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f'[排名列表]uid: {uid}')
-    im = await draw_rank_img(ev.user_id, uid)
+    im = await draw_rank_img(ev, uid)
     await bot.send_option(
         im,
         [
@@ -127,7 +127,7 @@ async def sned_aritifacts_list(bot: Bot, ev: Event):
     else:
         num = 1
 
-    im = await draw_lib(ev.user_id, uid, num)
+    im = await draw_lib(ev, uid, num)
     await bot.send_option(
         im,
         [
@@ -312,12 +312,11 @@ async def send_card_info(bot: Bot, ev: Event):
         await bot.send(im)
 
 
-@sv_get_enka.on_command('毕业度统计')
+@sv_get_enka.on_command(('毕业度统计', '毕业都统计'))
 async def send_charcard_list(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
-    user_id = ev.at if ev.at else ev.user_id
     if uid is None:
         return await bot.send(UID_HINT)
-    im = await draw_cahrcard_list(str(uid), user_id)
+    im = await draw_cahrcard_list(str(uid), ev)
     await bot.logger.info(f'UID{uid}获取角色数据成功！')
     await bot.send(im)

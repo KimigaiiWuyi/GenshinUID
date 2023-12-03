@@ -1,6 +1,7 @@
 import json
+import datetime
 from pathlib import Path
-from typing import Dict, List, Literal
+from typing import Dict, List, Literal, Optional
 
 import httpx
 import aiofiles
@@ -162,8 +163,22 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
     return half_img
 
 
-async def _get_data_from_url(url: str, path: Path) -> Dict:
-    if not path.exists():
+async def _get_data_from_url(
+    url: str, path: Path, expire_sec: Optional[float] = None
+) -> Dict:
+    time_difference = 10
+    if expire_sec is not None:
+        modified_time = path.stat().st_mtime
+        modified_datetime = datetime.datetime.fromtimestamp(modified_time)
+        current_datetime = datetime.datetime.now()
+
+        time_difference = (
+            current_datetime - modified_datetime
+        ).total_seconds()
+
+    if (
+        expire_sec is not None and time_difference >= expire_sec
+    ) or not path.exists():
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
             data = response.json()
@@ -181,7 +196,9 @@ async def get_review_data(
     version: str = Genshin_version[:3], floor: str = '12'
 ):
     schedule_data = await _get_data_from_url(
-        'http://www.yuhengcup.top/api/get_DatabaseSchedule', schedule_path
+        'http://www.yuhengcup.top/api/get_DatabaseSchedule',
+        schedule_path,
+        86400,
     )
 
     schedule: List = schedule_data['SpiralAbyssSchedule']

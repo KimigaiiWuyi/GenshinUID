@@ -1,15 +1,16 @@
 from typing import Dict, Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
 
 from .etc.etc import TEXT_PATH
 from ..utils.colors import get_color
 from .get_akasha_data import _get_rank
+from ..utils.image.image_tools import get_avatar
 from ..utils.map.name_covert import avatar_id_to_name
 from .to_card import draw_char_card, draw_weapon_card
-from ..utils.image.image_tools import get_qq_avatar, draw_pic_with_ring
 from ..utils.fonts.genshin_fonts import (
     gs_font_15,
     gs_font_22,
@@ -25,13 +26,12 @@ TITLE_PATH = RANK_TEXT / 'title.png'
 grey = (191, 191, 191)
 
 
-async def draw_rank_img(user_id: str, uid: str) -> Union[bytes, str]:
+async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
     rank_data = await _get_rank(uid)
     if isinstance(rank_data, str):
         return rank_data
 
-    user_avatar = await get_qq_avatar(user_id)
-    user_pic = await draw_pic_with_ring(user_avatar, 314)
+    user_pic = await get_avatar(ev, 314)
     title = Image.open(TITLE_PATH)
     title_draw = ImageDraw.Draw(title)
 

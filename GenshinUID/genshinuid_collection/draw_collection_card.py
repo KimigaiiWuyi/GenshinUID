@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.utils.api.mys.models import IndexData
 from gsuid_core.utils.error_reply import get_error_img
 
@@ -9,12 +10,7 @@ from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import avatarId2Name
 from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
-from ..utils.image.image_tools import (
-    draw_bar,
-    get_color_bg,
-    get_qq_avatar,
-    draw_pic_with_ring,
-)
+from ..utils.image.image_tools import draw_bar, get_avatar, get_color_bg
 
 TEXT_PATH = Path(__file__).parent / 'texture2D'
 
@@ -55,16 +51,12 @@ expmax_data = {
 }
 
 
-async def draw_collection_img(
-    qid: Union[str, int], uid: str
-) -> Union[str, bytes]:
-    return await draw_base_img(qid, uid, '收集')
+async def draw_collection_img(ev: Event, uid: str) -> Union[str, bytes]:
+    return await draw_base_img(ev, uid, '收集')
 
 
-async def draw_explora_img(
-    qid: Union[str, int], uid: str
-) -> Union[str, bytes]:
-    return await draw_base_img(qid, uid, '探索')
+async def draw_explora_img(ev: Event, uid: str) -> Union[str, bytes]:
+    return await draw_base_img(ev, uid, '探索')
 
 
 async def get_base_data(uid: str) -> Union[bytes, str, IndexData]:
@@ -165,7 +157,7 @@ async def get_collection_data(
 
 
 async def draw_base_img(
-    qid: Union[str, int], uid: str, mode: Literal['探索', '收集'] = '收集'
+    ev: Event, uid: str, mode: Literal['探索', '收集'] = '收集'
 ) -> Union[str, bytes]:
     # 获取数据
     if mode == '收集':
@@ -179,12 +171,7 @@ async def draw_base_img(
     percent_data, value_data = data[0], data[1]
 
     # 获取背景图片各项参数
-    _id = str(qid)
-    if _id.startswith('http'):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    else:
-        char_pic = await get_qq_avatar(qid=qid)
-    char_pic = await draw_pic_with_ring(char_pic, 264)
+    char_pic = await get_avatar(ev, 264)
 
     if mode == '收集':
         title = Image.open(TEXT_PATH / 'collection_title.png')

@@ -42,10 +42,10 @@ async def send_import_gacha_info(bot: Bot, ev: Event):
 @sv_gacha_log.on_fullmatch(('抽卡记录'))
 async def send_gacha_log_card_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[抽卡记录]')
-    uid, user_id = await get_uid(bot, ev, True)
+    uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    im = await draw_gachalogs_img(uid, user_id)
+    im = await draw_gachalogs_img(uid, ev)
     a = Button('🔁刷新抽卡记录', '刷新抽卡记录')
     b = Button('🔜导出抽卡记录至提瓦特小助手', '导出抽卡记录到小助手')
     c = Button('🔙从提瓦特小助手导入抽卡记录', '从小助手导入抽卡记录')

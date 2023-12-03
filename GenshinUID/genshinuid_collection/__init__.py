@@ -33,7 +33,6 @@ async def send_cp_info(bot: Bot, ev: Event):
 @sv_sj.on_command(('查询收集', 'sj'), block=True)
 async def send_collection_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询收集信息]')
-    user_id = ev.at if ev.at else ev.user_id
 
     # 获取uid
     uid = await get_uid(bot, ev)
@@ -41,7 +40,7 @@ async def send_collection_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     await bot.logger.info('[查询角色面板]uid: {}'.format(uid))
 
-    im = await draw_collection_img(user_id, uid)
+    im = await draw_collection_img(ev, uid)
     a = Button('🔍查询探索', '查询探索')
     b = Button('🔍查询收集', '查询收集')
     await bot.send_option(im, [a, b])
@@ -50,7 +49,6 @@ async def send_collection_info(bot: Bot, ev: Event):
 @sv_ts.on_command(('查询探索', 'ts'), block=True)
 async def send_explora_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询探索信息]')
-    user_id = ev.at if ev.at else ev.user_id
 
     # 获取uid
     uid = await get_uid(bot, ev)
@@ -58,7 +56,7 @@ async def send_explora_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     await bot.logger.info('[查询角色面板]uid: {}'.format(uid))
 
-    im = await draw_explora_img(user_id, uid)
+    im = await draw_explora_img(ev, uid)
     a = Button('🔍查询探索', '查询探索')
     b = Button('🔍查询收集', '查询收集')
     await bot.send_option(im, [a, b])

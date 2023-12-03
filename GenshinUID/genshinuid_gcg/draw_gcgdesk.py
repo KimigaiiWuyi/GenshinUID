@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
 
@@ -11,17 +12,13 @@ from ..utils.resource.download_url import download
 from ..utils.resource.RESOURCE_PATH import CARD_PATH
 from ..utils.colors import sec_color, first_color, light_color
 from ..utils.fonts.genshin_fonts import gs_font_20, gs_font_36
-from ..utils.image.image_tools import (
-    get_color_bg,
-    get_qq_avatar,
-    draw_pic_with_ring,
-)
+from ..utils.image.image_tools import get_avatar, get_color_bg
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 
 
 async def draw_deck_img(
-    user_id: str, uid: str, deck_id: int
+    ev: Event, uid: str, deck_id: int
 ) -> Union[str, bytes]:
     # 获取数据
     raw_data = await mys_api.get_gcg_deck(uid)
@@ -32,12 +29,7 @@ async def draw_deck_img(
     raw_data = raw_data['deck_list'][deck_id - 1]
     deck_name = raw_data['name']
     # 获取背景图片各项参数
-    _id = str(user_id)
-    if _id.startswith('http'):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    else:
-        char_pic = await get_qq_avatar(qid=user_id)
-    char_pic = await draw_pic_with_ring(char_pic, 320)
+    char_pic = await get_avatar(ev, 320)
 
     # 初始化图片
     img = await get_color_bg(950, 2300)

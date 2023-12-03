@@ -6,16 +6,13 @@ from pathlib import Path
 from typing import List, Tuple, Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 
 from ..utils.image.convert import convert_img
 from ..utils.map.name_covert import name_to_avatar_id
+from ..utils.image.image_tools import get_avatar, get_color_bg
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, PLAYER_PATH, WEAPON_PATH
-from ..utils.image.image_tools import (
-    get_color_bg,
-    get_qq_avatar,
-    draw_pic_with_ring,
-)
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_28,
@@ -132,7 +129,7 @@ def check_up(name: str, _time: str) -> bool:
         return False
 
 
-async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
+async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
         return '你还没有祈愿数据噢~\n请添加Stoken后使用命令`刷新抽卡记录`更新祈愿数据~'
@@ -301,12 +298,7 @@ async def draw_gachalogs_img(uid: str, user_id: str) -> Union[bytes, str]:
     weapon_y = (1 + ((total_data['武器祈愿']['total'] - 1) // 6)) * single_y
 
     # 获取背景图片各项参数
-    _id = str(user_id)
-    if _id.startswith('http'):
-        char_pic = await get_qq_avatar(avatar_url=_id)
-    else:
-        char_pic = await get_qq_avatar(qid=user_id)
-    char_pic = await draw_pic_with_ring(char_pic, 320)
+    char_pic = await get_avatar(ev, 320)
 
     avatar_title = Image.open(TEXT_PATH / 'avatar_title.png')
     img = await get_color_bg(950, 530 + 900 + normal_y + char_y + weapon_y)

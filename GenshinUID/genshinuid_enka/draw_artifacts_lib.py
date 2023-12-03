@@ -4,13 +4,14 @@ from typing import Dict, Union, Optional
 
 import aiofiles
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 
 from .etc.etc import TEXT_PATH
 from .start import refresh_player_list
 from ..utils.image.convert import convert_img
+from ..utils.image.image_tools import get_avatar
 from .draw_normal import _get_single_artifact_img
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
-from ..utils.image.image_tools import get_qq_avatar, draw_pic_with_ring
 from ..utils.fonts.genshin_fonts import gs_font_25, gs_font_36, gs_font_38
 
 
@@ -36,7 +37,7 @@ async def get_artifacts_lib_data(uid: str) -> Optional[Dict]:
     return data
 
 
-async def draw_lib(user_id: str, uid: str, num: int) -> Union[bytes, str]:
+async def draw_lib(ev: Event, uid: str, num: int) -> Union[bytes, str]:
     data = await get_artifacts_lib_data(uid)
     if data is None:
         return '你还没有圣遗物数据...请尝试使用[刷新圣遗物仓库]获取数据!'
@@ -80,8 +81,7 @@ async def draw_lib(user_id: str, uid: str, num: int) -> Union[bytes, str]:
         return f'[UID{uid}] 圣遗物仓库没有 {num} 页!\n最多为 {all_page} 页!'
 
     bg = Image.open(TEXT_PATH / 'artifacts_lib_bg.png')
-    avatar = await get_qq_avatar(user_id)
-    avatar_img = await draw_pic_with_ring(avatar, 280)
+    avatar_img = await get_avatar(ev, 280)
 
     bg.paste(avatar_img, (120, 88), avatar_img)
 

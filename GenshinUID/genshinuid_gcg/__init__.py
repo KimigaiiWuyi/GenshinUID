@@ -34,5 +34,5 @@ async def send_deck_pic(bot: Bot, ev: Event):
         deck_id = int(ev.text.strip())
     else:
         return bot.send('请输入正确的序号, 例如我的卡组1...')
-    im = await draw_deck_img(ev.user_id, uid, deck_id)
+    im = await draw_deck_img(ev, uid, deck_id)
     await bot.send_option(im, [Button('✅七圣数据总览', '七圣召唤')])

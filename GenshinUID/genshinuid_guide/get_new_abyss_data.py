@@ -56,13 +56,13 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
         if 'Vers' not in up:
             break
 
-        if (ver is None) or (ver and up['Vers'][0] >= ver):
-            ver = up['Vers'][0]
+        if (ver is None) or (ver and up['Vers'][-1] >= ver):
+            ver = up['Vers'][-1]
             continue
 
     index = 0
     for wave in data:
-        if ver is not None and wave['Vers'][0] != ver:
+        if ver is not None and wave['Vers'][-1] != ver:
             continue
         monsters = wave['Monsters']
         wave_monster_uh = (((len(monsters) - 1) // 3) + 1) * 125 + 40
@@ -99,8 +99,12 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
                 wave_desc = str(wave['WaveDesc'])
 
             if real_id in monster2entry_data:
-                monster_name = monster2entry_data[real_id]['name']
-                icon_name = monster2entry_data[real_id]['icon']
+                md = monster2entry_data[real_id]
+                if 'affix' in md and md['affix']:
+                    monster_name = md['affix'][0]['name']
+                else:
+                    monster_name = md['name']
+                icon_name = md['icon']
             elif 'Name' in monster:
                 monster_name = monster['Name']['CH']
                 if wave_desc in monster2entry_data:
@@ -119,6 +123,9 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
             else:
                 monster_name = '未知怪物'
                 icon_name = 'UI_AnimalIcon_Inu_Tanuki_01'
+
+            monster_name = monster_name.replace('-', '·')
+            monster_name = monster_name.replace('·光', '·芒')
 
             if 'Mark' in monster:
                 if monster['Mark']:

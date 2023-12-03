@@ -174,7 +174,7 @@ async def _get_data_from_url(
     url: str, path: Path, expire_sec: Optional[float] = None
 ) -> Dict:
     time_difference = 10
-    if expire_sec is not None:
+    if path.exists() and expire_sec is not None:
         modified_time = path.stat().st_mtime
         modified_datetime = datetime.datetime.fromtimestamp(modified_time)
         current_datetime = datetime.datetime.now()

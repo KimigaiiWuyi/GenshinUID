@@ -71,7 +71,15 @@ async def send_abyss_review(bot: Bot, ev: Event):
         im = await get_review(version)
 
     if isinstance(im, bytes):
-        await bot.send(im)
+        c = Button('♾️深渊概览', '深渊概览')
+        input_version = float(version)
+        now_version = float(Genshin_version[:-2])
+        if input_version <= now_version:
+            adv_version = now_version + 0.1
+        else:
+            adv_version = now_version
+        d = Button(f'♾️版本深渊{adv_version}', f'深渊概览{adv_version}')
+        await bot.send_option(im, [c, d])
     elif isinstance(im, List):
         mes = [MessageSegment.text(msg) for msg in im]
         await bot.send(MessageSegment.node(mes))

@@ -1,6 +1,7 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.database.models import GsBind
 
@@ -21,6 +22,14 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     if uid and not uid.isdigit():
         return await bot.send('你输入了错误的格式!')
 
+    a = Button('🔍查询探索', '查询探索')
+    b = Button('🔍查询收集', '查询收集')
+    c = Button('💖刷新面板', '刷新面板')
+    d2 = Button('🔔绑定UID', '绑定uid')
+    d = Button('🔔绑定更多UID', '绑定uid')
+    e = Button('🔄切换UID', '切换UID')
+    f = Button('❌删除uid', '删除uid')
+
     if '绑定' in ev.command:
         data = await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, 9)
         return await send_diff_msg(
@@ -32,6 +41,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 -2: f'UID{uid}已经绑定过了！',
                 -3: '你输入了错误的格式!',
             },
+            [[d, e, f], [a, b, c]],
         )
     elif '切换' in ev.command:
         data = await GsBind.switch_uid_by_game(qid, ev.bot_id, uid)
@@ -44,6 +54,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 -2: f'UID{uid}不在绑定列表中！',
                 -3: '请绑定大于等于两个UID以进行切换!',
             },
+            [[d, e, f], [a, b, c]],
         )
     else:
         data = await GsBind.delete_uid(qid, ev.bot_id, uid)
@@ -54,6 +65,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
                 0: f'删除UID{uid}成功！',
                 -1: f'该UID{uid}不在已绑定列表中！',
             },
+            [[d2, e, f]],
         )
 
 

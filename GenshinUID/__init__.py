@@ -619,6 +619,8 @@ def convert_message(_msg: Any, message: List[Message], index: int):
             logger.debug('[OB12图片]', _msg.data['file_id'])
         elif 'path' in _msg.data:
             message.append(Message('image', _msg.data['path']))
+        elif 'file' in _msg.data and 'url' not in _msg.data:
+            message.append(Message('image', _msg.data['file']))
         else:
             message.append(Message('image', _msg.data['url']))
     elif _msg.type == 'at':

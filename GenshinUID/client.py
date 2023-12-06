@@ -227,6 +227,7 @@ class GsClient:
                                 image,
                                 file,
                                 node,
+                                buttons,
                                 msg.target_id,
                             )
                         elif msg.bot_id == 'kaiheila':
@@ -450,6 +451,15 @@ def _kaiheila_kb_group(buttons: List[Dict]):
     }
 
 
+def _tg_kb(button: Dict):
+    from nonebot.adapters.telegram.model import InlineKeyboardButton
+
+    return InlineKeyboardButton(
+        text=button['text'],
+        callback_data=button['data'],
+    )
+
+
 async def villa_send(
     bot: Bot,
     content: Optional[str],
@@ -574,6 +584,10 @@ async def onebot_send(
     target_id: Optional[str],
     target_type: Optional[str],
 ):
+    if target_id is None:
+        return
+    _target_id = int(target_id)
+
     async def _send(content: Optional[str], image: Optional[str]):
         from nonebot.adapters.onebot.v11 import MessageSegment
 
@@ -595,27 +609,27 @@ async def onebot_send(
                     'upload_group_file',
                     file=str(path.absolute()),
                     name=file_name,
-                    group_id=target_id,
+                    group_id=_target_id,
                 )
             else:
                 await bot.call_api(
                     'upload_private_file',
                     file=str(path.absolute()),
                     name=file_name,
-                    user_id=target_id,
+                    user_id=_target_id,
                 )
             del_file(path)
         else:
             if target_type == 'group':
                 await bot.call_api(
                     'send_group_msg',
-                    group_id=target_id,
+                    group_id=_target_id,
                     message=result_msg,
                 )
             else:
                 await bot.call_api(
                     'send_private_msg',
-                    user_id=target_id,
+                    user_id=_target_id,
                     message=result_msg,
                 )
 
@@ -623,17 +637,16 @@ async def onebot_send(
         if target_type == 'group':
             await bot.call_api(
                 'send_group_forward_msg',
-                group_id=target_id,
+                group_id=_target_id,
                 messages=messages,
             )
         else:
             await bot.call_api(
                 'send_private_forward_msg',
-                user_id=target_id,
+                user_id=_target_id,
                 messages=messages,
             )
 
-    target_id = int(target_id)
     if node:
         messages = [
             to_json(
@@ -1188,33 +1201,56 @@ async def telegram_send(
     image: Optional[str],
     file: Optional[str],
     node: Optional[List[Dict]],
+    buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     target_id: Optional[str],
 ):
+    from nonebot.adapters.telegram.bot import Bot
+    from nonebot.adapters.telegram.model import InlineKeyboardMarkup
+    from nonebot.adapters.telegram.message import File, Entity, Message
+
+    assert isinstance(bot, Bot)
+
+    if target_id is None:
+        return
+
     async def _send(content: Optional[str], image: Optional[str]):
-        result = {}
+        message = Message()
+        reply_markup = None
         if image:
             if image.startswith('link://'):
                 img_bytes = await download_image(image.replace('link://', ''))
             else:
                 img_bytes = base64.b64decode(image.replace('base64://', ''))
-            result['photo'] = img_bytes
+            message.append(File.photo(img_bytes))
         if content:
-            result['text'] = content
+            message.append(Entity.text(content))
         if file:
             file_name, file_content = file.split('|')
             path = Path(__file__).resolve().parent / file_name
             store_file(path, file_content)
             with open(path, 'rb') as f:
                 doc = f.read()
-            result['document'] = doc
+            message.append(File.document(doc))
             del_file(path)
+        if buttons:
+            bt = []
+            kb = []
+            for button in buttons:
+                if isinstance(button, Dict):
+                    bt.append(_tg_kb(button))
+                    if len(bt) >= 2:
+                        kb.append(bt)
+                        bt = []
+                if isinstance(button, List):
+                    _t = []
+                    for i in button:
+                        _t.append(_tg_kb(i))
+                    else:
+                        kb.append(_t)
+                        _t = []
+            reply_markup = InlineKeyboardMarkup(inline_keyboard=kb)
 
-        if content:
-            await bot.call_api('send_message', chat_id=target_id, **result)
-        if image:
-            await bot.call_api('send_photo', chat_id=target_id, **result)
-        if file:
-            await bot.call_api('send_document', chat_id=target_id, **result)
+        await bot.send_to(target_id, message, reply_markup=reply_markup)
 
     if node:
         for _msg in node:
@@ -1398,4 +1434,5 @@ async def onebot_v12_send(
             else:
                 await _send(_msg['data'], None)
     else:
+        await _send(content, image)
         await _send(content, image)

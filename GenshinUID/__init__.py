@@ -13,7 +13,7 @@ from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
 from nonebot.internal.adapter import Event
 from websockets.exceptions import ConnectionClosed
-from nonebot import require, on_notice, on_message, on_fullmatch
+from nonebot import on, require, on_notice, on_message, on_fullmatch
 
 require('nonebot_plugin_apscheduler')
 
@@ -41,6 +41,7 @@ else:
     is_repeat = False
 
 
+@on('inline').handle()
 @get_notice.handle()
 async def get_notice_message(bot: Bot, ev: Event):
     if gsclient is None:
@@ -141,6 +142,29 @@ async def get_notice_message(bot: Bot, ev: Event):
             message = [Message('text', ev.extra)]
             user_type = 'group'
         else:
+            return
+    elif bot.adapter.get_name() == 'Telegram':
+        from nonebot.adapters.telegram.event import CallbackQueryEvent
+
+        if isinstance(ev, CallbackQueryEvent):
+            if ev.from_.is_bot:
+                return
+
+            user_id = str(ev.from_.id)
+            msg_id = str(ev.id)
+            sender = ev.from_.dict()
+            if ev.message:
+                if ev.message.chat.type == 'private':
+                    user_type = 'direct'
+                else:
+                    user_type = 'group'
+                    group_id = str(ev.message.chat.id)
+                message = [Message('text', ev.data)]
+            else:
+                logger.debug('[gsuid] 不支持该 Telegram 事件...')
+                return
+        else:
+            logger.debug('[gsuid] 不支持该 Telegram 事件...')
             return
     else:
         return
@@ -455,10 +479,10 @@ async def get_all_message(bot: Bot, ev: Event):
     elif bot.adapter.get_name() == 'Villa':
         from nonebot.adapters.villa import SendMessageEvent
 
-        sender = {
-            'nickname': ev.nickname,
-        }
         if isinstance(ev, SendMessageEvent):
+            sender = {
+                'nickname': ev.nickname,
+            }
             user_type = 'group'
             msg_id = ev.msg_uid
             group_id = f'{ev.villa_id}-{ev.room_id}'

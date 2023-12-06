@@ -3,6 +3,7 @@ import re
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.message_models import Button
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
@@ -36,5 +37,15 @@ async def send_role_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     await bot.logger.info('[查询角色信息]uid: {}'.format(uid))
 
+    a = Button('🔍查询探索', '查询探索')
+    b = Button('🔍查询收集', '查询收集')
+    c = Button('💖刷新面板', '刷新面板')
+    t = Button('🌌查询深渊', '查询深渊')
+    s = Button('✨查询体力', '每日')
+    u = Button('🆚查询七圣', '七圣召唤')
+    v = Button('✉原石札记', '原石札记')
+    x = Button('⏱注册时间', '原神注册时间')
+    y = Button('💗抽卡记录', '抽卡记录')
+
     im = await draw_pic(uid)
-    await bot.send(im)
+    await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])

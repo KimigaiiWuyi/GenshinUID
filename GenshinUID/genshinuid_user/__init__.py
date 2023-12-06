@@ -27,7 +27,7 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     c = Button('💖刷新面板', '刷新面板')
     d2 = Button('🔔绑定UID', '绑定uid')
     d = Button('🔔绑定更多UID', '绑定uid')
-    e = Button('🔄切换UID', '切换UID')
+    e = Button('🔄切换UID', '切换uid')
     f = Button('❌删除uid', '删除uid')
 
     if '绑定' in ev.command:

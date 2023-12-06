@@ -633,6 +633,7 @@ async def onebot_send(
                 messages=messages,
             )
 
+    target_id = int(target_id)
     if node:
         messages = [
             to_json(

@@ -582,7 +582,6 @@ async def onebot_send(
         )
         _content = MessageSegment.text(content) if content else ''
         result_msg = _content + result_image
-        target_id = int(target_id)
         if at_list and target_type == 'group':
             for at in at_list:
                 result_msg += MessageSegment.at(at)
@@ -634,6 +633,7 @@ async def onebot_send(
                 messages=messages,
             )
 
+    target_id = int(target_id)
     if node:
         messages = [
             to_json(

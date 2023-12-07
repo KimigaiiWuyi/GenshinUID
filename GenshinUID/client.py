@@ -1435,4 +1435,3 @@ async def onebot_v12_send(
                 await _send(_msg['data'], None)
     else:
         await _send(content, image)
-        await _send(content, image)

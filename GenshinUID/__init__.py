@@ -25,6 +25,7 @@ from .models import Message, MessageReceive  # noqa:E402
 
 get_message = on_message(priority=999)
 get_notice = on_notice(priority=999)
+get_tn = on('inline')
 install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
 start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
 connect_core = on_fullmatch(
@@ -41,7 +42,7 @@ else:
     is_repeat = False
 
 
-@on('inline').handle()
+@get_tn.handle()
 @get_notice.handle()
 async def get_notice_message(bot: Bot, ev: Event):
     if gsclient is None:

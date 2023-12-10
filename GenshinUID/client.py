@@ -290,6 +290,19 @@ class GsClient:
                                 msg.target_type,
                                 group_id,
                             )
+                        elif msg.bot_id == 'discord':
+                            await discord_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                at_list,
+                                markdown,
+                                buttons,
+                                msg.target_id,
+                                msg.target_type,
+                                group_id,
+                            )
                 except Exception as e:
                     logger.exception(e)
         except RuntimeError as e:
@@ -457,6 +470,16 @@ def _tg_kb(button: Dict):
     return InlineKeyboardButton(
         text=button['text'],
         callback_data=button['data'],
+    )
+
+
+def _dc_kb(button: Dict):
+    from nonebot.adapters.discord.api import Button, ButtonStyle
+
+    return Button(
+        label=button['text'],
+        custom_id=button['data'],
+        style=ButtonStyle.Primary,
     )
 
 
@@ -733,14 +756,15 @@ async def discord_send(
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     target_id: Optional[str],
     target_type: Optional[str],
+    group_id: Optional[str],
 ):
-    from nonebot.adapters.discord.message import parse_message
+    from nonebot.adapters.discord.api import ActionRow
     from nonebot.adapters.discord import Bot, Message, MessageSegment
 
     assert isinstance(bot, Bot)
 
     async def _send(content: Optional[str], image: Optional[str]):
-        if target_id:
+        if group_id:
             message = Message()
             if image:
                 img_bytes = base64.b64decode(image.replace('base64://', ''))
@@ -757,15 +781,33 @@ async def discord_send(
             if markdown:
                 logger.warning('[gscore] discord暂不支持发送markdown消息')
             if buttons:
-                logger.warning('[gscore] discord暂不支持发送markdown消息')
+                bt = []
+                for button in buttons:
+                    if isinstance(button, Dict):
+                        bt.append(_dc_kb(button))
+                        if len(bt) >= 2:
+                            message.append(
+                                MessageSegment.component(
+                                    ActionRow(components=bt)
+                                )
+                            )
+                            bt = []
+                    if isinstance(button, List):
+                        _t = []
+                        for i in button:
+                            _t.append(_dc_kb(i))
+                        else:
+                            message.append(
+                                MessageSegment.component(
+                                    ActionRow(components=_t)
+                                )
+                            )
+                            _t = []
 
-            message_data = parse_message(message)
-            await bot.create_message(
-                channel_id=int(target_id),
-                nonce=None,
-                tts=False,
-                allowed_mentions=None,
-                **message_data,
+            await bot.call_api('trigger_typing_indicator', channel_id=group_id)
+            await bot.send_to(
+                channel_id=int(group_id),
+                message=message,
             )
 
     if node:

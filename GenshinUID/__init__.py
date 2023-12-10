@@ -167,6 +167,36 @@ async def get_notice_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 Telegram 事件...')
             return
+    elif bot.adapter.get_name() == 'Discord':
+        from nonebot.adapters.discord.api import ChannelType
+        from nonebot.adapters.discord import MessageComponentInteractionEvent
+
+        sender = {}
+        if isinstance(ev, MessageComponentInteractionEvent):
+            user_type = (
+                'direct'
+                if ev.channel and ev.channel.type == ChannelType.DM
+                else 'group'
+            )
+            msg_id = str(ev.id)
+            group_id = str(ev.channel_id)
+            message = [Message('text', ev.data.custom_id)]
+            if user_type == 'direct':
+                nickname = ev.user.username  # type: ignore
+                avatar = ev.user.avatar  # type: ignore
+                user_id = str(ev.user.id)  # type: ignore
+            else:
+                nickname = ev.member.user.username  # type: ignore
+                avatar = ev.member.user.avatar  # type: ignore
+                user_id = str(ev.member.user.id)  # type: ignore
+            sender = {
+                'nickname': nickname,
+                'avatar': 'https://cdn.discordapp.com/avatars/'
+                f'{user_id}/{avatar}',
+            }
+        else:
+            logger.debug('[gsuid] 不支持该 Discord 事件...')
+            return
     else:
         return
 
@@ -508,9 +538,20 @@ async def get_all_message(bot: Bot, ev: Event):
             user_type = 'group'
             msg_id = str(ev.message_id)
             group_id = str(int(ev.channel_id))
+            sender = {
+                'nickname': ev.author.username,
+                'avatar': 'https://cdn.discordapp.com/avatars/'
+                f'{user_id}/{ev.author.avatar}',
+            }
         elif isinstance(ev, DirectMessageCreateEvent):
             msg_id = str(ev.message_id)
             user_type = 'direct'
+            group_id = str(int(ev.channel_id))
+            sender = {
+                'nickname': ev.author.username,
+                'avatar': 'https://cdn.discordapp.com/avatars/'
+                f'{user_id}/{ev.author.avatar}',
+            }
         else:
             logger.debug('[gsuid] 不支持该 Discord 事件...')
             return

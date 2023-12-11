@@ -44,19 +44,14 @@ python = "^3.8.1"
 httpx = ">=0.23.0"
 beautifulsoup4 = ">=4.11.1"
 lxml = ">=4.9.2"
-openpyxl = ">=3.0.10"
 aiohttp = ">=3.8.1"
 sqlalchemy = ">=1.4.39"
 pillow = ">=9.2.0"
 aiosqlite = ">=0.17.0"
-nonebot-plugin-apscheduler = ">=0.1.4"
 aiofiles = ">=0.8.0"
 sqlmodel = ">=0.0.8"
 gitpython = ">=3.1.27"
-fastapi-amis-admin = ">=0.2.1"
-fastapi = ">=0.87.0,!=0.89.0,<1.0.0"
 msgspec = ">=0.13.1"
-fastapi-user-auth = ">=0.2.1"
 qrcode = {extras = ["pil"], version = "^7.3.1"}
 
 [[tool.poetry.source]]
@@ -70,9 +65,9 @@ black = "^23.1.0"
 isort = "^5.12.0"
 pre-commit = "^2.21.0"
 pycln = "^2.1.2"
+openpyxl = ">=3.0.10"
 
 [tool.poetry.group.test.dependencies]
-nonebug = "^0.3.0"
 pytest = "^7.2.0"
 pytest-asyncio = "^0.20.3"
 

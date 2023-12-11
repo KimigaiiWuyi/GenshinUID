@@ -168,7 +168,11 @@ async def get_notice_message(bot: Bot, ev: Event):
             logger.debug('[gsuid] 不支持该 Telegram 事件...')
             return
     elif bot.adapter.get_name() == 'Discord':
-        from nonebot.adapters.discord.api import ChannelType
+        from nonebot.adapters.discord.api import (
+            ChannelType,
+            InteractionResponse,
+            InteractionCallbackType,
+        )
         from nonebot.adapters.discord import MessageComponentInteractionEvent
 
         sender = {}
@@ -194,6 +198,14 @@ async def get_notice_message(bot: Bot, ev: Event):
                 'avatar': 'https://cdn.discordapp.com/avatars/'
                 f'{user_id}/{avatar}',
             }
+            await bot.call_api(
+                'create_interaction_response',
+                interaction_id=ev.id,
+                interaction_token=ev.token,
+                response=InteractionResponse(
+                    type=InteractionCallbackType.PONG
+                ),
+            )
         else:
             logger.debug('[gsuid] 不支持该 Discord 事件...')
             return

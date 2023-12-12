@@ -131,6 +131,8 @@ class GsClient:
                     group_id = ''
                     markdown = ''
                     buttons = []
+                    template_buttons = ''
+                    template_markdown = {}
 
                     if msg.content:
                         for _c in msg.content:
@@ -151,6 +153,10 @@ class GsClient:
                                     markdown = _c.data
                                 elif _c.type == 'buttons':
                                     buttons = _c.data
+                                elif _c.type == 'template_markdown':
+                                    template_markdown = _c.data
+                                elif _c.type == 'template_buttons':
+                                    template_buttons = _c.data
                     else:
                         pass
 
@@ -215,6 +221,8 @@ class GsClient:
                                 at_list,
                                 markdown,
                                 buttons,
+                                template_markdown,
+                                template_buttons,
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
@@ -250,6 +258,8 @@ class GsClient:
                                 node,
                                 markdown,
                                 buttons,
+                                template_markdown,
+                                template_buttons,
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
@@ -831,6 +841,8 @@ async def guild_send(
     at_list: Optional[List[str]],
     markdown: Optional[str],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    template_markdown: Optional[Dict],
+    template_buttons: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
@@ -839,6 +851,11 @@ async def guild_send(
     from nonebot.adapters.qq.bot import Bot as qqbot
     from nonebot.adapters.qq.exception import ActionFailed
     from nonebot.adapters.qq.message import Message, MessageSegment
+    from nonebot.adapters.qq.models import (
+        MessageKeyboard,
+        MessageMarkdown,
+        MessageMarkdownParams,
+    )
 
     assert isinstance(bot, qqbot)
 
@@ -860,10 +877,29 @@ async def guild_send(
             if at_list and target_type == 'group':
                 for at in at_list:
                     message.append(MessageSegment.mention_user(at))
-        if markdown:
+        if template_markdown:
+            message.append(
+                MessageSegment.markdown(
+                    MessageMarkdown(
+                        custom_template_id=template_markdown['template_id'],
+                        params=[
+                            MessageMarkdownParams(
+                                key=key,
+                                values=[template_markdown['para'][key]],
+                            )
+                            for key in template_markdown['para']
+                        ],
+                    )
+                )
+            )
+        elif markdown:
             _markdown = markdown.replace('link://', '')
             message.append(MessageSegment.markdown(_markdown))
-        if buttons:
+        if template_buttons:
+            message.append(
+                MessageSegment.keyboard(MessageKeyboard(id=template_buttons))
+            )
+        elif buttons:
             message.append(MessageSegment.keyboard(_kb(buttons)))
 
         if target_type == 'group':
@@ -1019,12 +1055,19 @@ async def group_send(
     node: Optional[List[Dict]],
     markdown: Optional[str],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    template_markdown: Optional[Dict],
+    template_buttons: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
 ):
     from nonebot.adapters.qq.bot import Bot as qqbot
     from nonebot.adapters.qq.message import Message, MessageSegment
+    from nonebot.adapters.qq.models import (
+        MessageKeyboard,
+        MessageMarkdown,
+        MessageMarkdownParams,
+    )
 
     assert isinstance(bot, qqbot)
     assert isinstance(target_id, str)
@@ -1050,10 +1093,29 @@ async def group_send(
         elif _img:
             message.append(MessageSegment.image(_img))
 
-        if markdown:
+        if template_markdown:
+            message.append(
+                MessageSegment.markdown(
+                    MessageMarkdown(
+                        custom_template_id=template_markdown['template_id'],
+                        params=[
+                            MessageMarkdownParams(
+                                key=key,
+                                values=[template_markdown['para'][key]],
+                            )
+                            for key in template_markdown['para']
+                        ],
+                    )
+                )
+            )
+        elif markdown:
             _markdown = markdown.replace('link://', '')
             message.append(MessageSegment.markdown(_markdown))
-        if buttons:
+        if template_buttons:
+            message.append(
+                MessageSegment.keyboard(MessageKeyboard(id=template_buttons))
+            )
+        elif buttons:
             message.append(MessageSegment.keyboard(_kb(buttons)))
 
         if mid is None:

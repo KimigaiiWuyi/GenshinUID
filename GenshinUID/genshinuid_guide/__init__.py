@@ -20,7 +20,7 @@ sv_char_guide = SV('查询角色攻略')
 sv_abyss_review = SV('查询深渊阵容')
 
 
-@sv_char_guide.on_prefix(('参考攻略'))
+@sv_char_guide.on_prefix(('参考攻略', '攻略', '推荐'))
 @sv_char_guide.on_suffix(('攻略', '推荐'))
 async def send_guide_pic(bot: Bot, ev: Event):
     name = ev.text.strip()

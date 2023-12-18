@@ -130,7 +130,7 @@ async def draw_single_constellation(
     path = ICON_PATH / icon_name
     if not path.exists():
         await download(image, 8, icon_name)
-    icon = Image.open(path).resize((38, 38)).convert('RBGA')
+    icon = Image.open(path).resize((38, 38)).convert('RGBA')
     img.paste(icon, (57, 37), icon)
     img_draw.text(
         (134, 40),
@@ -192,6 +192,7 @@ async def draw_constellation_wiki_img(
         element_pic = Image.open(element_pic_path).resize((36, 36))
     else:
         element_pic = get_unknown_png().resize((36, 36))
+    element_pic = element_pic.convert('RGBA')
     img.paste(element_pic, (188, 81), element_pic)
     img.paste(star_pic, (201, 120), star_pic)
 

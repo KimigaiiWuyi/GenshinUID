@@ -5819,6 +5819,44 @@
         "route": "Hilichurl",
         "icon": "UI_MonsterIcon_Hili_None_01"
     },
+    "21010105": {
+        "id": 21010105,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "丘丘人",
+        "route": "Hilichurl",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
     "21010201": {
         "id": 21010201,
         "type": "MONSTER_ORDINARY",
@@ -6232,6 +6270,44 @@
     },
     "21010403": {
         "id": 21010403,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 10.8672,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 11.304,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "射手丘丘人",
+        "route": "Hilichurl Shooter",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
+    "21010404": {
+        "id": 21010404,
         "type": "MONSTER_ORDINARY",
         "affix": null,
         "hpDrops": null,
@@ -8945,6 +9021,44 @@
                 "hpPercent": 25
             }
         ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 40.752,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 60.288,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.3
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "雷斧丘丘暴徒",
+        "route": "Crackling Axe Mitachurl",
+        "icon": "UI_MonsterIcon_Brute_None_01"
+    },
+    "21020704": {
+        "id": 21020704,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
         "prop": [
             {
                 "propType": "FIGHT_PROP_BASE_HP",
@@ -22881,6 +22995,61 @@
         "route": "Suppression Specialist Mek",
         "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_02"
     },
+    "24060903": {
+        "id": 24060903,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "正义机器-荒",
+                "description": "正义机器-荒性词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Pneuma"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "正义机器-天线",
+                "description": "正义机器-天线词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Coil_01"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": "Pneuma",
+        "reward": null,
+        "name": "压制特化型机关",
+        "route": "Suppression Specialist Mek",
+        "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_02"
+    },
     "24065901": {
         "id": 24065901,
         "type": "MONSTER_ORDINARY",
@@ -23705,6 +23874,61 @@
         "route": "Area Alert Mek",
         "icon": "UI_MonsterIcon_MachinaIustitia_LengthShifter"
     },
+    "24061103": {
+        "id": 24061103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "正义机器-荒",
+                "description": "正义机器-荒性词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Pneuma"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "正义机器-天线",
+                "description": "正义机器-天线词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Coil_01"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 19.0176,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": "Pneuma",
+        "reward": null,
+        "name": "机关·区域警戒型",
+        "route": "Area Alert Mek",
+        "icon": "UI_MonsterIcon_MachinaIustitia_LengthShifter"
+    },
     "24061105": {
         "id": 24061105,
         "type": "MONSTER_ORDINARY",
@@ -24173,6 +24397,61 @@
                 "count": "0.084"
             }
         },
+        "name": "机关·区域警戒型",
+        "route": "Area Alert Mek",
+        "icon": "UI_MonsterIcon_MachinaIustitia_LengthShifter"
+    },
+    "24066103": {
+        "id": 24066103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "正义机器-光",
+                "description": "正义机器-光性词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Ousia"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "正义机器-天线",
+                "description": "正义机器-天线词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Coil_01"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 19.0176,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": "Ousia",
+        "reward": null,
         "name": "机关·区域警戒型",
         "route": "Area Alert Mek",
         "icon": "UI_MonsterIcon_MachinaIustitia_LengthShifter"
@@ -26345,6 +26624,44 @@
                 "hpPercent": 33
             }
         ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 15.072,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "盗宝团·斥候",
+        "route": "Treasure Hoarders: Scout",
+        "icon": "UI_MonsterIcon_Thoarder_Male_Rogue_01"
+    },
+    "25010226": {
+        "id": 25010226,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
         "prop": [
             {
                 "propType": "FIGHT_PROP_BASE_HP",

@@ -2426,6 +2426,46 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 545487479,
+        "rankLevel": 4,
+        "param": 15033,
+        "id": 400280,
+        "nameTextMapHash": 3758442817,
+        "descTextMapHash": 1785600354,
+        "icon": "UI_RelicIcon_15033_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2576561631,
+        "rankLevel": 5,
+        "param": 15033,
+        "id": 400281,
+        "nameTextMapHash": 3740718281,
+        "descTextMapHash": 233850090,
+        "icon": "UI_RelicIcon_15033_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 1035909015,
+        "rankLevel": 4,
+        "param": 15034,
+        "id": 400290,
+        "nameTextMapHash": 1267072625,
+        "descTextMapHash": 3175609954,
+        "icon": "UI_RelicIcon_15034_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 3334660991,
+        "rankLevel": 5,
+        "param": 15034,
+        "id": 400291,
+        "nameTextMapHash": 2930602401,
+        "descTextMapHash": 1638541810,
+        "icon": "UI_RelicIcon_15034_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 342345127,
         "rankLevel": 5,
         "id": 419000,

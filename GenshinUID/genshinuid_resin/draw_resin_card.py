@@ -17,14 +17,19 @@ from gsuid_core.utils.error_reply import (
 )
 
 from ..utils.mys_api import mys_api
-from ..utils.api.mys.models import FakeResin
 from ..utils.image.convert import convert_img
 from ..genshinuid_config.gs_config import gsconfig
 from ..genshinuid_enka.to_data import get_enka_info
 from ..utils.resource.download_url import download_file
+from ..utils.api.mys.models import FakeResin, DayilyTask
 from ..utils.api.mys.models import Expedition as WidgetExpedition
-from ..utils.api.mys.models import Transformer, WidgetResin, RecoveryTime
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_TEMP_PATH
+from ..utils.api.mys.models import (
+    Transformer,
+    WidgetResin,
+    RecoveryTime,
+    ArchonProgress,
+)
 from ..utils.fonts.genshin_fonts import (
     gs_font_20,
     gs_font_26,
@@ -109,7 +114,7 @@ async def get_resin_img(bot_id: str, user_id: str):
         # 开始绘图任务
         task = []
         img = Image.new(
-            'RGBA', (700 * len(useable_uid_list), 1200), (0, 0, 0, 0)
+            'RGBA', (700 * len(useable_uid_list), 1300), (0, 0, 0, 0)
         )
         for uid_index, uid in enumerate(useable_uid_list):
             task.append(_draw_all_resin_img(img, uid, uid_index))
@@ -136,7 +141,8 @@ async def seconds2hours(seconds: int) -> str:
 
 
 def transform_fake_resin(data: WidgetResin) -> FakeResin:
-    return FakeResin(
+    del data['daily_task']  # type: ignore
+    data = FakeResin(
         **data,
         remain_resin_discount_num=-99,
         resin_discount_num_limit=0,
@@ -149,7 +155,22 @@ def transform_fake_resin(data: WidgetResin) -> FakeResin:
             noticed=False,
             latest_job_id='123',
         ),
+        daily_task=DayilyTask(
+            total_num=-1,
+            finished_num=-1,
+            is_extra_task_reward_received=False,
+            task_rewards=[],
+            attendance_rewards=[],
+        ),
+        archon_quest_progress=ArchonProgress(
+            list=[],
+            is_open_archon_quest=False,
+            is_finish_all_mainline=False,
+            is_finish_all_interchapter=False,
+            wiki_url='False',
+        ),
     )
+    return data
 
 
 async def draw_bar(
@@ -291,6 +312,26 @@ async def draw_resin_img(uid: str) -> Image.Image:
         trans_status = 'ok'
     trans_bar = await draw_bar(trans_status, '参量质变', transformer_str)
 
+    # 魔神任务
+    archon_quest = daily_data['archon_quest_progress']
+    if archon_quest['wiki_url'] == 'False':
+        archon_status = 'un'
+        archon_str = '数据未知...'
+    else:
+        if (
+            archon_quest['is_finish_all_interchapter']
+            and archon_quest['is_finish_all_mainline']
+            and archon_quest['is_open_archon_quest']
+            and not archon_quest['list']
+        ):
+            archon_status = 'ok'
+            archon_str = '已全部完成'
+        else:
+            archon_status = 'no'
+            archon_str = archon_quest['list'][0]['chapter_num']
+
+    archon_bar = await draw_bar(archon_status, '魔神任务', archon_str)
+
     img_draw = ImageDraw.Draw(img)
 
     for _ in range(5):
@@ -306,7 +347,7 @@ async def draw_resin_img(uid: str) -> Image.Image:
     # 派遣
     for index, char in enumerate(daily_data['expeditions']):
         go_img = await _draw_task_img(char)
-        img.paste(go_img, (81 + index * 106, 971), go_img)
+        img.paste(go_img, (81 + index * 106, 1051), go_img)
 
     # 绘制树脂圆环
     ring_pic = Image.open(TEXT_PATH / 'ring.apng')
@@ -347,13 +388,14 @@ async def draw_resin_img(uid: str) -> Image.Image:
     )
 
     img_draw.text((350, 89), name, (13, 13, 13), gs_font_58, 'mm')
-    img_draw.text((350, 1140), data_res, (92, 92, 92), gs_font_20, 'mm')
+    img_draw.text((350, 1235), data_res, (92, 92, 92), gs_font_20, 'mm')
 
     delay = 78
     img.paste(coin_bar, (0, 642), coin_bar)
     img.paste(task_bar, (0, 642 + delay), task_bar)
     img.paste(weekly_bar, (0, 642 + delay * 2), weekly_bar)
     img.paste(trans_bar, (0, 642 + delay * 3), trans_bar)
+    img.paste(archon_bar, (0, 642 + delay * 4), archon_bar)
 
     sign_pic = Image.open(TEXT_PATH / f'sign_{is_sign}.png')
     img.paste(sign_pic, (275, 500), sign_pic)

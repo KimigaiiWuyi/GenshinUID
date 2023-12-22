@@ -328,7 +328,10 @@ async def draw_resin_img(uid: str) -> Image.Image:
             archon_str = '已全部完成'
         else:
             archon_status = 'no'
-            archon_str = archon_quest['list'][0]['chapter_num']
+            if archon_quest['list']:
+                archon_str = archon_quest['list'][0]['chapter_num']
+            else:
+                archon_str = '暂未开启...'
 
     archon_bar = await draw_bar(archon_status, '魔神任务', archon_str)
 

@@ -56,18 +56,18 @@ async def draw_foods_wiki_img(data: Food):
     w, h = 600, 750 + y1 + y2
 
     star_pic = get_star_png(data['rarity'])
-    path = TEXT_PATH / f'UI_Buff_Item_{data["foodcategory"]}.png'
+    path = TEXT_PATH / f'UI_Buff_Item_{data["filterType"]}.png'
     if path.exists():
         type_pic = Image.open(path)
     else:
         type_pic = await get_assets_from_ambr(
-            f'UI_Buff_Item_{data["foodcategory"]}'
+            f'UI_Buff_Item_{data["filterType"]}'
         )
         if type_pic is None:
             type_pic = get_unknown_png()
     type_pic = type_pic.convert('RGBA').resize((40, 40))
 
-    food_pic = await get_assets_from_ambr(data['images']['nameicon'])
+    food_pic = await get_assets_from_ambr(data['images']['filename_icon'])
     if food_pic is None:
         food_pic = Image.new('RGBA', (320, 320))
     else:
@@ -86,7 +86,7 @@ async def draw_foods_wiki_img(data: Food):
 
     img.paste(food_pic, (140, 119), food_pic)
     img_draw.text((45, 465), '食物类型', gray_color, gs_font_18, 'lm')
-    img_draw.text((45, 500), data['foodfilter'], white_color, gs_font_36, 'lm')
+    img_draw.text((45, 500), data['filterText'], white_color, gs_font_36, 'lm')
 
     wiki_cost_tag = Image.open(TEXT_PATH / 'cost_tag.png')
     img.paste(wiki_cost_tag, (25, 550), wiki_cost_tag)
@@ -106,7 +106,7 @@ async def draw_foods_wiki_img(data: Food):
         if isinstance(material, int):
             cost_pic = get_unknown_png()
         else:
-            name_icon = material['images']['nameicon']
+            name_icon = material['images']['filename_icon']
             _cost_pic = await get_assets_from_ambr(name_icon)
             if _cost_pic is None:
                 cost_pic = get_unknown_png()

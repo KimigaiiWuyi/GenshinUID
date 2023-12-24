@@ -164,13 +164,13 @@ async def avatarName2ElementJson() -> None:
         if 'retcode' in data:
             data = await convert_ambr_to_minigg(_id)
         if data is not None and 'code' not in data:
-            temp[name] = elementMap[data['element']]
+            temp[name] = elementMap[data['elementText']]
             try:
                 nameicon = data['images']['namesideicon']  # type: ignore
                 enName = nameicon.split('_')[-1]
                 enName2Id_result[enName] = _id
                 avatarId2Star_result[int(_id)] = str(data['rarity'])
-                avatarName2Weapon_result[data['name']] = data['weapontype']
+                avatarName2Weapon_result[data['name']] = data['weaponText']
             except:  # noqa: E722
                 adata = httpx.get(
                     f'https://api.ambr.top/v2/chs/avatar/{_id}?vh=40F8'

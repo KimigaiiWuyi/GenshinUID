@@ -15,6 +15,7 @@ from gsuid_core.utils.api.minigg.models import (
 
 from .path import TEXT_PATH
 from ..utils.resource.download_url import download
+from ..utils.get_assets import get_assets_from_ambr
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img
 from ..utils.resource.RESOURCE_PATH import (
@@ -78,7 +79,7 @@ async def get_single_constellation_img(
             async with aiofiles.open(path, 'rb') as f:
                 return await f.read()
     con = data[f'c{num}']
-    url = data['images'][f'c{num}']
+    url = data['images'][f'filename_c{num}']
     img = await draw_single_constellation(con, url, num, data['name'], True)
     return await convert_img(img)
 
@@ -91,7 +92,7 @@ async def draw_single_constellation(
     is_single: bool = False,
 ) -> Image.Image:
     # 计算长度
-    effect = data['effect']
+    effect = data['description']
     for i in range(1, 10):
         if i % 2 != 0:
             effect = effect.replace('**', '「', 1)
@@ -126,10 +127,10 @@ async def draw_single_constellation(
     icon_bg = Image.open(TEXT_PATH / 'ring_bg.png').resize((74, 74))
     img.paste(icon_bg, (38, 20), icon_bg)
 
-    icon_name = image.split('/')[-1]
+    icon_name = f'{image}.png'
     path = ICON_PATH / icon_name
     if not path.exists():
-        await download(image, 8, icon_name)
+        await get_assets_from_ambr(icon_name)
     icon = Image.open(path).resize((38, 38)).convert('RGBA')
     img.paste(icon, (57, 37), icon)
     img_draw.text(
@@ -161,7 +162,10 @@ async def draw_constellation_wiki_img(
     y = 0
     for i in range(1, 7):
         _img = await draw_single_constellation(
-            data[f'c{i}'], data['images'][f'c{i}'], i, char_data['name']
+            data[f'c{i}'],
+            data['images'][f'filename_c{i}'],
+            i,
+            char_data['name'],
         )
         img_list[i] = (_img, _img.size[1])
         y += _img.size[1]
@@ -187,7 +191,7 @@ async def draw_constellation_wiki_img(
     )
 
     star_pic = get_star_png(char_data['rarity'])
-    element_pic_path = TEXT_PATH / f'{char_data["element"]}.png'
+    element_pic_path = TEXT_PATH / f'{char_data["elementText"]}.png'
     if element_pic_path.exists():
         element_pic = Image.open(element_pic_path).resize((36, 36))
     else:

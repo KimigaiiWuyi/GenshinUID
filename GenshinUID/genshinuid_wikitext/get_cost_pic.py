@@ -70,7 +70,7 @@ async def draw_single_cost(title: str, data: Dict) -> Tuple[Image.Image, str]:
         if isinstance(material, int):
             cost_pic = get_unknown_png()
         else:
-            name_icon = material['images']['nameicon']
+            name_icon = material['images']['filename_icon']
             _cost_pic = await get_assets_from_ambr(name_icon)
             if _cost_pic is None:
                 cost_pic = get_unknown_png().resize((96, 96))
@@ -78,11 +78,11 @@ async def draw_single_cost(title: str, data: Dict) -> Tuple[Image.Image, str]:
                 cost_pic = _cost_pic.resize((96, 96))
 
             if (
-                material['materialtype'] == '武器突破素材'
-                or material['materialtype'] == '角色天赋素材'
-            ) and 'daysofweek' in material:
-                pos = material['dropdomain']
-                days = material['daysofweek']
+                material['typeText'] == '武器突破素材'
+                or material['typeText'] == '角色天赋素材'
+            ) and 'daysOfWeek' in material:
+                pos = material['dropDomainName']
+                days = material['daysOfWeek']
                 if '周日' in days:
                     days.remove('周日')
                 cost_pos = f'{pos} - {"/".join(days)}'
@@ -147,7 +147,7 @@ async def draw_char_cost_img(data: Character, talent_data: CharacterTalents):
     )
 
     star_pic = get_star_png(data['rarity'])
-    element_pic_path = TEXT_PATH / f'{data["element"]}.png'
+    element_pic_path = TEXT_PATH / f'{data["elementText"]}.png'
     if element_pic_path.exists():
         element_pic = Image.open(element_pic_path).resize((54, 54))
     else:

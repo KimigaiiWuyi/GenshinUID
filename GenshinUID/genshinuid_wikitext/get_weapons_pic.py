@@ -1,3 +1,4 @@
+import re
 import math
 from typing import Dict, List, Union
 
@@ -62,30 +63,32 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
     gray_color = (214, 214, 214)
     img_test = Image.new('RGBA', (1, 1))
     img_test_draw = ImageDraw.Draw(img_test)
-    effect = data['effect']
-    effect = effect.replace('/', '·')
+    effect_desc = re.sub(
+        r'</?c[^\u4e00-\u9fa5/d]+>',
+        '',
+        data['effectTemplateRaw'],
+    )
     rw_ef = []
-    for i in range(len(data['r1'])):
-        now = ''
+    for i in range(len(data['r1']['values'])):
+        _temp = []
         for j in range(1, 6):
-            ef_val = data[f'r{j}'][i].replace('/', '·')
-            now += ef_val + ' / '
-        now = f'{now[:-2]}'
+            _temp.append(data[f'r{j}']['values'][i].replace('/', '·'))
+        now = ' / '.join(_temp)
         rw_ef.append(now)
 
-    if effect:
-        effect = effect.format(*rw_ef)
+    if effect_desc:
+        effect_desc = effect_desc.format(*rw_ef)
     else:
-        effect = '无特效'
+        effect_desc = '无特效'
 
-    effect = get_str_size(effect, gs_font_22, 490)
+    effect_desc = get_str_size(effect_desc, gs_font_22, 490)
 
-    _, _, _, y1 = img_test_draw.textbbox((0, 0), effect, gs_font_22)
+    _, _, _, y1 = img_test_draw.textbbox((0, 0), effect_desc, gs_font_22)
     w, h = 600, 1110 + y1
 
     star_pic = get_star_png(data['rarity'])
-    type_pic = Image.open(TEXT_PATH / f'{data["weapontype"]}.png')
-    gacha_pic = await get_assets_from_ambr(data['images']['namegacha'])
+    type_pic = Image.open(TEXT_PATH / f'{data["weaponText"]}.png')
+    gacha_pic = await get_assets_from_ambr(data['images']['filename_gacha'])
     if gacha_pic is None:
         gacha_pic = Image.new('RGBA', (333, 666))
     else:
@@ -100,35 +103,33 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
     img.paste(type_pic, (44, 158), type_pic)
     img.paste(gacha_pic, (134, 81), gacha_pic)
     img_draw.text((45, 744), '基础攻击力', gray_color, gs_font_18, 'lm')
-    img_draw.text((545, 744), data['substat'], gray_color, gs_font_18, 'rm')
+    img_draw.text(
+        (545, 744), data['mainStatText'], gray_color, gs_font_18, 'rm'
+    )
 
-    if data['subvalue'] != '':
-        sub_val = (
-            (data['subvalue'] + '%')
-            if data['substat'] != '元素精通'
-            else data['subvalue']
-        )
+    if data['baseStatText'] != '':
+        sub_val = data['baseStatText']
     else:
         sub_val = ''
 
-    if data['substat'] != '':
+    if data['mainStatText'] != '':
         sp = (
             '%.1f%%' % (stats['specialized'] * 100)
-            if data['substat'] != '元素精通'
+            if data['mainStatText'] != '元素精通'
             else str(math.ceil(stats['specialized']))
         )
     else:
         sp = ''
 
-    atk = f'{data["baseatk"]}/{math.ceil(stats["attack"])}'
+    atk = f'{int(data["baseAtkValue"])}/{math.ceil(stats["attack"])}'
     subval = f'{sub_val}/{sp}'
 
     img_draw.text((45, 779), atk, white_color, gs_font_36, 'lm')
     img_draw.text((545, 779), subval, white_color, gs_font_36, 'rm')
 
-    effect_name = f'{data["effectname"]}' if data['effectname'] else '无特效'
+    effect_name = f'{data["effectName"]}' if data['effectName'] else '无特效'
     img_draw.text((46, 837), effect_name, (255, 206, 51), gs_font_28, 'lm')
-    img_draw.text((46, 866), effect, gray_color, gs_font_22)
+    img_draw.text((46, 866), effect_desc, gray_color, gs_font_22)
 
     # 计算材料
     temp: Dict[str, List[int]] = {}
@@ -190,16 +191,16 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
         if isinstance(material, int):
             cost_pic = get_unknown_png()
         else:
-            name_icon = material['images']['nameicon']
+            name_icon = material['images']['filename_icon']
             _cost_pic = await get_assets_from_ambr(name_icon)
             if _cost_pic is None:
                 cost_pic = get_unknown_png()
             else:
                 cost_pic = _cost_pic.convert('RGBA').resize((64, 64))
 
-            if not cost_pos and material['materialtype'] == '武器突破素材':
-                pos = material['dropdomain']
-                days = material['daysofweek']
+            if not cost_pos and material['typeText'] == '武器突破素材':
+                pos = material['dropDomainName']
+                days = material['daysOfWeek']
                 cost_pos = f'{pos} - {"/".join(days)}'
 
         t = 100 * index

@@ -292,27 +292,31 @@ async def enka_to_dict(
         else:
             weapon_info['weaponAffix'] = 1
         weapon_info['weaponStats'] = []
+
         for k in weapon_data['flat']['weaponStats']:
             weapon_prop_temp = {}
             weapon_prop_temp['appendPropId'] = k['appendPropId']
             weapon_prop_temp['statName'] = propId2Name[k['appendPropId']]
             weapon_prop_temp['statValue'] = k['statValue']
             weapon_info['weaponStats'].append(weapon_prop_temp)
+
         # 武器特效，须请求API
         try:
             effect_raw = await get_weapon_info(weapon_info['weaponName'])
         except ConnectTimeout:
             effect_raw = await convert_ambr_to_weapon(weapon_info['itemId'])
-        if not isinstance(effect_raw, List) and not isinstance(
-            effect_raw, int
+
+        if (
+            not isinstance(effect_raw, List)
+            and not isinstance(effect_raw, int)
+            and effect_raw is not None
         ):
-            effect = effect_raw['effect'].format(  # type:ignore
-                *effect_raw[  # type:ignore
-                    'r{}'.format(str(weapon_info['weaponAffix']))
-                ]
-            )
+            effect = effect_raw[f'r{weapon_info["weaponAffix"]}'][
+                'description'
+            ]
         else:
             effect = '无特效。'
+
         weapon_info['weaponEffect'] = effect
         char_data['weaponInfo'] = weapon_info
 

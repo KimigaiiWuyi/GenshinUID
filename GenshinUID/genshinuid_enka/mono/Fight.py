@@ -186,6 +186,8 @@ class Fight:
 
         if char.char_name == '宵宫' and power_name == 'A一段伤害':
             power_plus = 1
+        elif char.char_name == '娜维娅' and '层' in power_name:
+            power_plus = 2
 
         power_plus += real_prop[f'{power_name[0]}_powerPlus'] - 1
 
@@ -229,6 +231,9 @@ class Fight:
                 ex_add = 400
             effect = f'a+{ex_add}'
             effect_list.append(effect)
+
+        if char.char_name == '娜维娅' and '6层' in char.power_name:
+            effect_list.append('E:dmgBonus+45')
 
         if effect_list:
             char.real_prop = await char.get_effect_prop(

@@ -65,7 +65,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
     """
     pc2 = ''
     pc4 = ''
-    for uchar in data['2pc']:
+    for uchar in data['effect2Pc']:
         code = ord(uchar)
         if 32 <= code <= 126:
             code += 65248
@@ -73,7 +73,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
         else:
             new_char = uchar
         pc2 += new_char
-    for uchar in data['4pc']:
+    for uchar in data['effect4Pc']:
         code = ord(uchar)
         if 32 <= code <= 126:
             code += 65248
@@ -83,9 +83,9 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
         pc4 += new_char
     """
 
-    if '1pc' in data:
+    if 'effect1Pc' in data:
         suitbar1 = Image.open(artifacts_suitbar1_path)
-        pc1 = await str_lenth('　　　　' + data['1pc'], 22, 455)
+        pc1 = await str_lenth('　　　　' + data['effect1Pc'], 22, 455)
 
         # 计算长度
         img_draw = ImageDraw.Draw(img1)
@@ -97,8 +97,8 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
     else:
         suitbar4 = Image.open(artifacts_suitbar4_path)
         suitbar2 = Image.open(artifacts_suitbar2_path)
-        pc2 = await str_lenth('　　　　' + data['2pc'], 22, 455)
-        pc4 = await str_lenth('　　　　' + data['4pc'], 22, 455)
+        pc2 = await str_lenth('　　　　' + data['effect2Pc'], 22, 455)
+        pc4 = await str_lenth('　　　　' + data['effect4Pc'], 22, 455)
 
         # 计算长度
         img_draw = ImageDraw.Draw(img1)
@@ -117,7 +117,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
     artifacts_list = ['flower', 'plume', 'sands', 'goblet', 'circlet']
 
     for index, i in enumerate(artifacts_list):
-        if '1pc' in data and i != 'circlet':
+        if 'effect1Pc' in data and i != 'circlet':
             continue
 
         rel_path = REL_PATH / f'{data[i]["name"]}.png'
@@ -153,7 +153,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
 
     result_img.paste(artifacts_bar, (0, 260 + y2 + y1 + 40), artifacts_bar)
 
-    rarity = '稀有度：' + '/'.join(data['rarity'])
+    rarity = '稀有度：' + '/'.join([str(i) for i in [data['rarityList']]])
 
     text_draw = ImageDraw.Draw(result_img)
     text_draw.text((295, 182), data['name'], (154, 123, 51), gs_font_40, 'mm')

@@ -25,14 +25,14 @@ async def artifacts_wiki(name: str) -> str:
         im = '该圣遗物不存在。'
     else:
         star = ''
-        for i in data['rarity']:
-            star = star + i + '星、'
+        for i in data['rarityList']:
+            star = f'{star}{i}星、'
         star = star[:-1]
         im = artifacts_im.format(
             data['name'],
             star,
-            data['2pc'],
-            data['4pc'],
+            data['effect2Pc'],
+            data['effect4Pc'],
             data['flower']['name'],
             data['flower']['description'],
             data['plume']['name'],
@@ -66,7 +66,7 @@ async def foods_wiki(name: str) -> str:
             data['name'],
             data['rarity'],
             data['foodtype'],
-            data['foodfilter'],
+            data['filterText'],
             data['effect'],
             data['description'],
             ingredients,
@@ -80,7 +80,7 @@ async def enemies_wiki(name: str) -> str:
         im = '该原魔不存在。'
     else:
         reward = ''
-        for i in data['rewardpreview']:
+        for i in data['rewardPreview']:
             reward += (
                 f'{i["name"]}:{i["count"] if "count" in i else "未知"}'
                 if 'count' in i.keys()
@@ -89,7 +89,7 @@ async def enemies_wiki(name: str) -> str:
             reward += '\n'
         im = '【{}】\n——{}——\n类型: {}\n信息: {}\n掉落物: \n{}'.format(
             data['name'],
-            data['specialname'],
+            data['specialName'],
             data['category'],
             data['description'],
             reward,
@@ -105,32 +105,32 @@ async def weapon_wiki(name: str) -> str:
         im = ', '.join(data)
     else:
         name = data['name']
-        _type = data['weapontype']
-        star = data['rarity'] + '星'
+        _type = data['weaponText']
+        star = str(data['rarity']) + '星'
         info = data['description']
-        atk = str(data['baseatk'])
-        sub_name = data['substat']
-        if data['subvalue'] != '':
-            sub_val = (
-                (data['subvalue'] + '%')
-                if sub_name != '元素精通'
-                else data['subvalue']
-            )
+        atk = str(int(data['baseAtkValue']))
+        sub_name = data['mainStatText']
+        if data['baseStatText'] != '':
+            sub_val = data['baseStatText']
             sub = '\n' + '【' + sub_name + '】' + sub_val
         else:
             sub = ''
 
-        if data['effectname'] != '':
-            raw_effect = data['effect']
+        if data['effectName'] != '':
+            raw_effect = re.sub(
+                r'</?c[^\u4e00-\u9fa5/d]+>',
+                '',
+                data['effectTemplateRaw'],
+            )
             rw_ef = []
-            for i in range(len(data['r1'])):
+            for i in range(len(data['r1']["values"])):
                 now = ''
                 for j in range(1, 6):
-                    now = now + data['r{}'.format(j)][i] + '/'
+                    now = now + data['r{}'.format(j)]["values"][i] + '/'
                 now = now[:-1]
                 rw_ef.append(now)
             raw_effect = raw_effect.format(*rw_ef)
-            effect = '\n' + '【' + data['effectname'] + '】' + ': ' + raw_effect
+            effect = '\n' + '【' + data['effectName'] + '】' + ': ' + raw_effect
         else:
             effect = ''
         im = weapon_im.format(name, _type, star, info, atk, sub, effect)
@@ -145,13 +145,13 @@ async def weapon_stats_wiki(name: str, stats: int):
     elif isinstance(data, List) or isinstance(data2, List):
         im = '请输入具体的武器名称...'
     else:
-        if data['substat'] != '':
+        if data['mainStatText'] != '':
             sp = (
-                data['substat']
+                data['mainStatText']
                 + ': '
                 + '%.1f%%' % (data2['specialized'] * 100)
-                if data['substat'] != '元素精通'
-                else data['substat']
+                if data['mainStatText'] != '元素精通'
+                else data['mainStatText']
                 + ': '
                 + str(math.floor(data2['specialized']))
             )
@@ -202,9 +202,9 @@ async def char_wiki(name: str) -> str:
     else:
         name = data['title'] + ' — ' + data['name']
         star = data['rarity']
-        _type = data['weapontype']
-        element = data['element']
-        up_val = data['substat']
+        _type = data['weaponType']
+        element = data['elementText']
+        up_val = data['substatText']
         bdday = data['birthday']
         polar = data['constellation']
         cv = data['cv']['chinese']
@@ -224,9 +224,13 @@ async def char_stats_wiki(name: str, stats: int):
         im = '请输入具体的角色名称...'
     else:
         sp = (
-            data2['substat'] + ': ' + '%.1f%%' % (data['specialized'] * 100)
-            if data2['substat'] != '元素精通'
-            else data2['substat'] + ': ' + str(math.floor(data['specialized']))
+            data2['substatText']
+            + ': '
+            + '%.1f%%' % (data['specialized'] * 100)
+            if data2['substatText'] != '元素精通'
+            else data2['substatText']
+            + ': '
+            + str(math.floor(data['specialized']))
         )
         im = (
             data2['name']
@@ -295,7 +299,7 @@ async def constellation_wiki(name: str, c: int) -> str:
             + '】'
             + ': '
             + '\n'
-            + data['c{}'.format(c)]['effect'].replace('*', '')
+            + data['c{}'.format(c)]['description'].replace('*', '')
         )
     return im
 
@@ -313,7 +317,7 @@ async def talent_wiki(name: str, level: int) -> Union[List[Message], str]:
             else:
                 data = data['combat3']
             skill_name = data['name']
-            skill_info = data['info']
+            skill_info = data['description']
             skill_detail = ''
 
             mes_list: List[Message] = []
@@ -392,6 +396,6 @@ async def talent_wiki(name: str, level: int) -> Union[List[Message], str]:
                 else:
                     return '该角色未有第四个被动天赋...'
             skill_name = data['name']
-            skill_info = data['info']
+            skill_info = data['description']
             im = '【{}】\n{}'.format(skill_name, skill_info)
     return im

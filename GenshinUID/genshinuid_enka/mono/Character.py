@@ -170,11 +170,11 @@ class Character:
             weapon_info['weaponStats'][0]['statValue'] = round(
                 weapon_level_data['attack']
             )
-            if weapon_raw_data['substat'] != '':
+            if weapon_raw_data['mainStatText'] != '':
                 weapon_info['weaponStats'][1]['statName'] = weapon_raw_data[
-                    'substat'
+                    'mainStatText'
                 ]
-                if weapon_raw_data['substat'] == '元素精通':
+                if weapon_raw_data['mainStatText'] == '元素精通':
                     fake_value = round(weapon_level_data['specialized'])
                 else:
                     fake_value = float(
@@ -189,7 +189,7 @@ class Character:
                 )
             else:
                 weapon_info['weaponEffect'] = '无特效。'
-            weapon_info['weaponType'] = weapon_raw_data['weapontype']
+            weapon_info['weaponType'] = weapon_raw_data['weaponText']
             self.card_prop['weaponInfo'] = weapon_info
 
         # 修改假命座:
@@ -293,7 +293,7 @@ class Character:
         # 计算突破加成
         if isinstance(char_raw, dict):
             for attr in ATTR_MAP:
-                if attr in char_raw['substat']:
+                if attr in char_raw['substatText']:
                     sp = char_data['specialized']
                     if attr == '暴击伤害':
                         sp -= 0.5

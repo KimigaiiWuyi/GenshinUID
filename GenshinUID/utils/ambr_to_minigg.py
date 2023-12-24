@@ -71,12 +71,12 @@ WEAPON_TYPE = {
 
 class ConvertWeapon(TypedDict):
     name: str
-    weapontype: str
+    weaponText: str
     rarity: str
-    baseatk: float
-    substat: str
-    effect: str
-    effectname: str
+    baseAtkValue: float
+    mainStatText: str
+    effectTemplateRaw: str
+    effectName: str
     level: int
     ascension: int
     attack: float
@@ -94,10 +94,10 @@ class Image(TypedDict):
 
 class ConvertCharacter(TypedDict):
     name: str
-    weapontype: str
+    weaponText: str
     rarity: str
     baseatk: float
-    substat: str
+    substatText: str
     effect: str
     effectname: str
     level: int
@@ -105,7 +105,7 @@ class ConvertCharacter(TypedDict):
     attack: float
     specialized: float
     title: str
-    element: str
+    elementText: str
     images: Image
     hp: float
     defense: float
@@ -141,36 +141,32 @@ async def convert_ambr_to_weapon(
         substat = '无副词条'
     result = {
         'name': raw_data['name'],
-        'weapontype': raw_data['type'],
+        'weaponText': raw_data['type'],
         'rarity': str(raw_data['rank']),
-        'baseatk': baseatk,
-        'substat': substat,
-        'effectname': effect_name,
+        'baseAtkValue': baseatk,
+        'mainStatText': substat,
+        'effectName': effect_name,
         'level': 90,
         'ascension': 6,
     }
     for index, affix in enumerate(effect_up):
-        effect_value = re.findall(
-            r'<c[^\u4e00-\u9fa5]+>\d+?.?\d+[^\u4e00-\u9fa5]+r>',
+        effect_desc = re.sub(
+            r'</?c[^\u4e00-\u9fa5/d]+>',
+            '',
             effect_up[affix],
         )
-        attr_list = []
-        if index == 0:
-            result['effect'] = effect_up[affix]
-        for i, v in enumerate(effect_value):
-            if index == 0:
-                result['effect'] = result['effect'].replace(v, f'{{{i}}}')
-            r = re.search(r'>([0-9/.%]+)', v)
-            if r:
-                attr_list.append(r.group(1))
-        result[f'r{index+1}'] = attr_list
+
+        result[f'r{index+1}'] = {'description': effect_desc}
+
     atk_curve_type = upgrade['prop'][0]['type']
     sp_curve_type = upgrade['prop'][1]['type']
     atk_curve = WEAPON_GROW_CURVE['90']['curveInfos'][atk_curve_type]
     sp_curve = WEAPON_GROW_CURVE['90']['curveInfos'][sp_curve_type]
     atk_promoto = upgrade['promote'][-1]['addProps']['FIGHT_PROP_BASE_ATTACK']
+
     result['attack'] = atk_curve * baseatk + atk_promoto
     result['specialized'] = sp_curve * basesp
+
     return cast(ConvertWeapon, result)
 
 
@@ -187,7 +183,7 @@ async def convert_ambr_to_minigg(
         'weapontype': WEAPON_TYPE[raw_data['weaponType']],
         'element': ELEMENT_MAP[raw_data['element']],
         'images': {'namesideicon': raw_data['icon']},  # 暂时适配
-        'substat': PROP_MAP[
+        'substatText': PROP_MAP[
             list(raw_data['upgrade']['promote'][-1]['addProps'].keys())[-1]
         ],
         'hp': raw_data['upgrade']['prop'][0]['initValue']

@@ -14,7 +14,6 @@ from gsuid_core.utils.api.minigg.models import (
 )
 
 from .path import TEXT_PATH
-from ..utils.resource.download_url import download
 from ..utils.get_assets import get_assets_from_ambr
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.convert import str_lenth, convert_img

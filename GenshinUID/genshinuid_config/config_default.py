@@ -10,11 +10,6 @@ from gsuid_core.utils.plugins_config.models import (
 )
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
-    'random_pic_API': GsStrConfig(
-        '随机图API',
-        '用于面板查询的随机图API',
-        'https://genshin-res.cherishmoon.fun/img?name=',
-    ),
     'Ann_Groups': GsDictConfig(
         '推送公告群组',
         '原神公告推送群组',
@@ -51,6 +46,12 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '随机图',
         '开启后[查询心海]等命令展示图将替换为随机图片',
         False,
+    ),
+    'random_pic_API': GsStrConfig(
+        '随机图API',
+        '用于面板查询的随机图API',
+        'https://genshin-res.cherishmoon.fun/img?name=',
+        ['https://genshin-res.cherishmoon.fun/img?name='],
     ),
     'SchedSignin': GsBoolConfig(
         '定时签到',

@@ -310,6 +310,7 @@ async def enka_to_dict(
             not isinstance(effect_raw, List)
             and not isinstance(effect_raw, int)
             and effect_raw is not None
+            and int(effect_raw['rarity']) > 2
         ):
             effect = effect_raw[f'r{weapon_info["weaponAffix"]}'][
                 'description'

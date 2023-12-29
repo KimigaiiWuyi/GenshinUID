@@ -14,6 +14,7 @@ from .sign import sign_in, daily_sign
 from ..genshinuid_config.gs_config import gsconfig
 
 SIGN_TIME = gsconfig.get_config('SignTime').data
+IS_REPORT = gsconfig.get_config('PrivateSignReport').data
 
 sv_sign = SV('原神签到')
 sv_sign_config = SV('原神签到管理', pm=2)
@@ -52,6 +53,9 @@ async def send_daily_sign():
     private_msg_list = result['private_msg_list']
     group_msg_list = result['group_msg_list']
     logger.info('[每日全部签到]完成')
+
+    if not IS_REPORT:
+        return
 
     # 执行私聊推送
     for qid in private_msg_list:

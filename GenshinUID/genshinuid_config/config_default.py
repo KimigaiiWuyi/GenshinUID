@@ -42,6 +42,11 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '关闭后将不再给主人推送当天米游币任务完成情况',
         False,
     ),
+    'PrivateSignReport': GsBoolConfig(
+        '签到私聊报告',
+        '关闭后将不再给任何人推送当天签到任务完成情况',
+        True,
+    ),
     'RandomPic': GsBoolConfig(
         '随机图',
         '开启后[查询心海]等命令展示图将替换为随机图片',

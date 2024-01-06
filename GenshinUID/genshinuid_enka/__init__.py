@@ -61,8 +61,24 @@ async def sned_rank_pic(bot: Bot, ev: Event):
     )
 
 
-@sv_akasha.on_prefix('角色排名')
+@sv_akasha.on_prefix('角色排行榜')
 async def sned_role_rank_pic(bot: Bot, ev: Event):
+    # 获取角色名
+    msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
+    if not msg:
+        return
+    logger.info(f'[角色排行榜]角色: {msg}')
+    a = Button('💖排名列表', '排名列表')
+    b = Button(f'✅查询{msg}', f'查询{msg}')
+    c = Button(f'💖角色排名{msg}', f'角色排名{msg}')
+    d = Button('✅圣遗物排名', '圣遗物排名')
+
+    im = await draw_role_rank_img(msg)
+    await bot.send_option(im, [a, c, b, d])
+
+
+@sv_akasha.on_prefix('角色排名')
+async def sned_my_role_rank_pic(bot: Bot, ev: Event):
     # 获取角色名
     msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', ev.text))
     if not msg:
@@ -70,7 +86,17 @@ async def sned_role_rank_pic(bot: Bot, ev: Event):
     logger.info(f'[角色排名]角色: {msg}')
     a = Button('💖排名列表', '排名列表')
     b = Button(f'✅查询{msg}', f'查询{msg}')
-    await bot.send_option(await draw_role_rank_img(msg), [a, b])
+    c = Button(f'💖角色排行榜{msg}', f'角色排行榜{msg}')
+    d = Button('✅圣遗物排名', '圣遗物排名')
+
+    msg = msg.replace('附近', '')
+    # 获取uid
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+
+    im = await draw_role_rank_img(msg, uid)
+    await bot.send_option(im, [a, c, b, d])
 
 
 @sv_akasha.on_command('圣遗物排名')

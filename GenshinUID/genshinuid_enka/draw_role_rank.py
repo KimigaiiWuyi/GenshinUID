@@ -1,25 +1,27 @@
-from typing import Union
+from typing import Union, Optional
 
 from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 
 from ..utils.colors import get_color
 from .draw_rank_list import RANK_TEXT
+from .get_akasha_data import _get_rank
 from ..utils.api.cv.request import _CvApi
 from ..utils.map.GS_MAP_PATH import icon2Name
 from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH
 from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
-from ..utils.fonts.genshin_fonts import (
-    gs_font_18,
-    gs_font_20,
-    gs_font_26,
-    gs_font_30,
-)
 from ..utils.image.image_tools import (
     get_talent_pic,
     draw_pic_with_ring,
     get_weapon_affix_pic,
+)
+from ..utils.fonts.genshin_fonts import (
+    gs_font_18,
+    gs_font_20,
+    gs_font_24,
+    gs_font_26,
+    gs_font_30,
 )
 
 is_enable_akasha = gsconfig.get_config('EnableAkasha').data
@@ -36,21 +38,39 @@ REGION_MAP = {
 grey = (170, 170, 170)
 
 
-async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
+async def draw_role_rank_img(
+    char_name: str, player_uid: Optional[str] = None
+) -> Union[str, bytes]:
     if not is_enable_akasha:
         return '未开启排名系统...'
     cv_api = _CvApi()
 
     char_name = await alias_to_char_name(char_name)
     char_id = await name_to_avatar_id(char_name)
-    raw_data = await cv_api.get_sort_list(char_id)
+
+    if player_uid:
+        rank_data = await _get_rank(player_uid)
+        if isinstance(rank_data, str):
+            return rank_data
+        if char_id not in rank_data:
+            return f'你还暂无{char_name}的数据, 请先[强制刷新]...'
+
+        fit = rank_data[char_id]['calculations']['fit']
+        calculation_id = fit['calculationId']
+        r0 = int(fit["result"])
+        r1 = int(r0 * 1.00005)
+        raw_data = await cv_api.get_sort_list(char_id, calculation_id, r1)
+        tag = '角色附近'
+    else:
+        raw_data = await cv_api.get_sort_list(char_id)
+        tag = '前20'
 
     if raw_data is None:
         return '该角色尚未有排名...'
 
     data, count = raw_data
 
-    img = Image.open(RANK_TEXT / 'deep_grey.jpg')
+    img = Image.open(RANK_TEXT / 'deep_grey.jpg').resize((950, 2450))
     title = Image.open(RANK_TEXT / 'title.png')
     user_pic = await draw_pic_with_ring(
         Image.open(CHAR_PATH / f'{char_id}.png'), 314
@@ -59,19 +79,35 @@ async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
     img.paste(title, (0, 0), title)
 
     img_draw = ImageDraw.Draw(img)
-    img_draw.text((475, 425), f'前20 / 总数据 {count}条', 'white', gs_font_26, 'mm')
+    img_draw.text(
+        (475, 425), f'{tag} / 总数据 {count}条', 'white', gs_font_26, 'mm'
+    )
 
+    rank = 0
     for index, char in enumerate(data):
-        if index % 2 == 0:
+        region: str = char['owner']['region']
+        nickname: str = char['owner']['nickname']
+
+        if index == 0:
+            _rank: str = char['index']
+            rank = (
+                int(_rank[1:])
+                if isinstance(_rank, str) and _rank.startswith('~')
+                else int(_rank)
+            )
+        else:
+            rank += 1
+
+        uid: str = char['uid']
+
+        char_c = 'white'
+        if player_uid and player_uid == uid:
+            bar = Image.open(RANK_TEXT / 'sp.png')
+        elif index % 2 == 0:
             bar = Image.open(RANK_TEXT / 'white.png')
         else:
             bar = Image.open(RANK_TEXT / 'black.png')
 
-        bar_draw = ImageDraw.Draw(bar)
-
-        region: str = char['owner']['region']
-        nickname: str = char['owner']['nickname']
-        uid: str = char['uid']
         _c: int = char['constellation']
         _wc: int = char['weapon']['weaponInfo']['refinementLevel']['value'] + 1
         hp: int = int(char['stats']['maxHp']['value'])
@@ -103,10 +139,18 @@ async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
                 else:
                     icon_list.append(icon_img.resize((51, 51)))
 
-        bar_draw.rounded_rectangle((47, 30, 150, 70), 10, region_color)
-        bar_draw.text((99, 50), region, 'white', gs_font_30, 'mm')
+        x1, x2 = 15, 64 + 15 * len(str(rank))
+        x3 = int((x1 + x2) / 2)
 
-        bar_draw.text((162, 41), nickname, 'white', gs_font_26, 'lm')
+        bar_draw = ImageDraw.Draw(bar)
+
+        bar_draw.rounded_rectangle((x1, 0, x2, 25), 9, (96, 33, 109))
+        bar_draw.text((x3 + 1, 13), f'#{rank}名', 'white', gs_font_24, 'mm')
+
+        bar_draw.rounded_rectangle((47, 35, 150, 75), 10, region_color)
+        bar_draw.text((99, 55), region, 'white', gs_font_30, 'mm')
+
+        bar_draw.text((162, 41), nickname, char_c, gs_font_26, 'lm')
         bar_draw.text((162, 66), f'UID {uid}', grey, gs_font_20, 'lm')
         bar_draw.text((398, 42), f'{cr}: {cd}', 'white', gs_font_26, 'lm')
         bar_draw.text((398, 66), f'{cv} cv', cv_color, gs_font_20, 'lm')
@@ -127,7 +171,7 @@ async def draw_role_rank_img(char_name: str) -> Union[str, bytes]:
 
         bar_draw.text((370, 67), text, (214, 255, 192), gs_font_20, 'mm')
 
-        img.paste(bar, (0, 475 + index * 90), bar)
+        img.paste(bar, (0, 475 + index * 95), bar)
 
     img_draw.text(
         (475, img.size[1] - 35),

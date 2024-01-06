@@ -105,18 +105,42 @@ class _CvApi:
             )
 
     async def get_sort_list(
-        self, char_id: str
+        self,
+        char_id: str,
+        calculation_id: Optional[str] = None,
+        combo: Optional[Union[str, int]] = None,
     ) -> Optional[Tuple[List[Dict], int]]:
-        _raw_data = await self.get_calculation_info(char_id)
-        if _raw_data is not None:
-            calculation_id, count = _raw_data
-            raw_data = await self._cv_request(
-                SORT_API.format(calculation_id),
-                'GET',
-                self._HEADER,
-            )
-            if isinstance(raw_data, Dict) and 'data' in raw_data:
-                return raw_data['data'], count
+        count = 0
+        if calculation_id is None:
+            _raw_data = await self.get_calculation_info(char_id)
+            if _raw_data is not None:
+                calculation_id, count = _raw_data
+        else:
+            lb_data = await self.get_leaderboard_id_list(char_id)
+            if lb_data:
+                for i in lb_data:
+                    for g in i['weapons']:
+                        if g['calculationId'] == calculation_id:
+                            count = i['count']
+                            break
+
+        if count == 0:
+            return None
+
+        extra = ''
+        if combo:
+            extra += f'&p=lt%7C{combo}'
+        else:
+            extra = '&p='
+
+        url = SORT_API.format(calculation_id) + extra
+        raw_data = await self._cv_request(
+            url,
+            'GET',
+            self._HEADER,
+        )
+        if isinstance(raw_data, Dict) and 'data' in raw_data:
+            return raw_data['data'], count
 
     async def get_session_id(self) -> str:
         async with self.session.get(MAIN_API) as resp:

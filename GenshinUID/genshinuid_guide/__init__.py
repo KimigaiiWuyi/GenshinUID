@@ -75,7 +75,8 @@ async def send_abyss_review(bot: Bot, ev: Event):
         input_version = float(version)
         now_version = float(Genshin_version[:-2])
         if input_version <= now_version:
-            adv_version = now_version + 0.1
+            gv = Genshin_version.split('.')
+            adv_version = f'{gv[0]}.{int(gv[1])+1}'
         else:
             adv_version = now_version
         d = Button(f'♾️版本深渊{adv_version}', f'深渊概览{adv_version}')

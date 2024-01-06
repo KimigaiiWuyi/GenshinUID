@@ -62,7 +62,7 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
 
     index = 0
     for wave in data:
-        if ver is not None and wave['Vers'][-1] != ver:
+        if ver is not None and 'Vers' in wave and wave['Vers'][-1] != ver:
             continue
         monsters = wave['Monsters']
         wave_monster_uh = (((len(monsters) - 1) // 3) + 1) * 125 + 40

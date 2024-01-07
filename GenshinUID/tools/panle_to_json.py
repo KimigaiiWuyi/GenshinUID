@@ -85,6 +85,9 @@ SAMPLE = {
     '林尼': 'A隐具魔术箭伤害',
     '菲米尼': 'E四阶高压粉碎伤害',
     '那维莱特': 'A重击·衡平推裁持续伤害',
+    '芙宁娜': 'E谢贝蕾妲小姐伤害',
+    '夏洛蒂': 'Q施放治疗量',
+    '娜维娅': 'E玫瑰晶弹基础伤害(6层)',
 }
 
 
@@ -131,7 +134,7 @@ async def panle2Json() -> None:
     skill_temp = ''
     skill_count = -1
     title = 0
-    for row in range(9, 400):
+    for row in range(9, 410):
         temp = {}
         char_name = sheet.cell(row, 1).value
         skill = sheet.cell(row, 19).value

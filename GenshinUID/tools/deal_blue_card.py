@@ -6,10 +6,11 @@ path = Path(__file__).parent / 'blue_data'
 
 REF = {
     '冰': {
+        '莱欧斯利': 3,
         '申鹤': 3,
         '神里绫华': 2,
         '优菈': 3,
-        '甘雨': 7.1,
+        '甘雨': 7.3,
         '凯亚': 2,
         '重云': 2,
         '七七': 3,
@@ -19,6 +20,7 @@ REF = {
         '莱依拉': 1,
         '米卡': 2,
         '菲米尼': 2,
+        '夏洛蒂': 2,
     },
     '草': {
         '绮良良': 4,
@@ -87,6 +89,7 @@ REF = {
         '芭芭拉': 3,
     },
     '岩': {
+        '娜维娅': 3,
         '荒泷一斗': 3,
         '五郎': 1,
         '阿贝多': 4,
@@ -100,7 +103,7 @@ REF = {
 
 
 for ELE in REF:
-    TITLE = 110
+    TITLE = 115
     SIG = 197
     END = 31
     _path = path / f'{ELE}.jpg'
@@ -109,15 +112,24 @@ for ELE in REF:
     image = Image.open(_path)
 
     if ELE == '草':
-        _MOV = 65
+        _MOV = 55
     elif ELE == '火':
+        TITLE = 109
+        SIG = 196
         _MOV = 45
     elif ELE == '风':
-        SIG = 195
+        SIG = 193
         _MOV = 5
     elif ELE == '岩':
         SIG = 188
         _MOV = 35
+    elif ELE == '雷':
+        _MOV = 45
+        SIG = 194
+        TITLE = 115
+    elif ELE == '水':
+        _MOV = 44
+        SIG = 195
     else:
         _MOV = 20
 

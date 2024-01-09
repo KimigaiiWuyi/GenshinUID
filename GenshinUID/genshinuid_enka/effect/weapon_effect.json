@@ -1,4 +1,66 @@
 {
+	"鹤鸣余音": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "C:dmgBonus+28",
+				"2": "C:dmgBonus+41",
+				"3": "C:dmgBonus+54",
+				"4": "C:dmgBonus+67",
+				"5": "C:dmgBonus+80"
+			},
+			"group_effect": {
+				"1": "C:dmgBonus+28",
+				"2": "C:dmgBonus+41",
+				"3": "C:dmgBonus+54",
+				"4": "C:dmgBonus+67",
+				"5": "C:dmgBonus+80"
+			},
+			"time": 20,
+			"extra": {
+
+			}
+		}
+	},
+	"裁断": {
+		"normal": {
+			"normal_effect": {
+				"1": "addAtk+20",
+				"2": "addAtk+25",
+				"3": "addAtk+30",
+				"4": "addAtk+35",
+				"5": "addAtk+40"
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "E:dmgBonus+36",
+				"2": "E:dmgBonus+45",
+				"3": "E:dmgBonus+54",
+				"4": "E:dmgBonus+63",
+				"5": "E:dmgBonus+72"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 15,
+			"extra": {
+
+			}
+		}
+	},
 	"「究极霸王超级魔剑」": {
 		"normal": {
 			"normal_effect": {

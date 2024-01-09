@@ -181,6 +181,7 @@ class Character:
                         '{:.2f}'.format(weapon_level_data['specialized'] * 100)
                     )
                 weapon_info['weaponStats'][1]['statValue'] = fake_value
+
             if 'effect' in weapon_raw_data:
                 weapon_info['weaponEffect'] = weapon_raw_data['effect'].format(
                     *weapon_raw_data[

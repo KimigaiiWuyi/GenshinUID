@@ -64,10 +64,13 @@ BETA_CHAR = {
     '10000089': '芙宁娜',
     '10000090': '夏沃蕾',
     '10000091': '娜维娅',
+    '10000092': '嘉明',
+    '10000093': '闲云',
 }
 
 
 async def monster2map():
+    print('正在执行monster2map')
     monster_list = await get_ambr_monster_list()
     result = {}
     if monster_list:
@@ -86,7 +89,8 @@ async def monster2map():
 
 
 async def download_new_file():
-    base_url = 'https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master'
+    print('正在执行download_new_file')
+    base_url = 'https://gitlab.com/Dimbreath/AnimeGameData/-/raw/main'
     url_list = [
         f'{base_url}/ExcelBinOutput/AvatarExcelConfigData.json',
         f'{base_url}/ExcelBinOutput/WeaponExcelConfigData.json',
@@ -111,6 +115,7 @@ async def download_new_file():
 
 
 async def avatarId2NameJson() -> None:
+    print('正在执行avatarId2NameJson')
     with open(
         DATA_PATH / 'AvatarExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
@@ -137,6 +142,7 @@ async def avatarId2NameJson() -> None:
 
 
 async def avatarName2ElementJson() -> None:
+    print('正在执行avatarName2ElementJson')
     with open(MAP_PATH / avatarId2Name_fileName, 'r', encoding='UTF-8') as f:
         avatarId2Name = json.load(f)
 
@@ -207,6 +213,7 @@ async def avatarName2ElementJson() -> None:
 
 
 async def weaponHash2NameJson() -> None:
+    print('正在执行weaponHash2NameJson')
     with open(
         DATA_PATH / 'WeaponExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
@@ -224,6 +231,7 @@ async def weaponHash2NameJson() -> None:
 
 
 async def weaponHash2TypeJson() -> None:
+    print('正在执行weaponHash2TypeJson')
     with open(
         DATA_PATH / 'WeaponExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
@@ -240,6 +248,7 @@ async def weaponHash2TypeJson() -> None:
 
 
 async def skillId2NameJson() -> None:
+    print('正在执行skillId2NameJson')
     with open(
         DATA_PATH / 'AvatarSkillExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
@@ -256,6 +265,7 @@ async def skillId2NameJson() -> None:
 
 
 async def talentId2NameJson() -> None:
+    print('正在执行talentId2NameJson')
     with open(
         DATA_PATH / 'AvatarTalentExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:
@@ -273,6 +283,7 @@ async def talentId2NameJson() -> None:
 
 
 async def artifact2attrJson() -> None:
+    print('正在执行artifact2attrJson')
     with open(
         DATA_PATH / 'ReliquaryExcelConfigData.json', 'r', encoding='UTF-8'
     ) as f:

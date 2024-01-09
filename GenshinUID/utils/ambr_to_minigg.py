@@ -149,6 +149,7 @@ async def convert_ambr_to_weapon(
         'level': 90,
         'ascension': 6,
     }
+    index = 0
     for index, affix in enumerate(effect_up):
         effect_desc = re.sub(
             r'</?c[^\u4e00-\u9fa5/d]+>',
@@ -157,7 +158,9 @@ async def convert_ambr_to_weapon(
         )
 
         result[f'r{index+1}'] = {'description': effect_desc}
-
+    else:
+        if index != 0:
+            result['effect'] = result[f'r{index+1}']['description']
     atk_curve_type = upgrade['prop'][0]['type']
     sp_curve_type = upgrade['prop'][1]['type']
     atk_curve = WEAPON_GROW_CURVE['90']['curveInfos'][atk_curve_type]
@@ -181,6 +184,7 @@ async def convert_ambr_to_minigg(
         'title': raw_data['fetter']['title'],
         'rarity': raw_data['rank'],
         'weapontype': WEAPON_TYPE[raw_data['weaponType']],
+        'elementText': ELEMENT_MAP[raw_data['element']],
         'element': ELEMENT_MAP[raw_data['element']],
         'images': {'namesideicon': raw_data['icon']},  # 暂时适配
         'substatText': PROP_MAP[

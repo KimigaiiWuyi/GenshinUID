@@ -37525,6 +37525,363 @@
         "route": "Millennial Pearl Seahorse",
         "icon": "UI_MonsterIcon_SeaHorse_Primo_Electric"
     },
+    "26190101": {
+        "id": 26190101,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 225.4944,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.7,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.7,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104121": {
+                "rank": 2,
+                "icon": "UI_ItemIcon_104121"
+            },
+            "104122": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_104122"
+            },
+            "104123": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_104123"
+            },
+            "104124": {
+                "rank": 5,
+                "icon": "UI_ItemIcon_104124"
+            },
+            "104151": {
+                "rank": 2,
+                "icon": "UI_ItemIcon_104151"
+            },
+            "104152": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_104152"
+            },
+            "104153": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_104153"
+            },
+            "104154": {
+                "rank": 5,
+                "icon": "UI_ItemIcon_104154"
+            },
+            "113058": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_113058",
+                "count": "2.5556"
+            },
+            "400022": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400052": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10011_4"
+            },
+            "400088": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            }
+        },
+        "name": "隐山猊兽",
+        "route": "Solitary Suanni",
+        "icon": "UI_MonsterIcon_Hermit"
+    },
+    "26190102": {
+        "id": 26190102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "4.4-WQ-南山隐兽标记",
+                "description": "4.4-WQ-南山隐兽标记",
+                "abilityName": [
+                    "MonsterAffix_Hermit_WQTag"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 225.4944,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.7,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.7,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "隐山猊兽",
+        "route": "Solitary Suanni",
+        "icon": "UI_MonsterIcon_Hermit"
+    },
+    "26190103": {
+        "id": 26190103,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "4.4-南山隐兽爬塔标记",
+                "description": "4.4-南山隐兽爬塔标记",
+                "abilityName": [
+                    "MonsterAffix_Hermit_AbyssTag"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 225.4944,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.7,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.7,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "隐山猊兽",
+        "route": "Solitary Suanni",
+        "icon": "UI_MonsterIcon_Hermit"
+    },
+    "26190201": {
+        "id": 26190201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 57.0528,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 55.264,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.5,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112095": {
+                "rank": 2,
+                "icon": "UI_ItemIcon_112095",
+                "count": "3.9394"
+            },
+            "112096": {
+                "rank": 3,
+                "icon": "UI_ItemIcon_112096",
+                "count": "1.0505"
+            },
+            "112097": {
+                "rank": 4,
+                "icon": "UI_ItemIcon_112097",
+                "count": "0.2626"
+            },
+            "400022": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "玄文兽",
+        "route": "Xuanwen Beast",
+        "icon": "UI_MonsterIcon_Striped"
+    },
     "29010102": {
         "id": 29010102,
         "type": "MONSTER_BOSS",

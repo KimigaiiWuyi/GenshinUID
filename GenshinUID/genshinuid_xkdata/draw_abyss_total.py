@@ -61,27 +61,41 @@ async def draw_xk_abyss_img():
 
     # 基础文字部分
     img_draw = ImageDraw.Draw(img)
-    img_draw.text((673, 375), f'数据最后更新时间：{last_time}', grey, gs_font_30, 'mm')
+    img_draw.text(
+        (673, 375), f'数据最后更新时间：{last_time}', grey, gs_font_30, 'mm'
+    )
     img_draw.text((855, 311), f'{version_desc}', black, gs_font_30, 'mm')
 
     # 概览部分 85*26
     r = 20
-    img_draw.rounded_rectangle((428, 556, 513, 582), r, _c(avgs_rate))  # 人均摘星
+    img_draw.rounded_rectangle(
+        (428, 556, 513, 582), r, _c(avgs_rate)
+    )  # 人均摘星
     img_draw.text((471, 606), avgs, black, gs_font_26, 'mm')
     img_draw.text((471, 570), avgs_rate, grey, gs_font_24, 'mm')
-    img_draw.rounded_rectangle((945, 556, 1030, 582), r, _c(abc_rate))  # 平均战斗
+    img_draw.rounded_rectangle(
+        (945, 556, 1030, 582), r, _c(abc_rate)
+    )  # 平均战斗
     img_draw.text((988, 606), abc, black, gs_font_26, 'mm')
     img_draw.text((988, 570), abc_rate, grey, gs_font_24, 'mm')
-    img_draw.rounded_rectangle((428, 681, 513, 707), r, _c(amb_rate))  # 满星平均战斗
+    img_draw.rounded_rectangle(
+        (428, 681, 513, 707), r, _c(amb_rate)
+    )  # 满星平均战斗
     img_draw.text((471, 731), ambc, black, gs_font_26, 'mm')
     img_draw.text((471, 695), amb_rate, grey, gs_font_24, 'mm')
-    img_draw.rounded_rectangle((945, 681, 1030, 707), r, _c(pr_rate))  # 通关比例
+    img_draw.rounded_rectangle(
+        (945, 681, 1030, 707), r, _c(pr_rate)
+    )  # 通关比例
     img_draw.text((988, 731), f'{pr}%', black, gs_font_26, 'mm')
     img_draw.text((988, 695), f'{pr_rate}%', grey, gs_font_24, 'mm')
-    img_draw.rounded_rectangle((428, 806, 513, 832), r, _c(mr_rate))  # 满星比例
+    img_draw.rounded_rectangle(
+        (428, 806, 513, 832), r, _c(mr_rate)
+    )  # 满星比例
     img_draw.text((471, 856), f'{mr}%', black, gs_font_26, 'mm')
     img_draw.text((471, 820), f'{mr_rate}%', grey, gs_font_24, 'mm')
-    img_draw.rounded_rectangle((945, 806, 1030, 832), r, _c(mf_rate))  # 12场36星
+    img_draw.rounded_rectangle(
+        (945, 806, 1030, 832), r, _c(mf_rate)
+    )  # 12场36星
     img_draw.text((988, 856), f'{m12}%', black, gs_font_26, 'mm')
     img_draw.text((988, 820), f'{mf_rate}%', grey, gs_font_24, 'mm')
 
@@ -95,6 +109,11 @@ async def draw_xk_abyss_img():
             use_ratio = (use_count / had_count) * 100
         use_ratio = '{:.2f}%'.format(use_ratio)
         char_id: int = char['avatar_id']
+
+        if char_id == 10000999:
+            char_id = 10000093
+        elif char_id == 10000998:
+            char_id = 10000092
 
         # 绘图部分
         char_bg = Image.open(TEXT_PATH / 'char_bg.png')

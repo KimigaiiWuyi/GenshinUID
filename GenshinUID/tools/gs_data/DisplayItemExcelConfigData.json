@@ -156,6 +156,36 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 1214743615,
+        "rankLevel": 3,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410017,
+        "nameTextMapHash": 1280705105,
+        "descTextMapHash": 2371428658,
+        "icon": "UI_ItemIcon_109000",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 4168266351,
+        "rankLevel": 4,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410018,
+        "nameTextMapHash": 1704532353,
+        "descTextMapHash": 1838009194,
+        "icon": "UI_ItemIcon_118101",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2968121983,
+        "rankLevel": 4,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410019,
+        "nameTextMapHash": 2434320425,
+        "descTextMapHash": 4026425890,
+        "icon": "UI_ItemIcon_118101",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 1010293015,
         "rankLevel": 1,
         "param": 10001,
@@ -2468,6 +2498,8 @@
     {
         "typeDescTextMapHash": 342345127,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15001,
         "id": 419000,
         "nameTextMapHash": 3723237137,
         "descTextMapHash": 454636058,
@@ -2477,6 +2509,8 @@
     {
         "typeDescTextMapHash": 447413943,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15003,
         "id": 419001,
         "nameTextMapHash": 2012817457,
         "descTextMapHash": 2373116058,
@@ -2486,6 +2520,8 @@
     {
         "typeDescTextMapHash": 3721492255,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15008,
         "id": 419002,
         "nameTextMapHash": 4141792441,
         "descTextMapHash": 2956261242,
@@ -2495,6 +2531,8 @@
     {
         "typeDescTextMapHash": 61170855,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15007,
         "id": 419003,
         "nameTextMapHash": 3682852601,
         "descTextMapHash": 196022146,
@@ -2504,6 +2542,8 @@
     {
         "typeDescTextMapHash": 1613865839,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15005,
         "id": 419004,
         "nameTextMapHash": 4017406953,
         "descTextMapHash": 3264091922,
@@ -2513,6 +2553,8 @@
     {
         "typeDescTextMapHash": 946181583,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 14002,
         "id": 419005,
         "nameTextMapHash": 2306601497,
         "descTextMapHash": 1483428378,
@@ -2522,6 +2564,8 @@
     {
         "typeDescTextMapHash": 2238905327,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15002,
         "id": 419006,
         "nameTextMapHash": 1750253545,
         "descTextMapHash": 2933300866,
@@ -2531,6 +2575,8 @@
     {
         "typeDescTextMapHash": 487894223,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 14004,
         "id": 419007,
         "nameTextMapHash": 3085240897,
         "descTextMapHash": 1029758370,
@@ -2540,6 +2586,8 @@
     {
         "typeDescTextMapHash": 1316558303,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15014,
         "id": 419008,
         "nameTextMapHash": 740019217,
         "descTextMapHash": 2858158082,
@@ -2549,6 +2597,8 @@
     {
         "typeDescTextMapHash": 3621595055,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15015,
         "id": 419009,
         "nameTextMapHash": 840881833,
         "descTextMapHash": 3059126994,
@@ -2558,6 +2608,8 @@
     {
         "typeDescTextMapHash": 3181621559,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15006,
         "id": 419010,
         "nameTextMapHash": 4182266065,
         "descTextMapHash": 4114643626,
@@ -2567,6 +2619,8 @@
     {
         "typeDescTextMapHash": 831472887,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 14003,
         "id": 419011,
         "nameTextMapHash": 2812873121,
         "descTextMapHash": 3441852498,
@@ -2576,6 +2630,8 @@
     {
         "typeDescTextMapHash": 2318602439,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 14001,
         "id": 419012,
         "nameTextMapHash": 570079177,
         "descTextMapHash": 1651627274,
@@ -2585,6 +2641,8 @@
     {
         "typeDescTextMapHash": 2877555335,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15016,
         "id": 419013,
         "nameTextMapHash": 1215418833,
         "descTextMapHash": 305711386,
@@ -2594,6 +2652,8 @@
     {
         "typeDescTextMapHash": 2137624799,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15017,
         "id": 419014,
         "nameTextMapHash": 2169426049,
         "descTextMapHash": 3318925146,
@@ -2603,6 +2663,8 @@
     {
         "typeDescTextMapHash": 737318055,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15018,
         "id": 419015,
         "nameTextMapHash": 957669865,
         "descTextMapHash": 927019666,
@@ -2612,6 +2674,8 @@
     {
         "typeDescTextMapHash": 4018540887,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15019,
         "id": 419016,
         "nameTextMapHash": 2867258081,
         "descTextMapHash": 3866975370,
@@ -2621,6 +2685,8 @@
     {
         "typeDescTextMapHash": 1958253503,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15020,
         "id": 419017,
         "nameTextMapHash": 828872449,
         "descTextMapHash": 2761753914,
@@ -2630,6 +2696,8 @@
     {
         "typeDescTextMapHash": 3418011655,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15021,
         "id": 419018,
         "nameTextMapHash": 932898953,
         "descTextMapHash": 3888067858,
@@ -2639,6 +2707,8 @@
     {
         "typeDescTextMapHash": 2915021175,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15022,
         "id": 419019,
         "nameTextMapHash": 917349449,
         "descTextMapHash": 3070672370,
@@ -2648,6 +2718,8 @@
     {
         "typeDescTextMapHash": 4215338855,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15023,
         "id": 419020,
         "nameTextMapHash": 4239421897,
         "descTextMapHash": 734534506,
@@ -2657,6 +2729,8 @@
     {
         "typeDescTextMapHash": 4282602591,
         "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15024,
         "id": 419021,
         "nameTextMapHash": 3567329929,
         "descTextMapHash": 2948078026,

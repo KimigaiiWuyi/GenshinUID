@@ -57,8 +57,13 @@ async def draw_explore(uid: str):
     black = (2, 2, 2)
 
     worlds = raw_data['world_explorations']
+    worlds.sort(key=lambda x: (-x['id']), reverse=True)
 
-    image = crop_center_img(Image.open(TEXT_PATH / 'bg.jpg'), 1400, 950)
+    image = crop_center_img(
+        Image.open(TEXT_PATH / 'bg.jpg'),
+        1400,
+        450 * ((len(worlds) // 5) + 1) + 50,
+    )
 
     for index, world in enumerate(worlds):
         area_bg = Image.open(TEXT_PATH / 'area_bg.png')
@@ -119,7 +124,7 @@ async def draw_explore(uid: str):
 
         image.paste(
             area_bg,
-            (100 + 240 * (index % 5), 25 + 450 * (index // 5)),
+            (75 + 240 * (index % 5), 30 + 450 * (index // 5)),
             area_bg,
         )
     return await convert_img(image)

@@ -119,7 +119,7 @@ async def _draw_char_full_pic(
     result.paste(char_card_img, (0, 0), char_card_mask)
     img.paste(
         result,
-        (15 + (index % 4) * 265, 1345 + (index // 4) * 160),
+        (15 + (index % 4) * 265, 1525 + (index // 4) * 160),
         result,
     )
 
@@ -166,7 +166,7 @@ async def draw_pic(uid: str) -> Union[str, bytes]:
         else (char_num // 2) + (char_num % 2)
     )
 
-    up_lenth = 1320
+    up_lenth = 1500
 
     # 获取背景图片各项参数
     based_w = 1080
@@ -224,7 +224,9 @@ async def draw_pic(uid: str) -> Union[str, bytes]:
     world_exp = raw_data['world_explorations']
     world_list = []
     # 须弥占坑 & 城市补足
-    for city_index in range(1, 10):
+    for city_index in range(1, 15):
+        if city_index in [11, 12]:
+            continue
         world_list.append(
             {
                 'id': city_index,
@@ -246,18 +248,22 @@ async def draw_pic(uid: str) -> Union[str, bytes]:
             )
 
         # 岚丹特色怪物计数
+        count = 1
         for offering in world_part['boss_list']:
             temp['extra'].append(
                 {'name': offering['name'], 'level': offering['kill_num']}
             )
+            count += 1
+            if count >= 3:
+                break
 
-        world_list[world_part['id'] - 1] = temp
+        if world_part['id'] == 13:
+            _id = 10
+        else:
+            _id = world_part['id'] - 1
+        world_list[_id] = temp
 
     world_list.sort(key=lambda x: (-x['id']), reverse=True)
-    # 令层岩地下和地上合并
-    world_list[5]['exp'].append(world_list[6]['exp'][0])
-    # 移除地下
-    world_list.pop(6)
     # 添加宝箱信息和锚点
     chest_data = [
         'common_chest_number',
@@ -467,6 +473,6 @@ async def _draw_char_8_pic(
     result.paste(char_card_img, (0, 0), char_card8_mask)
     img.paste(
         result,
-        (15 + (index % 2) * 520, 1345 + (index // 2) * 250),
+        (15 + (index % 2) * 520, 1525 + (index // 2) * 250),
         result,
     )

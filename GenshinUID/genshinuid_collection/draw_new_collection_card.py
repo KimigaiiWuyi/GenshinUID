@@ -1,8 +1,12 @@
+from typing import List, Tuple
+
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.mys.models import Offering
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
 from gsuid_core.utils.download_resource.download_image import get_image
 
+from .const import expmax_data
 from ..utils.colors import get_color
 from ..utils.resource.RESOURCE_PATH import ICON_PATH
 from ..utils.image.image_tools import shift_image_hue
@@ -12,8 +16,10 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_20,
     gs_font_24,
     gs_font_32,
+    gs_font_36,
 )
 
+# 五个阶段，每个阶段需要的数量
 CMAP = {
     '枫丹': [10, 8, 6, 4, 2],
     '须弥': [10, 8, 6, 4, 2],
@@ -29,8 +35,16 @@ CMAP = {
     '流明石触媒': [10, 8, 6, 4, 2],
     '神樱眷顾': [50, 40, 30, 20, 10],
     '忍冬之树': [12, 10, 8, 5, 2],
+    '风神瞳': [66, 50, 35, 25, 10],
+    '岩神瞳': [131, 100, 70, 40, 10],
+    '雷神瞳': [181, 141, 100, 60, 15],
+    '草神瞳': [271, 211, 150, 90, 20],
+    '水神瞳': [271, 211, 150, 90, 20],
+    '冰神瞳': [271, 211, 150, 90, 20],
+    '火神瞳': [271, 211, 150, 90, 20],
 }
 
+# 颜色HUE旋转
 DMAP = {
     '枫丹': 14,
     '须弥': 250,
@@ -43,6 +57,32 @@ DMAP = {
     '蒙德': 300,
 }
 
+# 神瞳中文名
+STCMAP = {
+    'electro': '雷神瞳',
+    'geo': '岩神瞳',
+    'hydro': '水神瞳',
+    'anemo': '风神瞳',
+    'dendro': '草神瞳',
+    'cryo': '冰神瞳',
+    'pyro': '火神瞳',
+}
+
+STLMAP = {
+    'electro': '雷神瞳',
+    'geo': '岩神瞳',
+    'hydro': '水神瞳',
+    'anemo': '风神瞳',
+    'dendro': '草神瞳',
+    'cryo': '冰神瞳',
+    'pyro': '火神瞳',
+}
+
+r = 20
+half_white = (255, 255, 255, 120)
+white = (255, 255, 255)
+black = (2, 2, 2)
+
 
 async def draw_explore(uid: str):
     raw_data = await get_base_data(uid)
@@ -51,80 +91,175 @@ async def draw_explore(uid: str):
     ):
         return raw_data
 
-    r = 20
-    half_white = (255, 255, 255, 120)
-    white = (255, 255, 255)
-    black = (2, 2, 2)
-
     worlds = raw_data['world_explorations']
     worlds.sort(key=lambda x: (-x['id']), reverse=True)
+
+    new_culus = {}
+    for _culus in raw_data['stats']:
+        if _culus.endswith('culus_number'):
+            new_culus[_culus] = raw_data['stats'][_culus]
+
+    div_a = Image.open(TEXT_PATH / 'div.png')
+    div_b = Image.open(TEXT_PATH / 'div.png')
+
+    diva_draw = ImageDraw.Draw(div_a)
+    divb_draw = ImageDraw.Draw(div_b)
+
+    diva_draw.text((700, 40), '神瞳收集', (25, 29, 53), gs_font_36, 'mm')
+    divb_draw.text((700, 40), '城市探索', (25, 29, 53), gs_font_36, 'mm')
+
+    title_offer = 50
 
     image = crop_center_img(
         Image.open(TEXT_PATH / 'bg.jpg'),
         1400,
-        450 * ((len(worlds) // 5) + 1) + 50,
+        450
+        * ((((len(worlds) - 1) // 5) + 1) + (((len(new_culus) - 1) // 5) + 1))
+        + title_offer
+        + (div_a.size[1] + 40) * 2,
     )
 
-    for index, world in enumerate(worlds):
-        area_bg = Image.open(TEXT_PATH / 'area_bg.png')
+    image.paste(div_a, (0, title_offer + 20), div_a)
 
-        icon = await get_image(world['icon'], ICON_PATH)
-        icon = icon.resize((150, 150)).convert('RGBA')
+    for index_c, _culus in enumerate(new_culus):
+        _culus_name = _culus.replace('culus_number', '')
+        culus_name = _culus_name.capitalize()
+        num: int = raw_data['stats'][_culus]
+        culus_zh = STCMAP[_culus_name]
 
-        percent = world['exploration_percentage']
-        name = world['name']
-        if '·' in name:
-            name = name.split('·')[-1]
+        culus_icon = Image.open(TEXT_PATH / f'Item_{culus_name}culus.webp')
+        culus_icon = culus_icon.resize((154, 154))
 
-        shift = DMAP.get(name, 5)
-        area_bg = await shift_image_hue(area_bg, shift)
+        if num >= CMAP[culus_zh][0]:
+            level_name = '已集齐'
+        else:
+            level_name = '未集齐'
 
-        main_color = get_color(
-            world["level"], CMAP.get(name, [10, 8, 6, 4, 2])
+        area_bg = await draw_area(
+            culus_icon,
+            (73, 50),
+            (num / expmax_data[culus_zh]) * 100,
+            f'进度：{num} / {expmax_data[culus_zh]}',
+            culus_zh,
+            num,
+            level_name,
+            [],
+            15,
         )
-
-        rank = f'等阶{world["level"]}'
-
-        completion = f'探索完成度: {percent / 10}%'
-
-        area_bg.paste(icon, (75, 36), icon)
-
-        area_draw = ImageDraw.Draw(area_bg)
-
-        # 标题
-        area_draw.text((150, 216), name, white, gs_font_32, 'mm')
-
-        # 等阶
-        area_draw.rounded_rectangle((98, 240, 201, 270), r, main_color)
-        area_draw.text((150, 256), rank, white, gs_font_24, 'mm')
-
-        # 进度条
-        lenth = percent * 182 / 1000
-        area_draw.rounded_rectangle((59, 283, 241, 295), r, half_white)
-        area_draw.rounded_rectangle((59, 283, 59 + lenth, 295), r, white)
-        area_draw.text((150, 320), completion, white, gs_font_20, 'mm')
-
-        # 副等阶，如果有的话
-        if world['offerings']:
-            odata = world['offerings'][0]
-            oicon = await get_image(odata['icon'], ICON_PATH)
-            oicon = oicon.resize((38, 38)).convert('RGBA')
-            orank = f"等阶{odata['level']}"
-            oname = odata['name']
-
-            sub_color = get_color(
-                odata['level'], CMAP.get(oname, [10, 8, 6, 4, 2])
-            )
-
-            area_draw.rounded_rectangle((59, 340, 241, 387), 5, half_white)
-            area_bg.paste(oicon, (63, 343), oicon)
-            area_draw.text((107, 352), oname, black, gs_font_20, 'lm')
-            area_draw.rounded_rectangle((107, 364, 173, 384), r, sub_color)
-            area_draw.text((140, 374), orank, white, gs_font_15, 'mm')
 
         image.paste(
             area_bg,
-            (75 + 240 * (index % 5), 30 + 450 * (index // 5)),
+            (
+                75 + 240 * (index_c % 5),
+                30 + 80 + 450 * (index_c // 5) + title_offer,
+            ),
+            area_bg,
+        )
+
+    image.paste(
+        div_b,
+        (0, 80 + 450 * (((len(new_culus) - 1) // 5) + 1) + title_offer + 20),
+        div_b,
+    )
+
+    for index, world in enumerate(worlds):
+        icon = await get_image(world['icon'], ICON_PATH)
+        icon = icon.resize((150, 150)).convert('RGBA')
+
+        name = world['name']
+        if '·' in name:
+            name = name.split('·')[-1]
+        level = world["level"]
+        level_name = f'等阶{level}'
+        offerings = world['offerings']
+
+        area_bg = await draw_area(
+            icon,
+            (75, 36),
+            world['exploration_percentage'] / 10,
+            '',
+            name,
+            level,
+            level_name,
+            offerings,
+        )
+
+        image.paste(
+            area_bg,
+            (
+                75 + 240 * (index % 5),
+                30
+                + 80 * 2
+                + 450 * (((len(new_culus) - 1) // 5) + 1)
+                + 450 * (index // 5)
+                + title_offer,
+            ),
             area_bg,
         )
     return await convert_img(image)
+
+
+async def draw_area(
+    icon: Image.Image,
+    icon_pos: Tuple[int, int],
+    percent: float,
+    sub_text: str,
+    name: str,
+    level: int,
+    level_name: str,
+    offerings: List[Offering],
+    offer: int = 0,
+) -> Image.Image:
+    area_bg = Image.open(TEXT_PATH / 'area_bg.png')
+
+    shift = DMAP.get(name, 5)
+    area_bg = await shift_image_hue(area_bg, shift)
+
+    main_color = get_color(level, CMAP.get(name, [10, 8, 6, 4, 2]))
+
+    completion = '探索完成度: {:.1f}%'.format(percent)
+
+    area_bg.paste(icon, icon_pos, icon)
+
+    area_draw = ImageDraw.Draw(area_bg)
+
+    # 标题
+    area_draw.text((150, 216 + offer), name, white, gs_font_32, 'mm')
+
+    # 等阶
+    l_r = (98, 240 + offer, 201, 270 + offer)
+    area_draw.rounded_rectangle(l_r, r, main_color)
+    area_draw.text((150, 256 + offer), level_name, white, gs_font_24, 'mm')
+
+    # 进度条
+    lenth = percent * 1820 / 1000
+    p_r_n = (59, 283 + offer, 241, 295 + offer)
+    p_r_c = (59, 283 + offer, 59 + lenth, 295 + offer)
+    area_draw.rounded_rectangle(p_r_n, r, half_white)
+    area_draw.rounded_rectangle(p_r_c, r, white)
+    area_draw.text((150, 320 + offer), completion, white, gs_font_20, 'mm')
+    if sub_text:
+        area_draw.text((150, 350 + offer), sub_text, white, gs_font_20, 'mm')
+
+    # 副等阶，如果有的话
+    if offerings:
+        odata = offerings[0]
+        oicon = await get_image(odata['icon'], ICON_PATH)
+        oicon = oicon.resize((38, 38)).convert('RGBA')
+        orank = f"等阶{odata['level']}"
+        oname = odata['name']
+
+        sub_color = get_color(
+            odata['level'], CMAP.get(oname, [10, 8, 6, 4, 2])
+        )
+
+        o_r_1 = (59, 340 + offer, 241, 387 + offer)
+        o_r_2 = (107, 364 + offer, 173, 384 + offer)
+
+        area_draw.rounded_rectangle(o_r_1, 5, half_white)
+        area_bg.paste(oicon, (63, 343 + offer), oicon)
+        area_draw.text((107, 352 + offer), oname, black, gs_font_20, 'lm')
+        area_draw.rounded_rectangle(o_r_2, r, sub_color)
+        area_draw.text((140, 374 + offer), orank, white, gs_font_15, 'mm')
+
+    return area_bg

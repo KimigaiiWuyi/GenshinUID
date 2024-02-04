@@ -8,7 +8,7 @@ from gsuid_core.utils.error_reply import get_error_img
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
-from ..utils.map.GS_MAP_PATH import avatarId2Name
+from .const import max_data, award_data, expmax_data
 from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
 from ..utils.image.image_tools import draw_bar, get_avatar, get_color_bg
 
@@ -18,37 +18,6 @@ first_color = (29, 29, 29)
 brown_color = (41, 25, 0)
 red_color = (255, 66, 66)
 green_color = (74, 189, 119)
-
-max_data = {
-    '成就': 1136,
-    '华丽的宝箱': 262,
-    '珍贵的宝箱': 631,
-    '精致的宝箱': 2076,
-    '普通的宝箱': 2867,
-    '奇馈宝箱': 221,
-    '解锁传送点': 372,
-    '解锁秘境': 54,
-}
-
-award_data = {
-    '成就': 5,
-    '华丽的宝箱': 10,
-    '珍贵的宝箱': 8,
-    '精致的宝箱': 3,
-    '普通的宝箱': 1,
-    '奇馈宝箱': 2,
-    '解锁传送点': 0,
-    '解锁秘境': 0,
-}
-
-expmax_data = {
-    '获得角色数': len(avatarId2Name) - 2,
-    '风神瞳': 66,
-    '岩神瞳': 131,
-    '雷神瞳': 181,
-    '草神瞳': 271,
-    '水神瞳': 271,
-}
 
 
 async def draw_collection_img(ev: Event, uid: str) -> Union[str, bytes]:

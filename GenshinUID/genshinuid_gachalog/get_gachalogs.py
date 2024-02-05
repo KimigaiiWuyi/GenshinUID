@@ -91,7 +91,12 @@ async def save_gachalogs(
     if raw_data is None:
         raw_data = await get_new_gachalog(uid, gachalogs_history, is_force)
     else:
-        new_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
+        new_data = {
+            '新手祈愿': [],
+            '常驻祈愿': [],
+            '角色祈愿': [],
+            '武器祈愿': [],
+        }
         if gachalogs_history:
             for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
                 for item in raw_data[i]:
@@ -107,7 +112,12 @@ async def save_gachalogs(
     if raw_data == {} or not raw_data:
         return SK_HINT
 
-    temp_data = {'新手祈愿': [], '常驻祈愿': [], '角色祈愿': [], '武器祈愿': []}
+    temp_data = {
+        '新手祈愿': [],
+        '常驻祈愿': [],
+        '角色祈愿': [],
+        '武器祈愿': [],
+    }
     for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
         for item in raw_data[i]:
             if item not in temp_data[i]:

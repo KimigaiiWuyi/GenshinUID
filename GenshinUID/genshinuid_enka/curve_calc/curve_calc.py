@@ -47,22 +47,32 @@ async def get_weight_temp(prop: dict, attr: str) -> List[float]:
     weight = []
     if '攻击' in attr:
         weight.append(
-            (prop['atk_green'] / prop['baseAtk']) * 100 / WEIGHT_MAP['百分比攻击力']
+            (prop['atk_green'] / prop['baseAtk'])
+            * 100
+            / WEIGHT_MAP['百分比攻击力']
         )
     elif '生命' in attr:
         weight.append(
-            (prop['hp_green'] / prop['baseHp']) * 100 / WEIGHT_MAP['百分比血量']
+            (prop['hp_green'] / prop['baseHp'])
+            * 100
+            / WEIGHT_MAP['百分比血量']
         )
     elif '防御' in attr:
         weight.append(
-            (prop['def_green'] / prop['baseDef']) * 100 / WEIGHT_MAP['百分比防御力']
+            (prop['def_green'] / prop['baseDef'])
+            * 100
+            / WEIGHT_MAP['百分比防御力']
         )
     elif '精通' in attr:
         weight.append(prop['elementalMastery'] / WEIGHT_MAP['元素精通'])
     elif '充能' in attr:
-        weight.append(prop['energyRecharge'] * 100 / WEIGHT_MAP['元素充能效率'])
+        weight.append(
+            prop['energyRecharge'] * 100 / WEIGHT_MAP['元素充能效率']
+        )
     elif '物伤' in attr:
-        weight.append(prop['physicalDmgBonus'] * 100 / WEIGHT_MAP['物理伤害加成'])
+        weight.append(
+            prop['physicalDmgBonus'] * 100 / WEIGHT_MAP['物理伤害加成']
+        )
     elif '伤' in attr:
         weight.append(prop['dmgBonus'] * 100 / WEIGHT_MAP['元素伤害加成'])
     elif '治疗' in attr:

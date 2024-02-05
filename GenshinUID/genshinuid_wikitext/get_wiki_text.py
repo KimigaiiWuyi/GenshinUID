@@ -130,7 +130,9 @@ async def weapon_wiki(name: str) -> str:
                 now = now[:-1]
                 rw_ef.append(now)
             raw_effect = raw_effect.format(*rw_ef)
-            effect = '\n' + '【' + data['effectName'] + '】' + ': ' + raw_effect
+            effect = (
+                '\n' + '【' + data['effectName'] + '】' + ': ' + raw_effect
+            )
         else:
             effect = ''
         im = weapon_im.format(name, _type, star, info, atk, sub, effect)

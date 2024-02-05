@@ -44,7 +44,9 @@ async def send_find_map_msg(bot: Bot, ev: Event):
 
     resource_temp_path = MAP_DATA / f'{map_name}_{ev.text}.jpg'
     if resource_temp_path.exists():
-        await bot.logger.info(f'本地已有{map_name}_{ev.text}的资源点,直接发送...')
+        await bot.logger.info(
+            f'本地已有{map_name}_{ev.text}的资源点,直接发送...'
+        )
         resource_temp = await convert_img(resource_temp_path)
         await bot.send(resource_temp)
     else:

@@ -65,7 +65,9 @@ async def draw_enka_card(
         else:
             line1 = '刷新成功!'
 
-    line2 = f'UID {uid}请使用 查询{char_data_list[0]["avatarName"]} 命令进行查询!'
+    line2 = (
+        f'UID {uid}请使用 查询{char_data_list[0]["avatarName"]} 命令进行查询!'
+    )
     char_num = len(char_data_list)
     if char_num <= 8:
         based_w, based_h = 1000, 240 + ((char_num + 3) // 4) * 220

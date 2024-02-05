@@ -14,7 +14,9 @@ sv_get_regtime = SV('查询注册时间')
 sv_get_info = SV('查询原神信息')
 
 
-@sv_get_regtime.on_command(('原神注册时间', '注册时间', '查询注册时间'), block=True)
+@sv_get_regtime.on_command(
+    ('原神注册时间', '注册时间', '查询注册时间'), block=True
+)
 async def regtime(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询注册时间]')
     uid = await get_uid(bot, ev)

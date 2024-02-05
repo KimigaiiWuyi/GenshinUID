@@ -61,9 +61,11 @@ async def send_check_cookie(bot: Bot, ev: Event):
     else:
         return_str = '\n'.join(
             [
-                f'uid{user.uid}/mys{user.mys_id}的Cookies是正常的!'
-                if user not in invalid_user
-                else f'uid{user.uid}的Cookies是异常的!已删除该条Cookies!'
+                (
+                    f'uid{user.uid}/mys{user.mys_id}的Cookies是正常的!'
+                    if user not in invalid_user
+                    else f'uid{user.uid}的Cookies是异常的!已删除该条Cookies!'
+                )
                 for user in user_list
             ]
         )
@@ -99,15 +101,20 @@ async def send_check_stoken(bot: Bot, ev: Event):
     if len(user_list) > 4:
         im = f'正常Stoken数量: {len(user_list) - len(invalid_user)}'
         invalid = '\n'.join(
-            [f'uid{user.uid}的Stoken是异常的!已清除Stoken!\n' for user in invalid_user]
+            [
+                f'uid{user.uid}的Stoken是异常的!已清除Stoken!\n'
+                for user in invalid_user
+            ]
         )
         return_str = f'{im}\n{invalid if invalid else "无失效Stoken!"}'
     else:
         return_str = '\n'.join(
             [
-                f'uid{user.uid}/mys{user.mys_id}的Stoken是正常的!'
-                if user not in invalid_user
-                else f'uid{user.uid}的Stoken是异常的!已清除Stoken!'
+                (
+                    f'uid{user.uid}/mys{user.mys_id}的Stoken是正常的!'
+                    if user not in invalid_user
+                    else f'uid{user.uid}的Stoken是异常的!已清除Stoken!'
+                )
                 for user in user_list
             ]
         )

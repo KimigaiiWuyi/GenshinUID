@@ -67,7 +67,11 @@ async def get_artifacts_value(
 ) -> float:
     if charName not in ATTR_MAP:
         ATTR_MAP[charName] = ['攻击力', '暴击率', '暴击伤害']
-    if subName in ATTR_MAP[charName] and subName in ['血量', '防御力', '攻击力']:
+    if subName in ATTR_MAP[charName] and subName in [
+        '血量',
+        '防御力',
+        '攻击力',
+    ]:
         if subName == '血量':
             base = (subValue / baseHp) * 100
         elif subName == '防御力':

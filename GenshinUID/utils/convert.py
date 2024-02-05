@@ -7,15 +7,13 @@ from gsuid_core.utils.database.models import GsBind
 
 
 @overload
-async def get_uid(bot: Bot, ev: Event) -> Optional[str]:
-    ...
+async def get_uid(bot: Bot, ev: Event) -> Optional[str]: ...
 
 
 @overload
 async def get_uid(
     bot: Bot, ev: Event, get_user_id: bool = True
-) -> Tuple[Optional[str], str]:
-    ...
+) -> Tuple[Optional[str], str]: ...
 
 
 async def get_uid(

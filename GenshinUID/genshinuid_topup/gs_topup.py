@@ -24,15 +24,35 @@ disnote = '''免责声明:
 GOODS = {
     0: {
         'title': '创世结晶×60',
-        'aliases': ['创世结晶x60', '结晶×60', '结晶x60', '创世结晶60', '结晶60'],
+        'aliases': [
+            '创世结晶x60',
+            '结晶×60',
+            '结晶x60',
+            '创世结晶60',
+            '结晶60',
+        ],
     },
     1: {
         'title': '创世结晶×300',
-        'aliases': ['创世结晶x300', '结晶×300', '结晶x300', '创世结晶300', '结晶300', '30'],
+        'aliases': [
+            '创世结晶x300',
+            '结晶×300',
+            '结晶x300',
+            '创世结晶300',
+            '结晶300',
+            '30',
+        ],
     },
     2: {
         'title': '创世结晶×980',
-        'aliases': ['创世结晶x980', '结晶×980', '结晶x980', '创世结晶980', '结晶980', '98'],
+        'aliases': [
+            '创世结晶x980',
+            '结晶×980',
+            '结晶x980',
+            '创世结晶980',
+            '结晶980',
+            '98',
+        ],
     },
     3: {
         'title': '创世结晶×1980',
@@ -125,7 +145,9 @@ async def topup_(
     if goods_id < len(fetchgoods_data):
         goods_data = fetchgoods_data[goods_id]
     else:
-        return await bot.send('商品不存在,最大为' + str(len(fetchgoods_data) - 1))
+        return await bot.send(
+            '商品不存在,最大为' + str(len(fetchgoods_data) - 1)
+        )
     order = await mys_api.topup(uid, goods_data, method)
     if isinstance(order, int):
         logger.warning(f'[充值] {group_id} {user_id} 出错！')

@@ -483,9 +483,11 @@ class Fight:
         avg_dmg = (
             normal_dmg
             if critrate < 0
-            else crit_dmg
-            if critrate > 1
-            else crit_dmg * critrate + (1 - critrate) * normal_dmg
+            else (
+                crit_dmg
+                if critrate > 1
+                else crit_dmg * critrate + (1 - critrate) * normal_dmg
+            )
         )
 
         self.total_normal_dmg += normal_dmg

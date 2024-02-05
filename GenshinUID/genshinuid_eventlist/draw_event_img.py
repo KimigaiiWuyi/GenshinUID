@@ -62,7 +62,13 @@ class DrawEventList:
             # 跳过一部分活动
             flag = False
             name_full = event_list[event]['nameFull']['CHS']
-            for ban_word in ['首充', '深境螺旋', '传说任务', '纪行', '更新修复']:
+            for ban_word in [
+                '首充',
+                '深境螺旋',
+                '传说任务',
+                '纪行',
+                '更新修复',
+            ]:
                 if ban_word in name_full:
                     flag = True
                     break

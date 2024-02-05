@@ -20,12 +20,18 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '原神公告推送ID列表',
         [],
     ),
-    'SignTime': GsListStrConfig('每晚签到时间设置', '每晚米游社签到时间设置（时，分）', ['0', '38']),
+    'SignTime': GsListStrConfig(
+        '每晚签到时间设置', '每晚米游社签到时间设置（时，分）', ['0', '38']
+    ),
     'BBSTaskTime': GsListStrConfig(
-        '每晚米游社任务时间设置', '每晚米游社任务时间设置（时，分）', ['1', '41']
+        '每晚米游社任务时间设置',
+        '每晚米游社任务时间设置（时，分）',
+        ['1', '41'],
     ),
     'GetDrawTaskTime': GsListStrConfig(
-        '每晚留影叙佳期任务时间设置', '每晚留影叙佳期任务时间设置（时，分）', ['3', '25']
+        '每晚留影叙佳期任务时间设置',
+        '每晚留影叙佳期任务时间设置（时，分）',
+        ['3', '25'],
     ),
     'MhyBBSCoinReport': GsBoolConfig(
         '米游币推送',

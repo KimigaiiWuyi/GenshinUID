@@ -28,7 +28,9 @@ async def scheduled_get_xk_data():
     await save_all_abyss_rank()
 
 
-@sv_get_abyss_database.on_fullmatch(('深渊概览', '深渊统计', '深渊使用率'), block=True)
+@sv_get_abyss_database.on_fullmatch(
+    ('深渊概览', '深渊统计', '深渊使用率'), block=True
+)
 async def send_abyss_pic(bot: Bot, ev: Event):
     await draw_xk_abyss_img()
     img = await convert_img(TOTAL_IMG)

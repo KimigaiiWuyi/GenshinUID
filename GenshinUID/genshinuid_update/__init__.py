@@ -16,7 +16,9 @@ async def send_updatelog_msg(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_gs_config.on_fullmatch(('gs更新', 'gs强制更新', 'gs强行强制更新', 'gs全部更新'))
+@sv_gs_config.on_fullmatch(
+    ('gs更新', 'gs强制更新', 'gs强行强制更新', 'gs全部更新')
+)
 async def send_update_msg(bot: Bot, ev: Event):
     await bot.logger.info('[gs更新] 正在执行 ...')
     level = 2

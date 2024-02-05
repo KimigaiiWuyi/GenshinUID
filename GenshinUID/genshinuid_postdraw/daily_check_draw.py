@@ -106,7 +106,9 @@ async def daily_get_draw():
             if len(tasks) >= 1:
                 await asyncio.gather(*tasks)
                 delay = 50 + random.randint(3, 45)
-                logger.info(f'[自动留影叙佳期] 已完成{len(tasks)}个用户, 等待{delay}秒进行下一次获取')
+                logger.info(
+                    f'[自动留影叙佳期] 已完成{len(tasks)}个用户, 等待{delay}秒进行下一次获取'
+                )
                 tasks.clear()
                 await asyncio.sleep(delay)
 

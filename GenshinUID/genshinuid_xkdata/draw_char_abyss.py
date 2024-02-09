@@ -66,7 +66,9 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
 
     # 基础文字部分
     img_draw = ImageDraw.Draw(_img)
-    img_draw.text((450, 450), f'{char_name}的深渊统计', 'White', gs_font_40, 'mm')
+    img_draw.text(
+        (450, 450), f'{char_name}的深渊统计', 'White', gs_font_40, 'mm'
+    )
 
     # 绘图
     r = 20
@@ -98,7 +100,9 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
     char_data_list.append(str(all_char_info['abyss']['avg_level']))
     char_data_list.append(str(all_char_info['abyss']['avg_constellation']))
 
-    for index, i in enumerate(['使用率', '满星率', '出场率', '平均等级', '平均命座']):
+    for index, i in enumerate(
+        ['使用率', '满星率', '出场率', '平均等级', '平均命座']
+    ):
         _it = index * 161
         img_draw.text((127 + _it, 618), i, (67, 46, 26), gs_font_30, 'mm')
         img_draw.text(

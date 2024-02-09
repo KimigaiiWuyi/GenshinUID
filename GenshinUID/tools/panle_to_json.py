@@ -125,7 +125,9 @@ async def panle2Json() -> None:
     :说明:
       访问DATA_PATH并转换数据为dmgMap.json。
     '''
-    wb = openpyxl.load_workbook(str(DATA_PATH / '参考面板.xlsx'), data_only=True)
+    wb = openpyxl.load_workbook(
+        str(DATA_PATH / '参考面板.xlsx'), data_only=True
+    )
     sheet: Worksheet = wb.active  # type: ignore
 
     result = {}

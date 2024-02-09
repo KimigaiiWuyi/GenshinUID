@@ -35,7 +35,9 @@ async def all_daily_mihoyo_bbs_coin():
             logger.exception(f'[米游币任务]执行失败: {user.uid}')
             im_failed += 1
             im_failed_str += f'\n[米游币任务]执行失败: {user.uid}'
-    faild_im = f'\n以下为签到失败报告: {im_failed_str}' if im_failed_str != '' else ''
+    faild_im = (
+        f'\n以下为签到失败报告: {im_failed_str}' if im_failed_str != '' else ''
+    )
     im = f'今日获取mhycoin成功数量: {im_success}，失败数量: {im_failed}{faild_im}'
     return im, im_private
 

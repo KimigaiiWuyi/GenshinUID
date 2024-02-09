@@ -67,7 +67,9 @@ async def get_resin_text(uid: str) -> Union[str, bytes]:
                 remained_timed: str = seconds2hours(
                     expedition['remained_time']
                 )
-                expedition_info.append(f'{avatar_name} 剩余时间{remained_timed}')
+                expedition_info.append(
+                    f'{avatar_name} 剩余时间{remained_timed}'
+                )
 
         if dailydata['transformer']['recovery_time']['reached']:
             transformer_status = '可用'

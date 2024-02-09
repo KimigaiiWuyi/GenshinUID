@@ -711,9 +711,9 @@ class Character:
                     _ex = 10 + weaponAffix * 2
                     ex_effect.append(f'Q:dmgBonus+{_ex}')
             elif self.char_name == '优菈':
-                skill_effect = EXTRA_CHAR_LIST[self.char_name]['Q每层能量伤害'][
-                    'value'
-                ]
+                skill_effect = EXTRA_CHAR_LIST[self.char_name][
+                    'Q每层能量伤害'
+                ]['value']
                 attack_type = 'Q'
                 skill_level = prop[f'{attack_type}_skill_level'] - 1
                 value = float(skill_effect[skill_level])

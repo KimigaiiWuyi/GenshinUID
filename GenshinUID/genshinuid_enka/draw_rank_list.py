@@ -118,7 +118,9 @@ async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
             char_draw.text((791, 129), _cr, 'white', gs_font_26, 'lm')
             char_draw.text((791, 169), _cd, 'white', gs_font_26, 'lm')
 
-            char_draw.text((263, 260), '测试项目: 未知', grey, gs_font_22, 'lm')
+            char_draw.text(
+                (263, 260), '测试项目: 未知', grey, gs_font_22, 'lm'
+            )
             char_draw.text(
                 (716, 257), str(int(float(result))), 'white', gs_font_44, 'lm'
             )
@@ -140,7 +142,9 @@ async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
 
             char_draw = ImageDraw.Draw(char_img)
 
-            char_draw.text((65, 39), f'数据最后更新于 {time}', grey, gs_font_15, 'lm')
+            char_draw.text(
+                (65, 39), f'数据最后更新于 {time}', grey, gs_font_15, 'lm'
+            )
             char_draw.text(
                 (760, 37), f'{char_name}', 'white', gs_font_32, 'rm'
             )
@@ -164,7 +168,9 @@ async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
             char_draw.text((169, 129), _cr, 'white', gs_font_26, 'lm')
             char_draw.text((169, 169), _cd, 'white', gs_font_26, 'lm')
 
-            char_draw.text((669, 260), '测试项目: 未知', grey, gs_font_22, 'rm')
+            char_draw.text(
+                (669, 260), '测试项目: 未知', grey, gs_font_22, 'rm'
+            )
             char_draw.text(
                 (237, 249), str(int(float(result))), 'white', gs_font_44, 'rm'
             )

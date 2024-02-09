@@ -231,7 +231,9 @@ async def contrast_char_info(bot: Bot, ev: Event):
         return await bot.send('参考格式: 对比面板 公子 公子换可莉圣遗物')
     contrast_list = ev.text.strip().split(' ')
     if len(contrast_list) <= 1:
-        return await bot.send('输入格式错误...参考格式: 对比面板 公子 公子换可莉圣遗物')
+        return await bot.send(
+            '输入格式错误...参考格式: 对比面板 公子 公子换可莉圣遗物'
+        )
     elif len(contrast_list) >= 4:
         return await bot.send('不支持对比四个及以上的面板...')
 
@@ -244,7 +246,9 @@ async def contrast_char_info(bot: Bot, ev: Event):
         elif isinstance(im, Tuple):
             data = im[0]
             if isinstance(data, bytes):
-                return await bot.send('输入了错误的格式...参考格式: 对比面板 公子 公子换可莉圣遗物')
+                return await bot.send(
+                    '输入了错误的格式...参考格式: 对比面板 公子 公子换可莉圣遗物'
+                )
             elif isinstance(data, str):
                 return await bot.send(data)
             else:
@@ -262,10 +266,14 @@ async def contrast_char_info(bot: Bot, ev: Event):
 @sv_get_enka.on_command('保存面板')
 async def save_char_info(bot: Bot, ev: Event):
     if not ev.text.strip():
-        return await bot.send('后面需要跟自定义的保存名字\n例如：保存面板公子为核爆公子')
+        return await bot.send(
+            '后面需要跟自定义的保存名字\n例如：保存面板公子为核爆公子'
+        )
     save_list = ev.text.strip().split('为')
     if len(save_list) <= 1:
-        return await bot.send('输入格式错误...参考格式: 保存面板公子为核爆公子')
+        return await bot.send(
+            '输入格式错误...参考格式: 保存面板公子为核爆公子'
+        )
 
     uid = await get_uid(bot, ev)
     if uid is None:

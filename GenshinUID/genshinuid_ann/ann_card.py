@@ -72,7 +72,9 @@ async def ann_list_card() -> bytes:
                 bg, new_item, (x, list_head.height + (index * new_item.height))
             )
 
-    tip = '*可以使用 原神公告#0000(右上角ID) 来查看详细内容, 例子: 原神公告#2434'
+    tip = (
+        '*可以使用 原神公告#0000(右上角ID) 来查看详细内容, 例子: 原神公告#2434'
+    )
     draw_text_by_line(
         bg, (0, bg.height - 35), tip, gs_font_18, '#767779', 1000, True
     )

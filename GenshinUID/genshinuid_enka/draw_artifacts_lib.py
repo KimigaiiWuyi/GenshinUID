@@ -123,7 +123,9 @@ async def draw_lib(ev: Event, uid: str, num: int) -> Union[bytes, str]:
     )
 
     extra_notice = (
-        f'可用 圣遗物仓库{num+1} 命令查看第{num+1}页' if num < all_page else '暂无更多页数'
+        f'可用 圣遗物仓库{num+1} 命令查看第{num+1}页'
+        if num < all_page
+        else '暂无更多页数'
     )
 
     bg_draw.text(

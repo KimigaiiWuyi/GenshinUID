@@ -91,7 +91,9 @@ async def set_config_func(
         # 执行设置
         if query is not None:
             gsconfig.set_config(name, query)
-            im = '成功设置{}为{}。'.format(config_name, '开' if query else '关')
+            im = '成功设置{}为{}。'.format(
+                config_name, '开' if query else '关'
+            )
         else:
             im = '未传入参数query!'
     else:

@@ -54,22 +54,30 @@ async def sign_in(uid: str) -> str:
                         Header['x-rpc-challenge'] = ch
                         Header['x-rpc-validate'] = vl
                         Header['x-rpc-seccode'] = f'{vl}|jordan'
-                        logger.info(f'[签到] {uid} 已获取验证码, 等待时间{delay}秒')
+                        logger.info(
+                            f'[签到] {uid} 已获取验证码, 等待时间{delay}秒'
+                        )
                         await asyncio.sleep(delay)
                     else:
                         delay = 605 + random.randint(1, 120)
-                        logger.info(f'[签到] {uid} 未获取验证码,等待{delay}秒后重试...')
+                        logger.info(
+                            f'[签到] {uid} 未获取验证码,等待{delay}秒后重试...'
+                        )
                         await asyncio.sleep(delay)
                     continue
                 else:
-                    logger.info('配置文件暂未开启[跳过无感验证],跳过本次签到任务...')
+                    logger.info(
+                        '配置文件暂未开启[跳过无感验证],跳过本次签到任务...'
+                    )
                 return '签到失败...出现验证码!'
             # 成功签到!
             else:
                 if index == 0:
                     logger.info(f'[签到] {uid} 该用户无校验码!')
                 else:
-                    logger.info(f'[签到] [无感验证] {uid} 该用户重试 {index} 次验证成功!')
+                    logger.info(
+                        f'[签到] [无感验证] {uid} 该用户重试 {index} 次验证成功!'
+                    )
                 break
         elif (int(str(uid)[0]) > 5) and (sign_data['data']['code'] == 'ok'):
             # 国际服签到无risk_code字段
@@ -106,7 +114,9 @@ async def sign_in(uid: str) -> str:
         sign_missed -= 1
     sign_missed = sign_info.get('sign_cnt_missed') or sign_missed
     im = f'{mes_im}!\n{get_im}\n本月漏签次数：{sign_missed}'
-    logger.info(f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}')
+    logger.info(
+        f'[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}'
+    )
     return im
 
 
@@ -176,7 +186,9 @@ async def daily_sign():
                     delay = 1
                 else:
                     delay = 50 + random.randint(3, 45)
-                logger.info(f'[签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到')
+                logger.info(
+                    f'[签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到'
+                )
                 tasks.clear()
                 already = 0
                 await asyncio.sleep(delay)

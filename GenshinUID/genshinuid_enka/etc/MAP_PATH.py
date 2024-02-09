@@ -13,14 +13,14 @@ class ActionMAP(TypedDict):
 
 
 with open(EFFECT_PATH / 'weapon_effect.json', "r", encoding='UTF-8') as f:
-    weapon_effect_map: Dict[
-        str, Dict[str, Dict[str, Dict[str, str]]]
-    ] = json.load(f)
+    weapon_effect_map: Dict[str, Dict[str, Dict[str, Dict[str, str]]]] = (
+        json.load(f)
+    )
 
 with open(EFFECT_PATH / 'char_effect.json', "r", encoding='UTF-8') as f:
-    char_effect_map: Dict[
-        str, Dict[str, Dict[str, Dict[str, str]]]
-    ] = json.load(f)
+    char_effect_map: Dict[str, Dict[str, Dict[str, Dict[str, str]]]] = (
+        json.load(f)
+    )
 
 with open(EFFECT_PATH / 'artifact_effect.json', "r", encoding='UTF-8') as f:
     artifact_effect_map: Dict[str, Dict[str, Dict[str, str]]] = json.load(f)

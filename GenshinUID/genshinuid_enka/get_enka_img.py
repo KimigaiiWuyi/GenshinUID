@@ -196,7 +196,9 @@ async def get_char_args(
             if isinstance(char_data, str):
                 return char_data
         else:
-            for i, s in enumerate(['生之花', '死之羽', '时之沙', '空之杯', '理之冠']):
+            for i, s in enumerate(
+                ['生之花', '死之羽', '时之沙', '空之杯', '理之冠']
+            ):
                 if '赤沙' in part:
                     continue
                 if part[-1] == s[-1]:
@@ -216,7 +218,9 @@ async def get_single_percent(char_data: Dict, uid: str, num: int, best: List):
     char = Character(char_data)
     await char.init_prop()
     percent = float(char.percent.replace('%', ''))
-    logger.info(f'[查找最佳圣遗物] UID:{uid}第{num}次迭代...毕业度为{percent}!')
+    logger.info(
+        f'[查找最佳圣遗物] UID:{uid}第{num}次迭代...毕业度为{percent}!'
+    )
     best.append({'percent': percent, 'char_data': char.card_prop})
 
 

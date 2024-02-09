@@ -182,7 +182,9 @@ async def draw_pay_img(
         # 商品充值 UID
         drawer.text(
             (
-                int(185 + (195 - gs_font_15.getlength(f'充值到 UID{uid}')) / 2),
+                int(
+                    185 + (195 - gs_font_15.getlength(f'充值到 UID{uid}')) / 2
+                ),
                 int(
                     120
                     - warning

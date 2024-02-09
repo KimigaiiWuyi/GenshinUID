@@ -66,7 +66,9 @@ async def send_daily_sign():
                         single['msg'], 'direct', qid, single['bot_id'], '', ''
                     )
         except Exception as e:
-            logger.warning(f'[每日全部签到] QQ {qid} 私聊推送失败!错误信息:{e}')
+            logger.warning(
+                f'[每日全部签到] QQ {qid} 私聊推送失败!错误信息:{e}'
+            )
         await asyncio.sleep(0.5)
     logger.info('[每日全部签到]私聊推送完成')
 
@@ -75,7 +77,9 @@ async def send_daily_sign():
         # 根据succee数判断是否为简洁推送
         if group_msg_list[gid]['success'] >= 0:
             report = (
-                '以下为签到失败报告：{}'.format(group_msg_list[gid]['push_message'])
+                '以下为签到失败报告：{}'.format(
+                    group_msg_list[gid]['push_message']
+                )
                 if group_msg_list[gid]['push_message'] != ''
                 else ''
             )

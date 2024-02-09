@@ -128,7 +128,9 @@ class MihoyoBBSCoin:
             self.headers,
         )
         if 'err' in data['message'] or data['retcode'] == -100:
-            logger.error('获取任务列表失败, 你的cookie可能已过期, 请重新设置cookie。')
+            logger.error(
+                '获取任务列表失败, 你的cookie可能已过期, 请重新设置cookie。'
+            )
             return '你的Cookies已失效。'
         else:
             self.Today_getcoins = data['data']['can_get_points']
@@ -143,10 +145,14 @@ class MihoyoBBSCoin:
             else:
                 # 如果第0个大于或等于62则直接判定任务没做
                 if data['data']['states'][0]['mission_id'] >= 62:
-                    logger.info(f'新的一天, 今天可以获得{self.Today_getcoins}个米游币')
+                    logger.info(
+                        f'新的一天, 今天可以获得{self.Today_getcoins}个米游币'
+                    )
                     pass
                 else:
-                    logger.info(f'似乎还有任务没完成, 今天还能获得{self.Today_getcoins}')
+                    logger.info(
+                        f'似乎还有任务没完成, 今天还能获得{self.Today_getcoins}'
+                    )
                     for i in data['data']['states']:
                         # 58是讨论区签到
                         if i['mission_id'] == 58:

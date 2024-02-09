@@ -415,7 +415,9 @@ async def get_char_img(
                 .resize((1421, 800))
             )
         else:
-            char_img = Image.open(GACHA_IMG_PATH / f'{char_name}.png')  # 角色图像
+            char_img = Image.open(
+                GACHA_IMG_PATH / f'{char_name}.png'
+            )  # 角色图像
     # 确定图片的长宽
     w, h = char_img.size
     if (w, h) != (based_w, based_h):

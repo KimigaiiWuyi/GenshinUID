@@ -16,5 +16,7 @@ async def send_download_resource_msg(bot: Bot, ev: Event):
 
 
 async def startup():
-    logger.info('[资源文件下载] 正在检查与下载缺失的资源文件，可能需要较长时间，请稍等')
+    logger.info(
+        '[资源文件下载] 正在检查与下载缺失的资源文件，可能需要较长时间，请稍等'
+    )
     logger.info(f'[资源文件下载] {await download_all_resource()}')

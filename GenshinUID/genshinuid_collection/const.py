@@ -32,3 +32,13 @@ expmax_data = {
     '冰神瞳': 271,
     '火神瞳': 271,
 }
+
+
+def cal_level(num: int):
+    return [
+        num,
+        int(num * 4 / 5),
+        int(num * 3 / 5),
+        int(num * 2 / 5),
+        int(num / 5),
+    ]

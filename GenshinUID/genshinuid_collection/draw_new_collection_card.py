@@ -6,8 +6,8 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import crop_center_img
 from gsuid_core.utils.download_resource.download_image import get_image
 
-from .const import expmax_data
 from ..utils.colors import get_color
+from .const import max_data, cal_level, expmax_data
 from ..utils.resource.RESOURCE_PATH import ICON_PATH
 from ..utils.image.image_tools import shift_image_hue
 from .draw_collection_card import TEXT_PATH, get_base_data
@@ -42,6 +42,11 @@ CMAP = {
     '水神瞳': [271, 211, 150, 90, 20],
     '冰神瞳': [271, 211, 150, 90, 20],
     '火神瞳': [271, 211, 150, 90, 20],
+    '华丽的宝箱': cal_level(max_data['华丽的宝箱']),
+    '珍贵的宝箱': cal_level(max_data['珍贵的宝箱']),
+    '精致的宝箱': cal_level(max_data['精致的宝箱']),
+    '普通的宝箱': cal_level(max_data['普通的宝箱']),
+    '奇馈宝箱': cal_level(max_data['奇馈宝箱']),
 }
 
 # 颜色HUE旋转
@@ -101,12 +106,15 @@ async def draw_explore(uid: str):
 
     div_a = Image.open(TEXT_PATH / 'div.png')
     div_b = Image.open(TEXT_PATH / 'div.png')
+    div_c = Image.open(TEXT_PATH / 'div.png')
 
     diva_draw = ImageDraw.Draw(div_a)
     divb_draw = ImageDraw.Draw(div_b)
+    divc_draw = ImageDraw.Draw(div_c)
 
     diva_draw.text((700, 40), '神瞳收集', (25, 29, 53), gs_font_36, 'mm')
     divb_draw.text((700, 40), '城市探索', (25, 29, 53), gs_font_36, 'mm')
+    divc_draw.text((700, 40), '宝箱收集', (25, 29, 53), gs_font_36, 'mm')
 
     title_offer = 50
 
@@ -114,14 +122,18 @@ async def draw_explore(uid: str):
         Image.open(TEXT_PATH / 'bg.jpg'),
         1400,
         450
-        * ((((len(worlds) - 1) // 5) + 1) + (((len(new_culus) - 1) // 5) + 1))
+        * (
+            (((len(worlds) - 1) // 5) + 1)
+            + (((len(new_culus) - 1) // 5) + 1)
+            + 1
+        )
         + title_offer
         + (div_a.size[1] + 40) * 2,
     )
 
     image.paste(div_a, (0, title_offer + 20), div_a)
 
-    for index_c, _culus in enumerate(new_culus):
+    for index_e, _culus in enumerate(new_culus):
         _culus_name = _culus.replace('culus_number', '')
         culus_name = _culus_name.capitalize()
         num: int = raw_data['stats'][_culus]
@@ -140,6 +152,7 @@ async def draw_explore(uid: str):
             (73, 50),
             (num / expmax_data[culus_zh]) * 100,
             f'进度：{num} / {expmax_data[culus_zh]}',
+            '收集完成度',
             culus_zh,
             num,
             level_name,
@@ -150,15 +163,79 @@ async def draw_explore(uid: str):
         image.paste(
             area_bg,
             (
+                75 + 240 * (index_e % 5),
+                30 + 80 + 450 * (index_e // 5) + title_offer,
+            ),
+            area_bg,
+        )
+
+    # 宝箱收集
+
+    common_chest = raw_data['stats']['common_chest_number']
+    exq_chest = raw_data['stats']['exquisite_chest_number']
+    pre_chest = raw_data['stats']['precious_chest_number']
+    lux_chest = raw_data['stats']['luxurious_chest_number']
+    magic_chest = raw_data['stats']['magic_chest_number']
+
+    CHEST_ = {
+        '普通的宝箱': common_chest,
+        '精致的宝箱': exq_chest,
+        '珍贵的宝箱': pre_chest,
+        '华丽的宝箱': lux_chest,
+        '奇馈宝箱': magic_chest,
+    }
+
+    image.paste(
+        div_c,
+        (0, 80 + 450 * (((len(new_culus) - 1) // 5) + 1) + title_offer + 20),
+        div_c,
+    )
+
+    for index_c, chest_name in enumerate(CHEST_):
+        chest_icon = Image.open(TEXT_PATH / f'{chest_name}.png')
+        max_num = max_data[chest_name]
+        precent = CHEST_[chest_name] / max_num
+
+        if CHEST_[chest_name] >= max_num:
+            level_name = '已集齐'
+        else:
+            level_name = '未集齐'
+
+        area_bg = await draw_area(
+            chest_icon,
+            (75, 55),
+            precent * 100,
+            f'进度：{CHEST_[chest_name]} / {max_num}',
+            '收集完成度',
+            chest_name,
+            CHEST_[chest_name],
+            level_name,
+            [],
+            8,
+        )
+
+        image.paste(
+            area_bg,
+            (
                 75 + 240 * (index_c % 5),
-                30 + 80 + 450 * (index_c // 5) + title_offer,
+                30
+                + 80 * 2
+                + 450 * (((len(new_culus) - 1) // 5) + 1)
+                + 450 * (index_c // 5)
+                + title_offer,
             ),
             area_bg,
         )
 
     image.paste(
         div_b,
-        (0, 80 + 450 * (((len(new_culus) - 1) // 5) + 1) + title_offer + 20),
+        (
+            0,
+            80 * 2
+            + 450 * (((len(new_culus) - 1) // 5) + 2)
+            + title_offer
+            + 20,
+        ),
         div_b,
     )
 
@@ -178,6 +255,7 @@ async def draw_explore(uid: str):
             (75, 36),
             world['exploration_percentage'] / 10,
             '',
+            '探索完成度',
             name,
             level,
             level_name,
@@ -189,8 +267,8 @@ async def draw_explore(uid: str):
             (
                 75 + 240 * (index % 5),
                 30
-                + 80 * 2
-                + 450 * (((len(new_culus) - 1) // 5) + 1)
+                + 80 * 3
+                + 450 * (((len(new_culus) - 1) // 5) + 2)
                 + 450 * (index // 5)
                 + title_offer,
             ),
@@ -204,6 +282,7 @@ async def draw_area(
     icon_pos: Tuple[int, int],
     percent: float,
     sub_text: str,
+    com_text: str,
     name: str,
     level: int,
     level_name: str,
@@ -217,7 +296,7 @@ async def draw_area(
 
     main_color = get_color(level, CMAP.get(name, [10, 8, 6, 4, 2]))
 
-    completion = '探索完成度: {:.1f}%'.format(percent)
+    completion = '{}: {:.1f}%'.format(com_text, percent)
 
     area_bg.paste(icon, icon_pos, icon)
 

@@ -11,6 +11,7 @@ from .RESOURCE_PATH import (
     GACHA_IMG_PATH,
     CHAR_STAND_PATH,
     CHAR_NAMECARD_PATH,
+    CHAR_NAMECARDPIC_PATH,
 )
 
 
@@ -28,6 +29,7 @@ async def download_all_file_from_miniggicu():
             'resource/weapon': WEAPON_PATH,
             'wiki/guide': GUIDE_PATH,
             'wiki/ref': REF_PATH,
+            'resource/char_namecard_pic': CHAR_NAMECARDPIC_PATH,
         },
     )
     for d_files in ['100000067.png', '100000068.png']:

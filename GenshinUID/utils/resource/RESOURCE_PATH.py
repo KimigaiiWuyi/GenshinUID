@@ -18,6 +18,7 @@ CHAR_SIDE_PATH = RESOURCE_PATH / 'char_side'
 CHAR_SIDE_TEMP_PATH = RESOURCE_PATH / 'char_side_temp'
 CHAR_CARD_PATH = RESOURCE_PATH / 'char_card'
 CHAR_NAMECARD_PATH = RESOURCE_PATH / 'char_namecard'
+CHAR_NAMECARDPIC_PATH = RESOURCE_PATH / 'char_namecard_pic'
 REL_PATH = RESOURCE_PATH / 'reliquaries'
 ICON_PATH = RESOURCE_PATH / 'icon'
 TEMP_PATH = RESOURCE_PATH / 'temp'
@@ -75,6 +76,7 @@ def init_dir():
         CHAR_SIDE_TEMP_PATH,
         MONSTER_ICON_PATH,
         ABYSS_PATH,
+        CHAR_NAMECARDPIC_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

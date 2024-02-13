@@ -10,7 +10,7 @@ from gsuid_core.utils.api.mys.models import MihoyoAvatar
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..utils.resource.download_url import download_file
-from ..utils.fonts.genshin_fonts import genshin_font_origin
+from ..utils.fonts.genshin_fonts import gs_font_22, gs_font_28, gs_font_40
 from ..utils.resource.RESOURCE_PATH import (
     REL_PATH,
     CHAR_PATH,
@@ -41,12 +41,6 @@ char_card8_bg5 = Image.open(TEXT_PATH / 'char_card8_bg5.png')
 char_card8_fg = Image.open(TEXT_PATH / 'char_card8_fg.png')
 char_card8_mask = Image.open(TEXT_PATH / 'char_card8_mask.png')
 
-
-# 生成几个字号
-gs_font_16 = genshin_font_origin(16)
-gs_font_23 = genshin_font_origin(23)
-gs_font_28 = genshin_font_origin(28)
-gs_font_40 = genshin_font_origin(40)
 
 # 文字颜色
 text_color = (68, 66, 64)
@@ -99,21 +93,21 @@ async def _draw_char_full_pic(
         (114, 37),
         f'Lv{char_data["level"]}',
         text_color,
-        gs_font_23,
+        gs_font_22,
         anchor='lm',
     )
     char_draw.text(
         (162, 96),
         f'Lv{char_data["weapon"]["level"]}',
         text_color,
-        gs_font_23,
+        gs_font_22,
         anchor='lm',
     )
     char_draw.text(
         (162, 123),
         f'精炼{char_data["weapon"]["affix_level"]}',
         text_color,
-        gs_font_23,
+        gs_font_22,
         anchor='lm',
     )
     result.paste(char_card_img, (0, 0), char_card_mask)
@@ -374,7 +368,7 @@ async def _draw_world_exp_pic(
                 ),
                 f'{str(offering["name"])}:{str(offering["level"])}',
                 text_color,
-                gs_font_23,
+                gs_font_22,
                 anchor='rm',
             )
 
@@ -453,21 +447,21 @@ async def _draw_char_8_pic(
         (81, 196),
         f'Lv{char_data["weapon"]["level"]}',
         text_color,
-        gs_font_23,
+        gs_font_22,
         anchor='lm',
     )
     char_draw.text(
         (81, 168),
         f'{char_data["weapon"]["name"]}',
         text_color,
-        gs_font_23,
+        gs_font_22,
         anchor='lm',
     )
     char_draw.text(
         (138, 196),
         f'精炼{char_data["weapon"]["affix_level"]}',
         text_color,
-        gs_font_23,
+        gs_font_22,
         anchor='lm',
     )
     result.paste(char_card_img, (0, 0), char_card8_mask)

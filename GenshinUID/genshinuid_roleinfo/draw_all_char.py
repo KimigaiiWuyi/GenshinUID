@@ -95,7 +95,7 @@ async def draw_char_pic(uid: str):
         else:
             char_card = Image.new('RGBA', (560, 268))
 
-        weapon_icon = weapon_icon.resize((174, 174))
+        weapon_icon = weapon_icon.resize((174, 174)).convert('RGBA')
         char_card = char_card.resize((560, 268))
 
         char_bg.paste(char_card, (32, 29), char_mask)

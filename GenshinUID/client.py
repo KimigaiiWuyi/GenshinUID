@@ -377,7 +377,10 @@ def _bt(button: Dict):
     action = button['action']
     if action == -1:
         action = 2
-
+    enter = None
+    if action == 3:
+        action = 2
+        enter = True
     return Button(
         render_data=RenderData(
             label=button['text'],
@@ -391,6 +394,7 @@ def _bt(button: Dict):
                 specify_role_ids=button['specify_role_ids'],
                 specify_user_ids=button['specify_user_ids'],
             ),
+            enter = enter,
             unsupport_tips=button['unsupport_tips'],
             data=button['data'],
         ),

@@ -394,7 +394,7 @@ def _bt(button: Dict):
                 specify_role_ids=button['specify_role_ids'],
                 specify_user_ids=button['specify_user_ids'],
             ),
-            enter = enter,
+            enter=enter,
             unsupport_tips=button['unsupport_tips'],
             data=button['data'],
         ),

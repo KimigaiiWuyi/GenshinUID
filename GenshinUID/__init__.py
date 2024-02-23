@@ -168,12 +168,12 @@ async def get_notice_message(bot: Bot, ev: Event):
             logger.debug('[gsuid] 不支持该 Telegram 事件...')
             return
     elif bot.adapter.get_name() == 'Discord':
+        from nonebot.adapters.discord import MessageComponentInteractionEvent
         from nonebot.adapters.discord.api import (
             ChannelType,
             InteractionResponse,
             InteractionCallbackType,
         )
-        from nonebot.adapters.discord import MessageComponentInteractionEvent
 
         sender = {}
         if isinstance(ev, MessageComponentInteractionEvent):

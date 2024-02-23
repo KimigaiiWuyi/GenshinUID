@@ -26,7 +26,7 @@ SAMPLE = {
     '行秋': 'Q剑雨伤害',
     '魈': 'A高空下落伤害',
     '凝光': 'Q宝石伤害',
-    '可莉': 'A重击伤害(蒸发)',
+    '可莉': 'A重击伤害',
     '钟离': ['E总护盾量', 'Q伤害'],
     '菲谢尔': 'E奥兹攻击伤害',
     '班尼特': ['Q伤害(蒸发)', 'Q持续治疗'],
@@ -38,7 +38,7 @@ SAMPLE = {
     '阿贝多': 'E刹那之花伤害',
     '迪奥娜': 'E护盾基础吸收量',
     '莫娜': ['Q泡影破裂伤害(蒸发)', 'Q泡影破裂伤害'],
-    '刻晴': 'A重击伤害',
+    '刻晴': 'Q最后一击伤害(超激化)',
     '砂糖': 'A扩散伤害',
     '辛焱': ['Q伤害', 'E三级护盾吸收量'],
     '罗莎莉亚': 'Q冰枪持续伤害',
@@ -88,6 +88,9 @@ SAMPLE = {
     '芙宁娜': 'E谢贝蕾妲小姐伤害',
     '夏洛蒂': 'Q施放治疗量',
     '娜维娅': 'E玫瑰晶弹基础伤害(6层)',
+    '夏沃蕾': 'E持续治疗量',
+    '闲云': 'Q治疗量',
+    '嘉明': 'E下落攻击·踏云献瑞伤害',
 }
 
 
@@ -126,7 +129,7 @@ async def panle2Json() -> None:
       访问DATA_PATH并转换数据为dmgMap.json。
     '''
     wb = openpyxl.load_workbook(
-        str(DATA_PATH / '参考面板.xlsx'), data_only=True
+        str(DATA_PATH / '参考面板4.4A.xlsx'), data_only=True
     )
     sheet: Worksheet = wb.active  # type: ignore
 
@@ -215,7 +218,7 @@ async def panle2Json() -> None:
             else:
                 char_temp = char_name
             char_result.append(temp)
-            if row == 391:
+            if row == 423:
                 print('ok!')
                 result[char_temp] = char_result
         else:

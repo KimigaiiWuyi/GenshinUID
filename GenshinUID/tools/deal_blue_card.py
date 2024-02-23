@@ -34,6 +34,7 @@ REF = {
         '旅行者草': 3,
     },
     '风': {
+        '闲云': 3,
         '琳妮特': 3,
         '流浪者': 3,
         '珐露珊': 2,
@@ -59,6 +60,8 @@ REF = {
         '安柏': 2,
         '香菱': 6,
         '班尼特': 4,
+        '夏沃蕾': 2,
+        '嘉明': 2,
     },
     '雷': {
         '赛诺': 6,
@@ -106,20 +109,24 @@ for ELE in REF:
     TITLE = 115
     SIG = 197
     END = 31
-    _path = path / f'{ELE}.jpg'
-    if not _path.exists():
+    _path = path / f'{ELE}.png'
+    _path_j = path / f'{ELE}.jpg'
+    if _path.exists():
+        image = Image.open(_path)
+    elif _path_j.exists():
+        image = Image.open(_path_j)
+    else:
         continue
-    image = Image.open(_path)
 
     if ELE == '草':
         _MOV = 55
     elif ELE == '火':
-        TITLE = 109
+        TITLE = 114
         SIG = 196
-        _MOV = 45
+        _MOV = 23
     elif ELE == '风':
         SIG = 193
-        _MOV = 5
+        _MOV = 40
     elif ELE == '岩':
         SIG = 188
         _MOV = 35
@@ -156,4 +163,5 @@ for ELE in REF:
         print(area)
         char_img = image.crop(area)
         _MOV += MOVE
+        char_img = char_img.convert('RGB')
         char_img.save(path / f'{CHAR}.jpg')

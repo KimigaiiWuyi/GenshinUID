@@ -209,6 +209,34 @@ async def get_notice_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 Discord 事件...')
             return
+    elif bot.adapter.get_name() == 'qq':
+        from nonebot.adapters.qq.bot import Bot
+        from nonebot.adapters.qq.event import InteractionCreateEvent
+
+        assert isinstance(bot, Bot), '仅适用于 QQ 机器人'
+
+        sender = {}
+        if isinstance(ev, InteractionCreateEvent):
+            if ev.scene == 'guild':
+                sp_bot_id = 'qqguild'
+                user_type = 'group'
+                group_id = str(ev.channel_id)
+                msg_id = str(ev.data.resolved.message_id)
+            else:
+                sp_bot_id = 'qqgroup'
+                msg_id = str(ev.id)
+                if ev.scene == 'group':
+                    user_type = 'group'
+                    group_id = str(ev.group_openid)
+                    user_id = str(ev.group_member_openid)
+                else:
+                    user_type = 'direct'
+                    user_id = str(ev.user_openid)
+            message = [Message('text', ev.data.resolved.button_data)]
+            await bot.put_interaction(interaction_id=ev.id, code=0)
+        else:
+            logger.debug('[gsuid] 不支持该 QQ 事件...')
+            return
     else:
         return
 

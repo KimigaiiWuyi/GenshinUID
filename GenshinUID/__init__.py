@@ -47,12 +47,10 @@ else:
 async def get_notice_message(bot: Bot, ev: Event):
     if gsclient is None:
         return await connect()
-
     try:
         await gsclient.ws.ping()
     except ConnectionClosed:
         return await connect()
-
     raw_data = ev.dict()
     logger.debug(raw_data)
 
@@ -209,7 +207,7 @@ async def get_notice_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 Discord 事件...')
             return
-    elif bot.adapter.get_name() == 'qq':
+    elif bot.adapter.get_name() == 'QQ':
         from nonebot.adapters.qq.bot import Bot
         from nonebot.adapters.qq.event import InteractionCreateEvent
 
@@ -233,15 +231,15 @@ async def get_notice_message(bot: Bot, ev: Event):
                     user_type = 'direct'
                     user_id = str(ev.user_openid)
             message = [Message('text', ev.data.resolved.button_data)]
+
             await bot.put_interaction(interaction_id=ev.id, code=0)
         else:
             logger.debug('[gsuid] 不支持该 QQ 事件...')
             return
     else:
         return
-
     msg = MessageReceive(
-        bot_id=bot_id,
+        bot_id=sp_bot_id if sp_bot_id else bot_id,
         bot_self_id=self_id,
         user_type=sp_user_type if sp_user_type else user_type,
         group_id=group_id,
@@ -259,7 +257,6 @@ async def get_notice_message(bot: Bot, ev: Event):
 async def get_all_message(bot: Bot, ev: Event):
     if gsclient is None:
         return await connect()
-
     try:
         await gsclient.ws.ping()
     except ConnectionClosed:
@@ -643,7 +640,6 @@ async def get_all_message(bot: Bot, ev: Event):
 
     if not message:
         return
-
     msg = MessageReceive(
         bot_id=bot_id,
         bot_self_id=self_id,

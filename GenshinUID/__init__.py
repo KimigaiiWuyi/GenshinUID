@@ -231,7 +231,7 @@ async def get_notice_message(bot: Bot, ev: Event):
                     user_type = 'direct'
                     user_id = str(ev.user_openid)
             message = [Message('text', ev.data.resolved.button_data)]
-            
+
             await bot.put_interaction(interaction_id=ev.id, code=0)
         else:
             logger.debug('[gsuid] 不支持该 QQ 事件...')

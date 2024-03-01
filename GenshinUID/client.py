@@ -1126,7 +1126,7 @@ async def group_send(
             msg_seq = None
         else:
             msg_seq = msg_id_seq[mid]
-        
+
         if target_type == 'group':
             await bot.send_to_group(
                 group_openid=target_id,

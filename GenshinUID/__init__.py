@@ -312,6 +312,7 @@ async def get_all_message(bot: Bot, ev: Event):
             group_id = None
             msg_id = ev.id
             sender = ev.author.dict()
+            sender['nickname'] = ev.author.username
         # 群聊
         elif isinstance(ev, GuildMessageEvent):
             user_type = 'group'

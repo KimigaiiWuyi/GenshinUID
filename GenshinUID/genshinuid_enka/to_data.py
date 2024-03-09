@@ -121,7 +121,11 @@ async def enka_to_dict(
     ) as file:
         await file.write(json.dumps(enka_data, indent=4, ensure_ascii=False))
 
-    if 'avatarInfoList' not in enka_data:
+    if (
+        enka_data is None
+        or enka_data == {}
+        or 'avatarInfoList' not in enka_data
+    ):
         return f'UID{uid}刷新失败！未打开角色展柜!'
 
     char_dict_list = []

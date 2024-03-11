@@ -6,12 +6,11 @@ import httpx
 
 MAP_PATH = Path(__file__).parent.parent / 'utils' / 'map' / 'data'
 
-with open(MAP_PATH / 'enName2AvatarID_mapping_4.4.0.json') as f:
+with open(MAP_PATH / 'enName2AvatarID_mapping_4.5.0.json') as f:
     enmap: Dict[str, str] = json.load(f)
 
-char_list = ['Gaming', 'Liuyun']
+char_list = ['Chiori']
 base = 'https://api.ambr.top/assets/UI'
-title = base + '/{}'
 # title = 'https://enka.network/ui/{}'
 icon_list = [
     'Skill_E_{}_01.png',
@@ -58,6 +57,12 @@ def download(icon_name: str, url: str):
 def main():
     for char in char_list:
         for icon in icon_list:
+            print(icon)
+            if icon.startswith('UI_NameCardPic'):
+                _title = base + '/namecard'
+            else:
+                _title = base
+            title = _title + '/{}'
             icon_name = icon.format(char)
             url = title.format(icon_name)
             print(url)
@@ -101,4 +106,5 @@ def download_namecard_pic():
         download(f'{avatar_id}.png', url)
 
 
-download_namecard_pic()
+# download_namecard_pic()
+main()

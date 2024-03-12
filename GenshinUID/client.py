@@ -348,10 +348,10 @@ class GsClient:
         )
 
 
-def to_json(msg: str, name: str, uin: int):
+def to_json(msg: list, name: str, uin: str):
     return {
-        'type': 'node',
-        'data': {'name': name, 'uin': uin, 'content': msg},
+        "type": "node",
+        "data": {"name": name, "uin": uin, "content": msg},
     }
 
 
@@ -685,16 +685,20 @@ async def onebot_send(
             )
 
     if node:
+        from nonebot.adapters.onebot.v11 import MessageSegment
+
         messages = [
             to_json(
-                f'[CQ:image,file={_msg["data"]}]'
-                if _msg['type'] == 'image'
-                else _msg['data'],
-                '小助手',
-                2854196310,
+                [
+                    MessageSegment.image(_msg["data"])
+                    if _msg["type"] == "image"
+                    else MessageSegment.text(_msg["data"])
+                ],
+                "小助手",
+                str(2854196310),
             )
             for _msg in node
-            if 'data' in _msg
+            if "data" in _msg
         ]
         await _send_node(messages)
     else:

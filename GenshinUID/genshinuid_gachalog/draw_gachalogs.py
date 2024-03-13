@@ -165,6 +165,9 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             'long_gacha_data': {'time': 0, 'num': 0},
         }
         # 拿到数据列表
+        if i not in gacha_data['data']:
+            return '抽卡记录数据已变更, 请执行一次`刷新抽卡记录`以刷新数据'
+
         data_list = gacha_data['data'][i]
 
         # if data_list == []:

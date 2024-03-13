@@ -10,6 +10,7 @@ from gsuid_core.models import Event
 from gsuid_core.logger import logger
 
 from ..utils.image.convert import convert_img
+from .get_gachalogs import all_gacha_type_name
 from ..utils.map.name_covert import name_to_avatar_id
 from ..utils.image.image_tools import get_avatar, get_color_bg
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, PLAYER_PATH, WEAPON_PATH
@@ -30,7 +31,14 @@ brown_color = (41, 25, 0)
 red_color = (255, 66, 66)
 green_color = (74, 189, 119)
 
-CHANGE_MAP = {'常驻祈愿': 'normal', '角色祈愿': 'char', '武器祈愿': 'weapon'}
+CHANGE_MAP = {
+    '新手祈愿': 'new',
+    '常驻祈愿': 'normal',
+    '角色祈愿': 'char',
+    '武器祈愿': 'weapon',
+    '集录祈愿': 'mix',
+}
+
 HOMO_TAG = ['非到极致', '运气不好', '平稳保底', '小欧一把', '欧狗在此']
 NORMAL_LIST = [
     '莫娜',
@@ -138,7 +146,8 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 数据初始化
     total_data = {}
-    for i in ['常驻祈愿', '角色祈愿', '武器祈愿']:
+    y_count = 0
+    for i in all_gacha_type_name:
         total_data[i] = {
             'total': 0,  # 五星总数
             'avg': 0,  # 抽卡平均数
@@ -157,6 +166,11 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         }
         # 拿到数据列表
         data_list = gacha_data['data'][i]
+
+        # if data_list == []:
+        #     continue
+        y_count += 1
+
         # 初始化开关
         is_not_first = False
         # 开始初始化抽卡数
@@ -296,12 +310,16 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     normal_y = (1 + ((total_data['常驻祈愿']['total'] - 1) // 6)) * single_y
     char_y = (1 + ((total_data['角色祈愿']['total'] - 1) // 6)) * single_y
     weapon_y = (1 + ((total_data['武器祈愿']['total'] - 1) // 6)) * single_y
+    new_y = (1 + ((total_data['新手祈愿']['total'] - 1) // 6)) * single_y
+    mix_y = (1 + ((total_data['集录祈愿']['total'] - 1) // 6)) * single_y
 
     # 获取背景图片各项参数
     char_pic = await get_avatar(ev, 320)
 
     avatar_title = Image.open(TEXT_PATH / 'avatar_title.png')
-    img = await get_color_bg(950, 530 + 900 + normal_y + char_y + weapon_y)
+    img = await get_color_bg(
+        950, 530 + y_count * 300 + normal_y + char_y + weapon_y + new_y + mix_y
+    )
     img.paste(avatar_title, (0, 0), avatar_title)
     img.paste(char_pic, (318, 83), char_pic)
     img_draw = ImageDraw.Draw(img)
@@ -309,10 +327,9 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 处理title
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
-    type_list = ['常驻祈愿', '角色祈愿', '武器祈愿']
     y_extend = 0
     level = 3
-    for index, i in enumerate(type_list):
+    for index, i in enumerate(all_gacha_type_name):
         title = Image.open(TEXT_PATH / 'gahca_title.png')
         if i == '常驻祈愿':
             level = await get_level_from_list(
@@ -385,7 +402,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             'mm',
         )
         y_extend += (
-            (1 + ((total_data[type_list[index - 1]]['total'] - 1) // 6)) * 150
+            (
+                1
+                + (
+                    (total_data[all_gacha_type_name[index - 1]]['total'] - 1)
+                    // 6
+                )
+            )
+            * 150
             if index != 0
             else 0
         )

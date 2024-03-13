@@ -1,5 +1,6 @@
 import json
 import asyncio
+from copy import deepcopy
 from datetime import datetime
 from typing import Dict, Optional
 
@@ -8,11 +9,28 @@ from gsuid_core.utils.error_reply import SK_HINT
 from ..utils.mys_api import mys_api
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
+NULL_GACHA_LOG = {
+    '新手祈愿': [],
+    '常驻祈愿': [],
+    '角色祈愿': [],
+    '武器祈愿': [],
+    '集录祈愿': [],
+}
+
+all_gacha_type_name = [
+    '新手祈愿',
+    '常驻祈愿',
+    '角色祈愿',
+    '武器祈愿',
+    '集录祈愿',
+]
+
 gacha_type_meta_data = {
     '新手祈愿': ['100'],
     '常驻祈愿': ['200'],
     '角色祈愿': ['301', '400'],
     '武器祈愿': ['302'],
+    '集录祈愿': ['500'],
 }
 
 
@@ -71,7 +89,15 @@ async def save_gachalogs(
 
     # 如果有老的,准备合并, 先打开文件
     gachalogs_history = {}
-    old_normal_gacha_num, old_char_gacha_num, old_weapon_gacha_num = 0, 0, 0
+
+    (
+        old_normal_gacha_num,
+        old_char_gacha_num,
+        old_weapon_gacha_num,
+        old_mix_gacha_num,
+        old_new_gacha_num,
+    ) = (0, 0, 0, 0, 0)
+
     if gachalogs_path.exists():
         with open(gachalogs_path, "r", encoding='UTF-8') as f:
             gachalogs_history: Dict = json.load(f)
@@ -79,26 +105,24 @@ async def save_gachalogs(
         old_normal_gacha_num = len(gachalogs_history['常驻祈愿'])
         old_char_gacha_num = len(gachalogs_history['角色祈愿'])
         old_weapon_gacha_num = len(gachalogs_history['武器祈愿'])
+        if '集录祈愿' in gachalogs_history:
+            old_mix_gacha_num = len(gachalogs_history['集录祈愿'])
+        else:
+            old_mix_gacha_num = 0
+        if '新手祈愿' in gachalogs_history:
+            old_new_gacha_num = len(gachalogs_history['新手祈愿'])
+        else:
+            old_new_gacha_num = 0
     else:
-        gachalogs_history = {
-            '新手祈愿': [],
-            '常驻祈愿': [],
-            '角色祈愿': [],
-            '武器祈愿': [],
-        }
+        gachalogs_history = deepcopy(NULL_GACHA_LOG)
 
     # 获取新抽卡记录
     if raw_data is None:
         raw_data = await get_new_gachalog(uid, gachalogs_history, is_force)
     else:
-        new_data = {
-            '新手祈愿': [],
-            '常驻祈愿': [],
-            '角色祈愿': [],
-            '武器祈愿': [],
-        }
+        new_data = deepcopy(NULL_GACHA_LOG)
         if gachalogs_history:
-            for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+            for i in all_gacha_type_name:
                 for item in raw_data[i]:
                     if (
                         item not in gachalogs_history[i]
@@ -106,19 +130,19 @@ async def save_gachalogs(
                     ):
                         new_data[i].append(item)
             raw_data = new_data
-            for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+            for i in all_gacha_type_name:
                 raw_data[i].extend(gachalogs_history[i])
 
     if raw_data == {} or not raw_data:
         return SK_HINT
 
-    temp_data = {
-        '新手祈愿': [],
-        '常驻祈愿': [],
-        '角色祈愿': [],
-        '武器祈愿': [],
-    }
-    for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+    if '集录祈愿' not in raw_data:
+        raw_data['集录祈愿'] = []
+    if '新手祈愿' not in raw_data:
+        raw_data['新手祈愿'] = []
+
+    temp_data = deepcopy(NULL_GACHA_LOG)
+    for i in all_gacha_type_name:
         for item in raw_data[i]:
             if item not in temp_data[i]:
                 temp_data[i].append(item)
@@ -126,10 +150,12 @@ async def save_gachalogs(
 
     result['uid'] = uid
     result['data_time'] = current_time
+    result['new_gacha_num'] = len(raw_data['新手祈愿'])
     result['normal_gacha_num'] = len(raw_data['常驻祈愿'])
     result['char_gacha_num'] = len(raw_data['角色祈愿'])
     result['weapon_gacha_num'] = len(raw_data['武器祈愿'])
-    for i in ['常驻祈愿', '角色祈愿', '武器祈愿']:
+    result['mix_gacha_num'] = len(raw_data['集录祈愿'])
+    for i in all_gacha_type_name:
         if len(raw_data[i]) > 1:
             raw_data[i].sort(key=lambda x: (-int(x['id'])))
     result['data'] = raw_data
@@ -138,6 +164,8 @@ async def save_gachalogs(
     normal_add = result['normal_gacha_num'] - old_normal_gacha_num
     char_add = result['char_gacha_num'] - old_char_gacha_num
     weapon_add = result['weapon_gacha_num'] - old_weapon_gacha_num
+    mix_add = result['mix_gacha_num'] - old_mix_gacha_num
+    new_add = result['new_gacha_num'] - old_new_gacha_num
     all_add = normal_add + char_add + weapon_add
 
     # 保存文件
@@ -151,6 +179,9 @@ async def save_gachalogs(
         im = (
             f'UID{uid}数据更新成功！'
             f'本次更新{all_add}个数据\n'
-            f'常驻祈愿{normal_add}个\n角色祈愿{char_add}个\n武器祈愿{weapon_add}个！'
+            f'常驻祈愿{normal_add}个\n角色祈愿{char_add}个\n'
+            f'武器祈愿{weapon_add}个！\n集录祈愿{mix_add}个！'
         )
+        if new_add > 0:
+            im += f'\n新手祈愿{new_add}个！'
     return im

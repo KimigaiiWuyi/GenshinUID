@@ -50,6 +50,10 @@ async def get_new_gachalog(uid: str, full_data: Dict, is_force: bool):
                 if data == []:
                     break
                 end_id = data[-1]['id']
+
+                if gacha_name not in full_data:
+                    full_data[gacha_name] = []
+
                 if data[-1] in full_data[gacha_name] and not is_force:
                     for item in data:
                         if item not in full_data[gacha_name]:

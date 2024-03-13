@@ -146,7 +146,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 数据初始化
     total_data = {}
-    y_count = 0
+    your_gacha_type_list = []
     for i in all_gacha_type_name:
         total_data[i] = {
             'total': 0,  # 五星总数
@@ -165,14 +165,16 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             'long_gacha_data': {'time': 0, 'num': 0},
         }
         # 拿到数据列表
-        if i not in gacha_data['data']:
-            return '抽卡记录数据已变更, 请执行一次`刷新抽卡记录`以刷新数据'
+        if i in gacha_data['data'] and gacha_data['data'][i]:
+            your_gacha_type_list.append(i)
+        else:
+            gacha_data[f'{CHANGE_MAP[i]}_gacha_num'] = 0
+            continue
 
         data_list = gacha_data['data'][i]
 
         # if data_list == []:
         #     continue
-        y_count += 1
 
         # 初始化开关
         is_not_first = False
@@ -270,6 +272,10 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
         # 计算抽卡类型
         # 如果抽卡总数小于40
+        if f'{CHANGE_MAP[i]}_gacha_num' not in gacha_data:
+            gacha_data[f'{CHANGE_MAP[i]}_gacha_num'] = len(
+                gacha_data['data'][i]
+            )
         if gacha_data[f'{CHANGE_MAP[i]}_gacha_num'] <= 40:
             total_data[i]['type'] = '佛系型'
         # 如果长时抽卡总数占据了总抽卡数的70%
@@ -321,7 +327,14 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     avatar_title = Image.open(TEXT_PATH / 'avatar_title.png')
     img = await get_color_bg(
-        950, 530 + y_count * 300 + normal_y + char_y + weapon_y + new_y + mix_y
+        950,
+        530
+        + len(your_gacha_type_list) * 300
+        + normal_y
+        + char_y
+        + weapon_y
+        + new_y
+        + mix_y,
     )
     img.paste(avatar_title, (0, 0), avatar_title)
     img.paste(char_pic, (318, 83), char_pic)
@@ -332,7 +345,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
     y_extend = 0
     level = 3
-    for index, i in enumerate(all_gacha_type_name):
+    for index, i in enumerate(your_gacha_type_list):
         title = Image.open(TEXT_PATH / 'gahca_title.png')
         if i == '常驻祈愿':
             level = await get_level_from_list(
@@ -408,7 +421,7 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             (
                 1
                 + (
-                    (total_data[all_gacha_type_name[index - 1]]['total'] - 1)
+                    (total_data[your_gacha_type_list[index - 1]]['total'] - 1)
                     // 6
                 )
             )

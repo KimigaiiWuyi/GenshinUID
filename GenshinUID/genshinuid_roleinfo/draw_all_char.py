@@ -1,11 +1,12 @@
 from pathlib import Path
 
 from PIL import Image, ImageDraw
+from gsuid_core.utils.api.mys.models import IndexData
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import crop_center_img
 
-from ..utils.mys_api import mys_api
+from ..utils.image.image_tools import get_v4_bg
+from ..utils.mys_api import mys_api, get_base_data
 from ..utils.fonts.genshin_fonts import gs_font_28, gs_font_30
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,
@@ -19,12 +20,7 @@ char_mask = Image.open(TEXT_PATH / 'charcard_mask.png')
 char_fg = Image.open(TEXT_PATH / 'char_fg.png')
 
 
-async def draw_char_pic(uid: str):
-    raw_data = await mys_api.get_info(uid, None)
-
-    if isinstance(raw_data, int):
-        return await get_error_img(raw_data)
-
+async def _draw_char_pic(uid: str, raw_data: IndexData):
     # 记录数据
     if raw_data:
         char_data = raw_data['avatars']
@@ -64,9 +60,12 @@ async def draw_char_pic(uid: str):
     # 获取背景图片各项参数
     target = (374, 195)
     based_w = 1680
-    based_h = char_hang * target[1] + 160
+    based_h = char_hang * target[1] + 160 + 80
 
-    img = crop_center_img(Image.open(TEXT_PATH / 'bg.jpg'), based_w, based_h)
+    img = Image.new('RGBA', (based_w, based_h))
+
+    div_d = Image.open(TEXT_PATH / 'div_d.png')
+    img.paste(div_d, (0, 65), div_d)
 
     for index, char in enumerate(char_datas):
         char_star = char['rarity']
@@ -118,9 +117,26 @@ async def draw_char_pic(uid: str):
             char_bg,
             (
                 95 + (index % 4) * (target[0] + 5),
-                80 + (index // 4) * target[1],
+                80 + 80 + (index // 4) * target[1],
             ),
             char_bg,
         )
 
-    return await convert_img(img)
+    return img
+
+
+async def draw_char_pic(uid: str):
+    raw_data = await get_base_data(uid)
+    if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
+        return raw_data
+
+    img = await _draw_char_pic(uid, raw_data)
+    if isinstance(img, (bytes, str)):
+        return img
+    elif isinstance(img, (bytearray, memoryview)):
+        return bytes(img)
+
+    bg = get_v4_bg(img.size[0], img.size[1])
+    bg.paste(img, (0, 0), img)
+
+    return await convert_img(bg)

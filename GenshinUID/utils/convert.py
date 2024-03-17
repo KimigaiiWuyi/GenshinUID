@@ -3,6 +3,7 @@ from typing import Tuple, Union, Optional, overload
 
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsBind
 
 
@@ -41,6 +42,7 @@ async def get_uid(
                         user_id, ev.bot_id, group_id=new_group
                     )
         uid = await GsBind.get_uid_by_game(user_id, ev.bot_id)
+    logger.info(f'[获取UID] {uid}')
     if get_user_id:
         return uid, user_id
     return uid

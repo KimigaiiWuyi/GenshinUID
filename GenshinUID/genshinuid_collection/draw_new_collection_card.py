@@ -1,22 +1,20 @@
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from PIL import Image, ImageDraw
-from gsuid_core.utils.api.mys.models import Offering
 from gsuid_core.utils.image.convert import convert_img
-from gsuid_core.utils.image.image_tools import crop_center_img
+from gsuid_core.utils.api.mys.models import Offering, IndexData
 from gsuid_core.utils.download_resource.download_image import get_image
 
 from ..utils.colors import get_color
 from .const import max_data, cal_level, expmax_data
 from ..utils.resource.RESOURCE_PATH import ICON_PATH
-from ..utils.image.image_tools import shift_image_hue
 from .draw_collection_card import TEXT_PATH, get_base_data
+from ..utils.image.image_tools import get_v4_bg, shift_image_hue
 from ..utils.fonts.genshin_fonts import (
     gs_font_15,
     gs_font_20,
     gs_font_24,
     gs_font_32,
-    gs_font_36,
 )
 
 # 五个阶段，每个阶段需要的数量
@@ -95,43 +93,55 @@ async def draw_explore(uid: str):
         raw_data, (bytes, bytearray, memoryview)
     ):
         return raw_data
+    img = await _draw_explore(raw_data)
 
+    bg = get_v4_bg(img.size[0], img.size[1])
+    bg.paste(img, (0, 0), img)
+
+    return await convert_img(bg)
+
+
+async def _draw_explore(raw_data: IndexData):
     worlds = raw_data['world_explorations']
     worlds.sort(key=lambda x: (-x['id']), reverse=True)
 
-    new_culus = {}
+    new_culus: Dict[str, str] = {}
     for _culus in raw_data['stats']:
         if _culus.endswith('culus_number'):
             new_culus[_culus] = raw_data['stats'][_culus]
 
-    div_a = Image.open(TEXT_PATH / 'div.png')
-    div_b = Image.open(TEXT_PATH / 'div.png')
-    div_c = Image.open(TEXT_PATH / 'div.png')
+    div_a = Image.open(TEXT_PATH / 'div_a.png')
+    div_b = Image.open(TEXT_PATH / 'div_b.png')
+    div_c = Image.open(TEXT_PATH / 'div_c.png')
 
-    diva_draw = ImageDraw.Draw(div_a)
-    divb_draw = ImageDraw.Draw(div_b)
-    divc_draw = ImageDraw.Draw(div_c)
-
-    diva_draw.text((700, 40), '神瞳收集', (25, 29, 53), gs_font_36, 'mm')
-    divb_draw.text((700, 40), '城市探索', (25, 29, 53), gs_font_36, 'mm')
-    divc_draw.text((700, 40), '宝箱收集', (25, 29, 53), gs_font_36, 'mm')
-
+    x = 1680
+    # c = int(x / 2)
     title_offer = 50
+    line = 390
+    div_h = div_a.size[1] - 10
+    column = 6
+    card_x = 255
+    card_act_x = 300
+    footer = 80
+    offer_x = int((x - column * card_x) / 2 - (card_act_x - card_x) / 2)
 
-    image = crop_center_img(
-        Image.open(TEXT_PATH / 'bg.jpg'),
-        1400,
-        450
-        * (
-            (((len(worlds) - 1) // 5) + 1)
-            + (((len(new_culus) - 1) // 5) + 1)
-            + 1
-        )
-        + title_offer
-        + (div_a.size[1] + 40) * 2,
+    image = Image.new(
+        'RGBA',
+        (
+            x,
+            line
+            * (
+                (((len(worlds) - 1) // column) + 1)
+                + (((len(new_culus) - 1) // column) + 1)
+                + 1
+            )
+            + title_offer
+            + div_h * 3
+            + footer,
+        ),
     )
 
-    image.paste(div_a, (0, title_offer + 20), div_a)
+    image.paste(div_a, (0, title_offer), div_a)
 
     for index_e, _culus in enumerate(new_culus):
         _culus_name = _culus.replace('culus_number', '')
@@ -163,8 +173,8 @@ async def draw_explore(uid: str):
         image.paste(
             area_bg,
             (
-                75 + 240 * (index_e % 5),
-                30 + 80 + 450 * (index_e // 5) + title_offer,
+                offer_x + card_x * (index_e % column),
+                div_h + line * (index_e // column) + title_offer,
             ),
             area_bg,
         )
@@ -186,9 +196,9 @@ async def draw_explore(uid: str):
     }
 
     image.paste(
-        div_c,
-        (0, 80 + 450 * (((len(new_culus) - 1) // 5) + 1) + title_offer + 20),
-        div_c,
+        div_b,
+        (0, div_h + line * (((len(new_culus) - 1) // 5) + 1) + title_offer),
+        div_b,
     )
 
     for index_c, chest_name in enumerate(CHEST_):
@@ -217,26 +227,24 @@ async def draw_explore(uid: str):
         image.paste(
             area_bg,
             (
-                75 + 240 * (index_c % 5),
-                30
-                + 80 * 2
-                + 450 * (((len(new_culus) - 1) // 5) + 1)
-                + 450 * (index_c // 5)
+                offer_x + card_x * (index_c % column),
+                +div_h * 2
+                + line * (((len(new_culus) - 1) // column) + 1)
+                + line * (index_c // column)
                 + title_offer,
             ),
             area_bg,
         )
 
     image.paste(
-        div_b,
+        div_c,
         (
             0,
-            80 * 2
-            + 450 * (((len(new_culus) - 1) // 5) + 2)
-            + title_offer
-            + 20,
+            div_h * 2
+            + line * (((len(new_culus) - 1) // column) + 2)
+            + title_offer,
         ),
-        div_b,
+        div_c,
     )
 
     for index, world in enumerate(worlds):
@@ -265,16 +273,16 @@ async def draw_explore(uid: str):
         image.paste(
             area_bg,
             (
-                75 + 240 * (index % 5),
-                30
-                + 80 * 3
-                + 450 * (((len(new_culus) - 1) // 5) + 2)
-                + 450 * (index // 5)
+                offer_x + card_x * (index % column),
+                +div_h * 3
+                + line * (((len(new_culus) - 1) // column) + 2)
+                + line * (index // column)
                 + title_offer,
             ),
             area_bg,
         )
-    return await convert_img(image)
+
+    return image
 
 
 async def draw_area(
@@ -290,6 +298,8 @@ async def draw_area(
     offer: int = 0,
 ) -> Image.Image:
     area_bg = Image.open(TEXT_PATH / 'area_bg.png')
+    area_alpha = Image.new('RGBA', area_bg.size, (0, 0, 0, 0))
+    alpha_draw = ImageDraw.Draw(area_alpha)
 
     shift = DMAP.get(name, 5)
     area_bg = await shift_image_hue(area_bg, shift)
@@ -307,18 +317,18 @@ async def draw_area(
 
     # 等阶
     l_r = (98, 240 + offer, 201, 270 + offer)
-    area_draw.rounded_rectangle(l_r, r, main_color)
-    area_draw.text((150, 256 + offer), level_name, white, gs_font_24, 'mm')
+    alpha_draw.rounded_rectangle(l_r, r, main_color)
+    alpha_draw.text((150, 256 + offer), level_name, white, gs_font_24, 'mm')
 
     # 进度条
     lenth = percent * 1820 / 1000
     p_r_n = (59, 283 + offer, 241, 295 + offer)
     p_r_c = (59, 283 + offer, 59 + lenth, 295 + offer)
-    area_draw.rounded_rectangle(p_r_n, r, half_white)
-    area_draw.rounded_rectangle(p_r_c, r, white)
-    area_draw.text((150, 320 + offer), completion, white, gs_font_20, 'mm')
+    alpha_draw.rounded_rectangle(p_r_n, r, half_white)
+    alpha_draw.rounded_rectangle(p_r_c, r, white)
+    alpha_draw.text((150, 320 + offer), completion, white, gs_font_20, 'mm')
     if sub_text:
-        area_draw.text((150, 350 + offer), sub_text, white, gs_font_20, 'mm')
+        alpha_draw.text((150, 350 + offer), sub_text, white, gs_font_20, 'mm')
 
     # 副等阶，如果有的话
     if offerings:
@@ -335,10 +345,14 @@ async def draw_area(
         o_r_1 = (59, 340 + offer, 241, 387 + offer)
         o_r_2 = (107, 364 + offer, 173, 384 + offer)
 
-        area_draw.rounded_rectangle(o_r_1, 5, half_white)
+        alpha_draw.rounded_rectangle(o_r_1, 5, half_white)
+
+        area_bg.alpha_composite(area_alpha)
         area_bg.paste(oicon, (63, 343 + offer), oicon)
         area_draw.text((107, 352 + offer), oname, black, gs_font_20, 'lm')
         area_draw.rounded_rectangle(o_r_2, r, sub_color)
         area_draw.text((140, 374 + offer), orank, white, gs_font_15, 'mm')
+    else:
+        area_bg.alpha_composite(area_alpha)
 
     return area_bg

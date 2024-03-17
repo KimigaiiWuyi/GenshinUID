@@ -3,10 +3,8 @@ from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
 from gsuid_core.models import Event
-from gsuid_core.utils.api.mys.models import IndexData
-from gsuid_core.utils.error_reply import get_error_img
 
-from ..utils.mys_api import mys_api
+from ..utils.mys_api import get_base_data
 from ..utils.image.convert import convert_img
 from .const import max_data, award_data, expmax_data
 from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
@@ -26,14 +24,6 @@ async def draw_collection_img(ev: Event, uid: str) -> Union[str, bytes]:
 
 async def draw_explora_img(ev: Event, uid: str) -> Union[str, bytes]:
     return await draw_base_img(ev, uid, '探索')
-
-
-async def get_base_data(uid: str) -> Union[bytes, str, IndexData]:
-    # 获取Cookies
-    raw_data = await mys_api.get_info(uid, None)
-    if isinstance(raw_data, int):
-        return await get_error_img(raw_data)
-    return raw_data
 
 
 async def get_explore_data(

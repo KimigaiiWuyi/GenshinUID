@@ -1,11 +1,12 @@
 import json
 import base64
+from copy import deepcopy
 from datetime import datetime
 
 from httpx import get
 
-from .get_gachalogs import save_gachalogs
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from .get_gachalogs import NULL_GACHA_LOG, save_gachalogs, all_gacha_type_name
 
 INT_TO_TYPE = {
     '100': '新手祈愿',
@@ -13,6 +14,7 @@ INT_TO_TYPE = {
     '301': '角色祈愿',
     '400': '角色祈愿',
     '302': '武器祈愿',
+    '500': '集录祈愿',
 }
 
 
@@ -34,12 +36,7 @@ async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
         if data_uid != uid:
             return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
         raw_data = history_data['list']
-        result = {
-            '新手祈愿': [],
-            '常驻祈愿': [],
-            '角色祈愿': [],
-            '武器祈愿': [],
-        }
+        result = deepcopy(NULL_GACHA_LOG)
         for item in raw_data:
             item['uid'] = uid
             item['item_id'] = ''
@@ -80,7 +77,7 @@ async def export_gachalogs(uid: str) -> dict:
             },
             'list': [],
         }
-        for i in ['新手祈愿', '常驻祈愿', '角色祈愿', '武器祈愿']:
+        for i in all_gacha_type_name:
             for item in raw_data['data'][i]:
                 if item['gacha_type'] == '400':
                     item['uigf_gacha_type'] = '301'

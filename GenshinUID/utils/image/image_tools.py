@@ -7,11 +7,12 @@ from typing import Tuple, Union, Optional
 import httpx
 from httpx import get
 from gsuid_core.models import Event
-from PIL import Image, ImageDraw, ImageFont
+from gsuid_core.utils.api.mys.models import IndexData
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
-from ..fonts.genshin_fonts import gs_font_32
 from ...genshinuid_config.gs_config import gsconfig
+from ..fonts.genshin_fonts import gs_font_32, gs_font_36
 from ..resource.RESOURCE_PATH import CHAR_PATH, CU_BG_PATH, TEXT2D_PATH
 
 FETTER_PATH = TEXT2D_PATH / 'fetter'
@@ -33,8 +34,46 @@ else:
     bg_path = NM_BG_PATH
 
 
-async def get_avatar(ev: Event, size: int):
-    return await get_avatar_with_ring(ev, size, CHAR_PATH)
+def get_v4_bg(w: int, h: int):
+    img = crop_center_img(Image.open(TEXT_PATH / 'bg.jpg'), w, h)
+    black_img = Image.new('RGBA', (w, h), (0, 0, 0, 180))
+    img = img.filter(ImageFilter.GaussianBlur(radius=15))
+    img.paste(black_img, (0, 0), black_img)
+    img = img.convert('RGBA')
+    return img
+
+
+def get_v4_title(avatar: Image.Image, uid: str, title_data: IndexData):
+    title = Image.open(TEXT_PATH / 'title.png')
+    title_draw = ImageDraw.Draw(title)
+
+    title.paste(avatar, (651, 73), avatar)
+
+    ac_day = str(title_data['stats']['active_day_number'])
+    achi_num = str(title_data['stats']['achievement_number'])
+    abyss_num = str(title_data['stats']['spiral_abyss'])
+
+    title_draw.text((840, 530), f'UID {uid}', 'white', gs_font_36, 'mm')
+
+    title_draw.text((380, 627), ac_day, 'white', gs_font_32, 'lm')
+    title_draw.text((872, 627), achi_num, 'white', gs_font_32, 'lm')
+    title_draw.text((1365, 627), abyss_num, 'white', gs_font_32, 'lm')
+
+    return title
+
+
+def add_footer(img: Image.Image):
+    footer = Image.open(TEXT_PATH / 'footer.png')
+    x, y = (
+        int((img.size[0] - footer.size[0]) / 2),
+        img.size[1] - footer.size[1] - 20,
+    )
+    img.paste(footer, (x, y), footer)
+    return img
+
+
+async def get_avatar(ev: Event, size: int, with_ring: bool = True):
+    return await get_avatar_with_ring(ev, size, CHAR_PATH, None, with_ring)
 
 
 async def shift_image_hue(img: Image.Image, angle: float = 30) -> Image.Image:
@@ -234,19 +273,6 @@ def get_star_png(star: Union[int, str]) -> Image.Image:
 
 def get_unknown_png() -> Image.Image:
     return Image.open(TEXT_PATH / 'unknown.png')
-
-
-async def get_qq_avatar(
-    qid: Optional[Union[int, str]] = None, avatar_url: Optional[str] = None
-) -> Image.Image:
-    if qid:
-        avatar_url = f'http://q1.qlogo.cn/g?b=qq&nk={qid}&s=640'
-    elif avatar_url is None:
-        avatar_url = 'https://q1.qlogo.cn/g?b=qq&nk=3399214199&s=640'
-    char_pic = Image.open(BytesIO((await _get(avatar_url)).content)).convert(
-        'RGBA'
-    )
-    return char_pic
 
 
 async def draw_pic_with_ring(
@@ -495,4 +521,5 @@ class CustomizeImage:
         elif name == 'blue':
             return highlight_color['red'], highlight_color['green'], blue_color
         else:
+            return 0, 0, 0  # Error
             return 0, 0, 0  # Error

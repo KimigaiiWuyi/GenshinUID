@@ -40,7 +40,7 @@ async def send_role_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     await bot.logger.info('[查询角色信息]uid: {}'.format(uid))
 
-    im = await draw_pic(uid)
+    im = await draw_pic(ev, uid)
     await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])
 
 

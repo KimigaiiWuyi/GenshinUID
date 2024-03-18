@@ -4,6 +4,7 @@ import asyncio
 from pathlib import Path
 from copy import deepcopy
 from base64 import b64encode
+from collections import OrderedDict
 from typing import Any, List, Union, Optional
 
 import aiofiles
@@ -35,6 +36,7 @@ connect_core = on_fullmatch(
 gsclient: Optional[GsClient] = None
 command_start = deepcopy(driver.config.command_start)
 command_start.discard('')
+msg_id_cache = OrderedDict()
 
 if hasattr(driver.config, 'gsuid_core_repeat'):
     is_repeat = True
@@ -222,7 +224,7 @@ async def get_notice_message(bot: Bot, ev: Event):
                 msg_id = str(ev.data.resolved.message_id)
             else:
                 sp_bot_id = 'qqgroup'
-                msg_id = str(ev.id)
+
                 if ev.scene == 'group':
                     sender = {
                         'avatar': 'https://q.qlogo.cn/qqapp/'
@@ -234,6 +236,19 @@ async def get_notice_message(bot: Bot, ev: Event):
                 else:
                     user_type = 'direct'
                     user_id = str(ev.user_openid)
+
+                if user_id in msg_id_cache:
+                    msg_id = msg_id_cache[user_id]
+                else:
+                    msg_id = str(ev.id)
+
+                if len(msg_id_cache) >= 300:
+                    oldest_key = next(iter(msg_id_cache))
+                    del msg_id_cache[oldest_key]
+
+                # tx暂不支持
+                # msg_id = str(ev.id)
+
             message = [Message('text', ev.data.resolved.button_data)]
 
             await bot.put_interaction(interaction_id=ev.id, code=0)
@@ -306,13 +321,18 @@ async def get_all_message(bot: Bot, ev: Event):
                 'avatar': 'https://q.qlogo.cn/qqapp/'
                 f'{self_id}/{str(user_id)}/0'
             }
+            msg_id_cache[user_id] = msg_id
         elif isinstance(ev, C2CMessageCreateEvent):
             sp_bot_id = 'qqgroup'
             user_type = 'direct'
             group_id = None
             msg_id = ev.id
             sender = ev.author.dict()
-            sender['nickname'] = ev.author.username
+            try:
+                sender['nickname'] = f'QQ用户{ev.author.user_openid[:4]}'
+            except:  # noqa: E722, B001
+                sender['nickname'] = 'QQ用户'
+            msg_id_cache[user_id] = msg_id
         # 群聊
         elif isinstance(ev, GuildMessageEvent):
             user_type = 'group'
@@ -421,23 +441,19 @@ async def get_all_message(bot: Bot, ev: Event):
             logger.debug('[gsuid] 不支持该 onebotv11 事件...')
             return
     elif bot.adapter.get_name() == 'Feishu':
-        from nonebot.adapters.feishu.event import (
-            GroupEventMessage,
-            PrivateEventMessage,
-        )
+        from nonebot.adapters.feishu.event import GroupMessageEvent as FGM
+        from nonebot.adapters.feishu.event import PrivateMessageEvent as FPM
 
-        if isinstance(ev, GroupEventMessage) or isinstance(
-            ev, PrivateEventMessage
-        ):
+        if isinstance(ev, FGM) or isinstance(ev, FPM):
             for feishu_msg in messages:
                 if 'image_key' in feishu_msg.data:
                     feishu_msg.data['url'] = feishu_msg.data['image_key']
             user_id = ev.get_user_id()
             msg_id = ev.message_id
             sender = {}
-            if isinstance(ev, GroupEventMessage):
+            if isinstance(ev, FGM):
                 user_type = 'group'
-                group_id = ev.chat_id
+                group_id = ev.event.message.chat_id
             else:
                 user_type = 'direct'
         else:

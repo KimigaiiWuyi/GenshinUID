@@ -7,8 +7,9 @@ from pip._internal import main as pip_install
 
 from .path import CORE_PATH, GSUID_PATH
 
-GS_GIT = 'https://ghproxy.com/https://github.com/KimigaiiWuyi/GenshinUID.git'
-CORE_GIT = 'https://ghproxy.com/https://github.com/Genshin-bots/gsuid_core.git'
+PROXY = 'http://ghproxy.fuckmys.tk'
+GS_GIT = f'{PROXY}/https://github.com/KimigaiiWuyi/GenshinUID.git'
+CORE_GIT = '{PROXY}/https://github.com/Genshin-bots/gsuid_core.git'
 
 
 async def _install():

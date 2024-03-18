@@ -474,7 +474,7 @@ def _kaiheila_kb(button: Dict):
 def _kaiheila_kb_group(buttons: List[Dict]):
     return {
         "type": "action-group",
-        "elements": [button for button in buttons],
+        "elements": list(buttons),
     }
 
 
@@ -690,9 +690,11 @@ async def onebot_send(
         messages = [
             to_json(
                 [
-                    MessageSegment.image(_msg["data"])
-                    if _msg["type"] == "image"
-                    else MessageSegment.text(_msg["data"])
+                    (
+                        MessageSegment.image(_msg["data"])
+                        if _msg["type"] == "image"
+                        else MessageSegment.text(_msg["data"])
+                    )
                 ],
                 "小助手",
                 str(2854196310),
@@ -994,7 +996,9 @@ async def dodo_send(
                 url = image_return.url
                 w, h = image_return.width, image_return.height
             else:
-                logger.warning('[gscore] dodo可能不支持发送URL图片, 请转为base64发送')
+                logger.warning(
+                    '[gscore] dodo可能不支持发送URL图片, 请转为base64发送'
+                )
                 url = image.replace('link://', '')
                 w, h = 950, 1500
 
@@ -1088,7 +1092,9 @@ async def group_send(
             if img.startswith('link://'):
                 _img = img.replace('link://', '')
             else:
-                logger.warning('[gscore] qqgroup暂不支持发送本地图信息, 请转为URL发送')
+                logger.warning(
+                    '[gscore] qqgroup暂不支持发送本地图信息, 请转为URL发送'
+                )
                 return
         else:
             _img = ''
@@ -1437,9 +1443,9 @@ async def feishu_send(
         params = {
             "method": "POST",
             "query": {
-                "receive_id_type": 'union_id'
-                if target_type == 'direct'
-                else 'chat_id'
+                "receive_id_type": (
+                    'union_id' if target_type == 'direct' else 'chat_id'
+                )
             },
             "body": {
                 "receive_id": target_id,

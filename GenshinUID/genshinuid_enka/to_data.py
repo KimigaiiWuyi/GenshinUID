@@ -125,8 +125,9 @@ async def enka_to_dict(
         enka_data is None
         or enka_data == {}
         or 'avatarInfoList' not in enka_data
+        or not enka_data['avatarInfoList']
     ):
-        return f'UID{uid}刷新失败！未打开角色展柜!'
+        return f'UID{uid}刷新失败！未打开角色展柜或角色展柜未展示角色!'
 
     char_dict_list = []
 

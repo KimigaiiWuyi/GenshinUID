@@ -17,7 +17,7 @@ path = Path(__file__).parents[1] / 'genshinuid_adv'
 data_path = Path(__file__).parent / 'help_data'
 
 wb = load_workbook(str(data_path / 'Genshin All Char.xlsx'))
-ws: Worksheet = wb.active  # type: ignore
+ws: Worksheet = wb['原神全角色攻略']  # type: ignore
 for char_i in range(2, 1700, 5):  # 角色行
     char = ws.cell(char_i, 1).value
     if char is None:

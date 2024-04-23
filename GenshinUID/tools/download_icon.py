@@ -9,7 +9,7 @@ MAP_PATH = Path(__file__).parent.parent / 'utils' / 'map' / 'data'
 with open(MAP_PATH / 'enName2AvatarID_mapping_4.5.0.json') as f:
     enmap: Dict[str, str] = json.load(f)
 
-char_list = ['Chiori']
+char_list = ['Arlecchino']
 base = 'https://api.ambr.top/assets/UI'
 # title = 'https://enka.network/ui/{}'
 icon_list = [

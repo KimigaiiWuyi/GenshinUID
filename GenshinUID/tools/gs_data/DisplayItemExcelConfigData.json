@@ -2506,6 +2506,46 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 2567144335,
+        "rankLevel": 4,
+        "param": 15035,
+        "id": 400300,
+        "nameTextMapHash": 4065037225,
+        "descTextMapHash": 1248861426,
+        "icon": "UI_RelicIcon_15035_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 3118373423,
+        "rankLevel": 5,
+        "param": 15035,
+        "id": 400301,
+        "nameTextMapHash": 2152781465,
+        "descTextMapHash": 2344571178,
+        "icon": "UI_RelicIcon_15035_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 4028425319,
+        "rankLevel": 4,
+        "param": 15036,
+        "id": 400310,
+        "nameTextMapHash": 3939160433,
+        "descTextMapHash": 2241557442,
+        "icon": "UI_RelicIcon_15036_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 1259727863,
+        "rankLevel": 5,
+        "param": 15036,
+        "id": 400311,
+        "nameTextMapHash": 1310239873,
+        "descTextMapHash": 2987118698,
+        "icon": "UI_RelicIcon_15036_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 342345127,
         "rankLevel": 5,
         "displayType": "RELIQUARY_ITEM_SMELT",

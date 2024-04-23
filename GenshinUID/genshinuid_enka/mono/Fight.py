@@ -6,7 +6,7 @@ from gsuid_core.logger import logger
 from .Enemy import Enemy
 from .Power import Power
 from .Element import Element
-from .Character import Character
+from .Character import CHANGE_LIST, Character
 from ..dmg_calc.base_value import base_value_list
 
 
@@ -138,15 +138,7 @@ class Fight:
                 return dmg_type
 
         # 计算角色伤害加成应该使用什么
-        if char.weapon_type == '法器' or char.char_name in [
-            '荒泷一斗',
-            '刻晴',
-            '诺艾尔',
-            '胡桃',
-            '宵宫',
-            '魈',
-            '神里绫华',
-        ]:
+        if char.weapon_type == '法器' or char.char_name in CHANGE_LIST:
             dmg_type = char_element_dmg_type
         elif char.weapon_type == '弓':
             if char.attack_type in ['B', 'E', 'Q']:

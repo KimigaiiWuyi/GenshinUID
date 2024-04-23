@@ -1,4 +1,32 @@
 {
+  "未竟的遐思": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+50"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "谐律异想断章": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "dmgBonus+54"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "昔时之歌": {
     "normal_effect": {
       "2": "healBonus+15",

@@ -90,7 +90,7 @@ async def monster2map():
 
 async def download_new_file():
     print('正在执行download_new_file')
-    base_url = 'https://gitlab.com/Dimbreath/AnimeGameData/-/raw/main'
+    base_url = 'https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master'
     url_list = [
         f'{base_url}/ExcelBinOutput/AvatarExcelConfigData.json',
         f'{base_url}/ExcelBinOutput/WeaponExcelConfigData.json',

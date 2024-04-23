@@ -1,4 +1,33 @@
 {
+	"赤月之形": {
+		"normal": {
+			"normal_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			}
+		},
+		"fight": {
+			"fight_effect": {
+				"1": "dmgBonus+24",
+				"2": "dmgBonus+32",
+				"3": "dmgBonus+40",
+				"4": "dmgBonus+48",
+				"5": "dmgBonus+56"
+			},
+			"group_effect": {
+				"1": "",
+				"2": "",
+				"3": "",
+				"4": "",
+				"5": ""
+			},
+			"time": 14,
+			"extra": {}
+		}
+	},
 	"有乐御簾切": {
 		"normal": {
 			"normal_effect": {

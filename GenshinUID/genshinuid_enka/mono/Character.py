@@ -31,6 +31,17 @@ from ..etc.base_info import (
     baseWeaponInfo,
 )
 
+CHANGE_LIST = [
+    '荒泷一斗',
+    '刻晴',
+    '诺艾尔',
+    '胡桃',
+    '宵宫',
+    '魈',
+    '神里绫华',
+    '阿蕾奇诺',
+]
+
 
 class Character:
     def __init__(self, card_prop: Dict):
@@ -357,15 +368,7 @@ class Character:
 
             # 计算角色伤害加成应该使用什么
             for prop_limit in ['A', 'B', 'C', 'E', 'Q']:
-                if weapon_type == '法器' or char_name in [
-                    '荒泷一斗',
-                    '刻晴',
-                    '诺艾尔',
-                    '胡桃',
-                    '宵宫',
-                    '魈',
-                    '神里绫华',
-                ]:
+                if weapon_type == '法器' or char_name in CHANGE_LIST:
                     prop['{}_dmgBonus'.format(prop_limit)] = prop['dmgBonus']
                 elif weapon_type == '弓':
                     if prop_limit in ['A', 'C']:

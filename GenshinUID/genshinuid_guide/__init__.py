@@ -9,10 +9,10 @@ from gsuid_core.segment import MessageSegment
 
 from .get_guide import get_gs_guide
 from ..version import Genshin_version
-from .get_abyss_data import get_review
+
+# from .get_abyss_data import get_review
 from ..utils.image.convert import convert_img
 from .get_new_abyss_data import get_review_data
-from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import REF_PATH
 from ..utils.map.name_covert import alias_to_char_name
 
@@ -65,10 +65,8 @@ async def send_abyss_review(bot: Bot, ev: Event):
             floor = ev.text
             version = Genshin_version[:-2]
 
-    if gsconfig.get_config('PicWiki').data:
-        im = await get_review_data(version, floor)
-    else:
-        im = await get_review(version)
+    im = await get_review_data(version, floor)
+    # im = await get_review(version)
 
     if isinstance(im, bytes):
         c = Button('♾️深渊概览', '深渊概览')
@@ -82,7 +80,7 @@ async def send_abyss_review(bot: Bot, ev: Event):
         d = Button(f'♾️版本深渊{adv_version}', f'深渊概览{adv_version}')
         await bot.send_option(im, [c, d])
     elif isinstance(im, List):
-        mes = [MessageSegment.text(msg) for msg in im]
+        mes = [MessageSegment.text(str(msg)) for msg in im]
         await bot.send(MessageSegment.node(mes))
     elif isinstance(im, str):
         await bot.send(im)

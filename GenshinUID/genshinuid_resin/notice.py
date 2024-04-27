@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
@@ -21,7 +21,7 @@ NOTICE = {
 async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
     msg_dict: Dict[str, Dict[str, Dict]] = {}
     for bot_id in gss.active_bot:
-        user_list = await GsUser.get_all_push_user_list()
+        user_list: List[GsUser] = await GsUser.get_all_push_user_list()
         for user in user_list:
             if user.uid is None:
                 continue

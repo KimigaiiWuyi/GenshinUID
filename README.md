@@ -1,7 +1,7 @@
 <p align="center">
   <a href="https://github.com/KimigaiiWuyi/GenshinUID/"><img src="https://s2.loli.net/2023/03/25/bareSdYcsmRPOyZ.png" width="256" height="256" alt="GenshinUID"></a>
 </p>
-<h1 align = "center">GenshinUID 4.1</h1>
+<h1 align = "center">GenshinUID 4.6.1</h1>
 <h4 align = "center">✨支持OneBot(QQ)、QQ频道、微信、开黑啦、Telegram的全功能原神Bot插件✨</h4>
 <div align = "center">
         <a href="https://docs.sayu-bot.com/" target="_blank">安装文档</a> &nbsp; · &nbsp;
@@ -11,6 +11,7 @@
 <p align="center">
   <a><img src="https://s2.loli.net/2023/03/26/76oWuYJwg18aXL2.jpg"></a>
 </p>
+
 
 > [!WARNING]
 > 该分支并不是Nonebot2的插件，也不是任何一个其他Bot的插件，具体安装方法请参考[文档](https://docs.sayu-bot.com/)
@@ -28,6 +29,8 @@
 - [@音尘绝LiuSXwww](https://bbs.mihoyo.com/ys/accountCenter/postList?id=271681956) - 怪物数据表的**授权**使用
 - [@Asgater](https://www.miyoushe.com/ys/accountCenter/postList?id=79695828) - 原牌图鉴的**授权**使用
 - [虚空数据库](https://akashadata.com/) - 深渊出场数据的**授权**使用
+- [@祈鸢ya](https://www.miyoushe.com/ys/accountCenter/postList?id=137101761) - 「4.6~」原石预估数据图片的**授权**使用
+- [@七月的休](https://www.miyoushe.com/ys/accountCenter/postList?id=218945821) - 「~4.5」原石预估数据图片的**授权**使用
 - [玉衡杯深渊数据库](http://www.yuhengcup.top/abyss) - `版本深渊`功能数据提供
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献
 - [@lulu666lulu](https://github.com/lulu666lulu) - DS算法提供和验证码方案提供

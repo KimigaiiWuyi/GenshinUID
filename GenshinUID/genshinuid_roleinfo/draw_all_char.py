@@ -51,11 +51,7 @@ async def _draw_char_pic(uid: str, raw_data: IndexData):
 
     # 确定角色占用行数
     char_num = len(char_datas)
-    char_hang = (
-        1 + (char_num - 1) // 4
-        if char_num > 8
-        else (char_num // 2) + (char_num % 2)
-    )
+    char_hang = 1 + (char_num - 1) // 4
 
     # 获取背景图片各项参数
     target = (374, 195)

@@ -10,11 +10,11 @@ import_path = Path(__file__).parent / 'achievement_data' / '成就汇总.xlsx'
 export_path = Path(__file__).parents[1] / 'genshinuid_achievement'
 
 wb: Workbook = load_workbook(str(import_path))
-ws_daily: Worksheet = wb['成就相关每日委托']
-ws_all: Worksheet = wb['正式服成就汇总']
-ws_32: Worksheet = wb['3.2 新增成就']
-ws_33: Worksheet = wb['3.3 新增成就']
-ws_34: Worksheet = wb['3.4 新增成就']
+ws_daily: Worksheet = wb['成就相关每日委托']  # type: ignore
+ws_all: Worksheet = wb['正式服成就汇总']  # type: ignore
+ws_32: Worksheet = wb['3.2 新增成就']  # type: ignore
+ws_33: Worksheet = wb['3.3 新增成就']  # type: ignore
+ws_34: Worksheet = wb['3.4 新增成就']  # type: ignore
 
 result_achi = {}
 result_all = {}

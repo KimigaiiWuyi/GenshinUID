@@ -306,12 +306,5 @@
     "type": "MONSTER_ORDINARY",
     "route": "Tainted Water-Spouting Phantasm",
 	"icon": "UI_MonsterIcon_Necalevia_Big"
-  },
-  "20511201": {
-    "id": 20511201,
-    "name": "历经百战的浊水喷吐幻灵",
-    "type": "MONSTER_ORDINARY",
-    "route": "Tainted Water-Spouting Phantasm",
-	"icon": "UI_MonsterIcon_Necalevia_Big"
   }
 }

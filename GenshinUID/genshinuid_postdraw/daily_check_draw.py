@@ -95,9 +95,9 @@ async def single_get_draw(bot_id: str, uid: str, gid: str, qid: str):
 async def daily_get_draw():
     tasks = []
     for bot_id in gss.active_bot:
-        user_list = await GsUser.get_all_user()
+        user_list: List[GsUser] = await GsUser.get_all_user()
         for user in user_list:
-            if user.draw_switch != 'off':
+            if user.draw_switch != 'off' and user.uid:
                 tasks.append(
                     single_get_draw(
                         user.bot_id, user.uid, user.sign_switch, user.user_id

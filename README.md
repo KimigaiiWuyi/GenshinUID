@@ -30,6 +30,7 @@
 - [@Asgater](https://www.miyoushe.com/ys/accountCenter/postList?id=79695828) - 原牌图鉴的**授权**使用
 - [虚空数据库](https://akashadata.com/) - 深渊出场数据的**授权**使用
 - [@祈鸢ya](https://www.miyoushe.com/ys/accountCenter/postList?id=137101761) - 「4.6~」原石预估数据图片的**授权**使用
+- [@燕返晓归](https://www.miyoushe.com/ys/accountCenter/postList?id=184505932) - 材料收集路线图的**授权**使用
 - [@七月的休](https://www.miyoushe.com/ys/accountCenter/postList?id=218945821) - 「~4.5」原石预估数据图片的**授权**使用
 - [玉衡杯深渊数据库](http://www.yuhengcup.top/abyss) - `版本深渊`功能数据提供
 - [@lgc233](https://github.com/lgc2333) - 众多优秀PR贡献

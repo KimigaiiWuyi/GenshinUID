@@ -14,10 +14,18 @@ from ..version import Genshin_version
 from ..utils.image.convert import convert_img
 from .get_new_abyss_data import get_review_data
 from ..utils.resource.RESOURCE_PATH import REF_PATH
+from .get_bbs_post_guide import get_material_way_post
 from ..utils.map.name_covert import alias_to_char_name
 
 sv_char_guide = SV('查询角色攻略')
 sv_abyss_review = SV('查询深渊阵容')
+sv_bbs_post_guide = SV('查询BBS攻略')
+
+
+@sv_bbs_post_guide.on_suffix(('路线'))
+async def send_bbs_post_guide(bot: Bot, ev: Event):
+    name = ev.text.strip().replace('材料', '').replace('采集', '')
+    await bot.send(await get_material_way_post(name))
 
 
 @sv_char_guide.on_prefix(('参考攻略', '攻略', '推荐'))

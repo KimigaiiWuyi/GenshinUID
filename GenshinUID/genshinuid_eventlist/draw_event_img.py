@@ -3,6 +3,7 @@ from re import findall
 from pathlib import Path
 from typing import List, Literal
 
+import aiofiles
 from httpx import get
 from PIL import Image, ImageDraw
 from gsuid_core.utils.api.ambr.request import get_ambr_event_info
@@ -10,11 +11,12 @@ from gsuid_core.utils.api.ambr.request import get_ambr_event_info
 from ..version import Genshin_version
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import get_color_bg
-from ..utils.fonts.genshin_fonts import genshin_font_origin
+from ..utils.resource.RESOURCE_PATH import TEMP_PATH
+from ..utils.fonts.genshin_fonts import gs_font_26, gs_font_62
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
-EVENT_IMG_PATH = Path(__file__).parent / 'event.jpg'
-GACHA_IMG_PATH = Path(__file__).parent / 'gacha.jpg'
+EVENT_IMG_PATH = TEMP_PATH / 'event.jpg'
+GACHA_IMG_PATH = TEMP_PATH / 'gacha.jpg'
 
 PATTERN = r'<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>'
 
@@ -105,11 +107,6 @@ class DrawEventList:
         base_h = 100 + len(self.normal_event) * 380
         base_img = await get_color_bg(950, base_h)
 
-        font_l = genshin_font_origin(62)
-        # font_m = genshin_font_origin(34)
-        font_s = genshin_font_origin(26)
-
-        # now_time = datetime.now().strftime('%Y/%m/%d')
         event_cover = Image.open(TEXT_PATH / 'normal_event_cover.png')
 
         for index, value in enumerate(self.normal_event):
@@ -123,7 +120,11 @@ class DrawEventList:
 
             # 写标题
             event_img_draw.text(
-                (475, 47), value['full_name'], text_color, font_s, 'mm'
+                (475, 47),
+                value['full_name'],
+                text_color,
+                gs_font_26,
+                'mm',
             )
             # 纠错
             if isinstance(value['start_time'], str):
@@ -143,28 +144,28 @@ class DrawEventList:
                 (74, 149),
                 value['start_time'][0],
                 text_color,
-                font_l,
+                gs_font_62,
                 anchor='lm',
             )
             event_img_draw.text(
                 (74, 191),
                 value['start_time'][1],
                 text_color,
-                font_s,
+                gs_font_26,
                 anchor='lm',
             )
             event_img_draw.text(
                 (115, 275),
                 value['end_time'][0],
                 text_color,
-                font_l,
+                gs_font_62,
                 anchor='lm',
             )
             event_img_draw.text(
                 (115, 318),
                 value['end_time'][1],
                 text_color,
-                font_s,
+                gs_font_26,
                 anchor='lm',
             )
             event_img.paste(event_cover, (0, 0), event_cover)
@@ -182,11 +183,6 @@ class DrawEventList:
         base_h = 100 + len(self.gacha_event) * 480
         base_img = await get_color_bg(950, base_h)
 
-        font_l = genshin_font_origin(62)
-        # font_m = genshin_font_origin(34)
-        font_s = genshin_font_origin(26)
-
-        # now_time = datetime.now().strftime('%Y/%m/%d')
         gacha_cover = Image.open(TEXT_PATH / 'gacha_event_cover.png')
 
         for index, value in enumerate(self.gacha_event):
@@ -200,7 +196,11 @@ class DrawEventList:
 
             # 写标题
             gacha_img_draw.text(
-                (475, 47), value['full_name'], text_color, font_s, 'mm'
+                (475, 47),
+                value['full_name'],
+                text_color,
+                gs_font_26,
+                'mm',
             )
             # 纠错
             if isinstance(value['start_time'], str):
@@ -220,28 +220,28 @@ class DrawEventList:
                 (74, 199),
                 value['start_time'][0],
                 text_color,
-                font_l,
+                gs_font_62,
                 anchor='lm',
             )
             gacha_img_draw.text(
                 (74, 241),
                 value['start_time'][1],
                 text_color,
-                font_s,
+                gs_font_26,
                 anchor='lm',
             )
             gacha_img_draw.text(
                 (115, 325),
                 value['end_time'][0],
                 text_color,
-                font_l,
+                gs_font_62,
                 anchor='lm',
             )
             gacha_img_draw.text(
                 (115, 368),
                 value['end_time'][1],
                 text_color,
-                font_s,
+                gs_font_26,
                 anchor='lm',
             )
             gacha_img.paste(gacha_cover, (0, 0), gacha_cover)
@@ -266,12 +266,12 @@ async def get_all_event_img():
 async def get_event_img(event_type: Literal['EVENT', 'GACHA']) -> bytes:
     if event_type == 'EVENT':
         if EVENT_IMG_PATH.exists():
-            with open(EVENT_IMG_PATH, 'rb') as f:
-                return f.read()
+            async with aiofiles.open(EVENT_IMG_PATH, 'rb') as f:
+                return await f.read()
     else:
         if GACHA_IMG_PATH.exists():
-            with open(GACHA_IMG_PATH, 'rb') as f:
-                return f.read()
+            async with aiofiles.open(GACHA_IMG_PATH, 'rb') as f:
+                return await f.read()
 
     event_list = DrawEventList()
     await event_list.get_event_data()

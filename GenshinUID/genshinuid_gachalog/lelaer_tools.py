@@ -7,7 +7,7 @@ from gsuid_core.logger import logger
 from urllib3 import encode_multipart_formdata
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.api import GET_GACHA_LOG_URL
-from gsuid_core.utils.api.mys.request import RECOGNIZE_SERVER
+from gsuid_core.utils.api.mys.base_request import RECOGNIZE_SERVER
 
 from ..utils.mys_api import mys_api
 from .export_and_import import export_gachalogs, import_gachalogs

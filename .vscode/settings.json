@@ -31,5 +31,6 @@
   ],
   "python.analysis.include": [
     "${workspaceFolder}/../../../"
-  ]
+  ],
+  "python.analysis.autoImportCompletions": true
 }

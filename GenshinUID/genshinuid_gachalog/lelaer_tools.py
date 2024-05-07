@@ -26,7 +26,7 @@ async def get_gachaurl(uid: str):
         f"gacha_id=fecafa7b6560db5f3182222395d88aaa6aaac1bc"
         f"&timestamp={str(int(now))}"
         f"&lang=zh-cn&device_type=mobile&plat_type=ios&region={server_id}"
-        f"&authkey={quote(authkey,'utf-8')}"
+        f"&authkey={quote(authkey, 'utf-8')}"
         f"&game_biz=hk4e_cn&gacha_type=301&page=1&size=5&end_id=0"
     )
     logger.info(url)

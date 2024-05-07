@@ -1,42 +1,51 @@
 import json
+from io import BytesIO
 from typing import Dict
 from pathlib import Path
 
 import httpx
+from PIL import Image
 
 MAP_PATH = Path(__file__).parent.parent / 'utils' / 'map' / 'data'
 
-with open(MAP_PATH / 'enName2AvatarID_mapping_4.5.0.json') as f:
+with open(MAP_PATH / 'enName2AvatarID_mapping_4.6.0.json') as f:
     enmap: Dict[str, str] = json.load(f)
 
-char_list = ['Arlecchino']
-base = 'https://api.ambr.top/assets/UI'
+suffix = 'webp'
+
+char_list = ['Sigewinne', 'Sethos', 'Clorinde']
+base = 'https://api.hakush.in/gi/UI/'
 # title = 'https://enka.network/ui/{}'
+# hakush = 'https://api.hakush.in/gi/UI/'
+# ambr = 'https://api.ambr.top/assets/UI'
+
+
 icon_list = [
-    'Skill_E_{}_01.png',
-    'Skill_E_{}_02.png',
-    'Skill_S_{}_01.png',
-    'Skill_S_{}_02.png',
-    'UI_Talent_S_{}_01.png',
-    'UI_Talent_S_{}_02.png',
-    'UI_Talent_S_{}_03.png',
-    'UI_Talent_S_{}_04.png',
-    'UI_Talent_S_{}_05.png',
-    'UI_Talent_S_{}_06.png',
-    'UI_Talent_S_{}_07.png',
-    'UI_Talent_U_{}_01.png',
-    'UI_Talent_U_{}_02.png',
-    'UI_Talent_C_{}_01.png',
-    'UI_Talent_C_{}_02.png',
-    'UI_Gacha_AvatarImg_{}.png',
-    'UI_NameCardIcon_{}.png',
-    'UI_AvatarIcon_{}.png',
-    'UI_NameCardPic_{}_P.png',
+    'Skill_E_{}_01.' + suffix,
+    'Skill_E_{}_02.' + suffix,
+    'Skill_S_{}_01.' + suffix,
+    'Skill_S_{}_02.' + suffix,
+    'UI_Talent_S_{}_01.' + suffix,
+    'UI_Talent_S_{}_02.' + suffix,
+    'UI_Talent_S_{}_03.' + suffix,
+    'UI_Talent_S_{}_04.' + suffix,
+    'UI_Talent_S_{}_05.' + suffix,
+    'UI_Talent_S_{}_06.' + suffix,
+    'UI_Talent_S_{}_07.' + suffix,
+    'UI_Talent_U_{}_01.' + suffix,
+    'UI_Talent_U_{}_02.' + suffix,
+    'UI_Talent_C_{}_01.' + suffix,
+    'UI_Talent_C_{}_02.' + suffix,
+    'UI_Gacha_AvatarImg_{}.' + suffix,
+    'UI_NameCardIcon_{}.' + suffix,
+    'UI_AvatarIcon_{}.' + suffix,
+    'UI_NameCardPic_{}_P.' + suffix,
 ]
 is_download = True
 
 
 def download(icon_name: str, url: str):
+    icon_name = icon_name.split('.')[0] + '.png'
     path = Path(__file__).parent / icon_name
     if path.exists():
         print(f'{icon_name}已经存在!，跳过！')
@@ -45,10 +54,17 @@ def download(icon_name: str, url: str):
     char_data = httpx.get(url, follow_redirects=True, timeout=80)
     if char_data.headers['Content-Type'] == 'image/png':
         char_bytes = char_data.content
+    elif char_data.headers['Content-Type'] == 'image/webp':
+        webp_image = BytesIO(char_data.content)
+        img = Image.open(webp_image)
+        png_bytes = BytesIO()
+        img.save(png_bytes, 'PNG')
+        png_bytes.seek(0)
+        char_bytes = png_bytes.read()
     else:
         print(f'{icon_name}不存在，跳过！')
         return
-    # img_data = httpx.get(url).content
+
     with open(path, '+wb') as handler:
         handler.write(char_bytes)
         print('下载成功！')
@@ -102,8 +118,8 @@ def download_namecard_pic():
             en = 'Hutao'
         elif en == 'Thoma':
             en = 'Tohma'
-        url = f'{base}/namecard/UI_NameCardPic_{en}_P.png'
-        download(f'{avatar_id}.png', url)
+        url = f'{base}/namecard/UI_NameCardPic_{en}_P.' + suffix
+        download(f'{avatar_id}.' + suffix, url)
 
 
 # download_namecard_pic()

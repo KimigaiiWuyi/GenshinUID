@@ -637,14 +637,16 @@ class Character:
                     'A霜华矢两段伤害',
                     'A霜华矢两段伤害(融化)',
                 ]:
-                    val = [
-                        f'''{int(i[:-1]) +
-                                int(self.power_list['A霜华矢·霜华绽发伤害']['value'][index][:-1])
-                            }%'''
-                        for index, i in enumerate(
-                            self.power_list['A霜华矢命中伤害']['value']
-                        )
-                    ]
+                    val = []
+
+                    for index, i in enumerate(
+                        self.power_list['A霜华矢命中伤害']['value']
+                    ):
+                        zf = self.power_list['A霜华矢·霜华绽发伤害']
+                        v2 = int(zf['value'][index][:-1])
+                        v1 = int(i[:-1])
+                        val.append(f'{v1 +v2}%')
+
                     self.power_list[power_name] = {
                         'name': power_name,
                         'type': '攻击力',

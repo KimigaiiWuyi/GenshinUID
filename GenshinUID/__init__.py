@@ -12,6 +12,7 @@ from nonebot.log import logger
 from nonebot.adapters import Bot
 from nonebot.matcher import Matcher
 from nonebot.permission import SUPERUSER
+from nonebot.plugin import PluginMetadata
 from nonebot.internal.adapter import Event
 from websockets.exceptions import ConnectionClosed
 from nonebot import on, require, on_notice, on_message, on_fullmatch
@@ -41,6 +42,15 @@ connect_core = on_fullmatch(
     ('连接core', '链接core'),
     permission=SUPERUSER,
     block=True,
+)
+
+__plugin_meta__ = PluginMetadata(
+    name="GenshinUID",
+    description="SayuCore连接器, 支持大部分适配器的全功能插件",
+    usage="支持大部分适配器连接SayuCore",
+    type="application",
+    homepage="https://docs.sayu-bot.com",
+    supported_adapters=None,
 )
 
 gsclient: Optional[GsClient] = None

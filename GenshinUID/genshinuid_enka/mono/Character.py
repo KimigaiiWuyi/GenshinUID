@@ -645,7 +645,7 @@ class Character:
                         zf = self.power_list['A霜华矢·霜华绽发伤害']
                         v2 = int(zf['value'][index][:-1])
                         v1 = int(i[:-1])
-                        val.append(f'{v1 +v2}%')
+                        val.append(f'{v1 + v2}%')
 
                     self.power_list[power_name] = {
                         'name': power_name,

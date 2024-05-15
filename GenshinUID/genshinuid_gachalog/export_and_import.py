@@ -31,6 +31,8 @@ async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
             history_data = json.loads(data_bytes.decode())
         except UnicodeDecodeError:
             history_data = json.loads(data_bytes.decode('gbk'))
+        except json.decoder.JSONDecodeError:
+            return '请传入正确的JSON格式文件!'
     if 'info' in history_data and 'uid' in history_data['info']:
         data_uid = history_data['info']['uid']
         if data_uid != uid:

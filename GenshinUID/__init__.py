@@ -27,10 +27,20 @@ from .models import Message, MessageReceive  # noqa:E402
 get_message = on_message(priority=999)
 get_notice = on_notice(priority=999)
 get_tn = on('inline')
-install_core = on_fullmatch('gs一键安装', permission=SUPERUSER, block=True)
-start_core = on_fullmatch('启动core', permission=SUPERUSER, block=True)
+install_core = on_fullmatch(
+    'gs一键安装',
+    permission=SUPERUSER,
+    block=True,
+)
+start_core = on_fullmatch(
+    '启动core',
+    permission=SUPERUSER,
+    block=True,
+)
 connect_core = on_fullmatch(
-    ('连接core', '链接core'), permission=SUPERUSER, block=True
+    ('连接core', '链接core'),
+    permission=SUPERUSER,
+    block=True,
 )
 
 gsclient: Optional[GsClient] = None
@@ -42,6 +52,20 @@ if hasattr(driver.config, 'gsuid_core_repeat'):
     is_repeat = True
 else:
     is_repeat = False
+
+
+async def file_to_base64(file_path: Path):
+    # 读取文件内容
+    async with aiofiles.open(str(file_path), 'rb') as file:
+        file_content = await file.read()
+
+    # 将文件内容转换为base64编码
+    base64_encoded = b64encode(file_content)
+
+    # 将base64编码的字节转换为字符串
+    base64_string = base64_encoded.decode('utf-8')
+
+    return base64_string
 
 
 @get_tn.handle()
@@ -90,7 +114,24 @@ async def get_notice_message(bot: Bot, ev: Event):
             'group_upload',
             'offline_file',
         ]:
-            val = raw_data['file']['url']
+            if 'url' in raw_data['file']:
+                val = raw_data['file']['url']
+            elif 'id' in raw_data['file']:
+                if raw_data['file']['size'] <= 1024 * 1024 * 4:
+                    val_data = await bot.call_api(
+                        'get_file',
+                        file_id=raw_data['file']['id'],
+                    )
+                    if 'base64' in val_data and val_data['base64']:
+                        val = val_data['base64']
+                    else:
+                        path = Path(val_data['file'])
+                        val = await file_to_base64(path)
+            else:
+                logger.debug(raw_data)
+                logger.warning('[文件上传] 不支持的协议端')
+                return
+
             name = raw_data['file']['name']
             message = [Message('file', f'{name}|{val}')]
             # onebot_v11
@@ -319,7 +360,7 @@ async def get_all_message(bot: Bot, ev: Event):
             sender = ev.author.dict()
             sender = {
                 'avatar': 'https://q.qlogo.cn/qqapp/'
-                f'{self_id}/{str(user_id)}/0'
+                f'{self_id}/{str(user_id)}/0',
             }
             msg_id_cache[user_id] = msg_id
         elif isinstance(ev, C2CMessageCreateEvent):
@@ -660,7 +701,7 @@ async def get_all_message(bot: Bot, ev: Event):
 
     # 处理消息
     for index, _msg in enumerate(messages):
-        message = convert_message(_msg, message, index)
+        message = await convert_message(_msg, message, index, bot)
 
     if not message:
         return
@@ -725,7 +766,12 @@ async def repeat_connect():
         return
 
 
-def convert_message(_msg: Any, message: List[Message], index: int):
+async def convert_message(
+    _msg: Any,
+    message: List[Message],
+    index: int,
+    bot: Bot,
+):
     if _msg.type == 'text' or _msg.type == 'kmarkdown':
         data: str = (
             _msg.data['text'] if 'text' in _msg.data else _msg.data['content']
@@ -738,6 +784,20 @@ def convert_message(_msg: Any, message: List[Message], index: int):
                     data = _data[len(word) :]  # noqa:E203
                     break
         message.append(Message('text', data))
+    elif _msg.type == 'file':
+        if 'file_id' in _msg.data:
+            name = _msg.data.get('file')
+            if float(_msg.data['file_size']) <= 1024 * 1024 * 4:
+                val_data = await bot.call_api(
+                    'get_file',
+                    file_id=_msg.data.get('file_id'),
+                )
+                if 'base64' in val_data and val_data['base64']:
+                    val = val_data['base64']
+                else:
+                    path = Path(val_data['file'])
+                    val = await file_to_base64(path)
+                message.append(Message('file', f'{name}|{val}'))
     elif _msg.type == 'image':
         file_id = _msg.data.get('file_id')
         if file_id in _msg.data.values():

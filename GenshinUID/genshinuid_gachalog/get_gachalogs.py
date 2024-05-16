@@ -112,10 +112,12 @@ async def save_gachalogs(
         if '集录祈愿' in gachalogs_history:
             old_mix_gacha_num = len(gachalogs_history['集录祈愿'])
         else:
+            gachalogs_history['集录祈愿'] = []
             old_mix_gacha_num = 0
         if '新手祈愿' in gachalogs_history:
             old_new_gacha_num = len(gachalogs_history['新手祈愿'])
         else:
+            gachalogs_history['新手祈愿'] = []
             old_new_gacha_num = 0
     else:
         gachalogs_history = deepcopy(NULL_GACHA_LOG)

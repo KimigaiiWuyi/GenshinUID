@@ -1,4 +1,130 @@
 {
+  "希格雯": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "dmgBonus+8",
+        "70": "healBonus+30"
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "HydroResist+-35",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "Q:critDmg+110;Q:critRate+20"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "赛索斯": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": "贯影箭:addDmg+700%elementalMastery"
+      },
+      "fight_talent": {
+        "1": "贯影箭:critRate+15",
+        "2": "ElectroDmgBonus+30",
+        "3": "",
+        "4": "elementalMastery+80",
+        "5": "",
+        "6": "Q:addDmg+1400%atk;AQ:critDmg+70;AQ:critRate+10"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "克洛琳德": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "AQ:addDmg+60%atk%1800",
+        "70": "critRate+20"
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "AQ:addDmg+90%atk%2700",
+        "3": "",
+        "4": "Q:dmgBonus+200",
+        "5": "",
+        "6": "critRate+10;critDmg+70"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
   "阿蕾奇诺": {
     "normal": {
       "normal_skill": {

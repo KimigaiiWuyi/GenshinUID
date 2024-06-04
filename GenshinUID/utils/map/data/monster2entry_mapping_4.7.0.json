@@ -811,6 +811,61 @@
         "route": "Electro Slime",
         "icon": "UI_MonsterIcon_Slime_Electric_02"
     },
+    "20010590": {
+        "id": 20010590,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "感电免疫",
+                "description": "免疫感电伤害和效果",
+                "abilityName": [
+                    "MonsterAffix_ShockResist"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 4.0752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 26.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "雷史莱姆",
+        "route": "Electro Slime",
+        "icon": "UI_MonsterIcon_Slime_Electric_02"
+    },
     "20010601": {
         "id": 20010601,
         "type": "MONSTER_ORDINARY",
@@ -2646,6 +2701,53 @@
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 7.536,
                 "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "火史莱姆",
+        "route": "Pyro Slime",
+        "icon": "UI_MonsterIcon_Slime_Fire_02"
+    },
+    "20011290": {
+        "id": 20011290,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 4.0752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.3,
+                "type": "GROW_CURVE_ATTACK_2"
             },
             {
                 "propType": "FIGHT_PROP_BASE_DEFENSE",
@@ -5797,6 +5899,53 @@
         "route": "Cryo Specter",
         "icon": "UI_MonsterIcon_Sylph_Ice_01"
     },
+    "20060490": {
+        "id": 20060490,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方空中怪物标记特效",
+                "description": "4.7-怪物对推-敌方空中怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyAirBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 2.7168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 53.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "冰飘浮灵",
+        "route": "Cryo Specter",
+        "icon": "UI_MonsterIcon_Sylph_Ice_01"
+    },
     "20060501": {
         "id": 20060501,
         "type": "MONSTER_ORDINARY",
@@ -5859,6 +6008,53 @@
             {
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 21.98,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "火飘浮灵",
+        "route": "Pyro Specter",
+        "icon": "UI_MonsterIcon_Sylph_Fire_01"
+    },
+    "20060690": {
+        "id": 20060690,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方空中怪物标记特效",
+                "description": "4.7-怪物对推-敌方空中怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyAirBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 2.7168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 53.6,
                 "type": "GROW_CURVE_ATTACK_2"
             },
             {
@@ -6489,6 +6685,53 @@
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 22.608,
                 "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "打手丘丘人",
+        "route": "Hilichurl Fighter",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
+    "21010290": {
+        "id": 21010290,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1.133,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 44.6,
+                "type": "GROW_CURVE_ATTACK_2"
             },
             {
                 "propType": "FIGHT_PROP_BASE_DEFENSE",
@@ -7543,6 +7786,53 @@
         "route": "Cryo Hilichurl Shooter",
         "icon": "UI_MonsterIcon_Hili_Ice_Range"
     },
+    "21010990": {
+        "id": 21010990,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 2.7168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 26.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "冰箭丘丘人",
+        "route": "Cryo Hilichurl Shooter",
+        "icon": "UI_MonsterIcon_Hili_Ice_Range"
+    },
     "21011001": {
         "id": 21011001,
         "type": "MONSTER_ORDINARY",
@@ -7657,6 +7947,53 @@
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 16.956,
                 "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "雷箭丘丘人",
+        "route": "Electro Hilichurl Shooter",
+        "icon": "UI_MonsterIcon_Hili_Electric_Range"
+    },
+    "21011090": {
+        "id": 21011090,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 2.7168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 26.8,
+                "type": "GROW_CURVE_ATTACK_2"
             },
             {
                 "propType": "FIGHT_PROP_BASE_DEFENSE",
@@ -8851,6 +9188,53 @@
             "iceSubHurt": 0.1,
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.3
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "火斧丘丘暴徒",
+        "route": "Blazing Axe Mitachurl",
+        "icon": "UI_MonsterIcon_Brute_None_01"
+    },
+    "21020290": {
+        "id": 21020290,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 9.5088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 53.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
         },
         "fundamentalForce": null,
         "reward": null,
@@ -10306,6 +10690,53 @@
             "fireSubHurt": 0.1,
             "grassSubHurt": 0.1,
             "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "水丘丘萨满",
+        "route": "Hydro Samachurl",
+        "icon": "UI_MonsterIcon_Shaman_Water_01"
+    },
+    "21030190": {
+        "id": 21030190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1.90176,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 55.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
             "elecSubHurt": 0.1,
             "windSubHurt": 0.1,
             "iceSubHurt": 0.1,
@@ -18605,6 +19036,53 @@
         "route": "Ruin Guard",
         "icon": "UI_MonsterIcon_Defender_Noner_01"
     },
+    "24010190": {
+        "id": 24010190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 20.376,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 44.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.5
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "遗迹守卫",
+        "route": "Ruin Guard",
+        "icon": "UI_MonsterIcon_Defender_Noner_01"
+    },
     "24010201": {
         "id": 24010201,
         "type": "MONSTER_ORDINARY",
@@ -24022,6 +24500,69 @@
         "route": "Nimble Harvester Mek",
         "icon": "UI_MonsterIcon_MachinaIustitia_Assimilator"
     },
+    "24065790": {
+        "id": 24065790,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "正义机器-光",
+                "description": "正义机器-光性词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Ousia"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "正义机器-电池",
+                "description": "正义机器-电池词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Coil_02"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 8.8296,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 33.45,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": "Ousia",
+        "reward": null,
+        "name": "机关·灵活采集型",
+        "route": "Nimble Harvester Mek",
+        "icon": "UI_MonsterIcon_MachinaIustitia_Assimilator"
+    },
     "24068701": {
         "id": 24068701,
         "type": "MONSTER_ORDINARY",
@@ -24801,6 +25342,69 @@
             {
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": "Pneuma",
+        "reward": null,
+        "name": "压制特化型机关",
+        "route": "Suppression Specialist Mek",
+        "icon": "UI_MonsterIcon_MachinaIustitia_Ruggiero_02"
+    },
+    "24060990": {
+        "id": 24060990,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "正义机器-荒",
+                "description": "正义机器-荒性词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Pneuma"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "正义机器-电池",
+                "description": "正义机器-电池词缀",
+                "abilityName": [
+                    "Monster_MachinaIustitia_Coil_02"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 4.7544,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 89.2,
                 "type": "GROW_CURVE_ATTACK_2"
             },
             {
@@ -28802,6 +29406,53 @@
         "route": "Treasure Hoarders: Pyro Potioneer",
         "icon": "UI_MonsterIcon_Thoarder_Male_Chemist_Fire_01"
     },
+    "25010390": {
+        "id": 25010390,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 4.0752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 44.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "盗宝团·火之药剂师",
+        "route": "Treasure Hoarders: Pyro Potioneer",
+        "icon": "UI_MonsterIcon_Thoarder_Male_Chemist_Fire_01"
+    },
     "25010401": {
         "id": 25010401,
         "type": "MONSTER_ORDINARY",
@@ -29909,6 +30560,53 @@
         "route": "Nobushi: Kikouban",
         "icon": "UI_MonsterIcon_Samurai_Ronin_03"
     },
+    "25080390": {
+        "id": 25080390,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 10.8672,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 49.06,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "野伏·机巧番",
+        "route": "Nobushi: Kikouban",
+        "icon": "UI_MonsterIcon_Samurai_Ronin_03"
+    },
     "25090101": {
         "id": 25090101,
         "type": "MONSTER_BOSS",
@@ -30455,6 +31153,53 @@
         "route": "Kairagi: Dancing Thunder",
         "icon": "UI_MonsterIcon_Samurai_Kairagi_01"
     },
+    "25100190": {
+        "id": 25100190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.4,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "海乱鬼·雷腾",
+        "route": "Kairagi: Dancing Thunder",
+        "icon": "UI_MonsterIcon_Samurai_Kairagi_01"
+    },
     "25100201": {
         "id": 25100201,
         "type": "MONSTER_ORDINARY",
@@ -30579,6 +31324,53 @@
             "iceSubHurt": 0.1,
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "海乱鬼·炎威",
+        "route": "Kairagi: Fiery Might",
+        "icon": "UI_MonsterIcon_Samurai_Kairagi_02"
+    },
+    "25100290": {
+        "id": 25100290,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.4,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
         },
         "fundamentalForce": null,
         "reward": null,
@@ -31761,6 +32553,53 @@
         "route": "Eremite Desert Clearwater",
         "icon": "UI_MonsterIcon_Eremite_Female_Slim_PushDagger"
     },
+    "25310190": {
+        "id": 25310190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 11.5464,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 55.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "镀金旅团·沙中净水",
+        "route": "Eremite Desert Clearwater",
+        "icon": "UI_MonsterIcon_Eremite_Female_Slim_PushDagger"
+    },
     "25310201": {
         "id": 25310201,
         "type": "MONSTER_ORDINARY",
@@ -31832,6 +32671,53 @@
                 "count": "0.07"
             }
         },
+        "name": "镀金旅团·炽阳凝冰",
+        "route": "Eremite Sunfrost",
+        "icon": "UI_MonsterIcon_Eremite_Male_Standard_Glaive"
+    },
+    "25310290": {
+        "id": 25310290,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 11.5464,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 66.9,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
         "name": "镀金旅团·炽阳凝冰",
         "route": "Eremite Sunfrost",
         "icon": "UI_MonsterIcon_Eremite_Male_Standard_Glaive"
@@ -33087,6 +33973,53 @@
                 "icon": "UI_RelicIcon_10013_4"
             }
         },
+        "name": "幼岩龙蜥",
+        "route": "Geovishap Hatchling",
+        "icon": "UI_MonsterIcon_Wyrm_Rock"
+    },
+    "26030190": {
+        "id": 26030190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 10.8672,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 31.3,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
         "name": "幼岩龙蜥",
         "route": "Geovishap Hatchling",
         "icon": "UI_MonsterIcon_Wyrm_Rock"
@@ -35635,6 +36568,53 @@
         "route": "Electro Cicin",
         "icon": "UI_MonsterIcon_Cicin_Thunder_01"
     },
+    "26060190": {
+        "id": 26060190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方空中怪物标记特效",
+                "description": "4.7-怪物对推-敌方空中怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyAirBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1.08672,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.1,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.5,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "雷萤",
+        "route": "Electro Cicin",
+        "icon": "UI_MonsterIcon_Cicin_Thunder_01"
+    },
     "26060201": {
         "id": 26060201,
         "type": "MONSTER_ORDINARY",
@@ -35671,6 +36651,53 @@
             "iceSubHurt": 0.1,
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.5
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "水萤",
+        "route": "Hydro Cicin",
+        "icon": "UI_MonsterIcon_Cicin_Water_01"
+    },
+    "26060290": {
+        "id": 26060290,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方空中怪物标记特效",
+                "description": "4.7-怪物对推-敌方空中怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyAirBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1.08672,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.1,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
         },
         "fundamentalForce": null,
         "reward": null,
@@ -36142,6 +37169,53 @@
             "waterSubHurt": 0.1,
             "elecSubHurt": 0.1,
             "windSubHurt": 0.2,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "浮游风蕈兽",
+        "route": "Floating Anemo Fungus",
+        "icon": "UI_MonsterIcon_Fungus_Un_Delta_Wind"
+    },
+    "26090393": {
+        "id": 26090393,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方空中怪物标记特效",
+                "description": "4.7-怪物对推-敌方空中怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyAirBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 2.17344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 66.9,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
             "iceSubHurt": 0.1,
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
@@ -40400,6 +41474,53 @@
                 "count": "0.056"
             }
         },
+        "name": "泡泡雄海马",
+        "route": "Bubbler Seahorse",
+        "icon": "UI_MonsterIcon_SeaHorse_Mature"
+    },
+    "26160390": {
+        "id": 26160390,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "4.7-怪物对推-敌方地面怪物标记特效",
+                "description": "4.7-怪物对推-敌方地面怪物标记特效",
+                "abilityName": [
+                    "MvM_Monster_Common_EnemyBottom"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 2.17344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 35.7,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
         "name": "泡泡雄海马",
         "route": "Bubbler Seahorse",
         "icon": "UI_MonsterIcon_SeaHorse_Mature"

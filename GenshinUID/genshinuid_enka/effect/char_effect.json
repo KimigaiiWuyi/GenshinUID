@@ -100,12 +100,12 @@
     },
     "fight": {
       "fight_skill": {
-        "50": "AQ:addDmg+60%atk%1800",
+        "50": "AQ:addDmg+1800%60%atk",
         "70": "critRate+20"
       },
       "fight_talent": {
         "1": "",
-        "2": "AQ:addDmg+90%atk%2700",
+        "2": "AQ:addDmg+2700%90%atk",
         "3": "",
         "4": "Q:dmgBonus+200",
         "5": "",

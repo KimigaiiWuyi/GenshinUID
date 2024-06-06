@@ -367,7 +367,7 @@ async def main():
         'w',
         encoding='UTF-8',
     ) as file:
-        json.dump(char_action, file, ensure_ascii=False)
+        json.dump(char_action, file, ensure_ascii=False, indent=4)
 
 
 asyncio.run(main())

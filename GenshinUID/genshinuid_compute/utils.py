@@ -72,12 +72,6 @@ async def get_all_char_dict() -> List[Dict]:
         if d is not None:
             result.append(d)
 
-    import json
-    from pathlib import Path
-
-    with open(Path(__file__).parent / 'aa.json', 'w', encoding='utf-8') as f:
-        json.dump(result, f, ensure_ascii=False, indent=4)
-
     return result
 
 

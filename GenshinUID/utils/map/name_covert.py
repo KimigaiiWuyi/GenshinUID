@@ -1,9 +1,45 @@
+from typing import Dict, Optional
+
 from .GS_MAP_PATH import (
     alias_data,
     avatarId2Name,
     avatarId2Star_data,
+    avatarName2Element,
+    weaponId2Name_data,
+    avatarId2SkillList_data,
     enName_to_avatarId_data,
 )
+
+
+async def weapon_id_to_name(weapon_id: str) -> str:
+    if weapon_id in weaponId2Name_data:
+        return weaponId2Name_data[weapon_id]
+    else:
+        return '未知'
+
+
+async def name_to_weapon_id(weapon_name: str) -> str:
+    for _id in weaponId2Name_data:
+        if weapon_name == weaponId2Name_data[_id]:
+            return _id
+    else:
+        return '11509'
+
+
+async def avatar_id_to_skill_groupId(
+    avatar_id: str,
+) -> Optional[Dict[str, str]]:
+    if avatar_id in avatarId2SkillList_data:
+        return avatarId2SkillList_data[avatar_id]
+    else:
+        return None
+
+
+async def name_to_element(name: str) -> str:
+    if name in avatarName2Element:
+        return avatarName2Element[name]
+    else:
+        return 'Cryo'
 
 
 async def avatar_id_to_name(avatar_id: str) -> str:

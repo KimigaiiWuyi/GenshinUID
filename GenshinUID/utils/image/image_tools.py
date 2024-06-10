@@ -62,8 +62,14 @@ def get_v4_title(avatar: Image.Image, uid: str, title_data: IndexData):
     return title
 
 
-def add_footer(img: Image.Image):
+def add_footer(img: Image.Image, w: int = 0):
     footer = Image.open(TEXT_PATH / 'footer.png')
+
+    if w != 0:
+        footer = footer.resize(
+            (w, int(footer.size[1] * w / footer.size[0])),
+        )
+
     x, y = (
         int((img.size[0] - footer.size[0]) / 2),
         img.size[1] - footer.size[1] - 20,

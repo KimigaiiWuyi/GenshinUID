@@ -99,7 +99,7 @@ def download_namecard_pic():
         elif en == 'Jin':
             en = 'Yunjin'
         elif en == 'Miko':
-            en = 'Yae1'
+            en = 'Yae'
         elif en == 'Heizou':
             en = 'Heizo'
         elif en == 'Amber':

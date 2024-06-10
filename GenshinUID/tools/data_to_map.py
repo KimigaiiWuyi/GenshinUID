@@ -40,6 +40,8 @@ avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
 enName2Id_fileName = f'enName2AvatarID_mapping_{version}.json'
 avatarId2Star_fileName = f'avatarId2Star_mapping_{version}.json'
 avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
+avatarId2SkillList_fileName = f'avatarId2SkillList_mapping_{version}.json'
+weaponId2Name_fileName = f'weaponId2Name_mapping_{version}.json'
 
 monster2entry_fileName = f'monster2entry_mapping_{version}.json'
 
@@ -70,6 +72,149 @@ BETA_CHAR = {
     '10000097': '赛索斯',
     '10000098': '克洛琳德',
 }
+
+
+async def weaponId2Name():
+    result = {}
+    print('正在执行weaponId2Name')
+    with open(
+        DATA_PATH / 'WeaponExcelConfigData.json',
+        'r',
+        encoding='UTF-8',
+    ) as f:
+        weapon_data = json.load(f)
+
+    for weapon in weapon_data:
+        if str(weapon['nameTextMapHash']) in raw_data:
+            result[weapon['id']] = raw_data[str(weapon['nameTextMapHash'])]
+
+    with open(
+        MAP_PATH / weaponId2Name_fileName,
+        'w',
+        encoding='UTF-8',
+    ) as f:
+        json.dump(result, f, ensure_ascii=False, indent=4)
+
+
+async def avatarId2SkillGroupList():
+    result = {}
+    print('正在执行avatarId2SkillList')
+    with open(
+        MAP_PATH / f'enName2AvatarID_mapping_{version}.json',
+        'r',
+        encoding='UTF-8',
+    ) as f:
+        en_name = json.load(f)
+
+    with open(
+        DATA_PATH / 'AvatarSkillExcelConfigData.json',
+        'r',
+        encoding='UTF-8',
+    ) as f:
+        skill_data = json.load(f)
+
+        for skill in skill_data:
+            if 'proudSkillGroupId' in skill:
+                if skill['abilityName']:
+                    _name = skill['skillIcon'].split('_')[2]
+                    count = skill['abilityName'].count('_')
+
+                    if 'Diluc' in skill['abilityName']:
+                        name = 'Diluc'
+                    elif count <= 1:
+                        name = skill['abilityName'].split('_')[0]
+                    elif count >= 3:
+                        if skill['abilityName'].split('_')[1] == _name:
+                            name = skill['abilityName'].split('_')[1]
+                        else:
+                            continue
+                    else:
+                        name = skill['abilityName'].split('_')[1]
+
+                    if (
+                        _name != name
+                        and skill['skillIcon'].count('_') > 2
+                        and 'Catalyst' not in skill['skillIcon']
+                    ):
+                        print(_name)
+                        print(name)
+                        continue
+
+                else:
+                    name = skill['skillIcon'].split('_')[2]
+
+                if not skill['skillIcon'].startswith(
+                    ('Skill_A', 'Skill_S', 'Skill_E')
+                ):
+                    continue
+
+                if name not in en_name:
+                    name = name.split(' ')[-1]
+                    for _en in en_name:
+                        en = _en.split(' ')[-1]
+                        if en == 'Jean':
+                            en = 'Qin'
+                        elif en == 'Baizhu':
+                            en = 'Baizhuer'
+                        elif en == 'Alhaitham':
+                            en = 'Alhatham'
+                        elif en == 'Jin':
+                            en = 'Yunjin'
+                        elif en == 'Miko':
+                            en = 'Yae'
+                        elif en == 'Heizou':
+                            en = 'Heizo'
+                        elif en == 'Amber':
+                            en = 'Ambor'
+                        elif en == 'Noelle':
+                            en = 'Noel'
+                        elif en == 'Yanfei':
+                            en = 'Feiyan'
+                        elif en == 'Shogun':
+                            en = 'Shougun'
+                        elif en == 'Lynette':
+                            en = 'Linette'
+                        elif en == 'Lyney':
+                            en = 'Liney'
+                        elif en == 'Tao':
+                            en = 'Hutao'
+                        elif en == 'Thoma':
+                            en = 'Tohma'
+                        elif en == 'Kirara':
+                            en = 'Momoka'
+                        elif en == 'Xianyun':
+                            en = 'Liuyun'
+                        if name == en:
+                            avatar_id = en_name[_en]
+                            break
+                    else:
+                        if not name.startswith('Player'):
+                            print(name)
+                        continue
+                else:
+                    avatar_id = en_name[name]
+
+                if str(skill["nameTextMapHash"]) in raw_data:
+                    skill_name = raw_data[str(skill["nameTextMapHash"])]
+                else:
+                    skill_name = ''
+
+                if avatar_id not in result:
+                    result[avatar_id] = {}
+
+                result[avatar_id][skill['proudSkillGroupId']] = skill_name
+
+    result['10000036'] = {
+        "3631": "普通攻击·灭邪四式",
+        "3632": "灵刃·重华叠霜",
+        "3639": "灵刃·云开星落",
+    }
+    with open(
+        MAP_PATH / f'avatarId2SkillList_mapping_{version}.json',
+        'w',
+        encoding='UTF-8',
+    ) as f:
+        json.dump(result, f, indent=4, ensure_ascii=False)
 
 
 async def monster2map():
@@ -335,14 +480,14 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
-    await monster2map()
-    await download_new_file()
     global raw_data
     try:
         with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:
             raw_data = json.load(f)
     except FileNotFoundError:
         pass
+    await monster2map()
+    await download_new_file()
     await avatarId2NameJson()
     await avatarName2ElementJson()
     await weaponHash2NameJson()
@@ -350,6 +495,8 @@ async def main():
     await talentId2NameJson()
     await weaponHash2TypeJson()
     await artifact2attrJson()
+    await weaponId2Name()
+    await avatarId2SkillGroupList()
 
 
 asyncio.run(main())

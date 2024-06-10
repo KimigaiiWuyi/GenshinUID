@@ -83,6 +83,7 @@ async def download_file(
     name: str,
     sess: Optional[ClientSession] = None,
 ) -> Optional[Tuple[str, int, str]]:
+    logger.info(f"开始下载: [{name}] - {url}")
     if sess is None:
         sess = ClientSession()
     try:

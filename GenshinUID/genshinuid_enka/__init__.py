@@ -21,6 +21,7 @@ from .draw_rank_list import draw_rank_img
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import alias_data
 from .draw_arti_rank import draw_arti_rank_img
+from .draw_char_info import draw_all_char_list
 from .draw_char_rank import draw_cahrcard_list
 from .draw_role_rank import draw_role_rank_img
 from .get_enka_img import draw_enka_img, get_full_char
@@ -352,5 +353,15 @@ async def send_charcard_list(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     im = await draw_cahrcard_list(str(uid), ev)
-    await bot.logger.info(f'UID{uid}获取角色数据成功！')
+    await bot.logger.info(f'[毕业度统计] UID{uid}获取角色数据成功！')
+    await bot.send(im)
+
+
+@sv_get_enka.on_command(('角色橱窗'))
+async def send_char_detail_list(bot: Bot, ev: Event):
+    uid = await get_uid(bot, ev)
+    if uid is None:
+        return await bot.send(UID_HINT)
+    im = await draw_all_char_list(str(uid))
+    await bot.logger.info(f'[角色橱窗] UID{uid}获取角色数据成功！')
     await bot.send(im)

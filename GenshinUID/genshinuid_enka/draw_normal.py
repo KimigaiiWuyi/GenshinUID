@@ -10,7 +10,6 @@ from PIL import Image, ImageDraw, ImageChops
 from .mono.Character import Character
 from ..genshinuid_config.gs_config import gsconfig
 from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
-from ..utils.fonts.genshin_fonts import genshin_font_origin
 from .etc.etc import TEXT_PATH, strLenth, get_artifacts_value
 from ..utils.image.image_tools import (
     CustomizeImage,
@@ -23,6 +22,19 @@ from ..utils.resource.RESOURCE_PATH import (
     CU_CHBG_PATH,
     GACHA_IMG_PATH,
     CHAR_STAND_PATH,
+)
+from ..utils.fonts.genshin_fonts import (
+    gs_font_15,
+    gs_font_18,
+    gs_font_20,
+    gs_font_22,
+    gs_font_24,
+    gs_font_25,
+    gs_font_28,
+    gs_font_32,
+    gs_font_40,
+    gs_font_50,
+    gs_font_55,
 )
 
 ARTIFACTS_POS = {
@@ -108,28 +120,28 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (412, 670),
         weaponName,
         (255, 255, 255),
-        genshin_font_origin(50),
+        gs_font_50,
         anchor='lm',
     )
     char_info_text.text(
         (420, 710),
         weapon_type,
         (255, 255, 255),
-        genshin_font_origin(20),
+        gs_font_20,
         anchor='lm',
     )
     char_info_text.text(
         (420, 750),
         '基础攻击力',
         (255, 255, 255),
-        genshin_font_origin(32),
+        gs_font_32,
         anchor='lm',
     )
     char_info_text.text(
         (755, 750),
         str(weaponAtk),
         (255, 255, 255),
-        genshin_font_origin(32),
+        gs_font_32,
         anchor='rm',
     )
     if len(card_prop['weaponInfo']['weaponStats']) == 2:
@@ -141,14 +153,14 @@ async def get_char_card_base(char: Character) -> Image.Image:
             (420, 801),
             weapon_sub_info,
             (255, 255, 255),
-            genshin_font_origin(32),
+            gs_font_32,
             anchor='lm',
         )
         char_info_text.text(
             (755, 801),
             str(weapon_sub_value),
             (255, 255, 255),
-            genshin_font_origin(32),
+            gs_font_32,
             anchor='rm',
         )
     else:
@@ -156,14 +168,14 @@ async def get_char_card_base(char: Character) -> Image.Image:
             (420, 801),
             '该武器无副词条',
             (255, 255, 255),
-            genshin_font_origin(32),
+            gs_font_32,
             anchor='lm',
         )
     char_info_text.text(
         (460, 893),
         f'Lv.{weaponLevel}',
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='mm',
     )
     affix_pic = await get_weapon_affix_pic(weaponAffix)
@@ -173,16 +185,14 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (517, 895),
         f'精炼{str(weaponAffix)}阶',
         (255, 239, 173),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='lm',
     )
     '''
 
     weaponEffect = strLenth(weaponEffect, 25, 455)
     weaponEffect = '\n'.join(weaponEffect.split('\n')[:5])
-    char_info_text.text(
-        (412, 925), weaponEffect, (255, 255, 255), genshin_font_origin(25)
-    )
+    char_info_text.text((412, 925), weaponEffect, (255, 255, 255), gs_font_25)
 
     fight_prop = card_prop['avatarFightProp']
     hp = fight_prop['hp']
@@ -206,35 +216,35 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (411, 72),
         char.char_name,
         (255, 255, 255),
-        genshin_font_origin(55),
+        gs_font_55,
         anchor='lm',
     )
     char_info_text.text(
         (411, 122),
         '等级{}'.format(char.char_level),
         (255, 255, 255),
-        genshin_font_origin(40),
+        gs_font_40,
         anchor='lm',
     )
     char_info_text.text(
         (747, 126),
         str(char.char_fetter),
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='lm',
     )
     char_info_text.text(
         (103, 820),
         f'{a_skill_level}',
         (255, 255, 255),
-        genshin_font_origin(22),
+        gs_font_22,
         anchor='mm',
     )
     char_info_text.text(
         (103, 923),
         f'{e_skill_level}',
         (255, 255, 255),
-        genshin_font_origin(22),
+        gs_font_22,
         anchor='mm',
     )
 
@@ -242,7 +252,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (103, 1024),
         f'{q_skill_level}',
         (255, 255, 255),
-        genshin_font_origin(22),
+        gs_font_22,
         anchor='mm',
     )
 
@@ -251,56 +261,56 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (785, 174),
         str(round(hp)),
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 227),
         str(round(attack)),
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 280),
         str(round(defense)),
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 333),
         str(round(em)),
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 386),
         f'{str(round(critrate * 100, 2))}%',
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 439),
         f'{str(round(critdmg * 100, 2))}%',
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 492),
         f'{str(round(ce * 100, 1))}%',
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     char_info_text.text(
         (785, 545),
         f'{str(round(dmgBonus * 100, 1))}%',
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
 
@@ -308,21 +318,21 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (805, 174),
         f'(+{str(round(hp_green))})',
         (95, 251, 80),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='lm',
     )
     char_info_text.text(
         (805, 227),
         f'(+{str(round(attack_green))})',
         (95, 251, 80),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='lm',
     )
     char_info_text.text(
         (805, 280),
         f'(+{str(round(defense_green))})',
         (95, 251, 80),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='lm',
     )
 
@@ -333,7 +343,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (350, 1035),
         f'UID{uid}',
         (255, 255, 255),
-        genshin_font_origin(24),
+        gs_font_24,
         anchor='rm',
     )
     # 数据最后更新时间
@@ -341,7 +351,7 @@ async def get_char_card_base(char: Character) -> Image.Image:
         (780, 600),
         f'数据最后更新于{data_time}',
         (255, 255, 255),
-        genshin_font_origin(22),
+        gs_font_22,
         anchor='rm',
     )
     return char_info_1
@@ -482,7 +492,7 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
         (124, 51),
         main_name,
         (255, 255, 255),
-        genshin_font_origin(22),
+        gs_font_22,
         anchor='lm',
     )
     '''
@@ -490,7 +500,7 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
         (30, 102),
         artifactsPos,
         (255, 255, 255),
-        genshin_font_origin(20),
+        gs_font_20,
         anchor='lm',
     )
     '''
@@ -515,21 +525,21 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
         (38, 150),
         mainNameNew,
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='lm',
     )
     artifacts_text.text(
         (271, 150),
         mainValueStr,
         (255, 255, 255),
-        genshin_font_origin(28),
+        gs_font_28,
         anchor='rm',
     )
     artifacts_text.text(
         (232, 75),
         f'+{mainLevel}',
         (255, 255, 255),
-        genshin_font_origin(16),
+        gs_font_15,
         anchor='mm',
     )
 
@@ -563,14 +573,14 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
             (22, 200 + index * 35),
             '·{}'.format(subNameStr),
             artifacts_color,
-            genshin_font_origin(25),
+            gs_font_25,
             anchor='lm',
         )
         artifacts_text.text(
             (266, 200 + index * 35),
             '{}'.format(subValueStr),
             artifacts_color,
-            genshin_font_origin(25),
+            gs_font_25,
             anchor='rm',
         )
     artifactsScore = aritifact['value_score']
@@ -605,7 +615,7 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
         (156, 109),
         '{:.2f}'.format(artifactsScore) + '条',
         (255, 255, 255),
-        genshin_font_origin(18),
+        gs_font_18,
         anchor='mm',
     )
 
@@ -613,7 +623,7 @@ async def _get_single_artifact_img(aritifact: Dict) -> Image.Image:
         (235, 109),
         '{:.1f}'.format(cv_score) + '分',
         (255, 255, 255),
-        genshin_font_origin(18),
+        gs_font_18,
         anchor='mm',
     )
 

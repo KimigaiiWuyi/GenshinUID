@@ -73,3 +73,97 @@ class FakeResin(WidgetResin):
     transformer: Transformer
     daily_task: DayilyTask
     archon_quest_progress: ArchonProgress
+
+
+class PoetryAbyssLinks(TypedDict):
+    lineup_link: str
+    lineup_link_pc: str
+    strategy_link: str
+    lineup_publish_link: str
+    lineup_publish_link_pc: str
+
+
+class PoetryAbyssAvatar(TypedDict):
+    avatar_id: int
+    avatar_type: int
+    name: str
+    element: str
+    image: str
+    level: int
+    rarity: int
+
+
+class PoetryAbyssChoiceCard(TypedDict):
+    icon: str
+    name: str
+    desc: str
+    is_enhanced: bool
+    id: int
+
+
+class PoetryAbyssBuff(TypedDict):
+    icon: str
+    name: str
+    desc: str
+    is_enhanced: bool
+    id: int
+
+
+class PoetryAbyssDateTime(TypedDict):
+    year: int
+    month: int
+    day: int
+    hour: int
+    minute: int
+    second: int
+
+
+class PoetryAbyssSchedule(TypedDict):
+    start_time: int
+    end_time: int
+    schedule_type: int
+    schedule_id: int
+    start_date_time: PoetryAbyssDateTime
+    end_date_time: PoetryAbyssDateTime
+
+
+class PoetryAbyssDetailStat(TypedDict):
+    difficulty_id: int
+    max_round_id: int
+    heraldry: int
+    get_medal_round_list: List[int]
+    medal_num: int
+    coin_num: int
+    avatar_bonus_num: int
+    rent_cnt: int
+
+
+class RoundData(TypedDict):
+    avatars: List[PoetryAbyssAvatar]
+    choice_cards: List[PoetryAbyssChoiceCard]
+    buffs: List[PoetryAbyssBuff]
+    is_get_medal: bool
+    round_id: int
+    finish_time: int
+    finish_date_time: PoetryAbyssDateTime
+    detail_stat: PoetryAbyssDetailStat
+
+
+class PoetryAbyssDetail(TypedDict):
+    rounds_data: List[RoundData]
+    detail_stat: PoetryAbyssDetailStat
+    backup_avatars: List[PoetryAbyssAvatar]
+
+
+class PoetryAbyssData(TypedDict):
+    detail: PoetryAbyssDetail
+    stat: PoetryAbyssDetailStat
+    schedule: PoetryAbyssSchedule
+    has_data: bool
+    has_detail_data: bool
+
+
+class PoetryAbyssDatas(TypedDict):
+    data: List[PoetryAbyssData]
+    is_unlock: bool
+    links: PoetryAbyssLinks

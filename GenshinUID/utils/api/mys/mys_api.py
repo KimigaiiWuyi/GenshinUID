@@ -34,7 +34,7 @@ class GsMysAPI(_MysApi):
     ) -> Union[PoetryAbyssDatas, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
         HEADER = deepcopy(self._HEADER)
-        ck = await self.get_ck(uid)
+        ck = await self.get_ck(uid, 'OWNER')
         if ck is None:
             return -51
         HEADER['Cookie'] = ck

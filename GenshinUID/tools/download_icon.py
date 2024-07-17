@@ -8,12 +8,12 @@ from PIL import Image
 
 MAP_PATH = Path(__file__).parent.parent / 'utils' / 'map' / 'data'
 
-with open(MAP_PATH / 'enName2AvatarID_mapping_4.6.0.json') as f:
+with open(MAP_PATH / 'enName2AvatarID_mapping_4.8.0.json') as f:
     enmap: Dict[str, str] = json.load(f)
 
 suffix = 'webp'
 
-char_list = ['Sigewinne', 'Sethos', 'Clorinde']
+char_list = ['Mualani', 'Kinich', 'Emilie', 'Kachina']
 base = 'https://api.hakush.in/gi/UI/'
 # title = 'https://enka.network/ui/{}'
 # hakush = 'https://api.hakush.in/gi/UI/'

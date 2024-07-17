@@ -71,6 +71,10 @@ BETA_CHAR = {
     '10000095': '希格雯',
     '10000097': '赛索斯',
     '10000098': '克洛琳德',
+    '10000099': '艾梅莉埃',
+    '10000100': '卡齐娜',
+    '10000101': '基尼奇',
+    '10000102': '玛拉妮',
 }
 
 
@@ -480,14 +484,14 @@ async def artifact2attrJson() -> None:
 
 
 async def main():
+    # await download_new_file()
     global raw_data
     try:
         with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:
             raw_data = json.load(f)
     except FileNotFoundError:
         pass
-    await monster2map()
-    await download_new_file()
+    # await monster2map()
     await avatarId2NameJson()
     await avatarName2ElementJson()
     await weaponHash2NameJson()

@@ -2,12 +2,14 @@ from pathlib import Path
 from typing import Union
 
 from PIL import Image, ImageDraw
+from gsuid_core.models import Event
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
+from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
-from ..utils.image.image_tools import get_color_bg
+from ..utils.image.image_tools import add_footer, get_color_bg
 from ..utils.fonts.genshin_fonts import gs_font_26, gs_font_38, gs_font_58
 
 TEXT_PATH = Path(__file__).parent / 'texture2d'
@@ -24,6 +26,7 @@ COLOR_MAP = {
     '每日活跃': (190, 158, 97),
     '活动奖励': (89, 126, 162),
     '深境螺旋': (113, 152, 113),
+    '幻想剧诗': (152, 102, 146),
     '冒险奖励': (220, 99, 96),
     '任务奖励': (107, 182, 181),
     '其他': (118, 168, 196),
@@ -37,11 +40,13 @@ COLOR_MAP = {
 }
 
 
-async def draw_note_img(uid: str) -> Union[bytes, str]:
+async def draw_note_img(uid: str, ev: Event) -> Union[bytes, str]:
     # 获取数据
     data = await mys_api.get_award(uid)
     if isinstance(data, int):
         return await get_error_img(data)
+
+    avatar = await get_avatar_with_ring(ev, 317)
     # nickname = data['nickname']
     day_stone = data['day_data']['current_primogems']
     day_mora = data['day_data']['current_mora']
@@ -86,9 +91,10 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
 
     # 获取背景图片各项参数
     based_w = 850
-    based_h = 1900
+    based_h = 1950
 
     img = await get_color_bg(based_w, based_h)
+    img.paste(avatar, (267, 83), avatar)
     img.paste(note_pic, (0, 0), note_pic)
 
     ring_pic = Image.open(TEXT_PATH / 'ring.apng')
@@ -136,21 +142,21 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
             )
         img.paste(oops_pic, (106, 1513), oops_pic)
     else:
-        xy = ((94, 1515), (384, 1805))
+        xy = ((89, 1545), (379, 1835))
         temp = -90
         for index, i in enumerate(data['month_data']['group_by']):
             img_draw.pieslice(
                 xy,
                 temp,
                 temp + (i['percent'] / 100) * 360,
-                COLOR_MAP[i['action']],
+                COLOR_MAP.get(i['action'], (152, 102, 146)),
             )
             temp = temp + (i['percent'] / 100) * 360
             if i['action'] == '其他':
                 continue
             img_draw.rectangle(
                 ((407, 1523 + index * 52), (453, 1548 + index * 52)),
-                fill=COLOR_MAP[i['action']],
+                fill=COLOR_MAP.get(i['action'], (152, 102, 146)),
             )
             img_draw.text(
                 (614, 1535 + index * 52),
@@ -159,8 +165,9 @@ async def draw_note_img(uid: str) -> Union[bytes, str]:
                 gs_font_26,
                 'mm',
             )
-        img.paste(ok_pic, (115, 1535), ok_pic)
+        img.paste(ok_pic, (110, 1565), ok_pic)
 
+    img = add_footer(img, 850, 10, True)
     img = await convert_img(img)
     logger.info('[原石札记] 图片绘制完成!等待发送...')
     return img

@@ -8,7 +8,7 @@ import httpx
 from httpx import get
 from gsuid_core.models import Event
 from gsuid_core.utils.api.mys.models import IndexData
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageOps, ImageDraw, ImageFont, ImageFilter
 from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ...genshinuid_config.gs_config import gsconfig
@@ -62,8 +62,19 @@ def get_v4_title(avatar: Image.Image, uid: str, title_data: IndexData):
     return title
 
 
-def add_footer(img: Image.Image, w: int = 0):
+def add_footer(
+    img: Image.Image,
+    w: int = 0,
+    offset_y: int = 0,
+    is_invert: bool = False,
+):
     footer = Image.open(TEXT_PATH / 'footer.png')
+    if is_invert:
+        r, g, b, a = footer.split()
+        rgb_image = Image.merge('RGB', (r, g, b))
+        rgb_image = ImageOps.invert(rgb_image.convert('RGB'))
+        r2, g2, b2 = rgb_image.split()
+        footer = Image.merge('RGBA', (r2, g2, b2, a))
 
     if w != 0:
         footer = footer.resize(
@@ -72,8 +83,9 @@ def add_footer(img: Image.Image, w: int = 0):
 
     x, y = (
         int((img.size[0] - footer.size[0]) / 2),
-        img.size[1] - footer.size[1] - 20,
+        img.size[1] - footer.size[1] - 20 + offset_y,
     )
+
     img.paste(footer, (x, y), footer)
     return img
 

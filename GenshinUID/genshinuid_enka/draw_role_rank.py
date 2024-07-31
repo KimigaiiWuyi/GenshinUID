@@ -133,6 +133,7 @@ async def draw_role_rank_img(
                 url: str = item['icon']
                 icon_name = url.split('/')[-1].split('.')[0]
                 icon_img = Image.open(REL_PATH / f'{icon2Name[icon_name]}.png')
+                icon_img = icon_img.convert('RGBA')
                 if item['count'] >= 4:
                     icon_list.clear()
                     icon_list.append(icon_img.resize((64, 64)))

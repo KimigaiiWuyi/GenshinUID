@@ -51,7 +51,10 @@ async def notice_job():
             for BOT_ID in gss.active_bot:
                 bot = gss.active_bot[BOT_ID]
                 for user_id in result[bot_id]['direct']:
-                    msg_list = [result[bot_id]['direct'][user_id]]
+                    msg_list = [
+                        '✅[原神] 推送提醒:\n',
+                        result[bot_id]['direct'][user_id],
+                    ]
                     msg_list.append(MessageSegment.text)
                     await bot.target_send(
                         msg_list, 'direct', user_id, bot_id, '', ''
@@ -59,7 +62,9 @@ async def notice_job():
                     await asyncio.sleep(0.5)
                 logger.info('[推送检查] 私聊推送完成')
                 for gid in result[bot_id]['group']:
-                    msg_list = []
+                    msg_list = [
+                        MessageSegment.text('✅[原神] 推送提醒:\n'),
+                    ]
                     for user_id in result[bot_id]['group'][gid]:
                         msg_list.append(MessageSegment.at(user_id))
                         msg = result[bot_id]['group'][gid][user_id]

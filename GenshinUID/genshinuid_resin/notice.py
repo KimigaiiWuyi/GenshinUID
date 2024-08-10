@@ -27,10 +27,15 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
                 continue
             raw_data = await mys_api.get_daily_data(user.uid)
             if isinstance(raw_data, int):
-                logger.error(f'[推送提醒]获取{user.uid}的数据失败!')
+                logger.error(
+                    f'[推送提醒] 获取{user.uid}的数据失败!错误代码为: {raw_data}'
+                )
                 continue
             push_data = await GsPush.select_data_by_uid(user.uid)
-            msg_dict = await all_check(
+            if push_data is None:
+                continue
+
+            msg_dict[bot_id] = await all_check(
                 user.bot_id,
                 raw_data,
                 push_data.__dict__,

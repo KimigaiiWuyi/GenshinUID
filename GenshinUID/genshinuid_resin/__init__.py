@@ -10,9 +10,9 @@ from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
-from .notice import get_notice_list
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
+from .notice import MR_NOTICE, get_notice_list
 from ..genshinuid_config.gs_config import gsconfig
 
 sv_get_resin = SV('查询体力')
@@ -51,9 +51,10 @@ async def notice_job():
             for BOT_ID in gss.active_bot:
                 bot = gss.active_bot[BOT_ID]
                 for user_id in result[bot_id]['direct']:
-                    msg = result[bot_id]['direct'][user_id]
+                    msg_list = [result[bot_id]['direct'][user_id]]
+                    msg_list.append(MessageSegment.text)
                     await bot.target_send(
-                        msg, 'direct', user_id, bot_id, '', ''
+                        msg_list, 'direct', user_id, bot_id, '', ''
                     )
                     await asyncio.sleep(0.5)
                 logger.info('[推送检查] 私聊推送完成')
@@ -63,6 +64,7 @@ async def notice_job():
                         msg_list.append(MessageSegment.at(user_id))
                         msg = result[bot_id]['group'][gid][user_id]
                         msg_list.append(MessageSegment.text(msg))
+                    msg_list.append(MessageSegment.text(MR_NOTICE))
                     await bot.target_send(
                         msg_list, 'group', gid, bot_id, '', ''
                     )

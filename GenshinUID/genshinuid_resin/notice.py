@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from gsuid_core.gss import gss
 from gsuid_core.logger import logger
@@ -8,13 +8,13 @@ from gsuid_core.utils.database.models import GsPush, GsUser
 from ..utils.mys_api import mys_api
 from ..genshinuid_config.gs_config import gsconfig
 
-MR_NOTICE = '\n可发送[mr]或者[每日]来查看更多信息！\n'
+MR_NOTICE = '\n✅可发送[mr]或者[每日]来查看更多信息！\n'
 
 NOTICE = {
-    'coin': f'你的洞天宝钱快满啦！{MR_NOTICE}',
-    'resin': f'你的树脂/体力快满啦！{MR_NOTICE}',
-    'go': f'你有派遣信息即将可收取！{MR_NOTICE}',
-    'transform': f'你的质变仪即将可使用！{MR_NOTICE}',
+    'coin': '你的洞天宝钱快满啦！',
+    'resin': '你的树脂/体力快满啦！',
+    'go': '你有派遣奖励即将可领取！',
+    'transform': '你的质变仪即将可使用！',
 }
 
 
@@ -64,11 +64,15 @@ async def all_check(
                     )
             continue
         # 准备推送
-        if await check(mode, raw_data, push_data[f'{mode}_value']):
+        _check = await check(mode, raw_data, push_data[f'{mode}_value'])
+        if _check:
             if push_data[f'{mode}_push'] == 'off':
                 pass
             # on 推送到私聊
             else:
+                notice = NOTICE[mode]
+                if isinstance(_check, int):
+                    notice += f'（当前值: {_check}）'
                 # 初始化
                 if bot_id not in msg_dict:
                     msg_dict[bot_id] = {'direct': {}, 'group': {}}
@@ -76,9 +80,9 @@ async def all_check(
                 if push_data[f'{mode}_push'] == 'on':
                     # 添加私聊信息
                     if user_id not in msg_dict[bot_id]['direct']:
-                        msg_dict[bot_id]['direct'][user_id] = NOTICE[mode]
+                        msg_dict[bot_id]['direct'][user_id] = notice
                     else:
-                        msg_dict[bot_id]['direct'][user_id] += NOTICE[mode]
+                        msg_dict[bot_id]['direct'][user_id] += notice
                     await GsPush.update_data_by_uid(
                         uid, bot_id, None, **{f'{mode}_is_push': 'on'}
                     )
@@ -90,28 +94,30 @@ async def all_check(
                         msg_dict[bot_id]['group'][gid] = {}
 
                     if user_id not in msg_dict[bot_id]['group'][gid]:
-                        msg_dict[bot_id]['group'][gid][user_id] = NOTICE[mode]
+                        msg_dict[bot_id]['group'][gid][user_id] = notice
                     else:
-                        msg_dict[bot_id]['group'][gid][user_id] += NOTICE[mode]
+                        msg_dict[bot_id]['group'][gid][user_id] += notice
                     await GsPush.update_data_by_uid(
                         uid, bot_id, None, **{f'{mode}_is_push': 'on'}
                     )
     return msg_dict
 
 
-async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
+async def check(
+    mode: str, data: DailyNoteData, limit: int
+) -> Union[bool, int]:
     if mode == 'coin':
         if data['current_home_coin'] >= limit:
-            return True
+            return data['current_home_coin']
         elif data['current_home_coin'] >= data['max_home_coin']:
-            return True
+            return data['current_home_coin']
         else:
             return False
     if mode == 'resin':
         if data['current_resin'] >= limit:
-            return True
+            return data['current_resin']
         elif data['current_resin'] >= data['max_resin']:
-            return True
+            return data['current_resin']
         else:
             return False
     if mode == 'go':
@@ -129,4 +135,5 @@ async def check(mode: str, data: DailyNoteData, limit: int) -> bool:
             if time_min <= limit:
                 return True
         return False
+    return False
     return False

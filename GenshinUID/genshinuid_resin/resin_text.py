@@ -55,10 +55,10 @@ async def get_resin_text(uid: str) -> Union[str, bytes]:
         for expedition in dailydata['expeditions']:
             avatar: str = expedition['avatar_side_icon'][89:-4]
             try:
-                avatar_name: str = await enName_to_avatarId(avatar)
-                avatar_name: str = await avatar_id_to_name(avatar_name)
+                _avatar_name: str = await enName_to_avatarId(avatar)
+                avatar_name = await avatar_id_to_name(_avatar_name)
             except KeyError:
-                avatar_name: str = avatar
+                avatar_name = avatar
 
             if expedition['status'] == 'Finished':
                 expedition_info.append(f'{avatar_name} 探索完成')

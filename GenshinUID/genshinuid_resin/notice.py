@@ -19,7 +19,7 @@ NOTICE = {
 
 
 async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
-    msg_dict: Dict[str, Dict[str, Dict]] = {}
+    msg_dict = {}
     for bot_id in gss.active_bot:
         user_list: List[GsUser] = await GsUser.get_all_push_user_list()
         for user in user_list:
@@ -35,7 +35,7 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
             if push_data is None:
                 continue
 
-            msg_dict[bot_id] = await all_check(
+            msg_dict = await all_check(
                 user.bot_id,
                 raw_data,
                 push_data.__dict__,

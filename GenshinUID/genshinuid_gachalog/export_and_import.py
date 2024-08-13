@@ -2,6 +2,7 @@ import json
 import base64
 from copy import deepcopy
 from datetime import datetime
+from typing import Dict, List
 
 from httpx import get
 
@@ -18,11 +19,25 @@ INT_TO_TYPE = {
 }
 
 
+async def import_data(uid: str, raw_data: List[Dict]):
+    result = deepcopy(NULL_GACHA_LOG)
+    for item in raw_data:
+        item['uid'] = uid
+        item['item_id'] = ''
+        item['count'] = '1'
+        item['lang'] = 'zh-cn'
+        item['id'] = str(item['id'])
+        del item['uigf_gacha_type']
+        result[INT_TO_TYPE[item['gacha_type']]].append(item)
+    return result
+
+
 async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
+    history_data: Dict = {}
     if type == 'url':
-        history_data: dict = json.loads(get(history_url).text)
+        history_data = json.loads(get(history_url).text)
     elif type == 'json':
-        history_data: dict = json.loads(history_url)
+        history_data = json.loads(history_url)
         if history_data.get('code') == 300:
             return "[提瓦特小助手]抽卡记录不存在"
     else:
@@ -33,22 +48,35 @@ async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
             history_data = json.loads(data_bytes.decode('gbk'))
         except json.decoder.JSONDecodeError:
             return '请传入正确的JSON格式文件!'
-    if 'info' in history_data and 'uid' in history_data['info']:
-        data_uid = history_data['info']['uid']
-        if data_uid != uid:
-            return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
-        raw_data = history_data['list']
-        result = deepcopy(NULL_GACHA_LOG)
-        for item in raw_data:
-            item['uid'] = uid
-            item['item_id'] = ''
-            item['count'] = '1'
-            item['lang'] = 'zh-cn'
-            item['id'] = str(item['id'])
-            del item['uigf_gacha_type']
-            result[INT_TO_TYPE[item['gacha_type']]].append(item)
-        im = await save_gachalogs(uid, result)
-        return im
+    if 'info' in history_data and 'version' in history_data['info']:
+        _version: str = str(history_data['info']['version'])
+        _version = _version.replace('version', '').replace('v', '')
+        try:
+            version = float(_version)
+        except ValueError:
+            return '请传入正确的UIGF文件!'
+
+        if version >= 4.0:
+            if 'hk4e' in history_data:
+                im = ''
+                for sdata in history_data['hk4e']:
+                    data_uid = sdata['uid']
+                    result = await import_data(uid, sdata['list'])
+                    im += await save_gachalogs(uid, result)
+                return im
+            else:
+                return '你当前导入的UIGF文件不包含原神的抽卡数据, 请检查!'
+        else:
+            if 'uid' in history_data['info']:
+                data_uid = history_data['info']['uid']
+                if data_uid != uid:
+                    return f'该抽卡记录UID{data_uid}与你绑定UID{uid}不符合！'
+                raw_data = history_data['list']
+                result = await import_data(uid, raw_data)
+                im = await save_gachalogs(uid, result)
+                return im
+            else:
+                return '请传入正确的UIGF文件!'
     else:
         return '请传入正确的UIGF文件!'
 

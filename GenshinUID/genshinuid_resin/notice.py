@@ -11,10 +11,10 @@ from ..genshinuid_config.gs_config import gsconfig
 MR_NOTICE = '\n✅可发送[mr]或者[每日]来查看更多信息！\n'
 
 NOTICE = {
-    'coin': '你的洞天宝钱快满啦！',
-    'resin': '你的树脂/体力快满啦！',
-    'go': '你有派遣奖励即将可领取！',
-    'transform': '你的质变仪即将可使用！',
+    'coin': '💰你的洞天宝钱快满啦！',
+    'resin': '🌜你的树脂/体力快满啦！',
+    'go': '👨‍🏭你有派遣奖励即将可领取！',
+    'transform': '⌛你的质变仪即将可使用！',
 }
 
 

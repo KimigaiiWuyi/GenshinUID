@@ -129,4 +129,9 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '修改帮助图有多少列',
         '6',
     ),
+    'EnableCharCardByMys': GsBoolConfig(
+        '从米游社获取面板替代Enka服务',
+        '开启后角色卡片将从米游社获取, 可能会遇到验证码',
+        False,
+    ),
 }

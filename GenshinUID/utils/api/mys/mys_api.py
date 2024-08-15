@@ -1,11 +1,11 @@
 from copy import deepcopy
-from typing import Dict, Union, cast
+from typing import Dict, List, Union, cast
 
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.tools import get_ds_token, get_web_ds_token
 
-from .api import widget_url, new_abyss_url
-from .models import WidgetResin, PoetryAbyssDatas
+from .api import widget_url, new_abyss_url, char_detail_url
+from .models import Character, WidgetResin, PoetryAbyssDatas
 
 
 class GsMysAPI(_MysApi):
@@ -54,4 +54,29 @@ class GsMysAPI(_MysApi):
         )
         if isinstance(data, Dict):
             data = cast(PoetryAbyssDatas, data['data'])
+        return data
+
+    async def get_char_detail_data(
+        self, uid: str, char_id_list: List[str]
+    ) -> Union[List[Character], int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0], 'cn_gf01')
+        HEADER = deepcopy(self._HEADER)
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        HEADER['Cookie'] = ck
+
+        data = await self._mys_request(
+            char_detail_url,
+            'POST',
+            HEADER,
+            data={
+                "role_id": uid,
+                "server": server_id,
+                "character_ids": char_id_list,
+            },
+        )
+
+        if isinstance(data, Dict):
+            data = cast(List[Character], data['data']['list'])
         return data

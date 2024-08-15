@@ -73,3 +73,6 @@ pytest-asyncio = "^0.20.3"
 
 [tool.pyright]
 disableBytesTypePromotions = false
+
+[tool.basedpyright]
+deprecateTypingAliases = false

@@ -16,6 +16,7 @@ from .to_card import enka_to_card
 from ..utils.convert import get_uid
 from .get_akasha_data import get_rank
 from .start import refresh_player_list
+from .to_data_by_mys import mys_to_card
 from .draw_artifacts_lib import draw_lib
 from .draw_rank_list import draw_rank_img
 from ..utils.image.convert import convert_img
@@ -24,9 +25,12 @@ from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_info import draw_all_char_list
 from .draw_char_rank import draw_cahrcard_list
 from .draw_role_rank import draw_role_rank_img
+from ..genshinuid_config.gs_config import gsconfig
 from .get_enka_img import draw_enka_img, get_full_char
 from ..genshinuid_enka.start import check_artifacts_list
 from ..utils.resource.RESOURCE_PATH import TEMP_PATH, PLAYER_PATH
+
+EnableCharCardByMys = gsconfig.get_config('EnableCharCardByMys').data
 
 sv_enka_admin = SV('面板管理', pm=1)
 sv_enka_config = SV('面板设置', pm=2)
@@ -332,7 +336,10 @@ async def send_card_info(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info('[强制刷新]uid: {}'.format(uid))
-    im = await enka_to_card(uid)
+    if EnableCharCardByMys:
+        im = await mys_to_card(uid)
+    else:
+        im = await enka_to_card(uid)
     logger.info(f'UID{uid}获取角色数据成功！')
 
     if isinstance(im, Tuple):

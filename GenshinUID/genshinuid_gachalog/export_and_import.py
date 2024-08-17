@@ -5,8 +5,10 @@ from datetime import datetime
 from typing import Dict, List
 
 from httpx import get
+from gsuid_core.logger import logger
 
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+from ..utils.map.GS_MAP_PATH import charList, weaponList
 from .get_gachalogs import NULL_GACHA_LOG, save_gachalogs, all_gacha_type_name
 
 INT_TO_TYPE = {
@@ -22,8 +24,23 @@ INT_TO_TYPE = {
 async def import_data(uid: str, raw_data: List[Dict]):
     result = deepcopy(NULL_GACHA_LOG)
     for item in raw_data:
+        if 'name' not in item and 'item_id' not in item:
+            logger.error(f'[导入抽卡记录] 数据格式错误!{item}')
+            continue
+        if 'name' not in item:
+            if int(item['item_id']) >= 100000:
+                char_data = charList[str(item['item_id'])]
+                item['name'] = char_data['CHS']
+                item['rank_type'] = (
+                    '5' if char_data['rank'] == 'QUALITY_ORANGE' else '4'
+                )
+            else:
+                weapon_data = weaponList[str(item['item_id'])]
+                item['name'] = weapon_data['CHS']
+                item['rank_type'] = str(weapon_data['rank'])
+
         item['uid'] = uid
-        item['item_id'] = ''
+        item['item_id'] = item['item_id'] if 'item_id' in item else ''
         item['count'] = '1'
         item['lang'] = 'zh-cn'
         item['id'] = str(item['id'])

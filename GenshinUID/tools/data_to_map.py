@@ -13,6 +13,29 @@ from gsuid_core.utils.api.ambr.request import (  # noqa: E402
     get_ambr_monster_data,
     get_ambr_monster_list,
 )
+from gsuid_core.utils.api.hakush.request import (  # noqa: E402
+    get_hakush_char_list,
+    get_hakush_weapon_list,
+)
+
+from GenshinUID.utils.map.GS_MAP_PATH import (  # noqa: E402
+    charList_fileName,
+    enName2Id_fileName,
+    icon2Name_fileName,
+    name2Icon_fileName,
+    weaponList_fileName,
+    skillId2Name_fileName,
+    artifact2attr_fileName,
+    avatarId2Name_fileName,
+    avatarId2Star_fileName,
+    monster2entry_fileName,
+    talentId2Name_fileName,
+    weaponId2Name_fileName,
+    weaponHash2Name_fileName,
+    weaponHash2Type_fileName,
+    avatarName2Weapon_fileName,
+    avatarName2Element_fileName,
+)
 
 from ..version import Genshin_version  # noqa: E402
 from ..utils.ambr_to_minigg import convert_ambr_to_minigg  # noqa: E402
@@ -31,47 +54,8 @@ WEAPON_TYPE = {
 version = Genshin_version
 raw_data = {}
 
-avatarName2Element_fileName = f'avatarName2Element_mapping_{version}.json'
-weaponHash2Name_fileName = f'weaponHash2Name_mapping_{version}.json'
-weaponHash2Type_fileName = f'weaponHash2Type_mapping_{version}.json'
-skillId2Name_fileName = f'skillId2Name_mapping_{version}.json'
-talentId2Name_fileName = f'talentId2Name_mapping_{version}.json'
-avatarId2Name_fileName = f'avatarId2Name_mapping_{version}.json'
-enName2Id_fileName = f'enName2AvatarID_mapping_{version}.json'
-avatarId2Star_fileName = f'avatarId2Star_mapping_{version}.json'
-avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
-avatarId2SkillList_fileName = f'avatarId2SkillList_mapping_{version}.json'
-weaponId2Name_fileName = f'weaponId2Name_mapping_{version}.json'
-
-monster2entry_fileName = f'monster2entry_mapping_{version}.json'
-
-artifact2attr_fileName = f'artifact2attr_mapping_{version}.json'
-icon2Name_fileName = f'icon2Name_mapping_{version}.json'
-
 
 BETA_CHAR = {
-    '10000078': '艾尔海森',
-    '10000077': '瑶瑶',
-    '10000079': '迪希雅',
-    '10000080': '米卡',
-    '10000081': '卡维',
-    '10000082': '白术',
-    '10000061': '绮良良',
-    '10000083': '琳妮特',
-    '10000084': '林尼',
-    '10000085': '菲米尼',
-    '10000086': '莱欧斯利',
-    '10000087': '那维莱特',
-    '10000088': '夏洛蒂',
-    '10000089': '芙宁娜',
-    '10000090': '夏沃蕾',
-    '10000091': '娜维娅',
-    '10000092': '嘉明',
-    '10000093': '闲云',
-    '10000095': '希格雯',
-    '10000097': '赛索斯',
-    '10000098': '克洛琳德',
-    '10000099': '艾梅莉埃',
     '10000100': '卡齐娜',
     '10000101': '基尼奇',
     '10000102': '玛拉妮',
@@ -458,6 +442,12 @@ async def artifact2attrJson() -> None:
     with open(MAP_PATH / icon2Name_fileName, 'w', encoding='UTF-8') as file:
         json.dump(temp, file, ensure_ascii=False)
 
+    temp_reverse = {}
+    for i in temp:
+        temp_reverse[temp[i]] = i
+    with open(MAP_PATH / name2Icon_fileName, 'w', encoding='UTF-8') as file:
+        json.dump(temp_reverse, file, ensure_ascii=False)
+
     temp2 = {}
     for i in Display_data:
         if i['icon'].startswith('UI_RelicIcon'):
@@ -483,8 +473,19 @@ async def artifact2attrJson() -> None:
         json.dump(temp3, file, ensure_ascii=False)
 
 
+async def restore_hakush_data():
+    data = await get_hakush_char_list()
+    data2 = await get_hakush_weapon_list()
+    with open(MAP_PATH / charList_fileName, 'w', encoding='UTF-8') as f:
+        json.dump(data, f, ensure_ascii=False)
+
+    with open(MAP_PATH / weaponList_fileName, 'w', encoding='UTF-8') as f:
+        json.dump(data2, f, ensure_ascii=False)
+
+
 async def main():
     # await download_new_file()
+    '''
     global raw_data
     try:
         with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:
@@ -501,6 +502,8 @@ async def main():
     await artifact2attrJson()
     await weaponId2Name()
     await avatarId2SkillGroupList()
+    '''
+    await restore_hakush_data()
 
 
 asyncio.run(main())

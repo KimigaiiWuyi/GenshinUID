@@ -26,11 +26,20 @@ avatarId2SkillList_fileName = f'avatarId2SkillList_mapping_{version}.json'
 weaponId2Name_fileName = f'weaponId2Name_mapping_{version}.json'
 EXMonster_fileName = 'ExtraMonster.json'
 
+charList_fileName = f'charList_{version}.json'
+weaponList_fileName = f'weaponList_{version}.json'
+
 
 class TS(TypedDict):
     Name: Dict[str, str]
     Icon: Dict[str, str]
 
+
+with open(MAP / charList_fileName, 'r', encoding='UTF-8') as f:
+    charList = msgjson.decode(f.read(), type=Dict[str, Dict])
+
+with open(MAP / weaponList_fileName, 'r', encoding='UTF-8') as f:
+    weaponList = msgjson.decode(f.read(), type=Dict[str, Dict[str, str]])
 
 with open(MAP / avatarId2Name_fileName, 'r', encoding='UTF-8') as f:
     avatarId2Name = msgjson.decode(f.read(), type=Dict[str, str])

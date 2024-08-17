@@ -77,7 +77,7 @@ async def send_export_gacha_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
 
     resp = await bot.receive_resp(
-        '请问你要导出哪个版本的UIGF文件？\n可选：v2、v4',
+        '❓请问你要导出哪个版本的UIGF文件？\n➡可选：v2、v4',
     )
 
     version = '2'
@@ -89,7 +89,7 @@ async def send_export_gacha_info(bot: Bot, ev: Event):
             return await bot.send(
                 '❌请输入正确的版本号噢！(可选：v2、v4)\n本次导出终止...'
             )
-    await bot.send(f'即将为你导出UIGFv{version}文件，请耐心等待...')
+    await bot.send(f'🔜即将为你导出UIGFv{version}文件，请耐心等待...')
 
     export = await export_gachalogs(uid, version)
     if export['retcode'] == 'ok':

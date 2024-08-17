@@ -197,7 +197,7 @@ async def export_gachalogs(uid: str, version: str) -> dict:
             'retcode': 'ok',
             'data': '导出成功!',
             'name': f'UIGF_v{version}_{uid}.json',
-            'url': str((path / f'UIGF_{uid}.json').absolute()),
+            'url': str((path / f'UIGF_v{version}_{uid}.json').absolute()),
         }
     else:
         logger.error('[导出抽卡记录] 没有找到抽卡记录!')

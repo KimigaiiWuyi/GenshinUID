@@ -36,10 +36,10 @@ class TS(TypedDict):
 
 
 with open(MAP / charList_fileName, 'r', encoding='UTF-8') as f:
-    charList = msgjson.decode(f.read(), type=Dict[str, Dict])
+    charList = msgjson.decode(f.read(), type=Dict)
 
 with open(MAP / weaponList_fileName, 'r', encoding='UTF-8') as f:
-    weaponList = msgjson.decode(f.read(), type=Dict[str, Dict[str, str]])
+    weaponList = msgjson.decode(f.read(), type=Dict)
 
 with open(MAP / avatarId2Name_fileName, 'r', encoding='UTF-8') as f:
     avatarId2Name = msgjson.decode(f.read(), type=Dict[str, str])

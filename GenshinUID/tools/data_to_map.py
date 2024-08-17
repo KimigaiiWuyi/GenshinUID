@@ -476,6 +476,7 @@ async def artifact2attrJson() -> None:
 async def restore_hakush_data():
     data = await get_hakush_char_list()
     data2 = await get_hakush_weapon_list()
+
     with open(MAP_PATH / charList_fileName, 'w', encoding='UTF-8') as f:
         json.dump(data, f, ensure_ascii=False)
 

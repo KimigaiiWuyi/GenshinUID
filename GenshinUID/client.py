@@ -1091,21 +1091,16 @@ async def group_send(
         if img:
             if img.startswith('link://'):
                 _img = img.replace('link://', '')
+                message.append(MessageSegment.image(_img))
             else:
-                logger.warning(
-                    '[gscore] qqgroup暂不支持发送本地图信息, 请转为URL发送'
+                message.append(
+                    MessageSegment.file_image(
+                        base64.b64decode(img.replace('base64://', ''))
+                    )
                 )
-                return
-        else:
-            _img = ''
 
-        if text and img:
-            data = f'{text}\n{_img}'
-            message.append(MessageSegment.markdown(data))
-        elif text:
+        if text:
             message.append(MessageSegment.text(text))
-        elif _img:
-            message.append(MessageSegment.image(_img))
 
         if template_markdown:
             message.append(
@@ -1368,7 +1363,11 @@ async def telegram_send(
                         _t = []
             reply_markup = InlineKeyboardMarkup(inline_keyboard=kb)
 
-        await bot.send_to(target_id, message, reply_markup=reply_markup)
+        await bot.send_to(
+            target_id,
+            message,
+            reply_markup=reply_markup,
+        )
 
     if node:
         for _msg in node:

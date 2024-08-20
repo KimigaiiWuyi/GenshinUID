@@ -45,6 +45,7 @@ def get_value(value: str):
 
 async def mys_to_data(uid: str):
     path = PLAYER_PATH / uid
+    path.mkdir(parents=True, exist_ok=True)
 
     raw_data = await get_base_data(uid)
     if isinstance(raw_data, (str, bytes)):

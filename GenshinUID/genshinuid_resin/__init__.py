@@ -36,12 +36,12 @@ async def send_daily_info(bot: Bot, ev: Event):
 @sv_get_resin_admin.on_fullmatch(('强制推送体力提醒'))
 async def force_notice_job(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[强制推送体力信息]')
-    await notice_job()
+    await notice_job(True)
 
 
 @scheduler.scheduled_job('cron', minute='*/30')
-async def notice_job():
-    if is_check_resin:
+async def notice_job(force: bool = False):
+    if is_check_resin or force:
         result = await get_notice_list()
         logger.info('[推送检查]完成!等待消息推送中...')
         logger.debug(result)

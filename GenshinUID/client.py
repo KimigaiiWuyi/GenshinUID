@@ -10,6 +10,7 @@ from msgspec import json as msgjson
 from websockets.exceptions import ConnectionClosedError
 
 from .base import logger, hoshino_bot
+from .models import Message as GsMessage
 from .models import MessageSend, MessageReceive
 
 BOT_ID = 'HoshinoBot'
@@ -63,27 +64,6 @@ class GsClient:
 
                     bot = hoshino_bot
 
-                    content = ''
-                    image: Optional[str] = None
-                    node = []
-                    file = ''
-                    at_list = []
-                    if msg.content:
-                        for _c in msg.content:
-                            if _c.data:
-                                if _c.type == 'text':
-                                    content += _c.data
-                                elif _c.type == 'image':
-                                    image = _c.data
-                                elif _c.type == 'node':
-                                    node = _c.data
-                                elif _c.type == 'file':
-                                    file = _c.data
-                                elif _c.type == 'at':
-                                    at_list.append(_c.data)
-                    else:
-                        pass
-
                     # 根据bot_id字段发送消息
                     # OneBot v11 & v12
                     if not msg.bot_self_id:
@@ -95,12 +75,8 @@ class GsClient:
                         if msg.bot_id == 'onebot':
                             await onebot_send(
                                 bot,
-                                content,
-                                image,
-                                node,
-                                file,
+                                msg.content,
                                 ids,
-                                at_list,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -140,7 +116,7 @@ class GsClient:
         )
 
 
-def to_json(msg: str, name: str, uin: int):
+def to_json(msg: list, name: str, uin: str):
     return {
         'type': 'node',
         'data': {'name': name, 'uin': uin, 'content': msg},
@@ -160,55 +136,13 @@ def del_file(path: Path):
 
 async def onebot_send(
     bot: hoshino_bot,
-    content: Optional[str],
-    image: Optional[str],
-    node: Optional[List[Dict]],
-    file: Optional[str],
+    content: Optional[List[GsMessage]],
     bot_self_id: Optional[str],
-    at_list: Optional[List[str]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
-    async def _send(content: Optional[str], image: Optional[str]):
-        result_image = f'[CQ:image,file={image}]' if image else ''
-        content = content if content else ''
-        result_msg = content + result_image
-        if at_list and target_type == 'group':
-            for at in at_list:
-                result_msg += f'[CQ:at,qq={at}]'
-
-        if file:
-            file_name, file_content = file.split('|')
-            path = Path(__file__).resolve().parent / file_name
-            store_file(path, file_content)
-            if target_type == 'group':
-                await bot.call_action(
-                    'upload_group_file',
-                    file=str(path.absolute()),
-                    name=file_name,
-                    group_id=target_id,
-                )
-            else:
-                await bot.call_action(
-                    'upload_private_file',
-                    file=str(path.absolute()),
-                    name=file_name,
-                    user_id=target_id,
-                )
-            del_file(path)
-        else:
-            if target_type == 'group':
-                await bot.send_group_msg(
-                    self_id=bot_self_id,
-                    group_id=target_id,
-                    message=result_msg,
-                )
-            else:
-                await bot.send_private_msg(
-                    self_id=bot_self_id,
-                    user_id=target_id,
-                    message=result_msg,
-                )
+    if content is None:
+        return
 
     async def _send_node(messages):
         if target_type == 'group':
@@ -224,18 +158,64 @@ async def onebot_send(
                 messages=messages,
             )
 
-    if node:
-        messages = [
-            to_json(
-                f'[CQ:image,file={_msg["data"]}]'
-                if _msg['type'] == 'image'
-                else _msg['data'],
-                '小助手',
-                2854196310,
+    async def to_file(file: str):
+        file_name, file_content = file.split('|')
+        path = Path(__file__).resolve().parent / file_name
+        store_file(path, file_content)
+        if target_type == 'group':
+            await bot.call_action(
+                'upload_group_file',
+                file=str(path.absolute()),
+                name=file_name,
+                group_id=target_id,
             )
-            for _msg in node
-            if 'data' in _msg
-        ]
-        await _send_node(messages)
+        else:
+            await bot.call_action(
+                'upload_private_file',
+                file=str(path.absolute()),
+                name=file_name,
+                user_id=target_id,
+            )
+        del_file(path)
+
+    async def to_msg(gsmsgs: List[GsMessage]):
+        message: List[str] = []
+
+        for _c in gsmsgs:
+            if _c.data:
+                if _c.type == 'text':
+                    message.append(_c.type)
+                elif _c.type == 'image':
+                    message.append(
+                        f'[CQ:image,file={_c.data}]'.replace(
+                            'link://',
+                            '',
+                        )
+                    )
+                elif _c.type == 'node':
+                    await _send_node(
+                        to_json(
+                            await to_msg(_c.data),
+                            '小助手',
+                            str(2854196310),
+                        )
+                    )
+                elif _c.type == 'file':
+                    await to_file(_c.data)
+                elif _c.type == 'at':
+                    message.append(f'[CQ:at,qq={_c.data}]')
+        return message
+
+    result_msg = await to_msg(content)
+    if target_type == 'group':
+        await bot.send_group_msg(
+            self_id=bot_self_id,
+            group_id=target_id,
+            message=result_msg,
+        )
     else:
-        await _send(content, image)
+        await bot.send_private_msg(
+            self_id=bot_self_id,
+            user_id=target_id,
+            message=result_msg,
+        )

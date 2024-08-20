@@ -16,6 +16,7 @@ from nonebot import get_bot, get_bots, get_driver
 from websockets.exceptions import ConnectionClosedError
 
 from .utils import download_image
+from .models import Message as GsMessage
 from .models import MessageSend, MessageReceive
 
 msg_id_seq = OrderedDict()
@@ -167,11 +168,7 @@ class GsClient:
                         if msg.bot_id == 'onebot':
                             await onebot_send(
                                 bot,
-                                content,
-                                image,
-                                node,
-                                file,
-                                at_list,
+                                msg.content,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -613,62 +610,64 @@ async def villa_send(
 
 async def onebot_send(
     bot: Bot,
-    content: Optional[str],
-    image: Optional[str],
-    node: Optional[List[Dict]],
-    file: Optional[str],
-    at_list: Optional[List[str]],
+    content: Optional[List[GsMessage]],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
-    if target_id is None:
+    if target_id is None or content is None:
         return
     _target_id = int(target_id)
 
-    async def _send(content: Optional[str], image: Optional[str]):
-        from nonebot.adapters.onebot.v11 import MessageSegment
+    from nonebot.adapters.onebot.v11 import MessageSegment
 
-        result_image = (
-            MessageSegment.image(image.replace('link://', '')) if image else ''
-        )
-        _content = MessageSegment.text(content) if content else ''
-        result_msg = _content + result_image
-        if at_list and target_type == 'group':
-            for at in at_list:
-                result_msg += MessageSegment.at(at)
-
-        if file:
-            file_name, file_content = file.split('|')
-            path = Path(__file__).resolve().parent / file_name
-            store_file(path, file_content)
-            if target_type == 'group':
-                await bot.call_api(
-                    'upload_group_file',
-                    file=str(path.absolute()),
-                    name=file_name,
-                    group_id=_target_id,
-                )
-            else:
-                await bot.call_api(
-                    'upload_private_file',
-                    file=str(path.absolute()),
-                    name=file_name,
-                    user_id=_target_id,
-                )
-            del_file(path)
+    async def to_file(file: str):
+        file_name, file_content = file.split('|')
+        path = Path(__file__).resolve().parent / file_name
+        store_file(path, file_content)
+        if target_type == 'group':
+            await bot.call_api(
+                'upload_group_file',
+                file=str(path.absolute()),
+                name=file_name,
+                group_id=_target_id,
+            )
         else:
-            if target_type == 'group':
-                await bot.call_api(
-                    'send_group_msg',
-                    group_id=_target_id,
-                    message=result_msg,
-                )
-            else:
-                await bot.call_api(
-                    'send_private_msg',
-                    user_id=_target_id,
-                    message=result_msg,
-                )
+            await bot.call_api(
+                'upload_private_file',
+                file=str(path.absolute()),
+                name=file_name,
+                user_id=_target_id,
+            )
+        del_file(path)
+
+    async def to_msg(gsmsgs: List[GsMessage]):
+        message = []
+        for _c in gsmsgs:
+            if _c.data:
+                if _c.type == 'text':
+                    message.append(MessageSegment.text(_c.data))
+                elif _c.type == 'image':
+                    message.append(
+                        MessageSegment.image(
+                            _c.data.replace(
+                                'link://',
+                                '',
+                            )
+                        )
+                    )
+                elif _c.type == 'node':
+                    await _send_node(
+                        to_json(
+                            await to_msg(_c.data),
+                            "小助手",
+                            str(2854196310),
+                        )
+                    )
+                elif _c.type == 'file':
+                    await to_file(_c.data)
+                elif _c.type == 'at':
+                    message.append(MessageSegment.at(_c.data))
+        return message
 
     async def _send_node(messages):
         if target_type == 'group':
@@ -684,27 +683,19 @@ async def onebot_send(
                 messages=messages,
             )
 
-    if node:
-        from nonebot.adapters.onebot.v11 import MessageSegment
-
-        messages = [
-            to_json(
-                [
-                    (
-                        MessageSegment.image(_msg["data"])
-                        if _msg["type"] == "image"
-                        else MessageSegment.text(_msg["data"])
-                    )
-                ],
-                "小助手",
-                str(2854196310),
-            )
-            for _msg in node
-            if "data" in _msg
-        ]
-        await _send_node(messages)
+    result_msg = await to_msg(content)
+    if target_type == 'group':
+        await bot.call_api(
+            'send_group_msg',
+            group_id=_target_id,
+            message=result_msg,
+        )
     else:
-        await _send(content, image)
+        await bot.call_api(
+            'send_private_msg',
+            user_id=_target_id,
+            message=result_msg,
+        )
 
 
 async def onebot_red_send(
@@ -748,7 +739,11 @@ async def onebot_red_send(
             result_msg += MessageSegment.file(path)
 
         if target_id:
-            await bot.send_message(chat_type, target_id, result_msg)
+            await bot.send_message(
+                chat_type,
+                target_id,
+                result_msg,
+            )
 
         if file:
             del_file(path)  # type: ignore

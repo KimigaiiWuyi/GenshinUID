@@ -193,13 +193,18 @@ async def onebot_send(
                         )
                     )
                 elif _c.type == 'node':
-                    await _send_node(
+                    messages = [
                         to_json(
-                            await to_msg(_c.data),
+                            f'[CQ:image,file={_msg["data"]}]'
+                            if _msg['type'] == 'image'
+                            else _msg['data'],
                             '小助手',
                             str(2854196310),
                         )
-                    )
+                        for _msg in _c.data
+                        if 'data' in _msg
+                    ]
+                    await _send_node(messages)
                 elif _c.type == 'file':
                     await to_file(_c.data)
                 elif _c.type == 'at':
@@ -207,6 +212,10 @@ async def onebot_send(
         return message
 
     result_msg = await to_msg(content)
+    if result_msg:
+        result_msg = ''.join(result_msg)
+    else:
+        return
     if target_type == 'group':
         await bot.send_group_msg(
             self_id=bot_self_id,

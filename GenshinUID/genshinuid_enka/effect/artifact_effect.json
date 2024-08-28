@@ -5,7 +5,7 @@
       "4": ""
     },
     "fight_effect": {
-      "2": "addDmg+15",
+      "2": "dmgBonus+15",
       "4": "critRate+40"
     },
     "group_effect": {
@@ -20,11 +20,11 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "addDmg+28"
+      "4": "dmgBonus+28"
     },
     "group_effect": {
       "2": "",
-      "4": "addDmg+28"
+      "4": "dmgBonus+28"
     }
   },
   "未竟的遐思": {

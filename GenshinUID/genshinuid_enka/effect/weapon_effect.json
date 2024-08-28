@@ -1,4 +1,252 @@
 {
+  "息燧之笛": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addDef+16",
+        "2": "addDef+20",
+        "3": "addDef+24",
+        "4": "addDef+28",
+        "5": "addDef+32"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "撼地者": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "dmgBonus+16",
+        "2": "dmgBonus+20",
+        "3": "dmgBonus+24",
+        "4": "dmgBonus+28",
+        "5": "dmgBonus+32"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 8,
+      "extra": {
+        
+      }
+    }
+  },
+  "山王长牙": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "E:dmgBonus+60;E:dmgBonus+60",
+        "2": "E:dmgBonus+75;E:dmgBonus+75",
+        "3": "E:dmgBonus+90;E:dmgBonus+90",
+        "4": "E:dmgBonus+105;E:dmgBonus+105",
+        "5": "E:dmgBonus+120;E:dmgBonus+120"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 6,
+      "extra": {
+        
+      }
+    }
+  },
+  "虹的行迹": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addDef+16",
+        "2": "addDef+20",
+        "3": "addDef+24",
+        "4": "addDef+28",
+        "5": "addDef+32"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "苍纹角杯": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 6,
+      "extra": {
+        
+      }
+    }
+  },
+  "木棉之环": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "dmgBonus+16%0.0006%hp",
+        "2": "dmgBonus+20%0.0007%hp",
+        "3": "dmgBonus+24%0.0008%hp",
+        "4": "dmgBonus+28%0.0009%hp",
+        "5": "dmgBonus+32%0.00010%hp"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 10,
+      "extra": {
+        
+      }
+    }
+  },
+  "冲浪时光": {
+    "normal": {
+      "normal_effect": {
+        "1": "addHp+20",
+        "2": "addHp+25",
+        "3": "addHp+30",
+        "4": "addHp+35",
+        "5": "addHp+40"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "A:dmgBonus+48",
+        "2": "A:dmgBonus+60",
+        "3": "A:dmgBonus+72",
+        "4": "A:dmgBonus+84",
+        "5": "A:dmgBonus+96"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 14,
+      "extra": {
+        
+      }
+    }
+  },
+  "碎链": {
+    "normal": {
+      "normal_effect": {
+        "1": "addAtk+14.4;elementalMastery+24",
+        "2": "addAtk+18;elementalMastery+28",
+        "3": "addAtk+21.6;elementalMastery+32",
+        "4": "addAtk+25.2;elementalMastery+36",
+        "5": "addAtk+28.8;elementalMastery+40"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 0,
+      "extra": {
+        
+      }
+    }
+  },
   "赦罪": {
     "normal": {
       "normal_effect": {

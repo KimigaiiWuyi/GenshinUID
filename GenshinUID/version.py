@@ -1,2 +1,2 @@
-GenshinUID_version = '4.7.2'
-Genshin_version = '4.8.0'
+GenshinUID_version = '5.0.0'
+Genshin_version = '5.0.0'

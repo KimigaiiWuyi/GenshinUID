@@ -216,6 +216,36 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 368812783,
+        "rankLevel": 3,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410022,
+        "nameTextMapHash": 3965610833,
+        "descTextMapHash": 1947790634,
+        "icon": "UI_DisplayItemIcon_410022",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 980983655,
+        "rankLevel": 5,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410023,
+        "nameTextMapHash": 81021577,
+        "descTextMapHash": 54497642,
+        "icon": "UI_DisplayItemIcon_410023",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2298536959,
+        "rankLevel": 5,
+        "displayType": "DEFAULT_ITEM",
+        "id": 410024,
+        "nameTextMapHash": 1589421497,
+        "descTextMapHash": 677098274,
+        "icon": "UI_ItemIcon_118101",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 1010293015,
         "rankLevel": 1,
         "param": 10001,
@@ -2566,6 +2596,46 @@
         "itemType": "ITEM_DISPLAY"
     },
     {
+        "typeDescTextMapHash": 583795303,
+        "rankLevel": 4,
+        "param": 15037,
+        "id": 400320,
+        "nameTextMapHash": 1221170705,
+        "descTextMapHash": 2611090354,
+        "icon": "UI_RelicIcon_15037_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 1127903071,
+        "rankLevel": 5,
+        "param": 15037,
+        "id": 400321,
+        "nameTextMapHash": 3615686241,
+        "descTextMapHash": 2052566314,
+        "icon": "UI_RelicIcon_15037_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2412780039,
+        "rankLevel": 4,
+        "param": 15038,
+        "id": 400330,
+        "nameTextMapHash": 2321320121,
+        "descTextMapHash": 2907723050,
+        "icon": "UI_RelicIcon_15038_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2300084575,
+        "rankLevel": 5,
+        "param": 15038,
+        "id": 400331,
+        "nameTextMapHash": 3345941393,
+        "descTextMapHash": 1853024666,
+        "icon": "UI_RelicIcon_15038_4",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
         "typeDescTextMapHash": 342345127,
         "rankLevel": 5,
         "displayType": "RELIQUARY_ITEM_SMELT",
@@ -2805,6 +2875,94 @@
         "nameTextMapHash": 3567329929,
         "descTextMapHash": 2948078026,
         "icon": "UI_DisplayItemIcon_419021",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2287271047,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15025,
+        "id": 419022,
+        "nameTextMapHash": 1490901145,
+        "descTextMapHash": 1079194042,
+        "icon": "UI_DisplayItemIcon_419022",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 3935745223,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15026,
+        "id": 419023,
+        "nameTextMapHash": 686558713,
+        "descTextMapHash": 3206494666,
+        "icon": "UI_DisplayItemIcon_419023",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 3642171703,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15027,
+        "id": 419024,
+        "nameTextMapHash": 1559428705,
+        "descTextMapHash": 1782897746,
+        "icon": "UI_DisplayItemIcon_419024",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 1824417455,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15028,
+        "id": 419025,
+        "nameTextMapHash": 1618232937,
+        "descTextMapHash": 4110045978,
+        "icon": "UI_DisplayItemIcon_419025",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 2283704335,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15029,
+        "id": 419026,
+        "nameTextMapHash": 3310898441,
+        "descTextMapHash": 1202018850,
+        "icon": "UI_DisplayItemIcon_419026",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 116936791,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15030,
+        "id": 419027,
+        "nameTextMapHash": 1832464281,
+        "descTextMapHash": 51120106,
+        "icon": "UI_DisplayItemIcon_419027",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 4277744927,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15031,
+        "id": 419028,
+        "nameTextMapHash": 212482153,
+        "descTextMapHash": 3946519818,
+        "icon": "UI_DisplayItemIcon_419028",
+        "itemType": "ITEM_DISPLAY"
+    },
+    {
+        "typeDescTextMapHash": 1791364551,
+        "rankLevel": 5,
+        "displayType": "RELIQUARY_ITEM_SMELT",
+        "param": 15032,
+        "id": 419029,
+        "nameTextMapHash": 837974185,
+        "descTextMapHash": 4195989682,
+        "icon": "UI_DisplayItemIcon_419029",
         "itemType": "ITEM_DISPLAY"
     }
 ]

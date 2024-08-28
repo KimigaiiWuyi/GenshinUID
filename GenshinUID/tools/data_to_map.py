@@ -485,8 +485,8 @@ async def restore_hakush_data():
 
 
 async def main():
-    # await download_new_file()
-    '''
+    await restore_hakush_data()
+    await download_new_file()
     global raw_data
     try:
         with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:
@@ -503,8 +503,6 @@ async def main():
     await artifact2attrJson()
     await weaponId2Name()
     await avatarId2SkillGroupList()
-    '''
-    await restore_hakush_data()
 
 
 asyncio.run(main())

@@ -1,4 +1,32 @@
 {
+  "黑曜秘典": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "addDmg+15",
+      "4": "critRate+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "烬城勇者绘卷": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addDmg+28"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "addDmg+28"
+    }
+  },
   "未竟的遐思": {
     "normal_effect": {
       "2": "addAtk+18",

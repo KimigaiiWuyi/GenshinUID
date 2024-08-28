@@ -7,6 +7,7 @@ from gsuid_core.utils.error_reply import get_error
 
 from .to_card import pic_500, draw_enka_card
 from ..utils.image.convert import convert_img
+from .etc.MAP_PATH import avatarName2SkillAdd
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.map.name_covert import avatarId_to_enName
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -77,19 +78,6 @@ async def mys_to_data(uid: str):
         avatar_fight_prop = {}
         weapon_info = {}
 
-        for skill in char['skills']:
-            skill_id = str(skill['skill_id'])
-            if len(skill_id) <= 4:
-                continue
-            avatar_skill.append(
-                {
-                    "skillId": skill_id,
-                    "skillName": skill['name'],
-                    "skillLevel": skill['level'],
-                    "skillIcon": skill_icon_map[skill_id],
-                }
-            )
-
         for talent in char['constellations']:
             if talent['is_actived']:
                 talent_id = talent['id']
@@ -100,6 +88,48 @@ async def mys_to_data(uid: str):
                         "talentIcon": talent_icon_map[str(talent_id)],
                     }
                 )
+
+        if avatar_name in avatarName2SkillAdd:
+            skill_add = avatarName2SkillAdd[avatar_name]
+        else:
+            skill_add = ['E', 'Q']
+
+        a_skill_level, e_skill_level, q_skill_level = 0, 0, 0
+        for skillAdd_index in range(0, 2):
+            if len(avatar_talent) >= 3 + skillAdd_index * 2:
+                if skill_add[skillAdd_index] == 'E':
+                    e_skill_level = 3
+                elif skill_add[skillAdd_index] == 'Q':
+                    q_skill_level = 3
+                elif skill_add[skillAdd_index] == 'A':
+                    a_skill_level = 3
+
+        n = 0
+        for skill in char['skills']:
+            skill_id = str(skill['skill_id'])
+            if len(skill_id) <= 4:
+                continue
+            skill_icon = skill_icon_map[skill_id]
+            if skill_id.endswith('3') and skill_icon.endswith('2'):
+                continue
+            n += 1
+            skill_level = skill['level']
+
+            if n == 1:
+                skill_level -= a_skill_level
+            elif n == 2:
+                skill_level -= e_skill_level
+            elif n == 3:
+                skill_level -= q_skill_level
+
+            avatar_skill.append(
+                {
+                    "skillId": skill_id,
+                    "skillName": skill['name'],
+                    "skillLevel": skill_level,
+                    "skillIcon": skill_icon_map[skill_id],
+                }
+            )
 
         weapon = char['weapon']
         weapon_main = weapon['main_property']

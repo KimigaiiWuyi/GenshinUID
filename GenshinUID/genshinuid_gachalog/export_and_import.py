@@ -67,6 +67,10 @@ async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
             history_data = json.loads(data_bytes.decode('gbk'))
         except json.decoder.JSONDecodeError:
             return '请传入正确的JSON格式文件!'
+
+    if 'info' in history_data and 'uigf_version' in history_data['info']:
+        history_data['info']['version'] = history_data['info']['uigf_version']
+
     if 'info' in history_data and 'version' in history_data['info']:
         _version: str = str(history_data['info']['version'])
         _version = _version.replace('version', '').replace('v', '')

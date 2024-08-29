@@ -43,13 +43,14 @@ async def get_lelaer_gachalog(uid: str):
         history_data = await client.post(
             'https://www.lelaer.com/outputGacha.php', data=data
         )
+        logger.debug(history_data.content)
         history_log = history_data.text
         return await import_gachalogs(history_log, 'json', uid)
 
 
 async def export_gachalog_to_lelaer(uid: str):
     gachalog_url = await get_gachaurl(uid)
-    export = await export_gachalogs(uid)
+    export = await export_gachalogs(uid, '2')
     if export['retcode'] == 'ok':
         file_path = export['url']
     else:

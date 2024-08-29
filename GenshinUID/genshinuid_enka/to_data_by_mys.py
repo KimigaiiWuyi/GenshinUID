@@ -30,11 +30,11 @@ elementMap = {
 }
 
 posMap = {
-    "空之杯": "goblet",
-    "死之羽": "plume",
-    "理之冠": "circlet",
-    "生之花": "flower",
-    "时之沙": "sands",
+    '空之杯': 'goblet',
+    '死之羽': 'plume',
+    '理之冠': 'circlet',
+    '生之花': 'flower',
+    '时之沙': 'sands',
 }
 
 
@@ -62,7 +62,7 @@ async def mys_to_data(uid: str):
     if isinstance(data, int):
         return get_error(data)
 
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     skill_icon_map = skillId2Name['Icon']
     talent_icon_map = talentId2Name['Icon']
 
@@ -83,9 +83,9 @@ async def mys_to_data(uid: str):
                 talent_id = talent['id']
                 avatar_talent.append(
                     {
-                        "talentId": talent_id,
-                        "talentName": talent['name'],
-                        "talentIcon": talent_icon_map[str(talent_id)],
+                        'talentId': talent_id,
+                        'talentName': talent['name'],
+                        'talentIcon': talent_icon_map[str(talent_id)],
                     }
                 )
 
@@ -109,9 +109,14 @@ async def mys_to_data(uid: str):
             skill_id = str(skill['skill_id'])
             if len(skill_id) <= 4:
                 continue
+
+            if skill_id not in skill_icon_map:
+                continue
+
             skill_icon = skill_icon_map[skill_id]
             if skill_id.endswith('3') and skill_icon.endswith('2'):
                 continue
+
             n += 1
             skill_level = skill['level']
 
@@ -124,10 +129,10 @@ async def mys_to_data(uid: str):
 
             avatar_skill.append(
                 {
-                    "skillId": skill_id,
-                    "skillName": skill['name'],
-                    "skillLevel": skill_level,
-                    "skillIcon": skill_icon_map[skill_id],
+                    'skillId': skill_id,
+                    'skillName': skill['name'],
+                    'skillLevel': skill_level,
+                    'skillIcon': skill_icon,
                 }
             )
 
@@ -136,9 +141,9 @@ async def mys_to_data(uid: str):
         main_prop_id = Id2PropId[str(weapon_main['property_type'])]
         weaponStats = [
             {
-                "appendPropId": main_prop_id,
-                "statName": propId2Name[main_prop_id],
-                "statValue": get_value(weapon_main['final']),
+                'appendPropId': main_prop_id,
+                'statName': propId2Name[main_prop_id],
+                'statValue': get_value(weapon_main['final']),
             }
         ]
         weapon_sub = weapon['sub_property']
@@ -146,24 +151,24 @@ async def mys_to_data(uid: str):
             sub_prop_id = Id2PropId[str(weapon_sub['property_type'])]
             weaponStats.append(
                 {
-                    "appendPropId": sub_prop_id,
-                    "statName": propId2Name[sub_prop_id],
-                    "statValue": get_value(weapon_sub['final']),
+                    'appendPropId': sub_prop_id,
+                    'statName': propId2Name[sub_prop_id],
+                    'statValue': get_value(weapon_sub['final']),
                 }
             )
 
         weapon_info = {
-            "itemId": weapon['id'],
-            "nameTextMapHash": "807607555",
-            "weaponIcon": "UI_EquipIcon_Catalyst_Dvalin",
-            "weaponType": weapon['type_name'],
-            "weaponName": weapon['name'],
-            "weaponStar": weapon['rarity'],
-            "promoteLevel": 1,
-            "weaponLevel": weapon['level'],
-            "weaponAffix": weapon['affix_level'],
-            "weaponStats": weaponStats,
-            "weaponEffect": weapon['desc'],
+            'itemId': weapon['id'],
+            'nameTextMapHash': '807607555',
+            'weaponIcon': 'UI_EquipIcon_Catalyst_Dvalin',
+            'weaponType': weapon['type_name'],
+            'weaponName': weapon['name'],
+            'weaponStar': weapon['rarity'],
+            'promoteLevel': 1,
+            'weaponLevel': weapon['level'],
+            'weaponAffix': weapon['affix_level'],
+            'weaponStats': weaponStats,
+            'weaponEffect': weapon['desc'],
         }
         all_prop = (
             char['base_properties']
@@ -221,30 +226,30 @@ async def mys_to_data(uid: str):
                 sub_prop_id = Id2PropId[str(su['property_type'])]
                 reliquarySubstats.append(
                     {
-                        "appendPropId": sub_prop_id,
-                        "statName": propId2Name[sub_prop_id],
-                        "statValue": get_value(su['value']),
+                        'appendPropId': sub_prop_id,
+                        'statName': propId2Name[sub_prop_id],
+                        'statValue': get_value(su['value']),
                     }
                 )
 
             artifact_set_list.append(relic['set']['name'])
             relic_list.append(
                 {
-                    "itemId": relic['id'],
-                    "nameTextMapHash": "2007346252",
-                    "icon": name2Icon[relic['name']],
-                    "aritifactName": relic['name'],
-                    "aritifactSetsName": relic['set']['name'],
-                    "aritifactSetPiece": posMap[relic['pos_name']],
-                    "aritifactPieceName": relic['pos_name'],
-                    "aritifactStar": relic['rarity'],
-                    "aritifactLevel": relic['level'],
-                    "reliquaryMainstat": {
-                        "mainPropId": main_prop_id,
-                        "statValue": get_value(main_prop['value']),
-                        "statName": propId2Name[main_prop_id],
+                    'itemId': relic['id'],
+                    'nameTextMapHash': '2007346252',
+                    'icon': name2Icon[relic['name']],
+                    'aritifactName': relic['name'],
+                    'aritifactSetsName': relic['set']['name'],
+                    'aritifactSetPiece': posMap[relic['pos_name']],
+                    'aritifactPieceName': relic['pos_name'],
+                    'aritifactStar': relic['rarity'],
+                    'aritifactLevel': relic['level'],
+                    'reliquaryMainstat': {
+                        'mainPropId': main_prop_id,
+                        'statValue': get_value(main_prop['value']),
+                        'statName': propId2Name[main_prop_id],
                     },
-                    "reliquarySubstats": reliquarySubstats,
+                    'reliquarySubstats': reliquarySubstats,
                 }
             )
 
@@ -301,4 +306,5 @@ async def mys_to_card(uid: str) -> Union[str, bytes, Tuple[bytes, List[Dict]]]:
         return char_data_list
 
     img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
+    return img, char_data_list
     return img, char_data_list

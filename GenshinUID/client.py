@@ -656,9 +656,12 @@ async def onebot_send(
                         )
                     )
                 elif _c.type == 'node':
+                    _temp_data = []
+                    for i in _c.data:
+                        _temp_data.append(GsMessage(**i))
                     await _send_node(
                         to_json(
-                            await to_msg(_c.data),
+                            await to_msg(_temp_data),
                             "小助手",
                             str(2854196310),
                         )

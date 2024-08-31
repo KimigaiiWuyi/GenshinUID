@@ -2,11 +2,7 @@ from typing import Dict, List, Union
 
 from gsuid_core.logger import logger
 
-from ..utils.map.GS_MAP_PATH import (
-    avatarId2Name,
-    avatarName2Weapon,
-    weaponId2Name_data,
-)
+from ..utils.map.GS_MAP_PATH import mysData, avatarName2Weapon
 from ..utils.map.name_covert import (
     name_to_element,
     avatar_id_to_name,
@@ -35,11 +31,9 @@ async def get_all_char_dict() -> List[Dict]:
         '长柄武器': [],
     }
 
-    for weapon_id in weaponId2Name_data:
+    for weapon in mysData['data']['all_weapon']:
+        weapon_id = str(weapon['id'])
         if int(weapon_id[2]) <= 3:
-            continue
-
-        if weapon_id in ['11419', '11420', '11421', '11429', '15513']:
             continue
 
         if weapon_id.startswith('11'):
@@ -53,9 +47,8 @@ async def get_all_char_dict() -> List[Dict]:
         elif weapon_id.startswith('15'):
             weapon_list['弓'].append(weapon_id)
 
-    for char_id in avatarId2Name:
-        if char_id in ['10000095']:
-            continue
+    for char in mysData['data']['all_avatar']:
+        char_id = str(char['id'])
 
         char_name = await avatar_id_to_name(char_id)
         if char_name not in avatarName2Weapon:

@@ -19,6 +19,7 @@ from gsuid_core.utils.api.hakush.request import (  # noqa: E402
 )
 
 from GenshinUID.utils.map.GS_MAP_PATH import (  # noqa: E402
+    mysData_fileName,
     charList_fileName,
     enName2Id_fileName,
     icon2Name_fileName,
@@ -484,7 +485,15 @@ async def restore_hakush_data():
         json.dump(data2, f, ensure_ascii=False)
 
 
+async def restore_mysData():
+    base_url = 'https://api-takumi.mihoyo.com'
+    resp = httpx.get(f'{base_url}/event/platsimulator/config?gids=2&game=hk4e')
+    with open(MAP_PATH / mysData_fileName, 'w', encoding='UTF-8') as f:
+        json.dump(resp.json(), f, ensure_ascii=False)
+
+
 async def main():
+    await restore_mysData()
     await restore_hakush_data()
     await download_new_file()
     global raw_data

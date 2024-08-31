@@ -24,8 +24,9 @@ avatarName2Weapon_fileName = f'avatarName2Weapon_mapping_{version}.json'
 monster2entry_fileName = f'monster2entry_mapping_{version}.json'
 avatarId2SkillList_fileName = f'avatarId2SkillList_mapping_{version}.json'
 weaponId2Name_fileName = f'weaponId2Name_mapping_{version}.json'
-EXMonster_fileName = 'ExtraMonster.json'
+mysData_fileName = f'mysData_{version}.json'
 
+EXMonster_fileName = 'ExtraMonster.json'
 charList_fileName = f'charList_{version}.json'
 weaponList_fileName = f'weaponList_{version}.json'
 
@@ -108,3 +109,6 @@ with open(MAP / avatarId2SkillList_fileName, 'r', encoding='utf8') as f:
 
 with open(MAP / weaponId2Name_fileName, 'r', encoding='utf8') as f:
     weaponId2Name_data = msgjson.decode(f.read(), type=Dict[str, str])
+
+with open(MAP / mysData_fileName, 'r', encoding='utf8') as f:
+    mysData = msgjson.decode(f.read(), type=Dict)

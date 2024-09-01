@@ -346,6 +346,14 @@ class GsClient:
 
 
 def to_json(msg: list, name: str, uin: str):
+    '''
+    result = []
+    for i in msg:
+        if isinstance(i, Dict):
+            result.append(i)
+        else:
+            result.append(i.__dict__)
+    '''
     return {
         "type": "node",
         "data": {"name": name, "uin": uin, "content": msg},
@@ -659,13 +667,17 @@ async def onebot_send(
                     _temp_data = []
                     for i in _c.data:
                         _temp_data.append(GsMessage(**i))
-                    await _send_node(
+
+                    send_forward = [
                         to_json(
-                            await to_msg(_temp_data),
+                            await to_msg([_msg]),
                             "小助手",
                             str(2854196310),
                         )
-                    )
+                        for _msg in _temp_data
+                    ]
+
+                    await _send_node(send_forward)
                 elif _c.type == 'file':
                     await to_file(_c.data)
                 elif _c.type == 'at':
@@ -687,18 +699,19 @@ async def onebot_send(
             )
 
     result_msg = await to_msg(content)
-    if target_type == 'group':
-        await bot.call_api(
-            'send_group_msg',
-            group_id=_target_id,
-            message=result_msg,
-        )
-    else:
-        await bot.call_api(
-            'send_private_msg',
-            user_id=_target_id,
-            message=result_msg,
-        )
+    if result_msg:
+        if target_type == 'group':
+            await bot.call_api(
+                'send_group_msg',
+                group_id=_target_id,
+                message=result_msg,
+            )
+        else:
+            await bot.call_api(
+                'send_private_msg',
+                user_id=_target_id,
+                message=result_msg,
+            )
 
 
 async def onebot_red_send(

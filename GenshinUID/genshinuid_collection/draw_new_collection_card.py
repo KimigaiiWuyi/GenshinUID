@@ -9,7 +9,7 @@ from ..utils.colors import get_color
 from .const import max_data, cal_level, expmax_data
 from ..utils.resource.RESOURCE_PATH import ICON_PATH
 from .draw_collection_card import TEXT_PATH, get_base_data
-from ..utils.image.image_tools import get_v4_bg, shift_image_hue
+from ..utils.image.image_tools import get_v4_bg, add_footer, shift_image_hue
 from ..utils.fonts.genshin_fonts import (
     gs_font_15,
     gs_font_20,
@@ -97,6 +97,8 @@ async def draw_explore(uid: str):
 
     bg = get_v4_bg(img.size[0], img.size[1])
     bg.paste(img, (0, 0), img)
+
+    bg = add_footer(bg)
 
     return await convert_img(bg)
 
@@ -197,7 +199,12 @@ async def _draw_explore(raw_data: IndexData):
 
     image.paste(
         div_b,
-        (0, div_h + line * (((len(new_culus) - 1) // 5) + 1) + title_offer),
+        (
+            0,
+            div_h
+            + line * (((len(new_culus) - 1) // column) + 1)
+            + title_offer,
+        ),
         div_b,
     )
 

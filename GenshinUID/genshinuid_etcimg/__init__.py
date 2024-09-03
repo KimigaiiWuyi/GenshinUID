@@ -34,7 +34,15 @@ async def send_primogems_data(bot: Bot, ev: Event):
     await bot.send_option(primogems_img, [a, b])
 
 
-@sv_etc_img.on_fullmatch(('伤害乘区', '血量表', '抗性表', '血量排行'))
+@sv_etc_img.on_fullmatch(
+    (
+        '伤害乘区',
+        '血量表',
+        '抗性表',
+        '血量排行',
+        '深渊血量排行',
+    )
+)
 async def send_img_data(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[图片][杂图]')
     img = IMG_PATH / f'{ev.command}.jpg'

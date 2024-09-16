@@ -316,7 +316,7 @@ async def avatarName2ElementJson() -> None:
                 avatarName2Weapon_result[data['name']] = data['weaponText']
             except:  # noqa: E722
                 adata = httpx.get(
-                    f'https://api.ambr.top/v2/chs/avatar/{_id}?vh=40F8'
+                    f'https://gi.yatta.top/v2/chs/avatar/{_id}?vh=40F8'
                 ).json()
                 adata = adata['data']
                 enName = adata['route']

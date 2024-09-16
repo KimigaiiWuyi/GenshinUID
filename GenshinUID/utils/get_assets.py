@@ -7,7 +7,7 @@ from aiohttp.client import ClientSession
 
 from .resource.RESOURCE_PATH import ICON_PATH
 
-AMBR_UI = 'https://api.ambr.top/assets/UI/{}.png'
+AMBR_UI = 'https://gi.yatta.top/assets/UI/{}.png'
 ENKA_UI = 'https://enka.network/ui/{}.png'
 
 

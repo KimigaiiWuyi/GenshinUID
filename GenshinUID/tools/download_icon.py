@@ -17,7 +17,7 @@ char_list = ['Mualani', 'Kinich', 'Emilie', 'Kachina']
 base = 'https://api.hakush.in/gi/UI/'
 # title = 'https://enka.network/ui/{}'
 # hakush = 'https://api.hakush.in/gi/UI/'
-# ambr = 'https://api.ambr.top/assets/UI'
+# ambr = 'https://gi.yatta.top/assets/UI'
 
 
 icon_list = [

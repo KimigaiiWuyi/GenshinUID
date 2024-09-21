@@ -12,7 +12,18 @@ sv_user_info = SV('用户信息')
 sv_user_help = SV('绑定帮助')
 
 
-@sv_user_info.on_command(('绑定uid', '切换uid', '删除uid', '解绑uid'))
+@sv_user_info.on_command(
+    (
+        '绑定uid',
+        '绑定UID',
+        '切换uid',
+        '切换UID',
+        '删除uid',
+        '删除UID',
+        '解绑uid',
+        '解绑UID',
+    )
+)
 async def send_link_uid_msg(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[绑定/解绑用户信息]')
     qid = ev.user_id

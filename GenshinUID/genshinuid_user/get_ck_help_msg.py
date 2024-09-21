@@ -3,7 +3,7 @@ from typing import List
 from gsuid_core.models import Message
 
 CK_QRCODE_LOGIN = '''先发送【绑定uidxxx】绑定UID,
-然后发送【扫码登陆】, 使用米游社APP扫码完成绑定, [或者]选择以下方法
+然后发送【扫码登陆】, 使用米游社APP扫码完成绑定, 【[或者]】选择以下方法
 '''
 
 CK_CONSOLE = '''var cookie = document.cookie;

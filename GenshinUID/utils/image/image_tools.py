@@ -62,13 +62,17 @@ def get_v4_title(avatar: Image.Image, uid: str, title_data: IndexData):
     return title
 
 
+def get_footer():
+    return Image.open(TEXT_PATH / 'footer.png')
+
+
 def add_footer(
     img: Image.Image,
     w: int = 0,
     offset_y: int = 0,
     is_invert: bool = False,
 ):
-    footer = Image.open(TEXT_PATH / 'footer.png')
+    footer = get_footer()
     if is_invert:
         r, g, b, a = footer.split()
         rgb_image = Image.merge('RGB', (r, g, b))

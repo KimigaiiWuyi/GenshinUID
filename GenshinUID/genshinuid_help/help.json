@@ -1,4 +1,121 @@
 {
+  "查询服务": {
+    "desc": "可加 [查询]前缀",
+    "data": [
+      {
+        "name": "查询",
+        "desc": "角色信息一览,后可跟UID",
+        "eg": "查询100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "[上期]深渊/sy",
+        "desc": "深渊信息一览,后可跟UID",
+        "eg": "深渊100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "收集/sj",
+        "desc": "收集百分比,后可跟UID",
+        "eg": "收集100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "探索/ts",
+        "desc": "探索百分比,后可跟UID",
+        "eg": "探索100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "完成度/wcd",
+        "desc": "完成度百分比,后可跟UID",
+        "eg": "wcd100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色列表",
+        "desc": "查看完整的角色列表",
+        "eg": "角色列表",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "每日/mr",
+        "desc": "自己的游戏日常和树脂",
+        "eg": "便签",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "签到",
+        "desc": "进行一次米游社签到",
+        "eg": "签到",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "当前状态",
+        "desc": "游戏树脂和派遣状态",
+        "eg": "当前状态",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "每月统计",
+        "desc": "每月的原石获取情况",
+        "eg": "每月统计",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "原石札记/zj",
+        "desc": "原石获取状态图片版",
+        "eg": "当前信息",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "七圣召唤/召唤",
+        "desc": "查询自己的七圣召唤进度",
+        "eg": "召唤100740568",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "原神注册时间",
+        "desc": "获取自己的原神注册时间",
+        "eg": "原神注册时间",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "我的卡组",
+        "desc": "后可以跟数字指定套牌",
+        "eg": "我的卡组2",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      }
+    ]
+  },
   "个人服务": {
     "desc": "一些和其他账号相关的",
     "data": [
@@ -15,14 +132,6 @@
         "desc": "获取当天的留影叙佳期画片",
         "eg": "留影叙佳期",
         "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "扫码登陆",
-        "desc": "私聊扫码登陆，米游社扫码即可",
-        "eg": "扫码登陆",
-        "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
@@ -129,107 +238,6 @@
       }
     ]
   },
-  "查询服务": {
-    "desc": "可加 [查询]前缀",
-    "data": [
-      {
-        "name": "查询",
-        "desc": "角色信息一览,后可跟UID",
-        "eg": "查询100740568",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "[上期]深渊/sy",
-        "desc": "深渊信息一览,后可跟UID",
-        "eg": "深渊100740568",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "收集/sj",
-        "desc": "收集百分比,后可跟UID",
-        "eg": "收集100740568",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "探索/ts",
-        "desc": "探索百分比,后可跟UID",
-        "eg": "探索100740568",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "每日/mr",
-        "desc": "自己的游戏日常和树脂",
-        "eg": "便签",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "签到",
-        "desc": "进行一次米游社签到",
-        "eg": "签到",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "当前状态",
-        "desc": "游戏树脂和派遣状态",
-        "eg": "当前状态",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "每月统计",
-        "desc": "每月的原石获取情况",
-        "eg": "每月统计",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "原石札记/zj",
-        "desc": "原石获取状态图片版",
-        "eg": "当前信息",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "七圣召唤/召唤",
-        "desc": "查询自己的七圣召唤进度",
-        "eg": "召唤100740568",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "原神注册时间",
-        "desc": "获取自己的原神注册时间",
-        "eg": "原神注册时间",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "我的卡组",
-        "desc": "后可以跟数字指定套牌",
-        "eg": "我的卡组2",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      }
-    ]
-  },
   "面板服务": {
     "desc": "数据源由Enka提供",
     "data": [
@@ -242,7 +250,7 @@
         "need_admin": false
       },
       {
-        "name": "查询xx",
+        "name": "查询[角色]",
         "desc": "查询角色面板",
         "eg": "查询100740568心海",
         "need_ck": false,
@@ -250,7 +258,7 @@
         "need_admin": false
       },
       {
-        "name": "查询x命xx",
+        "name": "查询[数字]命[角色]",
         "desc": "为自己的面板增加虚构数据",
         "eg": "查询六命公子",
         "need_ck": false,
@@ -258,7 +266,7 @@
         "need_admin": false
       },
       {
-        "name": "查询xx换xx",
+        "name": "查询[角色]换[武器]",
         "desc": "查询角色面板更换武器",
         "eg": "查询六命心海换护摩",
         "need_ck": false,
@@ -266,7 +274,7 @@
         "need_admin": false
       },
       {
-        "name": "查询xx带xx换xx",
+        "name": "[角色]带[武器]换[圣遗物]",
         "desc": "查询不存在的角色",
         "eg": "查询莱依拉带护摩换公子圣遗物",
         "need_ck": false,
@@ -274,7 +282,7 @@
         "need_admin": false
       },
       {
-        "name": "查询xx换xx圣遗物",
+        "name": "查询[角色]换[角色]圣遗物",
         "desc": "更换角色圣遗物",
         "eg": "查询白术换公子圣遗物",
         "need_ck": false,
@@ -282,7 +290,7 @@
         "need_admin": false
       },
       {
-        "name": "查询xx成长曲线",
+        "name": "查询[角色]成长曲线",
         "desc": "输出当前角色成长表",
         "eg": "查询刻晴曲线",
         "need_ck": false,
@@ -298,25 +306,9 @@
         "need_admin": false
       },
       {
-        "name": "查询队伍 xx",
-        "desc": "查询队伍伤害",
-        "eg": "查询队伍 万叶 公子 ...",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
         "name": "毕业度统计",
         "desc": "查询所有已缓存角色的毕业度",
         "eg": "毕业度统计",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "原图",
-        "desc": "开启随机图API之后可以查看原图",
-        "eg": "回复命令，原图",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -343,17 +335,9 @@
         "need_admin": true
       },
       {
-        "name": "排名列表",
+        "name": "排名列表/统计",
         "desc": "查看自己的排名图片",
-        "eg": "排名列表",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "排名统计",
-        "desc": "查看自己的排名文字",
-        "eg": "排名统计",
+        "eg": "排名列表、排名统计",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -365,6 +349,22 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "角色排行榜",
+        "desc": "查看该角色的全球排名",
+        "eg": "角色排行榜雷神",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "圣遗物排行榜",
+        "desc": "查看圣遗物全球排名",
+        "eg": "圣遗物排行榜暴击伤害",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
@@ -372,7 +372,7 @@
     "desc": "获取一些没用的建议",
     "data": [
       {
-        "name": "xx用什么",
+        "name": "[角色]用什么",
         "desc": "角色该如何养成",
         "eg": "公子怎么养",
         "need_ck": false,
@@ -380,7 +380,7 @@
         "need_admin": false
       },
       {
-        "name": "xx给谁用",
+        "name": "[武器]给谁用",
         "desc": "武器/圣遗物能给谁用",
         "eg": "护摩谁能用",
         "need_ck": false,
@@ -388,7 +388,7 @@
         "need_admin": false
       },
       {
-        "name": "xx攻略/推荐",
+        "name": "[角色]攻略/推荐",
         "desc": "西风驿站攻略图",
         "eg": "可莉推荐",
         "need_ck": false,
@@ -396,7 +396,7 @@
         "need_admin": false
       },
       {
-        "name": "参考面板xx",
+        "name": "参考面板[角色]",
         "desc": "角色的小毕业面板",
         "eg": "参考面板公子",
         "need_ck": false,
@@ -420,7 +420,7 @@
         "need_admin": false
       },
       {
-        "name": "任务xx",
+        "name": "任务[地区]",
         "desc": "某个任务的攻略",
         "eg": "任务须弥",
         "need_ck": false,
@@ -452,17 +452,9 @@
         "need_admin": false
       },
       {
-        "name": "订阅原神公告",
+        "name": "(取消)订阅原神公告",
         "desc": "在本群订阅原神公告",
         "eg": "订阅原神公告",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "取消订阅原神公告",
-        "desc": "在本群取消订阅原神公告",
-        "eg": "取消订阅原神公告",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -569,7 +561,7 @@
         "need_admin": true
       },
       {
-        "name": "哪里有xx",
+        "name": "哪里有[资源]",
         "desc": "查找地图资源点",
         "eg": "哪里有甜甜花",
         "need_ck": false,
@@ -597,30 +589,6 @@
   "数据模块": {
     "desc": "有关插件的一些数据",
     "data": [
-      {
-        "name": "校验全部Cookies",
-        "desc": "校验全部ck的状态",
-        "eg": "校验全部Cookies",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "校验全部Stoken",
-        "desc": "校验全部sk的状态",
-        "eg": "校验全部Stoken",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "清除无效用户",
-        "desc": "清理失效的用户",
-        "eg": "清除无效用户",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
       {
         "name": "gs配置",
         "desc": "查看全局的插件配置",
@@ -654,30 +622,6 @@
         "need_admin": true
       },
       {
-        "name": "gs重启",
-        "desc": "重启你的Bot",
-        "eg": "gs重启",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
-        "name": "刷新ck",
-        "desc": "通过sk重新获取ck",
-        "eg": "刷新ck",
-        "need_ck": true,
-        "need_sk": true,
-        "need_admin": false
-      },
-      {
-        "name": "刷新全部ck",
-        "desc": "刷新绑定的全部ck",
-        "eg": "刷新全部ck",
-        "need_ck": true,
-        "need_sk": true,
-        "need_admin": true
-      },
-      {
         "name": "强制推送体力提醒",
         "desc": "强制推送全部体力信息",
         "eg": "强制推送体力提醒",
@@ -699,17 +643,9 @@
         "need_admin": false
       },
       {
-        "name": "血量排行",
+        "name": "血量排行/血量表",
         "desc": "常见怪物的血量排行",
-        "eg": "血量排行",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "血量表",
-        "desc": "所有怪物的血量",
-        "eg": "血量表",
+        "eg": "血量排行、血量表",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -737,59 +673,6 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
-      }
-    ]
-  },
-  "GsCore": {
-    "desc": "核心组件管理",
-    "data": [
-      {
-        "name": "启动core",
-        "desc": "能看到这想必不需要这个命令",
-        "eg": "启动core",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
-        "name": "连接core",
-        "desc": "有时候意外失联",
-        "eg": "连接core",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
-        "name": "gs关闭core",
-        "desc": "有时候只想单独关闭core",
-        "eg": "gs关闭core",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
-        "name": "gs全部更新",
-        "desc": "更新core和v4插件",
-        "eg": "gs全部更新",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
-        "name": "gs一键安装",
-        "desc": "能看到这想必不需要这个命令",
-        "eg": "gs一键安装",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
-        "name": "重置core配置",
-        "desc": "如果机器人只会响应你的命令",
-        "eg": "重置core配置",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
       }
     ]
   }

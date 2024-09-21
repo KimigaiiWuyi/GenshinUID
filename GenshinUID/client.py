@@ -184,7 +184,7 @@ async def onebot_send(
         for _c in gsmsgs:
             if _c.data:
                 if _c.type == 'text':
-                    message.append(_c.type)
+                    message.append(_c.data)
                 elif _c.type == 'image':
                     message.append(
                         f'[CQ:image,file={_c.data}]'.replace(
@@ -195,9 +195,11 @@ async def onebot_send(
                 elif _c.type == 'node':
                     messages = [
                         to_json(
-                            f'[CQ:image,file={_msg["data"]}]'
-                            if _msg['type'] == 'image'
-                            else _msg['data'],
+                            (
+                                f'[CQ:image,file={_msg["data"]}]'
+                                if _msg['type'] == 'image'
+                                else _msg['data']
+                            ),
                             '小助手',
                             str(2854196310),
                         )

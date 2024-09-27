@@ -1,8 +1,7 @@
-import asyncio
 import json
 from time import time
-from typing import Union, Literal, List
 from re import sub, compile, findall
+from typing import List, Union, Literal
 from datetime import datetime, timezone, timedelta
 
 from httpx import AsyncClient
@@ -10,7 +9,9 @@ from httpx import AsyncClient
 TZ = timezone(timedelta(hours=8))
 
 
-async def get_data(type: Literal["activity", "index", "code"], data: dict = {}) -> dict:
+async def get_data(
+    type: Literal["activity", "index", "code"], data: dict = {}
+) -> dict:
     """米哈游接口请求"""
 
     url = {

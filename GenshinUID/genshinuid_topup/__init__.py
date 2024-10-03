@@ -11,7 +11,7 @@ INPUTTIP = '''请输入正确的商品编号(0~6), 如:原神充值6
 也可以直接输入物品名称或价格，如:原神充值月卡 | pay648'''
 
 
-@sv_topup.on_command(('gsrc', '原神充值', 'pay'))
+@sv_topup.on_command(('原神充值', 'pay'))
 async def send_qrcode_login(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[原神充值]')
     value = ev.text

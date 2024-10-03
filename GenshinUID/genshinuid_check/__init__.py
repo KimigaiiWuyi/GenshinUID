@@ -14,7 +14,7 @@ async def daily_refresh_charData():
     await data_backup()
 
 
-@sv_data_manger.on_fullmatch(('gs清除缓存'))
+@sv_data_manger.on_fullmatch(('清除缓存'))
 async def send_backup_msg(bot: Bot, ev: Event):
     await data_backup()
     for item in MAP_DATA.glob('*'):

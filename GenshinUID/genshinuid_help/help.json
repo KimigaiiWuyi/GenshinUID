@@ -194,12 +194,12 @@
     ]
   },
   "私人服务": {
-    "desc": "需要加 [gs开启/设置] 前缀",
+    "desc": "需要加 [开启/设置] 前缀",
     "data": [
       {
         "name": "推送",
         "desc": "所有推送总开关",
-        "eg": "gs开启推送",
+        "eg": "开启推送",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -207,7 +207,7 @@
       {
         "name": "自动签到",
         "desc": "每晚0:30进行米游社签到",
-        "eg": "gs开启自动签到",
+        "eg": "开启自动签到",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -215,7 +215,7 @@
       {
         "name": "自动米游币",
         "desc": "每晚1:16进行米游币获取",
-        "eg": "gs开启自动米游币",
+        "eg": "开启自动米游币",
         "need_ck": false,
         "need_sk": true,
         "need_admin": false
@@ -223,7 +223,7 @@
       {
         "name": "[推送项]",
         "desc": "体力/派遣/宝钱/质变仪推送",
-        "eg": "gs开启体力、gs开启派遣",
+        "eg": "开启体力",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -231,7 +231,7 @@
       {
         "name": "[推送项]阈值",
         "desc": "设置推送的阈值",
-        "eg": "gs设置体力阈值140",
+        "eg": "设置体力阈值140",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -327,9 +327,9 @@
     "desc": "数据源由AKACV提供",
     "data": [
       {
-        "name": "gs开启排名系统",
+        "name": "开启排名系统",
         "desc": "开启排名系统之后可正常使用",
-        "eg": "gs开启排名系统",
+        "eg": "开启排名系统",
         "need_ck": false,
         "need_sk": false,
         "need_admin": true
@@ -590,9 +590,9 @@
     "desc": "有关插件的一些数据",
     "data": [
       {
-        "name": "gs配置",
+        "name": "配置",
         "desc": "查看全局的插件配置",
-        "eg": "gs配置",
+        "eg": "配置",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -614,9 +614,9 @@
         "need_admin": true
       },
       {
-        "name": "gs更新",
-        "desc": "可尝试gs强制更新",
-        "eg": "gs强行强制更新",
+        "name": "更新",
+        "desc": "可尝试强制更新",
+        "eg": "强行强制更新",
         "need_ck": false,
         "need_sk": false,
         "need_admin": true

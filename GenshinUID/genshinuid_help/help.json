@@ -19,6 +19,14 @@
         "need_admin": false
       },
       {
+        "name": "幻想真境剧诗",
+        "desc": "新深渊信息一览,后可跟UID",
+        "eg": "新深渊100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "收集/sj",
         "desc": "收集百分比,后可跟UID",
         "eg": "收集100740568",
@@ -38,6 +46,14 @@
         "name": "完成度/wcd",
         "desc": "完成度百分比,后可跟UID",
         "eg": "wcd100740568",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "我的背包",
+        "desc": "查看自己背包物品",
+        "eg": "我的背包",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -320,6 +336,14 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "角色橱窗",
+        "desc": "查看自己排名靠前的面板一览",
+        "eg": "角色橱窗",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
@@ -490,6 +514,22 @@
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "兑换码",
+        "desc": "查看前瞻兑换码",
+        "eg": "兑换码",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "[材料]路线",
+        "desc": "查看材料路线图",
+        "eg": "虹彩蔷薇路线",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },
@@ -646,6 +686,14 @@
         "name": "血量排行/血量表",
         "desc": "常见怪物的血量排行",
         "eg": "血量排行、血量表",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "深渊血量排行",
+        "desc": "深渊的血量排行",
+        "eg": "深渊血量排行",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

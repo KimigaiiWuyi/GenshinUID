@@ -22,5 +22,5 @@ async def send_diff_msg(
     for retcode in data:
         if code == retcode:
             return await bot.send_option(
-                data[retcode], option_list, True, '\n'
+                data[retcode], option_list, False, '\n'
             )

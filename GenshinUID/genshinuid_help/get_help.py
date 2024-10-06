@@ -75,4 +75,3 @@ async def get_core_help() -> Union[bytes, str]:
         extra_message=[f'数据版本 {Genshin_version}'],
     )
     return img
-    return img

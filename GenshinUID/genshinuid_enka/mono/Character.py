@@ -278,7 +278,7 @@ class Character:
         self.char_id = await name_to_avatar_id(char_name_covert)
         try:
             char_raw = await get_character_info(name=char_name_covert)
-        except ConnectTimeout:
+        except:  # noqa: E722
             char_raw = -1
 
         if not self.char_id and char_name != '旅行者':

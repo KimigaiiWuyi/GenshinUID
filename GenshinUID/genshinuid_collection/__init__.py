@@ -30,7 +30,7 @@ async def send_cp_info(bot: Bot, ev: Event):
     await bot.send_option(im, [a, b])
 
 
-@sv_sj.on_command(('查询收集', 'sj'), block=True)
+@sv_sj.on_command(('查询收集', 'sj', '收集'), block=True)
 async def send_collection_info(bot: Bot, ev: Event):
     await bot.logger.info('开始执行[查询收集信息]')
 

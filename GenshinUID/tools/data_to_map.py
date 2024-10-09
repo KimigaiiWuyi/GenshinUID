@@ -315,9 +315,14 @@ async def avatarName2ElementJson() -> None:
                 avatarId2Star_result[int(_id)] = str(data['rarity'])
                 avatarName2Weapon_result[data['name']] = data['weaponText']
             except:  # noqa: E722
-                adata = httpx.get(
-                    f'https://gi.yatta.top/v2/chs/avatar/{_id}?vh=40F8'
-                ).json()
+                while True:
+                    try:
+                        adata = httpx.get(
+                            f'https://gi.yatta.moe/api/v2/chs/avatar/{_id}'
+                        ).json()
+                        break
+                    except:  # noqa: E722
+                        pass
                 adata = adata['data']
                 enName = adata['route']
                 enName2Id_result[enName] = _id
@@ -493,9 +498,9 @@ async def restore_mysData():
 
 
 async def main():
+    await download_new_file()
     await restore_mysData()
     await restore_hakush_data()
-    await download_new_file()
     global raw_data
     try:
         with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:

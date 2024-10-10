@@ -73,11 +73,11 @@
     },
     "fight": {
       "fight_effect": {
-        "1": "addDef+16;dmgBonus+20;dmgBonus+0.008%def%25.6",
-        "2": "addDef+20;dmgBonus+25;dmgBonus+0.010%def%32",
-        "3": "addDef+24;dmgBonus+30;dmgBonus+0.012%def%38.4",
-        "4": "addDef+28;dmgBonus+35;dmgBonus+0.014%def%44.8",
-        "5": "addDef+32;dmgBonus+40;dmgBonus+0.016%def%51.2"
+        "1": "addDef+16;dmgBonus+20;dmgBonus+25.6%0.008%def",
+        "2": "addDef+20;dmgBonus+25;dmgBonus+32%0.010%def",
+        "3": "addDef+24;dmgBonus+30;dmgBonus+38.4%0.012%def",
+        "4": "addDef+28;dmgBonus+35;dmgBonus+44.8%0.014%def",
+        "5": "addDef+32;dmgBonus+40;dmgBonus+51.2%0.016%def"
       },
       "group_effect": {
         "1": "",

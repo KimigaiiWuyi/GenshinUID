@@ -1,5 +1,6 @@
 import json
 from io import BytesIO
+from time import sleep
 from typing import Dict
 from pathlib import Path
 
@@ -13,8 +14,8 @@ with open(MAP_PATH / 'enName2AvatarID_mapping_5.1.0.json') as f:
 
 suffix = 'webp'
 
-char_list = ['Xilonen']
-base = 'https://api.hakush.in/gi/UI/'
+char_list = ['Chasca', 'Olorun']
+base = 'https://api.hakush.in/gi/UI'
 # title = 'https://enka.network/ui/{}'
 # hakush = 'https://api.hakush.in/gi/UI/'
 # ambr = 'https://gi.yatta.top/assets/UI'
@@ -51,7 +52,14 @@ def download(icon_name: str, url: str):
         print(f'{icon_name}已经存在!，跳过！')
         return
     print(f'正在下载{icon_name}')
-    char_data = httpx.get(url, follow_redirects=True, timeout=80)
+    print(url)
+    while True:
+        try:
+            char_data = httpx.get(url, follow_redirects=True, timeout=80)
+            break
+        except:  # noqa:E722
+            sleep(4)
+
     if char_data.headers['Content-Type'] == 'image/png':
         char_bytes = char_data.content
     elif char_data.headers['Content-Type'] == 'image/webp':
@@ -86,10 +94,13 @@ def main():
                 download(icon_name, url)
 
 
-def download_namecard_pic():
+def download_namecard_pic(start: int = 10000002):
     for _enname in enmap:
         en = _enname.split(' ')[-1]
         avatar_id = enmap[_enname]
+        if int(avatar_id) < start:
+            continue
+
         if en == 'Jean':
             en = 'Qin'
         elif en == 'Baizhu':
@@ -118,9 +129,10 @@ def download_namecard_pic():
             en = 'Hutao'
         elif en == 'Thoma':
             en = 'Tohma'
-        url = f'{base}/namecard/UI_NameCardPic_{en}_P.' + suffix
+        url = f'{base}/UI_NameCardPic_{en}_P.' + suffix
         download(f'{avatar_id}.' + suffix, url)
 
 
-# download_namecard_pic()
-main()
+if __name__ == '__main__':
+    # download_namecard_pic(10000063)
+    main()

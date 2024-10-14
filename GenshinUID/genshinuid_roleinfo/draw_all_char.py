@@ -34,7 +34,7 @@ async def _draw_char_pic(uid: str, raw_data: IndexData):
     char_rawdata = await mys_api.get_character(uid, char_ids)
     if isinstance(char_rawdata, int):
         return await get_error_img(char_rawdata)
-    char_datas = char_rawdata['avatars']
+    char_datas = char_rawdata['list']
 
     for index, i in enumerate(char_datas):
         if i['rarity'] > 5:

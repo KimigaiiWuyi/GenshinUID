@@ -138,8 +138,13 @@ async def draw_abyss_img(
                 floors_data = _floor_data
                 break
         else:
-            return '你还没有挑战过该层深渊!'
-        floors_data = raw_abyss_data['floors'][floor]
+            if (
+                raw_abyss_data['floors']
+                and floor < raw_abyss_data['floors'][0]['index']
+            ):
+                return '你本期已跳过该层深渊!'
+            else:
+                return '你还没有挑战过该层深渊!'
     else:
         if len(raw_abyss_data['floors']) == 0:
             return '你还没有挑战本期深渊!\n可以使用[上期深渊]命令查询上期~'

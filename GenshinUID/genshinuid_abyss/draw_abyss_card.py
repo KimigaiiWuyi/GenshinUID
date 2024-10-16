@@ -131,13 +131,15 @@ async def draw_abyss_img(
 
     # 获取查询者数据
     if floor:
-        floor = floor - 9
-        if floor < 0:
+        if floor < 9:
             return '楼层不能小于9层!'
-        if len(raw_abyss_data['floors']) >= floor + 1:
-            floors_data = raw_abyss_data['floors'][floor]
+        for _floor_data in raw_abyss_data['floors']:
+            if floor == _floor_data['index']:
+                floors_data = _floor_data
+                break
         else:
-            return '你还没有挑战该层!'
+            return '你还没有挑战过该层深渊!'
+        floors_data = raw_abyss_data['floors'][floor]
     else:
         if len(raw_abyss_data['floors']) == 0:
             return '你还没有挑战本期深渊!\n可以使用[上期深渊]命令查询上期~'
@@ -206,6 +208,23 @@ async def draw_abyss_img(
         i for i in raw_abyss_data['floors'] if i['index'] >= 9
     ]
 
+    if raw_abyss_data['floors'] and raw_abyss_data['floors'][0]:
+        base = raw_abyss_data['floors'][0]['index']
+
+    for _i in range(base - 9):
+        raw_abyss_data['floors'].insert(
+            0,
+            {
+                'index': _i + 9,
+                'levels': [],
+                'is_unlock': True,
+                'star': 9,
+                'max_star': 9,
+                'settle_time': '0000-00-00 00:00:00',
+                'icon': '',
+            },
+        )
+
     # 绘制缩略信息
     for num in range(4):
         omit_bg = Image.open(TEXT_PATH / 'abyss_omit.png')
@@ -214,14 +233,20 @@ async def draw_abyss_img(
         omit_draw.rounded_rectangle((165, 19, 225, 49), 20, red_color)
         if len(raw_abyss_data['floors']) - 1 >= num:
             _floor = raw_abyss_data['floors'][num]
-            if _floor['star'] == _floor['max_star']:
+            if _floor['settle_time'] == '0000-00-00 00:00:00':
+                _color = red_color
+                _text = '已跳过'
+            elif _floor['star'] == _floor['max_star']:
                 _color = red_color
                 _text = '全满星'
             else:
                 _gap = _floor['max_star'] - _floor['star']
                 _color = blue_color
                 _text = f'差{_gap}颗'
-            if not is_unfull:
+
+            if _floor['settle_time'] == '0000-00-00 00:00:00':
+                _time_str = '跳过楼层不存在时间顺序!'
+            elif not is_unfull:
                 _timestamp = int(
                     _floor['levels'][-1]['battles'][-1]['timestamp']
                 )

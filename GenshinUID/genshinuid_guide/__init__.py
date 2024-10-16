@@ -57,7 +57,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
         await bot.logger.warning('未找到{}参考面板图片'.format(name))
 
 
-@sv_abyss_review.on_command(('版本深渊', '深渊阵容'))
+@sv_abyss_review.on_command(('版本深渊', '深渊阵容', '深渊怪物'))
 async def send_abyss_review(bot: Bot, ev: Event):
     floor = '12'
     if not ev.text:

@@ -5703,19 +5703,19 @@
                 "name": "浮游干核",
                 "rank": 1,
                 "icon": "UI_ItemIcon_112053",
-                "count": "1.2606"
+                "count": "2.101"
             },
             "112054": {
                 "name": "浮游幽核",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112054",
-                "count": "0.3362"
+                "count": "0.5602"
             },
             "112055": {
                 "name": "浮游晶化核",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112055",
-                "count": "0.084"
+                "count": "0.14"
             }
         },
         "name": "水飘浮灵",
@@ -5770,19 +5770,19 @@
                 "name": "浮游干核",
                 "rank": 1,
                 "icon": "UI_ItemIcon_112053",
-                "count": "1.2606"
+                "count": "2.101"
             },
             "112054": {
                 "name": "浮游幽核",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112054",
-                "count": "0.3362"
+                "count": "0.5602"
             },
             "112055": {
                 "name": "浮游晶化核",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112055",
-                "count": "0.084"
+                "count": "0.14"
             }
         },
         "name": "岩飘浮灵",
@@ -5837,19 +5837,19 @@
                 "name": "浮游干核",
                 "rank": 1,
                 "icon": "UI_ItemIcon_112053",
-                "count": "1.2606"
+                "count": "2.101"
             },
             "112054": {
                 "name": "浮游幽核",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112054",
-                "count": "0.3362"
+                "count": "0.5602"
             },
             "112055": {
                 "name": "浮游晶化核",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112055",
-                "count": "0.084"
+                "count": "0.14"
             }
         },
         "name": "风飘浮灵",
@@ -6127,19 +6127,19 @@
                 "name": "浮游干核",
                 "rank": 1,
                 "icon": "UI_ItemIcon_112053",
-                "count": "1.2606"
+                "count": "2.101"
             },
             "112054": {
                 "name": "浮游幽核",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112054",
-                "count": "0.3362"
+                "count": "0.5602"
             },
             "112055": {
                 "name": "浮游晶化核",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112055",
-                "count": "0.084"
+                "count": "0.14"
             }
         },
         "name": "草飘浮灵",
@@ -14340,6 +14340,49 @@
         "route": "Rockfond Rifthound Whelp",
         "icon": "UI_MonsterIcon_Hound_Kanis_Rock"
     },
+    "22040103": {
+        "id": 22040103,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 15.072,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.2,
+            "grassSubHurt": 0.2,
+            "waterSubHurt": 0.2,
+            "elecSubHurt": 0.2,
+            "windSubHurt": 0.2,
+            "iceSubHurt": 0.2,
+            "rockSubHurt": 0.2,
+            "physicalSubHurt": 0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "嗜岩·兽境幼兽",
+        "route": "Rockfond Rifthound Whelp",
+        "icon": "UI_MonsterIcon_Hound_Kanis_Rock"
+    },
     "22040201": {
         "id": 22040201,
         "type": "MONSTER_ORDINARY",
@@ -14953,6 +14996,53 @@
                 "icon": "UI_RelicIcon_15003_4"
             }
         },
+        "name": "黄金王兽",
+        "route": "Golden Wolflord",
+        "icon": "UI_MonsterIcon_Hound_Planelurker"
+    },
+    "22060102": {
+        "id": 22060102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 326.01599,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 70.336,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.25,
+            "grassSubHurt": 0.25,
+            "waterSubHurt": 0.25,
+            "elecSubHurt": 0.25,
+            "windSubHurt": 0.25,
+            "iceSubHurt": 0.25,
+            "rockSubHurt": 0.25,
+            "physicalSubHurt": 0.25
+        },
+        "fundamentalForce": null,
+        "reward": null,
         "name": "黄金王兽",
         "route": "Golden Wolflord",
         "icon": "UI_MonsterIcon_Hound_Planelurker"
@@ -15715,6 +15805,44 @@
         "route": "Black Serpent Knight: Windcutter",
         "icon": "UI_MonsterIcon_Darkwraith_Strong_Wind"
     },
+    "22080102": {
+        "id": 22080102,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 142.632,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.5,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.3
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "黑蛇骑士·斩风之剑",
+        "route": "Black Serpent Knight: Windcutter",
+        "icon": "UI_MonsterIcon_Darkwraith_Strong_Wind"
+    },
     "22080201": {
         "id": 22080201,
         "type": "MONSTER_ORDINARY",
@@ -15738,6 +15866,44 @@
             {
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "黑蛇骑士·摧岩之钺",
+        "route": "Black Serpent Knight: Rockbreaker Ax",
+        "icon": "UI_MonsterIcon_Darkwraith_Fat_Rock"
+    },
+    "22080202": {
+        "id": 22080202,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 163.008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 60.288,
                 "type": "GROW_CURVE_ATTACK_2"
             },
             {
@@ -17452,6 +17618,445 @@
         "name": "狂蔓隙境原体",
         "route": "Overgrown Breacher Primus",
         "icon": "UI_MonsterIcon_Ovacua_Chaos_02"
+    },
+    "22120201": {
+        "id": 22120201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 46.1856,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120301": {
+        "id": 22120301,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 65.2032,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 62.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120401": {
+        "id": 22120401,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120501": {
+        "id": 22120501,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 65.2032,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 62.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120601": {
+        "id": 22120601,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120701": {
+        "id": 22120701,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 46.1856,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120801": {
+        "id": 22120801,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 46.1856,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
+    },
+    "22120901": {
+        "id": 22120901,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "怪物专用-次数盾标记-深渊次数盾",
+                "description": "所有怪物使用深渊次数盾必须挂载",
+                "abilityName": [
+                    "Monster_Common_FrequencyShieldLabel_AbyssShield"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 46.1856,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深邃拟覆叶",
+        "route": "Tenebrous Mimiflora",
+        "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
     },
     "23010101": {
         "id": 23010101,
@@ -28879,6 +29484,261 @@
         "route": "Experimental Field Generator",
         "icon": "UI_MonsterIcon_MachinaIustitia_Gravitas"
     },
+    "24090101": {
+        "id": 24090101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010011,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010011,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112113": {
+                "name": "秘源轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112113",
+                "count": "4.596"
+            },
+            "112114": {
+                "name": "秘源机鞘",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112114",
+                "count": "1.2255"
+            },
+            "112115": {
+                "name": "秘源真芯",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112115",
+                "count": "0.3064"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "秘源机兵·寻捕械",
+        "route": "Secret Source Automaton: Hunter-Seeker",
+        "icon": "UI_MonsterIcon_ToothTrap"
+    },
+    "24090201": {
+        "id": 24090201,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 353.18399,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104141": {
+                "name": "最胜紫晶碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104141"
+            },
+            "104142": {
+                "name": "最胜紫晶断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104142"
+            },
+            "104143": {
+                "name": "最胜紫晶块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104143"
+            },
+            "104144": {
+                "name": "最胜紫晶",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104144"
+            },
+            "113066": {
+                "name": "秘刻金纹的源核",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113066",
+                "count": "2.5556"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400137": {
+                "name": "祭雷之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15011_3"
+            },
+            "400138": {
+                "name": "祭雷之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15011_3"
+            }
+        },
+        "name": "秘源机兵·构型械",
+        "route": "Secret Source Automaton: Configuration Device",
+        "icon": "UI_MonsterIcon_DragonClaw"
+    },
     "25010201": {
         "id": 25010201,
         "type": "MONSTER_ORDINARY",
@@ -33000,6 +33860,2949 @@
         "name": "镀金旅团·叶轮舞者",
         "route": "Eremite Floral Ring-Dancer",
         "icon": "UI_MonsterIcon_Eremite_Female_Standard_Dancer"
+    },
+    "25500101": {
+        "id": 25500101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-游猎龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Mosasaurus",
+                    "Monster_Human_Mosasaurus_TribeUlt",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_On",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_Off"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "流刃勇士·游击人",
+        "route": "Flowing Blade Skirmisher",
+        "icon": "UI_MonsterIcon_Human_Female_NoWeapon_Mosasaurus"
+    },
+    "25500102": {
+        "id": 25500102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-游猎龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Mosasaurus",
+                    "Monster_Human_Mosasaurus_TribeUlt",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_On",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_Off"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "流刃勇士·游击人",
+        "route": "Flowing Blade Skirmisher",
+        "icon": "UI_MonsterIcon_Human_Female_NoWeapon_Mosasaurus"
+    },
+    "25501101": {
+        "id": 25501101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "铸砂勇士·叩问人",
+        "route": "Forged Sand Interrogator",
+        "icon": "UI_MonsterIcon_Human_Female_NoWeapon_Drillhead"
+    },
+    "25501102": {
+        "id": 25501102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "铸砂勇士·叩问人",
+        "route": "Forged Sand Interrogator",
+        "icon": "UI_MonsterIcon_Human_Female_NoWeapon_Drillhead"
+    },
+    "25501103": {
+        "id": 25501103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "5.0WQ-部落战士灵体深渊侵蚀效果",
+                "description": "挂载深渊侵蚀特效",
+                "abilityName": [
+                    "Monster_TribalWarrior_AbyssEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "铸砂勇士·叩问人",
+        "route": "Forged Sand Interrogator",
+        "icon": "UI_MonsterIcon_Human_Female_NoWeapon_Drillhead"
+    },
+    "25501201": {
+        "id": 25501201,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落单手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Sword_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·引索客",
+        "route": "Swiftstep Seeker",
+        "icon": "UI_MonsterIcon_Human_Female_Sword_Hookwalker"
+    },
+    "25501202": {
+        "id": 25501202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落单手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Sword_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·引索客",
+        "route": "Swiftstep Seeker",
+        "icon": "UI_MonsterIcon_Human_Female_Sword_Hookwalker"
+    },
+    "25501203": {
+        "id": 25501203,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落单手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Sword_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·引索客",
+        "route": "Swiftstep Seeker",
+        "icon": "UI_MonsterIcon_Human_Female_Sword_Hookwalker"
+    },
+    "25502101": {
+        "id": 25502101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落单手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Sword_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·荡风斥候",
+        "route": "Swiftstep Storm Scout",
+        "icon": "UI_MonsterIcon_Human_Male_Sword_Hookwalker"
+    },
+    "25502102": {
+        "id": 25502102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落单手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Sword_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·荡风斥候",
+        "route": "Swiftstep Storm Scout",
+        "icon": "UI_MonsterIcon_Human_Male_Sword_Hookwalker"
+    },
+    "25502103": {
+        "id": 25502103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落单手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Sword_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·荡风斥候",
+        "route": "Swiftstep Storm Scout",
+        "icon": "UI_MonsterIcon_Human_Male_Sword_Hookwalker"
+    },
+    "25502201": {
+        "id": 25502201,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-游猎龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Mosasaurus",
+                    "Monster_Human_Mosasaurus_TribeUlt",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_On",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_Off"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "流刃勇士·锯脂者",
+        "route": "Flowing Blade Grease-Saw",
+        "icon": "UI_MonsterIcon_Human_Male_Sword_Mosasaurus"
+    },
+    "25502202": {
+        "id": 25502202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-单手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Sword_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-游猎龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Mosasaurus",
+                    "Monster_Human_Mosasaurus_TribeUlt",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_On",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_Off"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "流刃勇士·锯脂者",
+        "route": "Flowing Blade Grease-Saw",
+        "icon": "UI_MonsterIcon_Human_Male_Sword_Mosasaurus"
+    },
+    "25503101": {
+        "id": 25503101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-成男双手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Male_Standard_Claymore_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落双手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Claymore_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·重刃讯使",
+        "route": "Swiftstep Armed Courier",
+        "icon": "UI_MonsterIcon_Human_Male_Claymore_Hookwalker"
+    },
+    "25503102": {
+        "id": 25503102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-成男双手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Male_Standard_Claymore_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落双手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Claymore_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·重刃讯使",
+        "route": "Swiftstep Armed Courier",
+        "icon": "UI_MonsterIcon_Human_Male_Claymore_Hookwalker"
+    },
+    "25503103": {
+        "id": 25503103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-成男双手利器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_Male_Standard_Claymore_EventAlter_Sharp"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落双手剑",
+                "description": "钩爪部落特殊技细分逻辑处理，也需要挂载55092",
+                "abilityName": [
+                    "Monster_Human_Claymore_Hookwalker_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-勾爪龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Hookwalker"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "疾迅勇士·重刃讯使",
+        "route": "Swiftstep Armed Courier",
+        "icon": "UI_MonsterIcon_Human_Male_Claymore_Hookwalker"
+    },
+    "25504101": {
+        "id": 25504101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-壮男双手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_MuscleMan_Claymore_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "铸砂勇士·碎盾者",
+        "route": "Forged Sand Shieldbreaker",
+        "icon": "UI_MonsterIcon_Human_MuscleMan_Claymore_Drillhead"
+    },
+    "25504102": {
+        "id": 25504102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-壮男双手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_MuscleMan_Claymore_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "铸砂勇士·碎盾者",
+        "route": "Forged Sand Shieldbreaker",
+        "icon": "UI_MonsterIcon_Human_MuscleMan_Claymore_Drillhead"
+    },
+    "25504103": {
+        "id": 25504103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-壮男双手钝器",
+                "description": "用于对攻击Type和特效配置进行区分",
+                "abilityName": [
+                    "Monster_Human_MuscleMan_Claymore_EventAlter_Blunt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "5.0WQ-部落战士灵体深渊侵蚀效果",
+                "description": "挂载深渊侵蚀特效",
+                "abilityName": [
+                    "Monster_TribalWarrior_AbyssEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "铸砂勇士·碎盾者",
+        "route": "Forged Sand Shieldbreaker",
+        "icon": "UI_MonsterIcon_Human_MuscleMan_Claymore_Drillhead"
+    },
+    "25505101": {
+        "id": 25505101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-胖子钻地龙投枪",
+                "description": "控制投枪手中特效与Bullet",
+                "abilityName": [
+                    "Monster_Tribalwarrior_Male_Fat_NoWeapon_SpearThrow_DrillHead"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "铸砂勇士·投矛手",
+        "route": "Forged Sand Javelineer",
+        "icon": "UI_MonsterIcon_Human_Fat_NoWeapon_Drillhead"
+    },
+    "25505102": {
+        "id": 25505102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-钻地龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Drillhead",
+                    "Monster_Human_DrillHead_TribeUlt"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-胖子钻地龙投枪",
+                "description": "控制投枪手中特效与Bullet",
+                "abilityName": [
+                    "Monster_Tribalwarrior_Male_Fat_NoWeapon_SpearThrow_DrillHead"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "铸砂勇士·投矛手",
+        "route": "Forged Sand Javelineer",
+        "icon": "UI_MonsterIcon_Human_Fat_NoWeapon_Drillhead"
+    },
+    "25505201": {
+        "id": 25505201,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-游猎龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Mosasaurus",
+                    "Monster_Human_Mosasaurus_TribeUlt",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_On",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_Off"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-胖子游猎龙投枪",
+                "description": "控制投枪手中特效与Bullet",
+                "abilityName": [
+                    "Monster_Tribalwarrior_Male_Fat_NoWeapon_SpearThrow_Mosasaurus"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "流刃勇士·掷叉猎手",
+        "route": "Flowing Blade Harpoon-Thrower",
+        "icon": "UI_MonsterIcon_Human_Fat_NoWeapon_Mosasaurus"
+    },
+    "25505202": {
+        "id": 25505202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士-游猎龙部落标记",
+                "description": "影响部落特殊技的施放",
+                "abilityName": [
+                    "Monster_Human_TribeUltMark_Mosasaurus",
+                    "Monster_Human_Mosasaurus_TribeUlt",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_On",
+                    "Monster_Human_Mosasaurus_TribeUlt_UltAttackState_Off"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-胖子游猎龙投枪",
+                "description": "控制投枪手中特效与Bullet",
+                "abilityName": [
+                    "Monster_Tribalwarrior_Male_Fat_NoWeapon_SpearThrow_Mosasaurus"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "部落战士-战前喷漆罐-暖色",
+                "description": "战前喷漆手中的Item颜色",
+                "abilityName": [
+                    "Monster_Human_FreePoseManager_SprayCan_Warm"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "流刃勇士·掷叉猎手",
+        "route": "Flowing Blade Harpoon-Thrower",
+        "icon": "UI_MonsterIcon_Human_Fat_NoWeapon_Mosasaurus"
+    },
+    "25510101": {
+        "id": 25510101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "嵴锋龙武士·碎晶打者",
+        "route": "Tepetlisaurus Warrior: Shard Striker",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Powermaul_Drillhead"
+    },
+    "25510102": {
+        "id": 25510102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "5.0WQ-部落战士灵体深渊侵蚀效果",
+                "description": "挂载深渊侵蚀特效",
+                "abilityName": [
+                    "Monster_TribalWarrior_AbyssEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "嵴锋龙武士·碎晶打者",
+        "route": "Tepetlisaurus Warrior: Shard Striker",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Powermaul_Drillhead"
+    },
+    "25510201": {
+        "id": 25510201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "嵴锋龙武士·破岩锐刃",
+        "route": "Tepetlisaurus Warrior: Rockbreaker Blade",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Chainsword_Drillhead"
+    },
+    "25510202": {
+        "id": 25510202,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 107.58528,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "嵴锋龙武士·破岩锐刃",
+        "route": "Tepetlisaurus Warrior: Rockbreaker Blade",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Chainsword_Drillhead"
+    },
+    "25510203": {
+        "id": 25510203,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 77.70048,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "嵴锋龙武士·破岩锐刃",
+        "route": "Tepetlisaurus Warrior: Rockbreaker Blade",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Chainsword_Drillhead"
+    },
+    "25510301": {
+        "id": 25510301,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010013,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "匿叶龙武士·旋锯飞叶",
+        "route": "Yumkasaurus Warrior: Whirling Leaves",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Chainsword_Hookwalker"
+    },
+    "25510401": {
+        "id": 25510401,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010013,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "匿叶龙武士·流火鸣空",
+        "route": "Yumkasaurus Warrior: Flowing Skyfire",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Launcher_Hookwalker"
+    },
+    "25510402": {
+        "id": 25510402,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010013,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 70.6368,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "匿叶龙武士·流火鸣空",
+        "route": "Yumkasaurus Warrior: Flowing Skyfire",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Launcher_Hookwalker"
+    },
+    "25510501": {
+        "id": 25510501,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010012,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "鳍游龙武士·穿浪之梭",
+        "route": "Koholasaurus Warrior: Waveshuttler",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Slingshot_Mosasaurus"
+    },
+    "25510502": {
+        "id": 25510502,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010012,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 70.6368,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "鳍游龙武士·穿浪之梭",
+        "route": "Koholasaurus Warrior: Waveshuttler",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Slingshot_Mosasaurus"
+    },
+    "25510601": {
+        "id": 25510601,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010012,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112104": {
+                "name": "卫从的木哨",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112104",
+                "count": "1.2606"
+            },
+            "112105": {
+                "name": "战士的铁哨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112105",
+                "count": "0.3362"
+            },
+            "112106": {
+                "name": "龙冠武士的金哨",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112106",
+                "count": "0.084"
+            }
+        },
+        "name": "鳍游龙武士·裂礁之涛",
+        "route": "Koholasaurus Warrior: Reefsplitter",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Launcher_Mosasaurus"
+    },
+    "25510602": {
+        "id": 25510602,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0WQ-部落战士灵体死亡效果",
+                "description": "替换原有的死亡效果，改为灵体死亡效果",
+                "abilityName": [
+                    "Monster_TribalWarrior_Ghost_DieEffect"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010012,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 70.6368,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 45.216,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "鳍游龙武士·裂礁之涛",
+        "route": "Koholasaurus Warrior: Reefsplitter",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Launcher_Mosasaurus"
     },
     "26010101": {
         "id": 26010101,
@@ -42211,6 +46014,1727 @@
         "name": "玄文兽",
         "route": "Xuanwen Beast",
         "icon": "UI_MonsterIcon_Striped"
+    },
+    "26200101": {
+        "id": 26200101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 14.9424,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.3,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112101": {
+                "name": "稚嫩的尖齿",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112101",
+                "count": "0.9244"
+            },
+            "112102": {
+                "name": "老练的坚齿",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112102",
+                "count": "0.2465"
+            },
+            "112103": {
+                "name": "横行霸者的利齿",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112103",
+                "count": "0.0616"
+            }
+        },
+        "name": "幼嵴锋龙",
+        "route": "Tepetlisaur Whelp",
+        "icon": "UI_MonsterIcon_Natsaurus_Drillhead_Small"
+    },
+    "26200201": {
+        "id": 26200201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 40.752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112101": {
+                "name": "稚嫩的尖齿",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112101",
+                "count": "0.9244"
+            },
+            "112102": {
+                "name": "老练的坚齿",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112102",
+                "count": "0.2465"
+            },
+            "112103": {
+                "name": "横行霸者的利齿",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112103",
+                "count": "0.0616"
+            }
+        },
+        "name": "嵴锋龙",
+        "route": "Tepetlisaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Drillhead_Normal"
+    },
+    "26200202": {
+        "id": 26200202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0深渊shader怪 通用特效",
+                "description": "5.0深渊shader怪 通用特效",
+                "abilityName": [
+                    "MonsterAffix_Monster_TheAbyss_Effect"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "5.0WQ-灵体材质冻结石化瞬切配置",
+                "description": "使怪物在被冻结、石化时材质过渡为瞬间完成",
+                "abilityName": [
+                    "MonsterAffix_ShaderLerpDurationToZero"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010017,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 40.752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "嵴锋龙",
+        "route": "Tepetlisaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Drillhead_Normal"
+    },
+    "26210101": {
+        "id": 26210101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.3,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112101": {
+                "name": "稚嫩的尖齿",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112101",
+                "count": "0.9244"
+            },
+            "112102": {
+                "name": "老练的坚齿",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112102",
+                "count": "0.2465"
+            },
+            "112103": {
+                "name": "横行霸者的利齿",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112103",
+                "count": "0.0616"
+            }
+        },
+        "name": "幼鳍游龙",
+        "route": "Koholasaur Whelp",
+        "icon": "UI_MonsterIcon_Natsaurus_Mosasaurus_Small"
+    },
+    "26210201": {
+        "id": 26210201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010012,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 36.6768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 33.912,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112101": {
+                "name": "稚嫩的尖齿",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112101",
+                "count": "0.9244"
+            },
+            "112102": {
+                "name": "老练的坚齿",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112102",
+                "count": "0.2465"
+            },
+            "112103": {
+                "name": "横行霸者的利齿",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112103",
+                "count": "0.0616"
+            }
+        },
+        "name": "鳍游龙",
+        "route": "Koholasaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Mosasaurus_Normal"
+    },
+    "26210202": {
+        "id": 26210202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0深渊shader怪 通用特效",
+                "description": "5.0深渊shader怪 通用特效",
+                "abilityName": [
+                    "MonsterAffix_Monster_TheAbyss_Effect"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "5.0WQ-灵体材质冻结石化瞬切配置",
+                "description": "使怪物在被冻结、石化时材质过渡为瞬间完成",
+                "abilityName": [
+                    "MonsterAffix_ShaderLerpDurationToZero"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010012,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 36.6768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 33.912,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "鳍游龙",
+        "route": "Koholasaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Mosasaurus_Normal"
+    },
+    "26220101": {
+        "id": 26220101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.3,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112101": {
+                "name": "稚嫩的尖齿",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112101",
+                "count": "0.9244"
+            },
+            "112102": {
+                "name": "老练的坚齿",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112102",
+                "count": "0.2465"
+            },
+            "112103": {
+                "name": "横行霸者的利齿",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112103",
+                "count": "0.0616"
+            }
+        },
+        "name": "幼匿叶龙",
+        "route": "Yumkasaur Whelp",
+        "icon": "UI_MonsterIcon_Natsaurus_Hookwalker_Small"
+    },
+    "26220201": {
+        "id": 26220201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010013,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 36.6768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 33.912,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.5,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112101": {
+                "name": "稚嫩的尖齿",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112101",
+                "count": "0.9244"
+            },
+            "112102": {
+                "name": "老练的坚齿",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112102",
+                "count": "0.2465"
+            },
+            "112103": {
+                "name": "横行霸者的利齿",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112103",
+                "count": "0.0616"
+            }
+        },
+        "name": "匿叶龙",
+        "route": "Yumkasaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Hookwalker_Normal"
+    },
+    "26220202": {
+        "id": 26220202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0深渊shader怪 通用特效",
+                "description": "5.0深渊shader怪 通用特效",
+                "abilityName": [
+                    "MonsterAffix_Monster_TheAbyss_Effect"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "5.0WQ-灵体材质冻结石化瞬切配置",
+                "description": "使怪物在被冻结、石化时材质过渡为瞬间完成",
+                "abilityName": [
+                    "MonsterAffix_ShaderLerpDurationToZero"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010013,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 36.6768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 33.912,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.5,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "匿叶龙",
+        "route": "Yumkasaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Hookwalker_Normal"
+    },
+    "26220301": {
+        "id": 26220301,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010033,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010033,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.76801,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 105.504,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.7,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104131": {
+                "name": "生长碧翡碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104131"
+            },
+            "104132": {
+                "name": "生长碧翡断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104132"
+            },
+            "104133": {
+                "name": "生长碧翡块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104133"
+            },
+            "104134": {
+                "name": "生长碧翡",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104134"
+            },
+            "113065": {
+                "name": "过熟的火榴果",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113065",
+                "count": "2.5556"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400047": {
+                "name": "冒险家",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10010_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            }
+        },
+        "name": "贪食匿叶龙山王",
+        "route": "Gluttonous Yumkasaur Mountain King",
+        "icon": "UI_MonsterIcon_Natsaurus_Hookwalker_Primo"
+    },
+    "26220302": {
+        "id": 26220302,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "钩爪龙-挑战-任务线词缀",
+                "description": "钩爪龙-挑战-任务线词缀",
+                "abilityName": [
+                    "Monster_Natsaurus_Hookwalker_Primo_Rotted"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010033,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010033,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 326.01599,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 67.824,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.7,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "贪食匿叶龙山王",
+        "route": "Gluttonous Yumkasaur Mountain King",
+        "icon": "UI_MonsterIcon_Natsaurus_Hookwalker_Primo"
+    },
+    "26220303": {
+        "id": 26220303,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "钩爪龙-挑战-深渊词缀",
+                "description": "钩爪龙-挑战-深渊词缀",
+                "abilityName": [
+                    "Monster_Natsaurus_Hookwalker_Primo_Hard"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010033,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010033,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.76801,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 105.504,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.7,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "贪食匿叶龙山王",
+        "route": "Gluttonous Yumkasaur Mountain King",
+        "icon": "UI_MonsterIcon_Natsaurus_Hookwalker_Primo"
+    },
+    "26230301": {
+        "id": 26230301,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010031,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010031,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010031,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 168.4416,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 125.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.7,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104111": {
+                "name": "燃愿玛瑙碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104111"
+            },
+            "104112": {
+                "name": "燃愿玛瑙断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104112"
+            },
+            "104113": {
+                "name": "燃愿玛瑙块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104113"
+            },
+            "104114": {
+                "name": "燃愿玛瑙",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104114"
+            },
+            "113064": {
+                "name": "受祝所缚之印",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113064",
+                "count": "2.5556"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400047": {
+                "name": "冒险家",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10010_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400127": {
+                "name": "祭火之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15009_3"
+            },
+            "400128": {
+                "name": "祭火之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15009_3"
+            }
+        },
+        "name": "金焰绒翼龙暴君",
+        "route": "Goldflame Qucusaur Tyrant",
+        "icon": "UI_MonsterIcon_Natsaurus_Flamingo_Primo"
+    },
+    "26230302": {
+        "id": 26230302,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "翼手龙-挑战-深渊词缀",
+                "description": "翼手龙-挑战-深渊词缀",
+                "abilityName": [
+                    "Monster_Natsaurus_Flamingo_Primo_ForAbyss"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010031,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010031,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010031,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 168.4416,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 125.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.7,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "金焰绒翼龙暴君",
+        "route": "Goldflame Qucusaur Tyrant",
+        "icon": "UI_MonsterIcon_Natsaurus_Flamingo_Primo"
+    },
+    "26260101": {
+        "id": 26260101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 57.776,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112107": {
+                "name": "意志破碎的残片",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112107",
+                "count": "6.5658"
+            },
+            "112108": {
+                "name": "意志明晰的寄偶",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112108",
+                "count": "1.7508"
+            },
+            "112109": {
+                "name": "意志巡游的符像",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112109",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "窟岩·大灵显化身",
+        "route": "Rock-Cavernous Wayob Manifestation",
+        "icon": "UI_MonsterIcon_Wayob_Drillhead"
+    },
+    "26260103": {
+        "id": 26260103,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0大灵开场力场词缀",
+                "description": "5.0大灵开场力场词缀",
+                "abilityName": [
+                    "MonsterAffix_Wayob_GoFirstField"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010017,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 57.776,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "窟岩·大灵显化身",
+        "route": "Rock-Cavernous Wayob Manifestation",
+        "icon": "UI_MonsterIcon_Wayob_Drillhead"
+    },
+    "26260201": {
+        "id": 26260201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 57.776,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112107": {
+                "name": "意志破碎的残片",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112107",
+                "count": "6.5658"
+            },
+            "112108": {
+                "name": "意志明晰的寄偶",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112108",
+                "count": "1.7508"
+            },
+            "112109": {
+                "name": "意志巡游的符像",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112109",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "溯流·大灵显化身",
+        "route": "Flow-Inverted Wayob Manifestation",
+        "icon": "UI_MonsterIcon_Wayob_Mosasaurus"
+    },
+    "26260203": {
+        "id": 26260203,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0大灵开场力场词缀",
+                "description": "5.0大灵开场力场词缀",
+                "abilityName": [
+                    "MonsterAffix_Wayob_GoFirstField"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010012,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 57.776,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "溯流·大灵显化身",
+        "route": "Flow-Inverted Wayob Manifestation",
+        "icon": "UI_MonsterIcon_Wayob_Mosasaurus"
+    },
+    "26260301": {
+        "id": 26260301,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 57.776,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.5,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112107": {
+                "name": "意志破碎的残片",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112107",
+                "count": "6.5658"
+            },
+            "112108": {
+                "name": "意志明晰的寄偶",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112108",
+                "count": "1.7508"
+            },
+            "112109": {
+                "name": "意志巡游的符像",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112109",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "疾叶·大灵显化身",
+        "route": "Foliar-Swift Wayob Manifestation",
+        "icon": "UI_MonsterIcon_Wayob_Hookwalker"
+    },
+    "26260303": {
+        "id": 26260303,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "5.0大灵开场力场词缀",
+                "description": "5.0大灵开场力场词缀",
+                "abilityName": [
+                    "MonsterAffix_Wayob_GoFirstField"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010013,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 57.776,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.5,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "疾叶·大灵显化身",
+        "route": "Foliar-Swift Wayob Manifestation",
+        "icon": "UI_MonsterIcon_Wayob_Hookwalker"
+    },
+    "26270101": {
+        "id": 26270101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010011,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010011,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 103.2384,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 87.92,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.7,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112110": {
+                "name": "聚燃的石块",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112110",
+                "count": "5.2526"
+            },
+            "112111": {
+                "name": "聚燃的命种",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112111",
+                "count": "1.4006"
+            },
+            "112112": {
+                "name": "聚燃的游像眼",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112112",
+                "count": "0.3502"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "熔岩游像·流燃体",
+        "route": "Fluid Avatar of Lava",
+        "icon": "UI_MonsterIcon_Lava_Liquid"
+    },
+    "26270201": {
+        "id": 26270201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 116.8224,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 62.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112110": {
+                "name": "聚燃的石块",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112110",
+                "count": "5.2526"
+            },
+            "112111": {
+                "name": "聚燃的命种",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112111",
+                "count": "1.4006"
+            },
+            "112112": {
+                "name": "聚燃的游像眼",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112112",
+                "count": "0.3502"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "熔岩游像·蚀土者",
+        "route": "Eroding Avatar of Lava",
+        "icon": "UI_MonsterIcon_Lava_Solid"
     },
     "29010102": {
         "id": 29010102,

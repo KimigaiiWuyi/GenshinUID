@@ -1,6 +1,7 @@
 import sys
 import json
 import asyncio
+from re import T
 from pathlib import Path
 
 import httpx
@@ -209,11 +210,20 @@ async def avatarId2SkillGroupList():
 async def monster2map():
     print('正在执行monster2map')
     monster_list = await get_ambr_monster_list()
+    print('monster_list获取成功!')
     result = {}
     if monster_list:
         for monster_main_id in monster_list['items']:
             if not monster_main_id.startswith('28'):
-                data = await get_ambr_monster_data(monster_main_id)
+                while True:
+                    print(f'正在执行monster2map: {monster_main_id}')
+                    try:
+                        data = await get_ambr_monster_data(monster_main_id)
+                        break
+                    except Exception as e:
+                        print(e)
+                        await asyncio.sleep(3)
+                        continue
                 if data:
                     for entry_id in data['entries']:
                         entry: dict = data['entries'][entry_id]  # type: ignore
@@ -507,7 +517,7 @@ async def main():
             raw_data = json.load(f)
     except FileNotFoundError:
         pass
-    # await monster2map()
+    await monster2map()
     await avatarId2NameJson()
     await avatarName2ElementJson()
     await weaponHash2NameJson()

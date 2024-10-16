@@ -1,3 +1,4 @@
+import re
 import json
 import datetime
 from pathlib import Path
@@ -134,25 +135,25 @@ async def get_half_img(data: List, half: Literal['Upper', 'Lower']):
             monster_icon = await get_ambr_icon(
                 'monster', icon_name, MONSTER_ICON_PATH
             )
-            monster_icon = monster_icon.resize((89, 89)).convert('RGBA')
+            monster_icon = monster_icon.resize((110, 110)).convert('RGBA')
             monster_img = Image.open(TEXT_PATH / 'monster_bg.png')
-            monster_img.paste(monster_icon, (31, 19), monster_icon)
+            monster_img.paste(monster_icon, (35, 45), monster_icon)
             monster_img.paste(monster_fg, (0, 0), monster_fg)
 
             monster_draw = ImageDraw.Draw(monster_img)
             monster_draw.text(
-                (137, 52), monster_name[:10], 'white', gs_font_24, 'lm'
+                (160, 85), monster_name[:7], 'white', gs_font_28, 'lm'
             )
             monster_draw.text(
-                (137, 82),
+                (160, 115),
                 f'x{monster_num}',
                 (210, 210, 210),
-                gs_font_24,
+                gs_font_26,
                 'lm',
             )
             half_img.paste(
                 monster_img,
-                (5 + (m_index % 3) * 360, 83 + (m_index // 3) * 110 + temp),
+                (-7 + (m_index % 3) * 360, 40 + (m_index // 3) * 136 + temp),
                 monster_img,
             )
         index += 1
@@ -188,7 +189,7 @@ async def _get_data_from_url(
     ) or not path.exists():
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
-            data = response.json()
+            data = change_js_to_python(response.text)
             async with aiofiles.open(path, 'w', encoding='UTF-8') as file:
                 await file.write(
                     json.dumps(data, indent=4, ensure_ascii=False)
@@ -199,16 +200,39 @@ async def _get_data_from_url(
     return data
 
 
+def replace_var(match):
+    variable_name = match.group(1)
+    variable_value = match.group(2)
+    return f'"{variable_name}": {variable_value}'
+
+
+def change_js_to_python(js_code: str) -> Dict:
+    python_code = re.sub(r'//', '', js_code)
+    python_code = python_code.replace('Auto Generated', '')
+    python_code = re.sub(
+        r'var\s+(\w+)\s*=\s*(.*?)(?=\nvar|\Z)',
+        replace_var,
+        python_code,
+        flags=re.DOTALL,
+    )
+
+    python_code = re.sub(r'(?<=\})(?=\s*"\w)', ',', python_code)
+    python_code = re.sub(r'(?<=\])(?=\s*"\w)', ',', python_code)
+
+    python_code = f"{{{python_code.strip()}}}"
+    return json.loads(python_code)
+
+
 async def get_review_data(
     version: str = Genshin_version[:3], floor: str = '12'
 ):
-    schedule_data = await _get_data_from_url(
-        'http://www.yuhengcup.top/api/get_DatabaseSchedule',
+    all_data = await _get_data_from_url(
+        'https://homdgcat.wiki/gi/CH/database.js',
         schedule_path,
         86400,
     )
 
-    schedule: List = schedule_data['SpiralAbyssSchedule']
+    schedule: List = all_data['_SpiralAbyssSchedule']
     for i in schedule:
         if version in i['Name']:
             floors_data = i
@@ -218,18 +242,12 @@ async def get_review_data(
 
     floor_id = floors_data['Floors'][int(floor) - 9]
 
-    floor_data_path = ABYSS_PATH / f'{floor_id}.json'
-    floor_data = await _get_data_from_url(
-        f'http://www.yuhengcup.top/api/get_Floor?_id={floor_id}',
-        floor_data_path,
-    )
-
-    data = floor_data['_data']
-    floor_buff = data['Disorder']['CH'].replace('<b>', '').replace('</b>', '')
+    data = all_data['_SpiralAbyssFloorConfig'][str(floor_id)]
+    floor_buff = data['Disorder'].replace('<b>', '').replace('</b>', '')
     floor_monster = data['Chambers']
 
     icon = Image.open(TEXT2D_PATH / 'icon.png')
-    img = await get_color_bg(1100, 6000, TEXT_PATH / 'bg', True)
+    img = await get_color_bg(1100, 4000, TEXT_PATH / 'bg', True)
     img_draw = ImageDraw.Draw(img)
 
     img_draw.rounded_rectangle((421, 272, 548, 310), 10, (144, 0, 0))

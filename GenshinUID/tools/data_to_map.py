@@ -1,7 +1,6 @@
 import sys
 import json
 import asyncio
-from re import T
 from pathlib import Path
 
 import httpx

@@ -190,7 +190,7 @@ async def draw_abyss_img(
         '最强一击!': damage_rank[0],
         '最多击破!': defeat_rank[0],
         '承受伤害': take_damage_rank[0],
-        '元素战技': energy_skill_rank[0],
+        '元素爆发': energy_skill_rank[0],
     }
     for _index, _name in enumerate(title_data):
         _char = title_data[_name]

@@ -129,6 +129,14 @@
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "我的成就",
+        "desc": "检查自己成就完成状态一览",
+        "eg": "我的成就",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },

@@ -21,6 +21,7 @@ CHAR_NAMECARD_PATH = RESOURCE_PATH / 'char_namecard'
 CHAR_NAMECARDPIC_PATH = RESOURCE_PATH / 'char_namecard_pic'
 REL_PATH = RESOURCE_PATH / 'reliquaries'
 ICON_PATH = RESOURCE_PATH / 'icon'
+ACHI_ICON_PATH = RESOURCE_PATH / 'achi_icon'
 TEMP_PATH = RESOURCE_PATH / 'temp'
 CARD_PATH = RESOURCE_PATH / 'card'
 MONSTER_ICON_PATH = RESOURCE_PATH / 'monster_icon'
@@ -56,6 +57,7 @@ def init_dir():
         ICON_PATH,
         TEXT2D_PATH,
         PLAYER_PATH,
+        ACHI_ICON_PATH,
         TEMP_PATH,
         CARD_PATH,
         GUIDE_PATH,

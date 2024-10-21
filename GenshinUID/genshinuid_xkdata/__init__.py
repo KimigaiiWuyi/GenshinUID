@@ -8,10 +8,10 @@ from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 
 from .draw_char_abyss import draw_char_abyss_info
-from .draw_teyvat_img import draw_teyvat_abyss_img
 
 # from .draw_abyss_total import TOTAL_IMG, draw_xk_abyss_img
 from .get_all_char_data import save_all_char_info, save_all_abyss_rank
+from .draw_teyvat_img import draw_teyvat_team_img, draw_teyvat_abyss_img
 
 sv_get_abyss_database = SV('查询深渊数据库', priority=4)
 
@@ -37,7 +37,17 @@ async def send_abyss_pic(bot: Bot, ev: Event):
     # await draw_xk_abyss_img()
     img = await draw_teyvat_abyss_img()
     # img = await convert_img(TOTAL_IMG)
-    logger.info('获得深渊概览图片成功!')
+    logger.info('[深渊概览] 获得深渊概览图片成功!')
+    await bot.send(img)
+
+
+@sv_get_abyss_database.on_fullmatch(
+    ('深渊队伍', '深渊队伍统计', '深渊队伍推荐', '深渊组队'), block=True
+)
+async def send_abyss_team_pic(bot: Bot, ev: Event):
+    # await draw_xk_abyss_img()
+    img = await draw_teyvat_team_img()
+    logger.info('[深渊概览] 获得深渊队伍排行图片成功!')
     await bot.send(img)
 
 

@@ -17,7 +17,6 @@ from .draw_normal import (
 async def draw_char_img(
     char: Character,
     charUrl: Optional[str] = None,
-    is_curve: bool = False,
 ) -> Union[str, Tuple[Image.Image, Optional[bytes]]]:
     res = await draw_char_card(char, charUrl)
     return res, char.char_bytes

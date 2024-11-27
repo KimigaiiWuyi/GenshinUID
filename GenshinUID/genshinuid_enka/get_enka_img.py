@@ -60,11 +60,7 @@ async def draw_enka_img(
     # msg = raw_mes.strip()
 
     # 判断是否开启成长曲线或最佳, 并且去除
-    is_curve = False
     is_group = False
-    if '成长曲线' in msg or '曲线' in msg:
-        is_curve = True
-        msg = msg.replace('成长曲线', '').replace('曲线', '')
     if '队伍' in msg or '队伍伤害' in msg:
         is_group = True
         msg = msg.replace('队伍', '').replace('伤害', '').strip()
@@ -101,7 +97,7 @@ async def draw_enka_img(
         logger.info('[查询角色] 绘图失败, 替换的武器不正确!')
         return char
 
-    im = await draw_char_img(char, url, is_curve)
+    im = await draw_char_img(char, url)
     logger.info('[查询角色] 绘图完成,等待发送...')
     return im
 

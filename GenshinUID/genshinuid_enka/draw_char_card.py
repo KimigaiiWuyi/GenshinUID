@@ -4,7 +4,6 @@ from PIL import Image, ImageDraw
 
 from .mono.Character import Character
 from .dmg_calc.dmg_calc import draw_dmg_img
-from .draw_char_curve import draw_char_curve_card
 from .etc.etc import TEXT_PATH, get_all_artifacts_value
 from ..utils.fonts.genshin_fonts import gs_font_18, gs_font_50
 from .draw_normal import (
@@ -20,10 +19,7 @@ async def draw_char_img(
     charUrl: Optional[str] = None,
     is_curve: bool = False,
 ) -> Union[str, Tuple[Image.Image, Optional[bytes]]]:
-    if is_curve:
-        res = await draw_char_curve_card(char, charUrl)
-    else:
-        res = await draw_char_card(char, charUrl)
+    res = await draw_char_card(char, charUrl)
     return res, char.char_bytes
 
 

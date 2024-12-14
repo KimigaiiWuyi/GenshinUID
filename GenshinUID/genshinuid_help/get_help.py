@@ -54,7 +54,7 @@ async def get_core_help() -> Union[bytes, str]:
         help_bg=BG,
         icon_path=ICON_PATH,
         footer=get_footer(),
-        column=5,
+        column=column,
         item_bg=ITEM_BG,
         enable_cache=True,
     )

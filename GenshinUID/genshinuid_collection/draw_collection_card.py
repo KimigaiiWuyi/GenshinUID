@@ -41,6 +41,7 @@ async def get_explore_data(
         '雷神瞳': raw_data['stats']['electroculus_number'],
         '草神瞳': raw_data['stats']['dendroculus_number'],
         '水神瞳': raw_data['stats']['hydroculus_number'],
+        '火神瞳': raw_data['stats']['pyroculus_number'],
     }
     for i in raw_data['world_explorations']:
         data[i['name']] = i['exploration_percentage']

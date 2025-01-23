@@ -1,6 +1,7 @@
 from typing import Optional
 
 from gsuid_core.logger import logger
+from gsuid_core.utils.error_reply import CK_HINT
 from gsuid_core.utils.database.models import GsPush, GsUser
 
 from .gs_config import gsconfig
@@ -56,6 +57,8 @@ async def set_config_func(
         logger.info(
             f'uid: {uid}, option: {option}, config_name: {config_name}'
         )
+        if not await GsUser.data_exist(**{'uid': uid}):
+            return CK_HINT
         if config_name in PRIV_MAP:
             # 执行设置
             await GsUser.update_data_by_uid(

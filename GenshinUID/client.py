@@ -361,8 +361,8 @@ def to_json(msg: list, name: str, uin: str):
 
 
 def store_file(path: Path, file: str):
-    file_content = base64.b64decode(file).decode()
-    with open(path, 'w') as f:
+    file_content = base64.b64decode(file)
+    with open(path, 'wb') as f:
         f.write(file_content)
 
 

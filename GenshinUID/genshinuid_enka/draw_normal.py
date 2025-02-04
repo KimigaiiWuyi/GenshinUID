@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageChops
 from .mono.Character import Character
 from ..genshinuid_config.gs_config import gsconfig
 from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
+from ..utils.map.GS_MAP_PATH import CharId2TalentIcon_data
 from .etc.etc import TEXT_PATH, strLenth, get_artifacts_value
 from ..utils.image.image_tools import (
     CustomizeImage,
@@ -56,9 +57,13 @@ async def get_char_card_base(char: Character) -> Image.Image:
         if talent_num + 1 <= len(card_prop['talentList']):
             talent = card_prop['talentList'][talent_num]
             try:
-                talent_img = Image.open(
-                    ICON_PATH / '{}.png'.format(talent['talentIcon'])
-                )
+                if char.char_id in CharId2TalentIcon_data:
+                    icon_name = CharId2TalentIcon_data[char.char_id][
+                        talent_num
+                    ]
+                else:
+                    icon_name = talent['talentIcon']
+                talent_img = Image.open(ICON_PATH / f'{icon_name}.png')
             except Exception:
                 talent_img = Image.open(
                     ICON_PATH / 'UI_Talent_S_Kazuha_02.png'

@@ -19,6 +19,7 @@ from gsuid_core.utils.api.hakush.request import (  # noqa: E402
 )
 
 from GenshinUID.utils.map.GS_MAP_PATH import (  # noqa: E402
+    CharId2TalentIcon_fileName,
     mysData_fileName,
     charList_fileName,
     enName2Id_fileName,
@@ -559,11 +560,32 @@ async def save_all_char_data():
             json.dump(rdata, f, ensure_ascii=False)
 
 
+async def save_char_talent_num():
+    print('正在执行save_char_talent_num')
+    with open(MAP_PATH / charList_fileName, 'r', encoding='UTF-8') as f:
+        charList = json.load(f)
+
+    result = {}
+    for i in charList:
+        with open(CHAR_PATH / f'{i}.json', 'r', encoding='UTF-8') as f:
+            data = json.load(f)
+        try:
+            result[i] = [i['icon'] for i in data['constellation'].values()]
+        except:  # noqa: E722
+            print(i)
+
+    with open(
+        MAP_PATH / CharId2TalentIcon_fileName, 'w', encoding='UTF-8'
+    ) as f:
+        json.dump(result, f, ensure_ascii=False)
+
+
 async def main():
-    # await download_new_file()
+    '''
+    await download_new_file()
     await restore_mysData()
     await restore_hakush_data()
-    # await monster2map()
+    await monster2map()
     global raw_data
     try:
         with open(DATA_PATH / 'TextMapCHS.json', 'r', encoding='UTF-8') as f:
@@ -581,6 +603,8 @@ async def main():
     await avatarId2SkillGroupList()
     await save_all_weapon_data()
     await save_all_char_data()
+    '''
+    await save_char_talent_num()
 
 
 asyncio.run(main())

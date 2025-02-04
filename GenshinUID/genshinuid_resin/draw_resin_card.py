@@ -21,8 +21,11 @@ from ..utils.image.convert import convert_img
 from ..genshinuid_config.gs_config import gsconfig
 from ..genshinuid_enka.to_data import get_enka_info
 from ..utils.resource.download_url import download_file
-from ..utils.api.mys.models import FakeResin, DayilyTask
 from ..utils.api.mys.models import Expedition as WidgetExpedition
+from ..utils.api.mys.models import (
+    FakeResin,
+    DayilyTask,
+)
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH, CHAR_SIDE_TEMP_PATH
 from ..utils.api.mys.models import (
     Transformer,

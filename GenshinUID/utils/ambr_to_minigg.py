@@ -179,7 +179,7 @@ async def convert_exist_data_to_char(
 
 
 async def convert_ambr_to_weapon(
-    weapon_id: Union[int, str]
+    weapon_id: Union[int, str],
 ) -> Optional[ConvertWeapon]:
     path = WEAPON_DATA_PATH / f'{weapon_id}.json'
     if path.exists():
@@ -256,7 +256,7 @@ async def convert_ambr_to_minigg(
 
 
 async def convert_ambr_to_talent(
-    char_id: Union[str, int]
+    char_id: Union[str, int],
 ) -> Optional[CharacterTalents]:
     raw_data = await get_ambr_char_data(char_id)
     if raw_data is None:

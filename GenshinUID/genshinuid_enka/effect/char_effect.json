@@ -1,4 +1,46 @@
 {
+  "梦见月瑞希": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": "elementalMastery+100"
+      },
+      "fight_talent": {
+        "1": "扩散:addDmg+1100%elementalMastery",
+        "2": "CryoDmgBonus+0.04%elementalMastery;HydroDmgBonus+0.04%elementalMastery;PyroDmgBonus+0.04%elementalMastery;ElectroDmgBonus+0.04%elementalMastery",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "CryoDmgBonus+0.04%elementalMastery;HydroDmgBonus+0.04%elementalMastery;PyroDmgBonus+0.04%elementalMastery;ElectroDmgBonus+0.04%elementalMastery",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
   "旅行者(水)": {
     "normal": {
       "normal_skill": {

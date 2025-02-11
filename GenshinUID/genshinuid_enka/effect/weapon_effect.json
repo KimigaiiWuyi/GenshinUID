@@ -1,4 +1,66 @@
 {
+  "寝正月初晴": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+248",
+        "2": "elementalMastery+310",
+        "3": "elementalMastery+372",
+        "4": "elementalMastery+434",
+        "5": "elementalMastery+496"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 10,
+      "extra": {
+        
+      }
+    }
+  },
+  "且住亭御咄": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+20",
+        "2": "addAtk+25",
+        "3": "addAtk+30",
+        "4": "addAtk+35",
+        "5": "addAtk+40"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 10,
+      "extra": {
+        
+      }
+    }
+  },
   "焚曜千阳": {
     "normal": {
       "normal_effect": {

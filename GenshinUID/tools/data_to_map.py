@@ -581,7 +581,6 @@ async def save_char_talent_num():
 
 
 async def main():
-    '''
     await download_new_file()
     await restore_mysData()
     await restore_hakush_data()
@@ -603,7 +602,6 @@ async def main():
     await avatarId2SkillGroupList()
     await save_all_weapon_data()
     await save_all_char_data()
-    '''
     await save_char_talent_num()
 
 

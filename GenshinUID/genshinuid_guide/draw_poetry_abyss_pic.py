@@ -36,7 +36,7 @@ def is_current_time_in_range(start_time: str, end_time: str) -> bool:
     return start_datetime <= current_datetime <= end_datetime
 
 
-async def draw_poetry_abyss_image():
+async def draw_poetry_abyss_image(v: str):
     data = await hakush_api.get_hakush_rolecombats()
     if isinstance(data, int):
         return get_error(data)
@@ -47,7 +47,14 @@ async def draw_poetry_abyss_image():
         begin = item['begin']
         end = item['end']
         if is_current_time_in_range(begin, end):
-            poetry_id = _id
+            if '下' in v:
+                poetry_id = str(int(_id) + 1)
+                if poetry_id not in data:
+                    return (
+                        '没有找到下期的阵容, 可能暂未更新, 请尝试查找当期阵容!'
+                    )
+            else:
+                poetry_id = _id
             break
     else:
         return '没有找到当前的活动!'

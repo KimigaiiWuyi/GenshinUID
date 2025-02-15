@@ -62,7 +62,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
 
 @sv_poetry_abyss_review.on_command(('剧诗版本深渊', '剧诗深渊阵容'))
 async def send_poetry_abyss_review(bot: Bot, ev: Event):
-    im = await draw_poetry_abyss_image()
+    im = await draw_poetry_abyss_image(ev.text.strip())
     logger.info('[剧诗版本深渊] 获得深渊信息成功！')
     await bot.send(im)
 

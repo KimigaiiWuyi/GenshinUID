@@ -6,6 +6,7 @@ from gsuid_core.utils.api.mys.models import DailyNoteData
 from gsuid_core.utils.database.models import GsPush, GsUser
 
 from ..utils.mys_api import mys_api
+from ..utils.api.mys.models import WidgetResin
 from ..genshinuid_config.gs_config import gsconfig
 
 MR_NOTICE = '\n✅可发送[mr]或者[每日]来查看更多信息！\n'
@@ -25,7 +26,14 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
         for user in user_list:
             if user.uid is None:
                 continue
-            raw_data = await mys_api.get_daily_data(user.uid)
+
+            # 请求小组件源 或是战绩源
+            use_widget = gsconfig.get_config('WidgetResin').data
+            if use_widget:
+                raw_data = await mys_api.get_widget_resin_data(user.uid)
+            else:
+                raw_data = await mys_api.get_daily_data(user.uid)
+
             if isinstance(raw_data, int):
                 logger.error(
                     f'[推送提醒] 获取{user.uid}的数据失败!错误代码为: {raw_data}'
@@ -48,7 +56,7 @@ async def get_notice_list() -> Dict[str, Dict[str, Dict]]:
 
 async def all_check(
     bot_id: str,
-    raw_data: DailyNoteData,
+    raw_data: Union[DailyNoteData, WidgetResin],
     push_data: Dict,
     msg_dict: Dict[str, Dict[str, Dict]],
     user_id: str,
@@ -112,7 +120,7 @@ async def all_check(
 
 async def check(
     mode: str,
-    data: DailyNoteData,
+    data: Union[DailyNoteData, WidgetResin],
     limit: int,
 ) -> Union[bool, int]:
     if mode == 'coin':
@@ -132,16 +140,25 @@ async def check(
     if mode == 'go':
         for i in data['expeditions']:
             if i['status'] == 'Ongoing':
-                if int(i['remained_time']) <= limit * 60:
+                if (
+                    'remained_time' in i
+                    and int(i['remained_time']) <= limit * 60
+                ):
                     return True
             else:
                 return True
         return False
     if mode == 'transform':
-        if data['transformer']['obtained']:
-            time = data['transformer']['recovery_time']
-            time_min = (time['Day'] * 24 + time['Hour']) * 60 + time['Minute']
-            if time_min <= limit:
-                return True
-        return False
+        if 'transformer' in data:
+            if data['transformer']['obtained']:
+                time = data['transformer']['recovery_time']
+                time_min = (time['Day'] * 24 + time['Hour']) * 60 + time[
+                    'Minute'
+                ]
+                if time_min <= limit:
+                    return True
+            return False
+        else:
+            logger.warning('[推送提醒] 小组件源不存在质变仪数据...')
+            return False
     return False

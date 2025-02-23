@@ -345,6 +345,8 @@ async def get_all_message(bot: Bot, ev: Event):
     pm = 6
     msg_id = ''
 
+    dc_attachments = ''
+
     # qqguild
     if bot.adapter.get_name() == 'QQ':
         sp_bot_id = 'qqguild'
@@ -655,6 +657,7 @@ async def get_all_message(bot: Bot, ev: Event):
                 'avatar': 'https://cdn.discordapp.com/avatars/'
                 f'{user_id}/{ev.author.avatar}',
             }
+            dc_attachments = ev.attachments
         elif isinstance(ev, DirectMessageCreateEvent):
             msg_id = str(ev.message_id)
             user_type = 'direct'
@@ -664,6 +667,7 @@ async def get_all_message(bot: Bot, ev: Event):
                 'avatar': 'https://cdn.discordapp.com/avatars/'
                 f'{user_id}/{ev.author.avatar}',
             }
+            dc_attachments = ev.attachments
         else:
             logger.debug('[gsuid] 不支持该 Discord 事件...')
             return
@@ -712,6 +716,17 @@ async def get_all_message(bot: Bot, ev: Event):
     # 处理消息
     for index, _msg in enumerate(messages):
         message = await convert_message(_msg, message, index, bot)
+
+    # 处理 Discord 消息中的图片类附件
+    if dc_attachments:
+        from nonebot.adapters.discord.api import UNSET
+
+        for dc_attachment in dc_attachments:
+            if (
+                dc_attachment.content_type is not UNSET
+                and 'image' in dc_attachment.content_type
+            ):
+                message.append(Message('image', dc_attachment.url))
 
     if not message:
         return

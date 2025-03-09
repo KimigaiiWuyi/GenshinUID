@@ -15,6 +15,7 @@ from ...genshinuid_config.gs_config import gsconfig
 from ..fonts.genshin_fonts import gs_font_32, gs_font_36
 from ..resource.RESOURCE_PATH import CHAR_PATH, CU_BG_PATH, TEXT2D_PATH
 
+ICON = Path(__file__).parent.parent.parent.parent / 'ICON.png'
 FETTER_PATH = TEXT2D_PATH / 'fetter'
 TALENT_PATH = TEXT2D_PATH / 'talent'
 WEAPON_BG_PATH = TEXT2D_PATH / 'weapon'
@@ -32,6 +33,10 @@ if list(CU_BG_PATH.iterdir()) != []:
     bg_path = CU_BG_PATH
 else:
     bg_path = NM_BG_PATH
+
+
+def get_ICON():
+    return Image.open(ICON)
 
 
 def get_v4_bg(w: int, h: int):

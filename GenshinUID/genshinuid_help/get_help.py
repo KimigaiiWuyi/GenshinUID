@@ -12,9 +12,8 @@ from gsuid_core.help.draw_new_plugin_help import get_new_help
 from ..genshinuid_config.gs_config import gsconfig
 from ..version import Genshin_version, GenshinUID_version
 from ..utils.fonts.genshin_fonts import genshin_font_origin
-from ..utils.image.image_tools import get_footer, get_color_bg
+from ..utils.image.image_tools import get_ICON, get_footer, get_color_bg
 
-ICON = Path(__file__).parent.parent.parent / 'ICON.png'
 TEXT_PATH = Path(__file__).parent / 'texture2d'
 HELP_DATA = Path(__file__).parent / 'help.json'
 ICON_PATH = Path(__file__).parent / 'icon_path'
@@ -44,7 +43,7 @@ async def get_core_help() -> Union[bytes, str]:
     return await get_new_help(
         plugin_name='GenshinUID',
         plugin_info={f'v{GenshinUID_version}': ''},
-        plugin_icon=Image.open(ICON),
+        plugin_icon=get_ICON(),
         plugin_help=await get_help_data(),
         plugin_prefix=get_plugin_available_prefix('GenshinUID'),
         help_mode='dark',

@@ -8,7 +8,7 @@ ci:
   autoupdate_commit_msg: "⬆️ `pre-commit-ci`自动升级"
 repos:
   - repo: https://github.com/pycqa/isort
-    rev: 6.0.0
+    rev: 6.0.1
     hooks:
       - id: isort
 
@@ -18,7 +18,7 @@ repos:
       - id: black
 
   - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
+    rev: 7.1.2
     hooks:
       - id: flake8
 

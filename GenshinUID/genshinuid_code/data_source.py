@@ -9,20 +9,21 @@ from gsuid_core.utils.api.mys.api import BBS_URL
 
 TZ = timezone(timedelta(hours=8))
 
-
-MYJ = (
-    f'{BBS_URL}/painter/api/user_instant/list?offset=0&size=20&uid=75276550',
-)  # 米游姬个人中心
+# 原神个人中心
+YS = f'{BBS_URL}/painter/api/user_instant/list?offset=0&size=20&uid=75276539'
+# 米游姬个人中心
+MYJ = f'{BBS_URL}/painter/api/user_instant/list?offset=0&size=20&uid=75276550'
 
 url = {
-    'act_id': MYJ,
+    'act_id_1': YS,
+    'act_id_2': MYJ,
     'index': 'https://api-takumi.mihoyo.com/event/miyolive/index',
     'code': 'https://api-takumi-static.mihoyo.com/event/miyolive/refreshCode',
 }
 
 
 async def get_data(
-    type: Literal['index', 'code', 'act_id'],
+    type: Literal['index', 'code', 'act_id_1', 'act_id_2'],
     data: dict = {},
 ) -> dict:
     '''米哈游接口请求'''
@@ -49,10 +50,10 @@ async def get_data(
             return {'error': f'[{e.__class__.__name__}] {type} 接口请求错误'}
 
 
-async def get_act_id() -> str:
+async def get_act_id(id: Literal['1', '2']) -> str:
     '''获取 ``act_id``'''
 
-    ret = await get_data('act_id')
+    ret = await get_data('act_id_' + str(id))  # type: ignore
     if ret.get('error') or ret.get('retcode') != 0:
         return ''
 
@@ -67,7 +68,10 @@ async def get_act_id() -> str:
         shit = json.loads(post['structured_content'])
         for segment in shit:
             link = segment.get('attributes', {}).get('link', '')
-            if '观看' in segment.get('insert', '') and link:
+            if (
+                '观看' in segment.get('insert', '')
+                or '米游社直播间' in segment.get('insert', '')
+            ) and link:
                 matched = findall(r'act_id=(.*?)\&', link)
                 if matched:
                     act_id = matched[0]
@@ -123,9 +127,11 @@ async def get_code(version: str, act_id: str) -> Union[dict, List[dict]]:
 async def get_code_msg() -> str:
     '''生成最新前瞻直播兑换码消息'''
 
-    act_id = await get_act_id()
+    act_id = await get_act_id("1")
     if not act_id:
-        return '暂无前瞻直播资讯！'
+        act_id = await get_act_id("2")
+        if not act_id:
+            return '暂无前瞻直播资讯！'
 
     live_data = await get_live_data(act_id)
     if live_data.get('error'):

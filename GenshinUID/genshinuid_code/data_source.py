@@ -68,7 +68,10 @@ async def get_act_id(id: Literal['1', '2']) -> str:
         shit = json.loads(post['structured_content'])
         for segment in shit:
             link = segment.get('attributes', {}).get('link', '')
-            if ('观看' in segment.get('insert', '') or '米游社直播间' in segment.get('insert', '')) and link:
+            if (
+                '观看' in segment.get('insert', '')
+                or '米游社直播间' in segment.get('insert', '')
+            ) and link:
                 matched = findall(r'act_id=(.*?)\&', link)
                 if matched:
                     act_id = matched[0]

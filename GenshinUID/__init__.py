@@ -25,8 +25,8 @@ from .client import GsClient, driver  # noqa:E402
 from .auto_install import start, install  # noqa:E402
 from .models import Message, MessageReceive  # noqa:E402
 
-get_message = on_message(priority=999)
-get_notice = on_notice(priority=999)
+get_message = on_message(priority=0)
+get_notice = on_notice(priority=0)
 get_tn = on('inline')
 install_core = on_fullmatch(
     'gs一键安装',

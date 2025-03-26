@@ -391,6 +391,9 @@ async def main():
         try:
             talent_data = await convert_ambr_to_talent(char_id)
         except Exception as e:
+            import traceback
+
+            traceback.print_exc()
             print(e)
             continue
 

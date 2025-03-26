@@ -1,4 +1,32 @@
 {
+  "长夜之誓": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "C:dmgBonus+25",
+      "4": "C:dmgBonus+75"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "深廊终曲": {
+    "normal_effect": {
+      "2": "",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "CryoDmgBonus+15",
+      "4": "AQ:dmgBonus+60"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "黑曜秘典": {
     "normal_effect": {
       "2": "",

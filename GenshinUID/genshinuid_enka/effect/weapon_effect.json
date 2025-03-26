@@ -1,4 +1,35 @@
 {
+  "溢彩心念": {
+    "normal": {
+      "normal_effect": {
+        "1": "addAtk+28",
+        "2": "addAtk+35",
+        "3": "addAtk+42",
+        "4": "addAtk+49",
+        "5": "addAtk+56"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "C:dmgBonus+68",
+        "2": "C:dmgBonus+85",
+        "3": "C:dmgBonus+102",
+        "4": "C:dmgBonus+119",
+        "5": "C:dmgBonus+136"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 10,
+      "extra": {
+        
+      }
+    }
+  },
   "寝正月初晴": {
     "normal": {
       "normal_effect": {

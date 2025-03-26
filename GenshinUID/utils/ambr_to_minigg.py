@@ -263,7 +263,7 @@ async def convert_ambr_to_talent(
         return
     talent_data = raw_data['talent']
     result = {}
-    if '7' in talent_data:
+    if '7' in talent_data and char_id not in ['10000111', '10000110']:
         num = ['0', '1', '4']
     else:
         num = ['0', '1', '3']
@@ -278,7 +278,7 @@ async def convert_ambr_to_talent(
         }
         label_str = ''
         for label in talent_data[i]['promote']['1']['description']:
-            if label:
+            if label and isinstance(label, str):
                 label_str += label
                 result[f'combat{index+1}']['attributes']['labels'].append(
                     label
@@ -320,5 +320,4 @@ async def convert_ambr_to_talent(
                 result[f'combat{index+1}']['attributes']['parameters'][
                     para
                 ].append(talent_data[i]['promote'][level]['params'][ig])
-    return cast(CharacterTalents, result)
     return cast(CharacterTalents, result)

@@ -279,7 +279,10 @@ async def avatarId2NameJson() -> None:
 
     temp = {}
     for i in avatar_data:
-        temp[str(i['id'])] = raw_data[str(i['nameTextMapHash'])]
+        char_name = raw_data[str(i['nameTextMapHash'])]
+        if '试用' in char_name:
+            continue
+        temp[str(i['id'])] = char_name
 
     for _id in BETA_CHAR:
         temp[_id] = BETA_CHAR[_id]
@@ -582,7 +585,7 @@ async def save_char_talent_num():
 
 async def main():
     # await download_new_file()
-    # await restore_mysData()
+    await restore_mysData()
     await restore_hakush_data()
     await monster2map()
     global raw_data

@@ -36,7 +36,7 @@ async def get_month_and_time(time_data: str) -> List:
     if '永久开放' in time_data:
         month = time_data[:5]
         time = '永久开放'
-    if '更新后' in time_data or '版本' in time_data:
+    if '更新后' in time_data or '版本' in time_data or '版更' in time_data:
         month = time_data[:5]
         time = '更新后'
     else:
@@ -92,7 +92,12 @@ class DrawEventList:
                 r'(</span></p><p><span>|</t>)',
                 desc,
             )
-            if desc_content:
+            if (
+                desc_content
+                and desc_content[0]
+                and len(desc_content[0]) > 2
+                and desc_content[0][2]
+            ):
                 start_time = desc_content[0][2]
 
             event_data['full_name'] = event_list[event]['nameFull']['CHS']

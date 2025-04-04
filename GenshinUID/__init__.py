@@ -671,15 +671,21 @@ async def get_all_message(bot: Bot, ev: Event):
         # 处理 Discord 消息中的附件
         if ev.attachments:
             from nonebot.adapters.discord.api import UNSET
+            from nonebot.adapters.discord.utils import model_dump
 
-            for dc_attachment in ev.attachments:
-                if (content_type := dc_attachment.content_type) is not UNSET:
-                    message.append(
-                        Message(
-                            'image' if 'image' in content_type else 'file',
-                            dc_attachment,
-                        )
-                    )
+            message.extend(
+                Message(
+                    (
+                        'image'
+                        if (content_type := dc_attachment.content_type)
+                        is not UNSET
+                        and 'image' in content_type
+                        else 'attachment'
+                    ),
+                    model_dump(dc_attachment, exclude_unset=True),
+                )
+                for dc_attachment in ev.attachments
+            )
     elif bot.adapter.get_name() == 'DoDo':
         from nonebot.adapters.dodo import (
             ChannelMessageEvent,

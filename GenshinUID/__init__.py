@@ -345,8 +345,6 @@ async def get_all_message(bot: Bot, ev: Event):
     pm = 6
     msg_id = ''
 
-    dc_attachments = ''
-
     # qqguild
     if bot.adapter.get_name() == 'QQ':
         sp_bot_id = 'qqguild'
@@ -671,15 +669,15 @@ async def get_all_message(bot: Bot, ev: Event):
             return
 
         # 处理 Discord 消息中的附件
-        if dc_attachments := ev.attachments:
+        if ev.attachments:
             from nonebot.adapters.discord.api import UNSET
 
-            for dc_attachment in dc_attachments:
+            for dc_attachment in ev.attachments:
                 if (content_type := dc_attachment.content_type) is not UNSET:
                     message.append(
                         Message(
                             'image' if 'image' in content_type else 'file',
-                            dc_attachment.url,
+                            dc_attachment,
                         )
                     )
     elif bot.adapter.get_name() == 'DoDo':

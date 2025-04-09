@@ -22,22 +22,11 @@ require('nonebot_plugin_apscheduler')
 from nonebot_plugin_apscheduler import scheduler  # noqa:E402
 
 from .client import GsClient, driver  # noqa:E402
-from .auto_install import start, install  # noqa:E402
 from .models import Message, MessageReceive  # noqa:E402
 
 get_message = on_message(priority=0)
 get_notice = on_notice(priority=0)
 get_tn = on('inline')
-install_core = on_fullmatch(
-    'gs一键安装',
-    permission=SUPERUSER,
-    block=True,
-)
-start_core = on_fullmatch(
-    '启动core',
-    permission=SUPERUSER,
-    block=True,
-)
 connect_core = on_fullmatch(
     ('连接core', '链接core'),
     permission=SUPERUSER,
@@ -54,6 +43,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 gsclient: Optional[GsClient] = None
+is_connecting = False
 command_start = deepcopy(driver.config.command_start)
 command_start.discard('')
 msg_id_cache = OrderedDict()
@@ -325,8 +315,14 @@ async def get_notice_message(bot: Bot, ev: Event):
 
 @get_message.handle()
 async def get_all_message(bot: Bot, ev: Event):
-    if gsclient is None:
+    global is_connecting
+    if is_connecting:
+        return
+
+    if gsclient is None and is_connecting is False:
+        is_connecting = True
         return await connect()
+
     try:
         await gsclient.ws.ping()
     except ConnectionClosed:
@@ -730,21 +726,10 @@ async def get_all_message(bot: Bot, ev: Event):
     await gsclient._input(msg)
 
 
-@install_core.handle()
-async def send_install_msg(matcher: Matcher):
-    await matcher.send('即将开始安装...会持续一段时间, 且期间无法使用Bot!')
-    await matcher.send(await install())
-
-
 @connect_core.handle()
 async def send_connect_msg(matcher: Matcher):
     await connect()
     await matcher.send('链接成功！')
-
-
-@start_core.handle()
-async def send_start_msg(matcher: Matcher):
-    await matcher.send(await start())
 
 
 @driver.on_bot_connect
@@ -756,9 +741,12 @@ async def start_client():
 async def connect():
     global gsclient
     try:
+        await asyncio.sleep(2)
         gsclient = await GsClient().async_connect()
         await gsclient.start()
     except ConnectionRefusedError:
+        global is_connecting
+        is_connecting = False
         logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
 
 

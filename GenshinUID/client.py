@@ -5,6 +5,7 @@ import uuid
 import base64
 import asyncio
 from pathlib import Path
+from asyncio import CancelledError
 from collections import OrderedDict
 from typing import Dict, List, Union, Optional
 
@@ -312,6 +313,10 @@ class GsClient:
                             )
                 except Exception as e:
                     logger.exception(e)
+        except CancelledError:
+            logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
+        except KeyboardInterrupt:
+            logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
         except RuntimeError as e:
             logger.error(e)
         except ConnectionClosedError:
@@ -331,10 +336,13 @@ class GsClient:
         await self.msg_list.put(msg)
 
     async def send_msg(self):
-        while True:
-            msg: MessageReceive = await self.msg_list.get()
-            msg_send = msgjson.encode(msg)
-            await self.ws.send(msg_send)
+        try:
+            while True:
+                msg: MessageReceive = await self.msg_list.get()
+                msg_send = msgjson.encode(msg)
+                await self.ws.send(msg_send)
+        except CancelledError:
+            logger.warning(f'与[gsuid-core]断开连接! Bot_ID: {BOT_ID}')
 
     async def start(self):
         recv_task = asyncio.create_task(self.recv_msg())

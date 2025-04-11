@@ -255,6 +255,10 @@ async def _draw_explore(raw_data: IndexData):
     )
 
     for index, world in enumerate(worlds):
+        if world['name'] == '远古圣山':
+            icon_ = 'community-game-records/images/world-logo-16.1c751ac9.png'
+            world['icon'] = f'https://webstatic.mihoyo.com/app/{icon_}'
+
         icon = await get_image(world['icon'], ICON_PATH)
         icon = icon.resize((150, 150)).convert('RGBA')
 

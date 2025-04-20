@@ -24,8 +24,8 @@ from nonebot_plugin_apscheduler import scheduler  # noqa:E402
 from .client import GsClient, driver  # noqa:E402
 from .models import Message, MessageReceive  # noqa:E402
 
-get_message = on_message(priority=0)
-get_notice = on_notice(priority=0)
+get_message = on_message(priority=0, block=False)
+get_notice = on_notice(priority=0, block=False)
 get_tn = on('inline')
 connect_core = on_fullmatch(
     ('连接core', '链接core'),

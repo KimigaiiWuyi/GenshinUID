@@ -325,7 +325,9 @@ async def save_char_info(bot: Bot, ev: Event):
             return await bot.send_option(
                 f'保存成功!你可以使用[查询{save_name}]调用该面板!',
                 [
-                    Button(f'✅查询{save_name}', f'{gs_prefix}查询{save_name}'),
+                    Button(
+                        f'✅查询{save_name}', f'{gs_prefix}查询{save_name}'
+                    ),
                     Button('💖刷新面板', f'{gs_prefix}刷新面板'),
                 ],
             )
@@ -348,7 +350,9 @@ async def send_card_info(bot: Bot, ev: Event):
 
     if isinstance(im, Tuple):
         buttons = [
-            Button(f'✅查询{i["avatarName"]}', f'{gs_prefix}查询{i["avatarName"]}')
+            Button(
+                f'✅查询{i["avatarName"]}', f'{gs_prefix}查询{i["avatarName"]}'
+            )
             for i in im[1][:8]
         ]
         buttons.append(Button('📦圣遗物仓库', f'{gs_prefix}圣遗物仓库'))

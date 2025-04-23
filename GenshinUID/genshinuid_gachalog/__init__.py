@@ -49,8 +49,12 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     im = await draw_gachalogs_img(uid, ev)
     a = Button('🔁刷新抽卡记录', f'{gs_prefix}刷新抽卡记录')
-    b = Button('🔜导出抽卡记录至提瓦特小助手', f'{gs_prefix}导出抽卡记录到小助手')
-    c = Button('🔙从提瓦特小助手导入抽卡记录', f'{gs_prefix}从小助手导入抽卡记录')
+    b = Button(
+        '🔜导出抽卡记录至提瓦特小助手', f'{gs_prefix}导出抽卡记录到小助手'
+    )
+    c = Button(
+        '🔙从提瓦特小助手导入抽卡记录', f'{gs_prefix}从小助手导入抽卡记录'
+    )
     await bot.send_option(im, [[a], [b], [c]])
 
 
@@ -81,7 +85,9 @@ async def send_full_refresh_gacha_info(bot: Bot, ev: Event):
         f'UID{uid}开始执行[全量刷新抽卡记录],需要一定时间...请勿重复触发！'
     )
     im = await get_full_gachalog(uid)
-    return await bot.send_option(im, [Button('🃏抽卡记录', f'{gs_prefix}抽卡记录')])
+    return await bot.send_option(
+        im, [Button('🃏抽卡记录', f'{gs_prefix}抽卡记录')]
+    )
 
 
 @sv_export_gacha_log.on_fullmatch(('导出抽卡记录'))

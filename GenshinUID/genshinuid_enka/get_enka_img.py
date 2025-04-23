@@ -137,7 +137,9 @@ async def get_showcase(uid: str) -> Union[bytes, str]:
         if '\u4e00' <= file_name[0] <= '\u9fff':
             char_list.append(file_name.split('.')[0])
     if char_list == []:
-        return f'您还没有已缓存的角色噢~\n请先使用[{gs_prefix}强制刷新]命令缓存~'
+        return (
+            f'您还没有已缓存的角色噢~\n请先使用[{gs_prefix}强制刷新]命令缓存~'
+        )
     img = await draw_enka_card(uid=uid, char_list=char_list)
     return img
 

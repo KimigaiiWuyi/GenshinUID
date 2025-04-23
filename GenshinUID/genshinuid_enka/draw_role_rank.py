@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 
 from ..utils.colors import get_color
+from ..utils.prefix import gs_prefix
 from .draw_rank_list import RANK_TEXT
 from .get_akasha_data import _get_rank
 from ..utils.api.cv.request import _CvApi
@@ -53,7 +54,7 @@ async def draw_role_rank_img(
         if isinstance(rank_data, str):
             return rank_data
         if char_id not in rank_data:
-            return f'你还暂无{char_name}的数据, 请先[强制刷新]...'
+            return f'你还暂无{char_name}的数据, 请先[{gs_prefix}强制刷新]...'
 
         fit = rank_data[char_id]['calculations']['fit']
         calculation_id = fit['calculationId']

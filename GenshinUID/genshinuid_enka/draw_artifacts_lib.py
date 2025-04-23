@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.models import Event
 
 from .etc.etc import TEXT_PATH
+from ..utils.prefix import gs_prefix
 from .start import refresh_player_list
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import get_avatar
@@ -40,7 +41,7 @@ async def get_artifacts_lib_data(uid: str) -> Optional[Dict]:
 async def draw_lib(ev: Event, uid: str, num: int) -> Union[bytes, str]:
     data = await get_artifacts_lib_data(uid)
     if data is None:
-        return '你还没有圣遗物数据...请尝试使用[刷新圣遗物仓库]获取数据!'
+        return f'你还没有圣遗物数据...请尝试使用[{gs_prefix}刷新圣遗物仓库]获取数据!'
 
     all_list = [x for v in data['data'].values() for x in v]
     all_list.sort(key=lambda x: x['cv_score'], reverse=True)

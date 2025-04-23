@@ -9,6 +9,7 @@ from gsuid_core.utils.database.models import GsUser
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 from ..utils.mys_api import mys_api
+from ..utils.prefix import gs_prefix
 from ..genshinuid_config.gs_config import gsconfig
 
 private_msg_list = {}
@@ -86,7 +87,7 @@ async def sign_in(uid: str) -> str:
         else:
             # 重试超过阈值
             logger.warning('[签到] 超过请求阈值...')
-            return '签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到！'
+            return f'签到失败...出现验证码!\n请过段时间使用[{gs_prefix}签到]或由管理员[{gs_prefix}全部重签]或手动至米游社进行签到！'
     # 签到失败
     else:
         im = '签到失败!'

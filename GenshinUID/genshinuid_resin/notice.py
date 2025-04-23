@@ -6,10 +6,11 @@ from gsuid_core.utils.api.mys.models import DailyNoteData
 from gsuid_core.utils.database.models import GsPush, GsUser
 
 from ..utils.mys_api import mys_api
+from ..utils.prefix import gs_prefix
 from ..utils.api.mys.models import WidgetResin
 from ..genshinuid_config.gs_config import gsconfig
 
-MR_NOTICE = '\n✅可发送[mr]或者[每日]来查看更多信息！\n'
+MR_NOTICE = f'\n✅可发送[{gs_prefix}mr]或者[{gs_prefix}每日]来查看更多信息！\n'
 
 NOTICE = {
     'coin': '💰你的洞天宝钱快满啦！',

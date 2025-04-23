@@ -7,6 +7,7 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import CHAR_HINT
 
 from .to_card import draw_enka_card
+from ..utils.prefix import gs_prefix
 from .draw_char_card import draw_char_img
 from .draw_group_dmg import draw_group_dmg_img
 from .mono.Character import Character, get_char
@@ -136,7 +137,7 @@ async def get_showcase(uid: str) -> Union[bytes, str]:
         if '\u4e00' <= file_name[0] <= '\u9fff':
             char_list.append(file_name.split('.')[0])
     if char_list == []:
-        return '您还没有已缓存的角色噢~\n请先使用[强制刷新]命令缓存~'
+        return f'您还没有已缓存的角色噢~\n请先使用[{gs_prefix}强制刷新]命令缓存~'
     img = await draw_enka_card(uid=uid, char_list=char_list)
     return img
 

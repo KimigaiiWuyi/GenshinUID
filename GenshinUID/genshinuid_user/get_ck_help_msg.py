@@ -1,8 +1,8 @@
 from typing import List
-
+from ..utils.prefix import gs_prefix
 from gsuid_core.models import Message
 
-CK_QRCODE_LOGIN = '''先发送【绑定uidxxx】绑定UID,
+CK_QRCODE_LOGIN = f'''先发送【{gs_prefix}绑定uidxxx】绑定UID,
 然后发送【扫码登陆】, 使用米游社APP扫码完成绑定, 【[或者]】选择以下方法
 '''
 

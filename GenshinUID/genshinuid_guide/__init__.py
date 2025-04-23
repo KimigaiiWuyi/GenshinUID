@@ -9,6 +9,7 @@ from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 
 from .get_guide import get_gs_guide
+from ..utils.prefix import gs_prefix
 from ..version import Genshin_version
 
 # from .get_abyss_data import get_review
@@ -39,7 +40,7 @@ async def send_guide_pic(bot: Bot, ev: Event):
 
     if im:
         await bot.logger.info('获得{}攻略成功！'.format(name))
-        a = Button(f'🎴参考面板{name}', f'参考面板{name}')
+        a = Button(f'🎴参考面板{name}', f'{gs_prefix}参考面板{name}')
         await bot.send_option(im, [a])
     else:
         await bot.logger.warning('未找到{}攻略图片'.format(name))
@@ -55,7 +56,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
     if img.exists():
         img = await convert_img(img)
         await bot.logger.info('获得{}参考面板图片成功！'.format(name))
-        await bot.send_option(img, [Button(f'🎴{name}攻略', f'{name}攻略')])
+        await bot.send_option(img, [Button(f'🎴{name}攻略', f'{gs_prefix}{name}攻略')])
     else:
         await bot.logger.warning('未找到{}参考面板图片'.format(name))
 
@@ -87,7 +88,7 @@ async def send_abyss_review(bot: Bot, ev: Event):
     # im = await get_review(version)
 
     if isinstance(im, bytes):
-        c = Button('♾️深渊概览', '深渊概览')
+        c = Button('♾️深渊概览', f'{gs_prefix}深渊概览')
         input_version = float(version)
         now_version = float(Genshin_version[:-2])
         if input_version <= now_version:
@@ -95,7 +96,7 @@ async def send_abyss_review(bot: Bot, ev: Event):
             adv_version = f'{gv[0]}.{int(gv[1])+1}'
         else:
             adv_version = now_version
-        d = Button(f'♾️版本深渊{adv_version}', f'深渊概览{adv_version}')
+        d = Button(f'♾️版本深渊{adv_version}', f'{gs_prefix}深渊概览{adv_version}')
         await bot.send_option(im, [c, d])
     elif isinstance(im, List):
         mes = [MessageSegment.text(str(msg)) for msg in im]  # type: ignore

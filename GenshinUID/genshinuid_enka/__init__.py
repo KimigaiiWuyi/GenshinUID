@@ -14,6 +14,7 @@ from gsuid_core.utils.error_reply import UID_HINT
 from .to_data import switch_api
 from .to_card import enka_to_card
 from ..utils.convert import get_uid
+from ..utils.prefix import gs_prefix
 from .get_akasha_data import get_rank
 from .start import refresh_player_list
 from .to_data_by_mys import mys_to_card
@@ -60,8 +61,8 @@ async def send_rank_pic(bot: Bot, ev: Event):
     await bot.send_option(
         im,
         [
-            Button('♾️角色排名公子', '角色排名公子'),
-            Button('♾️圣遗物双爆排名', '圣遗物排名双爆'),
+            Button('♾️角色排名公子', f'{gs_prefix}角色排名公子'),
+            Button('♾️圣遗物双爆排名', f'{gs_prefix}圣遗物排名双爆'),
         ],
     )
 
@@ -73,10 +74,10 @@ async def send_role_rank_pic(bot: Bot, ev: Event):
     if not msg:
         return
     logger.info(f'[角色排行榜]角色: {msg}')
-    a = Button('💖排名列表', '排名列表')
-    b = Button(f'✅查询{msg}', f'查询{msg}')
-    c = Button(f'💖角色排名{msg}', f'角色排名{msg}')
-    d = Button('✅圣遗物排名', '圣遗物排名')
+    a = Button('💖排名列表', f'{gs_prefix}排名列表')
+    b = Button(f'✅查询{msg}', f'{gs_prefix}查询{msg}')
+    c = Button(f'💖角色排名{msg}', f'{gs_prefix}角色排名{msg}')
+    d = Button('✅圣遗物排名', f'{gs_prefix}圣遗物排名')
 
     im = await draw_role_rank_img(msg)
     await bot.send_option(im, [a, c, b, d])
@@ -89,10 +90,10 @@ async def send_my_role_rank_pic(bot: Bot, ev: Event):
     if not msg:
         return
     logger.info(f'[角色排名]角色: {msg}')
-    a = Button('💖排名列表', '排名列表')
-    b = Button(f'✅查询{msg}', f'查询{msg}')
-    c = Button(f'💖角色排行榜{msg}', f'角色排行榜{msg}')
-    d = Button('✅圣遗物排名', '圣遗物排名')
+    a = Button('💖排名列表', f'{gs_prefix}排名列表')
+    b = Button(f'✅查询{msg}', f'{gs_prefix}查询{msg}')
+    c = Button(f'💖角色排行榜{msg}', f'{gs_prefix}角色排行榜{msg}')
+    d = Button('✅圣遗物排名', f'{gs_prefix}圣遗物排名')
 
     msg = msg.replace('附近', '')
     # 获取uid
@@ -113,10 +114,10 @@ async def send_arti_rank_pic(bot: Bot, ev: Event):
     await bot.send_option(
         im,
         [
-            Button('♾️双爆排名', '圣遗物排名双爆'),
-            Button('♾️暴击率排名', '圣遗物排名暴击率'),
-            Button('♾️元素精通排名', '圣遗物排名元素精通'),
-            Button('♾️暴击伤害排名', '圣遗物排名暴击伤害'),
+            Button('♾️双爆排名', f'{gs_prefix}圣遗物排名双爆'),
+            Button('♾️暴击率排名', f'{gs_prefix}圣遗物排名暴击率'),
+            Button('♾️元素精通排名', f'{gs_prefix}圣遗物排名元素精通'),
+            Button('♾️暴击伤害排名', f'{gs_prefix}圣遗物排名暴击伤害'),
         ],
     )
 
@@ -162,10 +163,10 @@ async def send_aritifacts_list(bot: Bot, ev: Event):
     await bot.send_option(
         im,
         [
-            Button('♾️双爆排名', '圣遗物排名双爆'),
-            Button('♾️暴击率排名', '圣遗物排名暴击率'),
-            Button('♾️元素精通排名', '圣遗物排名元素精通'),
-            Button('♾️暴击伤害排名', '圣遗物排名暴击伤害'),
+            Button('♾️双爆排名', f'{gs_prefix}圣遗物排名双爆'),
+            Button('♾️暴击率排名', f'{gs_prefix}圣遗物排名暴击率'),
+            Button('♾️元素精通排名', f'{gs_prefix}圣遗物排名元素精通'),
+            Button('♾️暴击伤害排名', f'{gs_prefix}圣遗物排名暴击伤害'),
         ],
     )
 
@@ -199,10 +200,10 @@ async def send_char_info(bot: Bot, ev: Event):
         await bot.send_option(
             img,
             [
-                Button('🔄更换武器', f'查询{name}换'),
-                Button('⏫提高命座', f'查询六命{name}'),
-                Button('*️⃣保存面板', f'保存面板{name}为 '),
-                Button('🔀对比面板', f'对比面板 {name} '),
+                Button('🔄更换武器', f'{gs_prefix}查询{name}换'),
+                Button('⏫提高命座', f'{gs_prefix}查询六命{name}'),
+                Button('*️⃣保存面板', f'{gs_prefix}保存面板{name}为 '),
+                Button('🔀对比面板', f'{gs_prefix}对比面板 {name} '),
             ],
         )
         if im[1]:
@@ -324,8 +325,8 @@ async def save_char_info(bot: Bot, ev: Event):
             return await bot.send_option(
                 f'保存成功!你可以使用[查询{save_name}]调用该面板!',
                 [
-                    Button(f'✅查询{save_name}', f'查询{save_name}'),
-                    Button('💖刷新面板', '刷新面板'),
+                    Button(f'✅查询{save_name}', f'{gs_prefix}查询{save_name}'),
+                    Button('💖刷新面板', f'{gs_prefix}刷新面板'),
                 ],
             )
 
@@ -347,11 +348,11 @@ async def send_card_info(bot: Bot, ev: Event):
 
     if isinstance(im, Tuple):
         buttons = [
-            Button(f'✅查询{i["avatarName"]}', f'查询{i["avatarName"]}')
-            for i in im[1]
+            Button(f'✅查询{i["avatarName"]}', f'{gs_prefix}查询{i["avatarName"]}')
+            for i in im[1][:8]
         ]
-        buttons.append(Button('📦圣遗物仓库', '圣遗物仓库'))
-        buttons.append(Button('💖排名列表', '排名列表'))
+        buttons.append(Button('📦圣遗物仓库', f'{gs_prefix}圣遗物仓库'))
+        buttons.append(Button('💖排名列表', f'{gs_prefix}排名列表'))
         await bot.send_option(im[0], buttons)
     else:
         await bot.send(im)

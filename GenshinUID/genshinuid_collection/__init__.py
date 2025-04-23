@@ -5,6 +5,7 @@ from gsuid_core.message_models import Button
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
+from ..utils.prefix import gs_prefix
 from .draw_new_collection_card import draw_explore
 from .draw_collection_card import draw_explora_img, draw_collection_img
 
@@ -25,8 +26,8 @@ async def send_cp_info(bot: Bot, ev: Event):
     await bot.logger.info('[查询角色面板]uid: {}'.format(uid))
 
     im = await draw_explore(uid)
-    a = Button('🔍查询探索', '查询探索')
-    b = Button('🔍查询收集', '查询收集')
+    a = Button('🔍查询探索', f'{gs_prefix}查询探索')
+    b = Button('🔍查询收集', f'{gs_prefix}查询收集')
     await bot.send_option(im, [a, b])
 
 
@@ -41,8 +42,8 @@ async def send_collection_info(bot: Bot, ev: Event):
     await bot.logger.info('[查询角色面板]uid: {}'.format(uid))
 
     im = await draw_collection_img(ev, uid)
-    a = Button('🔍查询探索', '查询探索')
-    b = Button('🔍查询收集', '查询收集')
+    a = Button('🔍查询探索', f'{gs_prefix}查询探索')
+    b = Button('🔍查询收集', f'{gs_prefix}查询收集')
     await bot.send_option(im, [a, b])
 
 
@@ -57,6 +58,6 @@ async def send_explora_info(bot: Bot, ev: Event):
     await bot.logger.info('[查询角色面板]uid: {}'.format(uid))
 
     im = await draw_explora_img(ev, uid)
-    a = Button('🔍查询探索', '查询探索')
-    b = Button('🔍查询收集', '查询收集')
+    a = Button('🔍查询探索', f'{gs_prefix}查询探索')
+    b = Button('🔍查询收集', f'{gs_prefix}查询收集')
     await bot.send_option(im, [a, b])

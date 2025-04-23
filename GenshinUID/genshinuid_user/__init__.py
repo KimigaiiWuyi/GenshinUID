@@ -5,6 +5,7 @@ from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.database.models import GsBind
 
+from ..utils.prefix import gs_prefix
 from .get_ck_help_msg import get_ck_help
 from ..utils.message import send_diff_msg
 
@@ -33,13 +34,13 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     if uid and not uid.isdigit():
         return await bot.send('你输入了错误的格式!')
 
-    a = Button('🔍查询探索', '查询探索')
-    b = Button('🔍查询收集', '查询收集')
-    c = Button('💖刷新面板', '刷新面板')
-    d2 = Button('🔔绑定UID', '绑定uid')
-    d = Button('🔔绑定更多UID', '绑定uid')
-    e = Button('🔄切换UID', '切换uid')
-    f = Button('❌删除uid', '删除uid')
+    a = Button('🔍查询探索', f'{gs_prefix}查询探索')
+    b = Button('🔍查询收集', f'{gs_prefix}查询收集')
+    c = Button('💖刷新面板', f'{gs_prefix}刷新面板')
+    d2 = Button('🔔绑定UID', f'{gs_prefix}绑定uid')
+    d = Button('🔔绑定更多UID', f'{gs_prefix}绑定uid')
+    e = Button('🔄切换UID', f'{gs_prefix}切换uid')
+    f = Button('❌删除uid', f'{gs_prefix}删除uid')
 
     if '绑定' in ev.command:
         data = await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, 9)

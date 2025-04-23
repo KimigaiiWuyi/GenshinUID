@@ -6,6 +6,7 @@ from gsuid_core.message_models import Button
 from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
+from ..utils.prefix import gs_prefix
 from .draw_gcgdesk import draw_deck_img
 from .draw_gcginfo import draw_gcg_info
 
@@ -20,7 +21,7 @@ async def send_gcg_pic(bot: Bot, ev: Event):
     logger.info(f'[七圣召唤] uid: {uid}')
 
     im = await draw_gcg_info(uid)
-    await bot.send_option(im, [Button('✅我的卡组', '我的卡组')])
+    await bot.send_option(im, [Button('✅我的卡组', f'{gs_prefix}我的卡组')])
 
 
 @sv_gcg.on_command(('我的卡组', '我的牌组'))
@@ -36,4 +37,4 @@ async def send_deck_pic(bot: Bot, ev: Event):
     else:
         return bot.send('请输入正确的序号, 例如我的卡组1...')
     im = await draw_deck_img(ev, uid, deck_id)
-    await bot.send_option(im, [Button('✅七圣数据总览', '七圣召唤')])
+    await bot.send_option(im, [Button('✅七圣数据总览', f'{gs_prefix}七圣召唤')])

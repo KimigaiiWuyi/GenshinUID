@@ -31,3 +31,6 @@ async def send_diff_msg(
             return await bot.send_option(
                 data[retcode], option_list, False, '\n'
             )
+
+
+UID_HINT = f'你还没有绑定过uid哦!\n请使用[{PREFIX}绑定uid123456]命令绑定!'

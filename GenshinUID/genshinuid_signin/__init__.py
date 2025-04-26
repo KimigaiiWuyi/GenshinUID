@@ -3,11 +3,11 @@ from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.database.models import GsBind
 from gsuid_core.utils.sign.sign import sign_in, daily_sign
 from gsuid_core.utils.boardcast.send_msg import send_board_cast_msg
 
+from ..utils.message import UID_HINT
 from ..genshinuid_config.gs_config import gsconfig
 
 SIGN_TIME = gsconfig.get_config('SignTime').data

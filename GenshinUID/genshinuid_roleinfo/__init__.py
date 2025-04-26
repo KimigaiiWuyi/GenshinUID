@@ -3,9 +3,9 @@ import re
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
+from ..utils.message import UID_HINT
 from .get_regtime import calc_reg_time
 from .draw_all_char import draw_char_pic
 from .draw_roleinfo_card import draw_pic

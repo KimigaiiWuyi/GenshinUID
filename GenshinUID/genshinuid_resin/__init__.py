@@ -8,9 +8,9 @@ from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
 from gsuid_core.models import Event, Message
 from gsuid_core.segment import MessageSegment
-from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
+from ..utils.message import UID_HINT
 from .resin_text import get_resin_text
 from .draw_resin_card import get_resin_img
 from .notice import MR_NOTICE, get_notice_list

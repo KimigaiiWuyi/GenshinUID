@@ -7,10 +7,10 @@ from typing import Dict, List, Union, Literal, Optional
 
 import aiofiles
 from httpx import ReadTimeout
-from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.api.enka.models import EnkaData
 from gsuid_core.utils.api.enka.request import get_enka_info
 
+from ..utils.message import UID_HINT
 from .mono.Character import Character
 from ..utils.api.cv.request import _CvApi
 from .draw_normal import get_artifact_score_data

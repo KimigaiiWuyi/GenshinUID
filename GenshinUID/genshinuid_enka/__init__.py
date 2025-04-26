@@ -8,11 +8,11 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import UID_HINT
 
 from .to_data import switch_api
 from .to_card import enka_to_card
 from ..utils.convert import get_uid
+from ..utils.message import UID_HINT
 from .get_akasha_data import get_rank
 from .start import refresh_player_list
 from .to_data_by_mys import mys_to_card

@@ -9,6 +9,7 @@ from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
 
+from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
 from ..utils.resource.download_url import download_file
@@ -147,7 +148,7 @@ async def draw_abyss_img(
                 return '你还没有挑战过该层深渊!'
     else:
         if len(raw_abyss_data['floors']) == 0:
-            return '你还没有挑战本期深渊!\n可以使用[上期深渊]命令查询上期~'
+            return f'你还没有挑战本期深渊!\n可以使用[{PREFIX}上期深渊]命令查询上期~'
         floors_data = raw_abyss_data['floors'][-1]
 
     if floors_data['levels'][-1]['battles']:

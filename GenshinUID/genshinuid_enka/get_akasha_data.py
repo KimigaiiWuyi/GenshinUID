@@ -3,6 +3,7 @@ from typing import Dict, Union
 
 import aiofiles
 
+from ..utils.message import PREFIX
 from ..genshinuid_config.gs_config import gsconfig
 from ..utils.map.name_covert import avatar_id_to_name
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
@@ -15,13 +16,13 @@ async def _get_rank(uid: str) -> Union[Dict, str]:
         return '未开启排名系统...'
     path = PLAYER_PATH / uid / 'rank.json'
     if not path.exists():
-        return '你还没有排名缓存, 请使用[强制刷新]生成/刷新数据！'
+        return f'你还没有排名缓存, 请使用[{PREFIX}强制刷新]生成/刷新数据！'
 
     async with aiofiles.open(path, 'r', encoding='UTF-8') as file:
         rank_data = json.loads(await file.read())
 
     if len(rank_data) == 0:
-        return '你还没有排名缓存, 请使用[强制刷新]生成/刷新数据！'
+        return f'你还没有排名缓存, 请使用[{PREFIX}强制刷新]生成/刷新数据！'
 
     return rank_data
 

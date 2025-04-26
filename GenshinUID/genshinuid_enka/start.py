@@ -6,6 +6,7 @@ from copy import deepcopy
 import aiofiles
 from gsuid_core.logger import logger
 
+from ..utils.message import PREFIX
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 from .to_data import ARTIFACT_DATA, input_artifacts_data
 
@@ -15,7 +16,7 @@ pattern = r'^[\u4e00-\u9fa5]'
 async def refresh_player_list(uid: str, is_force: bool = False) -> str:
     player = PLAYER_PATH / uid
     if not player.exists():
-        return f'该UID{uid}对应面板数据不存在, 请先进行 [刷新面板]!'
+        return f'该UID{uid}对应面板数据不存在, 请先进行 [{PREFIX}刷新面板]!'
 
     path = player / 'artifacts.json'
     all_artifacts = deepcopy(ARTIFACT_DATA)

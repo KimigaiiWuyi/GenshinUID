@@ -6,6 +6,7 @@ from gsuid_core.utils.error_reply import UID_HINT
 
 from ..utils.convert import get_uid
 from .draw_cale_pic import draw_cale_img
+from ..utils.buttons import a, b, c, s, t, u, v, x, y
 
 sv_cale = SV('个人日历')
 
@@ -20,4 +21,4 @@ async def send_cale_pic(bot: Bot, ev: Event):
     logger.info(f'[个人日历] uid: {uid}')
 
     im = await draw_cale_img(ev, uid)
-    await bot.send_option(im)
+    await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])

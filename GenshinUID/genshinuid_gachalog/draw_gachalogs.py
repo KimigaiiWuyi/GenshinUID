@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
 
+from ..utils.message import PREFIX
 from ..utils.map.GS_MAP_PATH import charList
 from ..utils.image.convert import convert_img
 from .get_gachalogs import all_gacha_type_name
@@ -141,7 +142,7 @@ def check_up(name: str, _time: str) -> bool:
 async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
     path = PLAYER_PATH / str(uid) / 'gacha_logs.json'
     if not path.exists():
-        return '你还没有祈愿数据噢~\n请添加Stoken后使用命令`刷新抽卡记录`更新祈愿数据~'
+        return f'你还没有祈愿数据噢~\n请添加Stoken后使用命令`{PREFIX}刷新抽卡记录`更新祈愿数据~'
     with open(path, 'r', encoding='UTF-8') as f:
         gacha_data = json.load(f)
 

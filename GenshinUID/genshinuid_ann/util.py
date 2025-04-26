@@ -27,7 +27,6 @@ def cache(ttl=datetime.timedelta(hours=1), **kwargs):
 
         @functools.wraps(func)
         async def wrapped(*args, **kw):
-            nonlocal cache_data
             bound = inspect.signature(func).bind(*args, **kw)
             bound.apply_defaults()
             ins_key = '|'.join(

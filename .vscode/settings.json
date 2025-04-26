@@ -18,4 +18,5 @@
   "basedpyright.analysis.extraPaths": [
     "${workspaceFolder}/../../../"
   ],
+  "python.analysis.typeCheckingMode": "off",
 }

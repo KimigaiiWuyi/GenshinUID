@@ -2,6 +2,13 @@ from typing import Any, Dict, List, Union, Optional
 
 from gsuid_core.bot import Bot
 from gsuid_core.message_models import Button
+from gsuid_core.sv import get_plugin_available_prefix
+
+PREFIX = get_plugin_available_prefix('GenshinUID')
+
+
+class GButton(Button):
+    prefix = PREFIX
 
 
 async def send_diff_msg(

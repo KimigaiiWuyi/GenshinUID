@@ -1,4 +1,4 @@
-from gsuid_core.message_models import Button
+from ..utils.message import GButton as Button
 
 a = Button('🔍查询探索', '查询探索')
 b = Button('🔍查询收集', '查询收集')

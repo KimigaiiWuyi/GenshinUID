@@ -8,7 +8,6 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.message_models import Button
 from gsuid_core.utils.error_reply import UID_HINT
 
 from .to_data import switch_api
@@ -20,6 +19,7 @@ from .to_data_by_mys import mys_to_card
 from .draw_artifacts_lib import draw_lib
 from .draw_rank_list import draw_rank_img
 from ..utils.image.convert import convert_img
+from ..utils.message import GButton as Button
 from ..utils.map.GS_MAP_PATH import alias_data
 from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_info import draw_all_char_list

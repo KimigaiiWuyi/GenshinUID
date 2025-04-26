@@ -2,9 +2,9 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
-from gsuid_core.message_models import Button
 
 from ..utils.image.convert import convert_img
+from ..utils.message import GButton as Button
 from .draw_event_img import get_event_img, get_all_event_img
 
 sv_event_list = SV('活动列表')

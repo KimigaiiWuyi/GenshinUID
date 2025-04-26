@@ -2,12 +2,12 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.error_reply import UID_HINT
 from gsuid_core.utils.database.models import GsBind
 
 from ..utils.convert import get_uid
+from ..utils.message import GButton as Button
 from .draw_gachalogs import draw_gachalogs_img
 from .get_gachalogs import save_gachalogs, get_full_gachalog
 from .export_and_import import export_gachalogs, import_gachalogs

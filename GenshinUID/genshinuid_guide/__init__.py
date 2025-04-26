@@ -5,7 +5,6 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
 from gsuid_core.logger import logger
-from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 
 from .get_guide import get_gs_guide
@@ -13,6 +12,7 @@ from ..version import Genshin_version
 
 # from .get_abyss_data import get_review
 from ..utils.image.convert import convert_img
+from ..utils.message import GButton as Button
 from .get_new_abyss_data import get_review_data
 from ..utils.resource.RESOURCE_PATH import REF_PATH
 from .get_bbs_post_guide import get_material_way_post

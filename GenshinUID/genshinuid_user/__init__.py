@@ -1,12 +1,12 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
-from gsuid_core.message_models import Button
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.database.models import GsBind
 
 from .get_ck_help_msg import get_ck_help
 from ..utils.message import send_diff_msg
+from ..utils.message import GButton as Button
 
 sv_user_info = SV('用户信息')
 sv_user_help = SV('绑定帮助')

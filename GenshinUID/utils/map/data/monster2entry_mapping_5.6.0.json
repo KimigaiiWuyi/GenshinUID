@@ -34033,6 +34033,155 @@
         "route": "Secret Source Automaton: Configuration Device",
         "icon": "UI_MonsterIcon_DragonClaw"
     },
+    "24090501": {
+        "id": 24090501,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 293.4144,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104121": {
+                "name": "涤净青金碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104121"
+            },
+            "104122": {
+                "name": "涤净青金断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104122"
+            },
+            "104123": {
+                "name": "涤净青金块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104123"
+            },
+            "104124": {
+                "name": "涤净青金",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104124"
+            },
+            "113076": {
+                "name": "秘源积气喉",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113076",
+                "count": "2.5556"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400047": {
+                "name": "冒险家",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10010_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400132": {
+                "name": "祭水之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15010_3"
+            },
+            "400133": {
+                "name": "祭水之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15010_3"
+            }
+        },
+        "name": "秘源机兵·统御械",
+        "route": "Secret Source Automaton: Overseer Device",
+        "icon": "UI_MonsterIcon_DragonCollar"
+    },
     "25010201": {
         "id": 25010201,
         "type": "MONSTER_ORDINARY",
@@ -59867,5 +60016,43 @@
         "name": "蚀灭的源焰之主",
         "route": "Lord of Eroded Primal Fire",
         "icon": "UI_MonsterIcon_TheAbyssXiuhcoatl"
+    },
+    "29122000": {
+        "id": 29122000,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 679.2,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 125.6,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.7,
+            "windSubHurt": 0.7,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "门扉前的弈局",
+        "route": "The Game Before the Gate",
+        "icon": "UI_MonsterIcon_GiantChess"
     }
 }

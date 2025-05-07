@@ -1,4 +1,66 @@
 {
+  "香韵奏者": {
+    "normal": {
+      "normal_effect": {
+        "1": "addAtk+12",
+        "2": "addAtk+15",
+        "3": "addAtk+18",
+        "4": "addAtk+21",
+        "5": "addAtk+24"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+44",
+        "2": "addAtk+55",
+        "3": "addAtk+66",
+        "4": "addAtk+77",
+        "5": "addAtk+88"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 3,
+      "extra": {
+        
+      }
+    }
+  },
+  "冷寂迸音": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 10,
+      "extra": {
+        
+      }
+    }
+  },
   "溢彩心念": {
     "normal": {
       "normal_effect": {

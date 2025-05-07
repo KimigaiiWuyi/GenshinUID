@@ -115,7 +115,14 @@ async def avatarId2SkillGroupList():
         for skill in skill_data:
             if 'proudSkillGroupId' in skill:
                 if skill['abilityName']:
-                    _name = skill['skillIcon'].split('_')[2]
+                    _name = ''
+                    if (
+                        'skillIcon' in skill
+                        and skill['skillIcon']
+                        and skill['skillIcon'].count('_') >= 2
+                    ):
+                        _name = skill['skillIcon'].split('_')[2]
+
                     count = skill['abilityName'].count('_')
 
                     if 'Diluc' in skill['abilityName']:
@@ -135,12 +142,18 @@ async def avatarId2SkillGroupList():
                         and skill['skillIcon'].count('_') > 2
                         and 'Catalyst' not in skill['skillIcon']
                     ):
-                        print(_name)
-                        print(name)
                         continue
 
                 else:
-                    name = skill['skillIcon'].split('_')[2]
+                    if (
+                        'skillIcon' in skill
+                        and skill['skillIcon']
+                        and skill['skillIcon'].count('_') >= 2
+                    ):
+                        print(skill)
+                        name = skill['skillIcon'].split('_')[2]
+                    else:
+                        continue
 
                 if not skill['skillIcon'].startswith(
                     ('Skill_A', 'Skill_S', 'Skill_E')

@@ -398,6 +398,7 @@ async def main():
             continue
 
         if talent_data is None:
+            print('未找到角色天赋')
             continue
         result = {}
         for i in range(1, 4):

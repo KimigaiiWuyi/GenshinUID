@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Union, Optional
 
 from PIL import Image, ImageDraw
+from gsuid_core.logger import logger
 from gsuid_core.utils.api.enka.models import EnkaData
 
 from .to_data import enka_to_dict
@@ -42,6 +43,7 @@ async def enka_to_card(
             return await convert_img(pic_500)
 
     img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
+    logger.info(f'UID{uid}获取角色数据成功！')
     return img, char_data_list
 
 
@@ -72,8 +74,8 @@ async def draw_enka_card(
     if char_num <= 8:
         based_w, based_h = 1000, 240 + ((char_num + 3) // 4) * 220
     else:
-        based_w, based_h = 1200, 660 + (char_num - 5) // 5 * 110
-        if (char_num - 5) % 5 >= 4:
+        based_w, based_h = 1200, 660 + (char_num - 6) // 6 * 110
+        if (char_num - 6) % 6 >= 1:
             based_h += 110
 
     img = Image.open(TEXT_PATH / 'shin-w.jpg').resize((based_w, based_h))
@@ -151,9 +153,9 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
     else:
         _i = index - 13
         x, y = 50 + (_i % 9) * 220, 512 + (_i // 9) * 220
-        if _i % 9 >= 5:
+        if _i % 9 >= 6:
             y += 110
-            x = 160 + ((_i - 5) % 9) * 220
+            x = 160 + ((_i - 6) % 9) * 220
         img.paste(
             char_card,
             (x, y),

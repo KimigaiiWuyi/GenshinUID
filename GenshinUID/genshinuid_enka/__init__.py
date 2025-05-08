@@ -343,7 +343,6 @@ async def send_card_info(bot: Bot, ev: Event):
             im = await enka_to_card(uid)
     else:
         im = await enka_to_card(uid)
-    logger.info(f'UID{uid}获取角色数据成功！')
 
     if isinstance(im, Tuple):
         buttons = [

@@ -30,6 +30,37 @@
       }
     }
   },
+  "柔灯挽歌": {
+    "normal": {
+      "normal_effect": {
+        "1": "addAtk+15",
+        "2": "addAtk+19",
+        "3": "addAtk+23",
+        "4": "addAtk+27",
+        "5": "addAtk+31"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "dmgBonus+36",
+        "2": "dmgBonus+46",
+        "3": "dmgBonus+56",
+        "4": "dmgBonus+66",
+        "5": "dmgBonus+76"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 8,
+      "extra": {
+        
+      }
+    }
+  },
   "冷寂迸音": {
     "normal": {
       "normal_effect": {

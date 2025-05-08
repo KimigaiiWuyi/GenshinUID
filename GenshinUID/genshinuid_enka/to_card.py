@@ -43,7 +43,7 @@ async def enka_to_card(
             return await convert_img(pic_500)
 
     img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
-    logger.info(f'UID{uid}获取角色数据成功！')
+    logger.info(f'[强制刷新] UID{uid}成功!')
     return img, char_data_list
 
 
@@ -73,13 +73,9 @@ async def draw_enka_card(
     char_num = len(char_data_list)
     if char_num <= 8:
         based_w, based_h = 1000, 240 + ((char_num + 3) // 4) * 220
-    elif char_num <= 12:
-        based_w, based_h = 1000, 660 + (char_num - 5) // 5 * 110
-        if (char_num - 5) % 5 >= 4:
-            based_h += 110
     else:
-        based_w, based_h = 1200, 660 + (char_num - 6) // 6 * 110
-        if (char_num - 6) % 6 >= 1:
+        based_w, based_h = 1200, 660 + (char_num - 5) // 5 * 113
+        if (char_num - 5) % 5 >= 4:
             based_h += 110
 
     img = Image.open(TEXT_PATH / 'shin-w.jpg').resize((based_w, based_h))
@@ -155,11 +151,11 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
             char_card,
         )
     else:
-        _i = index - 16
-        x, y = 50 + (_i % 11) * 220, 512 + (_i // 9) * 220
-        if _i % 11 >= 6:
+        _i = index - 13
+        x, y = 50 + (_i % 9) * 220, 512 + (_i // 9) * 220
+        if _i % 9 >= 5:
             y += 110
-            x = 160 + ((_i - 6) % 9) * 220
+            x = 160 + ((_i - 5) % 9) * 220
         img.paste(
             char_card,
             (x, y),

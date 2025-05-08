@@ -73,6 +73,10 @@ async def draw_enka_card(
     char_num = len(char_data_list)
     if char_num <= 8:
         based_w, based_h = 1000, 240 + ((char_num + 3) // 4) * 220
+    elif char_num <= 12:
+        based_w, based_h = 1000, 660 + (char_num - 5) // 5 * 110
+        if (char_num - 5) % 5 >= 4:
+            based_h += 110
     else:
         based_w, based_h = 1200, 660 + (char_num - 6) // 6 * 110
         if (char_num - 6) % 6 >= 1:
@@ -151,9 +155,9 @@ async def draw_enka_char(index: int, img: Image.Image, char_data: dict):
             char_card,
         )
     else:
-        _i = index - 13
-        x, y = 50 + (_i % 9) * 220, 512 + (_i // 9) * 220
-        if _i % 9 >= 6:
+        _i = index - 16
+        x, y = 50 + (_i % 11) * 220, 512 + (_i // 9) * 220
+        if _i % 11 >= 6:
             y += 110
             x = 160 + ((_i - 6) % 9) * 220
         img.paste(

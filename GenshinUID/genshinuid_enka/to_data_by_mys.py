@@ -137,6 +137,12 @@ async def mys_to_data(uid: str):
                 }
             )
 
+            if len(avatar_skill) > 4:
+                # 移除最后两个元素
+                avatar_skill.pop()
+                avatar_skill.pop()
+                break
+
         weapon = char['weapon']
         weapon_main = weapon['main_property']
         main_prop_id = Id2PropId[str(weapon_main['property_type'])]
@@ -307,5 +313,4 @@ async def mys_to_card(uid: str) -> Union[str, bytes, Tuple[bytes, List[Dict]]]:
         return char_data_list
 
     img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
-    return img, char_data_list
     return img, char_data_list

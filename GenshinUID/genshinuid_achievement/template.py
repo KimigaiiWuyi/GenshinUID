@@ -11,17 +11,15 @@ daily_achi = {}
 
 @on_core_start
 async def load_data():
-    global all_achi, daily_achi
-
     async with aiofiles.open(
         path / 'all_achi.json', "r", encoding='UTF-8'
     ) as f:
-        all_achi = json.loads(await f.read())
+        all_achi.update(json.loads(await f.read()))
 
     async with aiofiles.open(
         path / 'daily_achi.json', "r", encoding='UTF-8'
     ) as f:
-        daily_achi = json.loads(await f.read())
+        daily_achi.update(json.loads(await f.read()))
 
 
 daily_template = '''任务：【{}】

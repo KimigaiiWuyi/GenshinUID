@@ -52,8 +52,8 @@ mysData: Dict = {}
 propId2Name: Dict[str, str] = {}
 Id2PropId: Dict[str, str] = {}
 artifactId2Piece: Dict[str, List[str]] = {}
-skillId2Name: TS = TS(Name={}, Icon={})
-talentId2Name: TS = TS(Name={}, Icon={})
+skillId2Name: TS = {'Name': {}, 'Icon': {}}
+talentId2Name: TS = {'Name': {}, 'Icon': {}}
 weaponHash2Name: Dict[str, str] = {}
 weaponHash2Type: Dict[str, str] = {}
 alias_data: Dict[str, List[str]] = {}
@@ -68,165 +68,172 @@ CharId2TalentIcon_data: Dict[str, List[str]] = {}
 
 @on_core_start
 async def load_map():
-    global charList, weaponList, avatarId2Name, icon2Name
-    global artifact2attr, name2Icon, avatarName2Element
-    global avatarName2Weapon, mysData, talentId2Name
-    global propId2Name, Id2PropId, artifactId2Piece, skillId2Name
-    global weaponHash2Name, weaponHash2Type, alias_data, avatarId2Star_data
-    global enName_to_avatarId_data, ex_monster_data, monster2entry_data
-    global avatarId2SkillList_data, weaponId2Name_data, CharId2TalentIcon_data
     logger.info('[GenshinUID MAP] 正在加载资源文件...')
 
     try:
         async with aiofiles.open(
             MAP / charList_fileName, 'r', encoding='UTF-8'
         ) as f:
-            charList = msgjson.decode(await f.read(), type=Dict)
+            charList.update(msgjson.decode(await f.read(), type=Dict))
 
         async with aiofiles.open(
             MAP / weaponList_fileName, 'r', encoding='UTF-8'
         ) as f:
-            weaponList = msgjson.decode(await f.read(), type=Dict)
+            weaponList.update(msgjson.decode(await f.read(), type=Dict))
 
         async with aiofiles.open(
             MAP / avatarId2Name_fileName, 'r', encoding='UTF-8'
         ) as f:
-            avatarId2Name = msgjson.decode(await f.read(), type=Dict[str, str])
+            avatarId2Name.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / icon2Name_fileName, 'r', encoding='UTF-8'
         ) as f:
-            icon2Name = msgjson.decode(await f.read(), type=Dict[str, str])
+            icon2Name.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / artifact2attr_fileName, 'r', encoding='UTF-8'
         ) as f:
-            artifact2attr = msgjson.decode(await f.read(), type=Dict[str, str])
+            artifact2attr.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / icon2Name_fileName, 'r', encoding='UTF-8'
         ) as f:
-            icon2Name = msgjson.decode(await f.read(), type=Dict[str, str])
+            icon2Name.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / name2Icon_fileName, 'r', encoding='UTF-8'
         ) as f:
-            name2Icon = msgjson.decode(await f.read(), type=Dict[str, str])
+            name2Icon.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / 'propId2Name_mapping.json', 'r', encoding='UTF-8'
         ) as f:
-            propId2Name = msgjson.decode(await f.read(), type=Dict[str, str])
+            propId2Name.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / 'Id2propId_mapping.json', 'r', encoding='UTF-8'
         ) as f:
-            Id2PropId = msgjson.decode(await f.read(), type=Dict[str, str])
+            Id2PropId.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
+            )
 
         async with aiofiles.open(
             MAP / weaponHash2Name_fileName, 'r', encoding='UTF-8'
         ) as f:
-            weaponHash2Name = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            weaponHash2Name.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / weaponHash2Type_fileName, 'r', encoding='UTF-8'
         ) as f:
-            weaponHash2Type = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            weaponHash2Type.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / 'artifactId2Piece_mapping.json', 'r', encoding='UTF-8'
         ) as f:
-            artifactId2Piece = msgjson.decode(
-                await f.read(), type=Dict[str, List[str]]
+            artifactId2Piece.update(
+                msgjson.decode(await f.read(), type=Dict[str, List[str]])
             )
 
         async with aiofiles.open(
             MAP / skillId2Name_fileName, 'r', encoding='UTF-8'
         ) as f:
-            skillId2Name = msgjson.decode(await f.read(), type=TS)
+            skillId2Name.update(msgjson.decode(await f.read(), type=TS))
 
         async with aiofiles.open(
             MAP / talentId2Name_fileName, 'r', encoding='UTF-8'
         ) as f:
-            talentId2Name = msgjson.decode(await f.read(), type=TS)
+            talentId2Name.update(msgjson.decode(await f.read(), type=TS))
 
         async with aiofiles.open(
             MAP / avatarName2Element_fileName, 'r', encoding='UTF-8'
         ) as f:
-            avatarName2Element = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            avatarName2Element.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / avatarName2Weapon_fileName, 'r', encoding='UTF-8'
         ) as f:
-            avatarName2Weapon = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            avatarName2Weapon.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / 'char_alias.json', 'r', encoding='UTF-8'
         ) as f:
-            alias_data = msgjson.decode(
-                await f.read(), type=Dict[str, List[str]]
+            alias_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, List[str]])
             )
 
         async with aiofiles.open(
             MAP / avatarId2Star_fileName, 'r', encoding='utf8'
         ) as f:
-            avatarId2Star_data = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            avatarId2Star_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / enName2Id_fileName, 'r', encoding='utf8'
         ) as f:
-            enName_to_avatarId_data = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            enName_to_avatarId_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / EXMonster_fileName, 'r', encoding='utf8'
         ) as f:
-            ex_monster_data = msgjson.decode(
-                await f.read(), type=Dict[str, Dict]
+            ex_monster_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, Dict])
             )
 
         async with aiofiles.open(
             MAP / monster2entry_fileName, 'r', encoding='utf8'
         ) as f:
-            monster2entry_data = msgjson.decode(
-                await f.read(), type=Dict[str, Dict]
+            monster2entry_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, Dict])
             )
 
         async with aiofiles.open(
             MAP / avatarId2SkillList_fileName, 'r', encoding='utf8'
         ) as f:
-            avatarId2SkillList_data = msgjson.decode(
-                await f.read(), type=Dict[str, Dict[str, str]]
+            avatarId2SkillList_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, Dict[str, str]])
             )
 
         async with aiofiles.open(
             MAP / weaponId2Name_fileName, 'r', encoding='utf8'
         ) as f:
-            weaponId2Name_data = msgjson.decode(
-                await f.read(), type=Dict[str, str]
+            weaponId2Name_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, str])
             )
 
         async with aiofiles.open(
             MAP / mysData_fileName, 'r', encoding='utf8'
         ) as f:
-            mysData = msgjson.decode(await f.read(), type=Dict)
+            mysData.update(msgjson.decode(await f.read(), type=Dict))
 
         async with aiofiles.open(
             MAP / CharId2TalentIcon_fileName, 'r', encoding='utf8'
         ) as f:
-            CharId2TalentIcon_data = msgjson.decode(
-                await f.read(), type=Dict[str, List[str]]
+            CharId2TalentIcon_data.update(
+                msgjson.decode(await f.read(), type=Dict[str, List[str]])
             )
         logger.success('[GenshinUID MAP] 资源文件加载完成')
     except FileNotFoundError:

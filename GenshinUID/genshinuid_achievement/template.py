@@ -1,12 +1,28 @@
 import json
 from pathlib import Path
 
-path = Path(__file__).parent
-with open(path / 'all_achi.json', "r", encoding='UTF-8') as f:
-    all_achi = json.load(f)
+import aiofiles
+from gsuid_core.server import on_core_start
 
-with open(path / 'daily_achi.json', "r", encoding='UTF-8') as f:
-    daily_achi = json.load(f)
+path = Path(__file__).parent
+all_achi = {}
+daily_achi = {}
+
+
+@on_core_start
+async def load_data():
+    global all_achi, daily_achi
+
+    async with aiofiles.open(
+        path / 'all_achi.json', "r", encoding='UTF-8'
+    ) as f:
+        all_achi = json.loads(await f.read())
+
+    async with aiofiles.open(
+        path / 'daily_achi.json', "r", encoding='UTF-8'
+    ) as f:
+        daily_achi = json.loads(await f.read())
+
 
 daily_template = '''任务：【{}】
 成就：【{}】

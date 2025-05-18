@@ -1,5 +1,6 @@
 import re
 from pathlib import Path
+from typing import Optional
 
 from bs4 import BeautifulSoup
 from PIL import Image, ImageOps, ImageDraw
@@ -18,13 +19,22 @@ from ..utils.image.image_tools import (
 
 assets_dir = Path(__file__).parent / 'assets'
 
-list_head = Image.open(assets_dir / 'list.png')
-list_item = (
-    Image.open(assets_dir / 'item.png').resize((384, 96)).convert('RGBA')
-)
+list_head: Optional[Image.Image] = None
+list_item: Optional[Image.Image] = None
 
 
 async def ann_list_card() -> bytes:
+    global list_head, list_item
+    if not list_head:
+        list_head = Image.open(assets_dir / 'list.png')
+
+    if not list_item:
+        list_item = (
+            Image.open(assets_dir / 'item.png')
+            .resize((384, 96))
+            .convert('RGBA')
+        )
+
     ann_list = await ann().get_ann_list()
     if not ann_list:
         raise Exception('获取游戏公告失败,请检查接口是否正常')
@@ -159,7 +169,7 @@ async def ann_detail_card(ann_id):
         bbox = gs_font_26.getbbox('囗')
         _x, _y = bbox[2] - bbox[0], bbox[3] - bbox[1]
 
-    padding = (_x, _y, _x, _y)
+    padding = (int(_x), int(_y), int(_x), int(_y))
     im = ImageOps.expand(im, padding, '#f9f6f2')
 
     return await convert_img(im)

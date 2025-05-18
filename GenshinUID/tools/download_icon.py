@@ -134,5 +134,5 @@ def download_namecard_pic(start: int = 10000002):
 
 
 if __name__ == '__main__':
-    # download_namecard_pic(10000063)
-    main()
+    download_namecard_pic(10000063)
+    # main()

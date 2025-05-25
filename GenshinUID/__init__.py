@@ -43,7 +43,7 @@ __plugin_meta__ = PluginMetadata(
 )
 
 gsclient: Optional[GsClient] = None
-is_connecting = False
+connect_lock = asyncio.Lock()
 command_start = deepcopy(driver.config.command_start)
 command_start.discard('')
 msg_id_cache = OrderedDict()
@@ -315,12 +315,8 @@ async def get_notice_message(bot: Bot, ev: Event):
 
 @get_message.handle()
 async def get_all_message(bot: Bot, ev: Event):
-    global is_connecting
-    if is_connecting:
-        return
 
-    if gsclient is None and is_connecting is False:
-        is_connecting = True
+    if gsclient is None:
         return await connect()
 
     try:
@@ -759,14 +755,19 @@ async def start_client():
 
 async def connect():
     global gsclient
-    try:
-        await asyncio.sleep(2)
-        gsclient = await GsClient().async_connect()
-        await gsclient.start()
-    except ConnectionRefusedError:
-        global is_connecting
-        is_connecting = False
-        logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
+
+    async with connect_lock:
+        if gsclient is not None:
+            return
+        try:
+            await asyncio.sleep(2)
+            gsclient = await GsClient().async_connect()
+
+            await gsclient.start()
+
+        except ConnectionRefusedError:
+            gsclient = None
+            logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
 
 
 @scheduler.scheduled_job('cron', second='*/10')

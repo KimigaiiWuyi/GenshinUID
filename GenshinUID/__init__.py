@@ -767,7 +767,9 @@ async def connect():
 
         except ConnectionRefusedError:
             gsclient = None
-            logger.error('Core服务器连接失败...请稍后使用[启动core]命令启动...')
+            logger.error(
+                'Core服务器连接失败...请稍后使用[启动core]命令启动...'
+            )
 
 
 @scheduler.scheduled_job('cron', second='*/10')

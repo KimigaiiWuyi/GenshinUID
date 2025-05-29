@@ -3,9 +3,11 @@ from typing import Dict, Tuple, Union, Literal
 
 from PIL import Image, ImageDraw
 from gsuid_core.models import Event
+from gsuid_core.logger import logger
 
 from ..utils.mys_api import get_base_data
 from ..utils.image.convert import convert_img
+from ..utils.map.GS_MAP_PATH import avatarId2Name
 from .const import max_data, award_data, expmax_data
 from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
 from ..utils.image.image_tools import draw_bar, get_avatar, get_color_bg
@@ -32,6 +34,8 @@ async def get_explore_data(
     raw_data = await get_base_data(uid)
     if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
         return raw_data
+
+    expmax_data['获得角色数'] = len(avatarId2Name) - 2
 
     # 处理数据
     data: Dict[str, int] = {
@@ -142,6 +146,7 @@ async def draw_base_img(
     img.paste(title, (0, 0), title)
     img.paste(char_pic, (241, 40), char_pic)
 
+    logger.debug(percent_data)
     for index, name in enumerate(percent_data):
         percent = percent_data[name]
         value = value_data[name]
@@ -160,4 +165,5 @@ async def draw_base_img(
 
 
 def _f(value: float) -> str:
+    return '{:.2f}%'.format(value)
     return '{:.2f}%'.format(value)

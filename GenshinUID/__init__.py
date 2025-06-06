@@ -350,6 +350,7 @@ async def get_all_message(bot: Bot, ev: Event):
     msg_id = ''
 
     # qqguild
+    sender = {}
     if bot.adapter.get_name() == 'QQ':
         sp_bot_id = 'qqguild'
         from nonebot.adapters.qq.event import (
@@ -447,6 +448,10 @@ async def get_all_message(bot: Bot, ev: Event):
             print(ev.get_message())
             message = [Message('text', ev.msg)]
             user_type = 'group'
+            print(ev.__dict__)
+            sender = {
+                'name': ev.nickname,
+            }
         else:
             return
     # kaiheila

@@ -221,6 +221,7 @@ class GsClient:
                                 at_list,
                                 msg.target_id,
                                 msg.target_type,
+                                msg.msg_id,
                             )
                         # 频道
                         elif msg.bot_id == 'qqguild':
@@ -744,6 +745,7 @@ async def heybox_send(
     at_list: Optional[List[str]],
     target_id: Optional[str],
     target_type: Optional[str],
+    msg_id: Optional[str],
 ):
     from nonebot.adapters.heybox import Bot, Message, MessageSegment
 
@@ -794,10 +796,12 @@ async def heybox_send(
                 elif _msg['type'] == 'at':
                     result_msg.append(MessageSegment.mention(_msg['data']))
 
+        print(result_msg)
         await bot.send_to_channel(
             room_id,
             channel_id,
             result_msg,
+            msg_id,
         )
 
 

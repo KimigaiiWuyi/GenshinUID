@@ -838,7 +838,7 @@ async def convert_message(
     elif _msg.type == 'file':
         if 'file_id' in _msg.data:
             name = _msg.data.get('file')
-            if float(_msg.data['file_size']) <= 1024 * 1024 * 4:
+            if float(_msg.data.get('file_size') or _msg.data.get('size')) <= 1024 * 1024 * 4:
                 val_data = await bot.call_api(
                     'get_file',
                     file_id=_msg.data.get('file_id'),

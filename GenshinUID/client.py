@@ -795,8 +795,8 @@ async def heybox_send(
                     result_msg.append(MessageSegment.mention(_msg['data']))
 
         await bot.send_to_channel(
-            channel_id,
             room_id,
+            channel_id,
             result_msg,
         )
 

@@ -4,11 +4,13 @@ import time
 import uuid
 import base64
 import asyncio
+from io import BytesIO
 from pathlib import Path
 from asyncio import CancelledError
 from collections import OrderedDict
 from typing import Dict, List, Union, Optional
 
+from PIL import Image
 import websockets.client
 from nonebot.log import logger
 from nonebot.adapters import Bot
@@ -205,6 +207,17 @@ class GsClient:
                                 image,
                                 file,
                                 node,
+                                at_list,
+                                msg.target_id,
+                                msg.target_type,
+                            )
+                        elif msg.bot_id == 'heybox':
+                            await heybox_send(
+                                bot,
+                                content,
+                                image,
+                                node,
+                                file,
                                 at_list,
                                 msg.target_id,
                                 msg.target_type,
@@ -720,6 +733,72 @@ async def onebot_send(
                 user_id=_target_id,
                 message=result_msg,
             )
+
+
+async def heybox_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    node: Optional[List[Dict]],
+    file: Optional[str],
+    at_list: Optional[List[str]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    from nonebot.adapters.heybox import Bot, Message, MessageSegment
+
+    assert isinstance(bot, Bot)
+
+    def add_image(image: str):
+        image_name = uuid.uuid4().hex + '.jpg'
+        if image.startswith('link://'):
+            img_url = image.replace('link://', '')
+            return MessageSegment.image(img_url, 720, 1280)
+        else:
+            img_bytes = base64.b64decode(image.replace('base64://', ''))
+            # 获取图片宽高
+            with Image.open(BytesIO(img_bytes)) as img:
+                width, height = img.size
+
+            return MessageSegment.local_image(
+                img_bytes, width, height, image_name
+            )
+
+    def add_text(content: str):
+        return MessageSegment.text(content)
+
+    if target_id:
+        result_msg: Message = Message()
+        channel_id, room_id = target_id.split('-')
+
+        if content:
+            result_msg.append(add_text(content))
+
+        if image:
+            result_msg.append(add_image(image))
+
+        if at_list and target_type == 'group':
+            for at in at_list:
+                result_msg += MessageSegment.mention(at)
+
+        if file:
+            logger.warning('[gscore] Heybox暂不支持发送文件消息')
+            return
+
+        if node:
+            for _msg in node:
+                if _msg['type'] == 'image':
+                    result_msg.append(add_image(_msg['data']))
+                elif _msg['type'] == 'text':
+                    result_msg.append(add_text(_msg['data']))
+                elif _msg['type'] == 'at':
+                    result_msg.append(MessageSegment.mention(_msg['data']))
+
+        await bot.send_to_channel(
+            channel_id,
+            room_id,
+            result_msg,
+        )
 
 
 async def onebot_red_send(

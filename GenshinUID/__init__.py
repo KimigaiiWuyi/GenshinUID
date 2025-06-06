@@ -197,7 +197,6 @@ async def get_notice_message(bot: Bot, ev: Event):
             user_type = 'group'
         else:
             return
-
     elif bot.adapter.get_name() == 'Telegram':
         from nonebot.adapters.telegram.event import CallbackQueryEvent
 
@@ -435,6 +434,20 @@ async def get_all_message(bot: Bot, ev: Event):
                 user_type = 'direct'
         else:
             logger.debug('[gsuid] 不支持该 Telegram 事件...')
+            return
+    elif bot.adapter.get_name() == 'Heybox':
+        from nonebot.adapters.heybox.event import UserIMMessageEvent
+
+        if isinstance(ev, UserIMMessageEvent):
+            user_id = str(ev.user_id)
+            group_id = f'{ev.channel_id}-{ev.room_id}'
+            msg_id = ev.im_seq
+            bot_id = 'heybox'
+            print(ev.msg)
+            print(ev.get_message())
+            message = [Message('text', ev.msg)]
+            user_type = 'group'
+        else:
             return
     # kaiheila
     elif bot.adapter.get_name() == 'Kaiheila':
@@ -884,4 +897,5 @@ async def get_file(bot: Bot, file_id: str):
         file_id=f'{file_id}',
         type='path',
     )
+    return data
     return data

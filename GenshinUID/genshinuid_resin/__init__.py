@@ -61,7 +61,7 @@ async def notice_job(force: bool = False):
                         msg_list, 'direct', user_id, bot_id, '', ''
                     )
                     await asyncio.sleep(0.5)
-                logger.info('[推送检查] 私聊推送完成')
+                logger.info('✅[推送检查] 私聊推送完成')
                 for gid in result[bot_id]['group']:
                     msg_list = [
                         MessageSegment.text('✅[原神] 推送提醒:\n'),
@@ -72,12 +72,17 @@ async def notice_job(force: bool = False):
                         msg_list.append(MessageSegment.text(msg))
                     msg_list.append(MessageSegment.text(MR_NOTICE))
                     await bot.target_send(
-                        msg_list, 'group', gid, bot_id, '', ''
+                        msg_list,
+                        'group',
+                        gid,
+                        bot_id,
+                        '',
+                        '',
                     )
                     await asyncio.sleep(0.5)
-                logger.info('[推送检查] 群聊推送完成')
+                logger.info('✅[推送检查] 群聊推送完成')
     else:
-        logger.info('[推送检查] 已关闭全局推送, 停止任务...')
+        logger.info('✅[推送检查] 已关闭全局推送, 停止任务...')
 
 
 @sv_get_resin.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))

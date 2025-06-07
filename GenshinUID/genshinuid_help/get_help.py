@@ -1,9 +1,9 @@
+import json
 from pathlib import Path
 from typing import Dict, Union
 
 import aiofiles
 from PIL import Image
-from msgspec import json as msgjson
 from gsuid_core.help.model import PluginHelp
 from gsuid_core.help.draw_plugin_help import get_help
 from gsuid_core.sv import get_plugin_available_prefix
@@ -26,7 +26,7 @@ BANNER_BG = Image.open(TEXT_PATH / 'banner_bg.jpg')
 
 async def get_help_data() -> Dict[str, PluginHelp]:
     async with aiofiles.open(HELP_DATA, 'rb') as file:
-        return msgjson.decode(await file.read(), type=Dict[str, PluginHelp])
+        return json.loads(await file.read())
 
 
 async def get_core_help() -> Union[bytes, str]:

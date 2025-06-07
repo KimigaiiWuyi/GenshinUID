@@ -14,7 +14,7 @@ with open(MAP_PATH / 'enName2AvatarID_mapping_5.6.0.json') as f:
 
 suffix = 'webp'
 
-char_list = ['Escoffier', 'Ifa']
+char_list = ['SkirkNew', 'Dahlia']
 base = 'https://api.hakush.in/gi/UI'
 # title = 'https://enka.network/ui/{}'
 # hakush = 'https://api.hakush.in/gi/UI/'
@@ -134,5 +134,5 @@ def download_namecard_pic(start: int = 10000002):
 
 
 if __name__ == '__main__':
-    download_namecard_pic(10000063)
-    # main()
+    # download_namecard_pic(10000063)
+    main()

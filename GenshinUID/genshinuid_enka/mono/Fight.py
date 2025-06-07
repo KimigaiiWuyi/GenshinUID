@@ -352,6 +352,8 @@ class Fight:
 
         base_area_plus = await self.get_base_area_plus(char)
 
+        extra_bonus = char.fight_prop['extraBonus'] + 1
+
         # 对草神进行特殊计算
         if '灭净三业' in power.name or '业障除' in power.name:
             base = await self.get_sp_base(power, char)
@@ -367,6 +369,7 @@ class Fight:
 
         # 基本乘区 = 有效数值(例如攻击力) * 倍率 + 固定值 + 激化区 + 额外加成值 + 特殊加成值
         base_area = base + reaction_power + add_dmg + char.sp.addDmg
+        base_area *= extra_bonus
         if base_area_plus != 1:
             base_area_plus -= 1
             base_area = base_area_plus * base_area

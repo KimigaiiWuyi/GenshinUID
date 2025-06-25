@@ -46,12 +46,9 @@ async def get_abyss_star_pic(star: int) -> Image.Image:
     return star_pic
 
 
-async def _draw_abyss_card(
+async def _draw_char_card(
     char: AbyssBattleAvatar,
-    talent_num: str,
-    floor_pic: Image.Image,
-    index_char: int,
-    index_part: int,
+    talent_num: Union[str, int],
 ):
     char_id = char['id']
     # 确认角色头像路径
@@ -72,6 +69,17 @@ async def _draw_abyss_card(
         anchor='mm',
     )
     char_card = char_card.resize((128, 160), Image.Resampling.LANCZOS)
+    return char_card
+
+
+async def _draw_abyss_card(
+    char: AbyssBattleAvatar,
+    talent_num: str,
+    floor_pic: Image.Image,
+    index_char: int,
+    index_part: int,
+):
+    char_card = await _draw_char_card(char, talent_num)
     floor_pic.paste(
         char_card,
         (70 + 147 * index_char, 39 + index_part * 170),

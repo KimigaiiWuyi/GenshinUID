@@ -19,6 +19,14 @@
         "need_admin": false
       },
       {
+        "name": "[上期]肃靖险乱/sjxl",
+        "desc": "肃靖险乱信息一览",
+        "eg": "新新深渊",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
         "name": "幻想真境剧诗",
         "desc": "新深渊信息一览,后可跟UID",
         "eg": "新深渊100740568",

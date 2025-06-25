@@ -5,8 +5,14 @@ from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.api import RECORD_BASE, RECORD_BASE_OS
 from gsuid_core.utils.api.mys.tools import get_ds_token, get_web_ds_token
 
-from .api import widget_url, calendar_url, new_abyss_url, char_detail_url
 from .models import Character, WidgetResin, CalendarData, PoetryAbyssDatas
+from .api import (
+    widget_url,
+    calendar_url,
+    new_abyss_url,
+    char_detail_url,
+    hard_challenge_url,
+)
 
 
 class GsMysAPI(_MysApi):
@@ -14,6 +20,31 @@ class GsMysAPI(_MysApi):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    async def get_hard_challenge_data(self, uid: str) -> Union[Dict, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0], 'cn_gf01')
+        HEADER = deepcopy(self._HEADER)
+        ck = await self.get_ck(uid, 'OWNER')
+        if ck is None:
+            return -51
+        HEADER['Cookie'] = ck
+
+        base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
+        data = await self._mys_request(
+            hard_challenge_url,
+            'GET',
+            HEADER,
+            data={
+                "role_id": uid,
+                "server": server_id,
+                "need_detail": True,
+            },
+            base_url=base,
+        )
+
+        if isinstance(data, Dict):
+            data = cast(Dict, data['data'])
+        return data
 
     async def get_calendar_data(self, uid: str) -> Union[CalendarData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])

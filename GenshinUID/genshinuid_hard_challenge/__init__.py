@@ -8,11 +8,18 @@ from ..utils.convert import get_uid
 from ..utils.message import UID_HINT
 from .draw_hard_challenge import draw_hard_challenge_img
 
-sv_hard_abyss = SV('查询肃靖险乱')
+sv_hard_abyss = SV('查询幽境危战')
 
 
 @sv_hard_abyss.on_command(
-    ('查询肃靖险乱', '肃靖险乱', '新新深渊', '三路深渊', 'sjxl'),
+    (
+        '查询幽境危战',
+        '幽境危战',
+        '肃靖险乱',
+        '新新深渊',
+        '三路深渊',
+        'yjwz',
+    ),
     block=True,
 )
 async def send_hard_abyss_info(bot: Bot, ev: Event):
@@ -20,11 +27,11 @@ async def send_hard_abyss_info(bot: Bot, ev: Event):
     if name:
         return
 
-    await bot.logger.info('开始执行[肃靖险乱]')
+    await bot.logger.info('开始执行[幽境危战]')
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[肃靖险乱]uid: {}'.format(uid))
+    await bot.logger.info('[幽境危战]uid: {}'.format(uid))
 
     im = await draw_hard_challenge_img(uid, ev)
 

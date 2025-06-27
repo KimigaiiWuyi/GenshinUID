@@ -13,6 +13,7 @@ sys.path.append(str(Path(__file__).parents[5]))
 __package__ = 'GenshinUID.tools'
 from ..utils.ambr_to_minigg import convert_ambr_to_talent  # noqa: E402
 from ..utils.map.GS_MAP_PATH import (  # noqa: E402
+    load_map,
     avatarId2Name,
     avatarName2Element,
 )
@@ -329,6 +330,7 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
 
 
 async def main():
+    await load_map()
     with open(
         str(
             Path(__file__).parents[1]

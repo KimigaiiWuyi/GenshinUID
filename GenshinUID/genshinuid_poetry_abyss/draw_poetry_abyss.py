@@ -73,7 +73,11 @@ async def draw_poetry_abyss_img(
     if not data['is_unlock'] or not data['data']:
         return '[幻想真境剧诗] 你还没有解锁该模式！'
 
-    data = data['data'][-1]
+    if active:
+        data = data['data'][-1]
+    else:
+        data = data['data'][0]
+
     round_data = data['detail']['rounds_data']
     stat_data = data['stat']
 

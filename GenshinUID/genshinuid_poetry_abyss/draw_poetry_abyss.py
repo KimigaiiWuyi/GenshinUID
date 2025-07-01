@@ -1,6 +1,6 @@
 from pathlib import Path
 from datetime import datetime
-from typing import List, Union
+from typing import List, Union, Optional
 
 from PIL import Image, ImageDraw
 from gsuid_core.models import Event
@@ -63,8 +63,10 @@ async def draw_buff(
         )
 
 
-async def draw_poetry_abyss_img(uid: str, ev: Event) -> Union[str, bytes]:
-    data = await mys_api.get_poetry_abyss_data(uid)
+async def draw_poetry_abyss_img(
+    uid: str, ev: Event, active: Optional[int] = None
+) -> Union[str, bytes]:
+    data = await mys_api.get_poetry_abyss_data(uid, active)
     if isinstance(data, int):
         return get_error(data)
 

@@ -12,7 +12,18 @@ sv_poetry_abyss = SV('查询幻想真境剧诗')
 
 
 @sv_poetry_abyss.on_command(
-    ('查询幻想真境剧诗', '幻想真境剧诗', '新深渊', '查询新深渊', '真剧诗'),
+    (
+        '查询幻想真境剧诗',
+        '幻想真境剧诗',
+        '新深渊',
+        '查询新深渊',
+        '真剧诗',
+        '查询上期幻想真境剧诗',
+        '上期幻想真境剧诗',
+        '上期新深渊',
+        '查询上期新深渊',
+        '上期真剧诗',
+    ),
     block=True,
 )
 async def send_poetry_abyss_info(bot: Bot, ev: Event):
@@ -26,6 +37,10 @@ async def send_poetry_abyss_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     await bot.logger.info('[幻想真境剧诗]uid: {}'.format(uid))
 
-    im = await draw_poetry_abyss_img(uid, ev)
+    if '上期' in ev.command:
+        active = 2
+    else:
+        active = None
+    im = await draw_poetry_abyss_img(uid, ev, active)
 
     await bot.send(im)

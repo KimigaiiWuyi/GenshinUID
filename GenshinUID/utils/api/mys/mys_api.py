@@ -1,5 +1,5 @@
 from copy import deepcopy
-from typing import Dict, List, Union, cast
+from typing import Dict, List, Union, Optional, cast
 
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.api import RECORD_BASE, RECORD_BASE_OS
@@ -87,7 +87,9 @@ class GsMysAPI(_MysApi):
         return data
 
     async def get_poetry_abyss_data(
-        self, uid: str
+        self,
+        uid: str,
+        active: Optional[int] = None,
     ) -> Union[PoetryAbyssDatas, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
@@ -101,6 +103,8 @@ class GsMysAPI(_MysApi):
             'role_id': uid,
             'need_detail': True,
         }
+        if active:
+            params['active'] = active
         HEADER['DS'] = get_ds_token(
             '&'.join([f'{k}={v}' for k, v in params.items()])
         )

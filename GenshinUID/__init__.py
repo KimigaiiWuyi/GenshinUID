@@ -868,6 +868,8 @@ async def convert_message(
             message.append(Message('reply', _msg.data['message_id']))
         else:
             message.append(Message('reply', _msg.data['id']))
+    elif _msg.type == 'mention_user':
+        message.append(Message('at', str(_msg.data['user_id']))) # discord给的整数值，需要转换成字符串
     elif _msg.type == 'mention':
         if 'user_id' in _msg.data:
             message.append(Message('at', _msg.data['user_id']))

@@ -11,6 +11,8 @@ from .api import (
     SORT_API,
     BUILDS_API,
     REFRESH_API,
+    STYGIAN_API,
+    HASH_ROW_API,
     ARTI_SORT_API,
     LEADERBOARD_API,
 )
@@ -187,6 +189,23 @@ class _CvApi:
             return data2
         return data1, data2
 
+    async def get_stygian_rank_data(self):
+        data = await self._cv_request(STYGIAN_API, 'GET', self._HEADER)
+        if isinstance(data, int):
+            return data
+        row = await self._cv_request(
+            HASH_ROW_API + data['totalRowsHash'],
+            'GET',
+            self._HEADER,
+        )
+
+        if isinstance(row, int):
+            count: int = 2999999
+        else:
+            count = row['totalRows']
+
+        return data, count
+
     async def close(self):
         # 调用session对象的close方法关闭会话
         await self.session.close()
@@ -205,7 +224,7 @@ class _CvApi:
             headers=header,
             params=params,
             json=data,
-            timeout=300,
+            timeout=300,  # type: ignore
         ) as resp:
             try:
                 raw_data = await resp.json()

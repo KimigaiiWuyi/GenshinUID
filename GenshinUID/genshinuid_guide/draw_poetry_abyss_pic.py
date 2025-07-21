@@ -44,8 +44,16 @@ async def draw_poetry_abyss_image(v: str):
     poetry_id = 0
     for _id in data:
         item = data[_id]
-        begin = item['begin']
-        end = item['end']
+        if 'live_begin' in item:
+            begin = item['live_begin']
+        else:
+            begin = item['begin']
+
+        if 'live_end' in item:
+            end = item['live_end']
+        else:
+            end = item['end']
+
         if is_current_time_in_range(begin, end):
             if '下' in v:
                 poetry_id = str(int(_id) + 1)

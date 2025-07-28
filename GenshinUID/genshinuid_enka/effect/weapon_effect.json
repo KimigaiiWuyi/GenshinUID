@@ -1,4 +1,66 @@
 {
+  "拾慧铸熔": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+60",
+        "2": "elementalMastery+75",
+        "3": "elementalMastery+90",
+        "4": "elementalMastery+105",
+        "5": "elementalMastery+120"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "支离轮光": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "attack+24",
+        "2": "attack+30",
+        "3": "attack+36",
+        "4": "attack+42",
+        "5": "attack+48"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 20,
+      "extra": {
+        
+      }
+    }
+  },
   "苍耀": {
     "normal": {
       "normal_effect": {

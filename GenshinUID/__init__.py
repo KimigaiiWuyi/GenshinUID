@@ -137,6 +137,35 @@ async def get_notice_message(bot: Bot, ev: Event):
             # onebot_v11
         else:
             return
+    elif bot.adapter.get_name() == 'Milky':
+        from nonebot.adapters.milky.bot import Bot
+        from nonebot.adapters.milky.event import (
+            GroupFileUploadEvent,
+            FriendFileUploadEvent,
+        )
+
+        assert isinstance(bot, Bot)
+
+        if isinstance(ev, GroupFileUploadEvent):
+            file_id = ev.data.file_id
+            file_link = await bot.get_group_file_download_url(
+                group_id=ev.data.group_id, file_id=file_id
+            )
+            message = [Message('file', file_link)]
+            user_id = str(ev.data.user_id)
+            group_id = str(ev.data.group_id)
+            user_type = 'group'
+        elif isinstance(ev, FriendFileUploadEvent):
+            file_id = ev.data.file_id
+            file_link = await bot.get_private_file_download_url(
+                user_id=ev.data.user_id, file_id=file_id
+            )
+            user_id = str(ev.data.user_id)
+            group_id = None
+            message = [Message('file', file_link)]
+            user_type = 'direct'
+        else:
+            return
     elif bot.adapter.get_name() == 'DoDo':
         from nonebot.adapters.dodo.event import CardMessageButtonClickEvent
 
@@ -558,6 +587,30 @@ async def get_all_message(bot: Bot, ev: Event):
         else:
             logger.debug('[gsuid] 不支持该 RedProtocol 事件...')
             return
+    elif bot.adapter.get_name() == 'Milky':
+        from nonebot.adapters.milky.event import (
+            GroupMessageEvent,
+            FriendMessageEvent,
+        )
+
+        if isinstance(ev, GroupMessageEvent) or isinstance(
+            ev, FriendMessageEvent
+        ):
+            sender = {
+                'name': ev.data.sender.nickname,
+                'nickname': ev.data.sender.nickname,
+                'avatar': f'http://q1.qlogo.cn/g?b=qq&nk={ev.data.sender.user_id}&s=640',
+            }
+            if isinstance(ev, GroupMessageEvent):
+                user_id = ev.get_user_id()
+                msg_id = str(ev.message_id)
+                user_type = 'group'
+                group_id = str(ev.data.peer_id)
+            elif isinstance(ev, FriendMessageEvent):
+                user_id = ev.get_user_id()
+                msg_id = str(ev.message_id)
+                user_type = 'direct'
+                group_id = None
     # ntchat
     elif bot.adapter.get_name() == 'ntchat':
         from nonebot.adapters.ntchat.event import (
@@ -757,6 +810,8 @@ async def get_all_message(bot: Bot, ev: Event):
 
     if not message:
         return
+
+    logger.debug(f'[转换消息段] {message}')
     msg = MessageReceive(
         bot_id=bot_id,
         bot_self_id=self_id,
@@ -838,7 +893,10 @@ async def convert_message(
     elif _msg.type == 'file':
         if 'file_id' in _msg.data:
             name = _msg.data.get('file')
-            if float(_msg.data.get('file_size') or _msg.data.get('size')) <= 1024 * 1024 * 4:
+            if (
+                float(_msg.data.get('file_size') or _msg.data.get('size'))
+                <= 1024 * 1024 * 4
+            ):
                 val_data = await bot.call_api(
                     'get_file',
                     file_id=_msg.data.get('file_id'),
@@ -869,7 +927,9 @@ async def convert_message(
         else:
             message.append(Message('reply', _msg.data['id']))
     elif _msg.type == 'mention_user':
-        message.append(Message('at', str(_msg.data['user_id']))) # discord给的整数值，需要转换成字符串
+        message.append(
+            Message('at', str(_msg.data['user_id']))
+        )  # discord给的整数值，需要转换成字符串
     elif _msg.type == 'mention':
         if 'user_id' in _msg.data:
             message.append(Message('at', _msg.data['user_id']))

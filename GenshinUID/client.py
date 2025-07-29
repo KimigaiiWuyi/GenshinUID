@@ -1566,6 +1566,71 @@ async def feishu_send(
         await _send(content, image)
 
 
+async def Milky_send(
+    bot: Bot,
+    content: Optional[str],
+    image: Optional[str],
+    file: Optional[str],
+    node: Optional[List[Dict]],
+    at_list: Optional[List[str]],
+    target_id: Optional[str],
+    target_type: Optional[str],
+):
+    from nonebot.adapters.milky import Bot
+    from nonebot.adapters.milky.message import Message, MessageSegment
+
+    assert isinstance(bot, Bot)
+
+    if target_id is None:
+        return
+
+    async def _send(content: Optional[str], image: Optional[str]):
+        message = Message()
+
+        if file:
+            file_name, file_content = file.split('|')
+            if target_type == 'group':
+                await bot.upload_group_file(
+                    group_id=int(target_id),
+                    file_name=file_name,
+                    base64=file_content,
+                )
+            elif target_type == 'direct':
+                await bot.upload_private_file(
+                    user_id=int(target_id),
+                    file_name=file_name,
+                    base64=file_content,
+                )
+            return
+
+        if content:
+            message.append(MessageSegment.text(content))
+        if image:
+            message.append(MessageSegment.image(image))
+
+        if at_list:
+            for at in at_list:
+                message.append(MessageSegment.mention(int(at)))
+
+        if target_type == 'group':
+            await bot.send_group_message(
+                group_id=int(target_id), message=message
+            )
+        elif target_type == 'direct':
+            await bot.send_private_message(
+                user_id=int(target_id), message=message
+            )
+
+    if node:
+        for _msg in node:
+            if _msg['type'] == 'image':
+                await _send(None, _msg['data'])
+            else:
+                await _send(_msg['data'], None)
+    else:
+        await _send(content, image)
+
+
 async def onebot_v12_send(
     bot: Bot,
     content: Optional[str],

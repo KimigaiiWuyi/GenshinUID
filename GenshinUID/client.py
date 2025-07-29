@@ -276,6 +276,17 @@ class GsClient:
                                 msg.target_type,
                                 msg.msg_id,
                             )
+                        elif msg.bot_id == 'milky':
+                            await Milky_send(
+                                bot,
+                                content,
+                                image,
+                                file,
+                                node,
+                                at_list,
+                                msg.target_id,
+                                msg.target_type,
+                            )
                         elif msg.bot_id == 'villa':
                             await villa_send(
                                 bot,

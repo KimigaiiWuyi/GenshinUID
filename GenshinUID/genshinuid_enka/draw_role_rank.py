@@ -47,6 +47,7 @@ async def draw_role_rank_img(
     cv_api = _CvApi()
 
     char_name = await alias_to_char_name(char_name)
+    print(char_name)
     char_id = await name_to_avatar_id(char_name)
 
     if player_uid:
@@ -56,6 +57,8 @@ async def draw_role_rank_img(
         if char_id not in rank_data:
             return f'你还暂无{char_name}的数据, 请先[{PREFIX}强制刷新]...'
 
+        print(char_id)
+        print(rank_data)
         fit = rank_data[char_id]['calculations']['fit']
         calculation_id = fit['calculationId']
         r0 = int(fit["result"])

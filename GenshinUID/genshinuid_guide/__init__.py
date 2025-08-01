@@ -20,8 +20,8 @@ from ..utils.map.name_covert import alias_to_char_name
 from .draw_poetry_abyss_pic import draw_poetry_abyss_image
 
 sv_char_guide = SV('查询角色攻略')
-sv_abyss_review = SV('查询深渊阵容')
-sv_poetry_abyss_review = SV('查询剧诗深渊阵容')
+sv_abyss_reviews = SV('查询深渊阵容', priority=2)
+sv_poetry_abyss_reviews = SV('查询剧诗深渊阵容', priority=3)
 sv_bbs_post_guide = SV('查询BBS攻略')
 
 
@@ -60,12 +60,14 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
         await bot.logger.warning('未找到{}参考面板图片'.format(name))
 
 
-@sv_poetry_abyss_review.on_command(
+@sv_poetry_abyss_reviews.on_command(
     (
         '剧诗版本深渊',
         '剧诗深渊阵容',
         '剧诗信息',
         '新深渊信息',
+        '剧诗怪物',
+        '新深渊怪物',
     )
 )
 async def send_poetry_abyss_review(bot: Bot, ev: Event):
@@ -74,7 +76,7 @@ async def send_poetry_abyss_review(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_abyss_review.on_command(('版本深渊', '深渊阵容', '深渊怪物', '深渊信息'))
+@sv_abyss_reviews.on_command(('版本深渊', '深渊阵容', '深渊怪物', '深渊信息'))
 async def send_abyss_review(bot: Bot, ev: Event):
     floor = '12'
     if not ev.text:

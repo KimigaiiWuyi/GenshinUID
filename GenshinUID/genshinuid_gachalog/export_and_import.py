@@ -29,6 +29,18 @@ async def import_data(uid: str, raw_data: List[Dict]):
         if 'name' not in item and 'item_id' not in item:
             logger.error(f'[导入抽卡记录] 数据格式错误!{item}')
             continue
+
+        if item['item_type'] == '角色':
+            for _id in charList:
+                if charList[_id]['CHS'] == item['name']:
+                    item['item_id'] = _id
+                    break
+        else:
+            for _id in weaponList:
+                if weaponList[_id]['CHS'] == item['name']:
+                    item['item_id'] = _id
+                    break
+
         if 'name' not in item or 'rank_type' not in item:
             if int(item['item_id']) >= 100000:
                 char_data = charList[str(item['item_id'])]
@@ -42,17 +54,6 @@ async def import_data(uid: str, raw_data: List[Dict]):
                 item['name'] = weapon_data['CHS']
                 item['rank_type'] = str(weapon_data['rank'])
                 item['item_type'] = '武器'
-        else:
-            if item['item_type'] == '角色':
-                for _id in charList:
-                    if charList[_id]['CHS'] == item['name']:
-                        item['item_id'] = _id
-                        break
-            else:
-                for _id in weaponList:
-                    if weaponList[_id]['CHS'] == item['name']:
-                        item['item_id'] = _id
-                        break
 
         item['uid'] = uid
         item['item_id'] = item['item_id'] if 'item_id' in item else ''

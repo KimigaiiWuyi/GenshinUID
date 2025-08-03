@@ -29,7 +29,7 @@ async def import_data(uid: str, raw_data: List[Dict]):
         if 'name' not in item and 'item_id' not in item:
             logger.error(f'[导入抽卡记录] 数据格式错误!{item}')
             continue
-        if 'name' not in item:
+        if 'name' not in item or 'rank_type' not in item:
             if int(item['item_id']) >= 100000:
                 char_data = charList[str(item['item_id'])]
                 item['name'] = char_data['CHS']

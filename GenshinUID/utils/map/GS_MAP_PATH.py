@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict, List, TypedDict
+from typing import Any, Dict, List, TypedDict
 
 from msgspec import json as msgjson
 from gsuid_core.logger import logger
@@ -38,8 +38,8 @@ class TS(TypedDict):
     Icon: Dict[str, str]
 
 
-charList: Dict[str, str] = {}
-weaponList: Dict[str, str] = {}
+charList: Dict[str, Dict[str, Any]] = {}
+weaponList: Dict[str, Dict[str, Any]] = {}
 avatarId2Name: Dict[str, str] = {}
 icon2Name: Dict[str, str] = {}
 artifact2attr: Dict[str, str] = {}

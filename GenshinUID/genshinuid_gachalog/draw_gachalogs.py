@@ -10,10 +10,10 @@ from gsuid_core.models import Event
 from gsuid_core.logger import logger
 
 from ..utils.message import PREFIX
-from ..utils.map.GS_MAP_PATH import charList
 from ..utils.image.convert import convert_img
 from .get_gachalogs import all_gacha_type_name
 from ..utils.map.name_covert import name_to_avatar_id
+from ..utils.map.GS_MAP_PATH import charList, weaponList
 from ..utils.image.image_tools import get_avatar, get_color_bg
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, PLAYER_PATH, WEAPON_PATH
 from ..utils.fonts.genshin_fonts import (
@@ -219,6 +219,19 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
                 )
 
             # 如果这是个五星
+            if 'rank_type' not in data:
+                if data['item_type'] == '武器':
+                    data['rank_type'] = str(
+                        weaponList[data['item_id']]['rank']
+                    )
+                elif data['item_type'] == '角色':
+                    data['rank_type'] = (
+                        '5'
+                        if str(charList[data['item_id']]['rank'])
+                        == 'QUALITY_ORANGE'
+                        else '4'
+                    )
+
             if data['rank_type'] == '5':
                 # 抽到这个五星花了多少抽
                 data['gacha_num'] = num

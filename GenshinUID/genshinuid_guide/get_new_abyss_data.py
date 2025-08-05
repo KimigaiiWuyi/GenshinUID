@@ -226,11 +226,17 @@ def change_js_to_python(js_code: str) -> Dict:
 async def get_review_data(
     version: str = Genshin_version[:3], floor: str = '12'
 ):
+    js_path = Path(__file__).parent / 'abyss.js'
+    js_code = js_path.read_text(encoding='UTF-8')
+    all_data = change_js_to_python(js_code)
+
+    '''
     all_data = await _get_data_from_url(
         'https://homdgcat.wiki/gi/CH/database.js',
         schedule_path,
         86400,
     )
+    '''
 
     schedule: List = all_data['_SpiralAbyssSchedule']
     for i in schedule:

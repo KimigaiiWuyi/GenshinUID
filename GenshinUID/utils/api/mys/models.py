@@ -51,6 +51,8 @@ class Act(TypedDict):
     status: int
     reward_list: List[RewardItem]
     is_finished: bool
+    x: int
+    y: int
 
 
 class RoleCombatDetail(TypedDict):
@@ -64,6 +66,25 @@ class TowerDetail(TypedDict):
     max_star: int
     total_star: int
     has_data: bool
+
+
+class SubHardDetail(TypedDict):
+    seconds: int
+    x: int
+    y: int
+
+
+class HardChallengeDetail(TypedDict):
+    is_unlock: bool
+    difficulty: int
+    second: int
+    icon: str
+    sub: SubHardDetail
+
+
+class ExploreDetail(TypedDict):
+    explore_percent: int
+    is_finished: bool
 
 
 class FixedAct(TypedDict):
@@ -82,6 +103,11 @@ class FixedAct(TypedDict):
     is_finished: bool
     role_combat_detail: Optional[RoleCombatDetail]
     tower_detail: Optional[TowerDetail]
+    hard_challenge_detail: Optional[HardChallengeDetail]
+    explore_detail: Optional[ExploreDetail]
+
+    x: int
+    y: int
 
 
 class Pool(TypedDict):

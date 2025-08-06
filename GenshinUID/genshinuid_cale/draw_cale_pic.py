@@ -10,13 +10,18 @@ from ..utils.api.mys.models import Act, FixedAct
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.resource.download_url import download
 from ..genshinuid_xkdata.draw_teyvat_img import gen_char
-from ..utils.fonts.genshin_fonts import gs_font_26, gs_font_30, gs_font_38
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, TEMP_PATH, WEAPON_PATH
 from ..utils.image.image_tools import (
     get_v4_bg,
     add_footer,
     get_avatar,
     get_v4_title,
+)
+from ..utils.fonts.genshin_fonts import (
+    gs_font_24,
+    gs_font_26,
+    gs_font_30,
+    gs_font_38,
 )
 
 GREY = (189, 189, 189)
@@ -37,10 +42,39 @@ def convert_timestamp_to_string(timestamp):
 
 async def draw_act(act: Union[Act, FixedAct]):
     act_bg = Image.open(TEXT_PATH / 'act_bg.png')
-
+    sub_t = None
     if act['status'] == 2:
         fg = yes if act['is_finished'] else no
         t = '已完成' if act['is_finished'] else '未完成'
+
+        if act['type'] == 'ActTypeHardChallenge':
+            if (
+                'hard_challenge_detail' in act
+                and act['hard_challenge_detail']
+                and act['hard_challenge_detail']['second']
+            ):
+                hcd = act['hard_challenge_detail']
+                fg = yes
+                t = f'困难{hcd["difficulty"]}'
+                sub_t = f'{hcd["second"]}秒'
+
+            else:
+                fg = no
+
+        if act['type'] == 'ActTypeHardChallengeSub':
+            if act['is_finished']:
+                t = '已完成'
+            else:
+                t = f'差{act["y"] - act["x"]}'
+
+        if (
+            act['type'] == 'ActTypeExplore'
+            and 'explore_detail' in act
+            and act['explore_detail']
+        ):
+            ed = act['explore_detail']
+            t = f'{ed["explore_percent"]}%'
+
         g = '结束剩余时间: '
     else:
         fg = un
@@ -57,6 +91,8 @@ async def draw_act(act: Union[Act, FixedAct]):
     act_draw.text((130, 102), limit_time, GREY, gs_font_26, 'lm')
 
     act_draw.text((840, 81), t, 'white', gs_font_30, 'mm')
+    if sub_t:
+        act_draw.text((840, 120), sub_t, (25, 153, 245), gs_font_24, 'mm')
 
     for j, reward in enumerate(act['reward_list'][:2]):
         icon_bg = Image.open(TEXT_PATH / 'icon_bg.png')
@@ -97,6 +133,34 @@ async def draw_cale_img(ev: Event, uid: str):
 
     title_img = title_img.resize((1058, 441))
 
+    act_list = []
+    for act in data['act_list']:
+        act_list.append(act)
+        if (
+            act['type'] == 'ActTypeHardChallenge'
+            and 'hard_challenge_detail' in act
+            and 'sub' in act['hard_challenge_detail']
+        ):
+            act_list.append(
+                {
+                    'type': 'ActTypeHardChallengeSub',
+                    'name': '幽境·紊乱爆发',
+                    'countdown_seconds': act['hard_challenge_detail']['sub'][
+                        'seconds'
+                    ],
+                    'x': act['hard_challenge_detail']['sub']['x'],
+                    'y': act['hard_challenge_detail']['sub']['y'],
+                    'is_finished': (
+                        True
+                        if act['hard_challenge_detail']['sub']['x']
+                        >= act['hard_challenge_detail']['sub']['y']
+                        else False
+                    ),
+                    'status': 2,
+                    'reward_list': [act['reward_list'][1]],
+                }
+            )
+
     w, h = 1000, title_img.size[1] + 385
 
     if data['avatar_card_pool_list']:
@@ -104,7 +168,7 @@ async def draw_cale_img(ev: Event, uid: str):
     if data['weapon_card_pool_list']:
         h += 270
 
-    h += len(data['act_list']) * 160
+    h += len(act_list) * 160
     h += len(data['fixed_act_list']) * 160
 
     img = get_v4_bg(w, h)
@@ -187,7 +251,7 @@ async def draw_cale_img(ev: Event, uid: str):
     img.paste(bar2, (0, p), bar2)
     p += 60
 
-    for act in data['act_list']:
+    for act in act_list:
         act_bg = await draw_act(act)
         img.paste(act_bg, (0, p), act_bg)
         p += 160

@@ -59,7 +59,7 @@ async def draw_role_rank_img(
         fit = rank_data[char_id]['calculations']['fit']
         calculation_id = fit['calculationId']
         r0 = int(fit["result"])
-        r1 = int(r0 + 1)
+        r1 = int(r0 + 0.01)
         raw_data = await cv_api.get_sort_list(char_id, calculation_id, r1)
         tag = '角色附近'
     else:

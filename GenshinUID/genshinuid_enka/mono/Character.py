@@ -2,7 +2,7 @@ import re
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 
-from httpx import ConnectTimeout
+# from httpx import ConnectTimeout
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.minigg.request import (
     get_weapon_info,
@@ -143,11 +143,14 @@ class Character:
             weapon_info = deepcopy(baseWeaponInfo)
             try:
                 weapon_raw_data = await get_weapon_info(weapon)
-            except ConnectTimeout:
+            except Exception as e:
+                logger.error(f'获取武器信息失败: {e}')
                 weapon_raw_data = -1
 
-            if isinstance(weapon_raw_data, int) or isinstance(
-                weapon_raw_data, List
+            if (
+                isinstance(weapon_raw_data, int)
+                or isinstance(weapon_raw_data, List)
+                or weapon_raw_data is None
             ):
                 weapon_id = 0
                 if weapon in beta_weapons:

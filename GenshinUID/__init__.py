@@ -40,7 +40,7 @@ async def get_gs_msg(ev):
     # 通用字段获取
     user_id = str(ev.user_id)
     msg_id = str(ev.message_id)
-    group_id = str(ev.group_id)
+    group_id = str(ev.group_id) if hasattr(ev, 'group_id') and ev.group_id else ''
     self_id = str(ev.self_id)
     sender = ev.sender
     sender['avatar'] = f'http://q1.qlogo.cn/g?b=qq&nk={user_id}&s=640'
@@ -102,7 +102,8 @@ async def get_gs_msg(ev):
 
 @hoshino_bot.on_message('private')
 async def send_priv_msg(ctx):
-    ctx.group_id = ''
+    # 直接传递私聊消息，不需要修改 group_id
+    # 私聊消息的 group_id 本来就是空的或 None
     await get_gs_msg(ctx)
 
 

@@ -66,6 +66,12 @@ mihoyobbs_List = [
         'name': '绝区零',
         'url': 'https://bbs.mihoyo.com/zzz/',
     },
+    {
+        'id': '9',
+        'forumId': '948',
+        'name': '崩坏：因缘精灵',
+        'url': 'https://bbs.mihoyo.com/hna/',
+    },
 ]
 
 

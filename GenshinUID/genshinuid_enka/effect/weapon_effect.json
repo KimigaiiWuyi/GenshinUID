@@ -1,4 +1,283 @@
 {
+  "罗网勾针": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+120",
+        "2": "elementalMastery+150",
+        "3": "elementalMastery+180",
+        "4": "elementalMastery+210",
+        "5": "elementalMastery+240"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "谧音吹哨": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addHp+16",
+        "2": "addHp+20",
+        "3": "addHp+24",
+        "4": "addHp+28",
+        "5": "addHp+32"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "织月者的曙色": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "Q:dmgBonus+48",
+        "2": "Q:dmgBonus+60",
+        "3": "Q:dmgBonus+72",
+        "4": "Q:dmgBonus+84",
+        "5": "Q:dmgBonus+96"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "万能钥匙": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+120",
+        "2": "elementalMastery+150",
+        "3": "elementalMastery+180",
+        "4": "elementalMastery+210",
+        "5": "elementalMastery+240"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "掘金之锹": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "天光的纺琴": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+100",
+        "2": "elementalMastery+125",
+        "3": "elementalMastery+150",
+        "4": "elementalMastery+175",
+        "5": "elementalMastery+200"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "血染荒城": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "Q:dmgBonus+28",
+        "2": "Q:dmgBonus+35",
+        "3": "Q:dmgBonus+42",
+        "4": "Q:dmgBonus+49",
+        "5": "Q:dmgBonus+56"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "乌髓孑灯": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "纺夜天镜": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+120",
+        "2": "elementalMastery+150",
+        "3": "elementalMastery+180",
+        "4": "elementalMastery+210",
+        "5": "elementalMastery+240"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
   "拾慧铸熔": {
     "normal": {
       "normal_effect": {

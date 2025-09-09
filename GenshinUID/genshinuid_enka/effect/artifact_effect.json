@@ -1,4 +1,32 @@
 {
+  "穹境示现之夜": {
+    "normal_effect": {
+      "2": "elementalMastery+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "critRate+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "critRate+30"
+    }
+  },
+  "纺月的夜歌": {
+    "normal_effect": {
+      "2": "energyRecharge+20",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "critRate+30"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "critRate+30"
+    }
+  },
   "长夜之誓": {
     "normal_effect": {
       "2": "",

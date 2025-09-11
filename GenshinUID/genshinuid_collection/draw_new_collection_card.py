@@ -40,6 +40,7 @@ CMAP = {
     '水神瞳': [271, 211, 150, 90, 20],
     '冰神瞳': [271, 211, 150, 90, 20],
     '火神瞳': [271, 211, 150, 90, 20],
+    '月神瞳': [271, 211, 150, 90, 20],
     '华丽的宝箱': cal_level(max_data['华丽的宝箱']),
     '珍贵的宝箱': cal_level(max_data['珍贵的宝箱']),
     '精致的宝箱': cal_level(max_data['精致的宝箱']),
@@ -69,16 +70,7 @@ STCMAP = {
     'dendro': '草神瞳',
     'cryo': '冰神瞳',
     'pyro': '火神瞳',
-}
-
-STLMAP = {
-    'electro': '雷神瞳',
-    'geo': '岩神瞳',
-    'hydro': '水神瞳',
-    'anemo': '风神瞳',
-    'dendro': '草神瞳',
-    'cryo': '冰神瞳',
-    'pyro': '火神瞳',
+    'moono': '月神瞳',
 }
 
 r = 20
@@ -257,6 +249,9 @@ async def _draw_explore(raw_data: IndexData):
     for index, world in enumerate(worlds):
         if world['name'] == '远古圣山':
             icon_ = 'community-game-records/images/world-logo-16.1c751ac9.png'
+            world['icon'] = f'https://webstatic.mihoyo.com/app/{icon_}'
+        elif world['name'] == '挪德卡莱':
+            icon_ = 'community-game-records/images/world-logo-17.dadac5bf.png'
             world['icon'] = f'https://webstatic.mihoyo.com/app/{icon_}'
 
         icon = await get_image(world['icon'], ICON_PATH)

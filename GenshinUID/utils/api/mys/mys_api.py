@@ -1,6 +1,7 @@
 from copy import deepcopy
 from typing import Dict, List, Union, Optional, cast
 
+from gsuid_core.utils.cache import gs_cache
 from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.api import RECORD_BASE, RECORD_BASE_OS
 from gsuid_core.utils.api.mys.tools import get_ds_token, get_web_ds_token
@@ -21,6 +22,7 @@ class GsMysAPI(_MysApi):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    @gs_cache(360)
     async def get_hard_challenge_data(self, uid: str) -> Union[Dict, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0], 'cn_gf01')
         HEADER = deepcopy(self._HEADER)
@@ -46,6 +48,7 @@ class GsMysAPI(_MysApi):
             data = cast(Dict, data['data'])
         return data
 
+    @gs_cache(300)
     async def get_calendar_data(self, uid: str) -> Union[CalendarData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
         header = deepcopy(self._HEADER)
@@ -66,6 +69,7 @@ class GsMysAPI(_MysApi):
             data = cast(CalendarData, data['data'])
         return data
 
+    @gs_cache(300)
     async def get_widget_resin_data(self, uid: str) -> Union[WidgetResin, int]:
         header = deepcopy(self._HEADER)
         sk = await self.get_stoken(uid)
@@ -86,6 +90,7 @@ class GsMysAPI(_MysApi):
             data = cast(WidgetResin, data['data'])
         return data
 
+    @gs_cache(360)
     async def get_poetry_abyss_data(
         self,
         uid: str,
@@ -119,6 +124,7 @@ class GsMysAPI(_MysApi):
             data = cast(PoetryAbyssDatas, data['data'])
         return data
 
+    @gs_cache(360)
     async def get_char_detail_data(
         self, uid: str, char_id_list: List[str]
     ) -> Union[List[Character], int]:

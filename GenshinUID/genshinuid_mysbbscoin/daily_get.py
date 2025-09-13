@@ -1,45 +1,36 @@
-import random
-import asyncio
-
-from gsuid_core.logger import logger
+from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.utils.database.models import GsUser
 
 from .get_mihoyo_bbs_coin import MihoyoBBSCoin
 from ..genshinuid_config.gs_config import gsconfig
 
 
+async def coin_task(uid: str):
+    stoken = await GsUser.get_user_attr_by_uid(uid, 'stoken')
+    if stoken:
+        im = await mihoyo_coin(stoken)
+    else:
+        im = '失败, 未绑定stoken，无法获取米游币!'
+    return im
+
+
 async def all_daily_mihoyo_bbs_coin():
-    users = await GsUser.get_all_user()
-    vaild_list = [_u for _u in users if _u.bbs_switch != 'off' and _u.stoken]
-    im_success = 0
-    im_failed = 0
-    im_failed_str = ''
-    im_private = {}
-    for user in vaild_list:
-        logger.info(f'[米游币任务]正在执行{user.uid}')
-        await asyncio.sleep(5 + random.randint(1, 3))
-        if user.stoken is None:
-            continue
-        try:
-            im = await mihoyo_coin(user.stoken)
-            logger.info(f'[米游币任务]已执行完毕: {user.uid}')
-            im_success += 1
-            # 开启私聊报告
-            if gsconfig.get_config('MhyBBSCoinReport').data:
-                if user.bot_id not in im_private:
-                    im_private[user.bot_id] = {}
-                if user.user_id not in im_private[user.bot_id]:
-                    im_private[user.bot_id][user.user_id] = ''
-                im_private[user.bot_id][user.user_id] += im
-        except Exception:
-            logger.exception(f'[米游币任务]执行失败: {user.uid}')
-            im_failed += 1
-            im_failed_str += f'\n[米游币任务]执行失败: {user.uid}'
-    faild_im = (
-        f'\n以下为签到失败报告: {im_failed_str}' if im_failed_str != '' else ''
+    datas = await gs_subscribe.get_subscribe('[原神] 自动米游币')
+    priv_result, group_result = await gs_subscribe.muti_task(
+        datas, coin_task, 'uid'
     )
-    im = f'今日获取mhycoin成功数量: {im_success}，失败数量: {im_failed}{faild_im}'
-    return im, im_private
+
+    if gsconfig.get_config('MhyBBSCoinReport').data:
+        for _, data in priv_result.items():
+            im = '\n'.join(data['im'])
+            event = data['event']
+            await event.send(im)
+
+    for _, data in group_result.items():
+        im = '✅ 今日自动获取米游币已完成！\n'
+        im += f'📝 本群共获取成功{data["success"]}人，共获取失败{data["fail"]}人。'
+        event = data['event']
+        await event.send(im)
 
 
 async def mihoyo_coin(stoken: str):

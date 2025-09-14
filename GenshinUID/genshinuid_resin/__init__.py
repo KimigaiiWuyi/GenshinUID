@@ -19,7 +19,7 @@ is_check_resin = gsconfig.get_config('SchedResinPush').data
 
 @sv_get_resin.on_fullmatch(('当前状态'))
 async def send_daily_info(bot: Bot, ev: Event):
-    logger.info('🔨 [GenshinUID]\n🌱 开始执行[每日信息文字版]')
+    logger.info('🔨 [原神服务]\n🌱 开始执行[每日信息文字版]')
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -31,15 +31,17 @@ async def send_daily_info(bot: Bot, ev: Event):
 
 @sv_get_resin_admin.on_fullmatch(('强制推送体力提醒'))
 async def force_notice_job(bot: Bot, ev: Event):
-    await bot.send('🔨 [GenshinUID]\n🌱 开始执行强制推送体力提醒!')
+    await bot.send('🔨 [原神服务]\n🌱 开始执行强制推送体力提醒!')
     await notice_job(True)
-    await bot.send('🔨 [GenshinUID]\n✅ 强制推送体力提醒执行完成!')
+    await bot.send('🔨 [原神服务]\n✅ 强制推送体力提醒执行完成!')
 
 
 @scheduler.scheduled_job('cron', minute='*/30')
 async def notice_job(force: bool = False):
     if is_check_resin or force:
         await send_notice_list()
+    else:
+        logger.info('🔨 [原神服务]\n❌ 未开启体力推送功能!')
 
 
 @sv_get_resin.on_fullmatch(('每日', 'mr', '实时便笺', '便笺', '便签'))

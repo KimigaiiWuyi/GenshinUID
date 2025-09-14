@@ -86,7 +86,7 @@ async def send_config_ev(bot: Bot, ev: Event):
         )
         im = f'🔨 [原神服务]\n✅ 已为[UID{uid}]设置{config_name}为{value}!'
     else:
-        im = '🔨 [原神服务]\n❌ 请先开启功能...\n🚩 例如: {P}开启体力推送'
+        im = f'🔨 [原神服务]\n❌ 请先开启功能...\n🚩 例如: {P}开启体力推送'
 
     await bot.send(im)
 

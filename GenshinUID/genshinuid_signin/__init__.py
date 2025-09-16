@@ -31,7 +31,7 @@ async def get_sign_func(bot: Bot, ev: Event):
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info('[原神] [签到]UID: {}'.format(uid))
+    logger.info(f'[原神] [签到]UID: {uid}')
     await bot.send(await sign_in(uid, 'gs'))
 
 

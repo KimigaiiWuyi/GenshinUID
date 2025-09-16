@@ -111,7 +111,7 @@ class _CvApi:
         self,
         char_id: str,
         calculation_id: Optional[str] = None,
-        combo: Optional[Union[str, int]] = None,
+        combo: Optional[Union[str, int, float]] = None,
     ) -> Optional[Tuple[List[Dict], int]]:
         count = 0
         if calculation_id is None:
@@ -137,6 +137,7 @@ class _CvApi:
             extra = '&p='
 
         url = SORT_API.format(calculation_id) + extra
+        logger.debug(f'[AKASHA] URL: {url}')
         raw_data = await self._cv_request(
             url,
             'GET',

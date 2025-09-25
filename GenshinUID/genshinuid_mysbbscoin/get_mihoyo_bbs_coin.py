@@ -324,12 +324,13 @@ class MihoyoBBSCoin:
     ) -> Dict:
         for _ in range(2):
             import json
+
             if BBS_SIGN_URL in url:
                 header['DS'] = get_ds_token('', data, '22')
             else:
                 header['DS'] = get_web_ds_token()
             async with AsyncClient(timeout=None) as client:
-                logger.trace(method,url,json.dumps(data),header)
+                logger.trace(method, url, json.dumps(data), header)
                 req = await client.request(
                     method=method,
                     url=url,

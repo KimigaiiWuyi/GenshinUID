@@ -437,10 +437,7 @@ async def enka_to_dict(
             )
 
     if is_enable_akasha:
-        threading.Thread(
-            target=lambda: asyncio.run(_restore_cv_data(uid, now)),
-            daemon=True,
-        ).start()
+        asyncio.create_task(_restore_cv_data(uid, now))
 
     return char_dict_list
 

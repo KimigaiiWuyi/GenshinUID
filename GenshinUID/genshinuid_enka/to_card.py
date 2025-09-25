@@ -30,21 +30,28 @@ pic_204 = Image.open(TEXT_PATH / '204.png')
 async def enka_to_card(
     uid: str, enka_data: Optional[EnkaData] = None
 ) -> Union[str, bytes, Tuple[bytes, List[Dict]]]:
-    char_data_list = await enka_to_dict(uid, enka_data)
-    if isinstance(char_data_list, str):
-        if '服务器正在维护或者关闭中' in char_data_list:
-            return await convert_img(pic_500)
-        elif '未打开角色展柜' in char_data_list:
-            return await convert_img(pic_204)
+    try:
+        char_data_list = await enka_to_dict(uid, enka_data)
+        if isinstance(char_data_list, str):
+            if '服务器正在维护或者关闭中' in char_data_list:
+                return await convert_img(pic_500)
+            elif '未打开角色展柜' in char_data_list:
+                return await convert_img(pic_204)
+            else:
+                return await convert_img(pic_500)
         else:
-            return await convert_img(pic_500)
-    else:
-        if char_data_list == []:
-            return await convert_img(pic_500)
+            if char_data_list == []:
+                return await convert_img(pic_500)
 
-    img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
-    logger.info(f'[强制刷新] UID{uid}成功!')
-    return img, char_data_list
+        img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
+        logger.info(f'[强制刷新] UID{uid}成功!')
+        return img, char_data_list
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+        logger.error(f'[强制刷新] UID{uid}失败! {e}')
+        return await convert_img(pic_500)
 
 
 async def draw_enka_card(

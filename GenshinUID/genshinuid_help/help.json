@@ -168,14 +168,6 @@
         "need_admin": false
       },
       {
-        "name": "留影叙佳期",
-        "desc": "获取当天的留影叙佳期画片",
-        "eg": "留影叙佳期",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
         "name": "刷新抽卡记录",
         "desc": "更新抽卡记录，需要SK",
         "eg": "刷新抽卡记录",

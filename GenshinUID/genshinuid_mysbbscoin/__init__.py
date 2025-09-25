@@ -1,10 +1,8 @@
 import random
 import asyncio
-from typing import Optional
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
-from gsuid_core.gss import gss
 from gsuid_core.models import Event
 from gsuid_core.aps import scheduler
 from gsuid_core.logger import logger
@@ -37,7 +35,7 @@ async def send_mihoyo_coin(bot: Bot, ev: Event):
 @sv_mysbbs_config.on_fullmatch('全部重获取')
 async def bbs_recheck(bot: Bot, ev: Event):
     await bot.send('已开始执行!可能需要较久时间!')
-    await send_daily_mihoyo_bbs_sign(ev)
+    await send_daily_mihoyo_bbs_sign()
     await bot.send('执行完成!')
 
 
@@ -51,25 +49,6 @@ async def get_coin_at_night():
         await send_daily_mihoyo_bbs_sign()
 
 
-async def send_daily_mihoyo_bbs_sign(ev: Optional[Event] = None):
-    im, im_private = await all_daily_mihoyo_bbs_coin()
-    if im_private:
-        for BOT_ID in gss.active_bot:
-            bot = gss.active_bot[BOT_ID]
-            for bot_id in im_private:
-                for user_id in im_private[bot_id]:
-                    msg = im_private[bot_id][user_id]
-                    await bot.target_send(
-                        msg, 'direct', user_id, bot_id, '', ''
-                    )
-                await asyncio.sleep(5 + random.randint(1, 3))
-    if ev:
-        target_type = 'group' if ev.group_id else 'direct'
-        target_id = ev.group_id if ev.group_id else ev.user_id
-        for BOT_ID in gss.active_bot:
-            bot = gss.active_bot[BOT_ID]
-            await bot.target_send(
-                im, target_type, target_id, ev.bot_id, '', ''
-            )
-        await asyncio.sleep(5 + random.randint(1, 3))
+async def send_daily_mihoyo_bbs_sign():
+    await all_daily_mihoyo_bbs_coin()
     logger.info('米游币获取已结束。')

@@ -123,7 +123,7 @@ class MihoyoBBSCoin:
             im = '\n'.join([start, sign, read, like, share])
             return im
         else:
-            return '米游社币任务执行出错了~'
+            return '失败, 米游社币任务执行出错了~'
 
     async def load_mihoyo_bbs_list_use(self):
         for i in range(1, 10):

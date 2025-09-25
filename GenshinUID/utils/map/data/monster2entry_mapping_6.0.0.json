@@ -7385,6 +7385,686 @@
         "route": "Thunder Manifestation",
         "icon": "UI_MonsterIcon_Raijin"
     },
+    "20080101": {
+        "id": 20080101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010024,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010024,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.5,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112128": {
+                "name": "霜夜的残照",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112128",
+                "count": "6.5658"
+            },
+            "112129": {
+                "name": "霜夜的柔辉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112129",
+                "count": "1.7508"
+            },
+            "112130": {
+                "name": "霜夜的煌荣",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112130",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "辉电·霜夜灵嗣",
+        "route": "Gleaming Charge: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Electric"
+    },
+    "20080102": {
+        "id": 20080102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010024,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010024,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.5,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "辉电·霜夜灵嗣",
+        "route": "Gleaming Charge: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Electric"
+    },
+    "20080201": {
+        "id": 20080201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010023,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010023,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.5,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112128": {
+                "name": "霜夜的残照",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112128",
+                "count": "6.5658"
+            },
+            "112129": {
+                "name": "霜夜的柔辉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112129",
+                "count": "1.7508"
+            },
+            "112130": {
+                "name": "霜夜的煌荣",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112130",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "蔓结·霜夜灵嗣",
+        "route": "Tangled Vines: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Grass"
+    },
+    "20080202": {
+        "id": 20080202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010023,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010023,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.5,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蔓结·霜夜灵嗣",
+        "route": "Tangled Vines: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Grass"
+    },
+    "20080301": {
+        "id": 20080301,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010021,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010021,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 176.592,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.5,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112128": {
+                "name": "霜夜的残照",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112128",
+                "count": "6.5658"
+            },
+            "112129": {
+                "name": "霜夜的柔辉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112129",
+                "count": "1.7508"
+            },
+            "112130": {
+                "name": "霜夜的煌荣",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112130",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "灼烜·霜夜灵嗣",
+        "route": "Blazing Brilliance: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Fire"
+    },
+    "20080302": {
+        "id": 20080302,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010021,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010021,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 176.592,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.5,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "灼烜·霜夜灵嗣",
+        "route": "Blazing Brilliance: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Fire"
+    },
+    "20080401": {
+        "id": 20080401,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010026,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010026,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 176.592,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112128": {
+                "name": "霜夜的残照",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112128",
+                "count": "6.5658"
+            },
+            "112129": {
+                "name": "霜夜的柔辉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112129",
+                "count": "1.7508"
+            },
+            "112130": {
+                "name": "霜夜的煌荣",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112130",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "凌晶·霜夜灵嗣",
+        "route": "Icy Crystal: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Ice"
+    },
+    "20080402": {
+        "id": 20080402,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010026,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010026,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 176.592,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "凌晶·霜夜灵嗣",
+        "route": "Icy Crystal: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Ice"
+    },
     "21010101": {
         "id": 21010101,
         "type": "MONSTER_ORDINARY",
@@ -22395,6 +23075,996 @@
         "route": "Tenebrous Mimiflora",
         "icon": "UI_MonsterIcon_TheAbyss_Rhizome"
     },
+    "22130001": {
+        "id": 22130001,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130002": {
+        "id": 22130002,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130101": {
+        "id": 22130101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130102": {
+        "id": 22130102,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130103": {
+        "id": 22130103,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130104": {
+        "id": 22130104,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130201": {
+        "id": 22130201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22130202": {
+        "id": 22130202,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野幽徒",
+        "route": "Wilderness Exile",
+        "icon": "UI_MonsterIcon_WildHunt"
+    },
+    "22131001": {
+        "id": 22131001,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 141.2736,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112134": {
+                "name": "幽雾化形",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112134",
+                "count": "2.6263"
+            },
+            "112135": {
+                "name": "幽雾片甲",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112135",
+                "count": "0.7003"
+            },
+            "112136": {
+                "name": "幽雾兜盔",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112136",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "荒野狂狩士",
+        "route": "Wilderness Hunter",
+        "icon": "UI_MonsterIcon_WildHunt_Elite"
+    },
     "23010101": {
         "id": 23010101,
         "type": "MONSTER_ORDINARY",
@@ -23720,6 +25390,3325 @@
         "name": "愚人众·风役人",
         "route": "Wind Operative",
         "icon": "UI_MonsterIcon_Fatuus_Escadron_Wind"
+    },
+    "23070101": {
+        "id": 23070101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004139,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·线列军",
+        "route": "Oprichniki Line Trooper",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23070102": {
+        "id": 23070102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004139,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·线列军",
+        "route": "Oprichniki Line Trooper",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23071101": {
+        "id": 23071101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004149,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·线列军",
+        "route": "Oprichniki Line Trooper",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23071102": {
+        "id": 23071102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004149,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·线列军",
+        "route": "Oprichniki Line Trooper",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23072101": {
+        "id": 23072101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-坦克4",
+                "description": "铁皮集群-坦克4",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank4"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 19.0176,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004140,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·支援兵",
+        "route": "Oprichniki Support Trooper",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_MuscleMan"
+    },
+    "23073101": {
+        "id": 23073101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004141,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·榴铳手",
+        "route": "Oprichniki Grenadier",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Female"
+    },
+    "23073102": {
+        "id": 23073102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 20.096,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004141,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·榴铳手",
+        "route": "Oprichniki Grenadier",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Female"
+    },
+    "23074101": {
+        "id": 23074101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-坦克4",
+                "description": "铁皮集群-坦克4",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank4"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004142,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·先锋士",
+        "route": "Oprichniki Vanguard",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23074102": {
+        "id": 23074102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-坦克4",
+                "description": "铁皮集群-坦克4",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank4"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004142,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·先锋士",
+        "route": "Oprichniki Vanguard",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23075101": {
+        "id": 23075101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-坦克4",
+                "description": "铁皮集群-坦克4",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank4"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004142,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·先锋士",
+        "route": "Oprichniki Vanguard",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23076101": {
+        "id": 23076101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-辅助",
+                "description": "铁皮集群-辅助",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Support"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004143,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·疗愈师",
+        "route": "Oprichniki Medic",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23076102": {
+        "id": 23076102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-辅助",
+                "description": "铁皮集群-辅助",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Support"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004143,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·疗愈师",
+        "route": "Oprichniki Medic",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23077101": {
+        "id": 23077101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-辅助",
+                "description": "铁皮集群-辅助",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Support"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004150,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·疗愈师",
+        "route": "Oprichniki Medic",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23077102": {
+        "id": 23077102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-辅助",
+                "description": "铁皮集群-辅助",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Support"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004150,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·疗愈师",
+        "route": "Oprichniki Medic",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23078101": {
+        "id": 23078101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004144,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·掷弹兵",
+        "route": "Oprichniki Bombardier",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23078102": {
+        "id": 23078102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                50004144,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·掷弹兵",
+        "route": "Oprichniki Bombardier",
+        "icon": "UI_MonsterIcon_NodKrai_Oprichnik_Male"
+    },
+    "23079101": {
+        "id": 23079101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克3",
+                "description": "铁皮集群-坦克3",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank3"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010011,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010011,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·火刃突击队",
+        "route": "Oprichniki Fireblade Shock Trooper",
+        "icon": "UI_MonsterIcon_Oprichnik_Male_Strong_LanceArquebus"
+    },
+    "23079102": {
+        "id": 23079102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克3",
+                "description": "铁皮集群-坦克3",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank3"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010011,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010011,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 59.7696,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·火刃突击队",
+        "route": "Oprichniki Fireblade Shock Trooper",
+        "icon": "UI_MonsterIcon_Oprichnik_Male_Strong_LanceArquebus"
+    },
+    "23079201": {
+        "id": 23079201,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克3",
+                "description": "铁皮集群-坦克3",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank3"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010016,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010016,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 65.2032,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 55.264,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·冰雹重炮手",
+        "route": "Oprichniki Hailstorm Cannoneer",
+        "icon": "UI_MonsterIcon_Oprichnik_Male_Fat_CannonShield"
+    },
+    "23079202": {
+        "id": 23079202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克3",
+                "description": "铁皮集群-坦克3",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank3"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010016,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010016,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 65.2032,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 55.264,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·冰雹重炮手",
+        "route": "Oprichniki Hailstorm Cannoneer",
+        "icon": "UI_MonsterIcon_Oprichnik_Male_Fat_CannonShield"
+    },
+    "23079301": {
+        "id": 23079301,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010014,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010014,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·雷霰近卫军",
+        "route": "Oprichniki Thunderblitz Gvardiya",
+        "icon": "UI_MonsterIcon_Oprichnik_Female_Slim_MachineGun"
+    },
+    "23079302": {
+        "id": 23079302,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010014,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010014,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 54.336,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.24,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": -0.2
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112125": {
+                "name": "磨损的执凭",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112125",
+                "count": "1.2606"
+            },
+            "112126": {
+                "name": "精致的执凭",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112126",
+                "count": "0.3362"
+            },
+            "112127": {
+                "name": "霜镌的执凭",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112127",
+                "count": "0.084"
+            }
+        },
+        "name": "愚人众特辖队·雷霰近卫军",
+        "route": "Oprichniki Thunderblitz Gvardiya",
+        "icon": "UI_MonsterIcon_Oprichnik_Female_Slim_MachineGun"
+    },
+    "23080102": {
+        "id": 23080102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克3",
+                "description": "铁皮集群-坦克3",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank3"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·近战攻坚型",
+        "route": "Close Combat Storm Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreA_MoveB_AttackA_Fire"
+    },
+    "23080201": {
+        "id": 23080201,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克3",
+                "description": "铁皮集群-坦克3",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank3"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 32.6016,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·近战斥候型",
+        "route": "Close Combat Scout Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreA_MoveA_AttackC_Water"
+    },
+    "23080301": {
+        "id": 23080301,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 27.632,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·强侦攻坚型",
+        "route": "Force Recon Storm Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreB_MoveB_AttackB_Grass"
+    },
+    "23080302": {
+        "id": 23080302,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 27.632,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·强侦攻坚型",
+        "route": "Force Recon Storm Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreB_MoveB_AttackB_Grass"
+    },
+    "23080401": {
+        "id": 23080401,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 27.632,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·强侦斥候型",
+        "route": "Force Recon Scout Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreB_MoveA_AttackB_Ice"
+    },
+    "23080402": {
+        "id": 23080402,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程",
+                "description": "铁皮集群-远程",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Range"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 27.168,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 27.632,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·强侦斥候型",
+        "route": "Force Recon Scout Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreB_MoveA_AttackB_Ice"
+    },
+    "23080501": {
+        "id": 23080501,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程飞行",
+                "description": "铁皮集群-远程飞行",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_RangeAir"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 21.7344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 27.632,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·强侦地效型",
+        "route": "Force Recon Ground Effect Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreB_MoveE_AttackB_Wind"
+    },
+    "23085101": {
+        "id": 23085101,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克2",
+                "description": "铁皮集群-坦克2",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank2"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·尖端全能攻坚型",
+        "route": "Cutting Edge All-Purpose Storm Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveD_AttackA_AttackC_AttackB_Electric"
+    },
+    "23085102": {
+        "id": 23085102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克2",
+                "description": "铁皮集群-坦克2",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank2"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 95.088,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·尖端全能攻坚型",
+        "route": "Cutting Edge All-Purpose Storm Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveD_AttackA_AttackC_AttackB_Electric"
+    },
+    "23085201": {
+        "id": 23085201,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克1",
+                "description": "铁皮集群-坦克1",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank1"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 108.672,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 62.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·尖端全能斥候型",
+        "route": "Cutting Edge All-Purpose Scout Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveC_AttackD_AttackC_AttackB_Water"
+    },
+    "23085202": {
+        "id": 23085202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-坦克1",
+                "description": "铁皮集群-坦克1",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_Tank1"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 108.672,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 62.8,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·尖端全能斥候型",
+        "route": "Cutting Edge All-Purpose Scout Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveC_AttackD_AttackC_AttackB_Water"
+    },
+    "23085301": {
+        "id": 23085301,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程飞行",
+                "description": "铁皮集群-远程飞行",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_RangeAir"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 81.504,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·尖端火力地效型",
+        "route": "Cutting Edge Fire Support Ground Effect Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveF_AttackB_Fire"
+    },
+    "23085302": {
+        "id": 23085302,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-S-蓝",
+                "description": "铁皮机器-S-蓝",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_South"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮集群-远程飞行",
+                "description": "铁皮集群-远程飞行",
+                "abilityName": [
+                    "Monster_Fatuimecha_SquadAI_RangeAir"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 81.504,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112122": {
+                "name": "毁损机轴",
+                "rank": 1,
+                "icon": "UI_ItemIcon_112122",
+                "count": "1.6808"
+            },
+            "112123": {
+                "name": "加固机轴",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112123",
+                "count": "0.4482"
+            },
+            "112124": {
+                "name": "精制机轴",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112124",
+                "count": "0.112"
+            }
+        },
+        "name": "巡陆艇·尖端火力地效型",
+        "route": "Cutting Edge Fire Support Ground Effect Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveF_AttackB_Fire"
+    },
+    "23085303": {
+        "id": 23085303,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 163.008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 105.504,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "巡陆艇·尖端火力地效型",
+        "route": "Cutting Edge Fire Support Ground Effect Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveF_AttackB_Fire"
+    },
+    "23085304": {
+        "id": 23085304,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "铁皮机器-磁动力",
+                "description": "铁皮机器-磁动力",
+                "abilityName": [
+                    "Monster_Fatuimecha_EnergyType_Kuuvahki"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-N-红",
+                "description": "铁皮机器-N-红",
+                "abilityName": [
+                    "Monster_Fatuimecha_KuuvahkiType_North"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "铁皮机器-磁单极",
+                "description": "铁皮机器-磁单极",
+                "abilityName": [
+                    "Monster_Fatuimecha_Kuuvahki_SingleMagnet"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 81.504,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "巡陆艇·尖端火力地效型",
+        "route": "Cutting Edge Fire Support Ground Effect Landcruiser",
+        "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveF_AttackB_Fire"
     },
     "24010101": {
         "id": 24010101,
@@ -34757,6 +39746,159 @@
         "name": "秘源机兵·统御械",
         "route": "Secret Source Automaton: Overseer Device",
         "icon": "UI_MonsterIcon_DragonCollar"
+    },
+    "24100101": {
+        "id": 24100101,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104141": {
+                "name": "最胜紫晶碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104141"
+            },
+            "104142": {
+                "name": "最胜紫晶断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104142"
+            },
+            "104143": {
+                "name": "最胜紫晶块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104143"
+            },
+            "104144": {
+                "name": "最胜紫晶",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104144"
+            },
+            "113077": {
+                "name": "精密型月矩力冲鸭模具",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113077",
+                "count": "2.5556"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400137": {
+                "name": "祭雷之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15011_3"
+            },
+            "400138": {
+                "name": "祭雷之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15011_3"
+            }
+        },
+        "name": "重拳出击鸭",
+        "route": "Knuckle Duckle",
+        "icon": "UI_MonsterIcon_Gastrobot_01"
     },
     "25010201": {
         "id": 25010201,
@@ -57380,6 +62522,743 @@
         "name": "炉壳山鼬",
         "route": "Furnace Shell Mountain Weasel",
         "icon": "UI_MonsterIcon_VolcanoWeasel"
+    },
+    "26300101": {
+        "id": 26300101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010024,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010024,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 149.424,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.5,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112131": {
+                "name": "失光块骨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112131",
+                "count": "6.5658"
+            },
+            "112132": {
+                "name": "稀光遗骼",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112132",
+                "count": "1.7508"
+            },
+            "112133": {
+                "name": "繁光躯外骸",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112133",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "蕴光奇羊",
+        "route": "Radiant Antelope",
+        "icon": "UI_MonsterIcon_Magbeast_Argali"
+    },
+    "26300102": {
+        "id": 26300102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 磁力魔兽 debuff强化1",
+                "description": "debuff数值强化",
+                "abilityName": [
+                    "MonsterAffix_Magbeast_DebuffEnhance1"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010024,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010024,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 149.424,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.5,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光奇羊",
+        "route": "Radiant Antelope",
+        "icon": "UI_MonsterIcon_Magbeast_Argali"
+    },
+    "26300201": {
+        "id": 26300201,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010025,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010025,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 163.008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 67.824,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.5,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112131": {
+                "name": "失光块骨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112131",
+                "count": "6.5658"
+            },
+            "112132": {
+                "name": "稀光遗骼",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112132",
+                "count": "1.7508"
+            },
+            "112133": {
+                "name": "繁光躯外骸",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112133",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "蕴光刃犀",
+        "route": "Radiant Bladehorn",
+        "icon": "UI_MonsterIcon_Magbeast_Rhino"
+    },
+    "26300202": {
+        "id": 26300202,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 磁力魔兽 debuff强化1",
+                "description": "debuff数值强化",
+                "abilityName": [
+                    "MonsterAffix_Magbeast_DebuffEnhance1"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010025,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010025,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 163.008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 67.824,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.5,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光刃犀",
+        "route": "Radiant Bladehorn",
+        "icon": "UI_MonsterIcon_Magbeast_Rhino"
+    },
+    "26300301": {
+        "id": 26300301,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010022,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010022,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 135.84,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 82.896,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112131": {
+                "name": "失光块骨",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112131",
+                "count": "6.5658"
+            },
+            "112132": {
+                "name": "稀光遗骼",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112132",
+                "count": "1.7508"
+            },
+            "112133": {
+                "name": "繁光躯外骸",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112133",
+                "count": "0.4378"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "蕴光璇蛸",
+        "route": "Radiant Lunapod",
+        "icon": "UI_MonsterIcon_Magbeast_Squid"
+    },
+    "26300302": {
+        "id": 26300302,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 磁力魔兽 debuff强化1",
+                "description": "debuff数值强化",
+                "abilityName": [
+                    "MonsterAffix_Magbeast_DebuffEnhance1"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010022,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010022,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 135.84,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 82.896,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光璇蛸",
+        "route": "Radiant Lunapod",
+        "icon": "UI_MonsterIcon_Magbeast_Squid"
+    },
+    "26301101": {
+        "id": 26301101,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 217.344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.7,
+            "grassSubHurt": 0.7,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104111": {
+                "name": "燃愿玛瑙碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104111"
+            },
+            "104112": {
+                "name": "燃愿玛瑙断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104112"
+            },
+            "104113": {
+                "name": "燃愿玛瑙块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104113"
+            },
+            "104114": {
+                "name": "燃愿玛瑙",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104114"
+            },
+            "104131": {
+                "name": "生长碧翡碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104131"
+            },
+            "104132": {
+                "name": "生长碧翡断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104132"
+            },
+            "104133": {
+                "name": "生长碧翡块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104133"
+            },
+            "104134": {
+                "name": "生长碧翡",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104134"
+            },
+            "113078": {
+                "name": "承光的鳞羽",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113078",
+                "count": "2.5556"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400047": {
+                "name": "冒险家",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10010_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            }
+        },
+        "name": "蕴光月幻蝶",
+        "route": "Radiant Moonfly",
+        "icon": "UI_MonsterIcon_Magbeast_Pergesa"
+    },
+    "26301102": {
+        "id": 26301102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "6.0磁力蛾子-深境定制",
+                "description": "6.0磁力蛾子-深境定制",
+                "abilityName": [
+                    "MonsterAffix_Magbeast_Pergesa_Abyss"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 217.344,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.7,
+            "grassSubHurt": 0.7,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光月幻蝶",
+        "route": "Radiant Moonfly",
+        "icon": "UI_MonsterIcon_Magbeast_Pergesa"
     },
     "29010102": {
         "id": 29010102,

@@ -188,7 +188,9 @@ async def convert_ambr_to_weapon(
     else:
         raw_data = await get_ambr_weapon_data(weapon_id)
         if raw_data is None:
-            raise Exception('[AmbrData] 未找到该武器/数据无法下载!')
+            raise Exception(
+                f'[AmbrData] 未找到该武器{weapon_id}/数据无法下载!'
+            )
         # 保存
         async with aiofiles.open(path, 'w', encoding='utf-8') as f:
             await f.write(json.dumps(raw_data))

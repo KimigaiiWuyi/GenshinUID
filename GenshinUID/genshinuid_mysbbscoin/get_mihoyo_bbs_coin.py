@@ -72,6 +72,12 @@ mihoyobbs_List = [
         'name': '崩坏：因缘精灵',
         'url': 'https://bbs.mihoyo.com/hna/',
     },
+    {
+        'id': '10',
+        'forumId': '950',
+        'name': '星布谷地',
+        'url': 'https://bbs.mihoyo.com/planet/',
+    },
 ]
 
 
@@ -89,15 +95,15 @@ class MihoyoBBSCoin:
             'x-rpc-device_name': random_text(random.randint(1, 10)),
             'x-rpc-device_model': 'Mi 10',
             'Referer': 'https://app.mihoyo.com',
-            'Host': 'bbs-api.mihoyo.com',
+            #'Host': 'bbs-api.mihoyo.com',
             'User-Agent': 'okhttp/4.8.0',
         }
         self.Task_do = {
             'bbs_Sign': False,
             'bbs_Read_posts': False,
-            'bbs_Read_posts_num': 4,
+            'bbs_Read_posts_num': 7,
             'bbs_Like_posts': False,
-            'bbs_Like_posts_num': 6,
+            'bbs_Like_posts_num': 10,
             'bbs_Share': False,
         }
         self.mihoyobbs_List_Use = []
@@ -226,7 +232,7 @@ class MihoyoBBSCoin:
                     'POST',
                     BBS_SIGN_URL,
                     header,
-                    {'gids': i['id']},
+                    {'gids': int(i['id'])},
                 )
                 if 'err' not in data['message']:
                     await asyncio.sleep(random.randint(2, 8))
@@ -317,21 +323,25 @@ class MihoyoBBSCoin:
         data: Dict = {},
     ) -> Dict:
         for _ in range(2):
+            import json
+
             if BBS_SIGN_URL in url:
                 header['DS'] = get_ds_token('', data, '22')
             else:
                 header['DS'] = get_web_ds_token()
             async with AsyncClient(timeout=None) as client:
+                logger.trace(method, url, json.dumps(data), header)
                 req = await client.request(
                     method=method,
                     url=url,
-                    json=data,
+                    data=json.dumps(data),
                     headers=header,
                 )
-                data = req.json()
-                logger.debug(data)
-            if data['retcode'] == 1034:
+                res_data = req.json()
+                logger.debug(res_data)
+            if res_data['retcode'] == 1034:
                 await mys_api._upass(self.headers, True)
+                continue
             else:
                 break
-        return data
+        return res_data

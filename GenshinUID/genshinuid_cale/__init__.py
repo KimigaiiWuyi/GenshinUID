@@ -27,5 +27,5 @@ async def send_cale_pic(bot: Bot, ev: Event):
 
 
 @scheduler.scheduled_job('cron', hour='0', minute='5')
-async def notice_job(force: bool = False):
+async def notice_cale_job(force: bool = False):
     await notice_cale()

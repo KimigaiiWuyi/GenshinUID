@@ -29,10 +29,11 @@ async def notice_cale():
 
             for act in act_list:
                 if (
-                    act['countdown_seconds'] <= 172810
+                    act['status'] == 2
+                    and act['countdown_seconds'] <= 172810
                     and not act['is_finished']
                 ):
-                    for _sub in datas[uid]:
+                    for _sub in active_datas[uid]:
 
                         t = ''
                         if act['type'] == 'ActTypeHardChallengeSub':

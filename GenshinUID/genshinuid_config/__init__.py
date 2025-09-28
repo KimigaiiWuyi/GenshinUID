@@ -22,6 +22,8 @@ PRIV_MAP = {
     '自动签到': None,
     '自动米游币': None,
     '推送': None,
+    '日常检查': None,
+    '活动提醒': None,
 }
 
 
@@ -156,25 +158,49 @@ async def open_switch_func(bot: Bot, ev: Event):
             coin = await gs_subscribe.get_subscribe('[原神] 宝钱', uid=uid)
             go = await gs_subscribe.get_subscribe('[原神] 派遣', uid=uid)
             trans = await gs_subscribe.get_subscribe('[原神] 质变仪', uid=uid)
+            daily = await gs_subscribe.get_subscribe(
+                '[原神] 日常检查', uid=uid
+            )
+            activity = await gs_subscribe.get_subscribe(
+                '[原神] 活动提醒', uid=uid
+            )
 
-            im += f'\n✅ 如需关闭请发送命令: {P}关闭推送\n💚 该项为总开关, 你开可以单独开启体力、宝钱、派遣、质变仪的推送。'
+            im += (
+                f'\n✅ 如需关闭请发送命令: {P}关闭推送\n💚'
+                ' 该项为总开关, 你开可以单独开启体力、宝钱、派遣、质变仪、日常检查的推送。'
+            )
+
             im += '\n🔖 【当前推送设置状态】'
             if resin:
                 im += f'\n✅ 体力推送 (阈值: {resin[0].extra_message})'
             else:
                 im += f'\n❌ 体力推送 (可发送{P}开启体力推送)'
+
             if coin:
                 im += f'\n✅ 宝钱推送 (阈值: {coin[0].extra_message})'
             else:
                 im += f'\n❌ 宝钱推送 (可发送{P}开启宝钱推送)'
+
             if go:
                 im += f'\n✅ 派遣推送 (阈值: {go[0].extra_message})'
             else:
                 im += f'\n❌ 派遣推送 (可发送{P}开启派遣推送)'
+
             if trans:
                 im += f'\n✅ 质变仪推送 (阈值: {trans[0].extra_message})'
             else:
                 im += f'\n❌ 质变仪推送 (可发送{P}开启质变仪推送)'
+
+            if daily:
+                im += '\n✅ 日常检查推送 (将在每日零点检查日常是否完成)'
+            else:
+                im += f'\n❌ 日常检查推送 (可发送{P}开启日常检查推送)'
+
+            if activity:
+                im += '\n✅ 活动提醒推送 (将在活动将要结束之时仍未完成时提醒)'
+            else:
+                im += f'\n❌ 活动提醒推送 (可发送{P}开启活动提醒推送)'
+
     else:
         data = await gs_subscribe.get_subscribe(
             c_name,

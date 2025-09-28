@@ -1,3 +1,4 @@
+import datetime
 from typing import Dict, List, Tuple, Union, Sequence
 
 from gsuid_core.logger import logger
@@ -17,6 +18,7 @@ NOTICE = {
     'resin': '🌜 你的树脂/体力快满啦！',
     'go': '👨‍🏭 你有派遣奖励即将可领取！',
     'transform': '⌛ 你的质变仪即将可使用！',
+    'daily': '🚑️ 你的日常任务还没有完成！',
 }
 
 NOTICE_MAP = {
@@ -24,6 +26,7 @@ NOTICE_MAP = {
     'resin': '树脂/体力',
     'go': '派遣',
     'transform': '质变仪',
+    'daily': '日常任务',
 }
 
 
@@ -42,12 +45,14 @@ async def send_notice_list():
     resin_datas = await gs_subscribe.get_subscribe('[原神] 体力')
     go_datas = await gs_subscribe.get_subscribe('[原神] 派遣')
     transform_datas = await gs_subscribe.get_subscribe('[原神] 质变仪')
+    daily_datas = await gs_subscribe.get_subscribe('[原神] 日常检查')
 
     datas = await _to_dict(datas)
     coin_datas = await _to_dict(coin_datas)
     resin_datas = await _to_dict(resin_datas)
     go_datas = await _to_dict(go_datas)
     transform_datas = await _to_dict(transform_datas)
+    daily_datas = await _to_dict(daily_datas)
 
     for uid in datas:
         # data = datas[uid]
@@ -66,6 +71,10 @@ async def send_notice_list():
                 continue
 
             for mode in NOTICE:
+
+                if datetime.datetime.now().hour >= 2 and mode == 'daily':
+                    continue
+
                 _datas: Dict[str, List[Subscribe]] = locals()[f'{mode}_datas']
                 if uid in _datas:
                     _data_list = _datas[uid]
@@ -77,13 +86,20 @@ async def send_notice_list():
                                 int(_data.extra_message),
                             )
                             if res[0]:
-                                mlist = [
-                                    f'🚨 原神推送提醒 - UID{uid}',
-                                    NOTICE[mode],
-                                    f'当前{NOTICE_MAP[mode]}值为: {res[1]}',
-                                    f'你设置的阈值为: {_data.extra_message}',
-                                    MR_NOTICE,
-                                ]
+                                if mode == 'daily':
+                                    mlist = [
+                                        f'🚨 原神推送提醒 - UID{uid}',
+                                        NOTICE[mode],
+                                        MR_NOTICE,
+                                    ]
+                                else:
+                                    mlist = [
+                                        f'🚨 原神推送提醒 - UID{uid}',
+                                        NOTICE[mode],
+                                        f'当前{NOTICE_MAP[mode]}值为: {res[1]}',
+                                        f'你设置的阈值为: {_data.extra_message}',
+                                        MR_NOTICE,
+                                    ]
                                 await _data.send('\n'.join(mlist))
 
 
@@ -130,4 +146,7 @@ async def check(
         else:
             logger.warning('[推送提醒] 小组件源不存在质变仪数据...')
             return False, 0
+    if mode == 'daily':
+        if not data['is_extra_task_reward_received']:
+            return True, 0
     return False, 0

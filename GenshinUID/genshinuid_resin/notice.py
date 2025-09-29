@@ -82,28 +82,28 @@ async def send_notice_list():
                 if uid in _datas:
                     _data_list = _datas[uid]
                     for _data in _data_list:
-                        if _data.extra_message:
-                            res = await check(
-                                mode,
-                                raw_data,
-                                int(_data.extra_message),
-                            )
-                            if res[0]:
-                                if mode == 'daily':
-                                    mlist = [
-                                        f'🚨 原神推送提醒 - UID{uid}',
-                                        NOTICE[mode],
-                                        MR_NOTICE,
-                                    ]
-                                else:
-                                    mlist = [
-                                        f'🚨 原神推送提醒 - UID{uid}',
-                                        NOTICE[mode],
-                                        f'当前{NOTICE_MAP[mode]}值为: {res[1]}',
-                                        f'你设置的阈值为: {_data.extra_message}',
-                                        MR_NOTICE,
-                                    ]
-                                await _data.send('\n'.join(mlist))
+                        mg = _data.extra_message or '0'
+                        res = await check(
+                            mode,
+                            raw_data,
+                            int(mg),
+                        )
+                        if res[0]:
+                            if mode == 'daily':
+                                mlist = [
+                                    f'🚨 原神推送提醒 - UID{uid}',
+                                    NOTICE[mode],
+                                    MR_NOTICE,
+                                ]
+                            else:
+                                mlist = [
+                                    f'🚨 原神推送提醒 - UID{uid}',
+                                    NOTICE[mode],
+                                    f'当前{NOTICE_MAP[mode]}值为: {res[1]}',
+                                    f'你设置的阈值为: {_data.extra_message}',
+                                    MR_NOTICE,
+                                ]
+                            await _data.send('\n'.join(mlist))
 
 
 async def check(

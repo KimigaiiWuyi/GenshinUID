@@ -72,10 +72,13 @@ async def send_notice_list():
 
             for mode in NOTICE:
 
-                if datetime.datetime.now().hour >= 2 and mode == 'daily':
+                if datetime.datetime.now().hour > 2 and mode == 'daily':
+                    logger.info(f'[推送提醒] {uid} 3点后不再发送日常任务提醒')
                     continue
 
                 _datas: Dict[str, List[Subscribe]] = locals()[f'{mode}_datas']
+                logger.debug(f'[推送提醒] {_datas}')
+
                 if uid in _datas:
                     _data_list = _datas[uid]
                     for _data in _data_list:

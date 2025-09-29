@@ -1,5 +1,9 @@
+from typing import List
+
 from gsuid_core.logger import logger
 from gsuid_core.subscribe import gs_subscribe
+
+from GenshinUID.utils.api.mys.models import Act
 
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
@@ -21,11 +25,15 @@ async def notice_cale():
                 )
                 continue
 
-            act_list = (
-                data['selected_act_list']
-                + data['act_list']
-                + data['fixed_act_list']
-            )
+            act_list: List[Act] = []
+            if 'selected_act_list' in data:
+                act_list += data['selected_act_list']
+
+            if 'act_list' in data:
+                act_list += data['act_list']
+
+            if 'fixed_act_list' in data:
+                act_list += data['fixed_act_list']
 
             for act in act_list:
                 if (

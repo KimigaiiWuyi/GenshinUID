@@ -41,6 +41,7 @@ async def send_primogems_data(bot: Bot, ev: Event):
         '抗性表',
         '血量排行',
         '深渊血量排行',
+        '新增血量表',
     )
 )
 async def send_img_data(bot: Bot, ev: Event):

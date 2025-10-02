@@ -93,7 +93,10 @@ async def draw_poetry_abyss_img(
     end_time = timestamp_to_str(float(data['schedule']['end_time']))
 
     difficulty = DIFFICULTY_MAP.get(stat_data['difficulty_id'], '困难模式')
+
     max_round = stat_data["max_round_id"]
+    earn_medal = stat_data['medal_num']
+
     if stat_data['difficulty_id'] == 3:
         if stat_data['max_round_id'] == 8:
             icon_name = 'gold_yes.png'
@@ -113,6 +116,7 @@ async def draw_poetry_abyss_img(
         else:
             icon_name = 'moon_no.png'
         max_round = 12
+        earn_medal += stat_data['tarot_finished_cnt']
     else:
         icon_name = 'gold_no.png'
     icon = Image.open(TEXT_PATH / icon_name).convert('RGBA')
@@ -151,7 +155,7 @@ async def draw_poetry_abyss_img(
     )
     title_draw.text(
         (1072, 430),
-        f'{stat_data["medal_num"]}/{max_round}',
+        f'{earn_medal}/{max_round}',
         'white',
         gs_font_30,
         'mm',
@@ -251,6 +255,9 @@ async def draw_poetry_abyss_img(
 
     flower_yes = Image.open(TEXT_PATH / 'flower_yes.png').convert('RGBA')
     flower_no = Image.open(TEXT_PATH / 'flower_no.png').convert('RGBA')
+    div = Image.open(TEXT_PATH / 'div.png').convert('RGBA')
+    monster_fg = Image.open(TEXT_PATH / 'monster_fg.png').convert('RGBA')
+
     for i, r in enumerate(round_data):
         is_get_medal = r['is_get_medal']
         round_id = r['round_id']
@@ -287,7 +294,24 @@ async def draw_poetry_abyss_img(
                 'mm',
             )
 
-            stage.paste(buff_image, (323 + 65 * bindex, 18), buff_image)
+            stage.paste(buff_image, (323 + 66 * bindex, 18), buff_image)
+
+        if len(r['enemies']) == 1:
+            monster_bg = Image.new('RGBA', (75, 75), (0, 0, 0, 0))
+            monster_icon_url = r['enemies'][0]['icon']
+            monster_icon_name = f'{r["enemies"][0]["name"]}.png'
+            monster_icon_path = ICON_PATH / f'{r["enemies"][0]["name"]}.png'
+            if not monster_icon_path.exists():
+                await download(
+                    monster_icon_url,
+                    8,
+                    monster_icon_name,
+                )
+            monster_icon = Image.open(monster_icon_path).convert('RGBA')
+            monster_icon = monster_icon.resize((75, 75))
+            monster_bg.paste(monster_icon, (0, 0), monster_icon)
+            monster_bg.paste(monster_fg, (0, 0), monster_fg)
+            stage.paste(monster_bg, (243, 19), monster_bg)
 
         for index_char, char in enumerate(r['avatars']):
             char_id = char['avatar_id']
@@ -320,6 +344,9 @@ async def draw_poetry_abyss_img(
                 )
 
         img.paste(stage, (30 + 570 * (i % 2), 760 + 280 * (i // 2)), stage)
+
+        if i % 2 == 1:
+            img.paste(div, (75, 756 + 280 * ((i // 2) + 1)), div)
 
     img = add_footer(img, 1000)
     res = await convert_img(img)

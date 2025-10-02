@@ -263,37 +263,61 @@ class PoetryAbyssDetailStat(TypedDict):
     coin_num: int
     avatar_bonus_num: int
     rent_cnt: int
+    tarot_finished_cnt: int
 
 
-class RoundData(TypedDict):
-    avatars: List[PoetryAbyssAvatar]
-    choice_cards: List[PoetryAbyssChoiceCard]
-    buffs: List[PoetryAbyssBuff]
-    is_get_medal: bool
-    round_id: int
-    finish_time: int
-    finish_date_time: PoetryAbyssDateTime
-    detail_stat: PoetryAbyssDetailStat
+class PoetryEnemy(TypedDict):
+    name: str
+    icon: str
+    level: int
 
 
-class PoetryAbyssDetail(TypedDict):
-    rounds_data: List[RoundData]
-    detail_stat: PoetryAbyssDetailStat
-    backup_avatars: List[PoetryAbyssAvatar]
+class RoundAvatar(TypedDict):
+    avatar_id: int
+    avatar_type: int
+    name: str
+    element: str
+    image: str
+    level: int
+    rarity: int
 
 
-class PoetryAbyssData(TypedDict):
-    detail: PoetryAbyssDetail
-    stat: PoetryAbyssDetailStat
-    schedule: PoetryAbyssSchedule
-    has_data: bool
-    has_detail_data: bool
+class DetailStat(TypedDict):
+    difficulty_id: int
+    max_round_id: int
+    heraldry: int
+    get_medal_round_list: List[int]
+    medal_num: int
+    coin_num: int
+    avatar_bonus_num: int
+    rent_cnt: int
 
 
-class PoetryAbyssDatas(TypedDict):
-    data: List[PoetryAbyssData]
-    is_unlock: bool
-    links: PoetryAbyssLinks
+class BackupAvatar(TypedDict):
+    avatar_id: int
+    avatar_type: int
+    name: str
+    element: str
+    image: str
+    level: int
+    rarity: int
+
+
+class StatisticAvatar(TypedDict):
+    avatar_id: int
+    avatar_icon: str
+    value: Union[str, int]
+    rarity: int
+
+
+class FightStatistic(TypedDict):
+    max_defeat_avatar: StatisticAvatar
+    max_damage_avatar: StatisticAvatar
+    max_take_damage_avatar: StatisticAvatar
+    total_coin_consumed: StatisticAvatar
+    shortest_avatar_list: List[StatisticAvatar]
+    total_use_time: int
+    is_show_battle_stats: bool
 
 
 class MainProperty(TypedDict):
@@ -474,62 +498,6 @@ class ChoiceCard(TypedDict):
     id: int
 
 
-class RoundAvatar(TypedDict):
-    avatar_id: int
-    avatar_type: int
-    name: str
-    element: str
-    image: str
-    level: int
-    rarity: int
-
-
-class DetailStat(TypedDict):
-    difficulty_id: int
-    max_round_id: int
-    heraldry: int
-    get_medal_round_list: List[int]
-    medal_num: int
-    coin_num: int
-    avatar_bonus_num: int
-    rent_cnt: int
-
-
-class BackupAvatar(TypedDict):
-    avatar_id: int
-    avatar_type: int
-    name: str
-    element: str
-    image: str
-    level: int
-    rarity: int
-
-
-class StatisticAvatar(TypedDict):
-    avatar_id: int
-    avatar_icon: str
-    value: Union[str, int]
-    rarity: int
-
-
-class FightStatistic(TypedDict):
-    max_defeat_avatar: StatisticAvatar
-    max_damage_avatar: StatisticAvatar
-    max_take_damage_avatar: StatisticAvatar
-    total_coin_consumed: StatisticAvatar
-    shortest_avatar_list: List[StatisticAvatar]
-    total_use_time: int
-    is_show_battle_stats: bool
-
-
-class ScheduleDetail(TypedDict):
-    rounds_data: List[RoundData]
-    detail_stat: DetailStat
-    lineup_link: str
-    backup_avatars: List[BackupAvatar]
-    fight_statisic: FightStatistic
-
-
 class CombatStat(TypedDict):
     difficulty_id: int
     max_round_id: int
@@ -548,19 +516,6 @@ class ScheduleInfo(TypedDict):
     schedule_id: int
     start_date_time: DateTime
     end_date_time: DateTime
-
-
-class Schedule(TypedDict):
-    detail: ScheduleDetail
-    stat: CombatStat
-    schedule: ScheduleInfo
-    has_data: bool
-    has_detail_data: bool
-
-
-class RoleCombat(TypedDict):
-    schedule_list: List[Schedule]
-    is_unlock: bool
 
 
 class GCGChallenge(TypedDict):
@@ -738,6 +693,48 @@ class AvatarInfo(TypedDict):
     has_data: bool
 
 
+class RoundData(TypedDict):
+    avatars: List[PoetryAbyssAvatar]
+    choice_cards: List[PoetryAbyssChoiceCard]
+    buffs: List[PoetryAbyssBuff]
+    is_get_medal: bool
+    round_id: int
+    finish_time: int
+    finish_date_time: PoetryAbyssDateTime
+    enemies: List[PoetryEnemy]
+    splendour_buff: SplendourBuff
+    is_tarot: bool
+    tarot_serial_no: int
+
+
+class PoetryAbyssDetail(TypedDict):
+    rounds_data: List[RoundData]
+    detail_stat: PoetryAbyssDetailStat
+    backup_avatars: List[PoetryAbyssAvatar]
+    fight_statisic: FightStatistic
+
+
+class ScheduleDetail(TypedDict):
+    rounds_data: List[RoundData]
+    detail_stat: DetailStat
+    lineup_link: str
+    backup_avatars: List[BackupAvatar]
+    fight_statisic: FightStatistic
+
+
+class Schedule(TypedDict):
+    detail: ScheduleDetail
+    stat: CombatStat
+    schedule: ScheduleInfo
+    has_data: bool
+    has_detail_data: bool
+
+
+class RoleCombat(TypedDict):
+    schedule_list: List[Schedule]
+    is_unlock: bool
+
+
 class SeasonPostData(TypedDict):
     avatar_info: AvatarInfo
     weapon_info: WeaponInfo
@@ -748,3 +745,17 @@ class SeasonPostData(TypedDict):
     spiral_abyss_info: List[SpiralAbyssInfo]
     gcg_info: GCGInfo
     role_combat: RoleCombat
+
+
+class PoetryAbyssData(TypedDict):
+    detail: PoetryAbyssDetail
+    stat: PoetryAbyssDetailStat
+    schedule: PoetryAbyssSchedule
+    has_data: bool
+    has_detail_data: bool
+
+
+class PoetryAbyssDatas(TypedDict):
+    data: List[PoetryAbyssData]
+    is_unlock: bool
+    links: PoetryAbyssLinks

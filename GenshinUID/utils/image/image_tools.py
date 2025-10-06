@@ -39,9 +39,9 @@ def get_ICON():
     return Image.open(ICON)
 
 
-def get_v4_bg(w: int, h: int):
+def get_v4_bg(w: int, h: int, black_value: int = 190):
     img = crop_center_img(Image.open(TEXT_PATH / 'bg.jpg'), w, h)
-    black_img = Image.new('RGBA', (w, h), (0, 0, 0, 180))
+    black_img = Image.new('RGBA', (w, h), (0, 0, 0, black_value))
     img = img.filter(ImageFilter.GaussianBlur(radius=15))
     img.paste(black_img, (0, 0), black_img)
     img = img.convert('RGBA')
@@ -109,6 +109,8 @@ async def shift_image_hue(img: Image.Image, angle: float = 30) -> Image.Image:
 
     pixels = img.load()
     hue_shift = angle
+
+    assert pixels is not None
 
     for y in range(img.height):
         for x in range(img.width):
@@ -439,7 +441,8 @@ class CustomizeImage:
         img = img.convert('RGBA')
         img = img.resize((1, 1), resample=0)
         dominant_color = img.getpixel((0, 0))
-        return dominant_color
+
+        return dominant_color  # type: ignore
 
     @staticmethod
     def get_bg_color(

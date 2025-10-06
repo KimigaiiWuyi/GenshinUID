@@ -376,7 +376,7 @@ async def draw_char_count_list(
 
     rows = (len(char_done_list) + _mode - 1) // _mode
     h = 750 + 80 + 90 * rows
-    img = get_v4_bg(2370 if _mode == 3 else 1600, h)
+    img = get_v4_bg(2370 if _mode == 3 else 1600, h, 200)
     img.paste(title, (0, 0), title)
 
     # title_bar部分
@@ -439,7 +439,16 @@ async def draw_single_rank(
     img: Image.Image, char: dict, index: int, _mode: int
 ):
     char_id = char['id']
-    char_rank = Image.open(TEXT_PATH / 'char_rank.png')
+
+    if char['value'] >= 24 and (
+        char['a_skill_level'] >= 8
+        or char['e_skill_level'] >= 8
+        or char['q_skill_level'] >= 8
+    ):
+        char_rank = Image.open(TEXT_PATH / 'char_rank_yes.png')
+    else:
+        char_rank = Image.open(TEXT_PATH / 'char_rank.png')
+
     char_pic = Image.open(CHAR_PATH / f'{char_id}.png')
     weapon_star = int(char['weapon_star'])
     char_pic = draw_ring(char_pic, char['char_star'])

@@ -23,7 +23,6 @@ from ..utils.message import GButton as Button
 from ..utils.map.GS_MAP_PATH import alias_data
 from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_info import draw_all_char_list
-from .draw_char_rank import draw_cahrcard_list
 from .draw_role_rank import draw_role_rank_img
 from ..genshinuid_config.gs_config import gsconfig
 from .get_enka_img import draw_enka_img, get_full_char
@@ -219,12 +218,12 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     msg = ''.join(re.findall('[\u4e00-\u9fa5 ]', text))
     if not msg:
         return
-    await bot.logger.info('开始执行[查询角色面板]')
+    logger.info('开始执行[查询角色面板]')
     # 获取uid
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[查询角色面板]uid: {}'.format(uid))
+    logger.info('[查询角色面板]uid: {}'.format(uid))
 
     im = await draw_enka_img(msg, uid, ev.image)
     return im
@@ -356,21 +355,11 @@ async def send_card_info(bot: Bot, ev: Event):
         await bot.send(im)
 
 
-@sv_get_enka.on_command(('毕业度统计', '毕业都统计'))
-async def send_charcard_list(bot: Bot, ev: Event):
-    uid = await get_uid(bot, ev)
-    if uid is None:
-        return await bot.send(UID_HINT)
-    im = await draw_cahrcard_list(str(uid), ev)
-    await bot.logger.info(f'[毕业度统计] UID{uid}获取角色数据成功！')
-    await bot.send(im)
-
-
 @sv_get_enka.on_command(('角色橱窗'))
 async def send_char_detail_list(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
     im = await draw_all_char_list(str(uid))
-    await bot.logger.info(f'[角色橱窗] UID{uid}获取角色数据成功！')
+    logger.info(f'[角色橱窗] UID{uid}获取角色数据成功！')
     await bot.send(im)

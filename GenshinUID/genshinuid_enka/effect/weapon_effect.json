@@ -755,11 +755,11 @@
     },
     "fight": {
       "fight_effect": {
-        "1": "A:addDmg+16atk",
-        "2": "A:addDmg+20atk",
-        "3": "A:addDmg+24atk",
-        "4": "A:addDmg+28atk",
-        "5": "A:addDmg+32atk"
+        "1": "A:addDmg+16%atk",
+        "2": "A:addDmg+20%atk",
+        "3": "A:addDmg+24%atk",
+        "4": "A:addDmg+28%atk",
+        "5": "A:addDmg+32%atk"
       },
       "group_effect": {
         "1": "",

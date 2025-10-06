@@ -6,10 +6,13 @@ from typing import Tuple, Union, Literal
 import aiofiles
 from PIL import Image, ImageDraw
 from gsuid_core.models import Event
+from gsuid_core.utils.error_reply import get_error
 
-from ..utils.mys_api import get_base_data
 from ..utils.image.convert import convert_img
+from ..utils.mys_api import mys_api, get_base_data
 from ..genshinuid_enka.mono.Character import Character
+from ..genshinuid_compute.utils import get_all_char_dict
+from ..utils.map.GS_MAP_PATH import charList, weaponList
 from ..utils.map.name_covert import avatar_id_to_char_star
 from ..genshinuid_enka.etc.etc import get_all_artifacts_value
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, PLAYER_PATH, WEAPON_PATH
@@ -119,6 +122,16 @@ async def draw_char_count_list(
     if isinstance(datas, (str, bytes)):
         return datas
 
+    raw = await get_all_char_dict()
+    pack_data = await mys_api.get_batch_compute_info(uid, raw)
+    if isinstance(pack_data, int):
+        return get_error(pack_data)
+
+    for item in pack_data['overall_consume']:
+        if item['id'] != 104319:
+            continue
+        crown_get = item['num'] - item['lack_num']
+
     crown_cost = 0
     """皇冠消耗"""
 
@@ -155,6 +168,23 @@ async def draw_char_count_list(
     useful_char = 0
     """有用角色"""
 
+    ALL_STAR_5_CHAR = len(
+        [i for i in charList if charList[i]['rank'] == 'QUALITY_ORANGE']
+    )
+    ALL_STAR_4_CHAR = len(
+        [i for i in charList if charList[i]['rank'] == 'QUALITY_PURPLE']
+    )
+
+    '''
+    ALL_STAR_4_WEAPON = len(
+        [i for i in weaponList if weaponList[i]['rank'] == 4]
+    )
+    '''
+
+    ALL_STAR_5_WEAPON = len(
+        [i for i in weaponList if weaponList[i]['rank'] == 5]
+    )
+
     char_done_list = []
     for char_name in char_list:
         temp = {}
@@ -167,6 +197,9 @@ async def draw_char_count_list(
 
         temp['char_name'] = char_name
         temp['fetter'] = raw_data['avatarFetter']
+        if char_name == '旅行者':
+            temp['fetter'] = 10
+
         temp['id'] = raw_data['avatarId']
 
         char = Character(raw_data)
@@ -236,7 +269,10 @@ async def draw_char_count_list(
             if temp['weapon_affix'] >= 5:
                 full_star4_weapon += 1
 
-        if temp['value'] >= 27 and (
+        if temp['value'] >= 27:
+            high_score_equip_num += 1
+
+        if temp['value'] >= 24 and (
             temp['a_skill_level'] >= 8
             or temp['e_skill_level'] >= 8
             or temp['q_skill_level'] >= 8
@@ -348,15 +384,15 @@ async def draw_char_count_list(
     title_bar_draw = ImageDraw.Draw(title_bar)
     if _mode == 3:
         title_list = [
-            crown_cost,
-            fetter_full,
-            full_star5_char,
-            full_star4_char,
-            star5_char,
-            star4_char,
-            star5_weapon,
-            full_star4_weapon,
-            full_star5_weapon,
+            f'{crown_cost}/{crown_get + crown_cost}',
+            f'{fetter_full}/{len(char_list)}',
+            f'{full_star5_char}/{star5_char}',
+            f'{full_star4_char}/{star4_char}',
+            f'{star5_char}/{ALL_STAR_5_CHAR}',
+            f'{star4_char}/{ALL_STAR_4_CHAR}',
+            f'{star5_weapon}/{ALL_STAR_5_WEAPON}',
+            f'{full_star4_weapon}/{star4_weapon}',
+            f'{full_star5_weapon}/{star5_weapon}',
             high_score_equip_num,
             useful_char,
         ]
@@ -364,12 +400,13 @@ async def draw_char_count_list(
         offset = 201.8
     else:
         title_list = [
-            crown_cost,
-            fetter_full,
-            full_star4_char,
-            star5_char,
-            star4_char,
-            star5_weapon,
+            f'{crown_cost}/{crown_get + crown_cost}',
+            f'{fetter_full}/{len(char_list)}',
+            f'{full_star5_char}/{star5_char}',
+            f'{full_star4_char}/{star4_char}',
+            f'{star5_char}/{ALL_STAR_5_CHAR}',
+            f'{star4_char}/{ALL_STAR_4_CHAR}',
+            f'{star5_weapon}/{ALL_STAR_5_WEAPON}',
             high_score_equip_num,
             useful_char,
         ]

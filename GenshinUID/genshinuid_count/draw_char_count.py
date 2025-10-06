@@ -402,7 +402,7 @@ async def draw_char_count_list(
         title_list = [
             f'{crown_cost}/{crown_get + crown_cost}',
             f'{fetter_full}/{len(char_list)}',
-            f'{full_star5_char}/{star5_char}',
+            # f'{full_star5_char}/{star5_char}',
             f'{full_star4_char}/{star4_char}',
             f'{star5_char}/{ALL_STAR_5_CHAR}',
             f'{star4_char}/{ALL_STAR_4_CHAR}',

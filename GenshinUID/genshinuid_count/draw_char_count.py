@@ -1,7 +1,7 @@
 import json
 import asyncio
 from pathlib import Path
-from typing import Tuple, Union, Literal
+from typing import List, Tuple, Union, Literal
 
 import aiofiles
 from PIL import Image, ImageDraw
@@ -78,6 +78,20 @@ value_mask = Image.open(TEXT_PATH / 'value_mask.png')
 div = Image.open(TEXT_PATH / 'div.png')
 
 
+def check_element(element: str, char: dict) -> bool:
+    return element == char["avatarElement"]
+
+
+EXTRA_MAP = {
+    '火': [check_element, 'Pyro'],
+    '水': [check_element, 'Hydro'],
+    '冰': [check_element, 'Cryo'],
+    '岩': [check_element, 'Geo'],
+    '雷': [check_element, 'Electro'],
+    '草': [check_element, 'Dendro'],
+}
+
+
 async def get_color(
     type: Literal['skill', 'equip', 'percent'], value: int
 ) -> Tuple[int, int, int]:
@@ -92,16 +106,37 @@ async def get_color(
 
 def draw_ring(img: Image.Image, star: int):
     bg_temp = Image.new('RGBA', (90, 90), (0, 0, 0, 0))
-    if star <= 4:
-        bg = Image.open(TEXT_PATH / 'star_4.png')
-    else:
-        bg = Image.open(TEXT_PATH / 'star_5.png')
+    if star >= 5:
+        star = 5
+    bg = Image.open(TEXT_PATH / f'star_{star}.png')
 
     img = img.resize((90, 90))
     bg_temp.paste(img, (0, 0), ring_mask)
     bg.paste(bg_temp, (0, 0), bg_temp)
     bg.paste(ring, (0, 0), ring)
     return bg
+
+
+def extract_words_with_positions(
+    text: str, vocabulary: List[str]
+) -> List[str]:
+    vocab_sorted = sorted(vocabulary, key=len, reverse=True)
+    result = []
+    i = 0
+
+    while i < len(text):
+        matched = False
+        for word in vocab_sorted:
+            if text[i:].startswith(word):
+                result.append(word)
+                i += len(word)
+                matched = True
+                break
+
+        if not matched:
+            i += 1
+
+    return result
 
 
 async def draw_char_count_list(
@@ -117,6 +152,12 @@ async def draw_char_count_list(
             char_list.append(file_name.split('.')[0])
     if not char_list:
         return '你还没有已缓存的角色！\n请先使用【强制刷新】进行刷新！'
+
+    extra_list = []
+    if ev.text.strip():
+        extra_list = extract_words_with_positions(
+            ev.text.strip(), list(EXTRA_MAP.keys())
+        )
 
     datas = await get_base_data(uid)
     if isinstance(datas, (str, bytes)):
@@ -244,7 +285,6 @@ async def draw_char_count_list(
             + temp['weapon_affix'] * (temp['weapon_star'] - 3)
             + temp['value']
         )
-        char_done_list.append(temp)
 
         # 角色变量
         if temp['fetter'] >= 10:
@@ -278,6 +318,21 @@ async def draw_char_count_list(
             or temp['q_skill_level'] >= 8
         ):
             useful_char += 1
+
+        _toru = 0
+        for extra in extra_list:
+            if extra in EXTRA_MAP:
+                if EXTRA_MAP[extra][0](EXTRA_MAP[extra][1], temp):
+                    _toru += 1
+                    continue
+
+        if not extra_list:
+            _toru = 1
+
+        if not _toru:
+            continue
+
+        char_done_list.append(temp)
 
     if len(char_done_list) > 86:
         _mode = 3

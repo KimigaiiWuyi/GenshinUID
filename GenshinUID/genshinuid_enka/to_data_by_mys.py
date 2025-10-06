@@ -121,12 +121,13 @@ async def mys_to_data(uid: str):
             n += 1
             skill_level = skill['level']
 
-            if n == 1:
-                skill_level -= a_skill_level
-            elif n == 2:
-                skill_level -= e_skill_level
-            elif n == 3:
-                skill_level -= q_skill_level
+            if avatar_name != '旅行者':
+                if n == 1:
+                    skill_level -= a_skill_level
+                elif n == 2:
+                    skill_level -= e_skill_level
+                elif n == 3:
+                    skill_level -= q_skill_level
 
             avatar_skill.append(
                 {

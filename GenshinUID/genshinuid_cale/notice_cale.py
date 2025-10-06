@@ -3,10 +3,9 @@ from typing import List
 from gsuid_core.logger import logger
 from gsuid_core.subscribe import gs_subscribe
 
-from GenshinUID.utils.api.mys.models import Act
-
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
+from ..utils.api.mys.models import Act
 
 
 async def notice_cale():

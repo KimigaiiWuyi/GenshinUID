@@ -26,11 +26,12 @@ async def all_daily_mihoyo_bbs_coin():
             event = data['event']
             await event.send(im)
 
-    for _, data in group_result.items():
-        im = '✅ 今日自动获取米游币已完成！\n'
-        im += f'📝 本群共获取成功{data["success"]}人，共获取失败{data["fail"]}人。'
-        event = data['event']
-        await event.send(im)
+    if gsconfig.get_config('MhyBBSCoinReportGroup').data:
+        for _, data in group_result.items():
+            im = '✅ 今日自动获取米游币已完成！\n'
+            im += f'📝 本群共获取成功{data["success"]}人，共获取失败{data["fail"]}人。'
+            event = data['event']
+            await event.send(im)
 
 
 async def mihoyo_coin(stoken: str):

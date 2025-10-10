@@ -38,6 +38,11 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         '开启后会私聊每个用户当前米游币任务完成情况',
         False,
     ),
+    'MhyBBSCoinReportGroup': GsBoolConfig(
+        '米游币群聊推送',
+        '开启后会在群聊中推送当前群米游币任务完成情况',
+        True,
+    ),
     'SignReportSimple': GsBoolConfig(
         '简洁签到报告',
         '开启后可以大大减少每日签到报告字数',

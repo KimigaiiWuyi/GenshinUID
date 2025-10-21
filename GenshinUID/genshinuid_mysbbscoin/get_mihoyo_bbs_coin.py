@@ -95,7 +95,6 @@ class MihoyoBBSCoin:
             'x-rpc-device_name': random_text(random.randint(1, 10)),
             'x-rpc-device_model': 'Mi 10',
             'Referer': 'https://app.mihoyo.com',
-            #'Host': 'bbs-api.mihoyo.com',
             'User-Agent': 'okhttp/4.8.0',
         }
         self.Task_do = {
@@ -330,11 +329,12 @@ class MihoyoBBSCoin:
             else:
                 header['DS'] = get_web_ds_token()
             async with AsyncClient(timeout=None) as client:
-                logger.trace(method, url, json.dumps(data), header)
+                data_str = json.dumps(data)
+                logger.trace(method, url, data_str, header)
                 req = await client.request(
                     method=method,
                     url=url,
-                    data=json.dumps(data),
+                    data=data_str,  # type: ignore
                     headers=header,
                 )
                 res_data = req.json()

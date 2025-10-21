@@ -9,6 +9,7 @@ from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..utils.mys_api import mys_api
 from ..utils.colors import first_color
+from ..utils.api.mys.models import RoundData
 from ..utils.image.convert import convert_img
 from ..utils.image.image_tools import add_footer
 from ..utils.resource.download_url import download, download_file
@@ -85,7 +86,28 @@ async def draw_poetry_abyss_img(
     else:
         data = data['data'][0]
 
-    round_data = data['detail']['rounds_data']
+    _round_data = data['detail']['rounds_data']
+    round_data: List[RoundData] = []
+
+    tarot_true_count = sum(
+        1 for _r in _round_data if _r.get('is_tarot') is True
+    )
+
+    # 如果超过两个，则需要移除 is_get_medal=False 的数据（仅限 is_tarot=True 的情况）
+    if tarot_true_count > 2:
+        for _round in _round_data:
+            # 如果不是tarot，直接保留
+            if not _round.get('is_tarot', False):
+                round_data.append(_round)
+            else:
+                # tarot的情况，仅保留is_get_medal为True的
+                if _round.get('is_get_medal', False):
+                    round_data.append(_round)
+    else:
+        # 否则，直接全部顺序append
+        for _round in _round_data:
+            round_data.append(_round)
+
     fight_statisic = data['detail']['fight_statisic']
     stat_data = data['stat']
 

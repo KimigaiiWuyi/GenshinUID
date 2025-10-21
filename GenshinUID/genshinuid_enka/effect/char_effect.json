@@ -86,14 +86,14 @@
   "菲林斯": {
     "normal": {
       "normal_skill": {
-        "50": "elementalMastery+160%8%atk",
+        "50": "elementalMastery+160%0.08%atk",
         "70": ""
       },
       "normal_talent": {
         "1": "",
         "2": "",
         "3": "",
-        "4": "addAtk+20;elementalMastery+60%2%atk",
+        "4": "addAtk+20;elementalMastery+60%0.02%atk",
         "5": "",
         "6": ""
       }

@@ -1,4 +1,97 @@
 {
+  "真语秘匣": {
+    "normal": {
+      "normal_effect": {
+        "1": "critRate+8",
+        "2": "critRate+10",
+        "3": "critRate+12",
+        "4": "critRate+14",
+        "5": "critRate+16"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+120;critDmg+36",
+        "2": "elementalMastery+150;critDmg+45",
+        "3": "elementalMastery+180;critDmg+54",
+        "4": "elementalMastery+210;critDmg+63",
+        "5": "elementalMastery+240;critDmg+72"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "圣祭者的辉杖": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+24;energyRecharge+18",
+        "2": "addAtk+30;energyRecharge+22.5",
+        "3": "addAtk+36;energyRecharge+27",
+        "4": "addAtk+42;energyRecharge+31.5",
+        "5": "addAtk+48;energyRecharge+36"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "霜辰": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+120",
+        "2": "elementalMastery+150",
+        "3": "elementalMastery+180",
+        "4": "elementalMastery+210",
+        "5": "elementalMastery+240"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
   "罗网勾针": {
     "normal": {
       "normal_effect": {

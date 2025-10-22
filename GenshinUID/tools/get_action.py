@@ -145,6 +145,8 @@ def from_type_to_value(value_type: str, para):
 
 def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
     result = {}
+    if char.startswith(('奇偶')):
+        return {}
     for label in labels:
         if '旅行者' not in char:
             if avatarName2Element[char] == 'Anemo':

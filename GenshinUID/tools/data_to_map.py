@@ -385,6 +385,8 @@ async def avatarName2ElementJson() -> None:
     avatarId2Star_result['10000005'] = '5'
     avatarId2Star_result['10000007'] = '5'
     avatarName2Weapon_result['旅行者'] = '单手剑'
+    avatarName2Weapon_result['奇偶·男性'] = '单手剑'
+    avatarName2Weapon_result['奇偶·女性'] = '单手剑'
 
     with open(MAP_PATH / enName2Id_fileName, 'w', encoding='UTF-8') as file:
         json.dump(enName2Id_result, file, ensure_ascii=False)

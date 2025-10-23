@@ -157,7 +157,9 @@ async def draw_cale_img(ev: Event, uid: str):
                         else False
                     ),
                     'status': 2,
-                    'reward_list': [act['reward_list'][1]],
+                    'reward_list': (
+                        [act['reward_list'][1]] if act['reward_list'] else []
+                    ),
                 }
             )
 

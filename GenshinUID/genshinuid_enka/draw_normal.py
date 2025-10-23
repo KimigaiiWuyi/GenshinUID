@@ -422,7 +422,12 @@ async def get_char_img(
         char_img = Image.open(BytesIO(char.char_bytes)).convert('RGBA')
     else:
         offset_x, offset_y = 200, 0
-        char_img = Image.open(GACHA_IMG_PATH / f'{char_name}.png')  # 角色图像
+        gacha_path = GACHA_IMG_PATH / f'{char_name}.png'
+        if gacha_path.exists():
+            char_img = Image.open(gacha_path)  # 角色图像
+        else:
+            char_img = Image.new('RGBA', (2048, 1024))
+
     # 确定图片的长宽
     w, h = char_img.size
     if (w, h) != (based_w, based_h):

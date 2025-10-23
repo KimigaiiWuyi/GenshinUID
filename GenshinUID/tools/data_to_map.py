@@ -380,6 +380,8 @@ async def avatarName2ElementJson() -> None:
                     adata['weaponType']
                 ]
 
+    avatarId2Star_result['10000117'] = '5'
+    avatarId2Star_result['10000118'] = '5'
     avatarId2Star_result['10000005'] = '5'
     avatarId2Star_result['10000007'] = '5'
     avatarName2Weapon_result['旅行者'] = '单手剑'
@@ -598,8 +600,8 @@ async def save_char_talent_num():
 
 async def main():
     # await download_new_file()
-    await restore_mysData()
-    await restore_hakush_data()
+    # await restore_mysData()
+    # await restore_hakush_data()
     await monster2map()
     global raw_data
     try:

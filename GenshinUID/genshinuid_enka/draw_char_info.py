@@ -377,11 +377,11 @@ async def get_char_img(char: Character):
     char_fg = Image.open(TEXT_PATH / 'info_char_fg.png')
     char_bg = Image.open(TEXT_PATH / 'info_char_bg.png')
 
-    char_img = (
-        Image.open(GACHA_IMG_PATH / f'{char_name}.png')
-        .resize((1776, 1000))
-        .convert('RGBA')
-    )
+    gacha_path = GACHA_IMG_PATH / f'{char_name}.png'
+    if gacha_path.exists():
+        char_img = Image.open(gacha_path).resize((1776, 1000)).convert('RGBA')
+    else:
+        char_img = Image.new('RGBA', (1776, 1000))
 
     char_mask = Image.new('RGBA', (700, 1000))
     char_pic = Image.new('RGBA', (700, 1000))

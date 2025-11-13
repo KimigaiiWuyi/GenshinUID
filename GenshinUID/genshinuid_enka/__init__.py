@@ -329,19 +329,34 @@ async def save_char_info(bot: Bot, ev: Event):
             )
 
 
-@sv_get_enka.on_command(('强制刷新', '刷新面板'))
+@sv_get_enka.on_command(
+    (
+        '强制刷新',
+        '刷新面板',
+        'mys强制刷新',
+        'enka强制刷新',
+        'mys刷新面板',
+        'enka刷新面板',
+    )
+)
 async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info('[强制刷新]uid: {}'.format(uid))
-    if EnableCharCardByMys:
+
+    if 'mys' in ev.command:
         im = await mys_to_card(uid)
-        if not isinstance(im, Tuple):
-            logger.info(f'从米游社获取数据失败，尝试从enka获取。{im}')
-            im = await enka_to_card(uid)
-    else:
+    elif 'enka' in ev.command:
         im = await enka_to_card(uid)
+    else:
+        if EnableCharCardByMys:
+            im = await mys_to_card(uid)
+            if not isinstance(im, Tuple):
+                logger.info(f'从米游社获取数据失败，尝试从enka获取。{im}')
+                im = await enka_to_card(uid)
+        else:
+            im = await enka_to_card(uid)
 
     if isinstance(im, Tuple):
         buttons = [

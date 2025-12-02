@@ -1,4 +1,97 @@
 {
+  "黑蚀": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "Q:critDmg+16;addAtk+20",
+        "2": "Q:critDmg+20;addAtk+25",
+        "3": "Q:critDmg+24;addAtk+30",
+        "4": "Q:critDmg+28;addAtk+35",
+        "5": "Q:critDmg+32;addAtk+40"
+      },
+      "group_effect": {
+        "1": "addAtk+16",
+        "2": "addAtk+20",
+        "3": "addAtk+24",
+        "4": "addAtk+28",
+        "5": "addAtk+32"
+      },
+      "time": 3,
+      "extra": {
+        
+      }
+    }
+  },
+  "虹蛇的雨弦": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+28",
+        "2": "addAtk+35",
+        "3": "addAtk+42",
+        "4": "addAtk+49",
+        "5": "addAtk+56"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
+  "黎明破晓之史": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "AEQ:dmgBonus+60",
+        "2": "AEQ:dmgBonus+75",
+        "3": "AEQ:dmgBonus+90",
+        "4": "AEQ:dmgBonus+105",
+        "5": "AEQ:dmgBonus+120"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
   "真语秘匣": {
     "normal": {
       "normal_effect": {

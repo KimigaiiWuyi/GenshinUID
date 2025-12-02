@@ -601,9 +601,9 @@ async def save_char_talent_num():
 
 
 async def main():
-    # await download_new_file()
-    # await restore_mysData()
-    # await restore_hakush_data()
+    await download_new_file()
+    await restore_mysData()
+    await restore_hakush_data()
     await monster2map()
     global raw_data
     try:

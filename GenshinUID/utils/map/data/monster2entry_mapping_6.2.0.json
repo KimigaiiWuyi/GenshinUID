@@ -6497,6 +6497,62 @@
         "route": "Hydro Tulpa",
         "icon": "UI_MonsterIcon_Narcissusborn_Normal_01"
     },
+    "20051202": {
+        "id": 20051202,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "5.3风来人通用词缀",
+                "description": "5.3风来人通用词缀",
+                "abilityName": [
+                    "MonsterEliteAffix_Level3_AttackUp_BossRushV52"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010032,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010032,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 209.1936,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 125,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "水形幻人",
+        "route": "Hydro Tulpa",
+        "icon": "UI_MonsterIcon_Narcissusborn_Normal_01"
+    },
     "20060101": {
         "id": 20060101,
         "type": "MONSTER_ORDINARY",
@@ -8773,6 +8829,49 @@
         "route": "Hilichurl",
         "icon": "UI_MonsterIcon_Hili_None_01"
     },
+    "21010107": {
+        "id": 21010107,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 60
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "丘丘人",
+        "route": "Hilichurl",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
     "21010201": {
         "id": 21010201,
         "type": "MONSTER_ORDINARY",
@@ -8855,6 +8954,82 @@
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 22.608,
                 "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "打手丘丘人",
+        "route": "Hilichurl Fighter",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
+    "21010203": {
+        "id": 21010203,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "打手丘丘人",
+        "route": "Hilichurl Fighter",
+        "icon": "UI_MonsterIcon_Hili_None_01"
+    },
+    "21010204": {
+        "id": 21010204,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
             },
             {
                 "propType": "FIGHT_PROP_BASE_DEFENSE",
@@ -9977,6 +10152,53 @@
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 7.536,
                 "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "冲锋丘丘人",
+        "route": "Hilichurl Berserker",
+        "icon": "UI_MonsterIcon_Hili_Fire_Range"
+    },
+    "21010703": {
+        "id": 21010703,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "点燃免疫",
+                "description": "免疫点燃伤害",
+                "abilityName": [
+                    "MonsterAffix_BurningResist"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
             },
             {
                 "propType": "FIGHT_PROP_BASE_DEFENSE",
@@ -12670,6 +12892,44 @@
         "route": "Stonehide Lawachurl",
         "icon": "UI_MonsterIcon_Brute_Rock_None"
     },
+    "21020503": {
+        "id": 21020503,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "丘丘岩盔王",
+        "route": "Stonehide Lawachurl",
+        "icon": "UI_MonsterIcon_Brute_Rock_None"
+    },
     "21020601": {
         "id": 21020601,
         "type": "MONSTER_ORDINARY",
@@ -13127,6 +13387,57 @@
             }
         ],
         "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 40.752,
+                "type": "GROW_CURVE_HP"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 60.288,
+                "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.3
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "雷斧丘丘暴徒",
+        "route": "Crackling Axe Mitachurl",
+        "icon": "UI_MonsterIcon_Brute_None_01"
+    },
+    "21020706": {
+        "id": 21020706,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 25
+            }
+        ],
         "prop": [
             {
                 "propType": "FIGHT_PROP_BASE_HP",
@@ -15138,19 +15449,19 @@
                 "name": "地脉的旧枝",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112020",
-                "count": "2.2324"
+                "count": "2.6263"
             },
             "112021": {
                 "name": "地脉的枯叶",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112021",
-                "count": "0.5953"
+                "count": "0.7003"
             },
             "112022": {
                 "name": "地脉的新芽",
                 "rank": 4,
                 "icon": "UI_ItemIcon_112022",
-                "count": "0.1487"
+                "count": "0.1751"
             },
             "400022": {
                 "name": "战狂",
@@ -15476,6 +15787,53 @@
                 "propType": "FIGHT_PROP_BASE_ATTACK",
                 "initValue": 56.52,
                 "type": "GROW_CURVE_ATTACK"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "火深渊法师",
+        "route": "Pyro Abyss Mage",
+        "icon": "UI_MonsterIcon_Abyss_Fire_01"
+    },
+    "22010106": {
+        "id": 22010106,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "点燃免疫",
+                "description": "免疫点燃伤害",
+                "abilityName": [
+                    "MonsterAffix_BurningResist"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
             },
             {
                 "propType": "FIGHT_PROP_BASE_DEFENSE",
@@ -15925,6 +16283,53 @@
         "route": "Cryo Abyss Mage",
         "icon": "UI_MonsterIcon_Abyss_Ice_01"
     },
+    "22010206": {
+        "id": 22010206,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "寒气免疫",
+                "description": "免疫冰冻和寒元素的减速效果",
+                "abilityName": [
+                    "MonsterAffix_IceAllResist"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 13.584,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 22.608,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "冰深渊法师",
+        "route": "Cryo Abyss Mage",
+        "icon": "UI_MonsterIcon_Abyss_Ice_01"
+    },
     "22010207": {
         "id": 22010207,
         "type": "MONSTER_ORDINARY",
@@ -16068,19 +16473,19 @@
                 "name": "地脉的旧枝",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112020",
-                "count": "2.2324"
+                "count": "2.6263"
             },
             "112021": {
                 "name": "地脉的枯叶",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112021",
-                "count": "0.5953"
+                "count": "0.7003"
             },
             "112022": {
                 "name": "地脉的新芽",
                 "rank": 4,
                 "icon": "UI_ItemIcon_112022",
-                "count": "0.1487"
+                "count": "0.1751"
             },
             "400022": {
                 "name": "战狂",
@@ -23326,108 +23731,6 @@
         "route": "Wilderness Exile",
         "icon": "UI_MonsterIcon_WildHunt"
     },
-    "22130003": {
-        "id": 22130003,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130004": {
-        "id": 22130004,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
     "22130101": {
         "id": 22130101,
         "type": "MONSTER_ORDINARY",
@@ -23868,261 +24171,6 @@
         "route": "Wilderness Exile",
         "icon": "UI_MonsterIcon_WildHunt"
     },
-    "22130105": {
-        "id": 22130105,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 18.68131,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 25.12,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130106": {
-        "id": 22130106,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130107": {
-        "id": 22130107,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130108": {
-        "id": 22130108,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130109": {
-        "id": 22130109,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
     "22130201": {
         "id": 22130201,
         "type": "MONSTER_ORDINARY",
@@ -24339,159 +24387,6 @@
                 "icon": "UI_RelicIcon_10013_4"
             }
         },
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130203": {
-        "id": 22130203,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 18.68131,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 25.12,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130204": {
-        "id": 22130204,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
-        "name": "荒野幽徒",
-        "route": "Wilderness Exile",
-        "icon": "UI_MonsterIcon_WildHunt"
-    },
-    "22130205": {
-        "id": 22130205,
-        "type": "MONSTER_ORDINARY",
-        "affix": null,
-        "hpDrops": [
-            {
-                "id": 22010010,
-                "hpPercent": 66
-            },
-            {
-                "id": 22010010,
-                "hpPercent": 33
-            }
-        ],
-        "prop": [
-            {
-                "propType": "FIGHT_PROP_BASE_HP",
-                "initValue": 32.6016,
-                "type": "GROW_CURVE_HP_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_ATTACK",
-                "initValue": 37.68,
-                "type": "GROW_CURVE_ATTACK_2"
-            },
-            {
-                "propType": "FIGHT_PROP_BASE_DEFENSE",
-                "initValue": 500,
-                "type": "GROW_CURVE_DEFENSE"
-            }
-        ],
-        "resistance": {
-            "critical": [
-                0,
-                0
-            ],
-            "fireSubHurt": 0.1,
-            "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
-            "elecSubHurt": 0.1,
-            "windSubHurt": 0.1,
-            "iceSubHurt": 0.1,
-            "rockSubHurt": 0.1,
-            "physicalSubHurt": 0.1
-        },
-        "fundamentalForce": null,
-        "reward": null,
         "name": "荒野幽徒",
         "route": "Wilderness Exile",
         "icon": "UI_MonsterIcon_WildHunt"
@@ -25942,7 +25837,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -25965,7 +25860,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004139,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26017,7 +25912,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26040,7 +25935,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004139,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26092,7 +25987,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26115,7 +26010,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004149,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26167,7 +26062,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26190,7 +26085,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004149,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26242,7 +26137,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Tank4"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26265,7 +26160,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004140,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26317,7 +26212,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26340,7 +26235,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004141,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26392,7 +26287,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26415,7 +26310,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004141,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26467,7 +26362,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Tank4"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26490,7 +26385,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004142,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26542,7 +26437,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Tank4"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26565,7 +26460,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004142,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26617,7 +26512,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Tank4"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26640,7 +26535,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004142,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26692,7 +26587,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Support"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26715,7 +26610,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004143,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26767,7 +26662,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Support"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26790,7 +26685,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004143,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26842,7 +26737,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Support"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26865,7 +26760,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004150,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26917,7 +26812,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Support"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -26940,7 +26835,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004150,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -26992,7 +26887,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -27015,7 +26910,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004144,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -27067,7 +26962,7 @@
                 "abilityName": [
                     "Monster_Fatuimecha_SquadAI_Range"
                 ],
-                "isCommon": null
+                "isCommon": true
             }
         ],
         "hpDrops": null,
@@ -27090,7 +26985,7 @@
         ],
         "resistance": {
             "critical": [
-                0,
+                50004144,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -29251,6 +29146,243 @@
         "route": "Cutting Edge Fire Support Ground Effect Landcruiser",
         "icon": "UI_MonsterIcon_Fatuimecha_CoreC_MoveF_AttackB_Fire"
     },
+    "23090101": {
+        "id": 23090101,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 298.848,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104111": {
+                "name": "燃愿玛瑙碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104111"
+            },
+            "104112": {
+                "name": "燃愿玛瑙断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104112"
+            },
+            "104113": {
+                "name": "燃愿玛瑙块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104113"
+            },
+            "104114": {
+                "name": "燃愿玛瑙",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104114"
+            },
+            "104161": {
+                "name": "哀叙冰玉碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104161"
+            },
+            "104162": {
+                "name": "哀叙冰玉断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104162"
+            },
+            "104163": {
+                "name": "哀叙冰玉块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104163"
+            },
+            "104164": {
+                "name": "哀叙冰玉",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104164"
+            },
+            "113080": {
+                "name": "循环式军用月矩核心",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113080",
+                "count": "2.5556"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400047": {
+                "name": "冒险家",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10010_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400127": {
+                "name": "祭火之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15009_3"
+            },
+            "400128": {
+                "name": "祭火之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15009_3"
+            }
+        },
+        "name": "超重型陆巡舰·机动战垒",
+        "route": "Super-Heavy Landrover: Mechanized Fortress",
+        "icon": "UI_MonsterIcon_Fatuimecha_AMP"
+    },
+    "23090102": {
+        "id": 23090102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "AMP机器人-深渊词缀",
+                "description": "6.2 40体 深渊词缀",
+                "abilityName": [
+                    "Monster_Fatuimecha_AMP_02_InAbyss"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 298.848,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "超重型陆巡舰·机动战垒",
+        "route": "Super-Heavy Landrover: Mechanized Fortress",
+        "icon": "UI_MonsterIcon_Fatuimecha_AMP"
+    },
     "24010101": {
         "id": 24010101,
         "type": "MONSTER_ORDINARY",
@@ -29729,19 +29861,19 @@
                 "name": "混沌装置",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112023",
-                "count": "2.6263"
+                "count": "3.9394"
             },
             "112024": {
                 "name": "混沌回路",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112024",
-                "count": "0.7003"
+                "count": "1.0505"
             },
             "112025": {
                 "name": "混沌炉心",
                 "rank": 4,
                 "icon": "UI_ItemIcon_112025",
-                "count": "0.1751"
+                "count": "0.2626"
             },
             "400022": {
                 "name": "战狂",
@@ -40117,6 +40249,177 @@
         "route": "Secret Source Automaton: Overseer Device",
         "icon": "UI_MonsterIcon_DragonCollar"
     },
+    "24090502": {
+        "id": 24090502,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "5.6古龙挑战-深渊版词缀",
+                "description": "抗性、数值、技能顺序等",
+                "abilityName": [
+                    "Monster_DragonCollar_AbyssVersion"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 335.6541,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "秘源机兵·统御械",
+        "route": "Secret Source Automaton: Overseer Device",
+        "icon": "UI_MonsterIcon_DragonCollar"
+    },
+    "24090503": {
+        "id": 24090503,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "5.6古龙挑战-深渊版词缀",
+                "description": "抗性、数值、技能顺序等",
+                "abilityName": [
+                    "Monster_DragonCollar_AbyssVersion"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 335.6541,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "秘源机兵·统御械",
+        "route": "Secret Source Automaton: Overseer Device",
+        "icon": "UI_MonsterIcon_DragonCollar"
+    },
+    "24090504": {
+        "id": 24090504,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 335.6541,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "秘源机兵·统御械",
+        "route": "Secret Source Automaton: Overseer Device",
+        "icon": "UI_MonsterIcon_DragonCollar"
+    },
     "24100101": {
         "id": 24100101,
         "type": "MONSTER_BOSS",
@@ -40154,7 +40457,7 @@
         ],
         "resistance": {
             "critical": [
-                1463452481864515000,
+                0,
                 0
             ],
             "fireSubHurt": 0.1,
@@ -41901,19 +42204,19 @@
                 "name": "破旧的刀镡",
                 "rank": 1,
                 "icon": "UI_ItemIcon_112044",
-                "count": "0.8404"
+                "count": "1.6808"
             },
             "112045": {
                 "name": "影打刀镡",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112045",
-                "count": "0.2241"
+                "count": "0.4482"
             },
             "112046": {
                 "name": "名刀镡",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112046",
-                "count": "0.056"
+                "count": "0.112"
             }
         },
         "name": "野伏·阵刀番",
@@ -41968,19 +42271,19 @@
                 "name": "破旧的刀镡",
                 "rank": 1,
                 "icon": "UI_ItemIcon_112044",
-                "count": "0.8404"
+                "count": "1.6808"
             },
             "112045": {
                 "name": "影打刀镡",
                 "rank": 2,
                 "icon": "UI_ItemIcon_112045",
-                "count": "0.2241"
+                "count": "0.4482"
             },
             "112046": {
                 "name": "名刀镡",
                 "rank": 3,
                 "icon": "UI_ItemIcon_112046",
-                "count": "0.056"
+                "count": "0.112"
             }
         },
         "name": "野伏·火付番",
@@ -47023,7 +47326,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "横蛮勇士·冲撞手",
         "route": "Ferocious Warrior: Human Ram",
@@ -47099,7 +47402,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "横蛮勇士·冲撞手",
         "route": "Ferocious Warrior: Human Ram",
@@ -48186,7 +48489,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "横蛮勇士·摔跤客",
         "route": "Ferocious Warrior: Wrestler",
@@ -48262,7 +48565,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "横蛮勇士·摔跤客",
         "route": "Ferocious Warrior: Wrestler",
@@ -48706,7 +49009,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "横蛮勇士·抓扑人",
         "route": "Ferocious Warrior: Grappler",
@@ -48774,7 +49077,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "横蛮勇士·抓扑人",
         "route": "Ferocious Warrior: Grappler",
@@ -49882,7 +50185,54 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "突角龙武士·破空轰动",
+        "route": "Tatankasaurus Warrior: Skybreaker",
+        "icon": "UI_MonsterIcon_Tribalwarrior_Powermaul_Bisonsaurus"
+    },
+    "25511190": {
+        "id": 25511190,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "部落战士精英 - 语音移除",
+                "description": "任务按需求使用，避免穿帮",
+                "abilityName": [
+                    "Monster_TribalWarrior_NoVoAlter"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 39.038727,
+                "type": "GROW_CURVE_ACTIVITY_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 44.55,
+                "type": "GROW_CURVE_ACTIVITY_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 200,
+                "type": "GROW_CURVE_ACTIVITY_DEFENSE_2"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
         "reward": null,
         "name": "突角龙武士·破空轰动",
         "route": "Tatankasaurus Warrior: Skybreaker",
@@ -49929,7 +50279,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": -0.2
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "突角龙武士·追缉灵光",
         "route": "Tatankasaurus Warrior: Spiritlight Chaser",
@@ -56987,6 +57337,66 @@
         "route": "Legatus Golem",
         "icon": "UI_MonsterIcon_Golem_Centaur"
     },
+    "26140105": {
+        "id": 26140105,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "5.3风来人通用词缀",
+                "description": "5.3风来人通用词缀",
+                "abilityName": [
+                    "MonsterEliteAffix_Level3_AttackUp_BossRushV52"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 228.2112,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 137.5,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "魔像督军",
+        "route": "Legatus Golem",
+        "icon": "UI_MonsterIcon_Golem_Centaur"
+    },
     "26140201": {
         "id": 26140201,
         "type": "MONSTER_ORDINARY",
@@ -61202,7 +61612,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "幼突角龙",
         "route": "Tatankasaur Whelp",
@@ -61249,7 +61659,45 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "突角龙",
+        "route": "Tatankasaurus",
+        "icon": "UI_MonsterIcon_Natsaurus_Bisonsaurus_Normal"
+    },
+    "26250290": {
+        "id": 26250290,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 45.009357,
+                "type": "GROW_CURVE_ACTIVITY_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 50.49,
+                "type": "GROW_CURVE_ACTIVITY_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 200,
+                "type": "GROW_CURVE_ACTIVITY_DEFENSE_2"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
         "reward": null,
         "name": "突角龙",
         "route": "Tatankasaurus",
@@ -61944,7 +62392,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "雳震·大灵显化身",
         "route": "Thundering Wayob Manifestation",
@@ -61996,7 +62444,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "雳震·大灵显化身",
         "route": "Thundering Wayob Manifestation",
@@ -62255,7 +62703,7 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": {
             "102": {
                 "name": "冒险阅历",
@@ -62409,7 +62857,178 @@
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "熔岩辉龙像",
+        "route": "Lava Dragon Statue",
+        "icon": "UI_MonsterIcon_LavaTitan"
+    },
+    "26270303": {
+        "id": 26270303,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "石头人爬塔标记",
+                "description": "石头人爬塔标记",
+                "abilityName": [
+                    "MonsterAffix_LavaTitan_AbyssTag"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 273.95828,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "熔岩辉龙像",
+        "route": "Lava Dragon Statue",
+        "icon": "UI_MonsterIcon_LavaTitan"
+    },
+    "26270304": {
+        "id": 26270304,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "石头人爬塔标记",
+                "description": "石头人爬塔标记",
+                "abilityName": [
+                    "MonsterAffix_LavaTitan_AbyssTag"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 273.95828,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "熔岩辉龙像",
+        "route": "Lava Dragon Statue",
+        "icon": "UI_MonsterIcon_LavaTitan"
+    },
+    "26270305": {
+        "id": 26270305,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 273.95828,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 100.48,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
         "reward": null,
         "name": "熔岩辉龙像",
         "route": "Lava Dragon Statue",
@@ -62447,16 +63066,16 @@
             }
         ],
         "resistance": {
-            "fireSubHurt": 0.1,
+            "fireSubHurt": 0.5,
             "grassSubHurt": 0.1,
             "waterSubHurt": 0.1,
             "elecSubHurt": 0.1,
             "windSubHurt": 0.1,
             "iceSubHurt": 0.1,
-            "rockSubHurt": 0.5,
+            "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": {
             "202": {
                 "name": "摩拉",
@@ -62562,16 +63181,16 @@
             }
         ],
         "resistance": {
-            "fireSubHurt": 0.1,
+            "fireSubHurt": 0.5,
             "grassSubHurt": 0.1,
             "waterSubHurt": 0.1,
             "elecSubHurt": 0.1,
             "windSubHurt": 0.1,
             "iceSubHurt": 0.1,
-            "rockSubHurt": 0.5,
+            "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1
         },
-        "fundamentalForce": "None",
+        "fundamentalForce": null,
         "reward": null,
         "name": "炉壳山鼬",
         "route": "Furnace Shell Mountain Weasel",
@@ -66865,11 +67484,12 @@
             }
         ],
         "resistance": {
+            "critical": true,
             "fireSubHurt": 0.1,
             "grassSubHurt": 0.1,
-            "waterSubHurt": 0.1,
+            "waterSubHurt": 0.7,
             "elecSubHurt": 0.7,
-            "windSubHurt": 0.7,
+            "windSubHurt": 0.1,
             "iceSubHurt": 0.1,
             "rockSubHurt": 0.1,
             "physicalSubHurt": 0.1

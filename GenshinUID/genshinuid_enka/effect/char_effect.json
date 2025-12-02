@@ -1,4 +1,88 @@
 {
+  "杜林": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "PyroResist+-35;DendroResist+-35",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "ABCE:addDmg+60%atk;Q:addDmg+150%atk",
+        "2": "dmgBonus+50",
+        "3": "",
+        "4": "Q:dmgBonus+40",
+        "5": "",
+        "6": "ignoreDef+30;Q:ignoreDef+40"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "ABCEQ:addDmg+60%atk",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "雅珂达": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "Q:dmgBonus+30",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "critRate+5;critDmg+40"
+      },
+      "group_skill": {
+        "50": "",
+        "70": "elementalMastery+100"
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
   "奇偶·女性": {
     "normal": {
       "normal_skill": {

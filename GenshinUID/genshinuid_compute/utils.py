@@ -90,10 +90,14 @@ async def char_id_to_compute_dict(
     if char_id in ['10000005', '10000001', '10000007']:
         return None
 
-    skill_list = await avatar_id_to_skill_groupId(char_id)
-    if not skill_list:
-        logger.debug(f'[char_id_to_compute_dict] {char_id}')
-        raise ValueError("[char_id_to_compute_dict] 未找到该角色技能")
+    try:
+        skill_list = await avatar_id_to_skill_groupId(char_id)
+        if not skill_list:
+            logger.warning(f'角色 {char_id} 技能数据缺失，跳过该角色')
+            return None  # 或返回空字典
+    except Exception as e:
+        logger.warning(f'获取角色 {char_id} 技能时出错: {e}')
+        return None
 
     skill_data = []
     skill_level = [

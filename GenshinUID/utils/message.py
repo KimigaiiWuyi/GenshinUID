@@ -1,10 +1,10 @@
 from typing import Any, Dict, List, Union, Optional
 
+from gsuid_core.sv import get_plugin_available_prefix
 from gsuid_core.bot import Bot
 from gsuid_core.message_models import Button
-from gsuid_core.sv import get_plugin_available_prefix
 
-PREFIX = get_plugin_available_prefix('GenshinUID')
+PREFIX = get_plugin_available_prefix("GenshinUID")
 
 
 class GButton(Button):
@@ -15,22 +15,18 @@ async def send_diff_msg(
     bot: Bot,
     code: Any,
     data: Optional[Dict] = None,
-    option_list: Optional[
-        Union[List[str], List[Button], List[List[str]], List[List[Button]]]
-    ] = None,
+    option_list: Optional[Union[List[str], List[Button], List[List[str]], List[List[Button]]]] = None,
 ):
     if data is None:
         data = {
-            0: '绑定UID成功!',
-            -1: 'UID的位数不正确!',
-            -2: 'UID已经绑定过了!',
-            -3: '你输入了错误的格式!',
+            0: "绑定UID成功!",
+            -1: "UID的位数不正确!",
+            -2: "UID已经绑定过了!",
+            -3: "你输入了错误的格式!",
         }
     for retcode in data:
         if code == retcode:
-            return await bot.send_option(
-                data[retcode], option_list, False, '\n'
-            )
+            return await bot.send_option(data[retcode], option_list, False, "\n")
 
 
-UID_HINT = f'你还没有绑定过uid哦!\n请使用[{PREFIX}绑定uid123456]命令绑定!'
+UID_HINT = f"你还没有绑定过uid哦!\n请使用[{PREFIX}绑定uid123456]命令绑定!"

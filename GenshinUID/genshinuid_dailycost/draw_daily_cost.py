@@ -1,8 +1,9 @@
 import time
-from pathlib import Path
 from typing import Union
+from pathlib import Path
 
 from PIL import Image, ImageDraw
+
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.ambr.request import get_ambr_icon
 
@@ -17,7 +18,7 @@ from ..utils.resource.RESOURCE_PATH import (
     WEAPON_PATH,
 )
 
-TEXT_PATH = Path(__file__).parent / 'texture2d'
+TEXT_PATH = Path(__file__).parent / "texture2d"
 
 
 async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
@@ -28,18 +29,18 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
     _t = time.localtime(timestamp)
     wk = time.strftime(weekdays[_t.tm_wday], _t)
 
-    path = TEMP_PATH / f'daily_cost_{wk}.jpg'
+    path = TEMP_PATH / f"daily_cost_{wk}.jpg"
     if not is_force and path.exists():
         return await convert_img(Image.open(path))
 
-    if wk == '周日':
-        return '今天是周日, 所有材料都能获得噢！'
+    if wk == "周日":
+        return "今天是周日, 所有材料都能获得噢！"
 
     data = await generate_daily_data()
     if data is None:
-        return '获取信息错误...'
+        return "获取信息错误..."
     elif data == {}:
-        return '今天是周日, 所有材料都能获得噢！'
+        return "今天是周日, 所有材料都能获得噢！"
 
     w, h = 950, 630
     for domain in data:
@@ -47,32 +48,32 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
 
     img = await get_color_bg(w, h)
 
-    title = Image.open(TEXT_PATH / 'title.png')
+    title = Image.open(TEXT_PATH / "title.png")
     title_draw = ImageDraw.Draw(title)
     title_draw.text(
         (475, 474),
-        f'今天是{wk}哦!',
-        'black',
+        f"今天是{wk}哦!",
+        "black",
         gs_font_36,
-        'mm',
+        "mm",
     )
-    title_draw.text((475, 531), '每日材料', 'black', gs_font_36, 'mm')
+    title_draw.text((475, 531), "每日材料", "black", gs_font_36, "mm")
 
     img.paste(title, (0, 0), title)
 
     y = 600
     for domain in data:
         icon_id = data[domain][0]
-        icon = await get_ambr_icon('UI', icon_id, ICON_PATH, 'ItemIcon')
+        icon = await get_ambr_icon("UI", icon_id, ICON_PATH, "ItemIcon")
 
-        icon = icon.resize((77, 77)).convert('RGBA')
-        bar = Image.open(TEXT_PATH / 'bar.png')
+        icon = icon.resize((77, 77)).convert("RGBA")
+        bar = Image.open(TEXT_PATH / "bar.png")
         bar_draw = ImageDraw.Draw(bar)
         bar.paste(icon, (43, 10), icon)
-        domain1, domain2 = domain.split('：')
+        domain1, domain2 = domain.split("：")
 
-        bar_draw.text((142, 50), domain2, 'black', gs_font_44, 'lm')
-        bar_draw.text((900, 50), domain1, 'black', gs_font_26, 'rm')
+        bar_draw.text((142, 50), domain2, "black", gs_font_44, "lm")
+        bar_draw.text((900, 50), domain1, "black", gs_font_26, "rm")
 
         img.paste(bar, (0, y), bar)
 
@@ -80,38 +81,38 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
             if isinstance(item, int):
                 continue
 
-            rank: int = item['rank']
+            rank: int = item["rank"]
 
-            if '炼武' in domain:
-                item_path = WEAPON_PATH / f'{item["name"]}.png'
+            if "炼武" in domain:
+                item_path = WEAPON_PATH / f"{item['name']}.png"
                 if not item_path.exists():
                     item = await get_ambr_icon(
-                        'UI',
-                        item['icon'].replace('UI_EquipIcon_', ''),
+                        "UI",
+                        item["icon"].replace("UI_EquipIcon_", ""),
                         WEAPON_PATH,
-                        'EquipIcon',
-                        f'{item["name"]}.png',
+                        "EquipIcon",
+                        f"{item['name']}.png",
                     )
                 else:
                     item = Image.open(item_path)
             else:
-                if 'name' in item:
-                    avatar_id = await name_to_avatar_id(item['name'])
-                    item_path = CHAR_PATH / f'{avatar_id}.png'
-                elif 'Boy' in item['icon']:
+                if "name" in item:
+                    avatar_id = await name_to_avatar_id(item["name"])
+                    item_path = CHAR_PATH / f"{avatar_id}.png"
+                elif "Boy" in item["icon"]:
                     avatar_id = 10000005
                 else:
                     avatar_id = 10000007
 
-                item_path = CHAR_PATH / f'{avatar_id}.png'
+                item_path = CHAR_PATH / f"{avatar_id}.png"
 
                 if not item_path.exists():
                     item = await get_ambr_icon(
-                        'UI',
-                        item['icon'].replace('UI_AvatarIcon_', ''),
+                        "UI",
+                        item["icon"].replace("UI_AvatarIcon_", ""),
                         CHAR_PATH,
-                        'AvatarIcon',
-                        f'{avatar_id}.png',
+                        "AvatarIcon",
+                        f"{avatar_id}.png",
                     )
                 else:
                     item = Image.open(item_path)
@@ -129,7 +130,7 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
                 item_bg,
             )
 
-            temp = Image.new('RGBA', (100, 100))
+            temp = Image.new("RGBA", (100, 100))
             temp.paste(item, (0, 0), item_bg)
 
             img.paste(
@@ -141,13 +142,13 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
         y += 110
 
     # 最后生成图片
-    all_black = Image.new('RGBA', img.size, (255, 255, 255))
+    all_black = Image.new("RGBA", img.size, (255, 255, 255))
     img = Image.alpha_composite(all_black, img)
 
-    img = img.convert('RGB')
+    img = img.convert("RGB")
     img.save(
-        TEMP_PATH / 'daily_cost.jpg',
-        'JPEG',
+        TEMP_PATH / "daily_cost.jpg",
+        "JPEG",
         quality=89,
         subsampling=0,
     )

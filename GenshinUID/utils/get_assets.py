@@ -7,17 +7,15 @@ from aiohttp.client import ClientSession
 
 from .resource.RESOURCE_PATH import ICON_PATH
 
-AMBR_UI = 'https://gi.yatta.top/assets/UI/{}.png'
-ENKA_UI = 'https://enka.network/ui/{}.png'
+AMBR_UI = "https://gi.yatta.top/assets/UI/{}.png"
+ENKA_UI = "https://enka.network/ui/{}.png"
 
 
-async def _get_assets(
-    name: str, type: Literal['ENKA', 'AMBR'] = 'AMBR'
-) -> Optional[Image.Image]:
-    path = ICON_PATH / f'{name}.png'
+async def _get_assets(name: str, type: Literal["ENKA", "AMBR"] = "AMBR") -> Optional[Image.Image]:
+    path = ICON_PATH / f"{name}.png"
     if path.exists():
         return Image.open(path)
-    if type == 'AMBR':
+    if type == "AMBR":
         URL = AMBR_UI
         EURL = ENKA_UI
     else:
@@ -27,14 +25,14 @@ async def _get_assets(
         async with sess.get(URL.format(name)) as res:
             if res.status == 200:
                 content = await res.read()
-                async with aiofiles.open(path, 'wb') as f:
+                async with aiofiles.open(path, "wb") as f:
                     await f.write(content)
                 return Image.open(BytesIO(content))
             else:
                 async with sess.get(EURL.format(name)) as res:
                     if res.status == 200:
                         content = await res.read()
-                        async with aiofiles.open(path, 'wb') as f:
+                        async with aiofiles.open(path, "wb") as f:
                             await f.write(content)
                         return Image.open(BytesIO(content))
                     else:
@@ -42,8 +40,8 @@ async def _get_assets(
 
 
 async def get_assets_from_enka(name: str) -> Optional[Image.Image]:
-    return await _get_assets(name, 'ENKA')
+    return await _get_assets(name, "ENKA")
 
 
 async def get_assets_from_ambr(name: str) -> Optional[Image.Image]:
-    return await _get_assets(name, 'AMBR')
+    return await _get_assets(name, "AMBR")

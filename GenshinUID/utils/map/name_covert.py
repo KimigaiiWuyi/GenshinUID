@@ -15,7 +15,7 @@ async def weapon_id_to_name(weapon_id: str) -> str:
     if weapon_id in weaponId2Name_data:
         return weaponId2Name_data[weapon_id]
     else:
-        return '未知'
+        return "未知"
 
 
 async def name_to_weapon_id(weapon_name: str) -> str:
@@ -23,7 +23,7 @@ async def name_to_weapon_id(weapon_name: str) -> str:
         if weapon_name == weaponId2Name_data[_id]:
             return _id
     else:
-        return '11509'
+        return "11509"
 
 
 async def avatar_id_to_skill_groupId(
@@ -39,7 +39,7 @@ async def name_to_element(name: str) -> str:
     if name in avatarName2Element:
         return avatarName2Element[name]
     else:
-        return 'Cryo'
+        return "Cryo"
 
 
 async def avatar_id_to_name(avatar_id: str) -> str:
@@ -48,7 +48,7 @@ async def avatar_id_to_name(avatar_id: str) -> str:
 
 
 async def name_to_avatar_id(name: str) -> str:
-    avatar_id = ''
+    avatar_id = ""
     for i in avatarId2Name:
         if avatarId2Name[i] == name:
             avatar_id = i
@@ -78,4 +78,4 @@ async def avatarId_to_enName(avatarId: str) -> str:
         if enName_to_avatarId_data[name] == avatarId:
             return name
     else:
-        return 'Ayaka'
+        return "Ayaka"

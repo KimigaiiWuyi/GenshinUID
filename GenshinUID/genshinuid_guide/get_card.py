@@ -1,9 +1,9 @@
-from pathlib import Path
 from typing import Optional
+from pathlib import Path
 
 from ..utils.map.name_covert import alias_to_char_name
 
-CARD_PATH = Path(__file__).parent / 'card'
+CARD_PATH = Path(__file__).parent / "card"
 
 # CARD_DATA = {i.name[:-4]: i for i in CARD_PATH.rglob('*.jpg')}
 CARD_DATA = {}
@@ -24,5 +24,5 @@ async def get_gs_card(msg: str) -> Optional[bytes]:
         else:
             return None
 
-    with open(img, 'rb') as f:
+    with open(img, "rb") as f:
         return f.read()

@@ -24,31 +24,31 @@ ELEMENT_MAP = {
 async def get_all_char_dict() -> List[Dict]:
     result = []
     weapon_list: Dict[str, List[str]] = {
-        '单手剑': [],
-        '双手剑': [],
-        '弓': [],
-        '法器': [],
-        '长柄武器': [],
+        "单手剑": [],
+        "双手剑": [],
+        "弓": [],
+        "法器": [],
+        "长柄武器": [],
     }
 
-    for weapon in mysData['data']['all_weapon']:
-        weapon_id = str(weapon['id'])
+    for weapon in mysData["data"]["all_weapon"]:
+        weapon_id = str(weapon["id"])
         if int(weapon_id[2]) <= 3:
             continue
 
-        if weapon_id.startswith('11'):
-            weapon_list['单手剑'].append(weapon_id)
-        elif weapon_id.startswith('12'):
-            weapon_list['双手剑'].append(weapon_id)
-        elif weapon_id.startswith('13'):
-            weapon_list['长柄武器'].append(weapon_id)
-        elif weapon_id.startswith('14'):
-            weapon_list['法器'].append(weapon_id)
-        elif weapon_id.startswith('15'):
-            weapon_list['弓'].append(weapon_id)
+        if weapon_id.startswith("11"):
+            weapon_list["单手剑"].append(weapon_id)
+        elif weapon_id.startswith("12"):
+            weapon_list["双手剑"].append(weapon_id)
+        elif weapon_id.startswith("13"):
+            weapon_list["长柄武器"].append(weapon_id)
+        elif weapon_id.startswith("14"):
+            weapon_list["法器"].append(weapon_id)
+        elif weapon_id.startswith("15"):
+            weapon_list["弓"].append(weapon_id)
 
-    for char in mysData['data']['all_avatar']:
-        char_id = str(char['id'])
+    for char in mysData["data"]["all_avatar"]:
+        char_id = str(char["id"])
 
         char_name = await avatar_id_to_name(char_id)
         if char_name not in avatarName2Weapon:
@@ -87,16 +87,16 @@ async def char_id_to_compute_dict(
     element = await name_to_element(char_name)
     element_id = ELEMENT_MAP[element]
 
-    if char_id in ['10000005', '10000001', '10000007']:
+    if char_id in ["10000005", "10000001", "10000007"]:
         return None
 
     try:
         skill_list = await avatar_id_to_skill_groupId(char_id)
         if not skill_list:
-            logger.warning(f'角色 {char_id} 技能数据缺失，跳过该角色')
+            logger.warning(f"角色 {char_id} 技能数据缺失，跳过该角色")
             return None  # 或返回空字典
     except Exception as e:
-        logger.warning(f'获取角色 {char_id} 技能时出错: {e}')
+        logger.warning(f"获取角色 {char_id} 技能时出错: {e}")
         return None
 
     skill_data = []
@@ -108,7 +108,7 @@ async def char_id_to_compute_dict(
 
     n = 0
     for skill_id in skill_list:
-        if skill_id.endswith(('1', '2', '9')):
+        if skill_id.endswith(("1", "2", "9")):
             skill_data.append(
                 {
                     "id": skill_id,
@@ -133,7 +133,7 @@ async def char_id_to_compute_dict(
     }
 
     if weapon_id != 0:
-        data['weapon'] = {
+        data["weapon"] = {
             "id": int(weapon_id),
             "name": await weapon_id_to_name(str(weapon_id)),
             "weapon_cat_id": 1,

@@ -8,38 +8,38 @@ from ..utils.convert import get_uid
 from ..utils.message import UID_HINT
 from .draw_poetry_abyss import draw_poetry_abyss_img
 
-sv_poetry_abyss = SV('查询幻想真境剧诗')
+sv_poetry_abyss = SV("查询幻想真境剧诗")
 
 
 @sv_poetry_abyss.on_command(
     (
-        '查询幻想真境剧诗',
-        '幻想真境剧诗',
-        '新深渊',
-        '查询新深渊',
-        '真剧诗',
-        '查询上期幻想真境剧诗',
-        '上期幻想真境剧诗',
-        '上期新深渊',
-        '查询上期新深渊',
-        '上期真剧诗',
-        '剧诗',
-        '上期剧诗',
+        "查询幻想真境剧诗",
+        "幻想真境剧诗",
+        "新深渊",
+        "查询新深渊",
+        "真剧诗",
+        "查询上期幻想真境剧诗",
+        "上期幻想真境剧诗",
+        "上期新深渊",
+        "查询上期新深渊",
+        "上期真剧诗",
+        "剧诗",
+        "上期剧诗",
     ),
     block=True,
 )
 async def send_poetry_abyss_info(bot: Bot, ev: Event):
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
     if name:
         return
 
-    await bot.logger.info('开始执行[幻想真境剧诗]')
+    await bot.logger.info("开始执行[幻想真境剧诗]")
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info('[幻想真境剧诗]uid: {}'.format(uid))
+    await bot.logger.info("[幻想真境剧诗]uid: {}".format(uid))
 
-    if '上期' in ev.command:
+    if "上期" in ev.command:
         active = 2
     else:
         active = None

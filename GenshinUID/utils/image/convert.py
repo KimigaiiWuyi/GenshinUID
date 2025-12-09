@@ -1,7 +1,7 @@
 from io import BytesIO
-from pathlib import Path
 from base64 import b64encode
 from typing import Union, overload
+from pathlib import Path
 
 import aiofiles
 from PIL import Image
@@ -23,9 +23,7 @@ async def convert_img(img: bytes, is_base64: bool = False) -> str: ...
 async def convert_img(img: Path, is_base64: bool = False) -> str: ...
 
 
-async def convert_img(
-    img: Union[Image.Image, str, Path, bytes], is_base64: bool = False
-):
+async def convert_img(img: Union[Image.Image, str, Path, bytes], is_base64: bool = False):
     """
     :说明:
       将PIL.Image对象转换为bytes或者base64格式。
@@ -36,43 +34,43 @@ async def convert_img(
       * res: bytes对象或base64编码图片。
     """
     if isinstance(img, Image.Image):
-        img = img.convert('RGB')
+        img = img.convert("RGB")
         result_buffer = BytesIO()
-        img.save(result_buffer, format='PNG', quality=80, subsampling=0)
+        img.save(result_buffer, format="PNG", quality=80, subsampling=0)
         res = result_buffer.getvalue()
         if is_base64:
-            res = 'base64://' + b64encode(res).decode()
+            res = "base64://" + b64encode(res).decode()
         return res
     elif isinstance(img, bytes):
         pass
     else:
-        async with aiofiles.open(img, 'rb') as fp:
+        async with aiofiles.open(img, "rb") as fp:
             img = await fp.read()
-    return f'base64://{b64encode(img).decode()}'
+    return f"base64://{b64encode(img).decode()}"
 
 
 async def str_lenth(r: str, size: int, limit: int = 540) -> str:
-    result = ''
+    result = ""
     temp = 0
     for i in r:
-        if i == '\n':
+        if i == "\n":
             temp = 0
             result += i
             continue
 
         if temp >= limit:
-            result += '\n' + i
+            result += "\n" + i
             temp = 0
         else:
             result += i
 
         if i.isdigit():
             temp += round(size / 10 * 6)
-        elif i == '/':
+        elif i == "/":
             temp += round(size / 10 * 2.2)
-        elif i == '.':
+        elif i == ".":
             temp += round(size / 10 * 3)
-        elif i == '%':
+        elif i == "%":
             temp += round(size / 10 * 9.4)
         else:
             temp += size

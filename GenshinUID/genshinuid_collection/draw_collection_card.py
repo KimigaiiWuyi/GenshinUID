@@ -1,18 +1,19 @@
-from pathlib import Path
 from typing import Dict, Tuple, Union, Literal
+from pathlib import Path
 
 from PIL import Image, ImageDraw
-from gsuid_core.models import Event
-from gsuid_core.logger import logger
 
+from gsuid_core.logger import logger
+from gsuid_core.models import Event
+
+from .const import max_data, award_data, expmax_data
 from ..utils.mys_api import get_base_data
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import avatarId2Name
-from .const import max_data, award_data, expmax_data
-from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
 from ..utils.image.image_tools import draw_bar, get_avatar, get_color_bg
+from ..utils.fonts.genshin_fonts import gs_font_30, gs_font_40
 
-TEXT_PATH = Path(__file__).parent / 'texture2D'
+TEXT_PATH = Path(__file__).parent / "texture2D"
 
 first_color = (29, 29, 29)
 brown_color = (41, 25, 0)
@@ -21,11 +22,11 @@ green_color = (74, 189, 119)
 
 
 async def draw_collection_img(ev: Event, uid: str) -> Union[str, bytes]:
-    return await draw_base_img(ev, uid, '收集')
+    return await draw_base_img(ev, uid, "收集")
 
 
 async def draw_explora_img(ev: Event, uid: str) -> Union[str, bytes]:
-    return await draw_base_img(ev, uid, '探索')
+    return await draw_base_img(ev, uid, "探索")
 
 
 async def get_explore_data(
@@ -35,39 +36,39 @@ async def get_explore_data(
     if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
         return raw_data
 
-    expmax_data['获得角色数'] = len(avatarId2Name) - 2
+    expmax_data["获得角色数"] = len(avatarId2Name) - 2
 
     # 处理数据
     data: Dict[str, int] = {
-        '获得角色数': raw_data['stats']['avatar_number'],
-        '风神瞳': raw_data['stats']['anemoculus_number'],
-        '岩神瞳': raw_data['stats']['geoculus_number'],
-        '雷神瞳': raw_data['stats']['electroculus_number'],
-        '草神瞳': raw_data['stats']['dendroculus_number'],
-        '水神瞳': raw_data['stats']['hydroculus_number'],
-        '火神瞳': raw_data['stats']['pyroculus_number'],
+        "获得角色数": raw_data["stats"]["avatar_number"],
+        "风神瞳": raw_data["stats"]["anemoculus_number"],
+        "岩神瞳": raw_data["stats"]["geoculus_number"],
+        "雷神瞳": raw_data["stats"]["electroculus_number"],
+        "草神瞳": raw_data["stats"]["dendroculus_number"],
+        "水神瞳": raw_data["stats"]["hydroculus_number"],
+        "火神瞳": raw_data["stats"]["pyroculus_number"],
     }
-    for i in raw_data['world_explorations']:
-        data[i['name']] = i['exploration_percentage']
+    for i in raw_data["world_explorations"]:
+        data[i["name"]] = i["exploration_percentage"]
 
     percent_data = {}
     value_data = {}
-    day: str = str(raw_data['stats']['active_day_number'])
+    day: str = str(raw_data["stats"]["active_day_number"])
     me_percent = 0
     world_percent = 0
 
     for name in data:
         # 百分比
-        p_str = f'{data[name]}'
+        p_str = f"{data[name]}"
         if name in expmax_data:
             percent = data[name] / expmax_data[name]
-            if name != '获得角色数':
+            if name != "获得角色数":
                 me_percent += percent
-            value = f'{p_str} / {expmax_data[name]} | {_f(percent * 100)}'
+            value = f"{p_str} / {expmax_data[name]} | {_f(percent * 100)}"
         else:
             percent = data[name] / 1000
             world_percent += percent
-            value = f'{_f(percent * 100)}'
+            value = f"{_f(percent * 100)}"
 
         percent_data[name] = percent
         value_data[name] = value
@@ -85,31 +86,31 @@ async def get_collection_data(
     if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
         return raw_data
 
-    raw_data = raw_data['stats']
+    raw_data = raw_data["stats"]
 
     # 处理数据
     data: Dict[str, int] = {
-        '成就': raw_data['achievement_number'],
-        '普通的宝箱': raw_data['common_chest_number'],
-        '精致的宝箱': raw_data['exquisite_chest_number'],
-        '珍贵的宝箱': raw_data['precious_chest_number'],
-        '华丽的宝箱': raw_data['luxurious_chest_number'],
-        '奇馈宝箱': raw_data['magic_chest_number'],
-        '解锁传送点': raw_data['way_point_number'],
-        '解锁秘境': raw_data['domain_number'],
+        "成就": raw_data["achievement_number"],
+        "普通的宝箱": raw_data["common_chest_number"],
+        "精致的宝箱": raw_data["exquisite_chest_number"],
+        "珍贵的宝箱": raw_data["precious_chest_number"],
+        "华丽的宝箱": raw_data["luxurious_chest_number"],
+        "奇馈宝箱": raw_data["magic_chest_number"],
+        "解锁传送点": raw_data["way_point_number"],
+        "解锁秘境": raw_data["domain_number"],
     }
     percent_data = {}
     value_data = {}
     left = 0
-    day: str = str(raw_data['active_day_number'])
+    day: str = str(raw_data["active_day_number"])
     all_percent = 0
 
     for name in data:
         # 百分比
         percent = data[name] / max_data[name]
         all_percent += percent
-        p_str = f'{data[name]} / {max_data[name]}'
-        value = f'{p_str} | {_f(percent * 100)}'
+        p_str = f"{data[name]} / {max_data[name]}"
+        value = f"{p_str} | {_f(percent * 100)}"
         # 可获石头
         left += award_data[name] * (max_data[name] - data[name])
         percent_data[name] = percent
@@ -117,14 +118,12 @@ async def get_collection_data(
 
     all_percent = _f(all_percent * 100 / len(data))
 
-    return percent_data, value_data, day, all_percent, f'约{left}'
+    return percent_data, value_data, day, all_percent, f"约{left}"
 
 
-async def draw_base_img(
-    ev: Event, uid: str, mode: Literal['探索', '收集'] = '收集'
-) -> Union[str, bytes]:
+async def draw_base_img(ev: Event, uid: str, mode: Literal["探索", "收集"] = "收集") -> Union[str, bytes]:
     # 获取数据
-    if mode == '收集':
+    if mode == "收集":
         data = await get_collection_data(uid)
     else:
         data = await get_explore_data(uid)
@@ -137,10 +136,10 @@ async def draw_base_img(
     # 获取背景图片各项参数
     char_pic = await get_avatar(ev, 264)
 
-    if mode == '收集':
-        title = Image.open(TEXT_PATH / 'collection_title.png')
+    if mode == "收集":
+        title = Image.open(TEXT_PATH / "collection_title.png")
     else:
-        title = Image.open(TEXT_PATH / 'explora_title.png')
+        title = Image.open(TEXT_PATH / "explora_title.png")
 
     img = await get_color_bg(750, 600 + len(percent_data) * 115)
     img.paste(title, (0, 0), title)
@@ -150,20 +149,20 @@ async def draw_base_img(
     for index, name in enumerate(percent_data):
         percent = percent_data[name]
         value = value_data[name]
-        bar = await draw_bar(f'·{name}', percent, value)
+        bar = await draw_bar(f"·{name}", percent, value)
         img.paste(bar, (0, 600 + index * 115), bar)
 
     # 头
     img_draw = ImageDraw.Draw(img)
-    img_draw.text((378, 357), f'UID {uid}', first_color, gs_font_30, 'mm')
-    img_draw.text((137, 498), data[2], first_color, gs_font_40, 'mm')
-    img_draw.text((372, 498), data[3], first_color, gs_font_40, 'mm')
-    img_draw.text((607, 498), data[4], first_color, gs_font_40, 'mm')
+    img_draw.text((378, 357), f"UID {uid}", first_color, gs_font_30, "mm")
+    img_draw.text((137, 498), data[2], first_color, gs_font_40, "mm")
+    img_draw.text((372, 498), data[3], first_color, gs_font_40, "mm")
+    img_draw.text((607, 498), data[4], first_color, gs_font_40, "mm")
 
     res = await convert_img(img)
     return res
 
 
 def _f(value: float) -> str:
-    return '{:.2f}%'.format(value)
-    return '{:.2f}%'.format(value)
+    return "{:.2f}%".format(value)
+    return "{:.2f}%".format(value)

@@ -1,19 +1,12 @@
 from copy import deepcopy
-from datetime import datetime, timedelta
 from typing import Dict, List, Union, Optional, cast
+from datetime import datetime, timedelta
 
 from gsuid_core.utils.cache import gs_cache
-from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.api import RECORD_BASE, RECORD_BASE_OS
+from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.api.mys.tools import get_ds_token, get_web_ds_token
 
-from .models import (
-    Character,
-    WidgetResin,
-    CalendarData,
-    SeasonPostData,
-    PoetryAbyssDatas,
-)
 from .api import (
     widget_url,
     calendar_url,
@@ -21,6 +14,13 @@ from .api import (
     char_detail_url,
     season_post_url,
     hard_challenge_url,
+)
+from .models import (
+    Character,
+    WidgetResin,
+    CalendarData,
+    SeasonPostData,
+    PoetryAbyssDatas,
 )
 
 
@@ -31,15 +31,13 @@ class GsMysAPI(_MysApi):
         super().__init__(*args, **kwargs)
 
     @gs_cache(3600)
-    async def get_season_post_data(
-        self, uid: str
-    ) -> Union[SeasonPostData, int]:
-        server_id = self.RECOGNIZE_SERVER.get(uid[0], 'cn_gf01')
+    async def get_season_post_data(self, uid: str) -> Union[SeasonPostData, int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0], "cn_gf01")
         HEADER = deepcopy(self._HEADER)
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_ck(uid, "OWNER")
         if ck is None:
             return -51
-        HEADER['Cookie'] = ck
+        HEADER["Cookie"] = ck
 
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
 
@@ -48,7 +46,7 @@ class GsMysAPI(_MysApi):
 
         data = await self._mys_request(
             season_post_url,
-            'GET',
+            "GET",
             HEADER,
             params={
                 "role_id": uid,
@@ -61,22 +59,22 @@ class GsMysAPI(_MysApi):
         )
 
         if isinstance(data, Dict):
-            data = cast(SeasonPostData, data['data'])
+            data = cast(SeasonPostData, data["data"])
         return data
 
     @gs_cache(360)
     async def get_hard_challenge_data(self, uid: str) -> Union[Dict, int]:
-        server_id = self.RECOGNIZE_SERVER.get(uid[0], 'cn_gf01')
+        server_id = self.RECOGNIZE_SERVER.get(uid[0], "cn_gf01")
         HEADER = deepcopy(self._HEADER)
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_ck(uid, "OWNER")
         if ck is None:
             return -51
-        HEADER['Cookie'] = ck
+        HEADER["Cookie"] = ck
 
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
         data = await self._mys_request(
             hard_challenge_url,
-            'GET',
+            "GET",
             HEADER,
             data={
                 "role_id": uid,
@@ -87,28 +85,28 @@ class GsMysAPI(_MysApi):
         )
 
         if isinstance(data, Dict):
-            data = cast(Dict, data['data'])
+            data = cast(Dict, data["data"])
         return data
 
     @gs_cache(300)
     async def get_calendar_data(self, uid: str) -> Union[CalendarData, int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
         header = deepcopy(self._HEADER)
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_ck(uid, "OWNER")
         if ck is None:
             return -51
-        header['Cookie'] = ck
+        header["Cookie"] = ck
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
         data = await self._mys_request(
             calendar_url,
-            'POST',
+            "POST",
             header,
             data={"role_id": uid, "server": server_id},
             base_url=base,
         )
 
         if isinstance(data, Dict):
-            data = cast(CalendarData, data['data'])
+            data = cast(CalendarData, data["data"])
         return data
 
     @gs_cache(300)
@@ -117,19 +115,19 @@ class GsMysAPI(_MysApi):
         sk = await self.get_stoken(uid)
         if sk is None:
             return -51
-        header['Cookie'] = sk
-        header['DS'] = get_web_ds_token(True)
-        header['x-rpc-channel'] = 'miyousheluodi'
+        header["Cookie"] = sk
+        header["DS"] = get_web_ds_token(True)
+        header["x-rpc-channel"] = "miyousheluodi"
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
         data = await self._mys_request(
             widget_url,
-            'GET',
+            "GET",
             header,
-            {'game_id': 2},
+            {"game_id": 2},
             base_url=base,
         )
         if isinstance(data, Dict):
-            data = cast(WidgetResin, data['data'])
+            data = cast(WidgetResin, data["data"])
         return data
 
     @gs_cache(360)
@@ -141,46 +139,42 @@ class GsMysAPI(_MysApi):
         server_id = self.RECOGNIZE_SERVER.get(uid[0])
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
         HEADER = deepcopy(self._HEADER)
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_ck(uid, "OWNER")
         if ck is None:
             return -51
-        HEADER['Cookie'] = ck
+        HEADER["Cookie"] = ck
         params = {
-            'server': server_id,
-            'role_id': uid,
-            'need_detail': True,
+            "server": server_id,
+            "role_id": uid,
+            "need_detail": True,
         }
         if active:
-            params['active'] = active
-        HEADER['DS'] = get_ds_token(
-            '&'.join([f'{k}={v}' for k, v in params.items()])
-        )
+            params["active"] = active
+        HEADER["DS"] = get_ds_token("&".join([f"{k}={v}" for k, v in params.items()]))
         data = await self._mys_request(
             new_abyss_url,
-            'GET',
+            "GET",
             HEADER,
             params,
             base_url=base,
         )
         if isinstance(data, Dict):
-            data = cast(PoetryAbyssDatas, data['data'])
+            data = cast(PoetryAbyssDatas, data["data"])
         return data
 
     @gs_cache(360)
-    async def get_char_detail_data(
-        self, uid: str, char_id_list: List[str]
-    ) -> Union[List[Character], int]:
-        server_id = self.RECOGNIZE_SERVER.get(uid[0], 'cn_gf01')
+    async def get_char_detail_data(self, uid: str, char_id_list: List[str]) -> Union[List[Character], int]:
+        server_id = self.RECOGNIZE_SERVER.get(uid[0], "cn_gf01")
         HEADER = deepcopy(self._HEADER)
-        ck = await self.get_ck(uid, 'OWNER')
+        ck = await self.get_ck(uid, "OWNER")
         if ck is None:
             return -51
-        HEADER['Cookie'] = ck
+        HEADER["Cookie"] = ck
 
         base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
         data = await self._mys_request(
             char_detail_url,
-            'POST',
+            "POST",
             HEADER,
             data={
                 "role_id": uid,
@@ -191,6 +185,6 @@ class GsMysAPI(_MysApi):
         )
 
         if isinstance(data, Dict):
-            data = cast(List[Character], data['data']['list'])
+            data = cast(List[Character], data["data"]["list"])
         return data
         return data

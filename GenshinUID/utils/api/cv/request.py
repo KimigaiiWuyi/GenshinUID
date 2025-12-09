@@ -1,8 +1,9 @@
-from urllib.parse import unquote
 from typing import Any, Dict, List, Tuple, Union, Literal, Optional
+from urllib.parse import unquote
+
+from aiohttp import TCPConnector, ClientSession, ContentTypeError
 
 from gsuid_core.logger import logger
-from aiohttp import TCPConnector, ClientSession, ContentTypeError
 
 from .api import (
     DATA_API,
@@ -18,59 +19,57 @@ from .api import (
 )
 
 SUBSTAT_MAP = {
-    '双爆': 'critValue',
-    '百分比攻击力': 'substats.ATK%',
-    '百分比血量': 'substats.HP%',
-    '百分比防御': 'substats.DEF%',
-    '固定攻击力': 'substats.Flat ATK',
-    '固定血量': 'substats.Flat HP',
-    '固定生命': 'substats.Flat HP',
-    '固定防御力': 'substats.Flat DEF',
-    '元素精通': 'substats.Elemental Mastery',
-    '元素充能效率': 'substats.Energy Recharge',
-    '暴击率': 'substats.Crit RATE',
-    '暴击伤害': 'substats.Crit DMG',
+    "双爆": "critValue",
+    "百分比攻击力": "substats.ATK%",
+    "百分比血量": "substats.HP%",
+    "百分比防御": "substats.DEF%",
+    "固定攻击力": "substats.Flat ATK",
+    "固定血量": "substats.Flat HP",
+    "固定生命": "substats.Flat HP",
+    "固定防御力": "substats.Flat DEF",
+    "元素精通": "substats.Elemental Mastery",
+    "元素充能效率": "substats.Energy Recharge",
+    "暴击率": "substats.Crit RATE",
+    "暴击伤害": "substats.Crit DMG",
 }
 
 
 class _CvApi:
     ssl_verify = True
     _HEADER = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
-        'AppleWebKit/537.36 (KHTML, like Gecko) '
-        'Chrome/142.0.0.0 Safari/537.36',
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/142.0.0.0 Safari/537.36",
         "Accept-Language": "en-US,en;q=0.9",
     }
 
     def __init__(self):
-        self.session = ClientSession(
-            connector=TCPConnector(verify_ssl=self.ssl_verify)
-        )
+        self.session = ClientSession(connector=TCPConnector(verify_ssl=self.ssl_verify))
         self.sessionID = None
 
     async def get_artifacts_list(
         self,
         sort_by: Union[
             Literal[
-                'critValue',
-                'substats.Flat ATK',
-                'substats.Flat HP',
-                'substats.Flat DEF',
-                'substats.ATK%',
-                'substats.HP%',
-                'substats.DEF%',
-                'substats.Elemental Mastery',
-                'substats.Energy Recharge',
-                'substats.Crit RATE',
-                'substats.Crit DMG',
+                "critValue",
+                "substats.Flat ATK",
+                "substats.Flat HP",
+                "substats.Flat DEF",
+                "substats.ATK%",
+                "substats.HP%",
+                "substats.DEF%",
+                "substats.Elemental Mastery",
+                "substats.Energy Recharge",
+                "substats.Crit RATE",
+                "substats.Crit DMG",
             ],
             str,
             None,
-        ] = 'critValue',
+        ] = "critValue",
     ) -> Optional[List[Dict]]:
         if sort_by is None or not sort_by:
-            sort_by = 'critValue'
-        if not sort_by.startswith(('c', 's')):
+            sort_by = "critValue"
+        if not sort_by.startswith(("c", "s")):
             for i in SUBSTAT_MAP:
                 if sort_by in i:
                     sort_by = SUBSTAT_MAP[i]
@@ -79,37 +78,33 @@ class _CvApi:
                 return None
         raw_data = await self._cv_request(
             ARTI_SORT_API.format(sort_by),
-            'GET',
+            "GET",
             self._HEADER,
         )
-        if isinstance(raw_data, Dict) and 'data' in raw_data:
-            if raw_data['data']:
-                return raw_data['data']
+        if isinstance(raw_data, Dict) and "data" in raw_data:
+            if raw_data["data"]:
+                return raw_data["data"]
             else:
                 return None
 
-    async def get_leaderboard_id_list(
-        self, char_id: str
-    ) -> Optional[List[Dict]]:
+    async def get_leaderboard_id_list(self, char_id: str) -> Optional[List[Dict]]:
         raw_data = await self._cv_request(
             LEADERBOARD_API.format(char_id),
-            'GET',
+            "GET",
             self._HEADER,
         )
-        if isinstance(raw_data, Dict) and 'data' in raw_data:
-            if raw_data['data']:
-                return raw_data['data']
+        if isinstance(raw_data, Dict) and "data" in raw_data:
+            if raw_data["data"]:
+                return raw_data["data"]
             else:
                 return None
 
-    async def get_calculation_info(
-        self, char_id: str
-    ) -> Optional[Tuple[str, int]]:
+    async def get_calculation_info(self, char_id: str) -> Optional[Tuple[str, int]]:
         raw_data = await self.get_leaderboard_id_list(char_id)
         if raw_data is not None:
             return (
-                raw_data[0]['weapons'][0]['calculationId'],
-                raw_data[0]['count'],
+                raw_data[0]["weapons"][0]["calculationId"],
+                raw_data[0]["count"],
             )
 
     async def get_sort_list(
@@ -127,39 +122,39 @@ class _CvApi:
             lb_data = await self.get_leaderboard_id_list(char_id)
             if lb_data:
                 for i in lb_data:
-                    for g in i['weapons']:
-                        if g['calculationId'] == calculation_id:
-                            count = i['count']
+                    for g in i["weapons"]:
+                        if g["calculationId"] == calculation_id:
+                            count = i["count"]
                             break
 
         if count == 0:
             return None
 
-        extra = ''
+        extra = ""
         if combo:
-            extra += f'&p=lt%7C{combo}'
+            extra += f"&p=lt%7C{combo}"
         else:
-            extra = '&p='
+            extra = "&p="
 
         url = SORT_API.format(calculation_id) + extra
-        logger.debug(f'[AKASHA] URL: {url}')
+        logger.debug(f"[AKASHA] URL: {url}")
         raw_data = await self._cv_request(
             url,
-            'GET',
+            "GET",
             self._HEADER,
         )
-        if isinstance(raw_data, Dict) and 'data' in raw_data:
-            return raw_data['data'], count
+        if isinstance(raw_data, Dict) and "data" in raw_data:
+            return raw_data["data"], count
 
     async def get_session_id(self) -> str:
         async with self.session.get(MAIN_API) as resp:
             cookies = resp.cookies
             cookies_dict = dict(cookies)
-            sid = cookies_dict.get('connect.sid', None)
+            sid = cookies_dict.get("connect.sid", None)
             if sid is not None:
                 sid = sid.value
             else:
-                sid = 'NVybrjSdSZISA0JRuKFoZIndoCfDWdA2'
+                sid = "NVybrjSdSZISA0JRuKFoZIndoCfDWdA2"
             sid = unquote(str(sid))
             sessionID = sid.split(".")[0].split(":")[-1]
             self.sessionID = sessionID
@@ -167,27 +162,21 @@ class _CvApi:
 
     async def get_base_data(self, uid: str) -> Union[Dict, int]:
         sessionID = await self.get_session_id()
-        return await self._cv_request(
-            DATA_API.format(uid), 'GET', self._HEADER, {'sessionID': sessionID}
-        )
+        return await self._cv_request(DATA_API.format(uid), "GET", self._HEADER, {"sessionID": sessionID})
 
     async def get_refresh_data(self, uid: str) -> Union[Dict, int]:
         return await self._cv_request(
             REFRESH_API.format(uid),
-            'GET',
+            "GET",
             self._HEADER,
-            {'sessionID': self.sessionID},
+            {"sessionID": self.sessionID},
         )
 
     async def get_rank_data(self, uid: str) -> Union[Tuple[Dict, Dict], int]:
         await self.get_base_data(uid)
         await self.get_refresh_data(uid)
-        data1 = await self._cv_request(
-            RANK_API.format(uid), 'GET', self._HEADER
-        )
-        data2 = await self._cv_request(
-            BUILDS_API.format(uid), 'GET', self._HEADER
-        )
+        data1 = await self._cv_request(RANK_API.format(uid), "GET", self._HEADER)
+        data2 = await self._cv_request(BUILDS_API.format(uid), "GET", self._HEADER)
         await self.session.close()
         if isinstance(data1, int):
             return data1
@@ -196,19 +185,19 @@ class _CvApi:
         return data1, data2
 
     async def get_stygian_rank_data(self):
-        data = await self._cv_request(STYGIAN_API, 'GET', self._HEADER)
+        data = await self._cv_request(STYGIAN_API, "GET", self._HEADER)
         if isinstance(data, int):
             return data
         row = await self._cv_request(
-            HASH_ROW_API + data['totalRowsHash'],
-            'GET',
+            HASH_ROW_API + data["totalRowsHash"],
+            "GET",
             self._HEADER,
         )
 
         if isinstance(row, int):
             count: int = 2999999
         else:
-            count = row['totalRows']
+            count = row["totalRows"]
 
         return data, count
 
@@ -219,13 +208,13 @@ class _CvApi:
     async def _cv_request(
         self,
         url: str,
-        method: Literal['GET', 'POST'] = 'GET',
+        method: Literal["GET", "POST"] = "GET",
         header: Dict[str, Any] = _HEADER,
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
     ) -> Union[Dict, int]:
-        logger.debug(f'[AKASHA] URL: {url}')
-        logger.debug(f'[AKASHA] Header: {header}')
+        logger.debug(f"[AKASHA] URL: {url}")
+        logger.debug(f"[AKASHA] Header: {header}")
 
         async with self.session.request(
             method,
@@ -239,6 +228,6 @@ class _CvApi:
                 raw_data = await resp.json()
             except ContentTypeError:
                 _raw_data = await resp.text()
-                raw_data = {'retcode': -999, 'data': _raw_data}
+                raw_data = {"retcode": -999, "data": _raw_data}
             logger.debug(raw_data)
             return raw_data

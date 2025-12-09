@@ -1,7 +1,7 @@
 from typing import Union
 
-from gsuid_core.utils.api.mys.models import IndexData
 from gsuid_core.utils.error_reply import get_error_img
+from gsuid_core.utils.api.mys.models import IndexData
 
 from .api.mys.mys_api import GsMysAPI
 

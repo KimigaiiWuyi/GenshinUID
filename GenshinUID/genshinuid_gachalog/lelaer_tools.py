@@ -3,10 +3,11 @@ from urllib.parse import quote
 
 import httpx
 import aiofiles
-from gsuid_core.logger import logger
 from urllib3 import encode_multipart_formdata
-from gsuid_core.utils.error_reply import get_error_img
+
+from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.api import GET_GACHA_LOG_URL
+from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.base_request import RECOGNIZE_SERVER
 
 from ..utils.mys_api import mys_api
@@ -18,7 +19,7 @@ async def get_gachaurl(uid: str):
     authkey_rawdata = await mys_api.get_authkey_by_cookie(uid)
     if isinstance(authkey_rawdata, int):
         return await get_error_img(authkey_rawdata)
-    authkey = authkey_rawdata['authkey']
+    authkey = authkey_rawdata["authkey"]
     now = time.time()
     url = (
         f"{GET_GACHA_LOG_URL}?"
@@ -35,32 +36,30 @@ async def get_gachaurl(uid: str):
 
 async def get_lelaer_gachalog(uid: str):
     gachalog_url = await get_gachaurl(uid)
-    data = {'uid': uid, 'gachaurl': gachalog_url, 'lang': 'zh-Hans'}
+    data = {"uid": uid, "gachaurl": gachalog_url, "lang": "zh-Hans"}
     async with httpx.AsyncClient(
         verify=False,
         timeout=30,
     ) as client:
-        history_data = await client.post(
-            'https://www.lelaer.com/outputGacha.php', data=data
-        )
+        history_data = await client.post("https://www.lelaer.com/outputGacha.php", data=data)
         logger.debug(history_data.content)
         history_log = history_data.text
-        return await import_gachalogs(history_log, 'json', uid)
+        return await import_gachalogs(history_log, "json", uid)
 
 
 async def export_gachalog_to_lelaer(uid: str):
     gachalog_url = await get_gachaurl(uid)
-    export = await export_gachalogs(uid, '2')
-    if export['retcode'] == 'ok':
-        file_path = export['url']
+    export = await export_gachalogs(uid, "2")
+    if export["retcode"] == "ok":
+        file_path = export["url"]
     else:
-        return '导出抽卡记录失败...'
-    async with aiofiles.open(file_path, 'r', encoding='utf-8') as f:
+        return "导出抽卡记录失败..."
+    async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
         record_data = await f.read()
 
         data = {
-            'upload': ('data.json', record_data, 'application/json'),
-            'importType': 'uigf',
+            "upload": ("data.json", record_data, "application/json"),
+            "importType": "uigf",
             "gachaurl": gachalog_url,
         }
 
@@ -69,13 +68,13 @@ async def export_gachalog_to_lelaer(uid: str):
         headers = {"Content-Type": header}
         async with httpx.AsyncClient(verify=False, timeout=30) as client:
             history_data = await client.post(
-                'https://www.lelaer.com/uigf.php',
+                "https://www.lelaer.com/uigf.php",
                 content=body,
                 headers=headers,
             )
             status_code = history_data.status_code
             history_res = history_data.text
-            if status_code == 200 and '导入成功' in history_res:
-                return '[提瓦特小助手]抽卡记录上传成功，请前往小程序查看'
+            if status_code == 200 and "导入成功" in history_res:
+                return "[提瓦特小助手]抽卡记录上传成功，请前往小程序查看"
             else:
-                return '[提瓦特小助手]上传失败'
+                return "[提瓦特小助手]上传失败"

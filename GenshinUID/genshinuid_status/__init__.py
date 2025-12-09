@@ -14,7 +14,7 @@ async def get_add_num():
     all_uid = []
     for data in datas:
         if data.uid:
-            all_uid.extend(data.uid.split('_'))
+            all_uid.extend(data.uid.split("_"))
     return len(set(all_uid))
 
 
@@ -25,10 +25,10 @@ async def get_sign_num():
 
 register_status(
     get_ICON(),
-    'GenshinUID',
+    "GenshinUID",
     {
-        '绑定UID': get_add_num,
-        '绑定账户': get_user_num,
-        '开启签到': get_sign_num,
+        "绑定UID": get_add_num,
+        "绑定账户": get_user_num,
+        "开启签到": get_sign_num,
     },
 )

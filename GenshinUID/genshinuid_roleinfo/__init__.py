@@ -2,59 +2,57 @@ import re
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
-from gsuid_core.models import Event
 from gsuid_core.logger import logger
+from gsuid_core.models import Event
 
-from ..utils.convert import get_uid
-from ..utils.message import UID_HINT
 from .get_regtime import calc_reg_time
 from .draw_all_char import draw_char_pic
-from .draw_roleinfo_card import draw_pic
 from ..utils.buttons import a, b, c, s, t, u, v, x, y
+from ..utils.convert import get_uid
+from ..utils.message import UID_HINT
+from .draw_roleinfo_card import draw_pic
 
-sv_get_regtime = SV('查询注册时间')
-sv_get_info = SV('查询原神信息')
+sv_get_regtime = SV("查询注册时间")
+sv_get_info = SV("查询原神信息")
 
 
-@sv_get_regtime.on_command(
-    ('原神注册时间', '注册时间', '查询注册时间'), block=True
-)
+@sv_get_regtime.on_command(("原神注册时间", "注册时间", "查询注册时间"), block=True)
 async def regtime(bot: Bot, ev: Event):
-    logger.info('[原神] 开始执行 [查询注册时间]')
+    logger.info("[原神] 开始执行 [查询注册时间]")
     uid = await get_uid(bot, ev)
     if uid is None:
         return bot.send(UID_HINT)
-    logger.info(f'[原神] [查询注册时间] uid: {uid}')
+    logger.info(f"[原神] [查询注册时间] uid: {uid}")
 
     im = await calc_reg_time(uid)
     await bot.send(im)
 
 
-@sv_get_info.on_command(('查询', 'uid', 'UID'))
+@sv_get_info.on_command(("查询", "uid", "UID"))
 async def send_role_info(bot: Bot, ev: Event):
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
     if name:
         return
-    logger.info('[原神] 开始执行[查询角色信息]')
+    logger.info("[原神] 开始执行[查询角色信息]")
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f'[原神] [查询角色信息] uid: {uid}')
+    logger.info(f"[原神] [查询角色信息] uid: {uid}")
 
     im = await draw_pic(ev, uid)
     await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])
 
 
-@sv_get_info.on_command(('角色列表'))
+@sv_get_info.on_command(("角色列表"))
 async def send_charlist_info(bot: Bot, ev: Event):
-    name = ''.join(re.findall('[\u4e00-\u9fa5]', ev.text))
+    name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
     if name:
         return
-    logger.info('[原神] 开始执行[角色列表]')
+    logger.info("[原神] 开始执行[角色列表]")
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f'[原神] [角色列表]uid: {uid}')
+    logger.info(f"[原神] [角色列表]uid: {uid}")
 
     im = await draw_char_pic(uid)
     await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])

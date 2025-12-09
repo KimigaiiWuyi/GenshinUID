@@ -20,9 +20,7 @@ COLOR_MAP: Dict[int, Tuple[int, int, int]] = {
 }
 
 
-def get_color(
-    value: float, data: Union[List[int], List[float]], reverse: bool = False
-) -> Tuple[int, int, int]:
+def get_color(value: float, data: Union[List[int], List[float]], reverse: bool = False) -> Tuple[int, int, int]:
     for index, i in enumerate(data):
         if (reverse and value <= i) or (value >= i):
             return COLOR_MAP[index]

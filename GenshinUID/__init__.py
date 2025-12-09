@@ -4,5 +4,5 @@ Plugins(
     name="GenshinUID",
     force_prefix=["gs"],
     allow_empty_prefix=False,
-    alias=['gsuid'],
+    alias=["gsuid"],
 )

@@ -1,4 +1,4 @@
-'''
+"""
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
@@ -35,6 +35,6 @@ async def send_all_postdraw_data(bot: Bot, ev: Event):
 async def postdraw_sign_at_night():
     if gsconfig.get_config('SchedGetDraw').data:
         await daily_get_draw()
-'''
+"""
 
 # 删除这个功能

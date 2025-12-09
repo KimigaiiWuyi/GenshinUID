@@ -1,19 +1,20 @@
 from typing import Union
 
 from PIL import Image
+
 from gsuid_core.models import Event
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.image.image_tools import easy_alpha_composite
 
-from ..utils.mys_api import get_base_data
 from .draw_all_char import _draw_char_pic
-from ..genshinuid_collection.draw_new_collection_card import _draw_explore
+from ..utils.mys_api import get_base_data
 from ..utils.image.image_tools import (
     get_v4_bg,
     add_footer,
     get_avatar,
     get_v4_title,
 )
+from ..genshinuid_collection.draw_new_collection_card import _draw_explore
 
 
 async def draw_pic(ev: Event, uid: str) -> Union[str, bytes]:
@@ -50,7 +51,7 @@ async def _draw_pic(ev: Event, uid: str) -> Union[str, bytes, Image.Image]:
     h = char_img.size[1] + explore_img.size[1] + 560
     o = 150
 
-    img = Image.new('RGBA', (w, h))
+    img = Image.new("RGBA", (w, h))
 
     img.paste(title_img, (0, 0), title_img)
     img = easy_alpha_composite(
@@ -58,8 +59,6 @@ async def _draw_pic(ev: Event, uid: str) -> Union[str, bytes, Image.Image]:
         explore_img,
         (-int((explore_img.size[0] - char_img.size[0]) / 2), 500 + o),
     )
-    img = easy_alpha_composite(
-        img, char_img, (0, 500 + explore_img.size[1] - 110 + o)
-    )
+    img = easy_alpha_composite(img, char_img, (0, 500 + explore_img.size[1] - 110 + o))
     img = add_footer(img)
     return img

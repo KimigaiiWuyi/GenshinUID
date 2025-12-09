@@ -1,4 +1,4 @@
-LELAER_API = 'https://api.lelaer.com/ys'
+LELAER_API = "https://api.lelaer.com/ys"
 
-AbyssRank_API = f'{LELAER_API}/getAbyssRank.php?star=all&role=all'
-ReturnList_API = f'{LELAER_API}/getRerunList.php'
+AbyssRank_API = f"{LELAER_API}/getAbyssRank.php?star=all&role=all"
+ReturnList_API = f"{LELAER_API}/getRerunList.php"

@@ -29,32 +29,30 @@ def cache(ttl=datetime.timedelta(hours=1), **kwargs):
         async def wrapped(*args, **kw):
             bound = inspect.signature(func).bind(*args, **kw)
             bound.apply_defaults()
-            ins_key = '|'.join(
-                ['%s_%s' % (k, v) for k, v in bound.arguments.items()]
-            )
+            ins_key = "|".join(["%s_%s" % (k, v) for k, v in bound.arguments.items()])
             default_data: _CacheData = {
-                'time': None,
-                'value': None,
+                "time": None,
+                "value": None,
             }
             data = cache_data.get(ins_key, default_data)
 
             now = datetime.datetime.now()
-            if not data['time'] or now - data['time'] > ttl:
+            if not data["time"] or now - data["time"] > ttl:
                 try:
-                    data['value'] = await func(*args, **kw)
-                    data['time'] = now
+                    data["value"] = await func(*args, **kw)
+                    data["time"] = now
                     cache_data[ins_key] = data
                 except Exception as e:
                     raise e
 
-            return data['value']
+            return data["value"]
 
         return wrapped
 
     return wrap
 
 
-@cache(ttl=datetime.timedelta(minutes=30), arg_key='url')
+@cache(ttl=datetime.timedelta(minutes=30), arg_key="url")
 async def cache_request_json(url):
     async with httpx.AsyncClient(timeout=None) as client:
         res = await client.get(url, timeout=10)

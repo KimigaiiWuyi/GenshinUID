@@ -2,6 +2,7 @@ import json
 from typing import Any, Dict, Union, Literal, Optional, cast
 
 from httpx import AsyncClient
+
 from gsuid_core.logger import logger
 
 from .api import AbyssRank_API, ReturnList_API
@@ -10,32 +11,32 @@ from .models import TeyvatAbyssRank, TeyvatReturnList
 
 class _TeyvatAPI:
     ssl_verify = True
-    _HEADER = {'User-Agent': 'GenshinUID & GsCore'}
+    _HEADER = {"User-Agent": "GenshinUID & GsCore"}
 
     async def get_abyss_rank(self) -> Union[TeyvatAbyssRank, int]:
         data = await self._teyvat_request(AbyssRank_API)
-        if isinstance(data, Dict) and 'code' in data:
-            if data['code'] == 200:
+        if isinstance(data, Dict) and "code" in data:
+            if data["code"] == 200:
                 return cast(TeyvatAbyssRank, data)
             else:
-                return data['code']
+                return data["code"]
         else:
             return -500
 
     async def get_return_list(self) -> Union[TeyvatReturnList, int]:
         data = await self._teyvat_request(ReturnList_API)
-        if isinstance(data, Dict) and 'code' in data:
-            if data['code'] == 200:
+        if isinstance(data, Dict) and "code" in data:
+            if data["code"] == 200:
                 return cast(TeyvatReturnList, data)
             else:
-                return data['code']
+                return data["code"]
         else:
             return -500
 
     async def _teyvat_request(
         self,
         url: str,
-        method: Literal['GET', 'POST'] = 'GET',
+        method: Literal["GET", "POST"] = "GET",
         header: Dict[str, Any] = _HEADER,
         params: Optional[Dict[str, Any]] = None,
         _json: Optional[Dict[str, Any]] = None,
@@ -54,7 +55,7 @@ class _TeyvatAPI:
                 try:
                     raw_data = json.loads(resp.text)
                 except:  # noqa
-                    raw_data = {'retcode': -999, 'data': resp.text}
+                    raw_data = {"retcode": -999, "data": resp.text}
             logger.debug(raw_data)
             return raw_data
 

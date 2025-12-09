@@ -15,14 +15,10 @@ async def calc_reg_time(uid: str) -> Union[str, bytes]:
         if isinstance(raw_data, int):
             return await get_error_img(raw_data)
         # 获取时间戳
-        reg_time = json.loads(raw_data['data'])['1']
+        reg_time = json.loads(raw_data["data"])["1"]
         # 转换为日期
-        regtime_date = time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime(reg_time)
-        )
-        return f'UID{uid} 的注册时间为\n{regtime_date}'
+        regtime_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(reg_time))
+        return f"UID{uid} 的注册时间为\n{regtime_date}"
     except Exception as e:
         logger.error(e)
-        return (
-            '数据获取错误, 可尝试使用【刷新ck】或者发送【扫码登陆】以绑定CK。'
-        )
+        return "数据获取错误, 可尝试使用【刷新ck】或者发送【扫码登陆】以绑定CK。"

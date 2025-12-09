@@ -696,3 +696,4 @@ GenshinUID Help.xlsx
 testnb2/
 
 .VSCodeCounter
+.ruff_cache

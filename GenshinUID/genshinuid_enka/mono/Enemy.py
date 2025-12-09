@@ -1,7 +1,7 @@
 from typing import Dict, List, Optional
 
-from .Character import Character
 from .Element import Element, reactable_elements_dict
+from .Character import Character
 
 
 class Enemy:
@@ -33,14 +33,14 @@ class Enemy:
         # TODO 遍历debuff列表, 超过时间的移除
 
     async def update_resist(self, effect: str):
-        name, val = effect.split('+')
+        name, val = effect.split("+")
         val = float(val) / 100
-        if name != 'Resist':
+        if name != "Resist":
             r = getattr(self, name)
             setattr(self, name, r + val)
         else:
             for element in self.element:
-                r = getattr(self, f'{element.name}Resist')
+                r = getattr(self, f"{element.name}Resist")
                 setattr(self, name, r + val)
 
     async def get_dmg_reaction(
@@ -49,23 +49,21 @@ class Enemy:
         char: Optional[Character] = None,
     ) -> float:
         if char:
-            for react in ['蒸发', '融化']:
+            for react in ["蒸发", "融化"]:
                 if react in char.power_name:
-                    em = char.real_prop[f'{char.attack_type}_elementalMastery']
+                    em = char.real_prop[f"{char.attack_type}_elementalMastery"]
                     k = 0
-                    if react == '蒸发':
-                        if char.char_element == 'Pyro':
+                    if react == "蒸发":
+                        if char.char_element == "Pyro":
                             k = 1.5
                         else:
                             k = 2
-                    elif react == '融化':
-                        if char.char_element == 'Pyro':
+                    elif react == "融化":
+                        if char.char_element == "Pyro":
                             k = 2
                         else:
                             k = 1.5
-                    reaction_add_dmg = k * (
-                        1 + (2.78 * em) / (em + 1400) + char.real_prop['a']
-                    )
+                    reaction_add_dmg = k * (1 + (2.78 * em) / (em + 1400) + char.real_prop["a"])
                     break
             else:
                 reaction_add_dmg = 1
@@ -90,24 +88,14 @@ class Enemy:
                         # 如果本次伤害类型,在这个元素的可反应列表里
                         if dmg_type in reactable_elements_dict[element]:
                             # 元素列表里的这个元素 就要减去反应量
-                            new_element_list[element] -= float(
-                                reactable_elements_dict[element][dmg_type][
-                                    'value'
-                                ]
-                            )
+                            new_element_list[element] -= float(reactable_elements_dict[element][dmg_type]["value"])
                             # 如果是增幅反应,给出相对应的倍率
-                            reaction_name = reactable_elements_dict[element][
-                                dmg_type
-                            ]['reaction']
+                            reaction_name = reactable_elements_dict[element][dmg_type]["reaction"]
                             if reaction_name in [
-                                '蒸发',
-                                '融化',
+                                "蒸发",
+                                "融化",
                             ]:
-                                reaction *= float(
-                                    reactable_elements_dict[element][dmg_type][
-                                        'dmg'
-                                    ]
-                                )
+                                reaction *= float(reactable_elements_dict[element][dmg_type]["dmg"])
                             else:
                                 self.debuff.append(reaction_name)
 
@@ -123,7 +111,7 @@ class Enemy:
 
     async def get_resist(self, dmg_type: Element):
         # 计算抗性
-        r = getattr(self, f'{dmg_type.name}Resist')
+        r = getattr(self, f"{dmg_type.name}Resist")
         if r > 0.75:
             r = 1 / (1 + 4 * r)
         elif r > 0:
@@ -149,9 +137,7 @@ class Enemy:
         d_down = (
             self.char_level
             + 100
-            + (1 - self.defense_resist - extra_d)
-            * (1 - self.ignore_defense - extra_ignoreD)
-            * (self.level + 100)
+            + (1 - self.defense_resist - extra_d) * (1 - self.ignore_defense - extra_ignoreD) * (self.level + 100)
         )
         d = d_up / d_down
         proof = r * d

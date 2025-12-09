@@ -1,0 +1,34 @@
+line-length = 120
+target-version = "py310"
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "build",
+    "dist",
+]
+
+[lint]
+select = ["E", "F", "I", "W"]
+ignore = []
+
+[lint.isort]
+force-sort-within-sections = false
+combine-as-imports = true
+length-sort = true
+known-first-party = ["gsuid_core"]
+extra-standard-library = ["typing_extensions"]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder"
+]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true

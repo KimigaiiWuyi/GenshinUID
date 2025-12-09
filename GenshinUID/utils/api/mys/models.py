@@ -139,7 +139,7 @@ class CalendarData(TypedDict):
 
 class Expedition(TypedDict):
     avatar_side_icon: str
-    status: Literal['Ongoing', 'Finished']
+    status: Literal["Ongoing", "Finished"]
 
 
 class RecoveryTime(TypedDict):

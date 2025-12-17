@@ -37,9 +37,7 @@ SUBSTAT_MAP = {
 class _CvApi:
     ssl_verify = True
     _HEADER = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/142.0.0.0 Safari/537.36",
+        "User-Agent": "GsCore / GenshinUID / 6.2.0",
         "Accept-Language": "en-US,en;q=0.9",
     }
 

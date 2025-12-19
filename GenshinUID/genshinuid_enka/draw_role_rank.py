@@ -53,7 +53,7 @@ async def draw_role_rank_img(char_name: str, player_uid: Optional[str] = None) -
         if isinstance(rank_data, str):
             return rank_data
         if char_id not in rank_data:
-            return f"你还暂无{char_name}的数据, 请先[{PREFIX}强制刷新]..."
+            return f"你还暂无{char_name}的数据, 请先[{PREFIX}enka强制刷新]..."
 
         fit = rank_data[char_id]["calculations"]["fit"]
         calculation_id = fit["calculationId"]

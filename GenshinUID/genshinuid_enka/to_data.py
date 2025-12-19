@@ -8,6 +8,7 @@ from typing import Dict, List, Union, Literal, Optional
 import aiofiles
 from httpx import ReadTimeout
 
+from gsuid_core.logger import logger
 from gsuid_core.utils.api.enka.models import EnkaData
 from gsuid_core.utils.api.enka.request import get_enka_info
 
@@ -383,9 +384,16 @@ async def _restore_cv_data(uid: str, now: str):
             rank_data = json.loads(await file.read())
     else:
         rank_data = {}
+
     if not isinstance(data, int):
         data1, data2 = data[0], data[1]
         for i in data1["data"]:
+            stats = {
+                "maxHP": 0,
+                "maxATK": 0,
+                "maxDEF": 0,
+            }
+
             for j in data2["data"]:
                 if i["_id"] == j["_id"]:
                     _value = 0
@@ -413,7 +421,14 @@ async def _restore_cv_data(uid: str, now: str):
                 "time": now,
             }
         async with aiofiles.open(path, "w", encoding="UTF-8") as file:
-            await file.write(json.dumps(rank_data, indent=4, ensure_ascii=False))
+            await file.write(
+                json.dumps(
+                    rank_data,
+                    indent=4,
+                    ensure_ascii=False,
+                )
+            )
+        logger.info(f"[缓存排名数据] UID:{uid}完成!")
 
 
 async def enka_to_data(uid: str, enka_data: Optional[EnkaData] = None) -> Union[dict, str]:

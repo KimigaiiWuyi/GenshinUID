@@ -46,9 +46,6 @@ async def enka_to_card(uid: str, enka_data: Optional[EnkaData] = None) -> Union[
         logger.info(f"[强制刷新] UID{uid}成功!")
         return img, char_data_list
     except Exception as e:
-        import traceback
-
-        traceback.print_exc()
         logger.error(f"[强制刷新] UID{uid}失败! {e}")
         return await convert_img(pic_500)
 

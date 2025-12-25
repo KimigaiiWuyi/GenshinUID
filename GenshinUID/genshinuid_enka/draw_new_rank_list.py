@@ -27,11 +27,14 @@ from ..utils.fonts.genshin_fonts import (
 )
 from ..utils.resource.download_url import download_file
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH, WEAPON_PATH
-from ..genshinuid_count.draw_char_count import div, draw_ring, draw_new_title
+from ..genshinuid_count.draw_char_count import draw_ring, draw_new_title
+
+TEXT_PATH = Path(__file__).parent / "texture2d"
 
 TEXTURE_PATH = Path(__file__).parent / "rank_texture2d"
 rank_bar_text = Image.open(TEXTURE_PATH / "rank_bar_text.png")
 rank_bar_fill = Image.open(TEXTURE_PATH / "rank_bar_fill.png")
+div = Image.open(TEXT_PATH / "div.png")
 
 
 def get_weapon_name(weapon_icon_name: str):
@@ -115,6 +118,8 @@ async def draw_single_rank(
             if artifactSets:
                 icon_list = []
                 for art in artifactSets:
+                    if art == "":
+                        break
                     rel_path = REL_PATH / f"{art}.png"
                     if not rel_path.exists():
                         for i in mysData["data"]["all_set"]:

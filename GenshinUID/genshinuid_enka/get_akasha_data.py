@@ -11,18 +11,18 @@ from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 is_enable_akasha = gsconfig.get_config("EnableAkasha").data
 
 
-async def _get_rank(uid: str) -> Union[Dict, str]:
+async def _get_rank(uid: str) -> Union[Dict[str, Dict[str, Dict]], str]:
     if not is_enable_akasha:
         return "未开启排名系统..."
     path = PLAYER_PATH / uid / "rank.json"
     if not path.exists():
-        return f"你还没有排名缓存, 请使用[{PREFIX}强制刷新]生成/刷新数据！"
+        return f"你还没有排名缓存, 请使用[{PREFIX}enka强制刷新]生成/刷新数据！"
 
     async with aiofiles.open(path, "r", encoding="UTF-8") as file:
         rank_data = json.loads(await file.read())
 
     if len(rank_data) == 0:
-        return f"你还没有排名缓存, 请使用[{PREFIX}强制刷新]生成/刷新数据！"
+        return f"你还没有排名缓存, 请使用[{PREFIX}enka强制刷新]生成/刷新数据！"
 
     return rank_data
 

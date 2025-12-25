@@ -18,11 +18,11 @@ from ..utils.convert import get_uid
 from ..utils.message import UID_HINT, GButton as Button
 from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_info import draw_all_char_list
-from .draw_rank_list import draw_rank_img
 from .draw_role_rank import draw_role_rank_img
 from .to_data_by_mys import mys_to_card
 from .get_akasha_data import get_rank
 from .draw_artifacts_lib import draw_lib
+from .draw_new_rank_list import draw_rank_img
 from ..utils.image.convert import convert_img
 from ..genshinuid_enka.start import check_artifacts_list
 from ..utils.map.GS_MAP_PATH import alias_data

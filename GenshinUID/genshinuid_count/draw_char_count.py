@@ -1,6 +1,6 @@
 import json
 import asyncio
-from typing import List, Tuple, Union, Literal
+from typing import List, Tuple, Union, Literal, Optional
 from pathlib import Path
 
 import aiofiles
@@ -136,10 +136,7 @@ def extract_words_with_positions(text: str, vocabulary: List[str]) -> List[str]:
     return result
 
 
-async def draw_char_count_list(
-    uid: str,
-    ev: Event,
-) -> Union[str, bytes]:
+async def draw_new_title(ev: Event, uid: str, _force_mode: Optional[int] = None):
     uid_fold = PLAYER_PATH / str(uid)
     char_file_list = uid_fold.glob("*")
     char_list = []
@@ -324,11 +321,13 @@ async def draw_char_count_list(
     else:
         _mode = 2
 
-    char_done_list.sort(key=lambda x: (-x["score_value"]))
+    if _force_mode is not None:
+        _mode = _force_mode
+
+    img = Image.new("RGBA", (2370 if _mode == 3 else 1600, 600 + 150))
 
     title = Image.open(TEXT_PATH / f"title_{_mode}.png")
     title_fg = Image.open(TEXT_PATH / f"title_fg_{_mode}.png")
-
     char_pic = await get_avatar(ev, 180)
     title.paste(char_pic, (117, 328) if _mode == 3 else (88, 328), char_pic)
     title.paste(title_fg, (0, 0), title_fg)
@@ -400,10 +399,6 @@ async def draw_char_count_list(
         gs_font_28,
         "mm",
     )
-
-    rows = (len(char_done_list) + _mode - 1) // _mode
-    h = 750 + 80 + 90 * rows
-    img = get_v4_bg(2370 if _mode == 3 else 1600, h, 200)
     img.paste(title, (0, 0), title)
 
     # title_bar部分
@@ -412,7 +407,7 @@ async def draw_char_count_list(
     if _mode == 3:
         title_list = [
             f"{crown_cost}/{crown_get + crown_cost}",
-            f"{fetter_full}/{len(char_list)}",
+            f"{fetter_full}/{len(datas['role'])}",
             f"{full_star5_char}/{star5_char}",
             f"{full_star4_char}/{star4_char}",
             f"{star5_char}/{ALL_STAR_5_CHAR}",
@@ -428,7 +423,7 @@ async def draw_char_count_list(
     else:
         title_list = [
             f"{crown_cost}/{crown_get + crown_cost}",
-            f"{fetter_full}/{len(char_list)}",
+            f"{fetter_full}/{len(datas['role'])}",
             # f'{full_star5_char}/{star5_char}',
             f"{full_star4_char}/{star4_char}",
             f"{star5_char}/{ALL_STAR_5_CHAR}",
@@ -450,6 +445,33 @@ async def draw_char_count_list(
         )
 
     img.paste(title_bar, (0, 570), title_bar)
+    return img, char_done_list
+
+
+async def draw_char_count_list(
+    uid: str,
+    ev: Event,
+) -> Union[str, bytes]:
+    title_data = await draw_new_title(ev, uid)
+    if isinstance(title_data, str):
+        return title_data
+    elif isinstance(title_data, bytes):
+        return title_data
+
+    title, char_done_list = title_data
+
+    if len(char_done_list) > 86:
+        _mode = 3
+    else:
+        _mode = 2
+
+    char_done_list.sort(key=lambda x: (-x["score_value"]))
+
+    rows = (len(char_done_list) + _mode - 1) // _mode
+    h = 750 + 80 + 90 * rows
+    img = get_v4_bg(2370 if _mode == 3 else 1600, h, 200)
+
+    img.paste(title, (0, 0), title)
 
     tasks = []
     for index, char in enumerate(char_done_list):

@@ -10,7 +10,7 @@ from .get_enka_img import get_char_data
 from .draw_role_rank import get_color
 from .get_akasha_data import _get_rank
 from ..utils.image.convert import convert_img
-from ..utils.map.GS_MAP_PATH import weaponList
+from ..utils.map.GS_MAP_PATH import mysData, weaponList
 from ..utils.map.name_covert import avatar_id_to_name, avatar_id_to_char_star
 from ..utils.image.image_tools import (
     get_v4_bg,
@@ -25,6 +25,7 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_30,
     gs_font_32,
 )
+from ..utils.resource.download_url import download_file
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH, WEAPON_PATH
 from ..genshinuid_count.draw_char_count import div, draw_ring, draw_new_title
 
@@ -113,7 +114,15 @@ async def draw_single_rank(
 
             icon_list = []
             for art in artifactSets:
-                icon_img = Image.open(REL_PATH / f"{art}.png")
+                rel_path = REL_PATH / f"{art}.png"
+                if not rel_path.exists():
+                    for i in mysData["data"]["all_set"]:
+                        if i["name"] == art:
+                            await download_file(i["icon"], 7, f"{i['name']}.png")
+                            break
+
+                icon_img = Image.open(rel_path)
+
                 if sets_type == "4":
                     icon_list.clear()
                     icon_list.append(icon_img.resize((64, 64)))

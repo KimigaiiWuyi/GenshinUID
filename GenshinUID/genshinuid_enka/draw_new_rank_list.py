@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.models import Event
 
+from .res import div, draw_ring, draw_new_title
 from .get_enka_img import get_char_data
 from .draw_role_rank import get_color
 from .get_akasha_data import _get_rank
@@ -27,14 +28,10 @@ from ..utils.fonts.genshin_fonts import (
 )
 from ..utils.resource.download_url import download_file
 from ..utils.resource.RESOURCE_PATH import REL_PATH, CHAR_PATH, WEAPON_PATH
-from ..genshinuid_count.draw_char_count import draw_ring, draw_new_title
-
-TEXT_PATH = Path(__file__).parent / "texture2d"
 
 TEXTURE_PATH = Path(__file__).parent / "rank_texture2d"
 rank_bar_text = Image.open(TEXTURE_PATH / "rank_bar_text.png")
 rank_bar_fill = Image.open(TEXTURE_PATH / "rank_bar_fill.png")
-div = Image.open(TEXT_PATH / "div.png")
 
 
 def get_weapon_name(weapon_icon_name: str):

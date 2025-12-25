@@ -112,33 +112,34 @@ async def draw_single_rank(
             sets_type = "2+2" if sets["type"] == "22" else "4"
             artifactSets = sets["set"].split("|")
 
-            icon_list = []
-            for art in artifactSets:
-                rel_path = REL_PATH / f"{art}.png"
-                if not rel_path.exists():
-                    for i in mysData["data"]["all_set"]:
-                        if i["name"] == art:
-                            await download_file(i["icon"], 7, f"{i['name']}.png")
-                            break
+            if artifactSets:
+                icon_list = []
+                for art in artifactSets:
+                    rel_path = REL_PATH / f"{art}.png"
+                    if not rel_path.exists():
+                        for i in mysData["data"]["all_set"]:
+                            if i["name"] == art:
+                                await download_file(i["icon"], 7, f"{i['name']}.png")
+                                break
 
-                icon_img = Image.open(rel_path)
+                    icon_img = Image.open(rel_path)
 
-                if sets_type == "4":
-                    icon_list.clear()
-                    icon_list.append(icon_img.resize((64, 64)))
+                    if sets_type == "4":
+                        icon_list.clear()
+                        icon_list.append(icon_img.resize((64, 64)))
+                    else:
+                        icon_list.append(icon_img.resize((51, 51)))
+
+                if len(icon_list) == 1:
+                    rank_bar.paste(icon_list[0], (166, 17), icon_list[0])
+                    text = "4"
+                elif len(icon_list) == 2:
+                    text = "2+2"
+                    rank_bar.paste(icon_list[0], (155, 24), icon_list[0])
+                    rank_bar.paste(icon_list[1], (171, 9), icon_list[1])
                 else:
-                    icon_list.append(icon_img.resize((51, 51)))
-
-            if len(icon_list) == 1:
-                rank_bar.paste(icon_list[0], (166, 17), icon_list[0])
-                text = "4"
-            elif len(icon_list) == 2:
-                text = "2+2"
-                rank_bar.paste(icon_list[0], (155, 24), icon_list[0])
-                rank_bar.paste(icon_list[1], (171, 9), icon_list[1])
-            else:
-                text = "0"
-            bar_draw.text((207, 61), text, (214, 255, 192), gs_font_20, "mm")
+                    text = "0"
+                bar_draw.text((207, 61), text, (214, 255, 192), gs_font_20, "mm")
 
     rank_bar.paste(rank_bar_text, (0, 0), rank_bar_text)
 

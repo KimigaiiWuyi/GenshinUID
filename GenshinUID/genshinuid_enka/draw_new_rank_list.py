@@ -69,6 +69,14 @@ async def draw_single_rank(
     _wc: int = char["weapon"]["refinement"]
     hp: int = int(char["stats"]["maxHP"])
     atk: int = int(char["stats"]["maxATK"])
+
+    if "critRate" not in char["stats"]:
+        char["stats"]["critRate"] = 0
+    if "critDMG" not in char["stats"]:
+        char["stats"]["critDMG"] = 0
+    if "critValue" not in char["stats"]:
+        char["stats"]["critValue"] = 0
+
     cr = "{:.1f}".format(char["stats"]["critRate"] * 100)
     cd = "{:.1f}".format(char["stats"]["critDMG"] * 100)
     cv = "{:.1f}".format(char["stats"]["critValue"])

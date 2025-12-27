@@ -62,6 +62,18 @@ async def draw_single_rank(
     outof: int = char["outOf"]
     percent: float = (ranking / outof) * 100
 
+    if ranking <= 100:
+        percent_show = f"全球前{ranking}名"
+        percent_color = (255, 73, 29)
+    else:
+        percent_show = f"全球前{percent:.1f}%"
+        if percent <= 10:
+            percent_color = (255, 41, 169)
+        elif percent <= 40:
+            percent_color = (75, 69, 255)
+        else:
+            percent_color = (255, 255, 255)
+
     rank_bar = Image.open(TEXTURE_PATH / "rank_bar.png")
     bar_draw = ImageDraw.Draw(rank_bar)
 
@@ -158,7 +170,7 @@ async def draw_single_rank(
 
     bar_draw.text((242, 36), f"{cr}: {cd}", "white", gs_font_26, "lm")
     bar_draw.text((242, 59), f"{cv} cv", cv_color, gs_font_20, "lm")
-    bar_draw.text((483, 46), f"{hp}", "white", gs_font_26, "lm")
+    bar_draw.text((486, 46), f"{hp}", "white", gs_font_26, "lm")
     bar_draw.text((690, 46), f"{atk}", "white", gs_font_26, "lm")
 
     rank_bar.paste(talent_pic, (770, 30), talent_pic)
@@ -166,14 +178,14 @@ async def draw_single_rank(
 
     bar_draw.text((1401, 34), result, "white", gs_font_32, "mm")
     bar_draw.text((1401, 64), _type, (150, 150, 150), gs_font_22, "mm")
-    bar_draw.text((1238, 34), f"全球前{percent:.1f}%", "white", gs_font_30, "rm")
+    bar_draw.text((1238, 34), percent_show, percent_color, gs_font_30, "rm")
     bar_draw.text((1238, 64), f"{ranking} / {outof}", (150, 150, 150), gs_font_22, "rm")
 
     img.paste(rank_bar, (0, 700 + index * 90), rank_bar)
 
 
 async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
-    rank_data = await _get_rank(uid)
+    rank_data: Union[Dict[str, Dict[str, Dict]], str] = await _get_rank(uid)
     if isinstance(rank_data, str):
         return rank_data
 
@@ -188,9 +200,25 @@ async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
     title, _ = title
     img.paste(title, (0, 0), title)
 
+    sort_rank_data = dict(
+        sorted(
+            rank_data.items(),
+            key=lambda x: x[1]["calculations"]["fit"]["ranking"] / x[1]["calculations"]["fit"]["outOf"],
+            reverse=False,
+        )
+    )
+
     tasks = []
-    for index, char in enumerate(rank_data):
-        tasks.append(draw_single_rank(uid, img, char, rank_data[char], index))
+    for index, (char_id, char_data_item) in enumerate(sort_rank_data.items()):
+        tasks.append(
+            draw_single_rank(
+                uid,
+                img,
+                char_id,
+                char_data_item,
+                index,
+            )
+        )
     await asyncio.gather(*tasks)
 
     img = add_footer(img, 700)

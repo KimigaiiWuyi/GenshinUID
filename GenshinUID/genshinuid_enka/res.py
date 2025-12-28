@@ -358,7 +358,7 @@ async def draw_new_title(ev: Event, uid: str, _force_mode: Optional[int] = None)
     if _mode == 3:
         title_list = [
             f"{crown_cost}/{crown_get + crown_cost}",
-            f"{fetter_full}/{len(datas['role'])}",
+            f"{fetter_full}/{len(datas['avatars'])}",
             f"{full_star5_char}/{star5_char}",
             f"{full_star4_char}/{star4_char}",
             f"{star5_char}/{ALL_STAR_5_CHAR}",

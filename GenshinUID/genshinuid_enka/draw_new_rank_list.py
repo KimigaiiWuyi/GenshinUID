@@ -170,7 +170,7 @@ async def draw_single_rank(
 
     bar_draw.text((242, 36), f"{cr}: {cd}", "white", gs_font_26, "lm")
     bar_draw.text((242, 59), f"{cv} cv", cv_color, gs_font_20, "lm")
-    bar_draw.text((486, 46), f"{hp}", "white", gs_font_26, "lm")
+    bar_draw.text((492, 46), f"{hp}", "white", gs_font_26, "lm")
     bar_draw.text((690, 46), f"{atk}", "white", gs_font_26, "lm")
 
     rank_bar.paste(talent_pic, (770, 30), talent_pic)

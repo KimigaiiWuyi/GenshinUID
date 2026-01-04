@@ -500,7 +500,7 @@ class Character:
             if effect_value >= effect_max:
                 effect_value = effect_max
 
-            if char_name == "旅行者":
+            if char_name == "旅行者" or char_name.startswith("奇偶"):
                 char_element = "Hydro"
             else:
                 char_element = avatarName2Element[char_name]

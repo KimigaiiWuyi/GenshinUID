@@ -360,6 +360,8 @@ class Character:
             prop["baseArea"] = 1
             prop["powerPlus"] = 1
             prop["extraBonus"] = 0
+            prop["moonDmgBonus"] = 0
+            prop["moonExDmgBonus"] = 0
             if prop["baseHp"] + prop["addHp"] == prop["hp"]:
                 prop["exHp"] = prop["addHp"]
                 prop["exAtk"] = prop["addAtk"]
@@ -574,7 +576,10 @@ class Character:
             else:
                 # 形如ABC:dmgBonus+75,则遍历ABC,增加值
                 for limit in effect_limit:
-                    prop["{}_{}".format(limit, effect_attr)] += effect_value
+                    prop_attr = "{}_{}".format(limit, effect_attr)
+                    if prop_attr not in prop:
+                        prop[prop_attr] = 0
+                    prop[prop_attr] += effect_value
         else:
             if effect_attr in ["a", "addDmg"]:
                 pass

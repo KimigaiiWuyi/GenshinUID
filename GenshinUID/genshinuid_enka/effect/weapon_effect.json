@@ -1,4 +1,66 @@
 {
+  "朏魄含光": {
+    "normal": {
+      "normal_effect": {
+        "1": "addDef+20",
+        "2": "addDef+25",
+        "3": "addDef+30",
+        "4": "addDef+35",
+        "5": "addDef+40"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "lunarCrystallizeDmgBonus+64",
+        "2": "lunarCrystallizeDmgBonus+80",
+        "3": "lunarCrystallizeDmgBonus+96",
+        "4": "lunarCrystallizeDmgBonus+112",
+        "5": "lunarCrystallizeDmgBonus+128"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 3,
+      "extra": {
+        
+      }
+    }
+  },
+  "帷间夜曲": {
+    "normal": {
+      "normal_effect": {
+        "1": "addHp+10",
+        "2": "addHp+12",
+        "3": "addHp+14",
+        "4": "addHp+16",
+        "5": "addHp+18"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addHp+14;lunar:critDmg+60",
+        "2": "addHp+15;lunar:critDmg+80",
+        "3": "addHp+16;lunar:critDmg+100",
+        "4": "addHp+17;lunar:critDmg+120",
+        "5": "addHp+18;lunar:critDmg+140"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 15,
+      "extra": {
+        
+      }
+    }
+  },
   "黑蚀": {
     "normal": {
       "normal_effect": {

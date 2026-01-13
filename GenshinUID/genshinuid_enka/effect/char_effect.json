@@ -1,4 +1,130 @@
 {
+  "哥伦比娅": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "critRate+15",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "moonExDmgBonus+1.5",
+        "2": "addHp+40;elementalMastery+0.35%hp;moonExDmgBonus+7",
+        "3": "moonExDmgBonus+1.5",
+        "4": "moonExDmgBonus+1.5",
+        "5": "moonExDmgBonus+1.5",
+        "6": "moonExDmgBonus+7;critDmg+80"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "moonExDmgBonus+1.5",
+        "2": "elementalMastery+0.35%hp;moonExDmgBonus+7",
+        "3": "moonExDmgBonus+1.5",
+        "4": "moonExDmgBonus+1.5",
+        "5": "moonExDmgBonus+1.5",
+        "6": "moonExDmgBonus+7;critDmg+80"
+      }
+    }
+  },
+  "兹白": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "灵驹飞踏第二段:addDmg+60%def",
+        "70": "addDef+30;elementalMastery+60"
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "灵驹飞踏第二段:addDmg+490%def",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "moonExDmgBonus+48"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "叶洛亚": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "critRate+5;critDmg+10;elementalMastery+50",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "def+200",
+        "5": "",
+        "6": "critRate+5;critDmg+20"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "def+200",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
   "杜林": {
     "normal": {
       "normal_skill": {

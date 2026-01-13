@@ -8065,6 +8065,339 @@
         "route": "Icy Crystal: Frostnight Scion",
         "icon": "UI_MonsterIcon_Moonbeast_Ice"
     },
+    "20080501": {
+        "id": 20080501,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010022,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010022,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 173.8752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "涌流·霜夜灵嗣",
+        "route": "Surging Currents: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Water"
+    },
+    "20080502": {
+        "id": 20080502,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010022,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010022,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 173.8752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.5,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "涌流·霜夜灵嗣",
+        "route": "Surging Currents: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Water"
+    },
+    "20080601": {
+        "id": 20080601,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010025,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010025,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.5,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "驰岚·霜夜灵嗣",
+        "route": "Veiled Cloudchaser: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Wind"
+    },
+    "20080602": {
+        "id": 20080602,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010025,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010025,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.5,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "驰岚·霜夜灵嗣",
+        "route": "Veiled Cloudchaser: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Wind"
+    },
+    "20080701": {
+        "id": 20080701,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010027,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010027,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "金礞·霜夜灵嗣",
+        "route": "Gilded Sunshard: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Rock"
+    },
+    "20080702": {
+        "id": 20080702,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 元素圣兽 地城词缀",
+                "description": "入战直接切状态",
+                "abilityName": [
+                    "MonsterAffix_Moonbeast_DungeonMode"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010027,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010027,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 138.5568,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.5,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "金礞·霜夜灵嗣",
+        "route": "Gilded Sunshard: Frostnight Scion",
+        "icon": "UI_MonsterIcon_Moonbeast_Rock"
+    },
     "20081001": {
         "id": 20081001,
         "type": "MONSTER_BOSS",
@@ -24500,6 +24833,957 @@
         "name": "荒野狂狩士",
         "route": "Wilderness Hunter",
         "icon": "UI_MonsterIcon_WildHunt_Elite"
+    },
+    "22140101": {
+        "id": 22140101,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 40.752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "112137": {
+                "name": "深黯的裂眼",
+                "rank": 2,
+                "icon": "UI_ItemIcon_112137",
+                "count": "2.6263"
+            },
+            "112138": {
+                "name": "深黯的怪核",
+                "rank": 3,
+                "icon": "UI_ItemIcon_112138",
+                "count": "0.7003"
+            },
+            "112139": {
+                "name": "深黯的钩喙",
+                "rank": 4,
+                "icon": "UI_ItemIcon_112139",
+                "count": "0.1751"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            }
+        },
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140102": {
+        "id": 22140102,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "罗伊格尔深渊版词缀",
+                "description": "罗伊格尔深渊版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_AbyssTag"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 40.752,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140103": {
+        "id": 22140103,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 26.376,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140111": {
+        "id": 22140111,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.3深渊怪物标记",
+                "description": "6.3深渊怪物标记",
+                "abilityName": [
+                    "V63_Pohjola_Common_AbyssHandler"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 66.01824,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140112": {
+        "id": 22140112,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "罗伊格尔深渊版词缀",
+                "description": "罗伊格尔深渊版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_AbyssTag"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 66.01824,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 37.68,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140113": {
+        "id": 22140113,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "罗伊格尔wq版词缀",
+                "description": "罗伊格尔wq版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_WQTag"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "6.3深渊怪物标记",
+                "description": "6.3深渊怪物标记",
+                "abilityName": [
+                    "V63_Pohjola_Common_AbyssHandler"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010010,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010010,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 16.3008,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 26.376,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140114": {
+        "id": 22140114,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 77.743416,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22140115": {
+        "id": 22140115,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 77.743416,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 25.12,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯钓客",
+        "route": "Fisher of Hidden Depths",
+        "icon": "UI_MonsterIcon_Lloigor_Sub"
+    },
+    "22150101": {
+        "id": 22150101,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104141": {
+                "name": "最胜紫晶碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104141"
+            },
+            "104142": {
+                "name": "最胜紫晶断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104142"
+            },
+            "104143": {
+                "name": "最胜紫晶块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104143"
+            },
+            "104144": {
+                "name": "最胜紫晶",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104144"
+            },
+            "113084": {
+                "name": "魇翼枯骸",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113084",
+                "count": "2.5556"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400137": {
+                "name": "祭雷之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15011_3"
+            },
+            "400138": {
+                "name": "祭雷之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15011_3"
+            }
+        },
+        "name": "深黯魇语之主",
+        "route": "Lord of the Hidden Depths: Whisperer of Nightmares",
+        "icon": "UI_MonsterIcon_Lloigor_Primo"
+    },
+    "22150102": {
+        "id": 22150102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "罗伊格尔深渊版词缀",
+                "description": "罗伊格尔深渊版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_AbyssTag"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯魇语之主",
+        "route": "Lord of the Hidden Depths: Whisperer of Nightmares",
+        "icon": "UI_MonsterIcon_Lloigor_Primo"
+    },
+    "22150103": {
+        "id": 22150103,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "罗伊格尔wq版词缀",
+                "description": "罗伊格尔wq版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_WQTag"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 220.0608,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 52.752,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯魇语之主",
+        "route": "Lord of the Hidden Depths: Whisperer of Nightmares",
+        "icon": "UI_MonsterIcon_Lloigor_Primo"
+    },
+    "22150104": {
+        "id": 22150104,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "地脉挑战怪物成就屏蔽判定gv",
+                "description": "地脉挑战怪物成就屏蔽判定gv",
+                "abilityName": [
+                    "MonsterAffix_LeyLineChallenge_GeneralAchievementCheck"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 431.90787,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯魇语之主",
+        "route": "Lord of the Hidden Depths: Whisperer of Nightmares",
+        "icon": "UI_MonsterIcon_Lloigor_Primo"
+    },
+    "22150105": {
+        "id": 22150105,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "罗伊格尔深渊版词缀",
+                "description": "罗伊格尔深渊版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_AbyssTag"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "地脉挑战怪物成就屏蔽判定gv",
+                "description": "地脉挑战怪物成就屏蔽判定gv",
+                "abilityName": [
+                    "MonsterAffix_LeyLineChallenge_GeneralAchievementCheck"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 431.90787,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯魇语之主",
+        "route": "Lord of the Hidden Depths: Whisperer of Nightmares",
+        "icon": "UI_MonsterIcon_Lloigor_Primo"
+    },
+    "22150106": {
+        "id": 22150106,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "罗伊格尔深渊版词缀",
+                "description": "罗伊格尔深渊版词缀",
+                "abilityName": [
+                    "MonsterAffix_Lloigor_AbyssTag"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "地脉挑战怪物成就屏蔽判定gv",
+                "description": "地脉挑战怪物成就屏蔽判定gv",
+                "abilityName": [
+                    "MonsterAffix_LeyLineChallenge_GeneralAchievementCheck"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010030,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010030,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 431.90787,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.36,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "深黯魇语之主",
+        "route": "Lord of the Hidden Depths: Whisperer of Nightmares",
+        "icon": "UI_MonsterIcon_Lloigor_Primo"
     },
     "23010101": {
         "id": 23010101,
@@ -63706,6 +64990,117 @@
         "route": "Radiant Lunapod",
         "icon": "UI_MonsterIcon_Magbeast_Squid"
     },
+    "26300401": {
+        "id": 26300401,
+        "type": "MONSTER_ORDINARY",
+        "affix": null,
+        "hpDrops": [
+            {
+                "id": 22010026,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010026,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 149.424,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 82.896,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光凛狼",
+        "route": "Radiant Glacial Wolf",
+        "icon": "UI_MonsterIcon_Magbeast_Steppenwolf"
+    },
+    "26300402": {
+        "id": 26300402,
+        "type": "MONSTER_ORDINARY",
+        "affix": [
+            {
+                "name": "6.0 磁力魔兽 debuff强化1",
+                "description": "debuff数值强化",
+                "abilityName": [
+                    "MonsterAffix_Magbeast_DebuffEnhance1"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010026,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010026,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 149.424,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 82.896,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光凛狼",
+        "route": "Radiant Glacial Wolf",
+        "icon": "UI_MonsterIcon_Magbeast_Steppenwolf"
+    },
     "26301101": {
         "id": 26301101,
         "type": "MONSTER_BOSS",
@@ -67499,5 +68894,262 @@
         "name": "门扉前的弈局",
         "route": "The Game Before the Gate",
         "icon": "UI_MonsterIcon_GiantChess"
+    },
+    "29130201": {
+        "id": 29130201,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1204.256,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 75.988,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "「博士」",
+        "route": "The Doctor",
+        "icon": "UI_MonsterIcon_Dotorre_Moon"
+    },
+    "29130202": {
+        "id": 29130202,
+        "type": "MONSTER_BOSS",
+        "affix": null,
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 1698,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 175.84,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "300"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "101116": {
+                "name": "垠土单手剑原胚",
+                "rank": 4,
+                "icon": "UI_ItemIcon_101116"
+            },
+            "101117": {
+                "name": "垠土弓原胚",
+                "rank": 4,
+                "icon": "UI_ItemIcon_101117"
+            },
+            "101118": {
+                "name": "垠土双手剑原胚",
+                "rank": 4,
+                "icon": "UI_ItemIcon_101118"
+            },
+            "101119": {
+                "name": "垠土法器原胚",
+                "rank": 4,
+                "icon": "UI_ItemIcon_101119"
+            },
+            "101120": {
+                "name": "垠土长柄武器原胚",
+                "rank": 4,
+                "icon": "UI_ItemIcon_101120"
+            },
+            "104121": {
+                "name": "涤净青金碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104121"
+            },
+            "104122": {
+                "name": "涤净青金断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104122"
+            },
+            "104123": {
+                "name": "涤净青金块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104123"
+            },
+            "104124": {
+                "name": "涤净青金",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104124"
+            },
+            "104141": {
+                "name": "最胜紫晶碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104141"
+            },
+            "104142": {
+                "name": "最胜紫晶断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104142"
+            },
+            "104143": {
+                "name": "最胜紫晶块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104143"
+            },
+            "104144": {
+                "name": "最胜紫晶",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104144"
+            },
+            "104161": {
+                "name": "哀叙冰玉碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104161"
+            },
+            "104162": {
+                "name": "哀叙冰玉断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104162"
+            },
+            "104163": {
+                "name": "哀叙冰玉块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104163"
+            },
+            "104164": {
+                "name": "哀叙冰玉",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104164"
+            },
+            "113021": {
+                "name": "异梦溶媒",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113021",
+                "count": "0.33"
+            },
+            "113081": {
+                "name": "贤医的假面",
+                "rank": 5,
+                "icon": "UI_ItemIcon_113081"
+            },
+            "113082": {
+                "name": "狂人的约束",
+                "rank": 5,
+                "icon": "UI_ItemIcon_113082"
+            },
+            "113083": {
+                "name": "异端的瓶剂",
+                "rank": 5,
+                "icon": "UI_ItemIcon_113083"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            }
+        },
+        "name": "「博士」",
+        "route": "The Doctor",
+        "icon": "UI_MonsterIcon_Dotorre_Moon"
     }
 }

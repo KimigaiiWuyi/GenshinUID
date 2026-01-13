@@ -1,4 +1,32 @@
 {
+  "晨星与月的晓歌": {
+    "normal_effect": {
+      "2": "elementalMastery+80",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "lunar:DmgBonus+60"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "风起之日": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addAtk+25;critRate+20"  
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
   "穹境示现之夜": {
     "normal_effect": {
       "2": "elementalMastery+80",

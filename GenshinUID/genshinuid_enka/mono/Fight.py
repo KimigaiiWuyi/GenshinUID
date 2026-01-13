@@ -60,9 +60,13 @@ class Fight:
                 if i in char.power_name:
                     dmg = await self.get_transform_dmg(char)
                     break
+            for i in ["月感电", "月绽放", "月结晶"]:
+                if i in char.power_name:
+                    dmg = await self.get_lunar_dmg(char)
+                    break
             else:
                 # 进行攻击
-                dmg = await self.get_dmg(char, dmg_type)
+                dmg = await self.get_dmg(char, dmg_type, seq["action"])
             normal_dmg, avg_dmg, crit_dmg = dmg[0], dmg[1], dmg[2]
 
             result[self.time] = {
@@ -110,7 +114,12 @@ class Fight:
                 else:
                     # 获取本次攻击的元素
                     dmg_type = await self.get_dmg_type(char)
-                    dmg = await self.get_dmg(char, dmg_type, True)
+                    dmg = await self.get_dmg(
+                        char,
+                        dmg_type,
+                        power_name,
+                        True,
+                    )
 
             # 得到结果
             result[power_name] = {
@@ -404,6 +413,12 @@ class Fight:
             crit_dmg = avg_dmg = 0
         return normal_dmg, avg_dmg, crit_dmg
 
+    # TODO 占位
+    async def get_lunar_dmg(self, char: Character):
+        moonExDmgBonus = 1
+        moonExDmgBonus += char.real_prop["moonExDmgBonus"]
+        return 0, 0, 0
+
     async def get_heal(self, char: Character) -> Tuple[float, float, float]:
         # 获得治疗增加值
         add_heal = await self.get_add_heal(char)
@@ -430,6 +445,7 @@ class Fight:
         self,
         char: Character,
         dmg_type: Element,
+        seq: str,
         is_single: bool = False,
     ) -> Tuple[float, float, float]:
         # 获得基础乘区(攻击区+倍率区+激化区)

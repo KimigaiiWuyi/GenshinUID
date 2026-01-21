@@ -77,7 +77,16 @@ async def draw_single_rank(
     rank_bar = Image.open(TEXTURE_PATH / "rank_bar.png")
     bar_draw = ImageDraw.Draw(rank_bar)
 
-    _c: int = char["priority"]
+    enka_char_data = await get_char_data(
+        uid,
+        await avatar_id_to_name(char_id),
+    )
+
+    if isinstance(enka_char_data, str):
+        _c = char["priority"]
+    else:
+        _c: int = len(enka_char_data["talentList"])
+
     _wc: int = char["weapon"]["refinement"]
     hp: int = int(char["stats"]["maxHP"])
     atk: int = int(char["stats"]["maxATK"])
@@ -114,11 +123,6 @@ async def draw_single_rank(
     weapon_name = get_weapon_name(weapon_icon_name)
     weapon_pic = Image.open(WEAPON_PATH / f"{weapon_name}.png")
     weapon_pic = draw_ring(weapon_pic, weapon_star)
-
-    enka_char_data = await get_char_data(
-        uid,
-        await avatar_id_to_name(char_id),
-    )
 
     if isinstance(enka_char_data, str):
         pass

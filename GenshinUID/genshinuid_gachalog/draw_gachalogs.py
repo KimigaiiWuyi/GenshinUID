@@ -82,9 +82,18 @@ async def _draw_card(
     text_point = (55, 124)
     if type == "角色":
         _id = await name_to_avatar_id(name)
+        if not _id:
+            logger.error(f"[原神抽卡记录] 角色{name}不存在，请检查角色名称是否正确!或者尝试更新插件版本！")
+            _id = "10000007"
         item_pic = Image.open(CHAR_PATH / f"{_id}.png").convert("RGBA").resize((108, 108))
     else:
-        item_pic = Image.open(WEAPON_PATH / f"{name}.png").convert("RGBA").resize((108, 108))
+        _weapon_path = WEAPON_PATH / f"{name}.png"
+        if not _weapon_path.exists():
+            logger.error(f"[原神抽卡记录] 武器{name}不存在，请检查武器名称是否正确!或者尝试更新插件版本！")
+            _weapon_path = CHAR_PATH / "10000007.png"
+
+        item_pic = Image.open(_weapon_path).convert("RGBA").resize((108, 108))
+
     card_img.paste(item_pic, point, item_pic)
     if gacha_num >= 81:
         text_color = red_color

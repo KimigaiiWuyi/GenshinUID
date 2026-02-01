@@ -1,26 +1,27 @@
-import os
+import asyncio
+import base64
 import json
+import os
 import time
 import uuid
-import base64
-import asyncio
-from io import BytesIO
-from pathlib import Path
 from asyncio import CancelledError
 from collections import OrderedDict
-from typing import Dict, List, Union, Optional
+from io import BytesIO
+from pathlib import Path
+from tkinter import W
+from typing import Dict, List, Optional, Union
 
-from PIL import Image
 import websockets.client
-from nonebot.log import logger
-from nonebot.adapters import Bot
 from msgspec import json as msgjson
 from nonebot import get_bot, get_bots, get_driver
+from nonebot.adapters import Bot
+from nonebot.log import logger
+from PIL import Image
 from websockets.exceptions import ConnectionClosedError
 
-from .utils import download_image
 from .models import Message as GsMessage
-from .models import MessageSend, MessageReceive
+from .models import MessageReceive, MessageSend
+from .utils import download_image
 
 msg_id_seq = OrderedDict()
 bots: Dict[str, str] = {}
@@ -40,6 +41,11 @@ if hasattr(driver.config, 'gsuid_core_port'):
     PORT = driver.config.gsuid_core_port
 else:
     PORT = '8765'
+
+if hasattr(driver.config, 'gsuid_core_ws_token'):
+    WS_TOKEN = driver.config.ws_token
+else:
+    WS_TOKEN = ''
 
 
 def _get_bot(bot_id: str) -> Bot:
@@ -82,6 +88,8 @@ class GsClient:
         self = GsClient()
         cls.is_alive = True
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
+        if WS_TOKEN:
+            cls.ws_url += f'?token={WS_TOKEN}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
         cls.ws = await websockets.client.connect(
             cls.ws_url, max_size=2**26, open_timeout=60, ping_timeout=60
@@ -442,8 +450,8 @@ def _bt(button: Dict):
 def _kb(buttons: Union[List[Dict], List[List[Dict]]]):
     from nonebot.adapters.qq.models import (
         InlineKeyboard,
-        MessageKeyboard,
         InlineKeyboardRow,
+        MessageKeyboard,
     )
 
     _rows = []
@@ -467,7 +475,7 @@ def _kb(buttons: Union[List[Dict], List[List[Dict]]]):
 
 
 def _villa_kb(index: int, button: Dict):
-    from nonebot.adapters.villa.models import InputButton, CallbackButton
+    from nonebot.adapters.villa.models import CallbackButton, InputButton
 
     if button['action'] == 1:
         return CallbackButton(
@@ -490,7 +498,7 @@ def _villa_kb(index: int, button: Dict):
 
 
 def _dodo_kb(button: Dict):
-    from nonebot.adapters.dodo.models import CardButton, ButtonClickAction
+    from nonebot.adapters.dodo.models import ButtonClickAction, CardButton
 
     return CardButton(
         click=ButtonClickAction(value=button['data'], action='call_back'),
@@ -546,12 +554,12 @@ async def villa_send(
     target_id: Optional[str],
     target_type: Optional[str],
 ):
-    from nonebot.adapters.villa.models import Panel
     from nonebot.adapters.villa import Bot, Message, MessageSegment
     from nonebot.adapters.villa.api import (
-        PostMessageContent,
         ImageMessageContent,
+        PostMessageContent,
     )
+    from nonebot.adapters.villa.models import Panel
 
     assert isinstance(bot, Bot)
 
@@ -826,8 +834,8 @@ async def onebot_red_send(
     target_id: Optional[str],
     target_type: Optional[str],
 ):
-    from nonebot.adapters.red.bot import Bot
     from nonebot.adapters.red.api.model import ChatType
+    from nonebot.adapters.red.bot import Bot
     from nonebot.adapters.red.message import Message, MessageSegment
 
     assert isinstance(bot, Bot)
@@ -891,8 +899,8 @@ async def discord_send(
     target_type: Optional[str],
     group_id: Optional[str],
 ):
-    from nonebot.adapters.discord.api import ActionRow
     from nonebot.adapters.discord import Bot, Message, MessageSegment
+    from nonebot.adapters.discord.api import ActionRow
 
     assert isinstance(bot, Bot)
 
@@ -1078,10 +1086,10 @@ async def dodo_send(
     from nonebot.adapters.dodo.bot import Bot as dodobot
     from nonebot.adapters.dodo.message import Message, MessageSegment
     from nonebot.adapters.dodo.models import (
+        CardButtonGroup,
+        CardImage,
         CardText,
         TextData,
-        CardImage,
-        CardButtonGroup,
     )
 
     assert isinstance(bot, dodobot)
@@ -1431,8 +1439,8 @@ async def telegram_send(
     target_id: Optional[str],
 ):
     from nonebot.adapters.telegram.bot import Bot
+    from nonebot.adapters.telegram.message import Entity, File, Message
     from nonebot.adapters.telegram.model import InlineKeyboardMarkup
-    from nonebot.adapters.telegram.message import File, Entity, Message
 
     assert isinstance(bot, Bot)
 

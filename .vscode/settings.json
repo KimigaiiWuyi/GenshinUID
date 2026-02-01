@@ -12,4 +12,5 @@
     "--profile",
     "black"
   ],
+  "python.analysis.typeCheckingMode": "off",
 }

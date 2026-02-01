@@ -1,19 +1,20 @@
-import os
-import base64
 import asyncio
+import base64
+import os
 from pathlib import Path
-from typing import Dict, List, Union, Optional
+from typing import Dict, List, Optional, Union
 
 import hoshino
 import websockets.client
 from msgspec import json as msgjson
 from websockets.exceptions import ConnectionClosedError
 
-from .base import logger, hoshino_bot
+from .base import hoshino_bot, logger
 from .models import Message as GsMessage
-from .models import MessageSend, MessageReceive
+from .models import MessageReceive, MessageSend
 
 BOT_ID = 'HoshinoBot'
+WS_TOKEN = ''
 bots: Dict[str, str] = {}
 
 
@@ -27,6 +28,8 @@ class GsClient:
         self = GsClient()
         cls.is_alive = True
         cls.ws_url = f'ws://{IP}:{PORT}/ws/{BOT_ID}'
+        if WS_TOKEN:
+            cls.ws_url += f'?token={WS_TOKEN}'
         logger.info(f'Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...')
         cls.ws = await websockets.client.connect(
             cls.ws_url, max_size=2**26, open_timeout=60, ping_timeout=60

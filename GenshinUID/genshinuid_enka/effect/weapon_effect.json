@@ -569,11 +569,11 @@
     },
     "fight": {
       "fight_effect": {
-        "1": "attack+24",
-        "2": "attack+30",
-        "3": "attack+36",
-        "4": "attack+42",
-        "5": "attack+48"
+        "1": "addAtk+24",
+        "2": "addAtk+30",
+        "3": "addAtk+36",
+        "4": "addAtk+42",
+        "5": "addAtk+48"
       },
       "group_effect": {
         "1": "",

@@ -1,21 +1,21 @@
 import os
 import re
 import asyncio
-from pathlib import Path
 from copy import deepcopy
 from base64 import b64encode
-from collections import OrderedDict
 from typing import Any, List, Union, Optional
+from pathlib import Path
+from collections import OrderedDict
 
 import aiofiles
-from nonebot.log import logger
-from nonebot.adapters import Bot
-from nonebot.matcher import Matcher
-from nonebot.permission import SUPERUSER
-from nonebot.plugin import PluginMetadata
-from nonebot.internal.adapter import Event
-from websockets.exceptions import ConnectionClosed
 from nonebot import on, require, on_notice, on_message, on_fullmatch
+from nonebot.log import logger
+from nonebot.plugin import PluginMetadata
+from nonebot.matcher import Matcher
+from nonebot.adapters import Bot
+from nonebot.permission import SUPERUSER
+from websockets.exceptions import ConnectionClosed
+from nonebot.internal.adapter import Event
 
 require('nonebot_plugin_apscheduler')
 
@@ -544,8 +544,10 @@ async def get_all_message(bot: Bot, ev: Event):
             logger.debug('[gsuid] 不支持该 onebotv11 事件...')
             return
     elif bot.adapter.get_name() == 'Feishu':
-        from nonebot.adapters.feishu.event import GroupMessageEvent as FGM
-        from nonebot.adapters.feishu.event import PrivateMessageEvent as FPM
+        from nonebot.adapters.feishu.event import (
+            GroupMessageEvent as FGM,
+            PrivateMessageEvent as FPM,
+        )
 
         if isinstance(ev, FGM) or isinstance(ev, FPM):
             for feishu_msg in messages:

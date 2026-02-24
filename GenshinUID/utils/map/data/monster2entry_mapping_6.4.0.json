@@ -65328,6 +65328,230 @@
         "route": "Radiant Moonfly",
         "icon": "UI_MonsterIcon_Magbeast_Pergesa"
     },
+    "26302101": {
+        "id": 26302101,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "多层护盾G教学关联词缀",
+                "description": "多层护盾G教学关联词缀",
+                "abilityName": [
+                    "Monster_Commom_MultiElementShield_Mark"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010037,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010037,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010037,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 285.264,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 87.92,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.7,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104171": {
+                "name": "坚牢黄玉碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104171"
+            },
+            "104172": {
+                "name": "坚牢黄玉断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104172"
+            },
+            "104173": {
+                "name": "坚牢黄玉块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104173"
+            },
+            "104174": {
+                "name": "坚牢黄玉",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104174"
+            },
+            "113085": {
+                "name": "棱光的断尾",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113085",
+                "count": "2.5556"
+            },
+            "400032": {
+                "name": "教官",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400033": {
+                "name": "教官",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10007_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400062": {
+                "name": "游医",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10013_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            }
+        },
+        "name": "蕴光月守宫",
+        "route": "Radiant Moongecko",
+        "icon": "UI_MonsterIcon_Magbeast_Gecko"
+    },
+    "26302102": {
+        "id": 26302102,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "6.4-挑战-磁力壁虎-深境词缀",
+                "description": "6.4-挑战-磁力壁虎-深境词缀",
+                "abilityName": [
+                    "Monster_Magbeast_Gecko_01_CombatStyle_01"
+                ],
+                "isCommon": true
+            },
+            {
+                "name": "多层护盾G教学关联词缀",
+                "description": "多层护盾G教学关联词缀",
+                "abilityName": [
+                    "Monster_Commom_MultiElementShield_Mark"
+                ],
+                "isCommon": true
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010037,
+                "hpPercent": 75
+            },
+            {
+                "id": 22010037,
+                "hpPercent": 50
+            },
+            {
+                "id": 22010037,
+                "hpPercent": 25
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 285.264,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 87.92,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.7,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "蕴光月守宫",
+        "route": "Radiant Moongecko",
+        "icon": "UI_MonsterIcon_Magbeast_Gecko"
+    },
     "29010102": {
         "id": 29010102,
         "type": "MONSTER_BOSS",

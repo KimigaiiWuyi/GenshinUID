@@ -30,13 +30,18 @@ from GenshinUID.utils.map.GS_MAP_PATH import (  # noqa: E402
     avatarName2Element_fileName,
 )
 from gsuid_core.utils.api.ambr.request import (  # noqa: E402
+    get_ambr_char_list,
+    get_ambr_weapon_list,
     get_ambr_monster_data,
     get_ambr_monster_list,
 )
+
+"""
 from gsuid_core.utils.api.hakush.request import (  # noqa: E402
     get_hakush_char_list,
     get_hakush_weapon_list,
 )
+"""
 
 from ..version import Genshin_version  # noqa: E402
 from ..utils.ambr_to_minigg import (  # noqa: E402
@@ -480,8 +485,13 @@ async def artifact2attrJson() -> None:
 
 async def restore_hakush_data():
     global weaponList
+    """
     data = await get_hakush_char_list()
     data2 = await get_hakush_weapon_list()
+    """
+
+    data = await get_ambr_char_list()
+    data2 = await get_ambr_weapon_list()
 
     with open(MAP_PATH / charList_fileName, "w", encoding="UTF-8") as f:
         json.dump(data, f, ensure_ascii=False)
@@ -545,7 +555,7 @@ async def save_char_talent_num():
 
 
 async def main():
-    await download_new_file()
+    # await download_new_file()
     await restore_mysData()
     await restore_hakush_data()
     await monster2map()

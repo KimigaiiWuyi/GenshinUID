@@ -1,4 +1,35 @@
 {
+  "狼的武功歌": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "dmgBonus+30;critDmg+30",
+        "2": "dmgBonus+38;critDmg+38",
+        "3": "dmgBonus+46;critDmg+46",
+        "4": "dmgBonus+54;critDmg+54",
+        "5": "dmgBonus+62;critDmg+62"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 4,
+      "extra": {
+        
+      }
+    }
+  },
   "朏魄含光": {
     "normal": {
       "normal_effect": {

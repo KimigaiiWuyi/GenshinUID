@@ -8,7 +8,7 @@ from pathlib import Path
 from collections import OrderedDict
 
 import aiofiles
-from nonebot import on, require, on_notice, on_message, on_fullmatch
+from nonebot import on, require, on_notice, get_driver, on_message, on_fullmatch
 from nonebot.log import logger
 from nonebot.plugin import PluginMetadata
 from nonebot.matcher import Matcher
@@ -53,6 +53,12 @@ if hasattr(driver.config, 'gsuid_core_repeat'):
 else:
     is_repeat = False
 
+driver = get_driver()
+
+if hasattr(driver.config, 'gsuid_core_reply_img'):
+    is_reply_img = driver.config.gsuid_core_reply_img
+else:
+    is_reply_img = True
 
 async def file_to_base64(file_path: Path):
     # 读取文件内容
@@ -540,6 +546,11 @@ async def get_all_message(bot: Bot, ev: Event):
                 group_id = str(ev.group_id)
             else:
                 user_type = 'direct'
+
+            if hasattr(ev, 'reply') and ev.reply and is_reply_img:
+               for seg in ev.reply.message:
+                   if seg.type == 'image' and seg.data:
+                       message.append(Message('image', seg.data['url']))
         else:
             logger.debug('[gsuid] 不支持该 onebotv11 事件...')
             return

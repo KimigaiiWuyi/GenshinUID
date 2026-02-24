@@ -135,6 +135,7 @@ class GsClient:
 
                     content = ''
                     image: Optional[str] = None
+                    record: Optional[str] = None
                     node = []
                     file = ''
                     at_list = []
@@ -157,6 +158,8 @@ class GsClient:
                                     file = _c.data
                                 elif _c.type == 'at':
                                     at_list.append(_c.data)
+                                elif _c.type == 'record':
+                                    record = _c.data
                                 elif _c.type == 'group':
                                     group_id = _c.data
                                 elif _c.type == 'markdown':
@@ -190,6 +193,7 @@ class GsClient:
                                 node,
                                 file,
                                 at_list,
+                                record,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -225,6 +229,7 @@ class GsClient:
                                 node,
                                 file,
                                 at_list,
+                                record,
                                 msg.target_id,
                                 msg.target_type,
                                 msg.msg_id,
@@ -254,6 +259,7 @@ class GsClient:
                                 file,
                                 node,
                                 buttons,
+                                record,
                                 msg.target_id,
                             )
                         elif msg.bot_id == 'kaiheila':
@@ -290,6 +296,7 @@ class GsClient:
                                 file,
                                 node,
                                 at_list,
+                                record,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -313,6 +320,7 @@ class GsClient:
                                 file,
                                 node,
                                 at_list,
+                                record,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -325,6 +333,7 @@ class GsClient:
                                 at_list,
                                 markdown,
                                 buttons,
+                                record,
                                 msg.target_id,
                                 msg.target_type,
                                 group_id,
@@ -338,6 +347,7 @@ class GsClient:
                                 at_list,
                                 markdown,
                                 buttons,
+                                record,
                                 msg.target_id,
                                 msg.target_type,
                                 group_id,
@@ -383,6 +393,20 @@ class GsClient:
             return_when=asyncio.FIRST_COMPLETED,
         )
 
+def get_bytes_from_base64_str(data_str: str) -> bytes:
+    # 1. 去掉自定义的前缀 "base64://"
+    prefix = "base64://"
+    if data_str.startswith(prefix):
+        # 截取前缀之后的内容
+        pure_b64_str = data_str[len(prefix):]
+    else:
+        pure_b64_str = data_str
+
+    # 2. 使用 base64 库解码回 bytes
+    # .encode('ascii') 是为了将 str 转为 bytes 供 b64decode 处理（通常可选）
+    mp3_bytes = base64.b64decode(pure_b64_str)
+
+    return mp3_bytes
 
 def to_json(msg: list, name: str, uin: str):
     '''
@@ -721,6 +745,8 @@ async def onebot_send(
                     await to_file(_c.data)
                 elif _c.type == 'at':
                     message.append(MessageSegment.at(_c.data))
+                elif _c.type == 'record':
+                    message.append(MessageSegment.record(get_bytes_from_base64_str(_c.data)))
         return message
 
     async def _send_node(messages):
@@ -760,6 +786,7 @@ async def heybox_send(
     node: Optional[List[Dict]],
     file: Optional[str],
     at_list: Optional[List[str]],
+    record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
@@ -795,6 +822,10 @@ async def heybox_send(
 
         if image:
             result_msg.append(add_image(image))
+
+        if record:
+            logger.warning('[gscore] Heybox暂不支持发送语音消息')
+            return
 
         if at_list and target_type == 'group':
             for at in at_list:
@@ -893,6 +924,7 @@ async def discord_send(
     at_list: Optional[List[str]],
     markdown: Optional[str],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
     group_id: Optional[str],
@@ -912,6 +944,9 @@ async def discord_send(
                 )
             if content:
                 message.append(MessageSegment.text(content))
+
+            if record:
+                message.append(MessageSegment.attachment('temp.mp3', content=get_bytes_from_base64_str(record)))
 
             if at_list and target_type == 'group':
                 for at in at_list:
@@ -1077,6 +1112,7 @@ async def dodo_send(
     at_list: Optional[List[str]],
     markdown: Optional[str],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
     group_id: Optional[str],
@@ -1145,6 +1181,9 @@ async def dodo_send(
         if at_list and target_type == 'group':
             for at in at_list:
                 message.append(MessageSegment.at_user(at))
+        if record:
+            logger.warning('[gscore] dodo不支持发送语音')
+            return
 
         if buttons:
             bt = []
@@ -1434,6 +1473,7 @@ async def telegram_send(
     file: Optional[str],
     node: Optional[List[Dict]],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
+    record: Optional[str],
     target_id: Optional[str],
 ):
     from nonebot.adapters.telegram.bot import Bot
@@ -1456,6 +1496,9 @@ async def telegram_send(
             message.append(File.photo(img_bytes))
         if content:
             message.append(Entity.text(content))
+        if record:
+            message.append(File.audio(get_bytes_from_base64_str(record)))
+
         if file:
             file_name, file_content = file.split('|')
             path = Path(__file__).resolve().parent / file_name
@@ -1505,6 +1548,7 @@ async def feishu_send(
     file: Optional[str],
     node: Optional[List[Dict]],
     at_list: Optional[List[str]],
+    record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -1523,6 +1567,9 @@ async def feishu_send(
             )
             del_file(path)
             _type = 'file'
+        elif record:
+            logger.warning('飞书不支持发送MP3语音消息')
+            return
         elif content:
             if at_list and target_type == 'group':
                 for at in at_list:
@@ -1590,6 +1637,7 @@ async def Milky_send(
     file: Optional[str],
     node: Optional[List[Dict]],
     at_list: Optional[List[str]],
+    record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -1624,6 +1672,8 @@ async def Milky_send(
             message.append(MessageSegment.text(content))
         if image:
             message.append(MessageSegment.image(image))
+        if record:
+            message.append(MessageSegment.record(raw=get_bytes_from_base64_str(record)))
 
         if at_list:
             for at in at_list:
@@ -1655,6 +1705,7 @@ async def onebot_v12_send(
     node: Optional[List[Dict]],
     file: Optional[str],
     at_list: Optional[List[str]],
+    record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
 ):

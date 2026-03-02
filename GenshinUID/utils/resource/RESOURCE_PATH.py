@@ -28,6 +28,8 @@ MONSTER_ICON_PATH = RESOURCE_PATH / "monster_icon"
 
 CHAR_DATA_PATH = RESOURCE_PATH / "char_data"
 WEAPON_DATA_PATH = RESOURCE_PATH / "weapon_data"
+MONSTER_DATA_PATH = RESOURCE_PATH / "monster_data"
+REL_DATA_PATH = RESOURCE_PATH / "reliquary_data"
 
 ABYSS_PATH = WIKI_PATH / "abyss_review"
 GUIDE_PATH = WIKI_PATH / "guide"
@@ -85,6 +87,8 @@ def init_dir():
         CHAR_NAMECARDPIC_PATH,
         CHAR_DATA_PATH,
         WEAPON_DATA_PATH,
+        MONSTER_DATA_PATH,
+        REL_DATA_PATH,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

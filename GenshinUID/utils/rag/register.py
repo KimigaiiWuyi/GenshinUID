@@ -1,6 +1,6 @@
 """
 RAG注册主模块
-负责整合角色和武器的RAG注册功能
+负责整合角色、武器、圣遗物和怪物的RAG注册功能
 """
 
 import json
@@ -11,9 +11,11 @@ from gsuid_core.ai_core.models import KnowledgePoint
 from gsuid_core.ai_core.register import ai_entity
 
 from .weapon_parser import parse_weapon_json, build_weapon_global_summary_kp
+from .monster_parser import parse_monster_json, build_monster_global_summary_kp
+from .artifact_parser import parse_artifact_json, build_artifact_global_summary_kp
 from ..map.GS_MAP_PATH import alias_data
 from .character_parser import parse_character_json, build_global_summary_kp
-from ..resource.RESOURCE_PATH import CHAR_DATA_PATH, WEAPON_DATA_PATH
+from ..resource.RESOURCE_PATH import REL_DATA_PATH, CHAR_DATA_PATH, WEAPON_DATA_PATH, MONSTER_DATA_PATH
 from ...genshinuid_adv.get_adv import adv_lst
 
 
@@ -28,11 +30,26 @@ def add_aliases_to_tags(char_name: str, tags: List[str], aliases: Dict[str, List
 
 
 def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[KnowledgePoint]:
-    """解析角色攻略数据为RAG知识块"""
+    """解析角色攻略数据为RAG知识块
+
+    同时构建圣遗物反向索引：圣遗物 -> 适合该圣遗物的角色列表
+    """
     knowledge_points: List[KnowledgePoint] = []
+
+    # 圣遗物反向索引：圣遗物名称 -> 适合该圣遗物的角色列表
+    artifact_to_chars: Dict[str, List[str]] = {}
 
     # 遍历所有角色
     for char_name, char_data in json_data.items():
+        # 收集该角色推荐的圣遗物（用于构建反向索引）
+        artifact_data = char_data.get("artifact", [])
+        for artifact_set in artifact_data:
+            for artifact_name in artifact_set:
+                if artifact_name not in artifact_to_chars:
+                    artifact_to_chars[artifact_name] = []
+                if char_name not in artifact_to_chars[artifact_name]:
+                    artifact_to_chars[artifact_name].append(char_name)
+
         # 构建全局Header
         global_header = f"【角色攻略】\n角色：{char_name}\n---\n"
 
@@ -49,9 +66,8 @@ def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[
                 adv_content += "\n"
 
         # 处理圣遗物推荐
-        artifact_data = char_data.get("artifact", [])
         if artifact_data:
-            adv_content += "## 推荐圣遗物\n"
+            adv_content += "## 推荐圣遗物 (角色适合圣遗物)\n"
             for i, artifact_set in enumerate(artifact_data):
                 adv_content += f"### 配装方案 {i + 1}：\n"
                 for artifact in artifact_set:
@@ -67,7 +83,7 @@ def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[
             adv_content += "\n"
 
         # 构建标签，包含别名
-        tags = ["角色", "攻略", "武器推荐", "圣遗物", char_name]
+        tags = ["角色", "攻略", "武器推荐", "圣遗物推荐", "圣遗物", char_name]
         tags = add_aliases_to_tags(char_name, tags, aliases)
 
         # 添加武器类型标签
@@ -86,6 +102,31 @@ def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[
                 "title": f"{char_name}-角色攻略",
                 "content": adv_content,
                 "tags": tags,
+                "_hash": "",
+            }
+        )
+
+    # 生成圣遗物反向索引知识块
+    for artifact_name, char_list in artifact_to_chars.items():
+        # 去重并排序
+        unique_chars = sorted(list(set(char_list)))
+
+        reverse_content = f"# 【圣遗物反向索引】{artifact_name}\n\n## 适合使用 {artifact_name} 的角色\n\n"
+
+        for char in unique_chars:
+            reverse_content += f"- {char}\n"
+
+        reverse_content += f"\n## 统计信息\n- 共有 {len(unique_chars)} 个角色适合使用此圣遗物\n"
+
+        knowledge_points.append(
+            {
+                "id": f"artifact_reverse_{artifact_name}",
+                "plugin": "genshin",
+                "type": "knowledge",
+                "category": "artifact_reverse_index",
+                "title": f"{artifact_name}-适合角色",
+                "content": reverse_content,
+                "tags": ["圣遗物", "反向索引", "角色推荐", artifact_name],
                 "_hash": "",
             }
         )
@@ -169,6 +210,72 @@ def weapon_register():
         ai_entity(weapon_summary_kp)
 
 
+def artifact_register():
+    """注册所有圣遗物数据"""
+    # 收集所有圣遗物数据，用于生成全局汇总
+    all_artifacts_data: List[Dict] = []
+
+    for i in REL_DATA_PATH.glob("*.json"):
+        try:
+            with open(i, "r", encoding="utf-8") as f:
+                json_data: Dict = json.load(f)
+                # 收集基础圣遗物信息用于汇总
+                level_list = json_data.get("levelList", [4, 5])
+                max_level = max(level_list) if level_list else 5
+                all_artifacts_data.append(
+                    {
+                        "name": json_data.get("name", "未知圣遗物"),
+                        "maxLevel": max_level,
+                        "id": json_data.get("id", 0),
+                    }
+                )
+                # 注册圣遗物详细知识块
+                for kp in parse_artifact_json(json_data):
+                    ai_entity(kp)
+        except Exception as e:
+            logger.warning(f"处理圣遗物文件 {i} 时出错: {e}")
+            continue
+
+    # 生成并注册圣遗物全局汇总知识块
+    if all_artifacts_data:
+        artifact_summary_kp = build_artifact_global_summary_kp(all_artifacts_data)
+        ai_entity(artifact_summary_kp)
+
+    logger.info(f"圣遗物RAG注册完成，共处理 {len(all_artifacts_data)} 套圣遗物")
+
+
+def monster_register():
+    """注册所有怪物数据"""
+    # 收集所有怪物数据，用于生成全局汇总
+    all_monsters_data: List[Dict] = []
+
+    for i in MONSTER_DATA_PATH.glob("*.json"):
+        try:
+            with open(i, "r", encoding="utf-8") as f:
+                json_data: Dict = json.load(f)
+                # 收集基础怪物信息用于汇总
+                all_monsters_data.append(
+                    {
+                        "name": json_data.get("name", "未知怪物"),
+                        "type": json_data.get("type", "未知类型"),
+                        "id": json_data.get("id", 0),
+                    }
+                )
+                # 注册怪物详细知识块
+                for kp in parse_monster_json(json_data):
+                    ai_entity(kp)
+        except Exception as e:
+            logger.warning(f"处理怪物文件 {i} 时出错: {e}")
+            continue
+
+    # 生成并注册怪物全局汇总知识块
+    if all_monsters_data:
+        monster_summary_kp = build_monster_global_summary_kp(all_monsters_data)
+        ai_entity(monster_summary_kp)
+
+    logger.info(f"怪物RAG注册完成，共处理 {len(all_monsters_data)} 个怪物")
+
+
 def rag_register():
     """执行完整的RAG注册"""
     logger.info("开始注册角色RAG数据...")
@@ -178,6 +285,14 @@ def rag_register():
     logger.info("开始注册武器RAG数据...")
     weapon_register()
     logger.info("武器RAG注册完成")
+
+    logger.info("开始注册圣遗物RAG数据...")
+    artifact_register()
+    logger.info("圣遗物RAG注册完成")
+
+    logger.info("开始注册怪物RAG数据...")
+    monster_register()
+    logger.info("怪物RAG注册完成")
 
     logger.info("开始注册角色攻略RAG数据...")
     char_adv_register()

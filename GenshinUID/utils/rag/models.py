@@ -142,3 +142,56 @@ class ConstellationInfo:
             "名称": self.name,
             "效果": self.description,
         }
+
+
+@dataclass
+class ArtifactInfo:
+    """圣遗物套装信息"""
+
+    id: str
+    name: str
+    route: str
+    max_level: int
+    icon: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "ArtifactInfo":
+        """从字典创建圣遗物信息"""
+        level_list = data.get("levelList", [4, 5])
+        max_level = max(level_list) if level_list else 5
+
+        return cls(
+            id=str(data.get("id", "unknown")),
+            name=data.get("name", "未知圣遗物"),
+            route=data.get("route", ""),
+            max_level=max_level,
+            icon=data.get("icon", ""),
+        )
+
+
+@dataclass
+class MonsterInfo:
+    """怪物基础信息"""
+
+    id: str
+    name: str
+    type: str
+    title: str
+    special_name: str
+    description: str
+    icon: str
+    route: str
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "MonsterInfo":
+        """从字典创建怪物信息"""
+        return cls(
+            id=str(data.get("id", "unknown")),
+            name=data.get("name", "未知怪物"),
+            type=data.get("type", "未知类型"),
+            title=data.get("title", ""),
+            special_name=data.get("specialName", ""),
+            description=data.get("description", ""),
+            icon=data.get("icon", ""),
+            route=data.get("route", ""),
+        )

@@ -22,6 +22,7 @@ from GenshinUID.utils.map.GS_MAP_PATH import (  # noqa: E402
     avatarId2Name_fileName,
     avatarId2Star_fileName,
     monster2entry_fileName,
+    reliquaryList_fileName,
     talentId2Name_fileName,
     weaponId2Name_fileName,
     weaponHash2Name_fileName,
@@ -34,7 +35,10 @@ from gsuid_core.utils.api.ambr.request import (  # noqa: E402
     get_ambr_weapon_list,
     get_ambr_monster_data,
     get_ambr_monster_list,
+    get_ambr_reliquary_data,
+    get_ambr_reliquary_list,
 )
+from GenshinUID.utils.resource.RESOURCE_PATH import REL_DATA_PATH, CHAR_DATA_PATH, WEAPON_DATA_PATH, MONSTER_DATA_PATH
 
 """
 from gsuid_core.utils.api.hakush.request import (  # noqa: E402
@@ -231,6 +235,16 @@ async def monster2map():
                     print(f"正在执行monster2map: {monster_main_id}")
                     try:
                         data = await get_ambr_monster_data(monster_main_id)
+                        if data is None:
+                            print(f"monster_main_id: {monster_main_id} 数据为空")
+                            break
+                        with open(
+                            MONSTER_DATA_PATH / f"{monster_main_id}.json",
+                            "w",
+                            encoding="UTF-8",
+                        ) as f:
+                            json.dump(data, f, indent=4, ensure_ascii=False)
+                        print(f"[SaveMonster] 成功保存 {monster_main_id}")
                         break
                     except Exception as e:
                         print(e)
@@ -483,7 +497,7 @@ async def artifact2attrJson() -> None:
         json.dump(temp3, file, ensure_ascii=False)
 
 
-async def restore_hakush_data():
+async def restore_ambr_data():
     global weaponList
     """
     data = await get_hakush_char_list()
@@ -492,12 +506,47 @@ async def restore_hakush_data():
 
     data = await get_ambr_char_list()
     data2 = await get_ambr_weapon_list()
+    data3 = await get_ambr_reliquary_list()
+
+    if data is None or data2 is None or data3 is None:
+        print("[Restore_ambr_data] 数据为空")
+        return
 
     with open(MAP_PATH / charList_fileName, "w", encoding="UTF-8") as f:
         json.dump(data, f, ensure_ascii=False)
 
     with open(MAP_PATH / weaponList_fileName, "w", encoding="UTF-8") as f:
         json.dump(data2, f, ensure_ascii=False)
+
+    with open(MAP_PATH / reliquaryList_fileName, "w", encoding="UTF-8") as f:
+        json.dump(data3, f, ensure_ascii=False)
+
+    for i in data:
+        c_data = await get_ambr_char_data(i)
+        if c_data:
+            with open(CHAR_DATA_PATH / f"{i}.json", "w", encoding="UTF-8") as f:
+                json.dump(c_data, f, ensure_ascii=False)
+            print(f"[SaveChar] 成功保存 {i}")
+        else:
+            print(f"[SaveChar] 失败保存 {i}")
+
+    for i in data2:
+        w_data = await get_ambr_weapon_data(i)
+        if w_data:
+            with open(WEAPON_DATA_PATH / f"{i}.json", "w", encoding="UTF-8") as f:
+                json.dump(w_data, f, ensure_ascii=False)
+            print(f"[SaveWeapon] 成功保存 {i}")
+        else:
+            print(f"[SaveWeapon] 失败保存 {i}")
+
+    for i in data3:
+        r_data = await get_ambr_reliquary_data(i)
+        if r_data:
+            with open(REL_DATA_PATH / f"{i}.json", "w", encoding="UTF-8") as f:
+                json.dump(r_data, f, ensure_ascii=False)
+            print(f"[SaveReliquary] 成功保存 {i}")
+        else:
+            print(f"[SaveReliquary] 失败保存 {i}")
 
     weaponList = data2
 
@@ -524,18 +573,6 @@ async def save_all_weapon_data():
                 json.dump(data, f, ensure_ascii=False)
 
 
-async def save_all_char_data():
-    print("正在执行save_all_char_data")
-    with open(MAP_PATH / charList_fileName, "r", encoding="UTF-8") as f:
-        charList = json.load(f)
-
-    for i in charList:
-        print(i)
-        rdata = await get_ambr_char_data(i)
-        with open(CHAR_PATH / f"{i}.json", "w", encoding="UTF-8") as f:
-            json.dump(rdata, f, ensure_ascii=False)
-
-
 async def save_char_talent_num():
     print("正在执行save_char_talent_num")
     with open(MAP_PATH / charList_fileName, "r", encoding="UTF-8") as f:
@@ -555,9 +592,9 @@ async def save_char_talent_num():
 
 
 async def main():
-    # await download_new_file()
+    await download_new_file()
     await restore_mysData()
-    await restore_hakush_data()
+    await restore_ambr_data()
     await monster2map()
     global raw_data
     try:
@@ -574,8 +611,6 @@ async def main():
     await artifact2attrJson()
     await weaponId2Name()
     await avatarId2SkillGroupList()
-    await save_all_weapon_data()
-    await save_all_char_data()
     await save_char_talent_num()
 
 

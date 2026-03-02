@@ -99,3 +99,31 @@ WEAPON_STAR_BASE_STATS = {
     4: {"基础攻击力": 42, "突破上限": 6},
     5: {"基础攻击力": 46, "突破上限": 6},
 }
+
+# ==================== 圣遗物部位映射 ====================
+ARTIFACT_POS_MAP = {
+    "EQUIP_BRACER": "生之花",
+    "EQUIP_NECKLACE": "死之羽",
+    "EQUIP_SHOES": "时之沙",
+    "EQUIP_RING": "空之杯",
+    "EQUIP_DRESS": "理之冠",
+}
+
+# ==================== 元素抗性映射 ====================
+RESISTANCE_MAP = {
+    "fireSubHurt": "火元素抗性",
+    "grassSubHurt": "草元素抗性",
+    "waterSubHurt": "水元素抗性",
+    "elecSubHurt": "雷元素抗性",
+    "windSubHurt": "风元素抗性",
+    "iceSubHurt": "冰元素抗性",
+    "rockSubHurt": "岩元素抗性",
+    "physicalSubHurt": "物理抗性",
+}
+
+# ==================== 怪物类型映射 ====================
+MONSTER_TYPE_MAP = {
+    "MONSTER_ORDINARY": "普通敌人",
+    "MONSTER_BOSS": "首领敌人",
+    "MONSTER_ENV_ANIMAL": "环境动物",
+}

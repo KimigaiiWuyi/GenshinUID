@@ -32,6 +32,7 @@ mysData_fileName = f"mysData_{version}.json"
 EXMonster_fileName = "ExtraMonster.json"
 charList_fileName = f"charList_{version}.json"
 weaponList_fileName = f"weaponList_{version}.json"
+reliquaryList_fileName = f"reliquaryList_{version}.json"
 
 
 class TS(TypedDict):

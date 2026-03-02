@@ -185,6 +185,75 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
             }
         )
 
+    # ==================== 块 5：武器数值对比信息 ====================
+    # 提取关键数值用于对比分析
+    max_level_stat = None
+    if base_stats:
+        for stat in base_stats:
+            level = stat.get("level", 1)
+            if max_level_stat is None or level > max_level_stat.get("level", 0):
+                max_level_stat = stat
+
+    if max_level_stat:
+        base_atk = max_level_stat.get("baseAtk", 0)
+        prop_type = max_level_stat.get("propType", "")
+        prop_value = max_level_stat.get("propValue", 0)
+        prop_name = FIGHT_PROP_MAP.get(prop_type, prop_type)
+
+        # 精炼效果摘要
+        affix_summary = ""
+        if affix_data:
+            r1_affix = affix_data[0] if affix_data else None
+            r5_affix = affix_data[-1] if len(affix_data) >= 5 else None
+            if r1_affix:
+                affix_summary += f"R1：{clean_html_tags(r1_affix.get('affixDesc', ''))}"
+            if r5_affix and len(affix_data) >= 5:
+                affix_summary += f" | R5：{clean_html_tags(r5_affix.get('affixDesc', ''))}"
+
+        comparison_content = (
+            global_header + f"# {weapon_info.name} 数值对比信息\n\n"
+            f"## 核心数值（用于武器对比）\n"
+            f"- **武器名称**：{weapon_info.name}\n"
+            f"- **武器星级**：{weapon_info.rank}星\n"
+            f"- **武器类型**：{weapon_info.type.value}\n"
+            f"- **满级基础攻击力**：{base_atk}\n"
+            f"- **满级副属性类型**：{prop_name}\n"
+            f"- **满级副属性数值**：{prop_value}\n\n"
+        )
+
+        # 添加精炼效果
+        if affix_summary:
+            comparison_content += f"## 精炼效果摘要\n{affix_summary}\n\n"
+
+        # 添加对比分析说明
+        comparison_content += (
+            f"## 武器对比分析要点\n"
+            f"- **基础攻击力**：{base_atk}（{weapon_info.rank}星武器基准）\n"
+            f"- **副属性**：{prop_name} {prop_value}\n"
+            f"- **适用场景**：根据精炼效果和属性搭配分析\n"
+        )
+
+        # 构建tags列表，确保没有None值
+        comparison_tags: List[str] = ["武器", "对比", "数值"]
+        if weapon_info.name:
+            comparison_tags.append(weapon_info.name)
+        if prop_name:
+            comparison_tags.append(prop_name)
+        comparison_tags.append(f"{weapon_info.rank}星")
+
+        knowledge_points.append(
+            {
+                "id": f"weapon_{weapon_info.id}_comparison",
+                "plugin": "genshin",
+                "type": "knowledge",
+                "category": "weapon_comparison",
+                "title": f"{weapon_info.name}-数值对比信息",
+                "content": comparison_content,
+                "tags": comparison_tags,
+                "_hash": "",
+            }
+        )
+
     return knowledge_points
 
 
@@ -273,5 +342,95 @@ def build_weapon_global_summary_kp(all_weapons_data: List[Dict]) -> KnowledgePoi
         "title": "原神全武器分类统计汇总",
         "content": summary_text,
         "tags": ["武器", "统计", "汇总", "类型", "星级", "主属性"],
+        "_hash": "",
+    }
+
+
+def build_weapon_comparison_summary_kp(all_weapons_data: List[Dict]) -> KnowledgePoint:
+    """生成武器数值对比汇总知识块，用于回答武器强度对比问题"""
+
+    # 按星级分类的武器数值汇总
+    star_weapon_stats: Dict[str, List[Dict]] = {
+        "5星": [],
+        "4星": [],
+    }
+
+    for weapon in all_weapons_data:
+        name = weapon.get("name", "未知武器")
+        rank = weapon.get("rank", 3)
+        weapon_stats = weapon.get("weaponStats", [])
+
+        # 获取满级数据
+        max_level_stat = None
+        for stat in weapon_stats:
+            level = stat.get("level", 1)
+            if max_level_stat is None or level > max_level_stat.get("level", 0):
+                max_level_stat = stat
+
+        if max_level_stat:
+            base_atk = max_level_stat.get("baseAtk", 0)
+            prop_type = max_level_stat.get("propType", "")
+            prop_value = max_level_stat.get("propValue", 0)
+            prop_name = FIGHT_PROP_MAP.get(prop_type, prop_type)
+
+            weapon_data = {
+                "name": name,
+                "base_atk": base_atk,
+                "prop_name": prop_name,
+                "prop_value": prop_value,
+            }
+
+            if rank >= 5:
+                star_weapon_stats["5星"].append(weapon_data)
+            elif rank == 4:
+                star_weapon_stats["4星"].append(weapon_data)
+
+    # 构建对比汇总文本
+    comparison_text = "# 原神武器数值对比汇总\n\n"
+    comparison_text += "> 本知识块包含所有武器的数值信息，用于回答武器强度对比、强多少等问题。\n\n"
+
+    # 5星武器数值汇总
+    comparison_text += "## 5星武器数值汇总\n\n"
+    comparison_text += "| 武器名称 | 满级基础攻击力 | 副属性 | 副属性数值 |\n"
+    comparison_text += "|---------|-------------|-------|----------|\n"
+    for weapon in sorted(star_weapon_stats["5星"], key=lambda x: x["base_atk"], reverse=True):
+        comparison_text += (
+            f"| {weapon['name']} | {weapon['base_atk']} | {weapon['prop_name']} | {weapon['prop_value']}% |\n"
+        )
+    comparison_text += "\n"
+
+    # 4星武器数值汇总
+    comparison_text += "## 4星武器数值汇总\n\n"
+    comparison_text += "| 武器名称 | 满级基础攻击力 | 副属性 | 副属性数值 |\n"
+    comparison_text += "|---------|-------------|-------|----------|\n"
+    for weapon in sorted(star_weapon_stats["4星"], key=lambda x: x["base_atk"], reverse=True):
+        comparison_text += (
+            f"| {weapon['name']} | {weapon['base_atk']} | {weapon['prop_name']} | {weapon['prop_value']}% |\n"
+        )
+    comparison_text += "\n"
+
+    # 添加武器对比分析方法
+    comparison_text += "## 武器强度对比分析方法\n\n"
+    comparison_text += "### 1. 基础攻击力对比\n"
+    comparison_text += "- 5星武器满级基础攻击力范围：542-741\n"
+    comparison_text += "- 4星武器满级基础攻击力范围：454-620\n"
+    comparison_text += "- 同星级武器，基础攻击力差异约为10-15%\n\n"
+    comparison_text += "### 2. 副属性对比\n"
+    comparison_text += "- 暴击伤害：最高66.2%（5星）/ 37.7%（4星）\n"
+    comparison_text += "- 暴击率：最高33.1%（5星）/ 36.8%（4星）\n"
+    comparison_text += "- 元素充能效率：最高55.1%（4星）\n"
+    comparison_text += "- 元素精通：最高221（4星）\n\n"
+    comparison_text += "### 3. 精炼效果对比\n"
+    comparison_text += "- 精炼等级R1→R5，效果提升约50-100%\n"
+    comparison_text += "- 高精炼4星武器可媲美低精炼5星武器\n"
+
+    return {
+        "id": "global_weapon_comparison_summary",
+        "plugin": "genshin",
+        "type": "knowledge",
+        "category": "weapon_comparison_summary",
+        "title": "原神武器数值对比汇总",
+        "content": comparison_text,
+        "tags": ["武器", "对比", "数值", "强度", "攻击力", "副属性", "精炼"],
         "_hash": "",
     }

@@ -4,6 +4,8 @@ from gsuid_core.sv import get_plugin_available_prefix
 from gsuid_core.bot import Bot
 from gsuid_core.message_models import Button
 
+from .rag import rag_register  # noqa: F401
+
 PREFIX = get_plugin_available_prefix("GenshinUID")
 
 

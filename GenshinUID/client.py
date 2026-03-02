@@ -141,6 +141,7 @@ class GsClient:
                     at_list = []
                     group_id = ''
                     markdown = ''
+                    video = ''
                     buttons = []
                     template_buttons = ''
                     template_markdown = {}
@@ -170,6 +171,8 @@ class GsClient:
                                     template_markdown = _c.data
                                 elif _c.type == 'template_buttons':
                                     template_buttons = _c.data
+                                elif _c.type == 'video':
+                                    video = _c.data
                     else:
                         pass
 
@@ -260,6 +263,7 @@ class GsClient:
                                 node,
                                 buttons,
                                 record,
+                                video,
                                 msg.target_id,
                             )
                         elif msg.bot_id == 'kaiheila':
@@ -297,6 +301,7 @@ class GsClient:
                                 node,
                                 at_list,
                                 record,
+                                video,
                                 msg.target_id,
                                 msg.target_type,
                             )
@@ -348,6 +353,7 @@ class GsClient:
                                 markdown,
                                 buttons,
                                 record,
+                                video,
                                 msg.target_id,
                                 msg.target_type,
                                 group_id,
@@ -747,6 +753,8 @@ async def onebot_send(
                     message.append(MessageSegment.at(_c.data))
                 elif _c.type == 'record':
                     message.append(MessageSegment.record(get_bytes_from_base64_str(_c.data)))
+                elif _c.type == 'video':
+                    message.append(MessageSegment.video(get_bytes_from_base64_str(_c.data)))
         return message
 
     async def _send_node(messages):
@@ -925,6 +933,7 @@ async def discord_send(
     markdown: Optional[str],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     record: Optional[str],
+    video: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
     group_id: Optional[str],
@@ -947,6 +956,9 @@ async def discord_send(
 
             if record:
                 message.append(MessageSegment.attachment('temp.mp3', content=get_bytes_from_base64_str(record)))
+            
+            if video:
+                message.append(MessageSegment.attachment('temp.mp4', content=get_bytes_from_base64_str(video)))
 
             if at_list and target_type == 'group':
                 for at in at_list:
@@ -1474,6 +1486,7 @@ async def telegram_send(
     node: Optional[List[Dict]],
     buttons: Optional[Union[List[Dict], List[List[Dict]]]],
     record: Optional[str],
+    video: Optional[str],
     target_id: Optional[str],
 ):
     from nonebot.adapters.telegram.bot import Bot
@@ -1498,6 +1511,8 @@ async def telegram_send(
             message.append(Entity.text(content))
         if record:
             message.append(File.audio(get_bytes_from_base64_str(record)))
+        if video:
+            message.append(File.video(get_bytes_from_base64_str(video)))
 
         if file:
             file_name, file_content = file.split('|')
@@ -1638,6 +1653,7 @@ async def Milky_send(
     node: Optional[List[Dict]],
     at_list: Optional[List[str]],
     record: Optional[str],
+    video: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
 ):
@@ -1674,6 +1690,8 @@ async def Milky_send(
             message.append(MessageSegment.image(image))
         if record:
             message.append(MessageSegment.record(raw=get_bytes_from_base64_str(record)))
+        if video:
+            message.append(MessageSegment.video(raw=get_bytes_from_base64_str(video)))
 
         if at_list:
             for at in at_list:

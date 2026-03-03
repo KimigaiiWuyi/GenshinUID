@@ -8,7 +8,7 @@ from typing import Dict, List
 
 from gsuid_core.logger import logger
 from gsuid_core.ai_core.models import KnowledgePoint
-from gsuid_core.ai_core.register import ai_entity
+from gsuid_core.ai_core.register import ai_alias, ai_entity
 
 from .weapon_parser import parse_weapon_json, build_weapon_global_summary_kp
 from .monster_parser import parse_monster_json, build_monster_global_summary_kp
@@ -17,6 +17,12 @@ from ..map.GS_MAP_PATH import alias_data
 from .character_parser import parse_character_json, build_global_summary_kp
 from ..resource.RESOURCE_PATH import REL_DATA_PATH, CHAR_DATA_PATH, WEAPON_DATA_PATH, MONSTER_DATA_PATH
 from ...genshinuid_adv.get_adv import adv_lst
+
+
+def register_aliases():
+    """注册角色别名"""
+    for main_name, alias_list in alias_data.items():
+        ai_alias(main_name, alias_list)
 
 
 def add_aliases_to_tags(char_name: str, tags: List[str], aliases: Dict[str, List[str]]) -> List[str]:
@@ -297,6 +303,8 @@ def rag_register():
     logger.info("开始注册角色攻略RAG数据...")
     char_adv_register()
     logger.info("角色攻略RAG注册完成")
+
+    register_aliases()
 
     logger.info("所有RAG数据注册完成！")
 

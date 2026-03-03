@@ -1,10 +1,11 @@
 import json
+from typing import Dict
 from pathlib import Path
 
 from ..utils.map.name_covert import alias_to_char_name
 
 with open(Path(__file__).parent / "char_adv_list.json", "r", encoding="UTF-8") as f:
-    adv_lst = json.load(f)
+    adv_lst: Dict = json.load(f)
 
 
 async def weapon_adv(name):

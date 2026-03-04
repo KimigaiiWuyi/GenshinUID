@@ -161,11 +161,50 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
         )
 
     # ==================== 块 4：武器精炼效果 ====================
-    affix_data = json_data.get("weaponAffix", [])
+    affix_data = json_data.get("affix", {})
     if affix_data:
+        # 获取第一个affix的key（通常是 "112515" 这种格式）
+        first_affix_key = next(iter(affix_data.keys()), "")
+        affix_info = affix_data.get(first_affix_key, {})
+
+        affix_name = affix_info.get("name", "")
+        upgrade_data = affix_info.get("upgrade", {})
+
+        if upgrade_data:
+            affix_content = global_header + f"# {weapon_info.name} 精炼效果\n\n"
+
+            if affix_name:
+                affix_content += f"## 特效名称：{affix_name}\n\n"
+
+            affix_content += "## 精炼等级效果\n\n"
+
+            # 解析精炼等级 0-4 对应 R1-R5
+            for level in range(5):
+                level_key = str(level)
+                if level_key in upgrade_data:
+                    desc = clean_html_tags(upgrade_data[level_key])
+                    r_level = level + 1  # 0->R1, 4->R5
+                    affix_content += f"### 精炼等阶 {r_level}\n{desc}\n\n"
+
+            knowledge_points.append(
+                {
+                    "id": f"weapon_{weapon_info.id}_affix",
+                    "plugin": "genshin",
+                    "type": "knowledge",
+                    "category": "weapon_affix",
+                    "title": f"{weapon_info.name}-精炼效果",
+                    "content": affix_content,
+                    "tags": ["武器", "精炼", weapon_info.name, affix_name],
+                    "_hash": "",
+                }
+            )
+
+    # 保留对旧格式 weaponAffix 的支持
+    old_affix_data = json_data.get("weaponAffix", [])
+    if old_affix_data and not affix_data:
         affix_content = global_header + f"# {weapon_info.name} 精炼效果\n\n## 精炼等级效果\n"
 
-        for affix in affix_data:
+        for affix in old_affix_data:
             name = affix.get("affixName", "")
             desc = clean_html_tags(affix.get("affixDesc", ""))
             level = affix.get("effect", 1)
@@ -202,13 +241,33 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
 
         # 精炼效果摘要
         affix_summary = ""
-        if affix_data:
-            r1_affix = affix_data[0] if affix_data else None
-            r5_affix = affix_data[-1] if len(affix_data) >= 5 else None
-            if r1_affix:
-                affix_summary += f"R1：{clean_html_tags(r1_affix.get('affixDesc', ''))}"
-            if r5_affix and len(affix_data) >= 5:
-                affix_summary += f" | R5：{clean_html_tags(r5_affix.get('affixDesc', ''))}"
+
+        # 首先尝试新格式的affix字段
+        new_affix_data = json_data.get("affix", {})
+        if new_affix_data:
+            first_affix_key = next(iter(new_affix_data.keys()), "")
+            affix_info = new_affix_data.get(first_affix_key, {})
+            upgrade_data = affix_info.get("upgrade", {})
+
+            # 获取R1和R5的描述
+            r1_desc = upgrade_data.get("0", "")
+            r5_desc = upgrade_data.get("4", "")
+
+            if r1_desc:
+                affix_summary += f"R1：{clean_html_tags(r1_desc)}"
+            if r5_desc:
+                affix_summary += f" | R5：{clean_html_tags(r5_desc)}"
+
+        # 如果没有新格式数据，尝试旧格式的weaponAffix字段
+        if not affix_summary:
+            old_affix_data = json_data.get("weaponAffix", [])
+            if old_affix_data:
+                r1_affix = old_affix_data[0] if old_affix_data else None
+                r5_affix = old_affix_data[-1] if len(old_affix_data) >= 5 else None
+                if r1_affix:
+                    affix_summary += f"R1：{clean_html_tags(r1_affix.get('affixDesc', ''))}"
+                if r5_affix and len(old_affix_data) >= 5:
+                    affix_summary += f" | R5：{clean_html_tags(r5_affix.get('affixDesc', ''))}"
 
         comparison_content = (
             global_header + f"# {weapon_info.name} 数值对比信息\n\n"

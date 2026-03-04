@@ -185,29 +185,32 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
 
     best_hit = Image.open(TEXT_PATH / "best_hit.png").convert("RGBA")
     max_damage_avatar = fight_statisic["max_damage_avatar"]
-    _char_id = max_damage_avatar["avatar_id"]
-    char_side_path = CHAR_SIDE_PATH / f"{_char_id}.png"
-    if not char_side_path.exists():
-        await download_file(max_damage_avatar["avatar_icon"], 3, f"{_char_id}.png")
-    char_side = Image.open(char_side_path)
-    char_side = char_side.resize((75, 75))
-    best_hit.paste(char_side, (27, 7), char_side)
-    best_hit_draw = ImageDraw.Draw(best_hit)
-    best_hit_draw.text(
-        (189, 58),
-        f"{max_damage_avatar['value']}",
-        (255, 255, 255),
-        gs_font_26,
-        "mm",
-    )
-    best_hit_draw.text(
-        (68, 91),
-        "最高伤害",
-        (255, 255, 255),
-        gs_font_20,
-        "mm",
-    )
-    title.paste(best_hit, (860, 222), best_hit)
+
+    if max_damage_avatar:
+        _char_id = max_damage_avatar["avatar_id"]
+        char_side_path = CHAR_SIDE_PATH / f"{_char_id}.png"
+        if not char_side_path.exists():
+            await download_file(max_damage_avatar["avatar_icon"], 3, f"{_char_id}.png")
+        char_side = Image.open(char_side_path)
+        char_side = char_side.resize((75, 75))
+        best_hit.paste(char_side, (27, 7), char_side)
+        best_hit_draw = ImageDraw.Draw(best_hit)
+        best_hit_draw.text(
+            (189, 58),
+            f"{max_damage_avatar['value']}",
+            (255, 255, 255),
+            gs_font_26,
+            "mm",
+        )
+        best_hit_draw.text(
+            (68, 91),
+            "最高伤害",
+            (255, 255, 255),
+            gs_font_20,
+            "mm",
+        )
+        title.paste(best_hit, (860, 222), best_hit)
+
     img.paste(title, (0, 0), title)
 
     status = Image.open(TEXT_PATH / "bar.png").convert("RGBA")

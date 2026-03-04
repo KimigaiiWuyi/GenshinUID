@@ -1,13 +1,12 @@
-import httpx
 import math
 import random
 import logging
 from io import BytesIO
 from typing import Dict, Optional
 
+import httpx
 import aiofiles
 from PIL import Image, ImageDraw, ImageChops
-from httpx import get
 
 from .etc.etc import TEXT_PATH, strLenth, get_artifacts_value
 from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
@@ -369,17 +368,17 @@ async def get_bg_card(char_element: str, ex_len: int, char_img: Image.Image) -> 
 
 async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image.Image:
     char_name = char.char_name
-    
+
     # 如果启用了随机图片且没有指定URL
     if gsconfig.get_config("RandomPic").data and char_url is None:
         if char_name == "旅行者":
             char_name_url = "荧"
         else:
             char_name_url = char_name
-        
+
         chbg_path = CU_CHBG_PATH / char_name_url
         char_url = f"{PIC_API}{char_name_url}"
-        
+
         # 如果本地有缓存图片，直接使用
         if chbg_path.exists():
             cuch_img = random.choice(list(chbg_path.iterdir()))
@@ -391,7 +390,7 @@ async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image
                 # 创建一个新的客户端，避免代理问题
                 with httpx.Client(verify=False, follow_redirects=True, timeout=30.0) as client:
                     char_data = client.get(char_url)
-                
+
                 if char_data.status_code == 200:
                     content_type = char_data.headers.get("Content-Type", "")
                     if "application/json" in content_type:
@@ -408,14 +407,14 @@ async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image
 
     based_w, based_h = 600, 1200
     offset_x, offset_y = 200, 0
-    
+
     # 如果还没有图片数据，尝试下载或使用本地图片
     if char_url and char.char_bytes is None:
         try:
             # 第二次请求：下载实际图片
             with httpx.Client(verify=False, follow_redirects=True, timeout=30.0) as client:
                 response = client.get(char_url)
-            
+
             if response.status_code == 200:
                 char.char_bytes = response.content
                 logger.info(f"[角色图片] {char_name} 下载成功")
@@ -425,7 +424,7 @@ async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image
         except Exception as e:
             logger.error(f"[角色图片] {char_name} 下载异常: {e}")
             char_url = None
-    
+
     # 处理图片
     if char_url and char.char_bytes is not None:
         try:
@@ -435,7 +434,7 @@ async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image
             char_img = None
     else:
         char_img = None
-    
+
     # 如果图片获取失败，使用本地缓存或创建默认图片
     if char_img is None:
         gacha_path = GACHA_IMG_PATH / f"{char_name}.png"
@@ -457,7 +456,7 @@ async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image
         scale_f = "%.3f" % (w / h)
         new_w = math.ceil(based_new_h * float(scale_f))
         new_h = math.ceil(based_new_w / float(scale_f))
-        
+
         if scale_f > based_scale:
             bg_img2 = char_img.resize((new_w, based_new_h), Image.Resampling.LANCZOS)
             x1 = new_w / 2 - based_new_w / 2 + offset_x
@@ -470,14 +469,14 @@ async def get_char_img(char: Character, char_url: Optional[str] = None) -> Image
             y1 = new_h / 2 - based_new_h / 2 + offset_y / 2
             x2 = based_new_w
             y2 = new_h / 2 + based_new_h / 2 - offset_y / 2
-        
+
         char_img = bg_img2.crop((x1, y1, x2, y2))
 
     # 应用遮罩
     char_info_mask = Image.open(TEXT_PATH / "char_info_mask.png")
     char_result = Image.new("RGBA", (based_w, based_h), (0, 0, 0, 0))
     char_result.paste(char_img, (0, 0), char_info_mask)
-    
+
     return char_result
 
 

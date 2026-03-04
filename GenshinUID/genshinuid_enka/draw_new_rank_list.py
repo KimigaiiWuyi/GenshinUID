@@ -38,7 +38,7 @@ def get_weapon_name(weapon_icon_name: str):
     for i in weaponList:
         weapon = weaponList[i]
         if weapon["icon"] == weapon_icon_name:
-            return weapon["CHS"]
+            return weapon["name"]
     else:
         return "无锋剑"
 

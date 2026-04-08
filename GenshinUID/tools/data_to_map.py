@@ -272,6 +272,7 @@ async def download_new_file():
         f"{base_url}/ExcelBinOutput/ReliquaryExcelConfigData.json",
         f"{base_url}/ExcelBinOutput/DisplayItemExcelConfigData.json",
         f"{base_url}/TextMap/TextMapCHS.json",
+        f"{base_url}/TextMap/TextMap_MediumCHS.json",
     ]
 
     async with httpx.AsyncClient() as client:
@@ -580,7 +581,7 @@ async def save_char_talent_num():
 
     result = {}
     for i in charList:
-        with open(CHAR_PATH / f"{i}.json", "r", encoding="UTF-8") as f:
+        with open(CHAR_DATA_PATH / f"{i}.json", "r", encoding="UTF-8") as f:
             data = json.load(f)
         try:
             result[i] = [i["icon"] for i in data["constellation"].values()]
@@ -592,16 +593,21 @@ async def save_char_talent_num():
 
 
 async def main():
-    await download_new_file()
-    await restore_mysData()
+    # await download_new_file()
+    # await restore_mysData()
     await restore_ambr_data()
-    await monster2map()
+    # await monster2map()
     global raw_data
     try:
         with open(DATA_PATH / "TextMapCHS.json", "r", encoding="UTF-8") as f:
             raw_data = json.load(f)
+
+        with open(DATA_PATH / "TextMap_MediumCHS.json", "r", encoding="UTF-8") as f:
+            raw_data.update(json.load(f))
+
     except FileNotFoundError:
         pass
+    """
     await avatarId2NameJson()
     await avatarName2ElementJson()
     await weaponHash2NameJson()
@@ -611,6 +617,7 @@ async def main():
     await artifact2attrJson()
     await weaponId2Name()
     await avatarId2SkillGroupList()
+    """
     await save_char_talent_num()
 
 

@@ -5,7 +5,7 @@
 
 from typing import Dict, List
 
-from gsuid_core.ai_core.models import KnowledgePoint
+from gsuid_core.ai_core.models import KnowledgeBase
 
 from .utils import clean_html_tags
 from .models import MonsterInfo
@@ -18,7 +18,7 @@ MONSTER_TYPE_MAP = {
 }
 
 
-def parse_monster_json(json_data: Dict) -> List[KnowledgePoint]:
+def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
     """
     解析怪物JSON数据为RAG知识块
 
@@ -37,7 +37,7 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgePoint]:
     # 构建全局Header
     global_header = f"【怪物情报】\n怪物：{monster_info.name} | ID：{monster_info.id}\n类型：{monster_info.type}\n---\n"
 
-    knowledge_points: List[KnowledgePoint] = []
+    knowledge_points: List[KnowledgeBase] = []
 
     # ==================== 块 1：怪物基础信息 ====================
     monster_content = (
@@ -59,12 +59,10 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgePoint]:
         {
             "id": f"monster_{monster_info.id}_info",
             "plugin": "genshin",
-            "type": "knowledge",
-            "category": "monster_info",
             "title": f"{monster_info.name}-基础信息",
             "content": monster_content,
             "tags": ["怪物", monster_info.type, monster_info.name],
-            "_hash": "",
+            "source": "plugin",
         }
     )
 
@@ -109,6 +107,9 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgePoint]:
                 }
                 for key, value in resistance.items():
                     resist_name = resist_map.get(key, key)
+                    # 跳过非数值类型的抗性（如 critical 列表）
+                    if not isinstance(value, (int, float)):
+                        continue
                     # 转换为百分比
                     resist_pct = value * 100
                     attr_content += f"- **{resist_name}**：{resist_pct:.0f}%\n"
@@ -123,8 +124,13 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgePoint]:
                         item_rank = item_data.get("rank", 0)
                         count = item_data.get("count", "")
                         if item_name:
+                            # 处理 count 可能是列表的情况
                             if count:
-                                attr_content += f"- **{item_name}**（{item_rank}星）：掉落概率 {count}\n"
+                                if isinstance(count, list):
+                                    count_str = "-".join(str(c) for c in count)
+                                else:
+                                    count_str = str(count)
+                                attr_content += f"- **{item_name}**（{item_rank}星）：掉落概率 {count_str}\n"
                             else:
                                 attr_content += f"- **{item_name}**（{item_rank}星）\n"
 
@@ -132,19 +138,17 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgePoint]:
                 {
                     "id": f"monster_{monster_info.id}_attr_{entry_id}",
                     "plugin": "genshin",
-                    "type": "knowledge",
-                    "category": "monster_attr",
                     "title": f"{monster_info.name}-属性与抗性",
                     "content": attr_content,
                     "tags": ["怪物", "属性", "抗性", monster_info.name],
-                    "_hash": "",
+                    "source": "plugin",
                 }
             )
 
     return knowledge_points
 
 
-def build_monster_global_summary_kp(all_monsters_data: List[Dict]) -> KnowledgePoint:
+def build_monster_global_summary_kp(all_monsters_data: List[Dict]) -> KnowledgeBase:
     """生成怪物全局汇总知识块，用于回答统计类问题
 
     例如："史莱姆有多少种？"、"所有精英敌人有哪些？"
@@ -177,10 +181,8 @@ def build_monster_global_summary_kp(all_monsters_data: List[Dict]) -> KnowledgeP
     return {
         "id": "monster_global_summary",
         "plugin": "genshin",
-        "type": "knowledge",
-        "category": "monster_summary",
         "title": "怪物全局汇总",
         "content": content,
         "tags": ["怪物", "汇总", "统计"],
-        "_hash": "",
+        "source": "plugin",
     }

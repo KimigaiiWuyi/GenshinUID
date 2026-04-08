@@ -1,4 +1,35 @@
 {
+  "霜结的誓金枝": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addDef+16;GeoDmgBonus+60;lunarCrystallizeDmgBonus+60",
+        "2": "addDef+20;GeoDmgBonus+75;lunarCrystallizeDmgBonus+75",
+        "3": "addDef+24;GeoDmgBonus+90;lunarCrystallizeDmgBonus+90",
+        "4": "addDef+28;GeoDmgBonus+105;lunarCrystallizeDmgBonus+105",
+        "5": "addDef+32;GeoDmgBonus+120;lunarCrystallizeDmgBonus+120"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 4,
+      "extra": {
+        
+      }
+    }
+  },
   "狼的武功歌": {
     "normal": {
       "normal_effect": {

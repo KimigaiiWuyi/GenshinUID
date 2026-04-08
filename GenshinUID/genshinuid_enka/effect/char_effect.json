@@ -1,4 +1,46 @@
 {
+  "莉奈娅": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "GeoResist+-30",
+        "70": "elementalMastery+5%def"
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "critDmg+40;百万吨重锤:critDmg+150",
+        "3": "",
+        "4": "addDef+50",
+        "5": "",
+        "6": ""
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
   "法尔伽": {
     "normal": {
       "normal_skill": {

@@ -9,7 +9,6 @@ from gsuid_core.utils.database.models import GsUser
 from gsuid_core.utils.plugins_config.gs_config import core_plugins_config
 
 from ..utils.mys_api import mys_api
-from ..genshinuid_config.gs_config import gsconfig
 
 private_msg_list = {}
 group_msg_list = {}
@@ -135,21 +134,12 @@ async def single_daily_sign(bot_id: str, uid: str, gid: str, qid: str):
                 "failed": 0,
                 "push_message": "",
             }
-        # 检查是否开启简洁签到
-        if gsconfig.get_config("SignReportSimple").data:
-            # 如果失败, 则添加到推送列表
-            if im.startswith(("签到失败", "网络有点忙", "OK", "ok")):
-                message = f"[CQ:at,qq={qid}] {im}"
-                group_msg_list[gid]["failed"] += 1
-                group_msg_list[gid]["push_message"] += "\n" + message
-            else:
-                group_msg_list[gid]["success"] += 1
-        # 没有开启简洁签到, 则每条消息都要携带@信息
-        else:
-            # 不用MessageSegment.at(row[2])，因为不方便移植
+        if im.startswith(("签到失败", "网络有点忙", "OK", "ok")):
             message = f"[CQ:at,qq={qid}] {im}"
+            group_msg_list[gid]["failed"] += 1
             group_msg_list[gid]["push_message"] += "\n" + message
-            group_msg_list[gid]["success"] -= 1
+        else:
+            group_msg_list[gid]["success"] += 1
 
 
 async def daily_sign():

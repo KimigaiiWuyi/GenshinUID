@@ -6,7 +6,7 @@ from gsuid_core.utils.plugins_config.models import (
     GsBoolConfig,
     GsDictConfig,
     GsListConfig,
-    GsListStrConfig,
+    GsTimeRConfig,
 )
 
 CONIFG_DEFAULT: Dict[str, GSC] = {
@@ -20,16 +20,20 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         "原神公告推送ID列表",
         [],
     ),
-    "SignTime": GsListStrConfig("每晚签到时间设置", "每晚米游社签到时间设置（时，分）", ["0", "38"]),
-    "BBSTaskTime": GsListStrConfig(
+    "SignTime": GsTimeRConfig(
+        "每晚签到时间设置",
+        "每晚米游社签到时间设置（时，分）",
+        (0, 38),
+    ),
+    "GroupSignReport": GsBoolConfig(
+        "群聊签到报告",
+        "开启后将在群聊内发送用户签到报告",
+        True,
+    ),
+    "BBSTaskTime": GsTimeRConfig(
         "每晚米游社任务时间设置",
         "每晚米游社任务时间设置（时，分）",
-        ["1", "41"],
-    ),
-    "GetDrawTaskTime": GsListStrConfig(
-        "每晚留影叙佳期任务时间设置",
-        "每晚留影叙佳期任务时间设置（时，分）",
-        ["3", "25"],
+        (1, 41),
     ),
     "MhyBBSCoinReport": GsBoolConfig(
         "米游币推送",
@@ -41,20 +45,15 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         "开启后会在群聊中推送当前群米游币任务完成情况",
         True,
     ),
-    "SignReportSimple": GsBoolConfig(
-        "简洁签到报告",
-        "开启后可以大大减少每日签到报告字数",
-        True,
-    ),
     "PrivateReport": GsBoolConfig(
-        "私聊报告",
+        "米游币任务完成私聊报告",
         "关闭后将不再给主人推送当天米游币任务完成情况",
         False,
     ),
     "PrivateSignReport": GsBoolConfig(
         "签到私聊报告",
-        "关闭后将不再给任何人推送当天签到任务完成情况",
-        True,
+        "关闭后将不再给任何私聊用户推送当天签到任务完成情况",
+        False,
     ),
     "RandomPic": GsBoolConfig(
         "随机图",
@@ -100,11 +99,6 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
     "ColorBG": GsBoolConfig(
         "多彩面板",
         "面板颜色不按照属性来渲染,而按照自定义颜色",
-        False,
-    ),
-    "DefaultPayWX": GsBoolConfig(
-        "支付默认微信",
-        "开启后使用gsrc命令将会以微信作为优先付款方式",
         False,
     ),
     "DefaultBaseBG": GsBoolConfig(

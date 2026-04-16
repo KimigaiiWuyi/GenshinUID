@@ -11,7 +11,8 @@ from ..utils.message import UID_HINT
 from ..genshinuid_config.gs_config import gsconfig
 
 SIGN_TIME = gsconfig.get_config("SignTime").data
-IS_REPORT = gsconfig.get_config("PrivateSignReport").data
+IS_REPORT_PRIVATE = gsconfig.get_config("PrivateSignReport").data
+IS_REPORT_GROUP = gsconfig.get_config("GroupSignReport").data
 
 sv_sign = SV("原神签到")
 sv_sign_config = SV("原神签到管理", pm=2)
@@ -49,15 +50,17 @@ async def send_daily_sign():
     datas = await gs_subscribe.get_subscribe("[原神] 自动签到")
     priv_result, group_result = await gs_subscribe.muti_task(datas, sign_in, "uid")
 
-    for _, data in priv_result.items():
-        im = "\n".join(data["im"])
-        event = data["event"]
-        await event.send(im)
+    if IS_REPORT_PRIVATE:
+        for _, data in priv_result.items():
+            im = "\n".join(data["im"])
+            event = data["event"]
+            await event.send(im)
 
-    for _, data in group_result.items():
-        im = "✅ 原神今日自动签到已完成！\n"
-        im += f"📝 本群共签到成功{data['success']}人，共签到失败{data['fail']}人。"
-        event = data["event"]
-        await event.send(im)
+    if IS_REPORT_GROUP:
+        for _, data in group_result.items():
+            im = "✅ 原神今日自动签到已完成！\n"
+            im += f"📝 本群共签到成功{data['success']}人，共签到失败{data['fail']}人。"
+            event = data["event"]
+            await event.send(im)
 
     logger.info("[原神] [每日全部签到]群聊推送完成")

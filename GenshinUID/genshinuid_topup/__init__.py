@@ -1,3 +1,4 @@
+'''
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.models import Event
@@ -45,3 +46,4 @@ async def send_qrcode_login(bot: Bot, ev: Event):
         gid = ev.group_id
 
     await topup_(bot, ev.bot_id, ev.user_id, gid, goods_id, method)
+'''

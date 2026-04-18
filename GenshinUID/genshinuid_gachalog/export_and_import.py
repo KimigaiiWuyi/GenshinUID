@@ -33,24 +33,24 @@ async def import_data(uid: str, raw_data: List[Dict]):
 
         if item["item_type"] == "角色":
             for _id in charList:
-                if charList[_id]["CHS"] == item["name"]:
+                if charList[_id]["name"] == item["name"]:
                     item["item_id"] = _id
                     break
         else:
             for _id in weaponList:
-                if weaponList[_id]["CHS"] == item["name"]:
+                if weaponList[_id]["name"] == item["name"]:
                     item["item_id"] = _id
                     break
 
         if "name" not in item or "rank_type" not in item:
             if int(item["item_id"]) >= 100000:
                 char_data = charList[str(item["item_id"])]
-                item["name"] = char_data["CHS"]
+                item["name"] = char_data["name"]
                 item["rank_type"] = "5" if char_data["rank"] == "QUALITY_ORANGE" else "4"
                 item["item_type"] = "角色"
             else:
                 weapon_data = weaponList[str(item["item_id"])]
-                item["name"] = weapon_data["CHS"]
+                item["name"] = weapon_data["name"]
                 item["rank_type"] = str(weapon_data["rank"])
                 item["item_type"] = "武器"
 
@@ -172,7 +172,7 @@ async def export_gachalogs(uid: str, version: str) -> dict:
                 weaponNmae2Id[weaponId2Name_data[i]] = i
 
             for i in charList:
-                charNmae2Id[charList[i]["CHS"]] = i
+                charNmae2Id[charList[i]["name"]] = i
 
             for i in all_gacha_type_name:
                 # i: 新手祈愿, 常驻祈愿, ...

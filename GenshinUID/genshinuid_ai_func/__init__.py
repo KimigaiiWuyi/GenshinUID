@@ -5,7 +5,7 @@ GenshinUID AI Tools 注册模块
 """
 
 from io import BytesIO
-from typing import Dict, List
+from typing import Union
 
 from PIL import Image
 from pydantic_ai import RunContext
@@ -35,7 +35,7 @@ def convert_img(img: Image.Image) -> bytes:
     return buf.getvalue()
 
 
-async def send_image(bot: Bot, im) -> None:
+async def send_image(bot: Bot, im: Union[Image.Image, tuple, bytes, str]) -> None:
     """发送图片，处理bytes/Image/str等不同类型"""
     if isinstance(im, Image.Image):
         await bot.send(convert_img(im))
@@ -53,8 +53,8 @@ async def send_image(bot: Bot, im) -> None:
 
 async def get_uid_from_ctx(ctx: RunContext[ToolContext]) -> str:
     """从上下文中获取用户UID"""
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
     if ev is None or bot is None:
         raise ValueError("无法获取用户信息")
 
@@ -62,6 +62,26 @@ async def get_uid_from_ctx(ctx: RunContext[ToolContext]) -> str:
     if uid is None:
         raise ValueError("用户未绑定UID，请先绑定")
     return uid
+
+
+def _parse_resin_time(recovery_time_str: str) -> tuple[int, int]:
+    """解析树脂恢复时间字符串，返回(小时, 分钟)"""
+    if not recovery_time_str.isdigit():
+        return 0, 0
+    seconds = int(recovery_time_str)
+    hours = seconds // 3600
+    mins = (seconds % 3600) // 60
+    return hours, mins
+
+
+def _format_expedition_status(expeditions: list) -> tuple[int, int]:
+    """解析派遣状态，返回(进行中数量, 总数量)"""
+    total = len(expeditions)
+    ongoing = 0
+    for e in expeditions:
+        if isinstance(e, dict) and e.get("status") == "Ongoing":
+            ongoing += 1
+    return ongoing, total
 
 
 @ai_tools(category="common")
@@ -77,8 +97,8 @@ async def get_resin_status(
     Returns:
         体力状态文本，包含当前树脂/上限、浓缩树脂数量、洞天力和宝钱等
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -91,51 +111,66 @@ async def get_resin_status(
     if isinstance(data, int):
         return f"获取体力数据失败: {get_error(data)}"
 
-    # 解析体力数据
-    resin = data.get("resin", {}) if isinstance(data, dict) else {}
-    current_resin = resin.get("current_resin", 0)
-    max_resin = resin.get("max_resin", 160)
+    if not isinstance(data, dict):
+        return "体力数据格式错误"
 
-    # 计算树脂溢出情况
-    overflow = current_resin - max_resin
+    # 解析体力数据 - API直接返回顶层字段
+    current_resin = data.get("current_resin", 0)
+    max_resin = data.get("max_resin", 160)
+    resin_recovery_time = data.get("resin_recovery_time", "0")
+
+    # 计算树脂恢复时间
+    hours, mins = _parse_resin_time(resin_recovery_time)
     full_time = ""
-    if overflow > 0:
-        # 树脂溢出，每8分钟回复1点
-        recovery_minutes = overflow * 8
-        hours = recovery_minutes // 60
-        mins = recovery_minutes % 60
-        full_time = f"（溢出+{overflow}，预计{hours}小时{mins}分后到达上限）"
-    elif current_resin >= max_resin:
+    if isinstance(current_resin, int) and isinstance(max_resin, int) and current_resin >= max_resin:
         full_time = "（已满）"
-    else:
-        remaining = max_resin - current_resin
-        recovery_minutes = remaining * 8
-        hours = recovery_minutes // 60
-        mins = recovery_minutes % 60
+    elif hours > 0 or mins > 0:
         full_time = f"（预计{hours}小时{mins}分后满）"
 
-    # 浓缩树脂
-    resin_coin = data.get("resin_coin", {}) if isinstance(data, dict) else {}
-    condenser_resin = resin_coin.get("current_resin_coin", 0)
+    # 浓缩树脂 - 通过 transformer 获取
+    transformer = data.get("transformer", {})
+    condenser_resin_text = "无"
+    if isinstance(transformer, dict) and transformer.get("obtained", False):
+        condenser_resin_text = transformer.get("latest_job_id", "可用")
 
-    # 洞天力和宝钱
-    time_robot = data.get("time_robot", {}) if isinstance(data, dict) else {}
-    adeptal_energy = time_robot.get("current_adeptal_energy", 0)
-    max_adeptal = time_robot.get("max_adeptal_energy", 2400)
+    # 洞天宝钱
+    current_home_coin = data.get("current_home_coin", 0)
+    max_home_coin = data.get("max_home_coin", 2400)
 
     # 派遣状态
-    expedition_info = data.get("expedition", []) if isinstance(data, dict) else []
-    ongoing_expeditions = len([e for e in expedition_info if e.get("status") == "Ongoing"])
+    expeditions = data.get("expeditions", [])
+    if isinstance(expeditions, list):
+        ongoing, total = _format_expedition_status(expeditions)
+    else:
+        ongoing, total = 0, 0
+
+    # 每日任务完成情况
+    finished_task_num = data.get("finished_task_num", 0)
+    total_task_num = data.get("total_task_num", 0)
+    task_status = f"{finished_task_num}/{total_task_num}"
 
     return f"""【树脂状态】
 当前树脂: {current_resin}/{max_resin} {full_time}
-浓缩树脂: {condenser_resin}个
+浓缩树脂: {condenser_resin_text}
 
-【洞天力】
-当前: {adeptal_energy}/{max_adeptal}
+【洞天宝钱】
+当前: {current_home_coin}/{max_home_coin}
 
 【派遣】
-进行中: {ongoing_expeditions}个"""
+进行中: {ongoing}/{total}个
+
+【每日委托】
+完成: {task_status}"""
+
+
+def _convert_timestamp(timestamp: int) -> str:
+    """将时间戳转换为人类可读字符串"""
+    days = timestamp // (24 * 3600)
+    hours = (timestamp % (24 * 3600)) // 3600
+    minutes = (timestamp % 3600) // 60
+    if days > 0:
+        return f"{days}天{hours}时{minutes}分"
+    return f"{hours}时{minutes}分"
 
 
 @ai_tools(category="common")
@@ -151,8 +186,8 @@ async def get_calendar_activities(
     Returns:
         活动日历文本，包含所有活动的状态和倒计时
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -169,26 +204,19 @@ async def get_calendar_activities(
         return "活动数据格式错误"
 
     act_list = data.get("act_list", [])
-
-    if not act_list:
+    if not isinstance(act_list, list) or len(act_list) == 0:
         return "暂无活动数据"
-
-    def convert_timestamp_to_string(timestamp: int) -> str:
-        days = timestamp // (24 * 3600)
-        hours = (timestamp % (24 * 3600)) // 3600
-        minutes = (timestamp % 3600) // 60
-        if days > 0:
-            return f"{days}天{hours}时{minutes}分"
-        return f"{hours}时{minutes}分"
 
     result = "【活动日历】\n\n"
 
     # 分类展示
-    ongoing: List[str] = []  # 进行中
-    upcoming: List[str] = []  # 即将开始
-    weekly: List[str] = []  # 周常任务
+    ongoing: list[str] = []
+    upcoming: list[str] = []
+    weekly: list[str] = []
 
     for act in act_list:
+        if not isinstance(act, dict):
+            continue
         name = act.get("name", "未知")
         status = act.get("status", 0)
         countdown = act.get("countdown_seconds", 0)
@@ -200,14 +228,14 @@ async def get_calendar_activities(
                 status_text = "✅已完成" if is_finished else "❌未完成"
                 weekly.append(f"• {name}: {status_text}")
             else:
-                time_text = convert_timestamp_to_string(countdown)
+                time_text = _convert_timestamp(countdown)
                 if is_finished:
                     status_text = "✅已完成"
                 else:
                     status_text = f"⏳剩余 {time_text}"
                 ongoing.append(f"• {name}: {status_text}")
         else:  # 未开始
-            time_text = convert_timestamp_to_string(countdown)
+            time_text = _convert_timestamp(countdown)
             upcoming.append(f"• {name}: 距开启 {time_text}")
 
     if ongoing:
@@ -215,7 +243,7 @@ async def get_calendar_activities(
     if weekly:
         result += "【周常任务】\n" + "\n".join(weekly) + "\n\n"
     if upcoming:
-        result += "【即将开始】\n" + "\n".join(upcoming[:5])  # 限制显示数量
+        result += "【即将开始】\n" + "\n".join(upcoming[:5])
 
     return result
 
@@ -233,8 +261,8 @@ async def check_weekly_tasks(
     Returns:
         周常任务完成状态文本
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -251,20 +279,21 @@ async def check_weekly_tasks(
     # 深渊（幻想真境剧诗）
     if isinstance(abyss_data, dict):
         seasons = abyss_data.get("seasons", [])
-        if seasons:
+        if isinstance(seasons, list) and len(seasons) > 0:
             latest_season = seasons[-1]
-            schedule_name = latest_season.get("schedule_name", "未知")
-            battle_time = latest_season.get("battle_time", 0)
-            # 0=未开启 1=已解锁(进行中) 2=已结束(可领取) 3=已结束(已领取)
-            if battle_time == 0:
-                status = "❌ 未开启"
-            elif battle_time == 1:
-                status = "🔄 进行中"
-            elif battle_time == 2:
-                status = "✅ 可领取"
-            else:
-                status = "✅ 已完成"
-            result += f"• 幻想真境剧诗({schedule_name}): {status}"
+            if isinstance(latest_season, dict):
+                schedule_name = latest_season.get("schedule_name", "未知")
+                battle_time = latest_season.get("battle_time", 0)
+                # 0=未开启 1=已解锁(进行中) 2=已结束(可领取) 3=已结束(已领取)
+                if battle_time == 0:
+                    status = "❌ 未开启"
+                elif battle_time == 1:
+                    status = "🔄 进行中"
+                elif battle_time == 2:
+                    status = "✅ 可领取"
+                else:
+                    status = "✅ 已完成"
+                result += f"• 幻想真境剧诗({schedule_name}): {status}"
 
     # 获取旧深渊状态
     old_abyss_data = await mys_api.get_poetry_abyss_data(uid, active=2)
@@ -291,8 +320,8 @@ async def send_abyss_overview_image(
     Returns:
         深渊攻略图
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -308,13 +337,10 @@ async def send_abyss_overview_image(
     if floor_num not in ["9", "10", "11", "12"]:
         floor_num = "12"
 
-    try:
-        # 绘制深渊图片
-        im = await draw_abyss_img(ev, uid, int(floor_num), "1")
-        await send_image(bot, im)
-        return f"✅ 已发送第{floor_num}层深渊攻略图"
-    except Exception as e:
-        return f"生成深渊攻略图失败: {str(e)}"
+    # 绘制深渊图片
+    im = await draw_abyss_img(ev, uid, int(floor_num), "1")
+    await send_image(bot, im)
+    return f"✅ 已发送第{floor_num}层深渊攻略图"
 
 
 @ai_tools(category="common")
@@ -334,8 +360,8 @@ async def get_character_build_info(
     Returns:
         角色练度详细信息文本
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -344,15 +370,12 @@ async def get_character_build_info(
     if uid is None:
         return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
 
-    try:
-        # 绘制角色信息图片
-        im = await draw_enka_img(character_name, uid, None)
-        if im is not None:
-            await send_image(bot, im)
-            return f"✅ 已发送角色{character_name}的详细信息"
-        return f"未找到角色: {character_name}"
-    except Exception as e:
-        return f"获取角色信息失败: {str(e)}"
+    # 绘制角色信息图片
+    im = await draw_enka_img(character_name, uid, None)
+    if im is not None:
+        await send_image(bot, im)
+        return f"✅ 已发送角色{character_name}的详细信息"
+    return f"未找到角色: {character_name}"
 
 
 @ai_tools(category="common")
@@ -368,8 +391,8 @@ async def get_monthly_stats(
     Returns:
         月度原石摩拉收入统计
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -378,13 +401,10 @@ async def get_monthly_stats(
     if uid is None:
         return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
 
-    try:
-        result = await get_monthly_award(uid)
-        if isinstance(result, bytes):
-            return "月度统计数据（图片格式）"
-        return result
-    except Exception as e:
-        return f"获取月度统计失败: {str(e)}"
+    result = await get_monthly_award(uid)
+    if isinstance(result, bytes):
+        return "月度统计数据（图片格式）"
+    return result
 
 
 @ai_tools(category="common")
@@ -400,8 +420,8 @@ async def send_activity_calendar_image(
     Returns:
         活动日历图片
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -410,12 +430,9 @@ async def send_activity_calendar_image(
     if uid is None:
         return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
 
-    try:
-        im = await draw_cale_img(ev, uid)
-        await send_image(bot, im)
-        return "✅ 已发送活动日历图"
-    except Exception as e:
-        return f"生成活动日历失败: {str(e)}"
+    im = await draw_cale_img(ev, uid)
+    await send_image(bot, im)
+    return "✅ 已发送活动日历图"
 
 
 @ai_tools(category="common")
@@ -431,8 +448,8 @@ async def send_season_report_image(
     Returns:
         季报图片
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -441,12 +458,9 @@ async def send_season_report_image(
     if uid is None:
         return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
 
-    try:
-        im = await get_season_post_draw(uid, ev)
-        await send_image(bot, im)
-        return "✅ 已发送季报图片"
-    except Exception as e:
-        return f"生成季报失败: {str(e)}"
+    im = await get_season_post_draw(uid, ev)
+    await send_image(bot, im)
+    return "✅ 已发送季报图片"
 
 
 @ai_tools(category="common")
@@ -462,8 +476,8 @@ async def get_poetry_abyss_status(
     Returns:
         幻想真境剧诗状态信息
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -472,12 +486,9 @@ async def get_poetry_abyss_status(
     if uid is None:
         return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
 
-    try:
-        im = await draw_poetry_abyss_img(uid, ev, None)
-        await send_image(bot, im)
-        return "✅ 已发送幻想真境剧诗信息"
-    except Exception as e:
-        return f"获取新深渊信息失败: {str(e)}"
+    im = await draw_poetry_abyss_img(uid, ev, None)
+    await send_image(bot, im)
+    return "✅ 已发送幻想真境剧诗信息"
 
 
 @ai_tools(category="common")
@@ -493,8 +504,8 @@ async def get_hard_challenge_status(
     Returns:
         幽境危战状态信息
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -503,12 +514,9 @@ async def get_hard_challenge_status(
     if uid is None:
         return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
 
-    try:
-        im = await draw_hard_challenge_img(uid, ev)
-        await send_image(bot, im)
-        return "✅ 已发送幽境危战信息"
-    except Exception as e:
-        return f"获取幽境危战信息失败: {str(e)}"
+    im = await draw_hard_challenge_img(uid, ev)
+    await send_image(bot, im)
+    return "✅ 已发送幽境危战信息"
 
 
 @ai_tools(category="default")
@@ -529,7 +537,7 @@ async def search_character_info(
         角色基础信息
     """
     # 角色信息映射（简化版）
-    characters: Dict[str, Dict[str, str]] = {
+    characters = {
         "雷电将军": {"element": "雷", "weapon": "长枪", "rarity": "5", "region": "稻妻"},
         "纳西妲": {"element": "草", "weapon": "法器", "rarity": "5", "region": "须弥"},
         "温迪": {"element": "风", "weapon": "弓箭", "rarity": "5", "region": "蒙德"},
@@ -567,8 +575,8 @@ async def get_expedition_status(
     Returns:
         派遣状态信息
     """
-    ev = ctx.deps.ev if ctx.deps else None
-    bot = ctx.deps.bot if ctx.deps else None
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
 
     if ev is None or bot is None:
         return "无法获取用户信息"
@@ -584,24 +592,23 @@ async def get_expedition_status(
     if not isinstance(data, dict):
         return "派遣数据格式错误"
 
-    expedition_list = data.get("expedition", [])
+    expeditions = data.get("expeditions", [])
+    if not isinstance(expeditions, list):
+        return "暂无派遣信息"
 
-    if not expedition_list:
+    if len(expeditions) == 0:
         return "暂无派遣信息"
 
     result = "【派遣状态】\n\n"
 
-    for exp in expedition_list:
+    for exp in expeditions:
+        if not isinstance(exp, dict):
+            continue
         avatar_side_icon = exp.get("avatar_side_icon", "")
         status = exp.get("status", "Unknown")
-        remaining_seconds = exp.get("remaining_seconds", 0)
-
-        # 计算剩余时间
-        hours = remaining_seconds // 3600
-        mins = (remaining_seconds % 3600) // 60
 
         if status == "Ongoing":
-            status_text = f"进行中（剩余{hours}时{mins}分）"
+            status_text = "进行中"
         elif status == "Finished":
             status_text = "✅ 可领取"
         else:

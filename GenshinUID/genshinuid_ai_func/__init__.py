@@ -620,3 +620,195 @@ async def get_expedition_status(
         result += f"• 角色{char_name}: {status_text}\n"
 
     return result
+
+
+@ai_tools(category="common")
+async def get_character_training_stats(
+    ctx: RunContext[ToolContext],
+) -> str:
+    """
+    获取角色练度/毕业度统计
+
+    返回玩家所有角色的等级、技能等级、武器等级、圣遗物练度等详细信息。
+    AI在用户询问"我的角色练度"、"毕业度统计"、"所有角色培养情况"时调用。
+
+    Returns:
+        角色练度统计数据文本
+    """
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
+
+    if ev is None or bot is None:
+        return "无法获取用户信息"
+
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
+    if uid is None:
+        return "⚠️ 请先绑定UID：发送 /绑定 你的UID"
+
+    import json
+
+    import aiofiles
+
+    from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+
+    uid_fold = PLAYER_PATH / str(uid)
+    if not uid_fold.exists():
+        return "⚠️ 暂无角色数据，请先使用【强制刷新】进行数据缓存"
+
+    char_file_list = uid_fold.glob("*")
+    char_list = []
+    for i in char_file_list:
+        file_name = i.name
+        if "\u4e00" <= file_name[0] <= "\u9fff":
+            char_list.append(file_name.split(".")[0])
+
+    if not char_list:
+        return "⚠️ 暂无已缓存的角色数据，请先使用【强制刷新】进行刷新"
+
+    result = f"【角色练度统计】共 {len(char_list)} 个角色\n\n"
+
+    char_stats = []
+    for char_name in char_list:
+        temp = {}
+        char_file = uid_fold / f"{char_name}.json"
+        async with aiofiles.open(char_file, "r", encoding="UTF-8") as f:
+            raw_data = json.loads(await f.read())
+
+        temp["char_name"] = char_name
+        temp["id"] = raw_data.get("avatarId", 0)
+        temp["char_level"] = raw_data.get("avatarLevel", 0)
+        temp["char_element"] = raw_data.get("avatarElement", "未知")
+        temp["constellation"] = len(raw_data.get("talentList", []))
+
+        skill_list = raw_data.get("avatarSkill", [])
+        if len(skill_list) >= 3:
+            temp["a_skill_level"] = skill_list[0].get("skillLevel", 0)
+            temp["e_skill_level"] = skill_list[1].get("skillLevel", 0)
+            temp["q_skill_level"] = skill_list[-1].get("skillLevel", 0)
+        else:
+            temp["a_skill_level"] = 0
+            temp["e_skill_level"] = 0
+            temp["q_skill_level"] = 0
+
+        temp["talent_num"] = len(raw_data.get("talentList", []))
+
+        weapon_info = raw_data.get("weaponInfo", {})
+        temp["weapon_name"] = weapon_info.get("weaponName", "未知")
+        temp["weapon_level"] = weapon_info.get("weaponLevel", 0)
+        temp["weapon_affix"] = weapon_info.get("weaponAffix", 0)
+        temp["weapon_star"] = weapon_info.get("weaponStar", 0)
+
+        from ..genshinuid_enka.etc.etc import get_all_artifacts_value
+        from ..genshinuid_enka.mono.Character import Character as CharClass
+
+        char_obj = CharClass(raw_data)
+        await char_obj.new()
+        await char_obj.get_fight_prop()
+
+        temp["value"] = await get_all_artifacts_value(
+            raw_data,
+            char_obj.baseHp,
+            char_obj.baseAtk,
+            char_obj.baseDef,
+            char_name,
+        )
+        temp["value"] = float("{:.2f}".format(temp["value"]))
+
+        char_stats.append(temp)
+
+    char_stats.sort(key=lambda x: (-x["value"]))
+
+    for i, char in enumerate(char_stats, 1):
+        result += f"{i}. {char['char_name']} (Lv.{char['char_level']} "
+        "{char['char_element']}元素, {char['constellation']}命)\n"
+        result += f"   技能: A{char['a_skill_level']} E{char['e_skill_level']} Q{char['q_skill_level']}\n"
+        result += f"   武器: {char['weapon_name']} Lv.{char['weapon_level']} "
+        "(精{char['weapon_affix']}, {char['weapon_star']}星)\n"
+        result += f"   圣遗物: {char['value']:.2f}分\n"
+
+    if len(char_stats) > 20:
+        result += f"\n...还有 {len(char_stats) - 20} 个角色未显示"
+
+    return result
+
+
+@ai_tools(category="common")
+async def get_daily_materials(
+    ctx: RunContext[ToolContext],
+    day_offset: int = 0,
+) -> str:
+    """
+    获取今日/明日/后日材料信息
+
+    返回指定日期的材料副本信息，包括可获取的角色升级材料、武器突破材料等。
+    AI在用户询问"今天什么材料"、"明日材料"、"后天素材"时调用。
+
+    Args:
+        day_offset: 日期偏移，0=今天(默认), 1=明天, 2=后天, -1=昨天
+
+    Returns:
+        每日材料文本数据
+    """
+    ev = ctx.deps.ev
+    bot = ctx.deps.bot
+
+    if ev is None or bot is None:
+        return "无法获取用户信息"
+
+    from datetime import datetime, timedelta
+
+    from ..genshinuid_dailycost.get_daily_data import generate_daily_data
+
+    weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"]
+
+    now = datetime.now()
+    target_date = now + timedelta(days=day_offset)
+    target_weekday = target_date.weekday()
+    target_wk = weekdays[target_weekday]
+
+    if day_offset == 0:
+        date_hint = "今天"
+    elif day_offset == 1:
+        date_hint = "明天"
+    elif day_offset == 2:
+        date_hint = "后天"
+    elif day_offset == -1:
+        date_hint = "昨天"
+    else:
+        date_hint = f"{day_offset}天后"
+
+    if target_wk == "周日":
+        return f"{date_hint}({target_wk})所有材料都能获得，无需特别刷取！"
+
+    data = await generate_daily_data()
+    if data is None:
+        return "获取材料信息失败，请稍后重试"
+
+    if data == {}:
+        return f"{date_hint}({target_wk})所有材料都能获得！"
+
+    result = f"【{date_hint}材料】({target_wk})\n\n"
+
+    domain_mapping = {
+        "炼武": "武器突破",
+        "修炼": "角色突破",
+    }
+
+    for domain, items in data.items():
+        domain_type = "其他"
+        for key, desc in domain_mapping.items():
+            if key in domain:
+                domain_type = desc
+                break
+
+        result += f"【{domain_type}】{domain}\n"
+
+        material_items = [item for item in items if isinstance(item, dict)]
+        for item in material_items[:4]:
+            item_name = item.get("name", "未知")
+            # item_id = item.get("id", 0)
+            result += f"  • {item_name}\n"
+
+        result += "\n"
+
+    return result

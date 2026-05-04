@@ -716,7 +716,7 @@ async def get_character_training_stats(
 
         char_stats.append(temp)
 
-    char_stats.sort(key=lambda x: (-x["value"]))
+    char_stats.sort(key=lambda x: -x["value"])
 
     for i, char in enumerate(char_stats, 1):
         result += f"{i}. {char['char_name']} (Lv.{char['char_level']} "

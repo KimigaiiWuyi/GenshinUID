@@ -96,7 +96,7 @@ async def draw_explore(uid: str):
 
 async def _draw_explore(raw_data: IndexData):
     worlds = raw_data["world_explorations"]
-    worlds.sort(key=lambda x: (-x["id"]), reverse=True)
+    worlds.sort(key=lambda x: -x["id"], reverse=True)
 
     new_culus: Dict[str, str] = {}
     for _culus in raw_data["stats"]:

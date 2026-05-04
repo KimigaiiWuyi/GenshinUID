@@ -235,7 +235,7 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
     result["mix_gacha_num"] = len(raw_data["集录祈愿"])
     for i in all_gacha_type_name:
         if len(raw_data[i]) > 1:
-            raw_data[i].sort(key=lambda x: (-int(x["id"])))
+            raw_data[i].sort(key=lambda x: -int(x["id"]))
     result["data"] = raw_data
 
     # 计算数据

@@ -81,7 +81,7 @@ async def draw_char_count_list(
     else:
         _mode = 2
 
-    char_done_list.sort(key=lambda x: (-x["score_value"]))
+    char_done_list.sort(key=lambda x: -x["score_value"])
 
     rows = (len(char_done_list) + _mode - 1) // _mode
     h = 750 + 80 + 90 * rows

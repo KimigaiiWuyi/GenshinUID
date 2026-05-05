@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.colors import sec_color, first_color, light_color
 from ..utils.mys_api import mys_api
@@ -27,6 +28,24 @@ async def draw_deck_img(ev: Event, uid: str, deck_id: int) -> Union[str, bytes]:
         return f"你没有第{deck_id}套卡组！"
     raw_data = raw_data["deck_list"][deck_id - 1]
     deck_name = raw_data["name"]
+
+    # AI 注入：提取卡组数据
+    try:
+        char_names = [c["name"] for c in raw_data["avatar_cards"]]
+        action_count = sum(a["num"] for a in raw_data["action_cards"])
+        action_details = []
+        for a in raw_data["action_cards"][:8]:
+            cost = a.get("action_cost", [{}])
+            cost_val = cost[0].get("cost_value", "?") if cost else "?"
+            action_details.append(f"{a['name']}({cost_val}费)")
+        parts = [f"【卡组: {deck_name}】"]
+        parts.append(f"角色牌: {', '.join(char_names)}")
+        parts.append(f"行动牌({action_count}张): {', '.join(action_details)}")
+        if len(raw_data["action_cards"]) > 8:
+            parts.append(f"  ...及其他{len(raw_data['action_cards']) - 8}张")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
     # 获取背景图片各项参数
     char_pic = await get_avatar(ev, 320)
 

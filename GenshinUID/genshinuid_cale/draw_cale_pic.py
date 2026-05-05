@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.api.mys.models import Act, FixedAct
@@ -124,6 +125,39 @@ async def draw_cale_img(ev: Event, uid: str):
         return raw_data
     elif isinstance(raw_data, (bytearray, memoryview)):
         return bytes(raw_data)
+
+    # AI 注入：提取日历数据
+    try:
+        parts = [f"【UID {uid} 个人日历】"]
+        # 活动列表
+        for act in data["act_list"]:
+            if act["status"] == 2:
+                status = "已完成" if act.get("is_finished") else "未完成"
+                remaining = convert_timestamp_to_string(act["countdown_seconds"])
+                rewards = ", ".join([r["name"] for r in act.get("reward_list", [])[:3]])
+                reward_info = f" 奖励: {rewards}" if rewards else ""
+                parts.append(f"  {act['name']}: {status} (剩余{remaining}){reward_info}")
+            else:
+                remaining = convert_timestamp_to_string(act["countdown_seconds"])
+                parts.append(f"  {act['name']}: 未开始 ({remaining}后开启)")
+        # 固定活动
+        for act in data["fixed_act_list"]:
+            status = "已完成" if act.get("is_finished") else "未完成"
+            remaining = convert_timestamp_to_string(act["countdown_seconds"])
+            parts.append(f"  {act['name']}: {status} (剩余{remaining})")
+        # 卡池信息
+        if data.get("avatar_card_pool_list"):
+            for pool in data["avatar_card_pool_list"]:
+                chars = [a["name"] for a in pool.get("avatars", [])]
+                remaining = convert_timestamp_to_string(pool["countdown_seconds"])
+                parts.append(f"  当前卡池: {pool['pool_name']} - {', '.join(chars)} (剩余{remaining})")
+        if data.get("weapon_card_pool_list"):
+            for pool in data["weapon_card_pool_list"]:
+                remaining = convert_timestamp_to_string(pool["countdown_seconds"])
+                parts.append(f"  武器卡池: {pool['pool_name']} (剩余{remaining})")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     char_pic = await get_avatar(ev, 377, False)
     title_img = get_v4_title(char_pic, uid, raw_data)

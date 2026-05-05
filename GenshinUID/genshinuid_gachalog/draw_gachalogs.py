@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .get_gachalogs import all_gacha_type_name
 from ..utils.message import PREFIX
@@ -406,6 +407,38 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
             )
         await asyncio.gather(*tasks)
         tasks.clear()
+
+    # AI 注入：提取抽卡记录数据
+    try:
+        parts = [f"【UID {uid} 抽卡记录】"]
+        for i in your_gacha_type_list:
+            td = total_data[i]
+            total_pulls = gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]
+            parts.append(
+                f"  {i}: 总{total_pulls}抽 "
+                f"五星{td['total']}个 平均{td['avg']}抽/个 "
+                f"UP平均{td['avg_up']}抽 已{td['remain']}抽未出金 "
+                f"类型:{td['type']}"
+            )
+            # 最近出金记录
+            if td["list"]:
+                recent = td["list"][-5:]
+                recent_str = []
+                for item in recent:
+                    up_tag = " UP" if item.get("is_up") else ""
+                    recent_str.append(f"{item['name']}({item['gacha_num']}抽{up_tag})")
+                parts.append(f"    最近出金: {' → '.join(recent_str)}")
+            # UP角色列表
+            if td["up_list"]:
+                up_names = [f"{item['name']}({item['gacha_num']}抽)" for item in td["up_list"][-5:]]
+                parts.append(f"    UP记录: {', '.join(up_names)}")
+            # 非UP五星
+            if td["normal_list"]:
+                normal_names = [item["name"] for item in td["normal_list"][-3:]]
+                parts.append(f"    歪到: {', '.join(normal_names)}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     # 发送图片
     res = await convert_img(img)

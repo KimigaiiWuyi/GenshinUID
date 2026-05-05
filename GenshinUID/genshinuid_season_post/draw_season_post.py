@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.mys.models import IndexData
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.image.convert import convert_img
@@ -66,6 +67,29 @@ async def get_season_post_draw(uid: str, ev: Event) -> Union[str, bytes]:
         return raw_data
     elif isinstance(raw_data, (bytearray, memoryview)):
         return bytes(raw_data)
+
+    # AI 注入：提取季报数据
+    try:
+        ri = data.get("resource_info", {})
+        ei = data.get("exploration_info", {})
+        gi = data.get("game_record_info", {})
+        parts = [f"【UID {uid} 季度报告】"]
+        parts.append(f"获得摩拉: {ri.get('gain_scoin', 'N/A')}  获得原石: {ri.get('gain_primogem', 'N/A')}")
+        tp = ei.get("trans_point", {})
+        parts.append(f"解锁锚点: {tp.get('cur_number', 'N/A')} (新增{tp.get('new_number', 0)})")
+        # 探索信息
+        if ei.get("area_list"):
+            for area in ei["area_list"][:5]:
+                parts.append(f"  {area.get('name', '?')}: 探索度{area.get('exploration_percentage', 0) / 10:.1f}%")
+        # 游戏记录
+        if gi:
+            parts.append(
+                f"活跃天数: {gi.get('active_day_number', 'N/A')}  获得角色数: {gi.get('avatar_number', 'N/A')}"
+            )
+            parts.append(f"成就数: {gi.get('achievement_number', 'N/A')}  深渊: {gi.get('spiral_abyss', 'N/A')}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     return await draw_season_post(uid, raw_data, data, ev)
 

@@ -4,6 +4,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.image.convert import convert_img
 from ..utils.map.name_covert import name_to_avatar_id
@@ -62,6 +63,21 @@ async def draw_teyvat_team_img():
 
     tip1 = data["tips"]
     tip2 = data["tips2"]
+
+    # AI 注入：提取深渊队伍数据
+    try:
+        version = data["version"].replace("当前版本：", "")
+        teams = data["result"][3][:8]
+        parts = [f"【深渊队伍推荐】{version}"]
+        for i, t in enumerate(teams):
+            chars = [r.get("name", "未知") for r in t["role"]]
+            use_rate = t.get("use_rate", "N/A")
+            hold_rate = t.get("hold_rate", "N/A")
+            appear_rate = t.get("appear_rate", "N/A")
+            parts.append(f"  #{i + 1} {'/'.join(chars)} 使用率:{use_rate} 持有率:{hold_rate} 登场率:{appear_rate}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     title = await get_teyvat_title(data)
 

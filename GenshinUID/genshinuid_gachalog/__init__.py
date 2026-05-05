@@ -37,7 +37,17 @@ async def send_import_gacha_info(bot: Bot, ev: Event):
         return await bot.send("导入抽卡记录异常...")
 
 
-@sv_gacha_log.on_fullmatch(("抽卡记录"))
+@sv_gacha_log.on_fullmatch(
+    ("抽卡记录"),
+    to_ai="""查看原神抽卡记录
+
+    当用户说"抽卡记录"、"抽卡历史"、"看看我抽了什么"时调用。
+    以图片形式返回抽卡记录统计（各卡池抽数、出货情况等）。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_gacha_log_card_info(bot: Bot, ev: Event):
     logger.info("开始执行[抽卡记录]")
     uid = await get_uid(bot, ev)
@@ -50,7 +60,17 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
     await bot.send_option(im, [[a], [b], [c]])
 
 
-@sv_refresh_gacha_log.on_fullmatch(("刷新抽卡记录", "强制刷新抽卡记录"))
+@sv_refresh_gacha_log.on_fullmatch(
+    ("刷新抽卡记录", "强制刷新抽卡记录"),
+    to_ai="""刷新原神抽卡记录数据
+
+    当用户说"刷新抽卡记录"、"强制刷新抽卡记录"时调用。
+    从米游社API重新获取抽卡记录。加"强制"前缀可强制刷新。
+
+    Args:
+        text: 无需参数，留空即可。是否强制由命令本身决定
+    """,
+)
 async def send_refresh_gacha_info(bot: Bot, ev: Event):
     logger.info("开始执行[刷新抽卡记录]")
     uid = await get_uid(bot, ev)
@@ -65,7 +85,17 @@ async def send_refresh_gacha_info(bot: Bot, ev: Event):
     await bot.send_option(im, [Button("🃏抽卡记录", "抽卡记录")])
 
 
-@sv_refresh_gacha_log.on_fullmatch(("全量刷新抽卡记录"))
+@sv_refresh_gacha_log.on_fullmatch(
+    ("全量刷新抽卡记录"),
+    to_ai="""全量刷新原神抽卡记录（从头获取所有记录）
+
+    当用户说"全量刷新抽卡记录"时调用。
+    从头获取所有历史抽卡记录，耗时较长。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_full_refresh_gacha_info(bot: Bot, ev: Event):
     logger.info("开始执行[全量刷新抽卡记录]")
     uid = await get_uid(bot, ev)
@@ -76,7 +106,17 @@ async def send_full_refresh_gacha_info(bot: Bot, ev: Event):
     return await bot.send_option(im, [Button("🃏抽卡记录", "抽卡记录")])
 
 
-@sv_export_gacha_log.on_fullmatch(("导出抽卡记录"))
+@sv_export_gacha_log.on_fullmatch(
+    ("导出抽卡记录"),
+    to_ai="""导出原神抽卡记录为UIGF格式文件
+
+    当用户说"导出抽卡记录"时调用。
+    将抽卡记录导出为标准UIGF格式JSON文件，支持v2和v4版本。
+
+    Args:
+        text: 无需参数，留空即可。系统会询问导出版本
+    """,
+)
 async def send_export_gacha_info(bot: Bot, ev: Event):
     logger.info("开始执行[导出抽卡记录]")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
@@ -106,7 +146,17 @@ async def send_export_gacha_info(bot: Bot, ev: Event):
         await bot.send("导出抽卡记录失败...")
 
 
-@sv_import_lelaer_gachalog.on_fullmatch(("从小助手导入抽卡记录"))
+@sv_import_lelaer_gachalog.on_fullmatch(
+    ("从小助手导入抽卡记录"),
+    to_ai="""从提瓦特小助手导入抽卡记录
+
+    当用户说"从小助手导入抽卡记录"时调用。
+    从提瓦特小助手平台导入抽卡记录到当前系统。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def import_lelaer_gachalog(bot: Bot, ev: Event):
     logger.info("开始执行[从小助手导入抽卡记录]")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
@@ -116,7 +166,17 @@ async def import_lelaer_gachalog(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_export_lelaer_gachalog.on_fullmatch(("导出抽卡记录到小助手"))
+@sv_export_lelaer_gachalog.on_fullmatch(
+    ("导出抽卡记录到小助手"),
+    to_ai="""将抽卡记录导出到提瓦特小助手
+
+    当用户说"导出抽卡记录到小助手"时调用。
+    将当前系统的抽卡记录同步导出到提瓦特小助手平台。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
     logger.info("开始执行[导出抽卡记录到小助手]")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
@@ -126,7 +186,17 @@ async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_export_gachalogurl.on_fullmatch(("导出抽卡记录链接", "导出抽卡记录连接"))
+@sv_export_gachalogurl.on_fullmatch(
+    ("导出抽卡记录链接", "导出抽卡记录连接"),
+    to_ai="""获取原神抽卡记录的导出链接
+
+    当用户说"导出抽卡记录链接"、"导出抽卡记录连接"时调用。
+    生成一个可分享的抽卡记录导出链接。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def export_gachalogurl(bot: Bot, ev: Event):
     logger.info("开始执行[导出抽卡记录链接]")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)

@@ -23,7 +23,18 @@ sv_ann_hint = SV("原神公告红点")
 sv_ann_schedule = SV("原神定时清空公告红点", priority=3)
 
 
-@sv_ann.on_command(("原神公告"))
+@sv_ann.on_command(
+    ("原神公告"),
+    to_ai="""查看原神公告列表或指定公告详情
+
+    当用户说"原神公告"、"游戏公告"、"有什么公告"时调用。
+    留空显示公告列表图片，输入公告ID显示对应公告详情。
+
+    Args:
+        text: 可选的公告ID数字，留空显示公告列表
+              例如 ""（显示列表）、"12345"（显示指定公告详情）
+    """,
+)
 async def ann_(bot: Bot, ev: Event):
     ann_id = ev.text
     if not ann_id:
@@ -39,14 +50,33 @@ async def ann_(bot: Bot, ev: Event):
     await bot.send(img)
 
 
-@sv_ann_sub.on_fullmatch("订阅原神公告")
+@sv_ann_sub.on_fullmatch(
+    "订阅原神公告",
+    to_ai="""订阅原神公告推送
+
+    当用户说"订阅原神公告"时调用。需要在群聊中使用。
+    订阅后群内将自动推送新公告通知。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def sub_ann_(bot: Bot, ev: Event):
     if ev.group_id is None:
         return await bot.send("请在群聊中订阅")
     await bot.send(sub_ann(bot.bot_id, ev.group_id))
 
 
-@sv_ann_sub.on_fullmatch(("取消订阅原神公告", "取消原神公告", "退订原神公告"))
+@sv_ann_sub.on_fullmatch(
+    ("取消订阅原神公告", "取消原神公告", "退订原神公告"),
+    to_ai="""取消订阅原神公告推送
+
+    当用户说"取消订阅原神公告"、"退订原神公告"时调用。需要在群聊中使用。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def unsub_ann_(bot: Bot, ev: Event):
     if ev.group_id is None:
         return await bot.send("请在群聊中取消订阅")
@@ -59,7 +89,15 @@ async def unsub_ann_(bot: Bot, ev: Event):
         "清除原神公告红点",
         "清除公告红点",
         "取消公告红点",
-    )
+    ),
+    to_ai="""清除原神公告的未读红点提示
+
+    当用户说"清除公告红点"、"取消公告红点"时调用。
+    需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
 )
 async def consume_remind_(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
@@ -69,7 +107,18 @@ async def consume_remind_(bot: Bot, ev: Event):
         await bot.send(await consume_remind(uid))
 
 
-@sv_ann_schedule.on_fullmatch(("开启自动清红", "关闭自动清红"), block=True)
+@sv_ann_schedule.on_fullmatch(
+    ("开启自动清红", "关闭自动清红"),
+    block=True,
+    to_ai="""开启或关闭自动清除原神公告红点功能
+
+    当用户说"开启自动清红"、"关闭自动清红"时调用。
+    开启后每5小时自动清除公告未读红点。
+
+    Args:
+        text: 无需参数，留空即可。开启/关闭由命令本身决定
+    """,
+)
 async def get_ann_schedule_msg(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if not uid:

@@ -9,6 +9,7 @@ from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.colors import (
     red_color,
@@ -132,6 +133,35 @@ async def draw_abyss_img(
         return await get_error_img(raw_abyss_data)
     if isinstance(raw_data, int):
         return await get_error_img(raw_data)
+
+    # AI 注入：提取深渊数据
+    try:
+        total_star = sum(f["star"] for f in raw_abyss_data["floors"])
+        max_star = sum(f["max_star"] for f in raw_abyss_data["floors"])
+        battle_times = raw_abyss_data["total_battle_times"]
+        damage_rank = raw_abyss_data.get("damage_rank", [])
+        defeat_rank = raw_abyss_data.get("defeat_rank", [])
+        take_damage_rank = raw_abyss_data.get("take_damage_rank", [])
+        energy_skill_rank = raw_abyss_data.get("energy_skill_rank", [])
+        parts = [f"【UID {uid} 深渊信息】"]
+        schedule = "上期" if schedule_type == "2" else "本期"
+        parts.append(f"({schedule}) 总星数: {total_star}/{max_star}  挑战次数: {battle_times}")
+        # 各层详情
+        for f in raw_abyss_data["floors"]:
+            star_str = "全满星" if f["star"] == f["max_star"] else f"{f['star']}/{f['max_star']}星"
+            settle = f.get("settle_time", "")
+            time_str = f" ({settle})" if settle and settle != "0000-00-00 00:00:00" else ""
+            parts.append(f"  第{f['index']}层: {star_str}{time_str}")
+        # 排行数据
+        if damage_rank:
+            parts.append(f"  最强一击: {damage_rank[0].get('value', 'N/A')}")
+        if defeat_rank:
+            parts.append(f"  最多击破: {defeat_rank[0].get('value', 'N/A')}")
+        if take_damage_rank:
+            parts.append(f"  承受伤害: {take_damage_rank[0].get('value', 'N/A')}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     if raw_data:
         char_data = raw_data["avatars"]

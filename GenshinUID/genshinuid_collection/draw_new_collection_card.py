@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.mys.models import Offering, IndexData
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.download_resource.download_image import get_image
 
 from .const import max_data, cal_level, expmax_data
@@ -84,6 +85,49 @@ async def draw_explore(uid: str):
     raw_data = await get_base_data(uid)
     if isinstance(raw_data, str) or isinstance(raw_data, (bytes, bytearray, memoryview)):
         return raw_data
+
+    # AI 注入：提取探索完成度数据
+    try:
+        worlds = raw_data["world_explorations"]
+        stats = raw_data["stats"]
+        parts = [f"【UID {uid} 世界探索完成度】"]
+        parts.append(f"活跃天数: {stats['active_day_number']}  获得角色数: {stats['avatar_number']}")
+        parts.append(f"成就数: {stats.get('achievement_number', 'N/A')}  深渊: {stats.get('spiral_abyss', 'N/A')}")
+        # 宝箱统计
+        chest_types = [
+            ("common_chest_number", "普通宝箱"),
+            ("exquisite_chest_number", "精致宝箱"),
+            ("precious_chest_number", "珍贵宝箱"),
+            ("luxurious_chest_number", "华丽宝箱"),
+            ("magic_chest_number", "奇馈宝箱"),
+        ]
+        chest_parts = []
+        for key, name in chest_types:
+            if key in stats:
+                chest_parts.append(f"{name}:{stats[key]}")
+        if chest_parts:
+            parts.append(f"  宝箱: {', '.join(chest_parts)}")
+        # 区域探索度
+        parts.append("  --- 区域探索度 ---")
+        for w in worlds:
+            pct = w["exploration_percentage"] / 10
+            offerings = ""
+            if w.get("offerings"):
+                offering_names = [f"{o['name']}Lv{o['level']}" for o in w["offerings"]]
+                offerings = f" ({', '.join(offering_names)})"
+            parts.append(f"  {w['name']}: {pct:.1f}%{offerings}")
+        # 神瞳统计
+        culus_parts = []
+        for key in stats:
+            if key.endswith("culus_number"):
+                name = key.replace("_number", "").replace("culus", "神瞳")
+                culus_parts.append(f"{name}:{stats[key]}")
+        if culus_parts:
+            parts.append(f"  神瞳: {', '.join(culus_parts)}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
+
     img = await _draw_explore(raw_data)
 
     bg = get_v4_bg(img.size[0], img.size[1])

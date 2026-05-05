@@ -22,7 +22,17 @@ sv_find_map_config = SV("查询地图设置", pm=2)
 sv_find_map = SV("查询地图")
 
 
-@sv_find_map_config.on_fullmatch(("切换地图"))
+@sv_find_map_config.on_fullmatch(
+    ("切换地图"),
+    to_ai="""切换原神资源点查询使用的地图
+
+    当用户说"切换地图"时调用。
+    在提瓦特、层岩巨渊、渊下宫三张地图之间循环切换。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_change_map_msg(bot: Bot, ev: Event):
     await bot.logger.info("[切换地图]正在执行...")
     MAP_ID_LIST.append(MAP_ID_LIST[0])
@@ -33,7 +43,17 @@ async def send_change_map_msg(bot: Bot, ev: Event):
     await bot.send(f"切换到{chn}地图")
 
 
-@sv_find_map.on_prefix(("哪里有", "哪儿有", "哪有"))
+@sv_find_map.on_prefix(
+    ("哪里有", "哪儿有", "哪有"),
+    to_ai="""查询原神中某种资源在地图上的分布位置
+
+    当用户说"哪里有清心"、"哪儿有琉璃袋"、"哪有水晶矿"时调用。
+    以图片形式返回该资源在地图上的分布标记。
+
+    Args:
+        text: 资源名称，例如 "清心"、"琉璃袋"、"水晶矿"、"绯樱绣球"、"鬼兜虫"
+    """,
+)
 async def send_find_map_msg(bot: Bot, ev: Event):
     map_id = MAP_ID_LIST[0]
     map_name = MAP_CHN_NAME[map_id]

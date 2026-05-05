@@ -5,6 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..genshinuid_enka.res import div, draw_ring, skill_mask, value_mask, draw_new_title
 from ..utils.image.convert import convert_img
@@ -82,6 +83,28 @@ async def draw_char_count_list(
         _mode = 2
 
     char_done_list.sort(key=lambda x: (-x["score_value"]))
+
+    # AI 注入：提取毕业度统计数据
+    try:
+        top_chars = char_done_list[:10]
+        parts = [f"【UID {uid} 毕业度统计】共 {len(char_done_list)} 个角色"]
+        # 统计评分分布
+        score_5 = sum(1 for c in char_done_list if c["score_value"] >= 80)
+        score_4 = sum(1 for c in char_done_list if 60 <= c["score_value"] < 80)
+        score_3 = sum(1 for c in char_done_list if c["score_value"] < 60)
+        parts.append(f"  评分分布: 优秀(≥80) {score_5}个  良好(60-79) {score_4}个  一般(<60) {score_3}个")
+        parts.append("  --- TOP 10 ---")
+        for c in top_chars:
+            parts.append(
+                f"  {c['char_name']}: 评分{c['score_value']} "
+                f"A{c['a_skill_level']} E{c['e_skill_level']} Q{c['q_skill_level']} "
+                f"词条{c['value']}条 武器:{c['weapon_name']}{c['weapon_affix']}阶 Lv{c['weapon_level']}"
+            )
+        if len(char_done_list) > 10:
+            parts.append(f"  ...及其他 {len(char_done_list) - 10} 个角色")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     rows = (len(char_done_list) + _mode - 1) // _mode
     h = 750 + 80 + 90 * rows

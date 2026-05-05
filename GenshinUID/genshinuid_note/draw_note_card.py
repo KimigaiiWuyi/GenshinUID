@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..utils.mys_api import mys_api
@@ -51,6 +52,27 @@ async def draw_note_img(uid: str, ev: Event) -> Union[bytes, str]:
     # nickname = data['nickname']
     day_stone = data["day_data"]["current_primogems"]
     day_mora = data["day_data"]["current_mora"]
+
+    # AI 注入：提取札记数据
+    try:
+        month_stone = data["month_data"]["current_primogems"]
+        month_mora = data["month_data"]["current_mora"]
+        lastmonth_stone = data["month_data"]["last_primogems"]
+        lastmonth_mora = data["month_data"]["last_mora"]
+        # 各类来源统计
+        month_data_group = data["month_data"].get("group_by", [])
+        source_parts = []
+        for g in month_data_group[:5]:
+            source_parts.append(f"{g['action']}: {g['num']}")
+        source_str = "\n  来源: " + ", ".join(source_parts) if source_parts else ""
+        ai_return(
+            f"【UID {uid} 札记数据】\n"
+            f"今日原石: {day_stone}  今日摩拉: {day_mora}\n"
+            f"本月原石: {month_stone} (上月{lastmonth_stone})  本月摩拉: {month_mora} (上月{lastmonth_mora})"
+            f"{source_str}"
+        )
+    except Exception:
+        pass
     lastday_stone = 0
     lastday_mora = 0
     if int(uid[0]) < 6:

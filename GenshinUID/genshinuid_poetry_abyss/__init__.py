@@ -27,6 +27,14 @@ sv_poetry_abyss = SV("查询幻想真境剧诗")
         "上期剧诗",
     ),
     block=True,
+    to_ai="""查询原神幻想真境剧诗（新深渊）战斗信息
+
+    当用户说"幻想真境剧诗"、"新深渊"、"剧诗"时调用。
+    以图片形式返回剧诗的战斗详情。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可。查询上期数据使用"上期"前缀命令
+    """,
 )
 async def send_poetry_abyss_info(bot: Bot, ev: Event):
     name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))

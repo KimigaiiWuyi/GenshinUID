@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..utils.mys_api import mys_api
@@ -32,6 +33,27 @@ async def draw_hard_challenge_img(uid: str, ev: Event) -> Union[str, bytes]:
 
     schedule = data["data"][0]["schedule"]
     sdata = data["data"][0]["single"]
+
+    # AI 注入：提取幽境危战数据
+    try:
+        best = sdata.get("best", {})
+        challenge = sdata.get("challenge", [])
+        if best:
+            difficulty_map = {1: "普通", 2: "困难", 3: "极限"}
+            diff = difficulty_map.get(best.get("difficulty", 0), "未知")
+            start_time = datetime.fromtimestamp(int(schedule["start_time"])).strftime("%m/%d")
+            end_time = datetime.fromtimestamp(int(schedule["end_time"])).strftime("%m/%d")
+            parts = [f"【UID {uid} 幽境危战】"]
+            parts.append(f"赛季: {start_time}~{end_time}  最高难度: {diff}  总用时: {best.get('second', 'N/A')}秒")
+            for c in challenge:
+                monster = c.get("monster", {})
+                monster_name = monster.get("name", "未知")
+                best_avatars = c.get("best_avatar", [])
+                char_names = [a.get("name", "?") for a in best_avatars[:4]]
+                parts.append(f"  {c['name']}: {c['second']}秒 怪物:{monster_name} 最佳:{', '.join(char_names)}")
+            ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     start_time: str = datetime.fromtimestamp(int(schedule["start_time"])).strftime("%Y/%m/%d")
     end_time: str = datetime.fromtimestamp(int(schedule["end_time"])).strftime("%Y/%m/%d")

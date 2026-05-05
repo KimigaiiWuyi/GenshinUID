@@ -24,6 +24,14 @@ sv_hard_abyss_rank = SV("查询幽境危战排行榜", priority=2)
         "yjwz",
     ),
     block=True,
+    to_ai="""查询原神幽境危战（三路深渊）战斗信息
+
+    当用户说"幽境危战"、"新新深渊"、"三路深渊"时调用。
+    以图片形式返回幽境危战的战斗详情。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
 )
 async def send_hard_abyss_info(bot: Bot, ev: Event):
     name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
@@ -48,6 +56,14 @@ async def send_hard_abyss_info(bot: Bot, ev: Event):
         "新新深渊排行榜",
     ),
     block=True,
+    to_ai="""查看原神幽境危战（三路深渊）的排行榜数据
+
+    当用户说"幽境危战排行榜"、"幽境排行榜"时调用。
+    以图片形式返回幽境危战的全服排行榜数据。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
 )
 async def send_hard_abyss_rank_info(bot: Bot, ev: Event):
     logger.info("开始执行 [幽境危战排行榜]")

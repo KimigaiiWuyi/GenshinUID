@@ -3,6 +3,7 @@ from typing import Union, Optional
 from PIL import Image, ImageDraw
 
 from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.colors import get_color
 from ..utils.message import PREFIX
@@ -69,6 +70,24 @@ async def draw_role_rank_img(char_name: str, player_uid: Optional[str] = None) -
         return "该角色尚未有排名..."
 
     data, count = raw_data
+
+    # AI 注入：提取角色排名数据
+    try:
+        parts = [f"【{char_name} 全服排行榜】{tag} / 总数据 {count}条"]
+        for i, item in enumerate(data[:10]):
+            name = item.get("nickname", "N/A")
+            uid_val = item.get("uid", "N/A")
+            value = item.get("value", "N/A")
+            region = item.get("region", "")
+            region_str = f" [{region}]" if region else ""
+            parts.append(f"  #{i + 1} {name}(UID{uid_val}){region_str}: {value}")
+        if player_uid and r0:
+            # 计算百分比排名
+            pct = (r0 / count * 100) if count else 0
+            parts.append(f"  你的评分: {r0:.2f} (超越{100 - pct:.1f}%的玩家)")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     img = Image.open(RANK_TEXT / "deep_grey.jpg").resize((950, 2450))
     title = Image.open(RANK_TEXT / "title.png")

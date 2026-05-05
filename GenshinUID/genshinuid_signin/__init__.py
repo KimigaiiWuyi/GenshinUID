@@ -26,7 +26,17 @@ async def sign_at_night():
 
 
 # 群聊内 签到 功能
-@sv_sign.on_fullmatch("签到")
+@sv_sign.on_fullmatch(
+    "签到",
+    to_ai="""执行米游社原神每日签到
+
+    当用户说"签到"、"我要签到"、"领取签到奖励"时调用。
+    需要用户已绑定原神UID。签到结果以文字形式返回。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def get_sign_func(bot: Bot, ev: Event):
     logger.info("[原神] [签到]QQ号: {}".format(ev.user_id))
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
@@ -36,7 +46,17 @@ async def get_sign_func(bot: Bot, ev: Event):
     await bot.send(await sign_in(uid, "gs"))
 
 
-@sv_sign_config.on_fullmatch("全部重签")
+@sv_sign_config.on_fullmatch(
+    "全部重签",
+    to_ai="""重新执行所有用户的米游社签到（管理员功能）
+
+    当管理员说"全部重签"、"重新签到"时调用。
+    将为所有已绑定用户重新执行米游社签到，耗时较长。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def recheck(bot: Bot, ev: Event):
     logger.info("开始执行[全部重签]")
     await bot.send("🚩 [原神] [全部重签] 已开始执行...")

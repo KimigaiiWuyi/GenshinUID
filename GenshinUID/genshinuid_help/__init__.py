@@ -12,7 +12,17 @@ PREFIX = get_plugin_available_prefix("GenshinUID")
 sv_gs_help = SV("gs帮助")
 
 
-@sv_gs_help.on_fullmatch(("帮助"))
+@sv_gs_help.on_fullmatch(
+    ("帮助"),
+    to_ai="""获取GenshinUID插件的帮助信息和功能列表
+
+    当用户说"帮助"、"有什么功能"、"怎么使用"时调用。
+    以图片形式返回插件的完整功能列表和使用说明。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_help_img(bot: Bot, ev: Event):
     logger.info("开始执行[gs帮助]")
     im = await get_core_help()

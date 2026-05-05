@@ -5,6 +5,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.api.ambr.request import get_ambr_icon
 
 from .get_daily_data import generate_daily_data
@@ -34,13 +35,40 @@ async def draw_daily_cost_img(is_force: bool = False) -> Union[str, bytes]:
         return await convert_img(Image.open(path))
 
     if wk == "周日":
+        ai_return("今天是周日, 所有材料都能获得噢！")
         return "今天是周日, 所有材料都能获得噢！"
 
     data = await generate_daily_data()
     if data is None:
         return "获取信息错误..."
     elif data == {}:
+        ai_return("今天是周日, 所有材料都能获得噢！")
         return "今天是周日, 所有材料都能获得噢！"
+
+    # AI 注入：提取每日材料数据
+    try:
+        parts = [f"【今日材料 {wk}】"]
+        for domain in data:
+            domain1, domain2 = domain.split("：")
+            char_names = []
+            weapon_names = []
+            for item in data[domain]:
+                if isinstance(item, dict):
+                    if "name" in item:
+                        if "炼武" in domain:
+                            weapon_names.append(item["name"])
+                        else:
+                            char_names.append(item["name"])
+            items = []
+            if char_names:
+                items.append(f"角色: {', '.join(char_names)}")
+            if weapon_names:
+                items.append(f"武器: {', '.join(weapon_names)}")
+            if items:
+                parts.append(f"  {domain1} - {domain2}: {' | '.join(items)}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     w, h = 950, 630
     for domain in data:

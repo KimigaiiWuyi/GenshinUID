@@ -9,6 +9,7 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .start import refresh_player_list
 from .to_card import enka_to_card
@@ -38,19 +39,40 @@ sv_get_enka = SV("面板查询", priority=10)
 sv_get_original_pic = SV("查看面板原图", priority=5)
 
 
-@sv_akasha.on_command("排名统计")
+@sv_akasha.on_command(
+    "排名统计",
+    to_ai="""查询原神角色排名统计数据
+
+    当用户说"排名统计"、"角色排名数据"时调用。
+    以文字形式返回角色排名的统计概览。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_rank_data(bot: Bot, ev: Event):
-    # 获取uid
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(f"[排名统计]uid: {uid}")
-    await bot.send(await get_rank(uid))
+    result = await get_rank(uid)
+    if isinstance(result, str):
+        ai_return(result)
+    await bot.send(result)
 
 
-@sv_akasha.on_command("排名列表")
+@sv_akasha.on_command(
+    "排名列表",
+    to_ai="""查询原神角色排名列表
+
+    当用户说"排名列表"、"角色排名排行"时调用。
+    以图片形式返回各角色的排名数据列表。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_rank_pic(bot: Bot, ev: Event):
-    # 获取uid
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -65,9 +87,19 @@ async def send_rank_pic(bot: Bot, ev: Event):
     )
 
 
-@sv_akasha.on_prefix("角色排行榜")
+@sv_akasha.on_prefix(
+    "角色排行榜",
+    to_ai="""查看指定角色的全服排行榜数据
+
+    当用户说"角色排行榜 公子"、"角色排行榜 胡桃"时调用。
+    以图片形式返回该角色的全服排行榜数据。
+
+    Args:
+        text: 角色名称，例如 "公子"、"胡桃"、"甘雨"
+              支持角色昵称，例如 "雷神"、"小草神"
+    """,
+)
 async def send_role_rank_pic(bot: Bot, ev: Event):
-    # 获取角色名
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", ev.text))
     if not msg:
         return
@@ -81,9 +113,19 @@ async def send_role_rank_pic(bot: Bot, ev: Event):
     await bot.send_option(im, [a, c, b, d])
 
 
-@sv_akasha.on_prefix("角色排名")
+@sv_akasha.on_prefix(
+    "角色排名",
+    to_ai="""查询指定UID的某个角色在全服的排名
+
+    当用户说"角色排名 公子"、"角色排名 胡桃"时调用。
+    以图片形式返回该角色在全服的排名详情。需要用户已绑定UID。
+
+    Args:
+        text: 角色名称，例如 "公子"、"胡桃"、"甘雨"
+              支持角色昵称，例如 "雷神"、"小草神"
+    """,
+)
 async def send_my_role_rank_pic(bot: Bot, ev: Event):
-    # 获取角色名
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", ev.text))
     if not msg:
         return
@@ -94,7 +136,6 @@ async def send_my_role_rank_pic(bot: Bot, ev: Event):
     d = Button("✅圣遗物排名", "圣遗物排名")
 
     msg = msg.replace("附近", "")
-    # 获取uid
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -103,7 +144,18 @@ async def send_my_role_rank_pic(bot: Bot, ev: Event):
     await bot.send_option(im, [a, c, b, d])
 
 
-@sv_akasha.on_command(("圣遗物排名", "圣遗物排行榜"))
+@sv_akasha.on_command(
+    ("圣遗物排名", "圣遗物排行榜"),
+    to_ai="""查看原神圣遗物排名排行榜
+
+    当用户说"圣遗物排名"、"圣遗物排行榜"时调用。
+    以图片形式返回圣遗物的排名数据。支持按不同属性排序。
+
+    Args:
+        text: 排序方式，例如 "双爆"、"暴击率"、"元素精通"、"暴击伤害"
+              留空默认按双爆排序
+    """,
+)
 async def send_arti_rank_pic(bot: Bot, ev: Event):
     # 获取排序名
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", ev.text))
@@ -120,14 +172,35 @@ async def send_arti_rank_pic(bot: Bot, ev: Event):
     )
 
 
-@sv_enka_admin.on_fullmatch("刷新全部圣遗物仓库")
+@sv_enka_admin.on_fullmatch(
+    "刷新全部圣遗物仓库",
+    to_ai="""刷新所有用户的圣遗物仓库数据（管理员功能）
+
+    当管理员说"刷新全部圣遗物仓库"时调用。
+    为所有用户重新获取圣遗物数据，耗时较长。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_fresh_all_list(bot: Bot, ev: Event):
     await bot.send("开始执行...可能时间较久, 执行完成会有提示, 请勿重复执行!")
     await check_artifacts_list()
     await bot.send("执行完成!")
 
 
-@sv_get_enka.on_fullmatch(("刷新圣遗物仓库", "强制刷新圣遗物仓库"), block=True)
+@sv_get_enka.on_fullmatch(
+    ("刷新圣遗物仓库", "强制刷新圣遗物仓库"),
+    block=True,
+    to_ai="""刷新原神圣遗物仓库数据
+
+    当用户说"刷新圣遗物仓库"、"强制刷新圣遗物仓库"时调用。
+    重新获取当前UID的圣遗物数据。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可。是否强制由命令本身决定
+    """,
+)
 async def send_fresh_list(bot: Bot, ev: Event):
     # 获取uid
     uid = await get_uid(bot, ev)
@@ -142,7 +215,17 @@ async def send_fresh_list(bot: Bot, ev: Event):
     await bot.send(await refresh_player_list(uid, is_force))
 
 
-@sv_get_enka.on_command("圣遗物仓库")
+@sv_get_enka.on_command(
+    "圣遗物仓库",
+    to_ai="""查看原神圣遗物仓库列表
+
+    当用户说"圣遗物仓库"、"查看圣遗物"时调用。
+    以图片形式返回当前UID的圣遗物仓库列表。需要用户已绑定UID。
+
+    Args:
+        text: 可选的页码数字，默认为1，例如 "1"、"2"、"3"
+    """,
+)
 async def send_aritifacts_list(bot: Bot, ev: Event):
     # 获取uid
     uid = await get_uid(bot, ev)
@@ -169,7 +252,17 @@ async def send_aritifacts_list(bot: Bot, ev: Event):
     )
 
 
-@sv_get_original_pic.on_fullmatch(("原图"))
+@sv_get_original_pic.on_fullmatch(
+    ("原图"),
+    to_ai="""获取上一条消息中图片的原图
+
+    当用户说"原图"时调用。需要先回复一条包含图片的消息。
+    返回该图片的原始高清版本。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_original_pic(bot: Bot, ev: Event):
     if ev.reply:
         path = TEMP_PATH / f"{ev.reply}.jpg"
@@ -179,12 +272,35 @@ async def send_original_pic(bot: Bot, ev: Event):
                 await bot.send(f.read())
 
 
-@sv_enka_config.on_fullmatch("切换api")
+@sv_enka_config.on_fullmatch(
+    "切换api",
+    to_ai="""切换面板查询使用的API源
+
+    当用户说"切换api"时调用。
+    在不同的面板查询API之间切换。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_change_api_info(bot: Bot, ev: Event):
     await bot.send(await switch_api())
 
 
-@sv_get_enka.on_prefix("查询")
+@sv_get_enka.on_prefix(
+    "查询",
+    to_ai="""查询原神角色面板详情（武器、圣遗物、属性等）
+
+    当用户说"查询 公子"、"查询 胡桃"时调用。
+    以图片形式返回角色的详细面板数据，包括武器、圣遗物、属性等。需要用户已绑定UID。
+
+    Args:
+        text: 角色名称，例如 "公子"、"胡桃"、"甘雨"
+              支持角色昵称，例如 "雷神"、"小草神"
+              可加"换"后缀切换武器，例如 "公子换"
+              可加"六命"前缀提高命座展示，例如 "六命公子"
+    """,
+)
 async def send_char_info(bot: Bot, ev: Event):
     name = ev.text.strip()
     im = await _get_char_info(bot, ev, name)
@@ -229,7 +345,18 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     return im
 
 
-@sv_get_enka.on_command("对比面板")
+@sv_get_enka.on_command(
+    "对比面板",
+    to_ai="""对比多个原神角色面板配置
+
+    当用户说"对比面板 公子 公子换可莉圣遗物"时调用。
+    以图片形式并排对比多个角色/配置的面板数据。
+
+    Args:
+        text: 用空格分隔的多个角色/配置名称，2-3个
+              例如 "公子 公子换可莉圣遗物"、"胡桃 甘雨"
+    """,
+)
 async def contrast_char_info(bot: Bot, ev: Event):
     if not ev.text.strip():
         return await bot.send("参考格式: 对比面板 公子 公子换可莉圣遗物")
@@ -263,7 +390,17 @@ async def contrast_char_info(bot: Bot, ev: Event):
     await bot.send(await convert_img(base_img))
 
 
-@sv_get_enka.on_command("保存面板")
+@sv_get_enka.on_command(
+    "保存面板",
+    to_ai="""保存当前原神角色面板为自定义名称
+
+    当用户说"保存面板公子为核爆公子"时调用。
+    将当前角色面板数据保存为自定义配置，后续可通过"查询 自定义名称"调用。
+
+    Args:
+        text: 格式为"角色名为自定义名称"，例如 "公子为核爆公子"、"胡桃为核爆胡桃"
+    """,
+)
 async def save_char_info(bot: Bot, ev: Event):
     if not ev.text.strip():
         return await bot.send("后面需要跟自定义的保存名字\n例如：保存面板公子为核爆公子")
@@ -329,7 +466,18 @@ async def save_char_info(bot: Bot, ev: Event):
         "enka强制刷新",
         "mys刷新面板",
         "enka刷新面板",
-    )
+    ),
+    to_ai="""刷新原神角色面板数据
+
+    当用户说"刷新面板"、"强制刷新"时调用。
+    从enka或米游社重新获取角色面板数据。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可。数据源由命令本身决定：
+              - "刷新面板"/"强制刷新"：自动选择数据源
+              - "mys刷新面板"/"mys强制刷新"：从米游社获取
+              - "enka刷新面板"/"enka强制刷新"：从enka获取
+    """,
 )
 async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
@@ -359,7 +507,17 @@ async def send_card_info(bot: Bot, ev: Event):
         await bot.send(im)
 
 
-@sv_get_enka.on_command(("角色橱窗"))
+@sv_get_enka.on_command(
+    ("角色橱窗"),
+    to_ai="""查看原神角色橱窗列表
+
+    当用户说"角色橱窗"、"角色列表"时调用。
+    以图片形式返回当前UID的全部角色橱窗展示。需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_char_detail_list(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
@@ -44,6 +45,22 @@ async def draw_gcg_info(uid: str) -> Union[bytes, str]:
     avatar_card_num_total: int = raw_data["avatar_card_num_total"]
     action_card_num_gained: int = raw_data["action_card_num_gained"]
     action_card_num_total: int = raw_data["action_card_num_total"]
+
+    # AI 注入：提取七圣召唤数据
+    try:
+        avatar_pct = avatar_card_num_gained / avatar_card_num_total * 100 if avatar_card_num_total else 0
+        action_pct = action_card_num_gained / action_card_num_total * 100 if action_card_num_total else 0
+        covers = raw_data.get("covers", [])
+        cover_names = [c.get("name", "未知") for c in covers[:5]]
+        ai_return(
+            f"【{nickname} 七圣召唤数据】\n"
+            f"等级: {level}\n"
+            f"角色牌: {avatar_card_num_gained}/{avatar_card_num_total} ({avatar_pct:.1f}%)\n"
+            f"行动牌: {action_card_num_gained}/{action_card_num_total} ({action_pct:.1f}%)\n"
+            f"展示卡牌: {', '.join(cover_names) if cover_names else '无'}"
+        )
+    except Exception:
+        pass
 
     avatar_rate = avatar_card_num_gained / avatar_card_num_total
     action_rate = action_card_num_gained / action_card_num_total

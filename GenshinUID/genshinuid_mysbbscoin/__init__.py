@@ -19,7 +19,17 @@ sv_get_mysbbs = SV("米游币获取")
 
 
 # 获取米游币
-@sv_get_mysbbs.on_fullmatch("开始获取米游币")
+@sv_get_mysbbs.on_fullmatch(
+    "开始获取米游币",
+    to_ai="""自动获取米游币
+
+    当用户说"获取米游币"、"开始获取米游币"时调用。
+    需要用户已绑定原神UID和stoken。操作结果以文字形式返回。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send("开始操作……")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
@@ -32,7 +42,17 @@ async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send(im)
 
 
-@sv_mysbbs_config.on_fullmatch("全部重获取")
+@sv_mysbbs_config.on_fullmatch(
+    "全部重获取",
+    to_ai="""重新获取所有用户的米游币（管理员功能）
+
+    当管理员说"全部重获取"、"重新获取米游币"时调用。
+    为所有已绑定stoken的用户重新执行米游币获取，耗时较长。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def bbs_recheck(bot: Bot, ev: Event):
     await bot.send("已开始执行!可能需要较久时间!")
     await send_daily_mihoyo_bbs_sign()

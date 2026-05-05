@@ -3,6 +3,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.ai_core.trigger_bridge import ai_return
+
 from .get_all_char_data import get_abyssinfo_data, get_akasha_char_data
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import artifact2attr
@@ -50,6 +52,25 @@ async def draw_char_abyss_info(char_name: str) -> Union[bytes, str]:
         return "没有该角色的数据..."
 
     all_char_info, char_useage_rank = _data[0], _data[1]
+
+    # AI 注入：提取角色深渊数据
+    try:
+        abyss = all_char_info["abyss"]
+        # 排名信息
+        rank_parts = []
+        for rank_item in char_useage_rank[:5]:
+            rank_parts.append(f"{rank_item.get('name', '?')}: {rank_item.get('v', '?')}")
+        rank_str = "\n  排名: " + ", ".join(rank_parts) if rank_parts else ""
+        ai_return(
+            f"【{char_name} 深渊统计】\n"
+            f"使用率: {float(abyss['use_rate']) * 100:.1f}%\n"
+            f"满星率: {float(abyss['maxstar_rate']) * 100:.1f}%\n"
+            f"出场率: {abyss['come_rate']:.1f}%\n"
+            f"平均等级: {abyss['avg_level']}  平均命座: {abyss['avg_constellation']}"
+            f"{rank_str}"
+        )
+    except Exception:
+        pass
 
     char_useage_rank.sort(key=lambda d: int(d["v"]))
 

@@ -4,6 +4,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..version import Genshin_version
 from ..utils.image.convert import convert_img
@@ -93,6 +94,26 @@ async def draw_teyvat_returnlist_img():
     char4_list = data["result"][1][:12]
     weapon5_list = data["result"][2][:12]
     _weapon4_list = data["result"][3][:12]
+
+    # AI 注入：提取未复刻数据
+    try:
+        parts = [f"【未复刻天数排行】版本 {version}"]
+        parts.append("五星角色 (按未复刻天数排序):")
+        for c in char5_list[:8]:
+            days = c["days"]
+            history = c.get("history", [])
+            last_up = history[-1] if history else "未知"
+            star = c.get("star", 5)
+            parts.append(f"  {c['role']}({star}★): {days}天未复刻 (上次UP: {last_up})")
+        parts.append("四星角色:")
+        for c in char4_list[:5]:
+            parts.append(f"  {c['role']}: {c['days']}天未复刻 (上次UP: {c['history'][-1]})")
+        parts.append("五星武器:")
+        for w in weapon5_list[:8]:
+            parts.append(f"  {w['role']}: {w['days']}天未复刻 (上次UP: {w['history'][-1]})")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     weapon4_list = []
     for weapon4 in _weapon4_list:

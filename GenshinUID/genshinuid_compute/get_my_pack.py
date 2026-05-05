@@ -7,6 +7,7 @@ from gsuid_core.models import Event
 from gsuid_core.utils.cache import gs_cache
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .utils import get_all_char_dict
 from ..utils.mys_api import mys_api, get_base_data
@@ -36,6 +37,28 @@ async def draw_my_pack(uid: str, ev: Event) -> Union[str, bytes]:
         return raw_data
     elif isinstance(raw_data, (bytearray, memoryview)):
         return bytes(raw_data)
+
+    # AI 注入：提取背包物品数据
+    try:
+        overall_consume = data["overall_consume"]
+        parts = [f"【UID {uid} 背包物品】共 {len(overall_consume)} 种材料"]
+        # 按缺少数量排序，优先展示缺少最多的
+        sorted_items = sorted(overall_consume, key=lambda x: x.get("lack_num", 0), reverse=True)
+        # 展示缺少材料
+        lack_items = [i for i in sorted_items if i.get("lack_num", 0) > 0]
+        if lack_items:
+            parts.append("  --- 缺少材料 TOP 10 ---")
+            for item in lack_items[:10]:
+                bag_num = item["num"] - item["lack_num"]
+                parts.append(f"  {item.get('name', item['id'])}: 拥有{bag_num}个 缺少{item['lack_num']}个")
+        # 展示拥有最多的材料
+        parts.append("  --- 拥有最多 TOP 10 ---")
+        for item in sorted_items[:10]:
+            bag_num = item["num"] - item["lack_num"]
+            parts.append(f"  {item.get('name', item['id'])}: {bag_num}个")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     char_pic = await get_avatar(ev, 377, False)
     title_img = get_v4_title(char_pic, uid, raw_data)

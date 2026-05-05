@@ -21,7 +21,18 @@ sv_user_help = SV("绑定帮助")
         "删除UID",
         "解绑uid",
         "解绑UID",
-    )
+    ),
+    to_ai="""绑定、切换或删除原神UID
+
+    当用户说"绑定uid 100000000"、"切换uid 100000001"、"删除uid 100000000"时调用。
+    支持绑定多个UID并在之间切换。操作结果以文字形式返回。
+
+    Args:
+        text: 要操作的UID数字，纯数字，例如 "100000000"
+              - 绑定：将UID绑定到当前账号
+              - 切换：切换到已绑定的某个UID
+              - 删除：从绑定列表中移除该UID
+    """,
 )
 async def send_link_uid_msg(bot: Bot, ev: Event):
     await bot.logger.info("开始执行[绑定/解绑用户信息]")
@@ -79,7 +90,17 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
         )
 
 
-@sv_user_help.on_fullmatch(("ck帮助", "绑定帮助"))
+@sv_user_help.on_fullmatch(
+    ("ck帮助", "绑定帮助"),
+    to_ai="""获取原神Cookie绑定帮助信息
+
+    当用户说"怎么绑定cookie"、"绑定帮助"、"ck帮助"时调用。
+    返回详细的Cookie获取和绑定步骤说明。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_ck_help(bot: Bot, ev: Event):
     msg_list = await get_ck_help()
     await bot.send(MessageSegment.node(msg_list))

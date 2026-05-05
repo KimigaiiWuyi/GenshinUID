@@ -26,14 +26,35 @@ PRIV_MAP = {
 }
 
 
-@sv_self_config.on_fullmatch(("配置", "原神配置"))
+@sv_self_config.on_fullmatch(
+    ("配置", "原神配置"),
+    to_ai="""查看当前用户的原神功能配置状态
+
+    当用户说"配置"、"原神配置"、"我的配置"时调用。
+    以图片形式展示当前用户已开启的各项推送和自动功能状态。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_config_card(bot: Bot, ev: Event):
     logger.info("开始执行[gs配置]")
     im = await draw_config_img(ev.bot_id)
     await bot.send(im)
 
 
-@sv_self_config.on_prefix(("设置"))
+@sv_self_config.on_prefix(
+    ("设置"),
+    to_ai="""设置原神功能的阈值参数
+
+    当用户说"设置体力阈值200"、"设置宝钱阈值1500"时调用。
+    需要用户已绑定UID和Cookie，且对应功能已开启。
+
+    Args:
+        text: 格式为"功能名称阈值数字"，例如 "体力阈值200"、"宝钱阈值1500"、"派遣阈值200"、"质变仪阈值800"
+              可设置的功能：体力、宝钱、派遣、质变仪
+    """,
+)
 async def send_config_ev(bot: Bot, ev: Event):
     logger.info("开始执行[设置阈值信息]")
 
@@ -83,7 +104,26 @@ async def send_config_ev(bot: Bot, ev: Event):
 
 
 # 开启 自动签到 和 推送树脂提醒 功能
-@sv_self_config.on_prefix(("开启", "关闭"))
+@sv_self_config.on_prefix(
+    ("开启", "关闭"),
+    to_ai="""开启或关闭原神的各项推送和自动功能
+
+    当用户说"开启体力推送"、"关闭自动签到"、"开启宝钱推送"时调用。
+    需要用户已绑定UID和Cookie。操作结果以文字形式返回。
+
+    Args:
+        text: 功能名称，可选值：
+              - "体力"/"体力推送"：树脂满时提醒
+              - "宝钱"/"宝钱推送"：洞天宝钱满时提醒
+              - "派遣"/"派遣推送"：派遣完成时提醒
+              - "质变仪"/"质变仪推送"：参量质变仪可用时提醒
+              - "自动签到"：每日自动米游社签到
+              - "自动米游币"：每日自动获取米游币
+              - "推送"：推送总开关
+              - "日常检查"：每日零点检查日常完成情况
+              - "活动提醒"：活动即将结束时提醒
+    """,
+)
 async def open_switch_func(bot: Bot, ev: Event):
     user_id = ev.user_id
     config_name = ev.text

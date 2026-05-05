@@ -13,7 +13,19 @@ from ..utils.message import UID_HINT
 sv_cale = SV("个人日历")
 
 
-@sv_cale.on_command(("个人日历", "日历", "查询个人日历", "查询日历"), block=True)
+@sv_cale.on_command(
+    ("个人日历", "日历", "查询个人日历", "查询日历"),
+    block=True,
+    to_ai="""查询原神个人日历（个人活动完成状态）
+
+    当用户说"个人日历"、"日历"、"活动完成状态"时调用。
+    以图片形式返回当前卡池/活动/深渊的完成情况。
+    需要用户已绑定UID。
+
+    Args:
+        text: 无需参数，留空即可
+    """,
+)
 async def send_cale_pic(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:

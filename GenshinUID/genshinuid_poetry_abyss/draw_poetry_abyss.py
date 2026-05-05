@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..utils.colors import first_color
@@ -77,6 +78,32 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
 
     if not data["is_unlock"] or not data["data"]:
         return "[幻想真境剧诗] 你还没有解锁该模式！"
+
+    # AI 注入：提取剧诗数据
+    try:
+        _data = data["data"][-1] if active else data["data"][0]
+        detail = _data.get("detail", {})
+        stat = detail.get("stat", {})
+        medal = stat.get("medal_num", "N/A")
+        difficulty = DIFFICULTY_MAP.get(detail.get("difficulty", 0), "未知")
+        rounds = detail.get("rounds_data", [])
+        completed = sum(1 for r in rounds if r.get("is_get_medal"))
+        parts = [f"【UID {uid} 幻想真境剧诗】"]
+        period = "上期" if active else "本期"
+        parts.append(f"({period}) 难度: {difficulty}  奖章: {medal}  完成关卡: {completed}/{len(rounds)}")
+        # 各关卡详情
+        for r in rounds:
+            name = r.get("name", "未知")
+            is_medal = "✓" if r.get("is_get_medal") else "✗"
+            is_tarot = " (塔罗)" if r.get("is_tarot") else ""
+            parts.append(f"  {is_medal} {name}{is_tarot}")
+        # 使用的角色
+        avatar_list = stat.get("avatar_id_list", [])
+        if avatar_list:
+            parts.append(f"  使用角色数: {len(avatar_list)}")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     if active:
         data = data["data"][-1]

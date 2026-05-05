@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .const import max_data, award_data, expmax_data
 from ..utils.mys_api import get_base_data
@@ -132,6 +133,21 @@ async def draw_base_img(ev: Event, uid: str, mode: Literal["探索", "收集"] =
         return data
 
     percent_data, value_data = data[0], data[1]
+
+    # AI 注入：提取收集/探索数据
+    try:
+        parts = [f"【UID {uid} {mode}数据】活跃天数: {data[2]}"]
+        if mode == "收集":
+            parts.append(f"总完成度: {data[3]}%  剩余可获原石: {data[4]}")
+        else:
+            parts.append(f"收集完成度: {data[3]}%  世界探索度: {data[4]}%")
+        parts.append("  --- 详细数据 ---")
+        for name in percent_data:
+            pct = percent_data[name] * 100
+            parts.append(f"  {name}: {value_data[name]} ({pct:.1f}%)")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
 
     # 获取背景图片各项参数
     char_pic = await get_avatar(ev, 264)

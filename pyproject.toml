@@ -44,20 +44,6 @@ python = "^3.8.1"
 httpx = ">=0.23.0"
 beautifulsoup4 = ">=4.11.1"
 lxml = ">=4.9.2"
-aiohttp = ">=3.8.1"
-sqlalchemy = ">=1.4.39"
-pillow = ">=9.2.0"
-aiosqlite = ">=0.17.0"
-aiofiles = ">=0.8.0"
-sqlmodel = ">=0.0.8"
-gitpython = ">=3.1.27"
-msgspec = ">=0.13.1"
-qrcode = {extras = ["pil"], version = "^7.3.1"}
-
-[[tool.poetry.source]]
-name = "USTC"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-priority = "default"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

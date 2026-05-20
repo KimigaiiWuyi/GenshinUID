@@ -124,10 +124,12 @@ async def get_new_gachalog(uid: str, full_data: Dict, is_force: bool):
                     full_data[gacha_name] = []
 
                 data = await check_gachalogs(data)
+
+                for item in data:
+                    item.pop("op_gacha_type", None)
+
                 if data[-1] in full_data[gacha_name] and not is_force:
                     for item in data:
-                        if "op_gacha_type" in item:
-                            del item["op_gacha_type"]
                         if item not in full_data[gacha_name]:
                             temp.append(item)
                     full_data[gacha_name][0:0] = temp
@@ -196,7 +198,8 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
         gachalogs_history = deepcopy(NULL_GACHA_LOG)
 
     for i in all_gacha_type_name:
-        gachalogs_history[i] = [i for i in gachalogs_history[i] if "op_gacha_type" not in i]
+        for item in gachalogs_history[i]:
+            item.pop("op_gacha_type", None)
         gachalogs_history[i] = await check_gachalogs(gachalogs_history[i])
 
     # 获取新抽卡记录

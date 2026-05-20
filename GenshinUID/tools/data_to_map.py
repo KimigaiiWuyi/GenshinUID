@@ -596,7 +596,7 @@ async def main():
     # await download_new_file()
     # await restore_mysData()
     await restore_ambr_data()
-    # await monster2map()
+    await monster2map()
     global raw_data
     try:
         with open(DATA_PATH / "TextMapCHS.json", "r", encoding="UTF-8") as f:
@@ -607,7 +607,7 @@ async def main():
 
     except FileNotFoundError:
         pass
-    """
+
     await avatarId2NameJson()
     await avatarName2ElementJson()
     await weaponHash2NameJson()
@@ -617,7 +617,6 @@ async def main():
     await artifact2attrJson()
     await weaponId2Name()
     await avatarId2SkillGroupList()
-    """
     await save_char_talent_num()
 
 

@@ -9,12 +9,12 @@ from PIL import Image
 
 MAP_PATH = Path(__file__).parent.parent / "utils" / "map" / "data"
 
-with open(MAP_PATH / "enName2AvatarID_mapping_6.5.0.json") as f:
+with open(MAP_PATH / "enName2AvatarID_mapping_6.6.0.json") as f:
     enmap: Dict[str, str] = json.load(f)
 
 suffix = "png"
 
-char_list = ["Linnea"]
+char_list = ["Prune"]
 base = "https://gi.yatta.top/assets/UI"
 # title = 'https://enka.network/ui/{}'
 # hakush = 'https://api.hakush.in/gi/UI/'

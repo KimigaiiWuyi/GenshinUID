@@ -1,4 +1,66 @@
 {
+  "尘光七谕": {
+    "normal": {
+      "normal_effect": {
+        "1": "addAtk+12",
+        "2": "addAtk+15",
+        "3": "addAtk+18",
+        "4": "addAtk+21",
+        "5": "addAtk+24"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "dmgBonus+26%0.001%atk",
+        "2": "dmgBonus+34%0.0013%atk",
+        "3": "dmgBonus+42%0.0016%atk",
+        "4": "dmgBonus+50%0.0019%atk",
+        "5": "dmgBonus+58%0.0022%atk"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 4,
+      "extra": {
+        
+      }
+    }
+  },
+  "灾悔": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "ABEQ:dmgBonus+40",
+        "2": "ABEQ:dmgBonus+50",
+        "3": "ABEQ:dmgBonus+60",
+        "4": "ABEQ:dmgBonus+70",
+        "5": "ABEQ:dmgBonus+80"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 4,
+      "extra": {
+        
+      }
+    }
+  },
   "霜结的誓金枝": {
     "normal": {
       "normal_effect": {

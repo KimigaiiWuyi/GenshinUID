@@ -393,6 +393,7 @@ async def get_all_message(bot: Bot, ev: Event):
             C2CMessageCreateEvent,
             DirectMessageCreateEvent,
             GroupAtMessageCreateEvent,
+            GroupMessageCreateEvent
         )
 
         # 私聊
@@ -411,6 +412,18 @@ async def get_all_message(bot: Bot, ev: Event):
             sender = {
                 'avatar': 'https://q.qlogo.cn/qqapp/'
                 f'{self_id}/{str(user_id)}/0',
+            }
+            msg_id_cache[user_id] = msg_id
+        elif isinstance(ev, GroupMessageCreateEvent):
+            sp_bot_id = 'qqgroup'
+            user_type = 'group'
+            group_id = str(ev.group_openid)
+            msg_id = ev.id
+            sender = ev.author.dict()
+            # 如果需要，可以像 GroupAtMessageCreateEvent 一样构造头像 URL
+            sender = {
+                'avatar': 'https://q.qlogo.cn/qqapp/'
+                f'{self_id}/{str(ev.author.member_openid)}/0',
             }
             msg_id_cache[user_id] = msg_id
         elif isinstance(ev, C2CMessageCreateEvent):

@@ -204,6 +204,8 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
         if gachalogs_history:
             for i in all_gacha_type_name:
                 for item in raw_data[i]:
+                    if "op_gacha_type" in item:
+                        del item["op_gacha_type"]
                     if item not in gachalogs_history[i] and item not in new_data[i]:
                         new_data[i].append(item)
             raw_data = new_data

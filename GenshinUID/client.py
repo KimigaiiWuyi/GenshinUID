@@ -699,23 +699,20 @@ async def onebot_send(
 
     async def to_file(file: str):
         file_name, file_content = file.split('|')
-        path = Path(__file__).resolve().parent / file_name
-        store_file(path, file_content)
         if target_type == 'group':
             await bot.call_api(
                 'upload_group_file',
-                file=str(path.absolute()),
+                file=f'base64://{file_content}',
                 name=file_name,
                 group_id=_target_id,
             )
         else:
             await bot.call_api(
                 'upload_private_file',
-                file=str(path.absolute()),
+                file=f'base64://{file_content}',
                 name=file_name,
                 user_id=_target_id,
             )
-        del_file(path)
 
     async def to_msg(gsmsgs: List[GsMessage]):
         message = []

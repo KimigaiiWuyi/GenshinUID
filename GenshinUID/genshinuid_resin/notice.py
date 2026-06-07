@@ -100,7 +100,13 @@ async def send_notice_list():
                                     f"你设置的阈值为: {_data.extra_message}",
                                     MR_NOTICE,
                                 ]
-                            await _data.send("\n".join(mlist))
+                            user_id = _data.user_id
+                            msg = [
+                                MessageSegment.at(user_id),
+                                "\n",
+                                "\n".join(mlist)
+                            ]
+                            await _data.send(msg)
 
 
 async def check(

@@ -1,8 +1,8 @@
 from typing import List
 
 from gsuid_core.logger import logger
-from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.segment import MessageSegment
+from gsuid_core.subscribe import gs_subscribe
 
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
@@ -52,9 +52,5 @@ async def notice_cale():
                             f"你可以发送 {PREFIX}日历 查看活动详情！",
                         ]
                         user_id = _sub.user_id
-                        msg = [
-                            MessageSegment.at(user_id),
-                            "\n",
-                            "\n".join(mlist)
-                        ]
+                        msg = [MessageSegment.at(user_id), "\n", "\n".join(mlist)]
                         await _sub.send(msg)

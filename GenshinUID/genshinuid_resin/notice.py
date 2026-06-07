@@ -2,10 +2,10 @@ import datetime
 from typing import Dict, List, Tuple, Union, Sequence
 
 from gsuid_core.logger import logger
+from gsuid_core.segment import MessageSegment
 from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.utils.api.mys.models import DailyNoteData
 from gsuid_core.utils.database.models import Subscribe
-from gsuid_core.segment import MessageSegment
 
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
@@ -102,11 +102,7 @@ async def send_notice_list():
                                     MR_NOTICE,
                                 ]
                             user_id = _data.user_id
-                            msg = [
-                                MessageSegment.at(user_id),
-                                "\n",
-                                "\n".join(mlist)
-                            ]
+                            msg = [MessageSegment.at(user_id), "\n", "\n".join(mlist)]
                             await _data.send(msg)
 
 

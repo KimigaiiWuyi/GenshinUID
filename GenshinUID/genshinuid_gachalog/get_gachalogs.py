@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 import aiofiles
 
 from gsuid_core.logger import logger
-from gsuid_core.utils.error_reply import SK_HINT
 
 from ..utils.mys_api import mys_api
 from .check_gachalogs import check_gachalogs
@@ -220,7 +219,7 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
 
     if raw_data == {} or not raw_data:
         lock.remove(uid)
-        return SK_HINT
+        return "🔔 你还没有绑定过Stoken哦~\n📎 请使用扫码登陆命令获取Stoken\n🚩 或者查看帮助文档获取绑定方式"
 
     if "集录祈愿" not in raw_data:
         raw_data["集录祈愿"] = []

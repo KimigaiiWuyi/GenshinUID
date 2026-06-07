@@ -1,11 +1,10 @@
 import re
 
-from gsuid_core.sv import SV
+from gsuid_core.sv import SV, get_plugin_available_prefix
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.subscribe import Subscribe, gs_subscribe
-from gsuid_core.utils.error_reply import CK_HINT
 from gsuid_core.utils.database.models import GsBind, GsUser
 
 from ..utils.message import PREFIX as P, UID_HINT
@@ -63,7 +62,12 @@ async def send_config_ev(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     cookie = await GsUser.get_user_cookie_by_uid(uid)
     if cookie is None:
-        return await bot.send(CK_HINT)
+        return await bot.send(
+            f"🔔 提示：你的当前UID{uid}暂未绑定Cookie~\n"
+            f"📎 请使用扫码登陆命令获取Cookie\n"
+            f"🚩 或者查看帮助文档获取绑定方式\n"
+            f"💡 若你想切换UID, 可以尝试命令：{P}切换UID"
+        )
 
     config_name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text.replace("阈值", "")))
 
@@ -140,7 +144,13 @@ async def open_switch_func(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     cookie = await GsUser.get_user_cookie_by_uid(uid)
     if cookie is None:
-        return await bot.send(CK_HINT)
+        PREFIX = get_plugin_available_prefix("GenshinUID")
+        return await bot.send(
+            f"🔔 提示：你的当前UID{uid}暂未绑定Cookie~\n"
+            f"📎 请使用扫码登陆命令获取Cookie\n"
+            f"🚩 或者查看帮助文档获取绑定方式\n"
+            f"💡 若你想切换UID, 可以尝试命令：{PREFIX}切换UID"
+        )
 
     c_name = f"[原神] {config_name}"
 

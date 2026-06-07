@@ -6,10 +6,10 @@ from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
-from gsuid_core.utils.error_reply import CK_HINT, SK_HINT
 from gsuid_core.utils.database.models import GsBind, GsUser
 
 from .daily_get import mihoyo_coin, all_daily_mihoyo_bbs_coin
+from ..utils.message import UID_HINT
 from ..genshinuid_config.gs_config import gsconfig
 
 BBS_TASK_TIME = gsconfig.get_config("BBSTaskTime").data
@@ -34,10 +34,14 @@ async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send("开始操作……")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
-        return await bot.send(CK_HINT)
+        return await bot.send(UID_HINT)
     stoken = await GsUser.get_user_stoken_by_uid(uid)
     if stoken is None:
-        return await bot.send(SK_HINT)
+        return await bot.send(
+            f"🔔 提示：你的当前UID{uid}暂未绑定Stoken~\n"
+            f"📎 请使用扫码登陆命令获取Stoken\n"
+            f"🚩 或者查看帮助文档获取绑定方式"
+        )
     im = await mihoyo_coin(stoken)
     await bot.send(im)
 

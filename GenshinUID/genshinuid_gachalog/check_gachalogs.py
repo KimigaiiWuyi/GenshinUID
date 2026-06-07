@@ -1,9 +1,11 @@
-from typing import Dict, List
+from typing import List
+
+from gsuid_core.utils.api.mys.models import SingleGachaLog
 
 from ..utils.map.GS_MAP_PATH import charList, weaponList
 
 
-async def check_gachalogs(raw_data: List[Dict]):
+async def check_gachalogs(raw_data: List[SingleGachaLog]):
     for i in raw_data:
         if ("item_id" in i and not i["item_id"]) or "item_id" not in i:
             if i["item_type"] == "角色":

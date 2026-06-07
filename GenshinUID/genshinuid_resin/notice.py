@@ -2,6 +2,7 @@ import datetime
 from typing import Dict, List, Tuple, Union, Sequence
 
 from gsuid_core.logger import logger
+from gsuid_core.segment import MessageSegment
 from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.utils.api.mys.models import DailyNoteData
 from gsuid_core.utils.database.models import Subscribe
@@ -100,7 +101,9 @@ async def send_notice_list():
                                     f"你设置的阈值为: {_data.extra_message}",
                                     MR_NOTICE,
                                 ]
-                            await _data.send("\n".join(mlist))
+                            user_id = _data.user_id
+                            msg = [MessageSegment.at(user_id), "\n", "\n".join(mlist)]
+                            await _data.send(msg)
 
 
 async def check(

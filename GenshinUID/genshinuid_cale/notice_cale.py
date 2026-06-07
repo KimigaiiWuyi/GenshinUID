@@ -1,6 +1,7 @@
 from typing import List
 
 from gsuid_core.logger import logger
+from gsuid_core.segment import MessageSegment
 from gsuid_core.subscribe import gs_subscribe
 
 from ..utils.message import PREFIX
@@ -50,4 +51,6 @@ async def notice_cale():
                             f"还剩下{act['countdown_seconds'] // 60}分钟, 活动即将结束！",
                             f"你可以发送 {PREFIX}日历 查看活动详情！",
                         ]
-                        await _sub.send("\n".join(mlist))
+                        user_id = _sub.user_id
+                        msg = [MessageSegment.at(user_id), "\n", "\n".join(mlist)]
+                        await _sub.send(msg)

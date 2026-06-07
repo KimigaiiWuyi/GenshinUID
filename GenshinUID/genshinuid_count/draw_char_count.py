@@ -82,7 +82,7 @@ async def draw_char_count_list(
     else:
         _mode = 2
 
-    char_done_list.sort(key=lambda x: (-x["score_value"]))
+    char_done_list.sort(key=lambda x: -x["score_value"])
 
     # AI 注入：提取毕业度统计数据
     try:

@@ -246,7 +246,7 @@ async def draw_pic(uid: str) -> Union[str, bytes]:
             _id = world_part["id"] - 1
         world_list[_id] = temp
 
-    world_list.sort(key=lambda x: (-x["id"]), reverse=True)
+    world_list.sort(key=lambda x: -x["id"], reverse=True)
     # 添加宝箱信息和锚点
     chest_data = [
         "common_chest_number",

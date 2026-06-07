@@ -460,6 +460,12 @@ async def get_all_message(bot: Bot, ev: Event):
         ):
             reply_msg_id = ev.message_reference.message_id  # type: ignore
             message.append(Message('reply', reply_msg_id))
+
+        if hasattr(ev, 'reply') and ev.reply:
+            logger.debug(f'reply_obj:{ev.reply}')
+            for att in getattr(ev.reply, 'attachments') or []:
+                if att.url:
+                    message.append(Message('image', att.url))
     # telegram
     elif bot.adapter.get_name() == 'Telegram':
         from nonebot.adapters.telegram.event import (

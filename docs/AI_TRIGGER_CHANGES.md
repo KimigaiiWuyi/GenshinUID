@@ -208,7 +208,7 @@ AI 在引导用户使用命令时，应使用正确的前缀格式，而非 `/�
 
 AI 调用触发器时，框架会使用 `MockBot` 代理：
 - `bot.send(str)` 的文本内容会被拦截并返回给 AI
-- `bot.send(bytes)` 的图片数据会被暂存，AI 可通过 `send_trigger_images` 工具决定是否发送
+- `bot.send(bytes)` 的图片数据会被暂存，AI 可通过 `send_message_by_ai` 工具传入 `image_id` 决定是否发送
 
 ### to_ai 注册机制
 
@@ -219,7 +219,7 @@ AI 调用触发器时，框架会使用 `MockBot` 代理：
 
 ## 注意事项
 
-1. **图片类触发器**：大部分触发器返回的是图片（`bytes`），AI 调用时图片会被暂存而非直接返回文本。AI 会收到提示"已生成 N 张图片"，并可调用 `send_trigger_images` 工具发送。
+1. **图片类触发器**：大部分触发器返回的是图片（`bytes`），AI 调用时图片会被暂存而非直接返回文本。AI 会收到提示"已生成 N 张图片"，并可调用 `send_message_by_ai` 工具传入 `image_id` 发送。
 
 2. **文字类触发器**：返回纯文本的触发器（如 `adv`、`resin_text`、`note_text`）的 `bot.send(str)` 会被 MockBot 自动拦截返回给 AI。
 

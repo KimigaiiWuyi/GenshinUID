@@ -44,14 +44,17 @@ async def notice_cale():
                             ed = act["explore_detail"]
                             t = f"{ed['explore_percent']}%"
 
-                        user_id = _sub.user_id
                         mlist = [
-                            MessageSegment.at(user_id),
-                            "\n",
-                            f"🚨 活动推送提醒 - UID{uid}\n",
-                            f"当前{act['name']}活动快要结束了!\n",
-                            f"你当前进度：未完成！{t}\n",
-                            f"还剩下{act['countdown_seconds'] // 60}分钟, 活动即将结束！\n",
+                            f"🚨 活动推送提醒 - UID{uid}",
+                            f"当前{act['name']}活动快要结束了!",
+                            f"你当前进度：未完成！{t}",
+                            f"还剩下{act['countdown_seconds'] // 60}分钟, 活动即将结束！",
                             f"你可以发送 {PREFIX}日历 查看活动详情！",
                         ]
-                        await _sub.send(mlist)
+                        user_id = _sub.user_id
+                        msg = [
+                            MessageSegment.at(user_id),
+                            "\n",
+                            "\n".join(mlist)
+                        ]
+                        await _sub.send(msg)

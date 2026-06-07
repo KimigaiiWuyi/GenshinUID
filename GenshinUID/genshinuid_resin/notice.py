@@ -5,6 +5,7 @@ from gsuid_core.logger import logger
 from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.utils.api.mys.models import DailyNoteData
 from gsuid_core.utils.database.models import Subscribe
+from gsuid_core.segment import MessageSegment
 
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api

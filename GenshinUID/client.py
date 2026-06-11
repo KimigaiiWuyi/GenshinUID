@@ -1,5 +1,5 @@
 import asyncio
-from typing import Dict, Union, Optional
+from typing import Dict, List, Union, Optional
 from asyncio import CancelledError
 
 import websockets
@@ -12,6 +12,7 @@ from websockets.exceptions import ConnectionClosedError
 from .models import Message as GsMessage, MessageSend, MessageReceive
 from .send_utils import (
     Milky_send,
+    del_msg,
     group_send,
     guild_send,
     feishu_send,
@@ -128,6 +129,22 @@ class GsClient:
                     else:
                         continue
 
+                    # 撤回控制包(单段 excute_delete_message): 短路到平台撤回 API,
+                    # 不当普通消息发送, 避免非 onebot 平台误发空消息
+                    if msg.content and len(msg.content) == 1 and msg.content[0].type == "excute_delete_message":
+                        _del_data = msg.content[0].data
+                        _mid = _del_data.get("message_id") if isinstance(_del_data, dict) else None
+                        if _mid is not None:
+                            for bot in bot_list:
+                                await del_msg(
+                                    bot,
+                                    msg.bot_id,
+                                    str(_mid),
+                                    msg.target_id,
+                                    msg.target_type,
+                                )
+                        continue
+
                     content = ""
                     image: Optional[str] = None
                     record: Optional[str] = None
@@ -174,131 +191,134 @@ class GsClient:
                     # 根据bot_id字段发送消息
 
                     # 平台真实出站消息id; 仅当 send 函数回传时非空
-                    recall_id: Optional[str] = None
+                    # 一帧被平台展开为多条消息时为 List[str]
+                    recall_id: Optional[Union[str, List[str]]] = None
 
-                    for bot in bot_list:
-                        # OneBot v11
-                        if msg.bot_id == "onebot":
-                            recall_id = await onebot_send(
-                                bot,
-                                msg.content,
-                                msg.target_id,
-                                msg.target_type,
-                            )
-                        # OneBot v12
-                        elif msg.bot_id == "onebot_v12":
-                            recall_id = await onebot_v12_send(
-                                bot,
-                                content,
-                                image,
-                                node,
-                                file,
-                                at_list,
-                                record,
-                                msg.target_id,
-                                msg.target_type,
-                            )
-                        elif msg.bot_id == "heybox":
-                            recall_id = await heybox_send(
-                                bot,
-                                content,
-                                image,
-                                node,
-                                file,
-                                at_list,
-                                record,
-                                msg.target_id,
-                                msg.target_type,
-                                msg.msg_id,
-                            )
-                        # 频道
-                        elif msg.bot_id == "qqguild":
-                            recall_id = await guild_send(
-                                bot,
-                                content,
-                                image,
-                                node,
-                                at_list,
-                                markdown,
-                                buttons,
-                                template_markdown,
-                                template_buttons,
-                                msg.target_id,
-                                msg.target_type,
-                                msg.msg_id,
-                                group_id,
-                            )
-                        elif msg.bot_id == "telegram":
-                            recall_id = await telegram_send(
-                                bot,
-                                content,
-                                image,
-                                file,
-                                node,
-                                buttons,
-                                record,
-                                video,
-                                msg.target_id,
-                            )
-                        elif msg.bot_id == "qqgroup":
-                            recall_id = await group_send(
-                                bot,
-                                content,
-                                image,
-                                node,
-                                markdown,
-                                buttons,
-                                template_markdown,
-                                template_buttons,
-                                msg.target_id,
-                                msg.target_type,
-                                msg.msg_id,
-                            )
-                        elif msg.bot_id == "milky":
-                            recall_id = await Milky_send(
-                                bot,
-                                content,
-                                image,
-                                file,
-                                node,
-                                at_list,
-                                record,
-                                video,
-                                msg.target_id,
-                                msg.target_type,
-                            )
-                        elif msg.bot_id == "feishu":
-                            recall_id = await feishu_send(
-                                bot,
-                                content,
-                                image,
-                                file,
-                                node,
-                                at_list,
-                                record,
-                                msg.target_id,
-                                msg.target_type,
-                            )
-                        elif msg.bot_id == "discord":
-                            recall_id = await discord_send(
-                                bot,
-                                content,
-                                image,
-                                node,
-                                at_list,
-                                markdown,
-                                buttons,
-                                record,
-                                video,
-                                msg.target_id,
-                                msg.target_type,
-                                group_id,
-                            )
-
-                    # 若 core 要求回执(echo 非空)且平台返回了消息id,
-                    # 则回传 recall_message_id 控制消息供 core 关联 future
-                    if msg.echo and recall_id:
-                        await self._send_recall_receipt(msg, recall_id)
+                    try:
+                        for bot in bot_list:
+                            # OneBot v11
+                            if msg.bot_id == "onebot":
+                                recall_id = await onebot_send(
+                                    bot,
+                                    msg.content,
+                                    msg.target_id,
+                                    msg.target_type,
+                                )
+                            # OneBot v12
+                            elif msg.bot_id == "onebot_v12":
+                                recall_id = await onebot_v12_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    node,
+                                    file,
+                                    at_list,
+                                    record,
+                                    msg.target_id,
+                                    msg.target_type,
+                                )
+                            elif msg.bot_id == "heybox":
+                                recall_id = await heybox_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    node,
+                                    file,
+                                    at_list,
+                                    record,
+                                    msg.target_id,
+                                    msg.target_type,
+                                    msg.msg_id,
+                                )
+                            # 频道
+                            elif msg.bot_id == "qqguild":
+                                recall_id = await guild_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    node,
+                                    at_list,
+                                    markdown,
+                                    buttons,
+                                    template_markdown,
+                                    template_buttons,
+                                    msg.target_id,
+                                    msg.target_type,
+                                    msg.msg_id,
+                                    group_id,
+                                )
+                            elif msg.bot_id == "telegram":
+                                recall_id = await telegram_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    file,
+                                    node,
+                                    buttons,
+                                    record,
+                                    video,
+                                    msg.target_id,
+                                )
+                            elif msg.bot_id == "qqgroup":
+                                recall_id = await group_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    node,
+                                    markdown,
+                                    buttons,
+                                    template_markdown,
+                                    template_buttons,
+                                    msg.target_id,
+                                    msg.target_type,
+                                    msg.msg_id,
+                                )
+                            elif msg.bot_id == "milky":
+                                recall_id = await Milky_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    file,
+                                    node,
+                                    at_list,
+                                    record,
+                                    video,
+                                    msg.target_id,
+                                    msg.target_type,
+                                )
+                            elif msg.bot_id == "feishu":
+                                recall_id = await feishu_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    file,
+                                    node,
+                                    at_list,
+                                    record,
+                                    msg.target_id,
+                                    msg.target_type,
+                                )
+                            elif msg.bot_id == "discord":
+                                recall_id = await discord_send(
+                                    bot,
+                                    content,
+                                    image,
+                                    node,
+                                    at_list,
+                                    markdown,
+                                    buttons,
+                                    record,
+                                    video,
+                                    msg.target_id,
+                                    msg.target_type,
+                                    group_id,
+                                )
+                    finally:
+                        # 只要 core 要求回执(echo 非空)就回执, 即便没拿到 id(返回
+                        # None/空list)或发送中途异常: 让 core 立即结算该帧, 避免
+                        # 空等 RECALL_WAIT_TIMEOUT 或连续零回执被误判为不支持回执
+                        if msg.echo:
+                            await self._send_recall_receipt(msg, recall_id)
 
                 except Exception as e:
                     logger.exception(e)
@@ -324,11 +344,17 @@ class GsClient:
     async def _input(self, msg: MessageReceive):
         await self.msg_list.put(msg)
 
-    async def _send_recall_receipt(self, msg: MessageSend, recall_id: str):
+    async def _send_recall_receipt(
+        self,
+        msg: MessageSend,
+        recall_id: Optional[Union[str, List[str]]],
+    ):
         """回传 recall_message_id 回执.
 
         复用上行 MessageReceive 通道, content 仅含单段 recall_message_id,
         data 自带 echo(原样回传供 core 关联)与 id(平台真实出站消息id).
+        id 为 None 表示本帧未拿到平台消息id(core 会结算该帧但不计入返回);
+        id 为 list 表示一帧被平台展开为多条消息, core 会 flatten 进扁平结果.
         """
         receipt = MessageReceive(
             bot_id=msg.bot_id,

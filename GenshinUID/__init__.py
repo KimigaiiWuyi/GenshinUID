@@ -1,7 +1,7 @@
 import asyncio
 from copy import deepcopy
 from base64 import b64encode
-from typing import Any, Dict, List, Tuple, Union, Optional
+from typing import Any, List, Union, Optional
 from pathlib import Path
 from collections import OrderedDict
 
@@ -29,6 +29,7 @@ from nonebot_plugin_apscheduler import scheduler  # noqa:E402
 
 from .client import GsClient, driver  # noqa:E402
 from .models import Message, MessageReceive  # noqa:E402
+from .meta_event import build_meta_receive  # noqa:E402
 
 get_message = on_message(priority=0, block=False)
 get_notice = on_notice(priority=0, block=False)
@@ -646,96 +647,14 @@ async def get_all_message(bot: Bot, ev: Event):
     await gsclient._input(msg)
 
 
-def _ob11_event_to_meta(raw_data: Dict[str, Any]) -> Optional[Tuple[str, Dict[str, Any]]]:
-    """将 OneBot V11 的通知/请求事件映射为 (meta事件名, data) 元组.
-
-    返回 None 表示该事件无需作为 meta 事件上报(交由其他处理器或忽略).
-    事件名与 data 字段遵循 gsuid_core 的 meta 命名约定.
-    """
-    post_type = raw_data.get("post_type")
-    if post_type == "notice":
-        ntype = raw_data.get("notice_type")
-        if ntype == "group_increase":
-            return "user_join_group", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "group_id": str(raw_data.get("group_id", "")),
-                "operator_id": str(raw_data.get("operator_id", "")),
-                "sub_type": raw_data.get("sub_type", ""),
-            }
-        elif ntype == "group_decrease":
-            return "user_exit_group", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "group_id": str(raw_data.get("group_id", "")),
-                "operator_id": str(raw_data.get("operator_id", "")),
-                "sub_type": raw_data.get("sub_type", ""),
-            }
-        elif ntype == "group_admin":
-            return "group_admin_change", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "group_id": str(raw_data.get("group_id", "")),
-                "sub_type": raw_data.get("sub_type", ""),
-            }
-        elif ntype == "group_ban":
-            return "group_ban", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "group_id": str(raw_data.get("group_id", "")),
-                "operator_id": str(raw_data.get("operator_id", "")),
-                "duration": raw_data.get("duration", 0),
-                "sub_type": raw_data.get("sub_type", ""),
-            }
-        elif ntype == "group_recall":
-            return "group_recall", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "group_id": str(raw_data.get("group_id", "")),
-                "operator_id": str(raw_data.get("operator_id", "")),
-                "message_id": str(raw_data.get("message_id", "")),
-            }
-        elif ntype == "friend_recall":
-            return "friend_recall", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "message_id": str(raw_data.get("message_id", "")),
-            }
-        elif ntype == "friend_add":
-            return "friend_add", {
-                "user_id": str(raw_data.get("user_id", "")),
-            }
-        elif ntype == "notify" and raw_data.get("sub_type") == "poke":
-            data = {
-                "user_id": str(raw_data.get("user_id", "")),
-                "target_id": str(raw_data.get("target_id", "")),
-            }
-            if raw_data.get("group_id") is not None:
-                data["group_id"] = str(raw_data["group_id"])
-            return "poke", data
-        return None
-    elif post_type == "request":
-        rtype = raw_data.get("request_type")
-        if rtype == "friend":
-            return "friend_request", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "comment": raw_data.get("comment", ""),
-                "flag": raw_data.get("flag", ""),
-            }
-        elif rtype == "group":
-            return "group_request", {
-                "user_id": str(raw_data.get("user_id", "")),
-                "group_id": str(raw_data.get("group_id", "")),
-                "comment": raw_data.get("comment", ""),
-                "flag": raw_data.get("flag", ""),
-                "sub_type": raw_data.get("sub_type", ""),
-            }
-        return None
-    return None
-
-
 @get_meta_request.handle()
 @get_meta.handle()
 async def get_meta_message(bot: Bot, ev: Event):
-    """监听平台元事件(进退群/禁言/撤回/戳一戳/加好友/加群申请等),
+    """监听平台元事件(进退群/禁言/撤回/戳一戳/加好友/加群申请/上下线等),
 
     转换为 content=[Message('meta-<事件名>', data)] 的 MessageReceive 上报 core,
-    由 core 的 on_meta 触发器分发. 当前仅实现 OneBot V11(参考适配器),
-    其它适配器未映射时静默忽略, 不影响既有行为.
+    由 core 的 on_meta 触发器分发. 各适配器的事件->meta 映射集中在 meta_event.py,
+    未映射的事件(或未支持的适配器)静默忽略, 不影响既有行为.
     """
     if gsclient is None:
         return await connect()
@@ -744,36 +663,15 @@ async def get_meta_message(bot: Bot, ev: Event):
     except ConnectionClosed:
         return await connect()
 
-    if bot.adapter.get_name() != "OneBot V11":
-        return
-
-    raw_data = ev.dict()
-    meta = _ob11_event_to_meta(raw_data)
-    if meta is None:
-        return
-    event_name, data = meta
-
-    self_id = str(bot.self_id)
-    bot_id = ev.__class__.__module__.split(".")[2]
-    group_id = data.get("group_id") or None
-    user_id = data.get("user_id") or ""
-    user_type = "group" if group_id else "direct"
-
     pm = 6
     if await SUPERUSER(bot, ev):
         pm = 1
 
-    msg = MessageReceive(
-        bot_id=bot_id,
-        bot_self_id=self_id,
-        user_type=user_type,
-        group_id=group_id,
-        user_id=user_id,
-        sender={},
-        content=[Message(f"meta-{event_name}", data)],
-        msg_id="",
-        user_pm=pm,
-    )
+    msg = build_meta_receive(bot, ev, pm)
+    if msg is None:
+        return
+
+    event_name = msg.content[0].type
     logger.info(f"【发送】[gsuid-core][Meta]: {event_name}")
     await gsclient._input(msg)
 

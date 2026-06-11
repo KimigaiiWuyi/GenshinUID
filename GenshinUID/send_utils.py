@@ -29,7 +29,7 @@ async def onebot_send(
     content: Optional[List[GsMessage]],
     target_id: Optional[str],
     target_type: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     if target_id is None or content is None:
         return None
     _target_id = int(target_id)
@@ -37,6 +37,9 @@ async def onebot_send(
     from nonebot.adapters.onebot.v11 import Bot, MessageSegment
 
     assert isinstance(bot, Bot)
+
+    # 收集本次产生的平台出站消息id(可能含转发气泡+正文气泡), 供 recv_msg 回传 core
+    recall_ids: List[str] = []
 
     async def to_file(file: str):
         file_name, file_content = file.split("|")
@@ -55,7 +58,7 @@ async def onebot_send(
                 user_id=_target_id,
             )
 
-    async def to_msg(gsmsgs: List[GsMessage]):
+    async def to_msg(gsmsgs: List[GsMessage]) -> List[MessageSegment]:
         message = []
         for _c in gsmsgs:
             if _c.data:
@@ -93,23 +96,35 @@ async def onebot_send(
                     message.append(MessageSegment.record(get_bytes_from_base64_str(_c.data)))
                 elif _c.type == "video":
                     message.append(MessageSegment.video(get_bytes_from_base64_str(_c.data)))
-                elif _c.type == "excute_delete_message":
-                    await bot.delete_msg(message_id=int(_c.data))
+                elif _c.type == "excute_ban_user":
+                    user_id = _c.data.get("user_id", None)
+                    group_id = _c.data.get("group_id", None)
+                    duration = _c.data.get("duration", None)
+                    if user_id is not None and group_id is not None:
+                        if isinstance(duration, int) or (isinstance(duration, str) and duration.isdigit()):
+                            await bot.set_group_ban(
+                                group_id=int(group_id),
+                                user_id=int(user_id),
+                                duration=int(duration),
+                            )
         return message
 
     async def _send_node(messages):
         if target_type == "group":
-            await bot.call_api(
+            ret = await bot.call_api(
                 "send_group_forward_msg",
                 group_id=_target_id,
                 messages=messages,
             )
         else:
-            await bot.call_api(
+            ret = await bot.call_api(
                 "send_private_forward_msg",
                 user_id=_target_id,
                 messages=messages,
             )
+        # 合并转发本身是一个气泡, 协议返回 message_id(部分实现还含 forward_id)
+        if isinstance(ret, dict) and ret.get("message_id") is not None:
+            recall_ids.append(str(ret["message_id"]))
 
     result_msg = await to_msg(content)
     if result_msg:
@@ -125,10 +140,13 @@ async def onebot_send(
                 user_id=_target_id,
                 message=result_msg,
             )
-        # 返回平台出站消息id, 供 recv_msg 在 echo 非空时回传 core
-        if recall and recall.get("message_id") is not None:
-            return str(recall["message_id"])
-    return None
+        if isinstance(recall, dict) and recall.get("message_id") is not None:
+            recall_ids.append(str(recall["message_id"]))
+
+    # 无id->None; 单气泡->str; 转发+正文等多气泡->List[str], 由 core flatten
+    if not recall_ids:
+        return None
+    return recall_ids[0] if len(recall_ids) == 1 else recall_ids
 
 
 async def heybox_send(
@@ -224,7 +242,7 @@ async def discord_send(
     target_id: Optional[str],
     target_type: Optional[str],
     group_id: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     from nonebot.adapters.discord import Bot, Message, MessageSegment
     from nonebot.adapters.discord.api import ActionRow
 
@@ -276,8 +294,10 @@ async def discord_send(
             return str(ret.id)
         return None
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
                 image = _msg["data"]
@@ -285,7 +305,10 @@ async def discord_send(
             else:
                 image = None
                 content = _msg["data"]
-            recall_id = await _send(content, image)
+            _r = await _send(content, image)
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image)
     return recall_id
@@ -305,7 +328,7 @@ async def guild_send(
     target_type: Optional[str],
     msg_id: Optional[str],
     guild_id: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     from nonebot.adapters.qq.bot import Bot as qqbot
     from nonebot.adapters.qq.models import (
         MessageKeyboard,
@@ -386,8 +409,10 @@ async def guild_send(
             return str(ret.id)
         return None
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
                 image = _msg["data"]
@@ -395,7 +420,10 @@ async def guild_send(
             else:
                 image = None
                 content = _msg["data"]
-            recall_id = await _send(content, image)
+            _r = await _send(content, image)
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image)
     return recall_id
@@ -413,7 +441,7 @@ async def group_send(
     target_id: Optional[str],
     target_type: Optional[str],
     msg_id: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     from nonebot.adapters.qq.bot import Bot as qqbot
     from nonebot.adapters.qq.models import (
         MessageKeyboard,
@@ -498,13 +526,20 @@ async def group_send(
         oldest_key = next(iter(msg_id_seq))
         del msg_id_seq[oldest_key]
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
-                recall_id = await _send(None, _msg["data"], msg_id)
+                _r = await _send(None, _msg["data"], msg_id)
             elif _msg["type"] == "text":
-                recall_id = await _send(_msg["data"], None, msg_id)
+                _r = await _send(_msg["data"], None, msg_id)
+            else:
+                _r = None
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image, msg_id)
     return recall_id
@@ -520,7 +555,7 @@ async def telegram_send(
     record: Optional[str],
     video: Optional[str],
     target_id: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     from nonebot.adapters.telegram.bot import Bot
     from nonebot.adapters.telegram.model import InlineKeyboardMarkup
     from nonebot.adapters.telegram.message import File, Entity, Message
@@ -573,8 +608,8 @@ async def telegram_send(
             reply_markup = InlineKeyboardMarkup(inline_keyboard=kb)
 
         ret = await bot.send_to(
-            target_id,
-            message,
+            chat_id=target_id,
+            message=message,
             reply_markup=reply_markup,
         )
         # telegram 发送后返回 Message(媒体组为其列表), message_id 即消息id
@@ -584,13 +619,18 @@ async def telegram_send(
             return str(ret.message_id)
         return None
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
-                recall_id = await _send(None, _msg["data"])
+                _r = await _send(None, _msg["data"])
             else:
-                recall_id = await _send(_msg["data"], None)
+                _r = await _send(_msg["data"], None)
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image)
     return recall_id
@@ -606,7 +646,7 @@ async def feishu_send(
     record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     async def _send(content: Optional[str], image: Optional[str]) -> Optional[str]:
         if file:
             file_name, file_content = file.split("|")
@@ -679,13 +719,18 @@ async def feishu_send(
                 return str(_mid)
         return None
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
-                recall_id = await _send(None, _msg["data"])
+                _r = await _send(None, _msg["data"])
             else:
-                recall_id = await _send(_msg["data"], None)
+                _r = await _send(_msg["data"], None)
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image)
     return recall_id
@@ -702,7 +747,7 @@ async def Milky_send(
     video: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     from nonebot.adapters.milky import Bot
     from nonebot.adapters.milky.message import Message, MessageSegment
 
@@ -754,16 +799,87 @@ async def Milky_send(
             return str(ret.message_seq)
         return None
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
-                recall_id = await _send(None, _msg["data"])
+                _r = await _send(None, _msg["data"])
             else:
-                recall_id = await _send(_msg["data"], None)
+                _r = await _send(_msg["data"], None)
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image)
     return recall_id
+
+
+async def del_msg(
+    bot: Bot,
+    bot_id: str,
+    message_id: str,
+    target_id: Optional[str],
+    target_type: Optional[str],
+) -> None:
+    """撤回已发出的消息(对应 core 下发的 excute_delete_message 控制包).
+
+    各平台撤回入参不同: OneBot/飞书仅需消息id; Telegram/QQ频道/Discord 需会话定位;
+    Milky 用 message_seq + 会话. 平台无对应 API 时记 warning, 不再误发空消息.
+    """
+    try:
+        if bot_id == "onebot":
+            from nonebot.adapters.onebot.v11 import Bot as OB11Bot
+
+            assert isinstance(bot, OB11Bot)
+            await bot.delete_msg(message_id=int(message_id))
+        elif bot_id == "onebot_v12":
+            await bot.call_api("delete_message", message_id=str(message_id))
+        elif bot_id == "telegram":
+            if target_id is not None:
+                await bot.call_api(
+                    "delete_message",
+                    chat_id=target_id,
+                    message_id=int(message_id),
+                )
+        elif bot_id == "qqguild":
+            if target_id is not None:
+                await bot.call_api(
+                    "delete_message",
+                    channel_id=str(target_id),
+                    message_id=str(message_id),
+                )
+        elif bot_id == "discord":
+            if target_id is not None:
+                await bot.call_api(
+                    "delete_message",
+                    channel_id=int(target_id),
+                    message_id=int(message_id),
+                )
+        elif bot_id == "milky":
+            if target_id is not None:
+                if target_type == "group":
+                    await bot.call_api(
+                        "recall_group_message",
+                        group_id=int(target_id),
+                        message_seq=int(message_id),
+                    )
+                else:
+                    await bot.call_api(
+                        "recall_private_message",
+                        user_id=int(target_id),
+                        message_seq=int(message_id),
+                    )
+        elif bot_id == "feishu":
+            await bot.call_api(
+                f"im/v1/messages/{message_id}",
+                method="DELETE",
+            )
+        else:
+            logger.warning(f"[gscore] 平台 {bot_id} 暂不支持撤回消息")
+    except Exception as e:
+        logger.warning(f"[gscore] 撤回消息失败({bot_id}): {e}")
 
 
 async def onebot_v12_send(
@@ -776,7 +892,7 @@ async def onebot_v12_send(
     record: Optional[str],
     target_id: Optional[str],
     target_type: Optional[str],
-) -> Optional[str]:
+) -> Optional[Union[str, List[str]]]:
     async def _send(content: Optional[str], image: Optional[str]) -> Optional[str]:
         async def send_file_message(params, file_type, file_id):
             params["message"] = [{"type": file_type, "data": {"file_id": file_id}}]
@@ -849,13 +965,18 @@ async def onebot_v12_send(
             return str(resp["message_id"])
         return None
 
-    recall_id: Optional[str] = None
+    # node 在不支持合并转发的平台被展开为多条消息, 逐条累积 id 为 list 回传
+    recall_id: Optional[Union[str, List[str]]] = None
     if node:
+        _ids: List[str] = []
         for _msg in node:
             if _msg["type"] == "image":
-                recall_id = await _send(None, _msg["data"])
+                _r = await _send(None, _msg["data"])
             else:
-                recall_id = await _send(_msg["data"], None)
+                _r = await _send(_msg["data"], None)
+            if _r is not None:
+                _ids.append(_r)
+        recall_id = _ids
     else:
         recall_id = await _send(content, image)
     return recall_id

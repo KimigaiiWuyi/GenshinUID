@@ -2,7 +2,7 @@ import asyncio
 from typing import Dict, List, Union, Optional
 from asyncio import CancelledError
 
-import websockets
+import websockets.client
 from msgspec import json as msgjson
 from nonebot import get_bot, get_bots, get_driver
 from nonebot.log import logger
@@ -89,7 +89,10 @@ class GsClient:
             cls.ws_url += f"?token={WS_TOKEN}"
         logger.info(f"Bot_ID: {BOT_ID}连接至[gsuid-core]: {self.ws_url}...")
         cls.ws = await websockets.client.connect(  # type: ignore
-            cls.ws_url, max_size=2**26, open_timeout=60, ping_timeout=60
+            cls.ws_url,
+            max_size=2**26,
+            open_timeout=60,
+            ping_timeout=60,
         )
         logger.success(f"与[gsuid-core]成功连接! Bot_ID: {BOT_ID}")
         cls.msg_list = asyncio.queues.Queue()
@@ -359,6 +362,7 @@ class GsClient:
         receipt = MessageReceive(
             bot_id=msg.bot_id,
             bot_self_id=msg.bot_self_id,
+            user_id="",
             content=[
                 GsMessage(
                     type="recall_message_id",

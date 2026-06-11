@@ -9,10 +9,10 @@ class Message(Struct):
 
 
 class MessageReceive(Struct):
-    bot_id: str = 'Bot'
-    bot_self_id: str = ''
-    msg_id: str = ''
-    user_type: Literal['group', 'direct', 'channel', 'sub_channel'] = 'group'
+    bot_id: str = "Bot"
+    bot_self_id: str = ""
+    msg_id: str = ""
+    user_type: Literal["group", "direct", "channel", "sub_channel"] = "group"
     group_id: Optional[str] = None
     user_id: Optional[str] = None
     sender: Dict[str, Any] = {}
@@ -22,7 +22,7 @@ class MessageReceive(Struct):
 
 class MessageContent(Struct):
     raw: Optional[MessageReceive] = None
-    raw_text: str = ''
+    raw_text: str = ""
     command: Optional[str] = None
     text: Optional[str] = None
     image: Optional[str] = None
@@ -32,9 +32,11 @@ class MessageContent(Struct):
 
 
 class MessageSend(Struct):
-    bot_id: str = 'Bot'
-    bot_self_id: str = ''
-    msg_id: str = ''
+    bot_id: str = "Bot"
+    bot_self_id: str = ""
+    msg_id: str = ""
     target_type: Optional[str] = None
     target_id: Optional[str] = None
     content: Optional[List[Message]] = None
+    # 回执关联令牌；core 仅在请求 recall_message_id 时下发，非空才需回执
+    echo: Optional[str] = None

@@ -2,15 +2,19 @@
   "python.languageServer": "None",
   "editor.formatOnSave": true,
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "explicit",
+      "source.fixAll.ruff": "explicit"
     }
   },
-  "isort.args": [
-    "--profile",
-    "black"
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/gsuid_core"
   ],
-  "python.analysis.typeCheckingMode": "off",
+  "basedpyright.analysis.typeCheckingMode": "basic",
+  "basedpyright.analysis.extraPaths": [
+    "${workspaceFolder}/gsuid_core"
+  ],
+  "python.analysis.typeCheckingMode": "off"
 }

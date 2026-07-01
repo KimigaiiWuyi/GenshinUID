@@ -1,4 +1,35 @@
 {
+  "超越之匙": {
+    "normal": {
+      "normal_effect": {
+        "1": "addAtk+28",
+        "2": "addAtk+35",
+        "3": "addAtk+42",
+        "4": "addAtk+49",
+        "5": "addAtk+56"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 4,
+      "extra": {
+        
+      }
+    }
+  },
   "尘光七谕": {
     "normal": {
       "normal_effect": {

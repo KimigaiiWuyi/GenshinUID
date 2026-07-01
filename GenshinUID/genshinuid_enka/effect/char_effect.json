@@ -3,7 +3,7 @@
     "normal": {
       "normal_skill": {
         "50": "",
-        "70": "elementalMastery+8%atk%160"
+        "70": "elementalMastery+160%8%atk"
       },
       "normal_talent": {
         "1": "",

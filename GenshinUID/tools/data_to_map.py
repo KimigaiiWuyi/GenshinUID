@@ -263,7 +263,7 @@ async def monster2map():
 
 async def download_new_file():
     print("正在执行download_new_file")
-    base_url = "https://gitlab.com/Dimbreath/AnimeGameData/-/raw/master"
+    base_url = "https://gitlab.com/Dimbreath/animegamedata2/-/raw/main"
     url_list = [
         f"{base_url}/ExcelBinOutput/AvatarExcelConfigData.json",
         f"{base_url}/ExcelBinOutput/WeaponExcelConfigData.json",
@@ -307,6 +307,8 @@ async def avatarId2NameJson() -> None:
     for _id in temp:
         if int(_id) >= 11000000:
             continue
+        # elif int(_id) <= 10000130:
+        #    continue
         else:
             result[_id] = temp[_id]
 
@@ -594,8 +596,8 @@ async def save_char_talent_num():
 
 async def main():
     await download_new_file()
-    await restore_mysData()
-    await restore_ambr_data()
+    # await restore_mysData()
+    # await restore_ambr_data()
     await monster2map()
     global raw_data
     try:

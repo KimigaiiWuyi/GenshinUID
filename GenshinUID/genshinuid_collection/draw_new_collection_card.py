@@ -284,6 +284,12 @@ async def _draw_explore(raw_data: IndexData):
         elif world["name"] == "挪德卡莱":
             icon_ = "community-game-records/images/world-logo-17.dadac5bf.png"
             world["icon"] = f"https://webstatic.mihoyo.com/app/{icon_}"
+        elif world["name"] == "风息山":
+            icon_ = "community-game-records/images/world-logo-1.20b81b5f.png"
+            world["icon"] = f"https://webstatic.mihoyo.com/app/{icon_}"
+        elif world["name"] == "空之神殿":
+            icon_ = "community-game-records/images/world-logo-19.a9df3078.png"
+            world["icon"] = f"https://webstatic.mihoyo.com/app/{icon_}"
 
         icon = await get_image(world["icon"], ICON_PATH)
         icon = icon.resize((150, 150)).convert("RGBA")

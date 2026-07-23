@@ -7,8 +7,8 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.mys.models import IndexData
 
 from ..utils.mys_api import mys_api, get_base_data
-from ..utils.image.image_tools import get_v4_bg
 from ..utils.map.name_covert import avatar_id_to_char_star
+from ..utils.image.image_tools import get_v4_bg
 from ..utils.fonts.genshin_fonts import gs_font_28, gs_font_30
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,

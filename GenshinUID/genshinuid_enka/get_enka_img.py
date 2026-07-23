@@ -122,8 +122,8 @@ async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> U
     else:
         # 国际服用户绑定了自己的 Cookie 时，缓存未命中就从 HoYoLAB
         # 自动同步完整角色列表，避免必须先手动执行强制刷新。
-        from .to_data_by_mys import mys_to_data
         from ..utils.mys_api import mys_api
+        from .to_data_by_mys import mys_to_data
 
         if mys_api.check_os(uid) and await mys_api.get_ck(uid, "OWNER"):
             sync_result = await mys_to_data(uid)

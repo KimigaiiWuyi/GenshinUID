@@ -8,6 +8,7 @@ from gsuid_core.utils.api.mys.models import IndexData
 
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.image.image_tools import get_v4_bg
+from ..utils.map.name_covert import avatar_id_to_char_star
 from ..utils.fonts.genshin_fonts import gs_font_28, gs_font_30
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,
@@ -37,10 +38,14 @@ async def _draw_char_pic(uid: str, raw_data: IndexData):
         return await get_error_img(char_rawdata)
     char_datas = char_rawdata["list"]
 
-    for index, i in enumerate(char_datas):
-        if i["rarity"] > 5:
-            char_datas[index]["rarity"] = 4
-            break
+    for char in char_datas:
+        rarity = char.get("rarity")
+        if rarity is None:
+            try:
+                rarity = int(await avatar_id_to_char_star(str(char["id"])))
+            except (KeyError, TypeError, ValueError):
+                rarity = 4
+        char["rarity"] = min(int(rarity), 5)
 
     char_datas.sort(
         key=lambda x: (

@@ -120,7 +120,21 @@ async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> U
     elif enable_self and char_self_path.exists():
         path = char_self_path
     else:
-        return CHAR_HINT.format(char_name)
+        # 国际服用户绑定了自己的 Cookie 时，缓存未命中就从 HoYoLAB
+        # 自动同步完整角色列表，避免必须先手动执行强制刷新。
+        from .to_data_by_mys import mys_to_data
+        from ..utils.mys_api import mys_api
+
+        if mys_api.check_os(uid) and await mys_api.get_ck(uid, "OWNER"):
+            sync_result = await mys_to_data(uid)
+            if isinstance(sync_result, list) and char_path.exists():
+                path = char_path
+            elif isinstance(sync_result, str):
+                return sync_result
+            else:
+                return CHAR_HINT.format(char_name)
+        else:
+            return CHAR_HINT.format(char_name)
 
     with open(path, "r", encoding="utf8") as fp:
         char_data = json.load(fp)

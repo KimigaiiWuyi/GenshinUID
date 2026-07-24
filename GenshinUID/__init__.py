@@ -688,6 +688,32 @@ async def start_client():
         await connect()
 
 
+@driver.on_shutdown
+async def stop_client():
+    """清理 WebSocket 连接，避免 Ctrl+C 卡住"""
+    global gsclient
+    if gsclient is None:
+        return
+    try:
+        if hasattr(gsclient, "pending"):
+            for task in gsclient.pending:
+                if not task.done():
+                    task.cancel()
+                    try:
+                        await task
+                    except asyncio.CancelledError:
+                        pass
+    except Exception:
+        pass
+    try:
+        if hasattr(gsclient, "ws") and gsclient.ws is not None:
+            await gsclient.ws.close()
+    except Exception:
+        pass
+    gsclient = None
+    logger.info("已断开与 gsuid-core 的连接")
+
+
 async def connect():
     global gsclient
 

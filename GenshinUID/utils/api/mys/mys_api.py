@@ -163,15 +163,22 @@ class GsMysAPI(_MysApi):
         return data
 
     @gs_cache(360)
-    async def get_char_detail_data(self, uid: str, char_id_list: List[str]) -> Union[List[Character], int]:
+    async def get_char_detail_data(
+        self,
+        uid: str,
+        char_id_list: List[int],
+    ) -> Union[List[Character], int]:
         server_id = self.RECOGNIZE_SERVER.get(uid[0], "cn_gf01")
-        HEADER = deepcopy(self._HEADER)
+        is_os = self.check_os(uid)
+        HEADER = deepcopy(self._HEADER_OS if is_os else self._HEADER)
         ck = await self.get_ck(uid, "OWNER")
         if ck is None:
             return -51
         HEADER["Cookie"] = ck
+        if is_os:
+            HEADER["DS"] = generate_os_ds()
 
-        base = RECORD_BASE_OS if self.check_os(uid) else RECORD_BASE
+        base = RECORD_BASE_OS if is_os else RECORD_BASE
         data = await self._mys_request(
             char_detail_url,
             "POST",
@@ -182,6 +189,8 @@ class GsMysAPI(_MysApi):
                 "character_ids": char_id_list,
             },
             base_url=base,
+            use_proxy=is_os,
+            game_name="gs",
         )
 
         if isinstance(data, Dict):

@@ -55,11 +55,24 @@ async def mys_to_data(uid: str):
     elif isinstance(raw_data, (bytearray, memoryview)):
         return bytes(raw_data)
 
-    char_data = raw_data["avatars"]
-    char_ids = []
-    for i in char_data:
-        char_ids.append(i["id"])
-    data = await mys_api.get_char_detail_data(uid, char_ids)
+    if mys_api.check_os(uid):
+        # 国际服 index 仅适合概览展示；完整角色集合从 character/list
+        # 获取。当前接口会直接返回 {base, weapon, relics, ...} 详情，
+        # 同时兼容仅返回扁平角色列表时再调用 character/detail。
+        char_list_data = await mys_api.get_character_list(uid, "OWNER")
+        if isinstance(char_list_data, int):
+            return get_error(char_list_data)
+        char_data = char_list_data["list"]
+        if char_data and "base" in char_data[0]:
+            data = char_data
+        else:
+            char_ids = [i["id"] for i in char_data]
+            data = await mys_api.get_char_detail_data(uid, char_ids)
+    else:
+        char_data = raw_data["avatars"]
+        char_ids = [i["id"] for i in char_data]
+        data = await mys_api.get_char_detail_data(uid, char_ids)
+
     if isinstance(data, int):
         return get_error(data)
 

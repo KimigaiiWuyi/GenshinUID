@@ -6,7 +6,7 @@ import aiofiles
 from urllib3 import encode_multipart_formdata
 
 from gsuid_core.logger import logger
-from gsuid_core.utils.api.mys.api import GET_GACHA_LOG_URL
+from gsuid_core.utils.api.mys.api import GET_GACHA_LOG
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.base_request import RECOGNIZE_SERVER
 
@@ -22,7 +22,7 @@ async def get_gachaurl(uid: str):
     authkey = authkey_rawdata["authkey"]
     now = time.time()
     url = (
-        f"{GET_GACHA_LOG_URL}?"
+        f"{GET_GACHA_LOG.get()}?"
         f"authkey_ver=1&sign_type=2&auth_appid=webview_gacha&init_type=301&"
         f"gacha_id=fecafa7b6560db5f3182222395d88aaa6aaac1bc"
         f"&timestamp={str(int(now))}"

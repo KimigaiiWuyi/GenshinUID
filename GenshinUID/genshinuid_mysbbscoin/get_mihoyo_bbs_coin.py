@@ -7,12 +7,12 @@ from httpx import AsyncClient
 
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.api import (
-    BBS_LIKE_URL,
-    BBS_LIST_URL,
-    BBS_SIGN_URL,
-    BBS_SHARE_URL,
-    BBS_DETAIL_URL,
-    BBS_TASKS_LIST,
+    BBS_LIKE,
+    BBS_LIST,
+    BBS_SIGN,
+    BBS_SHARE,
+    BBS_TASKS,
+    BBS_DETAIL,
 )
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
@@ -136,7 +136,7 @@ class MihoyoBBSCoin:
         logger.info("正在获取任务列表")
         data = await self._request(
             "GET",
-            BBS_TASKS_LIST,
+            BBS_TASKS.get(),
             self.headers,
         )
         if "err" in data["message"] or data["retcode"] == -100:
@@ -190,7 +190,7 @@ class MihoyoBBSCoin:
         logger.info("正在获取帖子列表......")
         data = await self._request(
             "GET",
-            BBS_LIST_URL.format(self.mihoyobbs_List_Use[0]["forumId"]),
+            BBS_LIST.format(self.mihoyobbs_List_Use[0]["forumId"]),
             self.headers,
         )
 
@@ -220,7 +220,7 @@ class MihoyoBBSCoin:
             for i in self.mihoyobbs_List_Use:
                 data = await self._request(
                     "POST",
-                    BBS_SIGN_URL,
+                    BBS_SIGN.get(),
                     header,
                     {"gids": int(i["id"])},
                 )
@@ -242,7 +242,7 @@ class MihoyoBBSCoin:
             for i in range(self.Task_do["bbs_Read_posts_num"]):
                 data = await self._request(
                     "GET",
-                    BBS_DETAIL_URL.format(self.postsList[i][0]),
+                    BBS_DETAIL.format(self.postsList[i][0]),
                     self.headers,
                 )
                 if data["message"] == "OK":
@@ -261,7 +261,7 @@ class MihoyoBBSCoin:
             for i in range(self.Task_do["bbs_Like_posts_num"]):
                 data = await self._request(
                     "POST",
-                    BBS_LIKE_URL,
+                    BBS_LIKE.get(),
                     self.headers,
                     {
                         "post_id": self.postsList[i][0],
@@ -275,7 +275,7 @@ class MihoyoBBSCoin:
                     await asyncio.sleep(random.randint(4, 13))
                     data = await self._request(
                         "POST",
-                        BBS_LIKE_URL,
+                        BBS_LIKE.get(),
                         self.headers,
                         {
                             "post_id": self.postsList[i][0],
@@ -296,7 +296,7 @@ class MihoyoBBSCoin:
             for _ in range(4):
                 data = await self._request(
                     "GET",
-                    BBS_SHARE_URL.format(self.postsList[0][0]),
+                    BBS_SHARE.format(self.postsList[0][0]),
                     self.headers,
                 )
                 if data["message"] == "OK":
@@ -315,7 +315,7 @@ class MihoyoBBSCoin:
         for _ in range(2):
             import json
 
-            if BBS_SIGN_URL in url:
+            if BBS_SIGN.get() in url:
                 header["DS"] = get_ds_token("", data, "22")
             else:
                 header["DS"] = get_web_ds_token()

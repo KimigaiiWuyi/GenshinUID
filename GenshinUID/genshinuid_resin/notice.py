@@ -4,12 +4,11 @@ from typing import Dict, List, Tuple, Union, Sequence
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
 from gsuid_core.subscribe import gs_subscribe
-from gsuid_core.utils.api.mys.models import DailyNoteData
+from gsuid_core.utils.api.mys.models import WidgetResin, DailyNoteData
 from gsuid_core.utils.database.models import Subscribe
 
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
-from ..utils.api.mys.models import WidgetResin
 from ..genshinuid_config.gs_config import gsconfig
 
 MR_NOTICE = f"\n✅可发送[{PREFIX}mr]或者[{PREFIX}每日]来查看更多信息！\n"

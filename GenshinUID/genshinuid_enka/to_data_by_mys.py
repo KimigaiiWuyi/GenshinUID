@@ -67,11 +67,11 @@ async def mys_to_data(uid: str):
             data = char_data
         else:
             char_ids = [i["id"] for i in char_data]
-            data = await mys_api.get_char_detail_data(uid, char_ids)
+            data = await mys_api.get_character_detail(uid, char_ids)
     else:
         char_data = raw_data["avatars"]
         char_ids = [i["id"] for i in char_data]
-        data = await mys_api.get_char_detail_data(uid, char_ids)
+        data = await mys_api.get_character_detail(uid, char_ids)
 
     if isinstance(data, int):
         return get_error(data)

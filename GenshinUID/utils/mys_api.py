@@ -1,11 +1,10 @@
 from typing import Union
 
+from gsuid_core.utils.api.mys_api import _MysApi
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import IndexData
 
-from .api.mys.mys_api import GsMysAPI
-
-mys_api = GsMysAPI()
+mys_api = _MysApi()
 
 
 async def get_base_data(uid: str) -> Union[bytes, str, IndexData]:

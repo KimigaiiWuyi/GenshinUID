@@ -3,6 +3,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error_img
@@ -180,7 +181,7 @@ async def draw_note_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     img = add_footer(img, 850, 10, True)
     img = await convert_img(img)
-    logger.info("[原石札记] 图片绘制完成!等待发送...")
+    logger.info(t("log.genshinuid.msg_ac9676"))
     return img
 
 

@@ -4,6 +4,7 @@ import asyncio
 from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -44,7 +45,7 @@ async def scheduled_get_xk_data():
 )
 async def send_abyss_pic(bot: Bot, ev: Event):
     img = await draw_teyvat_abyss_img()
-    logger.info("[深渊概览] 获得深渊概览图片成功!")
+    logger.info(t("log.genshinuid.msg_4fdad0"))
     await bot.send(img)
 
 
@@ -62,7 +63,7 @@ async def send_abyss_pic(bot: Bot, ev: Event):
 )
 async def send_abyss_team_pic(bot: Bot, ev: Event):
     img = await draw_teyvat_team_img()
-    logger.info("[深渊概览] 获得深渊队伍排行图片成功!")
+    logger.info(t("log.genshinuid.msg_bdd204"))
     await bot.send(img)
 
 

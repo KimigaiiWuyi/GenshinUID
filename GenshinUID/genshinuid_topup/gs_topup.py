@@ -9,6 +9,7 @@ import qrcode
 from qrcode import ERROR_CORRECT_L
 
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.error_reply import get_error_img
@@ -147,7 +148,7 @@ async def topup_(
         return await bot.send("商品不存在,最大为" + str(len(fetchgoods_data) - 1))
     order = await mys_api.topup(uid, goods_data, method)
     if isinstance(order, int):
-        logger.warning(f"[充值] {group_id} {user_id} 出错！")
+        logger.warning(t("log.genshinuid.group_id_user_id_541280", group_id=group_id, user_id=user_id))
         return await bot.send(await get_error_img(order))
     try:
         b64_data = get_qrcode_base64(order["encode_order"])
@@ -196,5 +197,5 @@ async def topup_(
             await bot.send(MessageSegment.node(msg_node))
     except Exception:
         traceback.print_exc()
-        logger.warning(f"[充值] {group_id} 图片发送失败")
+        logger.warning(t("log.genshinuid.group_id_b2d7bb", group_id=group_id))
     return await bot.send(await refresh(order, uid, order["order_no"]))

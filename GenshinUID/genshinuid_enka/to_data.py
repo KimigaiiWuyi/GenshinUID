@@ -8,6 +8,7 @@ from typing import Dict, List, Union, Literal, Optional
 import aiofiles
 from httpx import ReadTimeout
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.enka.models import EnkaData
 from gsuid_core.utils.api.enka.request import get_enka_info
@@ -428,7 +429,7 @@ async def _restore_cv_data(uid: str, now: str):
                     ensure_ascii=False,
                 )
             )
-        logger.info(f"[缓存排名数据] UID:{uid}完成!")
+        logger.info(t("log.genshinuid.uid_uid_5068e3", uid=uid))
 
 
 async def enka_to_data(uid: str, enka_data: Optional[EnkaData] = None) -> Union[dict, str]:

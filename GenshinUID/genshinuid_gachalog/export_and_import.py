@@ -7,6 +7,7 @@ from datetime import datetime
 import aiofiles
 from httpx import get
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from ..version import GenshinUID_version
@@ -28,7 +29,7 @@ async def import_data(uid: str, raw_data: List[Dict]):
     result = deepcopy(NULL_GACHA_LOG)
     for item in raw_data:
         if "name" not in item and "item_id" not in item:
-            logger.error(f"[导入抽卡记录] 数据格式错误!{item}")
+            logger.error(t("log.genshinuid.item_d387de", item=item))
             continue
 
         if item["item_type"] == "角色":
@@ -118,7 +119,7 @@ async def import_gachalogs(history_url: str, type: str, uid: str) -> str:
 
 
 async def export_gachalogs(uid: str, version: str) -> dict:
-    logger.info(f"[导出抽卡记录] 版本v{version}开始执行...")
+    logger.info(t("log.genshinuid.version_a70d6a", version=version))
     path = PLAYER_PATH / uid
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
@@ -198,7 +199,7 @@ async def export_gachalogs(uid: str, version: str) -> dict:
             result["hk4e"].append(rog)
 
         # 保存文件
-        logger.info(f"[导出抽卡记录] 版本v{version}开始保存文件...")
+        logger.info(t("log.genshinuid.version_0c583a", version=version))
         async with aiofiles.open(path / f"UIGF_v{version}_{uid}.json", "w", encoding="UTF-8") as file:
             await file.write(
                 json.dumps(
@@ -207,7 +208,7 @@ async def export_gachalogs(uid: str, version: str) -> dict:
                     indent=4,
                 )
             )
-        logger.success("[导出抽卡记录] 导出成功!")
+        logger.success(t("log.genshinuid.msg_b7a6fc"))
         im = {
             "retcode": "ok",
             "data": "导出成功!",
@@ -215,7 +216,7 @@ async def export_gachalogs(uid: str, version: str) -> dict:
             "url": str((path / f"UIGF_v{version}_{uid}.json").absolute()),
         }
     else:
-        logger.error("[导出抽卡记录] 没有找到抽卡记录!")
+        logger.error(t("log.genshinuid.msg_eec51f"))
         im = {
             "retcode": "error",
             "data": "你还没有抽卡记录可以导出!",

@@ -3,6 +3,7 @@ from urllib.parse import unquote
 
 from aiohttp import TCPConnector, ClientSession, ContentTypeError
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from .api import (
@@ -135,7 +136,7 @@ class _CvApi:
             extra = "&p="
 
         url = SORT_API.format(calculation_id) + extra
-        logger.debug(f"[AKASHA] URL: {url}")
+        logger.debug(t("log.genshinuid.akasha_url_url_9d8655", url=url))
         raw_data = await self._cv_request(
             url,
             "GET",
@@ -211,8 +212,8 @@ class _CvApi:
         params: Optional[Dict[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
     ) -> Union[Dict, int]:
-        logger.debug(f"[AKASHA] URL: {url}")
-        logger.debug(f"[AKASHA] Header: {header}")
+        logger.debug(t("log.genshinuid.akasha_url_url_9d8655_1", url=url))
+        logger.debug(t("log.genshinuid.akasha_header_header_7422a5", header=header))
 
         async with self.session.request(
             method,

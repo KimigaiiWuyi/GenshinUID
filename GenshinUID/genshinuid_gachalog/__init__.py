@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
@@ -49,7 +50,7 @@ async def send_import_gacha_info(bot: Bot, ev: Event):
     """,
 )
 async def send_gacha_log_card_info(bot: Bot, ev: Event):
-    logger.info("开始执行[抽卡记录]")
+    logger.info(t("log.genshinuid.msg_19ef2d"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -72,7 +73,7 @@ async def send_gacha_log_card_info(bot: Bot, ev: Event):
     """,
 )
 async def send_refresh_gacha_info(bot: Bot, ev: Event):
-    logger.info("开始执行[刷新抽卡记录]")
+    logger.info(t("log.genshinuid.msg_0cebbe"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -97,7 +98,7 @@ async def send_refresh_gacha_info(bot: Bot, ev: Event):
     """,
 )
 async def send_full_refresh_gacha_info(bot: Bot, ev: Event):
-    logger.info("开始执行[全量刷新抽卡记录]")
+    logger.info(t("log.genshinuid.msg_30ab91"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -118,7 +119,7 @@ async def send_full_refresh_gacha_info(bot: Bot, ev: Event):
     """,
 )
 async def send_export_gacha_info(bot: Bot, ev: Event):
-    logger.info("开始执行[导出抽卡记录]")
+    logger.info(t("log.genshinuid.msg_e68303"))
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -158,7 +159,7 @@ async def send_export_gacha_info(bot: Bot, ev: Event):
     """,
 )
 async def import_lelaer_gachalog(bot: Bot, ev: Event):
-    logger.info("开始执行[从小助手导入抽卡记录]")
+    logger.info(t("log.genshinuid.msg_91067a"))
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -178,7 +179,7 @@ async def import_lelaer_gachalog(bot: Bot, ev: Event):
     """,
 )
 async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
-    logger.info("开始执行[导出抽卡记录到小助手]")
+    logger.info(t("log.genshinuid.msg_2b884e"))
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -198,7 +199,7 @@ async def export_to_lelaer_gachalog(bot: Bot, ev: Event):
     """,
 )
 async def export_gachalogurl(bot: Bot, ev: Event):
-    logger.info("开始执行[导出抽卡记录链接]")
+    logger.info(t("log.genshinuid.msg_11ac61"))
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)

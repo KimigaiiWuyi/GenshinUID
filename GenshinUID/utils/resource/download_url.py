@@ -4,6 +4,7 @@ import aiofiles
 from aiohttp.client import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from .RESOURCE_PATH import (
@@ -93,14 +94,14 @@ async def download_file(
     name: str,
     sess: Optional[ClientSession] = None,
 ) -> Optional[Tuple[str, int, str]]:
-    logger.info(f"开始下载: [{name}] - {url}")
+    logger.info(t("log.genshinuid.name_url_497c0e", name=name, url=url))
     if sess is None:
         sess = ClientSession()
     try:
         async with sess.get(url) as res:
             content = await res.read()
     except ClientConnectorError:
-        logger.warning(f"[minigg.icu]{name}下载失败")
+        logger.warning(t("log.genshinuid.minigg_icu_name_2e4ab4", name=name))
         return url, path, name
     async with aiofiles.open(PATH_MAP[path] / name, "wb") as f:
         await f.write(content)

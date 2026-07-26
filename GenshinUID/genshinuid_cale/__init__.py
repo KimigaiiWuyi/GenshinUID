@@ -1,12 +1,13 @@
 from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
 from .notice_cale import notice_cale
 from .draw_cale_pic import draw_cale_img
-from ..utils.buttons import a, b, c, s, t, u, v, x, y
+from ..utils.buttons import a, b, c, s, t as btn_t, u, v, x, y
 from ..utils.convert import get_uid
 from ..utils.message import UID_HINT
 
@@ -30,10 +31,10 @@ async def send_cale_pic(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[个人日历] uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_6e0c45", uid=uid))
 
     im = await draw_cale_img(ev, uid)
-    await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])
+    await bot.send_option(im, [[a, b, c], [btn_t, s, u], [v, x, y]])
 
 
 @scheduler.scheduled_job("cron", hour="0", minute="5")

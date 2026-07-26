@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 
 import aiofiles
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
@@ -58,7 +59,7 @@ async def get_full_gachalog(uid: str):
     if gachalogs_path.exists():
         gacha_log_backup_path = path / f"gacha_logs_{current_time}.json"
         shutil.copy(gachalogs_path, gacha_log_backup_path)
-        logger.info(f"[全量刷新抽卡记录] 已备份抽卡记录到{gacha_log_backup_path}")
+        logger.info(t("log.genshinuid.gacha_log_backup_path_b0e4e5", gacha_log_backup_path=gacha_log_backup_path))
         async with aiofiles.open(gachalogs_path, "r", encoding="UTF-8") as f:
             gachalogs_history: Dict = json.loads(await f.read())
         gachalogs_history = remove_gachalog(gachalogs_history)

@@ -1,6 +1,7 @@
 import datetime
 from typing import Dict, List, Tuple, Union, Sequence
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
 from gsuid_core.subscribe import gs_subscribe
@@ -65,16 +66,16 @@ async def send_notice_list():
                 raw_data = await mys_api.get_daily_data(uid)
 
             if isinstance(raw_data, int):
-                logger.error(f"[推送提醒] 获取{uid}的数据失败!错误代码为: {raw_data}")
+                logger.error(t("log.genshinuid.uid_raw_data_aee7d6", uid=uid, raw_data=raw_data))
                 continue
 
             for mode in NOTICE:
                 if datetime.datetime.now().hour > 2 and mode == "daily":
-                    logger.info(f"[推送提醒] {uid} 3点后不再发送日常任务提醒")
+                    logger.info(t("log.genshinuid.uid_392e14", uid=uid))
                     continue
 
                 _datas: Dict[str, List[Subscribe]] = locals()[f"{mode}_datas"]
-                logger.debug(f"[推送提醒] {_datas}")
+                logger.debug(t("log.genshinuid.datas_4b0d0f", _datas=_datas))
 
                 if uid in _datas:
                     _data_list = _datas[uid]
@@ -141,7 +142,7 @@ async def check(
                     return True, time_min
             return False, 0
         else:
-            logger.warning("[推送提醒] 小组件源不存在质变仪数据...")
+            logger.warning(t("log.genshinuid.msg_d30a1a"))
             return False, 0
     if mode == "daily":
         if not data["is_extra_task_reward_received"]:

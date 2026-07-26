@@ -1,3 +1,4 @@
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.cache import gs_cache
 from gsuid_core.utils.error_reply import get_error
@@ -20,7 +21,7 @@ async def get_material_way_post(name: str):
         colloctions = []
         return error
 
-    logger.info(f"[BBS_Guide] 合集存在, 开始获取攻略: {name}")
+    logger.info(t("log.genshinuid.bbs_guide_name_2d1843", name=name))
 
     for c in colloctions:
         post = c["post"]

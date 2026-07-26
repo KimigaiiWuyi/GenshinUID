@@ -2,6 +2,7 @@ import re
 
 from gsuid_core.sv import SV, get_plugin_available_prefix
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.subscribe import Subscribe, gs_subscribe
@@ -37,7 +38,7 @@ PRIV_MAP = {
     """,
 )
 async def send_config_card(bot: Bot, ev: Event):
-    logger.info("开始执行[gs配置]")
+    logger.info(t("log.genshinuid.gs_ebec48"))
     im = await draw_config_img(ev.bot_id)
     await bot.send(im)
 
@@ -55,7 +56,7 @@ async def send_config_card(bot: Bot, ev: Event):
     """,
 )
 async def send_config_ev(bot: Bot, ev: Event):
-    logger.info("开始执行[设置阈值信息]")
+    logger.info(t("log.genshinuid.msg_6ea246"))
 
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
@@ -77,7 +78,7 @@ async def send_config_ev(bot: Bot, ev: Event):
     if value is None:
         return await bot.send(f"🔨 [原神服务]\n❌ 请输入正确的阈值数字...\n🚩 例如: {P}设置体力阈值200")
 
-    logger.info(f"[设置阈值信息] func: {config_name}, value: {value}")
+    logger.info(t("log.genshinuid.func_config_name_value_value_556366", config_name=config_name, value=value))
 
     if config_name not in PRIV_MAP or (config_name in PRIV_MAP and PRIV_MAP[config_name] is None):
         return await bot.send(f"🔨 [原神服务]\n❌ 请输入正确的功能名称...\n🚩 例如: {P}设置体力阈值200")
@@ -91,7 +92,7 @@ async def send_config_ev(bot: Bot, ev: Event):
 
     if datas:
         if len(datas) > 1:
-            logger.warning(f"[设置阈值信息] {ev.user_id} 存在多个订阅, {datas}")
+            logger.warning(t("log.genshinuid.p0_datas_6006b0", p0=ev.user_id, datas=datas))
 
         data = datas[0]
         await gs_subscribe.update_subscribe_message(
@@ -137,7 +138,7 @@ async def open_switch_func(bot: Bot, ev: Event):
     if config_name not in PRIV_MAP:
         return await bot.send(f"🔨 [原神服务]\n❌ 请输入正确的功能名称...\n🚩 例如: {P}开启自动签到")
 
-    logger.info(f"[原神服务] [{user_id}]尝试[{ev.command[2:]}]了[{ev.text}]功能")
+    logger.info(t("log.genshinuid.user_id_p0_p1_512ea1", user_id=user_id, p0=ev.command[2:], p1=ev.text))
 
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:

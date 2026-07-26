@@ -2,6 +2,7 @@ from typing import List, Union
 
 from PIL import Image
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from .RESOURCE_PATH import CHAR_PATH, TEXT2D_PATH, CHAR_CARD_PATH
@@ -38,11 +39,11 @@ async def create_single_item_card(
 
 async def create_single_char_card(char_id: Union[str, int]) -> Image.Image:
     if str(char_id) not in avatarId2Star_data:
-        logger.warning(f"资源文件夹发现异常图片{char_id}....忽略加载...")
+        logger.warning(t("log.genshinuid.char_id_885727", char_id=char_id))
         return Image.new("RGBA", (256, 310))
     path = CHAR_PATH / f"{char_id}.png"
     if not path.exists():
-        logger.warning(f"资源文件夹未发现图片{char_id}....忽略加载...")
+        logger.warning(t("log.genshinuid.char_id_a48987", char_id=char_id))
         return Image.new("RGBA", (256, 310))
     char_img = Image.open(path).convert("RGBA")
     char_star = avatarId2Star_data[str(char_id)]

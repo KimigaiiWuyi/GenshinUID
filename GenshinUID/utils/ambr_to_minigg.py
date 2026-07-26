@@ -4,6 +4,7 @@ from typing import List, Union, Optional, TypedDict, cast
 
 import aiofiles
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.ambr.request import (
     get_ambr_char_data,
@@ -124,7 +125,7 @@ async def convert_exist_data_to_char(char_id: Union[str, int], element: Optional
     else:
         raw_data = await get_ambr_char_data(char_id)
         if raw_data is None:
-            logger.error(f"[AmbrData] 未找到该角色{char_id}/数据无法下载!")
+            logger.error(t("log.genshinuid.ambrdata_char_id_4d6072", char_id=char_id))
             raise Exception("[AmbrData] 未找到该角色/数据无法下载!")
         # 保存
         async with aiofiles.open(path, "w", encoding="utf-8") as f:

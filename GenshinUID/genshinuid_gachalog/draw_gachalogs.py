@@ -7,6 +7,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.ai_core.trigger_bridge import ai_return
@@ -84,13 +85,13 @@ async def _draw_card(
     if type == "角色":
         _id = await name_to_avatar_id(name)
         if not _id:
-            logger.error(f"[原神抽卡记录] 角色{name}不存在，请检查角色名称是否正确!或者尝试更新插件版本！")
+            logger.error(t("log.genshinuid.name_c0fe97", name=name))
             _id = "10000007"
         item_pic = Image.open(CHAR_PATH / f"{_id}.png").convert("RGBA").resize((108, 108))
     else:
         _weapon_path = WEAPON_PATH / f"{name}.png"
         if not _weapon_path.exists():
-            logger.error(f"[原神抽卡记录] 武器{name}不存在，请检查武器名称是否正确!或者尝试更新插件版本！")
+            logger.error(t("log.genshinuid.name_d6f6bf", name=name))
             _weapon_path = CHAR_PATH / "10000007.png"
 
         item_pic = Image.open(_weapon_path).convert("RGBA").resize((108, 108))
@@ -442,5 +443,5 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
 
     # 发送图片
     res = await convert_img(img)
-    logger.info("[查询抽卡]绘图已完成,等待发送!")
+    logger.info(t("log.genshinuid.msg_ef94ba"))
     return res

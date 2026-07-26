@@ -5,6 +5,7 @@ from copy import deepcopy
 
 import aiofiles
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from .to_data import ARTIFACT_DATA, input_artifacts_data
@@ -22,7 +23,7 @@ async def refresh_player_list(uid: str, is_force: bool = False) -> str:
     path = player / "artifacts.json"
     all_artifacts = deepcopy(ARTIFACT_DATA)
     if not path.exists():
-        logger.info(f"UID{uid} 不存在圣遗物列表,开始生成中...")
+        logger.info(t("log.genshinuid.uid_uid_1c3c20", uid=uid))
     else:
         async with aiofiles.open(path, "r", encoding="UTF-8") as file:
             all_artifacts = json.loads(await file.read())
@@ -35,7 +36,7 @@ async def refresh_player_list(uid: str, is_force: bool = False) -> str:
         return "无需刷新圣遗物列表"
         # return '删除旧数据中...请重新刷新!'
 
-    logger.info(f"开始刷新UID{uid}圣遗物列表...")
+    logger.info(t("log.genshinuid.uid_uid_463d41", uid=uid))
     num = 0
     for char in player.iterdir():
         match = re.match(pattern, char.name)
@@ -61,7 +62,7 @@ async def refresh_player_list(uid: str, is_force: bool = False) -> str:
 
 
 async def check_artifacts_list():
-    logger.info("开始检查是否创建圣遗物列表...")
+    logger.info(t("log.genshinuid.msg_c03676"))
     for player in PLAYER_PATH.iterdir():
         await refresh_player_list(player.name)
-    logger.info("圣遗物列表检查完成!")
+    logger.info(t("log.genshinuid.msg_44a88a"))

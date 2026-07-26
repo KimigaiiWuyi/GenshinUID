@@ -6,6 +6,7 @@ RAG注册主模块
 import json
 from typing import Dict, List
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.ai_core.models import KnowledgePoint
 from gsuid_core.ai_core.register import ai_alias, ai_entity
@@ -149,14 +150,14 @@ def char_adv_register():
         for kp in parse_char_adv_json(adv_lst, aliases):
             ai_entity(kp)
 
-        logger.info(f"角色攻略数据注册完成，共处理 {len(adv_lst)} 个角色")
+        logger.info(t("log.genshinuid.p0_9c5177", p0=len(adv_lst)))
 
     except FileNotFoundError:
-        logger.info(f"警告：未找到角色攻略文件 {adv_lst}")
+        logger.info(t("log.genshinuid.adv_lst_1c832d", adv_lst=adv_lst))
     except json.JSONDecodeError as e:
-        logger.info(f"JSON解析错误：{e}")
+        logger.info(t("log.genshinuid.json_d2e26b", e=e))
     except Exception as e:
-        logger.info(f"注册角色攻略数据时发生错误：{e}")
+        logger.info(t("log.genshinuid.msg_b3f284", e=e))
 
 
 def char_register():
@@ -239,7 +240,7 @@ def artifact_register():
                 for kp in parse_artifact_json(json_data):
                     ai_entity(kp)
         except Exception as e:
-            logger.warning(f"处理圣遗物文件 {i} 时出错: {e}")
+            logger.warning(t("log.genshinuid.msg_fb7105", i=i, e=e))
             continue
 
     # 生成并注册圣遗物全局汇总知识块
@@ -247,7 +248,7 @@ def artifact_register():
         artifact_summary_kp = build_artifact_global_summary_kp(all_artifacts_data)
         ai_entity(artifact_summary_kp)
 
-    logger.info(f"圣遗物RAG注册完成，共处理 {len(all_artifacts_data)} 套圣遗物")
+    logger.info(t("log.genshinuid.rag_p0_5ac7eb", p0=len(all_artifacts_data)))
 
 
 def monster_register():
@@ -271,7 +272,7 @@ def monster_register():
                 for kp in parse_monster_json(json_data):
                     ai_entity(kp)
         except Exception as e:
-            logger.warning(f"处理怪物文件 {i} 时出错: {e}")
+            logger.warning(t("log.genshinuid.msg_1d0015", i=i, e=e))
             continue
 
     # 生成并注册怪物全局汇总知识块
@@ -279,34 +280,34 @@ def monster_register():
         monster_summary_kp = build_monster_global_summary_kp(all_monsters_data)
         ai_entity(monster_summary_kp)
 
-    logger.info(f"怪物RAG注册完成，共处理 {len(all_monsters_data)} 个怪物")
+    logger.info(t("log.genshinuid.rag_p0_2cc983", p0=len(all_monsters_data)))
 
 
 def rag_register():
     """执行完整的RAG注册"""
-    logger.info("开始注册角色RAG数据...")
+    logger.info(t("log.genshinuid.rag_53fb81"))
     char_register()
-    logger.info("角色RAG注册完成")
+    logger.info(t("log.genshinuid.rag_2078ba"))
 
-    logger.info("开始注册武器RAG数据...")
+    logger.info(t("log.genshinuid.rag_faa0a1"))
     weapon_register()
-    logger.info("武器RAG注册完成")
+    logger.info(t("log.genshinuid.rag_ddb0f4"))
 
-    logger.info("开始注册圣遗物RAG数据...")
+    logger.info(t("log.genshinuid.rag_6c1c50"))
     artifact_register()
-    logger.info("圣遗物RAG注册完成")
+    logger.info(t("log.genshinuid.rag_987c4d"))
 
-    logger.info("开始注册怪物RAG数据...")
+    logger.info(t("log.genshinuid.rag_ecfccd"))
     monster_register()
-    logger.info("怪物RAG注册完成")
+    logger.info(t("log.genshinuid.rag_3b7050"))
 
-    logger.info("开始注册角色攻略RAG数据...")
+    logger.info(t("log.genshinuid.rag_46d8d0"))
     char_adv_register()
-    logger.info("角色攻略RAG注册完成")
+    logger.info(t("log.genshinuid.rag_e19e48"))
 
     register_aliases()
 
-    logger.info("所有RAG数据注册完成！")
+    logger.info(t("log.genshinuid.rag_f3d2e9"))
 
 
 rag_register()

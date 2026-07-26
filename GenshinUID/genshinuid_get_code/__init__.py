@@ -5,6 +5,7 @@ from httpx import AsyncClient
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -39,5 +40,5 @@ async def get_code_func(bot: Bot, ev: Event):
                 im += "\n🚨 该兑换码每人只能兑换一次, 请勿重复刷取!"
                 await bot.send(im)
         except Exception:
-            logger.error("获取兑换码失败")
+            logger.error(t("log.genshinuid.msg_d735c9"))
             await bot.send("👽️获取兑换码失败!请勿重新尝试!")

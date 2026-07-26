@@ -5,6 +5,7 @@ from typing import Dict, Literal
 
 from httpx import AsyncClient
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.api import (
     BBS_LIKE,
@@ -133,14 +134,14 @@ class MihoyoBBSCoin:
 
     # 获取任务列表, 用来判断做了哪些任务
     async def get_tasks_list(self):
-        logger.info("正在获取任务列表")
+        logger.info(t("log.genshinuid.msg_8a612f"))
         data = await self._request(
             "GET",
             BBS_TASKS.get(),
             self.headers,
         )
         if "err" in data["message"] or data["retcode"] == -100:
-            logger.error("获取任务列表失败, 你的cookie可能已过期, 请重新设置cookie。")
+            logger.error(t("log.genshinuid.cookie_cookie_f6e063"))
             return "你的Cookies已失效。"
         else:
             self.Today_getcoins = data["data"]["can_get_points"]
@@ -155,10 +156,10 @@ class MihoyoBBSCoin:
             else:
                 # 如果第0个大于或等于62则直接判定任务没做
                 if data["data"]["states"][0]["mission_id"] >= 62:
-                    logger.info(f"新的一天, 今天可以获得{self.Today_getcoins}个米游币")
+                    logger.info(t("log.genshinuid.p0_04807b", p0=self.Today_getcoins))
                     pass
                 else:
-                    logger.info(f"似乎还有任务没完成, 今天还能获得{self.Today_getcoins}")
+                    logger.info(t("log.genshinuid.p0_e523b0", p0=self.Today_getcoins))
                     for i in data["data"]["states"]:
                         # 58是讨论区签到
                         if i["mission_id"] == 58:
@@ -187,7 +188,7 @@ class MihoyoBBSCoin:
     # 获取要帖子列表
     async def get_list(self) -> list:
         temp_list = []
-        logger.info("正在获取帖子列表......")
+        logger.info(t("log.genshinuid.msg_603dcf"))
         data = await self._request(
             "GET",
             BBS_LIST.format(self.mihoyobbs_List_Use[0]["forumId"]),
@@ -215,7 +216,7 @@ class MihoyoBBSCoin:
         if self.Task_do["bbs_Sign"]:
             return "SignM已经完成过了~"
         else:
-            logger.info("开始执行米游社签到......")
+            logger.info(t("log.genshinuid.msg_0005c2"))
             header = deepcopy(self.headers)
             for i in self.mihoyobbs_List_Use:
                 data = await self._request(
@@ -227,7 +228,7 @@ class MihoyoBBSCoin:
                 if "err" not in data["message"]:
                     await asyncio.sleep(random.randint(2, 8))
                 else:
-                    logger.warning(f"米游社签到 [game_id: {i['id']}] 失败...")
+                    logger.warning(t("log.genshinuid.game_id_p0_d62c87", p0=i["id"]))
                     await asyncio.sleep(random.randint(9, 30))
                     continue
             return "SignM:完成!"
@@ -237,7 +238,7 @@ class MihoyoBBSCoin:
         if self.Task_do["bbs_Read_posts"]:
             return "ReadM已经完成过了~"
         else:
-            logger.info("开始执行米游社看帖......")
+            logger.info(t("log.genshinuid.msg_cc41b8"))
             num_ok = 0
             for i in range(self.Task_do["bbs_Read_posts_num"]):
                 data = await self._request(
@@ -255,7 +256,7 @@ class MihoyoBBSCoin:
         if self.Task_do["bbs_Like_posts"]:
             return "LikeM任务已经完成过了~"
         else:
-            logger.info("开始执行米游社点赞......")
+            logger.info(t("log.genshinuid.msg_bec7e3"))
             num_ok = 0
             num_cancel = 0
             for i in range(self.Task_do["bbs_Like_posts_num"]):
@@ -292,7 +293,7 @@ class MihoyoBBSCoin:
         if self.Task_do["bbs_Share"]:
             return "ShareM已经完成过了~"
         else:
-            logger.info("开始执行米游社分享......")
+            logger.info(t("log.genshinuid.msg_45c37c"))
             for _ in range(4):
                 data = await self._request(
                     "GET",

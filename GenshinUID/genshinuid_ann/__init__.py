@@ -5,6 +5,7 @@ from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
 from gsuid_core.gss import gss
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.subscribe import gs_subscribe
@@ -124,7 +125,7 @@ async def get_ann_schedule_msg(bot: Bot, ev: Event):
     if not uid:
         return await bot.send(UID_HINT)
 
-    logger.info(f"[原神][开启定时清空公告红点] UID: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_6dd59a", uid=uid))
     await gs_subscribe.add_subscribe(
         "single",
         "[原神] 自动清红",
@@ -136,7 +137,7 @@ async def get_ann_schedule_msg(bot: Bot, ev: Event):
 
 @scheduler.scheduled_job("cron", hour="*/5")
 async def send_ann_schedule():
-    logger.info("[原神][定时清空公告红点] 正在执行中!")
+    logger.info(t("log.genshinuid.msg_856bd2"))
     datas = await gs_subscribe.get_subscribe("[原神] 自动清红")
     if datas:
         for subscribe in datas:
@@ -151,12 +152,12 @@ async def check_ann():
 
 
 async def check_ann_state():
-    logger.info("[原神公告] 定时任务: 原神公告查询..")
+    logger.info(t("log.genshinuid.msg_d457f8"))
     ids = gsconfig.get_config("Ann_Ids").data
     sub_list = gsconfig.get_config("Ann_Groups").data
 
     if not sub_list:
-        logger.info("没有群订阅, 取消获取数据")
+        logger.info(t("log.genshinuid.msg_a6d5f9"))
         return
 
     if not ids:
@@ -164,14 +165,14 @@ async def check_ann_state():
         if not ids:
             raise Exception("获取原神公告ID列表错误,请检查接口")
         gsconfig.set_config("Ann_Ids", ids)
-        logger.info("初始成功, 将在下个轮询中更新.")
+        logger.info(t("log.genshinuid.msg_357117"))
         return
 
     new_ids = await ann().get_ann_ids()
     new_ann = set(ids) ^ set(new_ids)
 
     if not new_ann:
-        logger.info("[原神公告] 没有最新公告")
+        logger.info(t("log.genshinuid.msg_517227"))
         return
 
     for ann_id in new_ann:
@@ -192,5 +193,5 @@ async def check_ann_state():
         except Exception as e:
             logger.exception(str(e))
 
-    logger.info("[原神公告] 推送完毕, 更新数据库")
+    logger.info(t("log.genshinuid.msg_ec7120"))
     gsconfig.set_config("Ann_Ids", new_ids)

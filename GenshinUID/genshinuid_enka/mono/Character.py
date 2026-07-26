@@ -2,6 +2,8 @@ import re
 from copy import deepcopy
 from typing import Dict, List, Tuple, Optional
 
+from gsuid_core.i18n import t
+
 # from httpx import ConnectTimeout
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.minigg.request import (
@@ -140,7 +142,7 @@ class Character:
             try:
                 weapon_raw_data = await get_weapon_info(weapon)
             except Exception as e:
-                logger.error(f"获取武器信息失败: {e}")
+                logger.error(t("log.genshinuid.msg_bf5747", e=e))
                 weapon_raw_data = -1
 
             if isinstance(weapon_raw_data, int) or isinstance(weapon_raw_data, List) or weapon_raw_data is None:
@@ -588,7 +590,14 @@ class Character:
                     prop[f"{attr}_{effect_attr}"] += effect_value
             prop[f"{effect_attr}"] += effect_value
 
-        logger.trace(f"{effect_attr} + {effect_value} 基于[{effect_base}]")
+        logger.trace(
+            t(
+                "log.genshinuid.effect_attr_effect_value_effect_base_ffaf5f",
+                effect_attr=effect_attr,
+                effect_value=effect_value,
+                effect_base=effect_base,
+            )
+        )
 
         return prop
 

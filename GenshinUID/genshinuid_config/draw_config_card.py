@@ -4,6 +4,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsBind, GsUser
 
@@ -58,7 +59,7 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
     await asyncio.gather(*tasks)
 
     res = await convert_img(img)
-    logger.info("[查询配置信息]绘图已完成,等待发送!")
+    logger.info(t("log.genshinuid.msg_d7a840"))
     return res
 
 

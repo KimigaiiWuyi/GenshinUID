@@ -4,6 +4,7 @@ from pathlib import Path
 
 import aiofiles
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.hhw.request import (
     get_abyss_review,
@@ -29,7 +30,7 @@ async def _generate_data():
     with open(REVIEW_PATH, "w", encoding="UTF-8") as file:
         json.dump(result, file, ensure_ascii=False)
 
-    logger.info("[深渊预览] 数据已刷新！")
+    logger.info(t("log.genshinuid.msg_b5039c"))
 
 
 async def generate_data():

@@ -3,6 +3,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error_img
@@ -115,5 +116,5 @@ async def draw_deck_img(ev: Event, uid: str, deck_id: int) -> Union[str, bytes]:
             )
         img.paste(bg, (0, 827 + cut * 285), bg)
     img = await convert_img(img)
-    logger.info("[七圣召唤]绘图已结束，等待发送...")
+    logger.info(t("log.genshinuid.msg_595c35"))
     return img

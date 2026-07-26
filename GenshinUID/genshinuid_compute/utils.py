@@ -1,5 +1,6 @@
 from typing import Dict, List, Union
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from ..utils.map.GS_MAP_PATH import mysData, avatarName2Weapon
@@ -93,10 +94,10 @@ async def char_id_to_compute_dict(
     try:
         skill_list = await avatar_id_to_skill_groupId(char_id)
         if not skill_list:
-            logger.warning(f"角色 {char_id} 技能数据缺失，跳过该角色")
+            logger.warning(t("log.genshinuid.char_id_b581b7", char_id=char_id))
             return None  # 或返回空字典
     except Exception as e:
-        logger.warning(f"获取角色 {char_id} 技能时出错: {e}")
+        logger.warning(t("log.genshinuid.char_id_398f03", char_id=char_id, e=e))
         return None
 
     skill_data = []

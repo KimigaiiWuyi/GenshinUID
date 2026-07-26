@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple, Union, Optional
 
 from PIL import Image
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import CHAR_HINT
 
@@ -96,11 +97,11 @@ async def draw_enka_img(
     char = await get_char(*_args)
 
     if isinstance(char, str):
-        logger.info("[查询角色] 绘图失败, 替换的武器不正确!")
+        logger.info(t("log.genshinuid.msg_35c91a"))
         return char
 
     im = await draw_char_img(char, url)
-    logger.info("[查询角色] 绘图完成,等待发送...")
+    logger.info(t("log.genshinuid.msg_5ce645"))
     return im
 
 
@@ -222,7 +223,7 @@ async def get_single_percent(char_data: Dict, uid: str, num: int, best: List):
     char = Character(char_data)
     await char.init_prop()
     percent = float(char.percent.replace("%", ""))
-    logger.info(f"[查找最佳圣遗物] UID:{uid}第{num}次迭代...毕业度为{percent}!")
+    logger.info(t("log.genshinuid.uid_uid_num_percent_523a00", uid=uid, num=num, percent=percent))
     best.append({"percent": percent, "char_data": char.card_prop})
 
 
@@ -234,7 +235,7 @@ async def get_artifacts_repo(uid: str) -> Dict[str, List[Dict]]:
         "goblet": [],
         "circlet": [],
     }
-    logger.info(f"[建立圣遗物仓库] UID:{uid}开始...")
+    logger.info(t("log.genshinuid.uid_uid_591eec", uid=uid))
     # 开始查找全部角色
     uid_fold = PLAYER_PATH / str(uid)
     char_file_list = uid_fold.glob("*")
@@ -246,12 +247,15 @@ async def get_artifacts_repo(uid: str) -> Dict[str, List[Dict]]:
                 if equip not in artifacts_repo[equip["aritifactSetPiece"]]:
                     artifacts_repo[equip["aritifactSetPiece"]].append(equip)
     logger.info(
-        f"[建立圣遗物仓库] UID:{uid}完成!共计\
-          {len(artifacts_repo['flower'])},\
-          {len(artifacts_repo['plume'])},\
-          {len(artifacts_repo['sands'])},\
-          {len(artifacts_repo['goblet'])},\
-          {len(artifacts_repo['circlet'])}个圣遗物!"
+        t(
+            "log.genshinuid.uid_uid_p0_p1_p2_p3_acf084",
+            uid=uid,
+            p0=len(artifacts_repo["flower"]),
+            p1=len(artifacts_repo["plume"]),
+            p2=len(artifacts_repo["sands"]),
+            p3=len(artifacts_repo["goblet"]),
+            p4=len(artifacts_repo["circlet"]),
+        )
     )
     return artifacts_repo
 

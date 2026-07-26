@@ -1,6 +1,7 @@
 from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -22,7 +23,7 @@ sv_daily_cost = SV("查询每日材料")
     """,
 )
 async def send_collection_info(bot: Bot, ev: Event):
-    logger.info("开始执行[每日材料]")
+    logger.info(t("log.genshinuid.msg_cffadd"))
     im = await draw_daily_cost_img()
     await bot.send(im)
 

@@ -5,6 +5,7 @@ from copy import deepcopy
 from typing import List, Optional
 
 from gsuid_core.gss import gss
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.models import RoleCalendar, RolesCalendar
 from gsuid_core.utils.database.models import GsUser
@@ -47,11 +48,11 @@ async def check_today(uid: str) -> bool:
         day = now.day
         if char_day == f"{month}/{day}":
             is_got = True
-            logger.info("[自动留影叙佳期] 今日有可获取角色，开启任务...")
+            logger.info(t("log.genshinuid.msg_f0fb6c"))
             break
     else:
         is_got = False
-        logger.info("[自动留影叙佳期] 今日无可获取角色，自动取消任务...")
+        logger.info(t("log.genshinuid.msg_038ffb"))
 
     return is_got
 
@@ -100,7 +101,7 @@ async def daily_get_draw():
             if len(tasks) >= 1:
                 await asyncio.gather(*tasks)
                 delay = 50 + random.randint(3, 45)
-                logger.info(f"[自动留影叙佳期] 已完成{len(tasks)}个用户, 等待{delay}秒进行下一次获取")
+                logger.info(t("log.genshinuid.p0_delay_5344c0", p0=len(tasks), delay=delay))
                 tasks.clear()
                 await asyncio.sleep(delay)
 
@@ -113,5 +114,5 @@ async def daily_get_draw():
     private_msg_list.clear()
     group_msg_list.clear()
     logger.info(result)
-    logger.info("[自动留影叙佳期] 已结束")
+    logger.info(t("log.genshinuid.msg_85f04b"))
     return result

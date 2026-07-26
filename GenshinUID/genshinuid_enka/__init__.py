@@ -7,6 +7,7 @@ from PIL import Image
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.ai_core.trigger_bridge import ai_return
@@ -54,7 +55,7 @@ async def send_rank_data(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[排名统计]uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_b564c8", uid=uid))
     result = await get_rank(uid)
     if isinstance(result, str):
         ai_return(result)
@@ -76,7 +77,7 @@ async def send_rank_pic(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[排名列表]uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_736a67", uid=uid))
     im = await draw_rank_img(ev, uid)
     await bot.send_option(
         im,
@@ -103,7 +104,7 @@ async def send_role_rank_pic(bot: Bot, ev: Event):
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", ev.text))
     if not msg:
         return
-    logger.info(f"[角色排行榜]角色: {msg}")
+    logger.info(t("log.genshinuid.msg_8fd81d", msg=msg))
     a = Button("💖排名列表", "排名列表")
     b = Button(f"✅查询{msg}", f"查询{msg}")
     c = Button(f"💖角色排名{msg}", f"角色排名{msg}")
@@ -129,7 +130,7 @@ async def send_my_role_rank_pic(bot: Bot, ev: Event):
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", ev.text))
     if not msg:
         return
-    logger.info(f"[角色排名]角色: {msg}")
+    logger.info(t("log.genshinuid.msg_86aa0f", msg=msg))
     a = Button("💖排名列表", "排名列表")
     b = Button(f"✅查询{msg}", f"查询{msg}")
     c = Button(f"💖角色排行榜{msg}", f"角色排行榜{msg}")
@@ -159,7 +160,7 @@ async def send_my_role_rank_pic(bot: Bot, ev: Event):
 async def send_arti_rank_pic(bot: Bot, ev: Event):
     # 获取排序名
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", ev.text))
-    logger.info(f"[圣遗物排名]排序: {msg}")
+    logger.info(t("log.genshinuid.msg_3d7d31", msg=msg))
     im = await draw_arti_rank_img(msg)
     await bot.send_option(
         im,
@@ -206,7 +207,7 @@ async def send_fresh_list(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[刷新圣遗物仓库]uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_1a363b", uid=uid))
     await bot.send(f"UID{uid}开始刷新, 请勿重复触发!")
     if ev.command.startswith("强制"):
         is_force = True
@@ -231,7 +232,7 @@ async def send_aritifacts_list(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[圣遗物仓库]uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_3f9f28", uid=uid))
 
     if ev.text and ev.text.isdigit():
         num = int(ev.text)
@@ -334,7 +335,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     msg = "".join(re.findall("[\u4e00-\u9fa5 ]", text))
     if not msg:
         return
-    logger.info("开始执行[查询角色面板]")
+    logger.info(t("log.genshinuid.msg_55f82a"))
     # 获取uid
     uid = await get_uid(bot, ev)
     if uid is None:
@@ -493,7 +494,7 @@ async def send_card_info(bot: Bot, ev: Event):
         if EnableCharCardByMys:
             im = await mys_to_card(uid)
             if not isinstance(im, Tuple):
-                logger.info(f"从米游社获取数据失败，尝试从enka获取。{im}")
+                logger.info(t("log.genshinuid.enka_im_06dd12", im=im))
                 im = await enka_to_card(uid)
         else:
             im = await enka_to_card(uid)
@@ -523,5 +524,5 @@ async def send_char_detail_list(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     im = await draw_all_char_list(str(uid))
-    logger.info(f"[角色橱窗] UID{uid}获取角色数据成功！")
+    logger.info(t("log.genshinuid.uid_uid_e7b254", uid=uid))
     await bot.send(im)

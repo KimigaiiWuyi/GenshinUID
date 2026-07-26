@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -22,5 +23,5 @@ sv_get_returnlist = SV("查询未复刻天数", priority=4)
 )
 async def send_abyss_pic(bot: Bot, ev: Event):
     img = await draw_teyvat_returnlist_img()
-    logger.info("[未复刻] 获得未复刻UP列表成功!")
+    logger.info(t("log.genshinuid.up_e329b8"))
     await bot.send(img)

@@ -2,6 +2,7 @@ import re
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -38,7 +39,7 @@ async def send_hard_abyss_info(bot: Bot, ev: Event):
     if name:
         return
 
-    logger.info("开始执行 [幽境危战]")
+    logger.info(t("log.genshinuid.msg_4cb1d0"))
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -66,8 +67,8 @@ async def send_hard_abyss_info(bot: Bot, ev: Event):
     """,
 )
 async def send_hard_abyss_rank_info(bot: Bot, ev: Event):
-    logger.info("开始执行 [幽境危战排行榜]")
+    logger.info(t("log.genshinuid.msg_5279ac"))
     im = await draw_hard_rank()
-    logger.info("[幽境危战排行榜] 图片发送完成")
+    logger.info(t("log.genshinuid.msg_a641c7"))
 
     await bot.send(im)

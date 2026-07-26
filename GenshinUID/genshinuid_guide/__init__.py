@@ -3,6 +3,7 @@ from typing import List
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
@@ -123,7 +124,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
 )
 async def send_poetry_abyss_review(bot: Bot, ev: Event):
     im = await draw_poetry_abyss_image(ev.text.strip())
-    logger.info("[剧诗版本深渊] 获得深渊信息成功！")
+    logger.info(t("log.genshinuid.msg_09c19e"))
     await bot.send(im)
 
 

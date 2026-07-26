@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -26,5 +27,5 @@ async def send_charcard_list(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     im = await draw_char_count_list(str(uid), ev)
-    logger.info(f"[毕业度统计] UID{uid}获取角色数据成功！")
+    logger.info(t("log.genshinuid.uid_uid_8bbaae", uid=uid))
     await bot.send(im)

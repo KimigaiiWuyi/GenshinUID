@@ -1,5 +1,6 @@
 from typing import List
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.segment import MessageSegment
 from gsuid_core.subscribe import gs_subscribe
@@ -20,7 +21,7 @@ async def notice_cale():
         if uid and uid in active_datas:
             data = await mys_api.get_calendar_data(uid)
             if isinstance(data, int):
-                logger.error(f"[推送活动提醒] 获取{uid}的数据失败!错误代码为: {data}")
+                logger.error(t("log.genshinuid.uid_data_d7c9c9", uid=uid, data=data))
                 continue
 
             act_list: List[Act] = []

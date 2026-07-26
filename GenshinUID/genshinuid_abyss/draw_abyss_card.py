@@ -5,6 +5,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error_img
@@ -349,5 +350,5 @@ async def draw_abyss_img(
         await asyncio.gather(*task)
 
     res = await convert_img(img)
-    logger.info("[查询深渊信息]绘图已完成,等待发送!")
+    logger.info(t("log.genshinuid.msg_9f5261"))
     return res

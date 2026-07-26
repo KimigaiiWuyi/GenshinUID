@@ -6,6 +6,7 @@ from pathlib import Path
 from PIL import Image
 from httpx import AsyncClient
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from .api import HAKUSH_U_API, HAKUSH_ROLECOMBAT_API, HAKUSH_ROLECOMBATS_API
@@ -55,7 +56,7 @@ class _HakushAPI:
         _json: Optional[Dict[str, Any]] = None,
     ) -> Union[Dict, int, bytes]:
         async with AsyncClient(timeout=None) as client:
-            logger.debug(f"[HAKUSH] 正在请求{url}")
+            logger.debug(t("log.genshinuid.hakush_url_9a0f99", url=url))
             resp = await client.request(
                 method,
                 url,

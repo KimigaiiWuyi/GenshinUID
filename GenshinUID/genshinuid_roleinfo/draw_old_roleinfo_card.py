@@ -4,6 +4,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.api.mys.models import MihoyoAvatar
@@ -302,7 +303,7 @@ async def draw_pic(uid: str) -> Union[str, bytes]:
     await asyncio.gather(*tasks)
 
     res = await convert_img(img)
-    logger.info("[查询角色信息]绘图已完成,等待发送!")
+    logger.info(t("log.genshinuid.msg_b10c11"))
     return res
 
 

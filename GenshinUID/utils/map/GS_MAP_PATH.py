@@ -3,6 +3,7 @@ from pathlib import Path
 
 from msgspec import json as msgjson
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from ...version import Genshin_version
@@ -141,6 +142,6 @@ try:
 
     with open(MAP / CharId2TalentIcon_fileName, "r", encoding="utf8") as f:
         CharId2TalentIcon_data.update(msgjson.decode(f.read(), type=Dict[str, List[str]]))
-    logger.success("[GenshinUID MAP] 资源文件加载完成")
+    logger.success(t("log.genshinuid.genshinuid_map_380311"))
 except FileNotFoundError:
-    logger.error("[GenshinUID] 未找到对应版本的映射文件")
+    logger.error(t("log.genshinuid.genshinuid_267801"))

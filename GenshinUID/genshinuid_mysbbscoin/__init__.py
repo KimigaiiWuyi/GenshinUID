@@ -4,6 +4,7 @@ import asyncio
 from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.database.models import GsBind, GsUser
@@ -73,4 +74,4 @@ async def get_coin_at_night():
 
 async def send_daily_mihoyo_bbs_sign():
     await all_daily_mihoyo_bbs_coin()
-    logger.info("米游币获取已结束。")
+    logger.info(t("log.genshinuid.msg_e592d3"))

@@ -1,6 +1,7 @@
 from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.ai_core.trigger_bridge import ai_return
@@ -32,7 +33,7 @@ __all__ = ["ai_return"]
     """,
 )
 async def send_daily_info(bot: Bot, ev: Event):
-    logger.info("🔨 [原神服务]\n🌱 开始执行[每日信息文字版]")
+    logger.info(t("log.genshinuid.msg_fd95a1"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -66,7 +67,7 @@ async def notice_job(force: bool = False):
     if is_check_resin or force:
         await send_notice_list()
     else:
-        logger.info("🔨 [原神服务]\n❌ 未开启体力推送功能!")
+        logger.info(t("log.genshinuid.msg_5887e9"))
 
 
 @sv_get_resin.on_fullmatch(
@@ -81,7 +82,7 @@ async def notice_job(force: bool = False):
     """,
 )
 async def send_daily_info_pic(bot: Bot, ev: Event):
-    logger.info("开始执行[每日信息]")
+    logger.info(t("log.genshinuid.msg_2f9be3"))
     user_id = ev.at if ev.at else ev.user_id
     logger.info("[每日信息]QQ号: {}".format(user_id))
 

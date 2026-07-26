@@ -1,6 +1,7 @@
 import math
 from typing import List, Union
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error_img
 
@@ -108,5 +109,5 @@ async def get_resin_text(uid: str) -> Union[str, bytes]:
         )
         return send_mes
     except TypeError:
-        logger.exception("[查询当前状态]查询失败!")
+        logger.exception(t("log.genshinuid.msg_e222da"))
         return "你绑定过的UID中可能存在过期CK~请重新绑定一下噢~"

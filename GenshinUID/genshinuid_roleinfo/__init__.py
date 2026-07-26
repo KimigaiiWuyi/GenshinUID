@@ -2,13 +2,14 @@ import re
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .get_regtime import calc_reg_time
 from .draw_all_char import draw_char_pic
-from ..utils.buttons import a, b, c, s, t, u, v, x, y
+from ..utils.buttons import a, b, c, s, t as btn_t, u, v, x, y
 from ..utils.convert import get_uid
 from ..utils.message import UID_HINT
 from .draw_roleinfo_card import draw_pic
@@ -32,11 +33,11 @@ __all__ = ["ai_return"]
     """,
 )
 async def regtime(bot: Bot, ev: Event):
-    logger.info("[原神] 开始执行 [查询注册时间]")
+    logger.info(t("log.genshinuid.msg_7db258"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return bot.send(UID_HINT)
-    logger.info(f"[原神] [查询注册时间] uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_3c0770", uid=uid))
 
     im = await calc_reg_time(uid)
     if isinstance(im, str):
@@ -59,14 +60,14 @@ async def send_role_info(bot: Bot, ev: Event):
     name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
     if name:
         return
-    logger.info("[原神] 开始执行[查询角色信息]")
+    logger.info(t("log.genshinuid.msg_ca4978"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[原神] [查询角色信息] uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_f71cbf", uid=uid))
 
     im = await draw_pic(ev, uid)
-    await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])
+    await bot.send_option(im, [[a, b, c], [btn_t, s, u], [v, x, y]])
 
 
 @sv_get_info.on_command(
@@ -84,11 +85,11 @@ async def send_charlist_info(bot: Bot, ev: Event):
     name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text))
     if name:
         return
-    logger.info("[原神] 开始执行[角色列表]")
+    logger.info(t("log.genshinuid.msg_1a09e7"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[原神] [角色列表]uid: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_26a2eb", uid=uid))
 
     im = await draw_char_pic(uid)
-    await bot.send_option(im, [[a, b, c], [t, s, u], [v, x, y]])
+    await bot.send_option(im, [[a, b, c], [btn_t, s, u], [v, x, y]])

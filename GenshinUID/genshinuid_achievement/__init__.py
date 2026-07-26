@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.ai_core.trigger_bridge import ai_return
@@ -26,7 +27,7 @@ sv_achi_search = SV("成就完成查询")
     """,
 )
 async def send_achi_img(bot: Bot, ev: Event):
-    logger.info(f"[成就列表] 参数：{ev.text}")
+    logger.info(t("log.genshinuid.p0_11ddc2", p0=ev.text))
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
@@ -46,7 +47,7 @@ async def send_achi_img(bot: Bot, ev: Event):
     """,
 )
 async def send_task_info(bot: Bot, ev: Event):
-    logger.info(f"[查委托] 参数：{ev.text}")
+    logger.info(t("log.genshinuid.p0_55baa5", p0=ev.text))
     im = await get_daily_achi(ev.text)
     if isinstance(im, str):
         ai_return(im)
@@ -65,7 +66,7 @@ async def send_task_info(bot: Bot, ev: Event):
     """,
 )
 async def send_achi_info(bot: Bot, ev: Event):
-    logger.info(f"[查成就] 参数：{ev.text}")
+    logger.info(t("log.genshinuid.p0_41dd2b", p0=ev.text))
     im = await get_achi(ev.text)
     if isinstance(im, str):
         ai_return(im)

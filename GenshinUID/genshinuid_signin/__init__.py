@@ -1,6 +1,7 @@
 from gsuid_core.sv import SV
 from gsuid_core.aps import scheduler
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.subscribe import gs_subscribe
@@ -42,7 +43,7 @@ async def get_sign_func(bot: Bot, ev: Event):
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info(f"[原神] [签到]UID: {uid}")
+    logger.info(t("log.genshinuid.uid_uid_93d17b", uid=uid))
     await bot.send(await sign_in(uid, "gs"))
 
 
@@ -58,14 +59,14 @@ async def get_sign_func(bot: Bot, ev: Event):
     """,
 )
 async def recheck(bot: Bot, ev: Event):
-    logger.info("开始执行[全部重签]")
+    logger.info(t("log.genshinuid.msg_145d21"))
     await bot.send("🚩 [原神] [全部重签] 已开始执行...")
     await send_daily_sign()
     await bot.send("🚩 [原神] [全部重签] 执行完成！")
 
 
 async def send_daily_sign():
-    logger.info("[原神] 开始执行[每日全部签到]")
+    logger.info(t("log.genshinuid.msg_cf4ab9"))
     # 执行签到 并获得推送消息
     datas = await gs_subscribe.get_subscribe("[原神] 自动签到")
     priv_result, group_result = await gs_subscribe.muti_task(datas, sign_in, "uid")
@@ -83,4 +84,4 @@ async def send_daily_sign():
             event = data["event"]
             await event.send(im)
 
-    logger.info("[原神] [每日全部签到]群聊推送完成")
+    logger.info(t("log.genshinuid.msg_948500"))

@@ -3,6 +3,7 @@ import asyncio
 from copy import deepcopy
 
 from gsuid_core.gss import gss
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.database.models import GsUser
@@ -17,7 +18,7 @@ already = 0
 
 # 签到函数
 async def sign_in(uid: str) -> str:
-    logger.info(f"[签到] {uid} 开始执行签到")
+    logger.info(t("log.genshinuid.uid_ee7732", uid=uid))
     # 获得签到信息
     sign_info = await mys_api.get_sign_info(uid)
     # 初步校验数据
@@ -25,7 +26,7 @@ async def sign_in(uid: str) -> str:
         return await sign_error(uid, sign_info)
     # 检测是否已签到
     if sign_info["is_sign"]:
-        logger.info(f"[签到] {uid} 该用户今日已签到,跳过...")
+        logger.info(t("log.genshinuid.uid_52af1e", uid=uid))
         global already
         already += 1
         day_of_month = int(sign_info["today"].split("-")[-1])
@@ -53,35 +54,35 @@ async def sign_in(uid: str) -> str:
                         Header["x-rpc-challenge"] = ch
                         Header["x-rpc-validate"] = vl
                         Header["x-rpc-seccode"] = f"{vl}|jordan"
-                        logger.info(f"[签到] {uid} 已获取验证码, 等待时间{delay}秒")
+                        logger.info(t("log.genshinuid.uid_delay_047f39", uid=uid, delay=delay))
                         await asyncio.sleep(delay)
                     else:
                         delay = 605 + random.randint(1, 120)
-                        logger.info(f"[签到] {uid} 未获取验证码,等待{delay}秒后重试...")
+                        logger.info(t("log.genshinuid.uid_delay_bb3983", uid=uid, delay=delay))
                         await asyncio.sleep(delay)
                     continue
                 else:
-                    logger.info("配置文件暂未开启[跳过无感验证],跳过本次签到任务...")
+                    logger.info(t("log.genshinuid.msg_185139"))
                 return "签到失败...出现验证码!"
             # 成功签到!
             else:
                 if index == 0:
-                    logger.info(f"[签到] {uid} 该用户无校验码!")
+                    logger.info(t("log.genshinuid.uid_0e4f10", uid=uid))
                 else:
-                    logger.info(f"[签到] [无感验证] {uid} 该用户重试 {index} 次验证成功!")
+                    logger.info(t("log.genshinuid.uid_index_07cd35", uid=uid, index=index))
                 break
         elif (int(str(uid)[0]) > 5) and (sign_data["code"] == "ok"):
             # 国际服签到无risk_code字段
-            logger.info(f"[国际服签到] {uid} 签到成功!")
+            logger.info(t("log.genshinuid.uid_6944d8", uid=uid))
             break
         else:
             # 重试超过阈值
-            logger.warning("[签到] 超过请求阈值...")
+            logger.warning(t("log.genshinuid.msg_dac6af"))
             return "签到失败...出现验证码!\n请过段时间使用[签到]或由管理员[全部重签]或手动至米游社进行签到！"
     # 签到失败
     else:
         im = "签到失败!"
-        logger.warning(f"[签到] {uid} 签到失败, 结果: {im}")
+        logger.warning(t("log.genshinuid.uid_im_270690", uid=uid, im=im))
         return im
     # 获取签到列表
     sign_list = await mys_api.get_sign_list(uid)
@@ -105,13 +106,13 @@ async def sign_in(uid: str) -> str:
         sign_missed -= 1
     sign_missed = sign_info.get("sign_cnt_missed") or sign_missed
     im = f"{mes_im}!\n{get_im}\n本月漏签次数：{sign_missed}"
-    logger.info(f"[签到] {uid} 签到完成, 结果: {mes_im}, 漏签次数: {sign_missed}")
+    logger.info(t("log.genshinuid.uid_mes_im_sign_missed_595ec2", uid=uid, mes_im=mes_im, sign_missed=sign_missed))
     return im
 
 
 async def sign_error(uid: str, retcode: int) -> str:
     error_msg = get_error(retcode)
-    logger.warning(f"[签到] {uid} 出错, 错误码{retcode}, 错误消息{error_msg}!")
+    logger.warning(t("log.genshinuid.uid_retcode_error_msg_002bbc", uid=uid, retcode=retcode, error_msg=error_msg))
     if retcode == 10001 or retcode == -100:
         ck = await GsUser.get_user_cookie_by_uid(uid)
         if ck:
@@ -148,7 +149,7 @@ async def daily_sign():
     for BOT_ID in gss.active_bot:
         user_list = await GsUser.get_all_user()
         uid_list = [user.uid for user in user_list if user.sign_switch != "off" and not user.status and user.uid]
-        logger.info(f"[全部重签][UID列表] {uid_list}")
+        logger.info(t("log.genshinuid.uid_uid_list_ae3264", uid_list=uid_list))
         for user in user_list:
             if user.sign_switch != "off" and not user.status and user.uid:
                 tasks.append(single_daily_sign(user.bot_id, user.uid, user.sign_switch, user.user_id))
@@ -158,7 +159,7 @@ async def daily_sign():
                     delay = 1
                 else:
                     delay = 50 + random.randint(3, 45)
-                logger.info(f"[签到] 已签到{len(tasks)}个用户, 等待{delay}秒进行下一次签到")
+                logger.info(t("log.genshinuid.p0_delay_fba95c", p0=len(tasks), delay=delay))
                 tasks.clear()
                 already = 0
                 await asyncio.sleep(delay)

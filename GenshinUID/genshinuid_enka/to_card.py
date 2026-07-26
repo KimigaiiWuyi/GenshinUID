@@ -4,6 +4,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.enka.models import EnkaData
 
@@ -43,10 +44,10 @@ async def enka_to_card(uid: str, enka_data: Optional[EnkaData] = None) -> Union[
                 return await convert_img(pic_500)
 
         img = await draw_enka_card(uid=uid, char_data_list=char_data_list)
-        logger.info(f"[强制刷新] UID{uid}成功!")
+        logger.info(t("log.genshinuid.uid_uid_44c8f5", uid=uid))
         return img, char_data_list
     except Exception as e:
-        logger.error(f"[强制刷新] UID{uid}失败! {e}")
+        logger.error(t("log.genshinuid.uid_uid_97b458", uid=uid, e=e))
         return await convert_img(pic_500)
 
 

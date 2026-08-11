@@ -122,7 +122,7 @@ async def avatarId2SkillGroupList():
 
         for skill in skill_data:
             if "proudSkillGroupId" in skill:
-                if skill["abilityName"]:
+                if "abilityName" in skill and skill["abilityName"]:
                     _name = ""
                     if "skillIcon" in skill and skill["skillIcon"] and skill["skillIcon"].count("_") >= 2:
                         _name = skill["skillIcon"].split("_")[2]
@@ -433,7 +433,10 @@ async def skillId2NameJson() -> None:
     for i in skill_data:
         if str(i["nameTextMapHash"]) in raw_data:
             temp["Name"][str(i["id"])] = raw_data[str(i["nameTextMapHash"])]
-            temp["Icon"][str(i["id"])] = i["skillIcon"]
+            if "skillIcon" in i:
+                temp["Icon"][str(i["id"])] = i["skillIcon"]
+            else:
+                print(i)
 
     with open(MAP_PATH / skillId2Name_fileName, "w", encoding="UTF-8") as file:
         json.dump(temp, file, ensure_ascii=False)
@@ -595,10 +598,10 @@ async def save_char_talent_num():
 
 
 async def main():
-    await download_new_file()
+    # await download_new_file()
     # await restore_mysData()
     # await restore_ambr_data()
-    await monster2map()
+    # await monster2map()
     global raw_data
     try:
         with open(DATA_PATH / "TextMapCHS.json", "r", encoding="UTF-8") as f:
@@ -610,9 +613,9 @@ async def main():
     except FileNotFoundError:
         pass
 
-    await avatarId2NameJson()
-    await avatarName2ElementJson()
-    await weaponHash2NameJson()
+    # await avatarId2NameJson()
+    # await avatarName2ElementJson()
+    # await weaponHash2NameJson()
     await skillId2NameJson()
     await talentId2NameJson()
     await weaponHash2TypeJson()

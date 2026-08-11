@@ -34,11 +34,11 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "lunar:DmgBonus+60"
+      "4": "lunarDmgBonus+60"
     },
     "group_effect": {
       "2": "",
-      "4": ""
+      "4": "lunarDmgBonus+60"
     }
   },
   "风起之日": {
@@ -48,7 +48,7 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "addAtk+25;critRate+20"  
+      "4": "addAtk+25;critRate+20"
     },
     "group_effect": {
       "2": "",
@@ -62,11 +62,11 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "critRate+30"
+      "4": "critRate+30;lunarDmgBonus+20"
     },
     "group_effect": {
       "2": "",
-      "4": "critRate+30"
+      "4": "lunarDmgBonus+20"
     }
   },
   "纺月的夜歌": {
@@ -76,11 +76,11 @@
     },
     "fight_effect": {
       "2": "",
-      "4": "critRate+30"
+      "4": "elementalMastery+120;lunarDmgBonus+20"
     },
     "group_effect": {
       "2": "",
-      "4": "critRate+30"
+      "4": "elementalMastery+120;lunarDmgBonus+20"
     }
   },
   "长夜之誓": {
@@ -865,6 +865,34 @@
     "group_effect": {
       "2": "",
       "4": ""
+    }
+  },
+  "血红之证": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "critRate+16;stellarSpreadDmgBonus+40"
+    },
+    "group_effect": {
+      "2": "",
+      "4": ""
+    }
+  },
+  "炉火融炼之心": {
+    "normal_effect": {
+      "2": "addAtk+18",
+      "4": ""
+    },
+    "fight_effect": {
+      "2": "",
+      "4": "addAtk+12"
+    },
+    "group_effect": {
+      "2": "",
+      "4": "stellarDmgBonus+50"
     }
   }
 }

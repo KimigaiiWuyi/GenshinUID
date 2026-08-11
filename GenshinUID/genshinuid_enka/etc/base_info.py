@@ -1,4 +1,27 @@
-PERCENT_ATTR = ["dmgBonus", "addAtk", "addDef", "addHp"]
+PERCENT_ATTR = [
+    "dmgBonus",
+    "addAtk",
+    "addDef",
+    "addHp",
+    "stellarBaseDmgBonus",
+    "stellarDmgBonus",
+    "stellarSpreadDmgBonus",
+    "stellarSuperconductDmgBonus",
+    "stellarCritDmg",
+    "stellarElevate",
+    "lunarDmgBonus",
+    "lunarBaseDmgBonus",
+    "lunarElectroDmgBonus",
+    "lunarBloomDmgBonus",
+    "lunarCrystallizeDmgBonus",
+    "lunarCritDmg",
+    "lunarElevate",
+    "lunarElectroElevate",
+    "lunarBloomElevate",
+    "lunarCrystallizeElevate",
+    "moonDmgBonus",
+    "moonExDmgBonus",
+]
 
 baseWeaponInfo = {
     "itemId": 0,

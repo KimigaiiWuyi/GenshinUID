@@ -55,17 +55,25 @@ class Fight:
             # 更新self.seq_history
             self.seq_history = seq
 
-            # 聚变反应
-            for i in ["扩散", "绽放)", "感电", "超载"]:
+            # 聚变 / 月曜 / 星烁反应
+            dmg = None
+            for i in ["星超导", "星扩散", "星烁"]:
                 if i in char.power_name:
-                    dmg = await self.get_transform_dmg(char)
+                    dmg = await self.get_stellar_dmg(char)
                     break
-            for i in ["月感电", "月绽放", "月结晶"]:
-                if i in char.power_name:
-                    dmg = await self.get_lunar_dmg(char)
-                    break
-            else:
-                # 进行攻击
+            if dmg is None:
+                for i in ["月感电", "月绽放", "月结晶"]:
+                    if i in char.power_name:
+                        dmg = await self.get_lunar_dmg(char)
+                        break
+            if dmg is None:
+                for i in ["扩散", "绽放)", "感电", "超载"]:
+                    if i in char.power_name:
+                        if "星扩散" in char.power_name or "星超导" in char.power_name:
+                            continue
+                        dmg = await self.get_transform_dmg(char)
+                        break
+            if dmg is None:
                 dmg = await self.get_dmg(char, dmg_type, seq["action"])
             normal_dmg, avg_dmg, crit_dmg = dmg[0], dmg[1], dmg[2]
 
@@ -97,13 +105,25 @@ class Fight:
             await char.get_attack_type(char.power_name)
             # 更新角色的属性
             await self.get_new_fight_prop(char)
-            # 聚变反应
-            for i in ["扩散", "绽放)", "感电", "超载"]:
+            # 星烁 / 月曜 / 聚变 / 正常
+            dmg = []
+            for i in ["星超导", "星扩散", "星烁"]:
                 if i in power_name:
-                    dmg = await self.get_transform_dmg(char)
+                    dmg = await self.get_stellar_dmg(char)
                     break
-            else:
-                dmg = []
+            if not dmg:
+                for i in ["月感电", "月绽放", "月结晶"]:
+                    if i in power_name:
+                        dmg = await self.get_lunar_dmg(char)
+                        break
+            if not dmg:
+                for i in ["扩散", "绽放)", "感电", "超载"]:
+                    if i in power_name:
+                        # 普通扩散（非星扩散）
+                        if "星扩散" in power_name:
+                            continue
+                        dmg = await self.get_transform_dmg(char)
+                        break
 
             # 正常伤害
             if not dmg:
@@ -413,11 +433,275 @@ class Fight:
             crit_dmg = avg_dmg = 0
         return normal_dmg, avg_dmg, crit_dmg
 
-    # TODO 占位
-    async def get_lunar_dmg(self, char: Character):
-        moonExDmgBonus = 1
-        moonExDmgBonus += char.real_prop["moonExDmgBonus"]
-        return 0, 0, 0
+    def _lunar_kind(self, power_name: str) -> str:
+        if "月感电" in power_name:
+            return "月感电"
+        if "月绽放" in power_name:
+            return "月绽放"
+        if "月结晶" in power_name:
+            return "月结晶"
+        return "月感电"
+
+    def _lunar_base_k(self, kind: str) -> float:
+        """月曜基础系数（meropide）：月感电 3 / 月绽放 1 / 月结晶 1.6"""
+        return {"月感电": 3.0, "月绽放": 1.0, "月结晶": 1.6}.get(kind, 3.0)
+
+    def _lunar_element(self, kind: str) -> Element:
+        return {
+            "月感电": Element.Electro,
+            "月绽放": Element.Dendro,
+            "月结晶": Element.Geo,
+        }.get(kind, Element.Electro)
+
+    def _is_lunar_direct(self, char: Character) -> bool:
+        """技能带有效倍率 → 直伤月曜；否则按反应月曜（等级基础值）。"""
+        power = char.power_list.get(char.power_name) or {}
+        vals = power.get("value") or []
+        if not vals:
+            return False
+        v0 = str(vals[0])
+        # 百分比或固定值倍率
+        if "%" in v0:
+            try:
+                return float(v0.replace("%", "").split("+")[0]) > 0
+            except ValueError:
+                return True
+        # 防御/生命倍率也可能是小数百分比字符串
+        try:
+            return float(v0.split("+")[0]) > 15  # 非 1..10 的扩散占位
+        except ValueError:
+            return "%" in v0 or "+" in v0
+
+    async def get_lunar_dmg(self, char: Character) -> Tuple[float, float, float]:
+        """
+        月曜伤害（月感电 / 月绽放 / 月结晶）
+        直伤月曜：
+          (倍率×属性×基础系数×(1+基础增伤)×(1+6×精通/(精通+2000)+月曜增伤)×大权区 + 羽毛)
+          ×(1+暴击率×暴击伤害)×抗性×(1+擢升)
+        反应月曜（单人项，面板默认取自身满额）：
+          (反应基础值×基础系数×(1+基础增伤)×(1+6×精通/(精通+2000)+月曜增伤) + 羽毛)
+          ×(1+暴击率×暴击伤害)×抗性×(1+擢升)
+        """
+        kind = self._lunar_kind(char.power_name)
+        base_k = self._lunar_base_k(kind)
+        dmg_type = self._lunar_element(kind)
+
+        em = char.real_prop.get(
+            f"{char.attack_type}_elementalMastery",
+            char.real_prop.get("elementalMastery", 0),
+        )
+        # 基础增伤
+        base_bonus = char.real_prop.get("lunarBaseDmgBonus", 0) + char.real_prop.get("moonExDmgBonus", 0)
+        # 月曜增伤 = 通用 + 分反应 + 旧字段
+        type_key = {
+            "月感电": "lunarElectroDmgBonus",
+            "月绽放": "lunarBloomDmgBonus",
+            "月结晶": "lunarCrystallizeDmgBonus",
+        }[kind]
+        lunar_bonus = (
+            char.real_prop.get("lunarDmgBonus", 0)
+            + char.real_prop.get("moonDmgBonus", 0)
+            + char.real_prop.get(type_key, 0)
+        )
+        base_area = char.real_prop.get("lunarBaseArea", 1) or 1
+        feather = char.real_prop.get("lunarAddDmg", 0)
+        # 擢升：通用 + 分反应（命座「擢升」专用，不是增伤）
+        type_elev_key = {
+            "月感电": "lunarElectroElevate",
+            "月绽放": "lunarBloomElevate",
+            "月结晶": "lunarCrystallizeElevate",
+        }[kind]
+        elevate = char.real_prop.get("lunarElevate", 0) + char.real_prop.get(type_elev_key, 0)
+        em_factor = 1 + (6.0 * em) / (em + 2000) + lunar_bonus
+
+        critrate = char.real_prop.get(f"{char.attack_type}_critRate", char.real_prop.get("critRate", 0.05))
+        critdmg = char.real_prop.get(f"{char.attack_type}_critDmg", char.real_prop.get("critDmg", 0.5))
+        critdmg += char.real_prop.get("lunarCritDmg", 0)
+        expected_mul = 1 + critrate * critdmg
+
+        if self._is_lunar_direct(char):
+            power = await self.get_power(char)
+            effect_prop = await self.get_effect_prop(char)
+            raw = effect_prop * power.percent + power.value
+            core = raw * base_k * (1 + base_bonus) * em_factor * base_area + feather
+        else:
+            # base_value_list ≈ 反应基础值/2
+            level_base = base_value_list[max(0, min(char.char_level, len(base_value_list)) - 1)] * 2
+            core = level_base * base_k * (1 + base_bonus) * em_factor + feather
+
+        proof = await self.enemy.get_resist(dmg_type)
+        base_dmg = core * proof * (1 + elevate)
+
+        normal_dmg = base_dmg
+        avg_dmg = base_dmg * expected_mul
+        crit_hit = base_dmg * (1 + critdmg)
+
+        self.total_normal_dmg += normal_dmg
+        self.total_avg_dmg += avg_dmg
+        self.total_crit_dmg += crit_hit
+        return normal_dmg, avg_dmg, crit_hit
+
+    def _stellar_superconduct_base_k(self, stacks: int = 13) -> float:
+        """
+        星超导 · 星烁基础系数（meropide）
+        层数 0 → 1；1~12 → 0.05×层+1.4；>12 → 2。默认满层取最高 2。
+        """
+        if stacks <= 0:
+            return 1.0
+        if stacks <= 12:
+            return 0.05 * stacks + 1.4
+        return 2.0
+
+    def _stellar_spread_reaction_base_k(self, kind: str = "ice", vortex: int = 6) -> float:
+        """
+        反应星扩散基础倍率（玉衡杯 7.0v3 / 用户截图）
+        - 反应星扩散·风：固定 0.75
+        - 反应星扩散·冰：风涡 1~2 → 2；3~6 → 3（默认风涡满 6 → 3）
+        """
+        if kind == "anemo" or kind == "风":
+            return 0.75
+        # 冰
+        if vortex <= 2:
+            return 2.0
+        return 3.0
+
+    def _is_stellar_reaction_style(self, char: Character) -> bool:
+        """
+        反应型星扩散：无技能倍率（剧变式 / 扩散表），如 A扩散伤害(星扩散)。
+        直伤型：带技能倍率的星超导/星扩散技能。
+        """
+        power = char.power_list.get(char.power_name) or {}
+        ptype = str(power.get("type") or "")
+        name = char.power_name
+        if "扩散" in ptype and "星扩散" in name:
+            return True
+        # 倍率全是等级占位或为空 → 反应型
+        if "星扩散" in name and "星超导" not in name:
+            try:
+                # 粗判：value 为 "1".."10" 这类扩散表
+                vals = power.get("value") or []
+                if vals and all(
+                    str(v).replace("%", "").isdigit() and float(str(v).replace("%", "")) < 20 for v in vals[:3]
+                ):
+                    if ptype in ("扩散", "攻击力", ""):
+                        # 经典 A扩散伤害 的 value 是 1..10 且 type=扩散
+                        if ptype == "扩散":
+                            return True
+            except Exception:  # noqa: BLE001
+                pass
+        return False
+
+    async def get_stellar_dmg(self, char: Character) -> Tuple[float, float, float]:
+        """
+        星烁伤害：
+        1) 直伤星超导 / 直伤星扩散（技能倍率×属性）— meropide 直伤星烁公式
+        2) 反应星扩散·风 / ·冰（等级基础值×倍率）— 玉衡杯截图公式
+
+        直伤：
+          (属性×倍率×基础系数×(1+基础提升)×(1+6×精通/(精通+2000)+增伤)×大权区 + 羽毛)
+          ×抗性×(1+暴击率×暴击伤害)×(1+擢升)
+
+        反应星扩散（单人项，取最高）：
+          反应基础值×基础倍率×(1+基础提升)×(1+6×精通/(精通+2000)+星扩散增伤)
+          ×抗性×暴击区×擢升
+          风基础倍率 0.75；冰基础倍率风涡满层 3
+        """
+        em = char.real_prop.get(
+            f"{char.attack_type}_elementalMastery",
+            char.real_prop.get("elementalMastery", 0),
+        )
+        base_bonus = char.real_prop.get("stellarBaseDmgBonus", 0)
+        base_area_mul = char.real_prop.get("stellarBaseArea", 1) or 1
+        feather = char.real_prop.get("stellarAddDmg", 0)
+        elevate = char.real_prop.get("stellarElevate", 0)
+
+        critrate = char.real_prop.get(f"{char.attack_type}_critRate", char.real_prop.get("critRate", 0.05))
+        critdmg = char.real_prop.get(f"{char.attack_type}_critDmg", char.real_prop.get("critDmg", 0.5))
+        critdmg += char.real_prop.get("stellarCritDmg", 0)
+        expected_mul = 1 + critrate * critdmg
+
+        name = char.power_name
+        is_spread = "星扩散" in name
+        is_super = "星超导" in name
+
+        # 星烁增伤分层（与月曜分反应一致）：
+        # - stellarDmgBonus：文案「星烁反应伤害」——覆盖星超导 + 星扩散
+        # - stellarSpreadDmgBonus：仅「星扩散反应伤害」
+        # - stellarSuperconductDmgBonus：仅「星超导反应伤害」（若有）
+        stellar_bonus = char.real_prop.get("stellarDmgBonus", 0)
+        if is_spread:
+            stellar_bonus += char.real_prop.get("stellarSpreadDmgBonus", 0)
+        if is_super:
+            stellar_bonus += char.real_prop.get("stellarSuperconductDmgBonus", 0)
+        # 技能名同时含两者时：通用 + 两路专用都吃（最高）
+        em_factor = 1 + (6.0 * em) / (em + 2000) + stellar_bonus
+
+        # ---------- 反应型星扩散 ----------
+        if is_spread and self._is_stellar_reaction_style(char):
+            # 默认取最高：反应星扩散·冰（风涡满层基础倍率 3）
+            # 若明确只要风，可在技能名带「风」；否则冰倍率更高作面板上限
+            if "·风" in name or "风元素" in name:
+                dmg_type = Element.Anemo
+                base_k = self._stellar_spread_reaction_base_k("anemo")
+            else:
+                dmg_type = Element.Cryo
+                base_k = self._stellar_spread_reaction_base_k("ice", vortex=6)
+
+            # base_value_list ≈ 反应基础值/2（与超激化/扩散实现一致），故 ×2 对齐 1446.85@90
+            level_base = base_value_list[max(0, min(char.char_level, len(base_value_list)) - 1)] * 2
+            core = level_base * base_k * (1 + base_bonus) * em_factor
+            proof = await self.enemy.get_resist(dmg_type)
+            base_dmg = core * proof * (1 + elevate)
+            # 反应星扩散可暴击：暴击区 = 1 + 暴击率×暴击伤害（期望）
+            normal_dmg = base_dmg
+            avg_dmg = base_dmg * expected_mul
+            crit_hit = base_dmg * (1 + critdmg)
+            self.total_normal_dmg += normal_dmg
+            self.total_avg_dmg += avg_dmg
+            self.total_crit_dmg += crit_hit
+            return normal_dmg, avg_dmg, crit_hit
+
+        # ---------- 直伤星超导 / 直伤星扩散 ----------
+        power = await self.get_power(char)
+        effect_prop = await self.get_effect_prop(char)
+        raw = effect_prop * power.percent + power.value
+
+        if is_super and is_spread:
+            # 技能同时写星超导/星扩散：取更高基础系数（满层超导 2 > 直伤扩散 1）
+            base_k = max(
+                self._stellar_superconduct_base_k(stacks=13),
+                1.0,
+            )
+        elif is_super:
+            # 星超导直伤：满层基础系数 2
+            base_k = self._stellar_superconduct_base_k(stacks=13)
+        elif is_spread:
+            # 星扩散直伤基础倍率 = 1（玉衡杯截图）
+            base_k = 1.0
+        else:
+            # 泛「星烁」：按超导满层
+            base_k = self._stellar_superconduct_base_k(stacks=13)
+
+        core = raw * base_k * (1 + base_bonus) * em_factor * base_area_mul + feather
+
+        dmg_type = getattr(Element, char.char_element, Element.Cryo)
+        if is_spread:
+            # 直伤星扩散：冰/风随技能；默认角色元素，风系角色用风抗
+            if char.char_element == "Anemo":
+                dmg_type = Element.Anemo
+            else:
+                dmg_type = getattr(Element, char.char_element, Element.Cryo)
+        proof = await self.enemy.get_resist(dmg_type)
+
+        base_dmg = core * proof * (1 + elevate)
+        normal_dmg = base_dmg
+        avg_dmg = base_dmg * expected_mul
+        crit_hit = base_dmg * (1 + critdmg)
+
+        self.total_normal_dmg += normal_dmg
+        self.total_avg_dmg += avg_dmg
+        self.total_crit_dmg += crit_hit
+        return normal_dmg, avg_dmg, crit_hit
 
     async def get_heal(self, char: Character) -> Tuple[float, float, float]:
         # 获得治疗增加值

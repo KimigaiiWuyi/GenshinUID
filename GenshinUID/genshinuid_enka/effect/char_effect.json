@@ -272,24 +272,24 @@
         "70": ""
       },
       "fight_talent": {
-        "1": "moonExDmgBonus+1.5",
-        "2": "addHp+40;elementalMastery+0.35%hp;moonExDmgBonus+7",
-        "3": "moonExDmgBonus+1.5",
-        "4": "moonExDmgBonus+1.5",
-        "5": "moonExDmgBonus+1.5",
-        "6": "moonExDmgBonus+7;critDmg+80"
+        "1": "lunarElevate+1.5",
+        "2": "addHp+40;elementalMastery+0.35%hp;lunarElevate+7",
+        "3": "lunarElevate+1.5",
+        "4": "lunarElevate+1.5",
+        "5": "lunarElevate+1.5",
+        "6": "critDmg+80;lunarElevate+7"
       },
       "group_skill": {
         "50": "",
         "70": ""
       },
       "group_talent": {
-        "1": "moonExDmgBonus+1.5",
-        "2": "elementalMastery+0.35%hp;moonExDmgBonus+7",
-        "3": "moonExDmgBonus+1.5",
-        "4": "moonExDmgBonus+1.5",
-        "5": "moonExDmgBonus+1.5",
-        "6": "moonExDmgBonus+7;critDmg+80"
+        "1": "lunarElevate+1.5",
+        "2": "elementalMastery+0.35%hp;lunarElevate+7",
+        "3": "lunarElevate+1.5",
+        "4": "lunarElevate+1.5",
+        "5": "lunarElevate+1.5",
+        "6": "critDmg+80;lunarElevate+7"
       }
     }
   },
@@ -319,7 +319,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": "moonExDmgBonus+48"
+        "6": "lunarCrystallizeElevate+48"
       },
       "group_skill": {
         "50": "",
@@ -571,7 +571,7 @@
         "3": "",
         "4": "DendroResist+-20",
         "5": "",
-        "6": ""
+        "6": "lunarBloomElevate+15"
       },
       "group_skill": {
         "50": "",
@@ -609,11 +609,11 @@
       },
       "fight_talent": {
         "1": "",
-        "2": "",
+        "2": "lunarBloomDmgBonus+40",
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "lunarBloomElevate+25"
       },
       "group_skill": {
         "50": "",
@@ -621,11 +621,11 @@
       },
       "group_talent": {
         "1": "",
-        "2": "",
+        "2": "lunarBloomDmgBonus+40",
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "lunarBloomElevate+25"
       }
     }
   },
@@ -655,7 +655,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "lunarElectroDmgBonus+35;lunarBloomDmgBonus+35;a+35"
       },
       "group_skill": {
         "50": "",
@@ -667,7 +667,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "lunarElectroDmgBonus+35;lunarBloomDmgBonus+35;a+35"
       }
     }
   },
@@ -697,7 +697,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "lunarElectroElevate+45"
       },
       "group_skill": {
         "50": "",
@@ -709,7 +709,7 @@
         "3": "",
         "4": "",
         "5": "",
-        "6": ""
+        "6": "lunarElectroElevate+10"
       }
     }
   },
@@ -5246,6 +5246,90 @@
         "4": "",
         "5": "",
         "6": "dmgBonus+12"
+      }
+    }
+  },
+  "阿罗夏": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
+  },
+  "奥黛塔": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "stellarElevate+45"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "stellarElevate+25"
       }
     }
   }

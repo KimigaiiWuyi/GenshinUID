@@ -64,12 +64,18 @@ extra = {
     "莫娜": {"A重击伤害": "蒸发", "Q泡影破裂伤害": "蒸发"},
     "迪卢克": {"Q斩击伤害": "蒸发"},
     "芭芭拉": {"A重击伤害": "蒸发"},
-    "七七": {"Q技能伤害": "融化"},
+    "七七": {
+        "Q技能伤害": "融化",
+        "Q伤害": ["融化", "星超导"],
+        "E伤害": "星超导",
+        "E寒病鬼差伤害": "星超导",
+        "E寒病鬼差协同攻击伤害": "星超导",
+    },
     "八重神子": {
-        "Q伤害": "超激化",
-        "Q天狐霆雷伤害": "超激化",
-        "E杀生樱伤害·叁阶": "超激化",
-        "E杀生樱伤害·肆阶": "超激化",
+        "Q伤害": ["超激化", "星超导"],
+        "Q天狐霆雷伤害": ["超激化", "星超导"],
+        "E杀生樱伤害·叁阶": ["超激化", "星超导"],
+        "E杀生樱伤害·肆阶": ["超激化", "星超导"],
     },
     "菲谢尔": {"E奥兹攻击伤害": "超激化"},
     "久岐忍": {"Q单次伤害": "超激化"},
@@ -88,7 +94,7 @@ extra = {
         "Q连斩伤害": "超激化*2",
         "Q最后一击伤害": "超激化",
     },
-    "北斗": {"Q闪雷伤害": "超激化"},
+    "北斗": {"Q闪雷伤害": ["超激化", "星超导"], "E基础伤害": "星超导"},
     "赛诺": {
         "E冥祭伤害": "超激化",
         "Q一段伤害": "超激化",
@@ -114,6 +120,81 @@ extra = {
     },
     "娜维娅": {
         "E玫瑰晶弹基础伤害": ["3层", "6层"],
+    },
+    # 星烁：星超导 / 星扩散（直伤星烁公式）
+    "桑多涅": {
+        "A重击冷凝射线伤害": ["星超导", "星扩散"],
+        "E棱晶弹伤害": ["星超导", "星扩散"],
+        "Q聚能光束伤害": ["星超导", "星扩散"],
+        "Q轰炸伤害": ["星超导", "星扩散"],
+    },
+    "奥黛塔": {
+        "E技能伤害": ["星超导", "星扩散"],
+        "E破晓终奏持续伤害": ["星超导", "星扩散"],
+        "E拂羽舞步伤害": ["星超导", "星扩散"],
+        "E旋翼舞步伤害": ["星超导", "星扩散"],
+        "Q斩击伤害": ["星超导", "星扩散"],
+        "Q斩击最终段伤害": ["星超导", "星扩散"],
+    },
+    "梦见月瑞希": {
+        "A扩散伤害": "星扩散",
+        "E伤害": "星扩散",
+        "E持续攻击伤害": "星扩散",
+        "Q伤害": "星扩散",
+        "Q梦念冲击波伤害": "星扩散",
+    },
+    # 月曜：月感电 / 月绽放 / 月结晶
+    "菲林斯": {
+        "E一段伤害": "月感电",
+        "E重击伤害": "月感电",
+        "E北国枪阵伤害 ": "月感电",
+        "E北国枪阵伤害": "月感电",
+        "Q初始伤害": "月感电",
+        "Q雷霆交响伤害": "月感电",
+        "Q雷霆交响额外伤害": "月感电",
+    },
+    "伊涅芙": {
+        "E伤害": "月感电",
+        "E薇尔琪塔放电伤害": "月感电",
+        "Q伤害": "月感电",
+    },
+    "哥伦比娅": {
+        # 已有独立月感电/月绽放/月结晶条目，再挂通用变体
+        "E伤害": ["月感电", "月绽放", "月结晶"],
+        "E引力涟漪·持续伤害": ["月感电", "月绽放", "月结晶"],
+        "Q伤害": ["月感电", "月绽放", "月结晶"],
+        "A月露涤荡伤害": ["月感电", "月绽放", "月结晶"],
+    },
+    "爱诺": {
+        "E一段伤害": ["月感电", "月绽放", "月结晶"],
+        "Q水弹伤害": ["月感电", "月绽放", "月结晶"],
+    },
+    "奈芙尔": {
+        "E伤害": "月绽放",
+        "E幻戏自身一段伤害": "月绽放",
+        "Q一段伤害": "月绽放",
+    },
+    "菈乌玛": {
+        "E点按伤害": "月绽放",
+        "E长按一段伤害": "月绽放",
+        "E霜林圣域攻击伤害": "月绽放",
+        "A唤灵之祷伤害": "月绽放",
+    },
+    "兹白": {
+        "E月转时隙一段伤害": "月结晶",
+        "E月转时隙重击伤害": "月结晶",
+        "E灵驹飞踏第一段伤害": "月结晶",
+        "Q第一段伤害": "月结晶",
+    },
+    "叶洛亚": {
+        "E点按伤害": "月结晶",
+        "E长按伤害": "月结晶",
+        "Q伤害": "月结晶",
+    },
+    "莉奈娅": {
+        "E露米捶捶乱打伤害": "月结晶",
+        "E露米加力重锤伤害": "月结晶",
+        "E露米百万吨重锤伤害": "月结晶",
     },
 }
 template = {"A重击伤害": {"name": "A重击伤害", "type": "", "plus": 1, "value": []}}
@@ -309,6 +390,26 @@ def find_tag(labels: List, index: int, char: str, parameters: dict) -> dict:
     return result
 
 
+# 旅行者必须带元素后缀，裸 ID（10000005/10000007）无完整 talent
+TRAVELER_ELEMENT_IDS = {
+    "旅行者(风)": "10000005-anemo",
+    "旅行者(雷)": "10000005-electro",
+    "旅行者(岩)": "10000005-geo",
+    "旅行者(草)": "10000005-dendro",
+    "旅行者(火)": "10000005-pyro",
+    "旅行者(水)": "10000005-hydro",
+    "旅行者(冰)": "10000005-cryo",
+}
+
+# 映射表里的旅行者裸名 / 占位 ID，直接跳过
+TRAVELER_SKIP_IDS = {
+    "10000005",
+    "10000007",
+    "10000134",
+    "10000135",
+}
+
+
 async def main():
     with open(
         str(Path(__file__).parents[1] / "genshinuid_enka" / "effect" / "char_action.json"),
@@ -317,51 +418,39 @@ async def main():
     ) as file:
         char_action = json.load(file)
 
-    for char_id in avatarId2Name:
-        char_list.append(avatarId2Name[char_id])
-    char_list.extend(
-        [
-            "旅行者(风)",
-            "旅行者(雷)",
-            "旅行者(岩)",
-            "旅行者(草)",
-            "旅行者(火)",
-            "旅行者(水)",
-        ]
-    )
+    seen_names = set()
+    for char_id, name in avatarId2Name.items():
+        # 跳过旅行者裸名（无元素），避免 convert 时报缺 talent
+        if str(char_id) in TRAVELER_SKIP_IDS or name == "旅行者":
+            continue
+        if name in seen_names:
+            continue
+        seen_names.add(name)
+        char_list.append(name)
+
+    # 旅行者按元素展开（含 7.0 冰主）
+    for tname in TRAVELER_ELEMENT_IDS:
+        if tname not in char_list:
+            char_list.append(tname)
+
     for char in char_list:
         print(char)
-        """
-        talent_data = httpx.get(
-            f'https://info.minigg.cn/talents?query={char}'
-        ).json()
-        if 'retcode' in talent_data:
-        """
-        if char == "旅行者(风)":
-            char_id = "10000005-anemo"
-        elif char == "旅行者(雷)":
-            char_id = "10000005-electro"
-        elif char == "旅行者(岩)":
-            char_id = "10000005-geo"
-        elif char == "旅行者(草)":
-            char_id = "10000005-dendro"
-        elif char == "旅行者(火)":
-            char_id = "10000005-pyro"
-        elif char == "旅行者(水)":
-            char_id = "10000005-hydro"
-        elif char == "旅行者(冰)":
-            char_id = "10000005-cryo"
+        if char in TRAVELER_ELEMENT_IDS:
+            char_id = TRAVELER_ELEMENT_IDS[char]
         else:
             for _id in avatarId2Name:
-                if avatarId2Name[_id] == char:
-                    char_id = _id
+                if avatarId2Name[_id] == char and str(_id) not in TRAVELER_SKIP_IDS:
+                    char_id = str(_id)
                     break
             else:
+                print(f"  跳过：未找到 ID ({char})")
                 continue
+
+        # 纯数字 ID 过滤测试号；带 -anemo/-cryo 的旅行者保留
         try:
-            if int(char_id) >= 11000000:
+            if "-" not in str(char_id) and int(char_id) >= 11000000:
                 continue
-        except:  # noqa: E722
+        except ValueError:
             pass
 
         try:
@@ -370,19 +459,29 @@ async def main():
             import traceback
 
             traceback.print_exc()
-            print(e)
+            print(f"  天赋转换失败 {char_id}: {e}")
             continue
 
         if talent_data is None:
-            print("未找到角色天赋")
+            print(f"  未找到角色天赋 ({char_id})")
             continue
+
         result = {}
+        missing = False
         for i in range(1, 4):
-            skill = talent_data["combat{}".format(str(i))]
+            key = f"combat{i}"
+            if key not in talent_data:
+                print(f"  缺少 {key}，跳过 {char}")
+                missing = True
+                break
+            skill = talent_data[key]
             labels = skill["attributes"]["labels"]
             parameters = skill["attributes"]["parameters"]
             result = dict(result, **find_tag(labels, i, char, parameters))
+        if missing:
+            continue
         char_action[char] = result
+        print(f"  OK {char_id} -> {len(result)} skills")
 
     with open(
         str(Path(__file__).parents[1] / "genshinuid_enka" / "effect" / "char_action.json"),

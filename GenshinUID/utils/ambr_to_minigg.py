@@ -1,6 +1,7 @@
 import re
 import json
 from typing import List, Union, Optional, TypedDict, cast
+from pathlib import Path
 
 import aiofiles
 
@@ -237,29 +238,81 @@ async def convert_ambr_to_minigg(char_id: Union[str, int], element: Optional[str
     return await convert_exist_data_to_char(char_id, element)
 
 
+async def _load_local_char_raw(char_id: Union[str, int]) -> Optional[dict]:
+    """优先读本地角色详情：resource/char_data → tools/gs_data/char。"""
+    cid = str(char_id)
+    candidates = [
+        CHAR_DATA_PATH / f"{cid}.json",
+        Path(__file__).resolve().parents[1] / "tools" / "gs_data" / "char" / f"{cid}.json",
+    ]
+    for path in candidates:
+        if not path.exists():
+            continue
+        try:
+            async with aiofiles.open(path, "r", encoding="utf-8") as f:
+                text = await f.read()
+            if not text.strip() or text.strip() == "null":
+                continue
+            data = json.loads(text)
+            if isinstance(data, dict) and data.get("talent"):
+                return data
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"[AmbrData] 本地角色数据不可用 {path}: {e}")
+    return None
+
+
 async def convert_ambr_to_talent(
     char_id: Union[str, int],
 ) -> Optional[CharacterTalents]:
-    raw_data = await get_ambr_char_data(char_id)
+    """
+    将 ambr/yatta 角色详情转为 combat1/2/3 天赋倍率。
+    旅行者必须带元素后缀，如 10000005-cryo / 10000005-anemo；
+    裸 ID 10000005/10000007 无完整 talent，会返回 None。
+    """
+    cid = str(char_id)
+    raw_data = await _load_local_char_raw(cid)
     if raw_data is None:
-        return
-    talent_data = raw_data["talent"]
+        raw_data = await get_ambr_char_data(cid)
+    if raw_data is None:
+        logger.warning(f"[AmbrData] 未找到角色数据: {cid}")
+        return None
+
+    if not isinstance(raw_data, dict):
+        return None
+
+    talent_data = raw_data.get("talent")
+    if not talent_data or not isinstance(talent_data, dict):
+        # 旅行者无元素后缀、或未实装元素会落到这里
+        logger.warning(f"[AmbrData] 角色 {cid} 无 talent 字段（旅行者请使用 10000005-cryo 等形式）")
+        return None
+
     result = {}
-    if "7" in talent_data and char_id not in ["10000111", "10000110"]:
-        num = ["0", "1", "4"]
+    # 部分角色（含部分旅行者元素）天赋 key 布局不同：有 7 用 0/1/4，否则 0/1/3
+    if "7" in talent_data and cid not in ["10000111", "10000110"]:
+        skill_keys = ["0", "1", "4"]
     else:
-        num = ["0", "1", "3"]
-    for index, i in enumerate(num):
+        skill_keys = ["0", "1", "3"]
+
+    for index, i in enumerate(skill_keys):
+        if i not in talent_data:
+            logger.warning(f"[AmbrData] 角色 {cid} 缺少天赋 key={i}，跳过 combat{index + 1}")
+            continue
+        skill = talent_data[i]
+        promote = skill.get("promote") or {}
+        if "1" not in promote and 1 not in promote:
+            logger.warning(f"[AmbrData] 角色 {cid} 天赋 {i} 无 promote，跳过")
+            continue
+        p1 = promote.get("1") or promote.get(1) or {}
         result[f"combat{index + 1}"] = {
-            "name": talent_data[i]["name"],
-            "info": talent_data[i]["description"],
+            "name": skill.get("name", ""),
+            "info": skill.get("description", ""),
             "attributes": {
                 "labels": [],
                 "parameters": {},
             },
         }
         label_str = ""
-        for label in talent_data[i]["promote"]["1"]["description"]:
+        for label in p1.get("description") or []:
             if label and isinstance(label, str):
                 label_str += label
                 result[f"combat{index + 1}"]["attributes"]["labels"].append(label)
@@ -279,10 +332,17 @@ async def convert_ambr_to_talent(
         new_para_list = [f"param{i}" for i in new_nums]
 
         for ig, para in enumerate(new_para_list):
-            for level in talent_data[i]["promote"]:
+            for level in promote:
                 if para not in result[f"combat{index + 1}"]["attributes"]["parameters"]:
                     result[f"combat{index + 1}"]["attributes"]["parameters"][para] = []
-                result[f"combat{index + 1}"]["attributes"]["parameters"][para].append(
-                    talent_data[i]["promote"][level]["params"][ig]
-                )
+                params = (promote[level] or {}).get("params") or []
+                if ig < len(params):
+                    result[f"combat{index + 1}"]["attributes"]["parameters"][para].append(params[ig])
+                else:
+                    result[f"combat{index + 1}"]["attributes"]["parameters"][para].append(0.0)
+
+    if not result or any(f"combat{i}" not in result for i in (1, 2, 3)):
+        logger.warning(f"[AmbrData] 角色 {cid} 天赋 combat 不完整: {list(result.keys())}")
+        if not result:
+            return None
     return cast(CharacterTalents, result)

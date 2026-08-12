@@ -2,7 +2,7 @@ import json
 import shutil
 import asyncio
 from copy import deepcopy
-from typing import Dict, Optional
+from typing import Any, Dict, List, Optional
 from datetime import datetime, timedelta
 
 import aiofiles
@@ -11,10 +11,15 @@ from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from ..utils.mys_api import mys_api
-from .check_gachalogs import check_gachalogs
+from .check_gachalogs import (
+    check_gachalogs,
+    merge_gacha_list,
+    upsert_gacha_item,
+    gacha_list_contains,
+)
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
-NULL_GACHA_LOG = {
+NULL_GACHA_LOG: Dict[str, List[Dict[str, Any]]] = {
     "新手祈愿": [],
     "常驻祈愿": [],
     "角色祈愿": [],
@@ -38,11 +43,19 @@ gacha_type_meta_data = {
     "集录祈愿": ["500"],
 }
 
-full_lock = []
-lock = []
+full_lock: List[str] = []
+lock: List[str] = []
 
 
-async def get_full_gachalog(uid: str):
+def _to_record_list(items: List[Any]) -> List[Dict[str, Any]]:
+    records: List[Dict[str, Any]] = []
+    for item in items:
+        if isinstance(item, dict):
+            records.append(dict(item))
+    return records
+
+
+async def get_full_gachalog(uid: str) -> str:
     if uid in full_lock:
         return "当前正在全量刷新抽卡记录中, 请勿重试!请稍后再试...!"
 
@@ -51,17 +64,15 @@ async def get_full_gachalog(uid: str):
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
 
-    # 获取当前时间
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H-%M-%S")
-    # 抽卡记录json路径
     gachalogs_path = path / "gacha_logs.json"
     if gachalogs_path.exists():
         gacha_log_backup_path = path / f"gacha_logs_{current_time}.json"
         shutil.copy(gachalogs_path, gacha_log_backup_path)
         logger.info(t("log.genshinuid.gacha_log_backup_path_b0e4e5", gacha_log_backup_path=gacha_log_backup_path))
         async with aiofiles.open(gachalogs_path, "r", encoding="UTF-8") as f:
-            gachalogs_history: Dict = json.loads(await f.read())
+            gachalogs_history: Dict[str, Any] = json.loads(await f.read())
         gachalogs_history = remove_gachalog(gachalogs_history)
         async with aiofiles.open(gachalogs_path, "w", encoding="UTF-8") as f:
             await f.write(
@@ -77,7 +88,7 @@ async def get_full_gachalog(uid: str):
     return im
 
 
-def remove_gachalog(gachalog: Dict, month: int = 5):
+def remove_gachalog(gachalog: Dict[str, Any], month: int = 5) -> Dict[str, Any]:
     now = datetime.now()
     threshold = now - timedelta(days=month * 30)
 
@@ -100,8 +111,12 @@ def remove_gachalog(gachalog: Dict, month: int = 5):
     return gachalog
 
 
-async def get_new_gachalog(uid: str, full_data: Dict, is_force: bool):
-    temp = []
+async def get_new_gachalog(
+    uid: str,
+    full_data: Dict[str, List[Dict[str, Any]]],
+    is_force: bool,
+) -> Dict[str, List[Dict[str, Any]]]:
+    temp: List[Dict[str, Any]] = []
     for gacha_name in gacha_type_meta_data:
         for gacha_type in gacha_type_meta_data[gacha_name]:
             end_id = "0"
@@ -115,40 +130,48 @@ async def get_new_gachalog(uid: str, full_data: Dict, is_force: bool):
                 await asyncio.sleep(0.9)
                 if isinstance(data, int):
                     return {}
-                data = data["list"]
-                if data == []:
+                data_list = _to_record_list(list(data["list"]))
+                if data_list == []:
                     break
-                end_id = data[-1]["id"]
+                end_id = str(data_list[-1]["id"])
 
                 if gacha_name not in full_data:
                     full_data[gacha_name] = []
 
-                data = await check_gachalogs(data)
+                records = await check_gachalogs(data_list)
+                for item in records:
+                    if "op_gacha_type" in item:
+                        del item["op_gacha_type"]
 
-                for item in data:
-                    item.pop("op_gacha_type", None)
-
-                if data[-1] in full_data[gacha_name] and not is_force:
-                    for item in data:
-                        if item not in full_data[gacha_name]:
+                # 到达已缓存区间：按预设 key/id 合并后停止，不按整 dict 判断
+                if gacha_list_contains(full_data[gacha_name], records[-1]) and not is_force:
+                    for item in records:
+                        if not gacha_list_contains(full_data[gacha_name], item):
                             temp.append(item)
+                        else:
+                            upsert_gacha_item(full_data[gacha_name], item)
                     full_data[gacha_name][0:0] = temp
                     temp = []
                     break
                 if len(full_data[gacha_name]) >= 1:
-                    if int(data[-1]["id"]) <= int(full_data[gacha_name][0]["id"]):
-                        full_data[gacha_name].extend(data)
+                    if int(records[-1]["id"]) <= int(full_data[gacha_name][0]["id"]):
+                        full_data[gacha_name].extend(records)
                     else:
-                        full_data[gacha_name][0:0] = data
+                        full_data[gacha_name][0:0] = records
                 else:
-                    full_data[gacha_name].extend(data)
+                    full_data[gacha_name].extend(records)
                 await asyncio.sleep(0.5)
-    for i in full_data:
-        full_data[i] = await check_gachalogs(full_data[i])
+    for pool_name in full_data:
+        checked = await check_gachalogs(full_data[pool_name])
+        full_data[pool_name] = merge_gacha_list(checked)
     return full_data
 
 
-async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bool = False) -> str:
+async def save_gachalogs(
+    uid: str,
+    raw_data: Optional[Dict[str, List[Dict[str, Any]]]] = None,
+    is_force: bool = False,
+) -> str:
     if uid in lock:
         return "当前正在刷新抽卡记录中, 请勿重试!请稍后再试...!"
     lock.append(uid)
@@ -156,18 +179,13 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
     if not path.exists():
         path.mkdir(parents=True, exist_ok=True)
 
-    # 获取当前时间
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d %H-%M-%S")
 
-    # 初始化最后保存的数据
-    result = {}
-
-    # 抽卡记录json路径
+    result: Dict[str, Any] = {}
     gachalogs_path = path / "gacha_logs.json"
 
-    # 如果有老的,准备合并, 先打开文件
-    gachalogs_history = {}
+    gachalogs_history: Dict[str, List[Dict[str, Any]]] = {}
 
     (
         old_normal_gacha_num,
@@ -177,42 +195,68 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
         old_new_gacha_num,
     ) = (0, 0, 0, 0, 0)
 
+    repaired_num = 0
+
     if gachalogs_path.exists():
         async with aiofiles.open(gachalogs_path, "r", encoding="UTF-8") as f:
-            gachalogs_history: Dict = json.loads(await f.read())
-        gachalogs_history = gachalogs_history["data"]
+            file_data: Dict[str, Any] = json.loads(await f.read())
+        history_data = file_data["data"]
+        if not isinstance(history_data, dict):
+            lock.remove(uid)
+            return "抽卡记录文件格式错误，请检查本地 gacha_logs.json！"
+
+        # json 反序列化为任意 dict，运行时再收敛为记录列表
+        gachalogs_history = {}
+        for pool_name in all_gacha_type_name:
+            pool_items = history_data[pool_name] if pool_name in history_data else []
+            if isinstance(pool_items, list):
+                gachalogs_history[pool_name] = _to_record_list(pool_items)
+            else:
+                gachalogs_history[pool_name] = []
+
+        # 先自愈本地重复，再统计旧数量，避免修复后显示负数新增
+        for i in all_gacha_type_name:
+            before = len(gachalogs_history[i])
+            for item in gachalogs_history[i]:
+                if "op_gacha_type" in item:
+                    del item["op_gacha_type"]
+            gachalogs_history[i] = merge_gacha_list(await check_gachalogs(gachalogs_history[i]))
+            repaired_num += before - len(gachalogs_history[i])
+
         old_normal_gacha_num = len(gachalogs_history["常驻祈愿"])
         old_char_gacha_num = len(gachalogs_history["角色祈愿"])
         old_weapon_gacha_num = len(gachalogs_history["武器祈愿"])
-        if "集录祈愿" in gachalogs_history:
-            old_mix_gacha_num = len(gachalogs_history["集录祈愿"])
-        else:
-            gachalogs_history["集录祈愿"] = []
-            old_mix_gacha_num = 0
-        if "新手祈愿" in gachalogs_history:
-            old_new_gacha_num = len(gachalogs_history["新手祈愿"])
-        else:
-            gachalogs_history["新手祈愿"] = []
-            old_new_gacha_num = 0
+        old_mix_gacha_num = len(gachalogs_history["集录祈愿"])
+        old_new_gacha_num = len(gachalogs_history["新手祈愿"])
     else:
         gachalogs_history = deepcopy(NULL_GACHA_LOG)
 
-    for i in all_gacha_type_name:
-        for item in gachalogs_history[i]:
-            item.pop("op_gacha_type", None)
-        gachalogs_history[i] = await check_gachalogs(gachalogs_history[i])
-
-    # 获取新抽卡记录
+    api_failed = False
+    # API 失败时只回写自愈快照，避免拉页中间态落盘
+    healed_snapshot = deepcopy(gachalogs_history) if repaired_num > 0 else None
     if raw_data is None:
         raw_data = await get_new_gachalog(uid, gachalogs_history, is_force)
+        if raw_data == {} or not raw_data:
+            api_failed = True
+            if healed_snapshot is not None:
+                raw_data = healed_snapshot
+            else:
+                lock.remove(uid)
+                return "🔔 你还没有绑定过Stoken哦~\n📎 请使用扫码登陆命令获取Stoken\n🚩 或者查看帮助文档获取绑定方式"
     else:
         new_data = deepcopy(NULL_GACHA_LOG)
         if gachalogs_history:
             for i in all_gacha_type_name:
+                if i not in raw_data:
+                    raw_data[i] = []
                 for item in raw_data[i]:
                     if "op_gacha_type" in item:
                         del item["op_gacha_type"]
-                    if item not in gachalogs_history[i] and item not in new_data[i]:
+                    if gacha_list_contains(gachalogs_history[i], item):
+                        upsert_gacha_item(gachalogs_history[i], item)
+                    elif gacha_list_contains(new_data[i], item):
+                        upsert_gacha_item(new_data[i], item)
+                    else:
                         new_data[i].append(item)
             raw_data = new_data
             for i in all_gacha_type_name:
@@ -227,12 +271,10 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
     if "新手祈愿" not in raw_data:
         raw_data["新手祈愿"] = []
 
-    temp_data = deepcopy(NULL_GACHA_LOG)
     for i in all_gacha_type_name:
-        for item in raw_data[i]:
-            if item not in temp_data[i]:
-                temp_data[i].append(item)
-    raw_data = temp_data
+        if i not in raw_data:
+            raw_data[i] = []
+        raw_data[i] = merge_gacha_list(raw_data[i])
 
     result["uid"] = uid
     result["data_time"] = current_time
@@ -246,7 +288,6 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
             raw_data[i].sort(key=lambda x: -int(x["id"]))
     result["data"] = raw_data
 
-    # 计算数据
     normal_add = result["normal_gacha_num"] - old_normal_gacha_num
     char_add = result["char_gacha_num"] - old_char_gacha_num
     weapon_add = result["weapon_gacha_num"] - old_weapon_gacha_num
@@ -254,13 +295,14 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
     new_add = result["new_gacha_num"] - old_new_gacha_num
     all_add = normal_add + char_add + weapon_add
 
-    # 保存文件
     with open(gachalogs_path, "w", encoding="UTF-8") as file:
         json.dump(result, file, ensure_ascii=False)
 
-    # 回复文字
-    if all_add == 0:
-        im = f"UID{uid}没有新增祈愿数据!"
+    repair_hint = f"（已自动修复{repaired_num}条重复记录）" if repaired_num > 0 else ""
+    if api_failed:
+        im = f"UID{uid}刷新抽卡记录失败，请检查Stoken/网络后重试。{repair_hint}"
+    elif all_add == 0:
+        im = f"UID{uid}没有新增祈愿数据!{repair_hint}"
     else:
         im = (
             f"UID{uid}数据更新成功！"
@@ -270,5 +312,7 @@ async def save_gachalogs(uid: str, raw_data: Optional[dict] = None, is_force: bo
         )
         if new_add > 0:
             im += f"\n新手祈愿{new_add}个！"
+        if repair_hint:
+            im += f"\n{repair_hint}"
     lock.remove(uid)
     return im

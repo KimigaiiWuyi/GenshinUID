@@ -1,68 +1,57 @@
-[tool.black]
-line-length = 79
-target-version = ["py38", "py39", "py310"]
-include = '\.pyi?$'
-skip-string-normalization = true
-extend-exclude = '''
-'''
+[project]
+name = "nonebot-plugin-genshinuid"
+version = "6.0.0"
+description = "支持OneBot(QQ)、OneBotV12、QQ频道、Telegram（电报）、FeiShu（飞书）、Discord的全功能NoneBot2原神插件"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+requires-python = ">=3.10,<4"
+authors = [
+    { name = "KimigaiiWuyi", email = "444835641@qq.com" },
+]
+dependencies = [
+    "nonebot2>=2.0.0b4",
+    "pillow>=9.2.0",
+    "msgspec>=0.13.1",
+    "aiofiles>=23.1.0",
+    "websockets>=11.0.1",
+    "nonebot-plugin-apscheduler>=0.2.0",
+    "aiohttp>=3.9.3",
+    "nonebot-plugin-alconna>=0.57.0",
+]
 
-[tool.isort]
-profile = "black"
-line_length = 79
-length_sort = true
-skip_gitignore = true
-force_sort_within_sections = true
-extra_standard_library = ["typing_extensions"]
+[project.urls]
+Homepage = "https://github.com/KimigaiiWuyi/GenshinUID/tree/v4.0-nonebot2"
+Repository = "https://github.com/KimigaiiWuyi/GenshinUID"
+Documentation = "https://docs.gsuid.gbots.work/#/"
+"Bug Tracker" = "https://github.com/KimigaiiWuyi/GenshinUID/issues"
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.14.7",
+    "pre-commit>=2.21.0",
+    "pyright>=1.1.350",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["GenshinUID"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 
-[build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry]
-name = "nonebot-plugin-genshinuid"
-version = "5.0.0"
-description = "支持OneBot(QQ)、OneBotV12、QQ频道、Telegram（电报）、FeiShu（飞书）、Discord的全功能NoneBot2原神插件"
-authors = ["KimigaiiWuyi <444835641@qq.com>"]
-license = "GPL-3.0-or-later"
-readme = "README.md"
-homepage = "https://github.com/KimigaiiWuyi/GenshinUID/tree/v4.0-nonebot2"
-repository = "https://github.com/KimigaiiWuyi/GenshinUID"
-documentation = "https://docs.gsuid.gbots.work/#/"
-packages = [
-    { include = "GenshinUID" }
-]
-exclude = []
-
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/KimigaiiWuyi/GenshinUID/issues"
-
-[tool.poetry.dependencies]
-python = ">=3.8.1,<4"
-nonebot2 = ">=2.0.0b4"
-pillow = ">=9.2.0"
-msgspec = ">=0.13.1"
-aiofiles = ">=23.1.0"
-websockets = ">=11.0.1"
-nonebot-plugin-apscheduler = ">=0.2.0"
-aiohttp = "^3.9.3"
-
-[[tool.poetry.source]]
-name = "USTC"
-url = "https://pypi.mirrors.ustc.edu.cn/simple"
-
-
-[tool.poetry.group.dev.dependencies]
-flake8 = ">=6.0.0"
-black = ">=22.12.0"
-isort = ">=5.11.5"
-pre-commit = ">=2.21.0"
-pycln = ">=2.1.2"
-
 [tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+include = ["GenshinUID"]
+exclude = ["dist", "docs"]
 disableBytesTypePromotions = false
+reportMissingTypeStubs = false
+reportUnknownMemberType = false
+reportUnknownArgumentType = false
+reportUnknownVariableType = false
 
 [tool.basedpyright]
 deprecateTypingAliases = false

@@ -6,24 +6,29 @@ exclude = [
     "__pycache__",
     "build",
     "dist",
+    "pyproject.toml",
 ]
 
 [lint]
 select = ["E", "F", "I", "W"]
 ignore = []
 
+[lint.per-file-ignores]
+# nonebot require() 必须在导入插件模块之前执行
+"GenshinUID/*.py" = ["E402"]
+
 [lint.isort]
 force-sort-within-sections = false
 combine-as-imports = true
 length-sort = true
-known-first-party = ["gsuid_core"]
+known-first-party = ["GenshinUID"]
 extra-standard-library = ["typing_extensions"]
 section-order = [
     "future",
     "standard-library",
     "third-party",
     "first-party",
-    "local-folder"
+    "local-folder",
 ]
 
 [format]
@@ -32,3 +37,4 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
 docstring-code-format = true
+

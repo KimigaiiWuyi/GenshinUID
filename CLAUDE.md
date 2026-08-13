@@ -23,19 +23,18 @@ or wherever `gsuid_core_path` config points.
 
 ## Commands
 
-This project uses **Poetry** and **pre-commit**. There is no application entrypoint here — the code
-runs as a plugin inside a host NoneBot2 bot.
+This project uses **PEP 621 `pyproject.toml`** and **pre-commit**. There is no application
+entrypoint here — the code runs as a plugin inside a host NoneBot2 bot.
 
-- Install deps: `poetry install`
-- Build distributables: `poetry build` (outputs to `dist/`)
+- Install (editable): `pip install -e .`
+- Install with lint tools: `pip install -e ".[dev]"`
+- Build distributables: `python -m build` (outputs to `dist/`)
 - Lint + format everything: `pre-commit run --all-files`
-- Format only (matches CI): `poetry run black .` then `poetry run isort .`
-- `requirements.txt` is **generated** by the `poetry-export` pre-commit hook — never hand-edit it;
-  change `pyproject.toml` and let the hook regenerate it.
+- Format only (matches CI / gsuid_core): `ruff check --fix .` then `ruff format .`
 
-Formatting is strict: **black with line-length 79**, isort `profile=black` + `length_sort=true`.
-`pyproject.toml` configures pytest (`asyncio_mode = "auto"`), but there is currently **no test
-suite** in this branch.
+Formatting is strict: **ruff** with `ruff.toml` aligned to gsuid_core (`line-length = 120`,
+select `E,F,I,W`, isort `length_sort`). `pyproject.toml` configures pytest
+(`asyncio_mode = "auto"`), but there is currently **no test suite** in this branch.
 
 ## Architecture
 
@@ -59,8 +58,10 @@ Four conceptual layers, mapped to files:
 ### The unified `Message` protocol
 
 Every message is a list of `Message(type, data)` segments. Common `type` values: `text`, `image`,
-`file`, `at`, `reply`, `node` (forward msg), `record` (audio), `video`, `markdown`, `buttons`,
-`group`. Media `data` is a string carrying a scheme prefix that the `*_send` functions branch on:
+`file`, `at`, `reply` (quoted text, ingest), `reply_id` (quoted message id), `node` (forward msg),
+`record` (audio), `video`, `markdown`, `buttons`, `group`. Quoted images are always forwarded to
+core as extra `image` segments. On the send path, both `reply` and `reply_id` become a quote
+(core still uses `reply` as a message id). Media `data` is a string carrying a scheme prefix:
 
 - `base64://<...>` — raw bytes, base64-encoded (preferred for uploads).
 - `link://<url>` — a remote URL to fetch/forward.
@@ -91,10 +92,10 @@ follow this pattern.
 
 ### Configuration
 
-All config is read from the host bot's NoneBot `driver.config` via `hasattr(...)` guards (see top of
-`client.py`, `__init__.py`, `path.py`). Keys: `gsuid_core_host` (default `localhost`),
-`gsuid_core_port` (`8765`), `gsuid_core_ws_token`, `gsuid_core_botid`, `gsuid_core_repeat` (enables a
-10s reconnect cron), `gsuid_core_reply_img`, `gsuid_core_path`. The WS URL is
+All config is read from NoneBot `PluginConfig` (`GenshinUID/config.py`). Keys: `gsuid_core_host`
+(default `localhost`), `gsuid_core_port` (`8765`), `gsuid_core_ws_token`, `gsuid_core_botid`,
+`gsuid_core_repeat` (enables a 10s reconnect cron), `gsuid_core_path`. `gsuid_core_reply_img` is
+kept for host-config compatibility but no longer gates quoted-image upload. The WS URL is
 `ws://{host}:{port}/ws/{BOT_ID}[?token=...]`.
 
 ### Permission levels (`user_pm`)

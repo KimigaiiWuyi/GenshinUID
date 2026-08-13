@@ -29,8 +29,7 @@ core 侧已支持 `await bot.send(msg, wait_recall=True) -> Optional[str]`，返
 - **上行（adapter → core）**：复用 `MessageReceive` 承载回执，`content` 仅含单段：
 
   ```python
-  Message(type='recall_message_id',
-          data={'echo': '<原样回传>', 'id': '<平台出站msg_id>'})
+  Message(type="recall_message_id", data={"echo": "<原样回传>", "id": "<平台出站msg_id>"})
   ```
 
 ### 1.3 实现要点

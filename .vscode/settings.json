@@ -16,5 +16,6 @@
   "basedpyright.analysis.extraPaths": [
     "${workspaceFolder}/gsuid_core"
   ],
-  "python.analysis.typeCheckingMode": "off"
+  "python.analysis.typeCheckingMode": "off",
+  "ruff.exclude": ["pyproject.toml"]
 }

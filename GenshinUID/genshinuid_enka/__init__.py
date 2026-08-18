@@ -17,8 +17,8 @@ from .to_card import enka_to_card
 from .to_data import switch_api
 from .get_enka_img import draw_enka_img, get_full_char
 from ..utils.convert import get_uid
-from ..utils.mys_api import mys_api
 from ..utils.message import UID_HINT, GButton as Button
+from ..utils.mys_api import mys_api
 from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_info import draw_all_char_list
 from .draw_role_rank import draw_role_rank_img

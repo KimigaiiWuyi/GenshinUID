@@ -39,7 +39,7 @@ async def sign_at_night():
     """,
 )
 async def get_sign_func(bot: Bot, ev: Event):
-    logger.info("[原神] [签到]QQ号: {}".format(ev.user_id))
+    logger.info(t("log.genshinuid.signin_qq", user_id=ev.user_id))
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)

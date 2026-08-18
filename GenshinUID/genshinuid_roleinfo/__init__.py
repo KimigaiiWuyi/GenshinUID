@@ -94,9 +94,9 @@ async def send_charlist_info(bot: Bot, ev: Event):
 
     refresh_result = await refresh_all_char_cache(uid)
     if isinstance(refresh_result, list):
-        logger.info(f"[原神] [角色列表]已刷新 {len(refresh_result)} 个角色缓存")
+        logger.info(t("log.genshinuid.rolelist_refreshed", count=len(refresh_result)))
     elif refresh_result is not None:
-        logger.warning("[原神] [角色列表]用户 Cookie 无效或全角色缓存刷新失败")
+        logger.warning(t("log.genshinuid.rolelist_cookie_fail"))
 
     im = await draw_char_pic(uid)
     await bot.send_option(im, [[a, b, c], [btn_t, s, u], [v, x, y]])

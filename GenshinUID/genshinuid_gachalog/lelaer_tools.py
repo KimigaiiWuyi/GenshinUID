@@ -5,6 +5,7 @@ import httpx
 import aiofiles
 from urllib3 import encode_multipart_formdata
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.api.mys.api import GET_GACHA_LOG
 from gsuid_core.utils.error_reply import get_error_img
@@ -30,7 +31,7 @@ async def get_gachaurl(uid: str):
         f"&authkey={quote(authkey, 'utf-8')}"
         f"&game_biz=hk4e_cn&gacha_type=301&page=1&size=5&end_id=0"
     )
-    logger.info(url)
+    logger.info(t("log.genshinuid.lelaer_gacha_url", url=url))
     return url
 
 

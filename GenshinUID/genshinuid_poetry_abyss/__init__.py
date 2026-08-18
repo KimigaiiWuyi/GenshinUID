@@ -2,6 +2,7 @@ import re
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 
 from ..utils.convert import get_uid
@@ -41,11 +42,11 @@ async def send_poetry_abyss_info(bot: Bot, ev: Event):
     if name:
         return
 
-    await bot.logger.info("开始执行[幻想真境剧诗]")
+    await bot.logger.info(t("log.genshinuid.poetry_start"))
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info("[幻想真境剧诗]uid: {}".format(uid))
+    await bot.logger.info(t("log.genshinuid.poetry_uid", uid=uid))
 
     if "上期" in ev.command:
         active = 2

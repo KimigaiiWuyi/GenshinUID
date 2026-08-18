@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
@@ -23,6 +24,6 @@ async def get_sign_func(bot: Bot, ev: Event):
     try:
         codes = await get_code_msg()
     except Exception as e:
-        logger.opt(exception=e).error("获取前瞻兑换码失败")
+        logger.opt(exception=e).error(t("log.genshinuid.code_fetch_fail"))
         codes = "获取前瞻兑换码失败"
     await bot.send(codes)

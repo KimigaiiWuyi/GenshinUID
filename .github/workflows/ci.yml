@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - v4
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ruff
+        run: python -m pip install ruff==0.14.7
+
+      - name: Ruff check
+        run: python -m ruff check GenshinUID tests --exclude GenshinUID/tools
+
+      - name: Ruff format
+        run: python -m ruff format --check GenshinUID tests
+
+  logger-i18n:
+    name: Logger and locale integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pytest
+        run: python -m pip install pytest==9.0.2
+
+      - name: Check logger i18n and locales
+        run: python -m pytest tests/test_logger_i18n.py -p no:cacheprovider --tb=short

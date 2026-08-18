@@ -257,7 +257,7 @@ async def _load_local_char_raw(char_id: Union[str, int]) -> Optional[dict]:
             if isinstance(data, dict) and data.get("talent"):
                 return data
         except Exception as e:  # noqa: BLE001
-            logger.warning(f"[AmbrData] 本地角色数据不可用 {path}: {e}")
+            logger.warning(t("log.genshinuid.ambr_local_bad", path=path, e=e))
     return None
 
 
@@ -274,7 +274,7 @@ async def convert_ambr_to_talent(
     if raw_data is None:
         raw_data = await get_ambr_char_data(cid)
     if raw_data is None:
-        logger.warning(f"[AmbrData] 未找到角色数据: {cid}")
+        logger.warning(t("log.genshinuid.ambr_char_missing", cid=cid))
         return None
 
     if not isinstance(raw_data, dict):
@@ -283,7 +283,7 @@ async def convert_ambr_to_talent(
     talent_data = raw_data.get("talent")
     if not talent_data or not isinstance(talent_data, dict):
         # 旅行者无元素后缀、或未实装元素会落到这里
-        logger.warning(f"[AmbrData] 角色 {cid} 无 talent 字段（旅行者请使用 10000005-cryo 等形式）")
+        logger.warning(t("log.genshinuid.ambr_no_talent", cid=cid))
         return None
 
     result = {}
@@ -295,12 +295,12 @@ async def convert_ambr_to_talent(
 
     for index, i in enumerate(skill_keys):
         if i not in talent_data:
-            logger.warning(f"[AmbrData] 角色 {cid} 缺少天赋 key={i}，跳过 combat{index + 1}")
+            logger.warning(t("log.genshinuid.ambr_missing_key", cid=cid, key=i, index=index + 1))
             continue
         skill = talent_data[i]
         promote = skill.get("promote") or {}
         if "1" not in promote and 1 not in promote:
-            logger.warning(f"[AmbrData] 角色 {cid} 天赋 {i} 无 promote，跳过")
+            logger.warning(t("log.genshinuid.ambr_no_promote", cid=cid, talent=i))
             continue
         p1 = promote.get("1") or promote.get(1) or {}
         result[f"combat{index + 1}"] = {
@@ -342,7 +342,7 @@ async def convert_ambr_to_talent(
                     result[f"combat{index + 1}"]["attributes"]["parameters"][para].append(0.0)
 
     if not result or any(f"combat{i}" not in result for i in (1, 2, 3)):
-        logger.warning(f"[AmbrData] 角色 {cid} 天赋 combat 不完整: {list(result.keys())}")
+        logger.warning(t("log.genshinuid.ambr_combat_incomplete", cid=cid, keys=list(result.keys())))
         if not result:
             return None
     return cast(CharacterTalents, result)

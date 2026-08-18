@@ -269,7 +269,7 @@ async def send_original_pic(bot: Bot, ev: Event):
     if ev.reply:
         path = TEMP_PATH / f"{ev.reply}.jpg"
         if path.exists():
-            logger.info("[原图]访问图片: {}".format(path))
+            logger.info(t("log.genshinuid.enka_orig_pic", path=path))
             with open(path, "rb") as f:
                 await bot.send(f.read())
 
@@ -341,7 +341,7 @@ async def _get_char_info(bot: Bot, ev: Event, text: str):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info("[查询角色面板]uid: {}".format(uid))
+    logger.info(t("log.genshinuid.collection_panel_uid", uid=uid))
 
     im = await draw_enka_img(msg, uid, ev.image)
     return im
@@ -485,7 +485,7 @@ async def send_card_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info("[强制刷新]uid: {}".format(uid))
+    logger.info(t("log.genshinuid.enka_force_uid", uid=uid))
 
     is_force = "强制刷新" in ev.command
     if "mys" in ev.command:
@@ -497,7 +497,7 @@ async def send_card_info(bot: Bot, ev: Event):
         if is_force and owner_ck is not None:
             im = await mys_to_card(uid, force_refresh=True)
             if not isinstance(im, Tuple):
-                logger.info(f"从米游社获取数据失败，尝试从enka获取。{im}")
+                logger.info(t("log.genshinuid.enka_im_06dd12", im=im))
                 im = await enka_to_card(uid)
         elif EnableCharCardByMys:
             im = await mys_to_card(uid)

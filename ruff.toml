@@ -6,6 +6,7 @@ exclude = [
     "__pycache__",
     "build",
     "dist",
+    "GenshinUID/tools",
 ]
 
 [lint]

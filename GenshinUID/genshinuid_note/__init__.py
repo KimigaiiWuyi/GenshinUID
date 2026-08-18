@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 from gsuid_core.utils.database.models import GsBind
 
@@ -42,7 +43,7 @@ async def send_monthly_data(bot: Bot, ev: Event):
     """,
 )
 async def send_monthly_pic(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[每日信息]")
+    await bot.logger.info(t("log.genshinuid.note_start"))
     uid = await get_uid(bot, ev)
     if uid is None:
         return UID_HINT

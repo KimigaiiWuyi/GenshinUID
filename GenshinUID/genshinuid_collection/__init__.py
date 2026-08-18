@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 
 from ..utils.convert import get_uid
@@ -25,12 +26,12 @@ sv_ts = SV("查询探索")
     """,
 )
 async def send_cp_info(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[查询完成度信息]")
+    await bot.logger.info(t("log.genshinuid.collection_cp_start"))
 
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info("[查询角色面板]uid: {}".format(uid))
+    await bot.logger.info(t("log.genshinuid.collection_panel_uid", uid=uid))
 
     im = await draw_explore(uid)
     a = Button("🔍查询探索", "查询探索")
@@ -51,12 +52,12 @@ async def send_cp_info(bot: Bot, ev: Event):
     """,
 )
 async def send_collection_info(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[查询收集信息]")
+    await bot.logger.info(t("log.genshinuid.collection_sj_start"))
 
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info("[查询角色面板]uid: {}".format(uid))
+    await bot.logger.info(t("log.genshinuid.collection_panel_uid", uid=uid))
 
     im = await draw_collection_img(ev, uid)
     a = Button("🔍查询探索", "查询探索")
@@ -77,12 +78,12 @@ async def send_collection_info(bot: Bot, ev: Event):
     """,
 )
 async def send_explora_info(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[查询探索信息]")
+    await bot.logger.info(t("log.genshinuid.collection_ts_start"))
 
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info("[查询角色面板]uid: {}".format(uid))
+    await bot.logger.info(t("log.genshinuid.collection_panel_uid", uid=uid))
 
     im = await draw_explora_img(ev, uid)
     a = Button("🔍查询探索", "查询探索")

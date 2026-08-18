@@ -100,7 +100,7 @@ async def _draw_task_img(
 async def get_resin_img(bot_id: str, user_id: str):
     try:
         uid_list = await GsBind.get_uid_list_by_game(user_id, bot_id)
-        logger.info("[每日信息]UID: {}".format(uid_list))
+        logger.info(t("log.genshinuid.resin_pic_uid", uid_list=uid_list))
         if uid_list is None:
             return UID_HINT
         # 进行校验UID是否绑定CK
@@ -109,7 +109,7 @@ async def get_resin_img(bot_id: str, user_id: str):
             status = await GsUser.get_user_cookie_by_uid(uid)
             if status is not None:
                 useable_uid_list.append(uid)
-        logger.info("[每日信息]可用UID: {}".format(useable_uid_list))
+        logger.info(t("log.genshinuid.resin_pic_ok_uid", uid_list=useable_uid_list))
         if len(useable_uid_list) == 0:
             return "请先绑定一个可用CK & UID再来查询哦~"
         # 开始绘图任务

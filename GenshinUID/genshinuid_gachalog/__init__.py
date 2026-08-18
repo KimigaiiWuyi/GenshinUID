@@ -79,7 +79,7 @@ async def send_refresh_gacha_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     is_force = False
     if ev.command.startswith("强制"):
-        await bot.logger.info("[WARNING]本次为强制刷新")
+        await bot.logger.info(t("log.genshinuid.gacha_force_refresh"))
         is_force = True
     await bot.send(f"UID{uid}开始执行[刷新抽卡记录],需要一定时间...请勿重复触发！")
     im = await save_gachalogs(uid, None, is_force)

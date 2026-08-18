@@ -2,6 +2,7 @@ import asyncio
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 from gsuid_core.ai_core.trigger_bridge import ai_return
@@ -54,7 +55,7 @@ async def send_task_adv(bot: Bot, ev: Event):
     """,
 )
 async def send_meme_card(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[抽表情]")
+    await bot.logger.info(t("log.genshinuid.mys_meme_start"))
     await bot.send(await get_meme_img())
 
 
@@ -70,7 +71,7 @@ async def send_meme_card(bot: Bot, ev: Event):
     """,
 )
 async def send_lots_data(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[御神签]")
+    await bot.logger.info(t("log.genshinuid.mys_lots_start"))
     result = await get_lots_msg(ev.user_id)
     if isinstance(result, str):
         ai_return(result)

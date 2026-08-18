@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.database.models import GsBind
@@ -35,9 +36,9 @@ sv_user_help = SV("绑定帮助")
     """,
 )
 async def send_link_uid_msg(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[绑定/解绑用户信息]")
+    await bot.logger.info(t("log.genshinuid.user_bind_start"))
     qid = ev.user_id
-    await bot.logger.info("[绑定/解绑]UserID: {}".format(qid))
+    await bot.logger.info(t("log.genshinuid.user_bind_qid", qid=qid))
 
     uid = ev.text.strip()
     if uid and not uid.isdigit():

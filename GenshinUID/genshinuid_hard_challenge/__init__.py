@@ -43,7 +43,7 @@ async def send_hard_abyss_info(bot: Bot, ev: Event):
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info("[幽境危战] uid: {}".format(uid))
+    logger.info(t("log.genshinuid.hard_uid", uid=uid))
 
     im = await draw_hard_challenge_img(uid, ev)
 

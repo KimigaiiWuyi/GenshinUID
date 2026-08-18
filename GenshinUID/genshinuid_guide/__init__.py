@@ -71,11 +71,11 @@ async def send_guide_pic(bot: Bot, ev: Event):
     im = await get_gs_guide(name)
 
     if im:
-        await bot.logger.info("获得{}攻略成功！".format(name))
+        await bot.logger.info(t("log.genshinuid.guide_ok", name=name))
         a = Button(f"🎴参考面板{name}", f"参考面板{name}")
         await bot.send_option(im, [a])
     else:
-        await bot.logger.warning("未找到{}攻略图片".format(name))
+        await bot.logger.warning(t("log.genshinuid.guide_missing", name=name))
 
 
 @sv_char_guide.on_prefix(
@@ -98,10 +98,10 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
     img = REF_PATH / "{}.jpg".format(name)
     if img.exists():
         img = await convert_img(img)
-        await bot.logger.info("获得{}参考面板图片成功！".format(name))
+        await bot.logger.info(t("log.genshinuid.guide_ref_ok", name=name))
         await bot.send_option(img, [Button(f"🎴{name}攻略", f"{name}攻略")])
     else:
-        await bot.logger.warning("未找到{}参考面板图片".format(name))
+        await bot.logger.warning(t("log.genshinuid.guide_ref_missing", name=name))
 
 
 @sv_poetry_abyss_reviews.on_command(

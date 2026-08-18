@@ -37,7 +37,7 @@ async def send_daily_info(bot: Bot, ev: Event):
     uid = await get_uid(bot, ev)
     if uid is None:
         return await bot.send(UID_HINT)
-    logger.info("[每日信息文字版]UID: {}".format(uid))
+    logger.info(t("log.genshinuid.resin_text_uid", uid=uid))
 
     im = await get_resin_text(uid)
     if isinstance(im, str):
@@ -84,7 +84,7 @@ async def notice_job(force: bool = False):
 async def send_daily_info_pic(bot: Bot, ev: Event):
     logger.info(t("log.genshinuid.msg_2f9be3"))
     user_id = ev.at if ev.at else ev.user_id
-    logger.info("[每日信息]QQ号: {}".format(user_id))
+    logger.info(t("log.genshinuid.resin_pic_qq", user_id=user_id))
 
     im = await get_resin_img(bot.bot_id, user_id)
     await bot.send(im)

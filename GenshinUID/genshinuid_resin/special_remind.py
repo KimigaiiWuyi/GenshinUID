@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from typing import Dict, Tuple, Optional
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.meta_plugins import import_api
@@ -50,13 +51,13 @@ async def send_resin_special_mail(email: str, uid: str, current: int, threshold:
     subject, body = compose_resin_mail(uid, current, threshold)
     # 顶层 import 会让没装 gscore_mail 的用户整包加载失败
     if import_api("gscore_mail") is None:
-        logger.warning("[原神邮箱提醒] gscore_mail 未安装，回退到会话推送")
+        logger.warning(t("log.genshinuid.mail_plugin_missing"))
         return False
     from gscore_mail.api import send
 
     result = await send(to=email, subject=subject, body=body)
     if result["ok"]:
-        logger.info(f"[原神邮箱提醒] 已邮件提醒 UID{uid} -> {email} 体力={current}")
+        logger.info(t("log.genshinuid.mail_sent", uid=uid, email=email, current=current))
         return True
-    logger.warning(f"[原神邮箱提醒] 邮件发送失败 UID{uid} -> {email}: {result['message']}")
+    logger.warning(t("log.genshinuid.mail_fail", uid=uid, email=email, message=result["message"]))
     return False

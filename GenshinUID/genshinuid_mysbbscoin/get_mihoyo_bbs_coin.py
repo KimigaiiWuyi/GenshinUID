@@ -208,7 +208,7 @@ class MihoyoBBSCoin:
                 ]
             )
 
-        logger.info("已获取{}个帖子".format(len(temp_list)))
+        logger.info(t("log.genshinuid.bbs_posts_got", count=len(temp_list)))
         return temp_list
 
     # 进行签到操作

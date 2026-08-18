@@ -1,5 +1,6 @@
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 
 from ..utils.image.convert import convert_img
@@ -34,12 +35,12 @@ sv_find_map = SV("查询地图")
     """,
 )
 async def send_change_map_msg(bot: Bot, ev: Event):
-    await bot.logger.info("[切换地图]正在执行...")
+    await bot.logger.info(t("log.genshinuid.map_switch_start"))
     MAP_ID_LIST.append(MAP_ID_LIST[0])
     MAP_ID_LIST.pop(0)
     current = MAP_ID_LIST[0]
     chn = MAP_CHN_NAME.get(current)
-    await bot.logger.info(f"[切换地图]当前地图为{chn}")
+    await bot.logger.info(t("log.genshinuid.map_switch_current", chn=chn))
     await bot.send(f"切换到{chn}地图")
 
 
@@ -57,17 +58,17 @@ async def send_change_map_msg(bot: Bot, ev: Event):
 async def send_find_map_msg(bot: Bot, ev: Event):
     map_id = MAP_ID_LIST[0]
     map_name = MAP_CHN_NAME[map_id]
-    await bot.logger.info(f"[查找资源点]正在执行...当前地图为{map_name}")
+    await bot.logger.info(t("log.genshinuid.map_find_start", map_name=map_name))
 
     if not MAP_DATA.exists():
         MAP_DATA.mkdir()
 
     resource_temp_path = MAP_DATA / f"{map_name}_{ev.text}.jpg"
     if resource_temp_path.exists():
-        await bot.logger.info(f"本地已有{map_name}_{ev.text}的资源点,直接发送...")
+        await bot.logger.info(t("log.genshinuid.map_find_cached", map_name=map_name, resource=ev.text))
         resource_temp = await convert_img(resource_temp_path)
         await bot.send(resource_temp)
     else:
-        await bot.logger.info("本地未缓存,正在渲染...")
+        await bot.logger.info(t("log.genshinuid.map_find_render"))
         im = await draw_genshin_map(ev.text, map_id, map_name)
         await bot.send(im)

@@ -2,6 +2,7 @@ import re
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 from gsuid_core.ai_core.trigger_bridge import ai_return
 
@@ -34,17 +35,17 @@ async def send_abyss_info(bot: Bot, ev: Event):
     if name:
         return
 
-    await bot.logger.info("开始执行[查询深渊信息]")
+    await bot.logger.info(t("log.genshinuid.abyss_query_start"))
     uid, user_id = await get_uid(bot, ev, True)
     if uid is None:
         return await bot.send(UID_HINT)
-    await bot.logger.info("[查询深渊信息]uid: {}".format(uid))
+    await bot.logger.info(t("log.genshinuid.abyss_query_uid", uid=uid))
 
     if "sq" in ev.command or "上期" in ev.command:
         schedule_type = "2"
     else:
         schedule_type = "1"
-    await bot.logger.info("[查询深渊信息]深渊期数: {}".format(schedule_type))
+    await bot.logger.info(t("log.genshinuid.abyss_query_schedule", schedule_type=schedule_type))
 
     if ev.text in ["九", "十", "十一", "十二"]:
         floor = ev.text.replace("九", "9").replace("十一", "11").replace("十二", "12").replace("十", "10")
@@ -55,7 +56,7 @@ async def send_abyss_info(bot: Bot, ev: Event):
     else:
         floor = None
 
-    await bot.logger.info("[查询深渊信息]深渊层数: {}".format(floor))
+    await bot.logger.info(t("log.genshinuid.abyss_query_floor", floor=floor))
 
     im = await draw_abyss_img(ev, uid, floor, schedule_type)
     a = Button("🔍查询深渊11", "查询深渊11")

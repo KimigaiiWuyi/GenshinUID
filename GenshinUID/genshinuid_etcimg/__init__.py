@@ -2,6 +2,7 @@ from pathlib import Path
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
+from gsuid_core.i18n import t
 from gsuid_core.models import Event
 
 from ..version import Genshin_version
@@ -27,7 +28,7 @@ sv_etc_img = SV("杂图")
     """,
 )
 async def send_primogems_data(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[图片][版本规划]")
+    await bot.logger.info(t("log.genshinuid.etcimg_ver_start"))
     if ev.text:
         path = PRIMOGEMS_DATA_PATH / f"{ev.text}.png"
         if path.exists():
@@ -37,7 +38,7 @@ async def send_primogems_data(bot: Bot, ev: Event):
     else:
         img = f"{Genshin_version[:3]}.png"
     primogems_img = PRIMOGEMS_DATA_PATH / img
-    await bot.logger.info("[图片][版本规划]访问图片: {}".format(img))
+    await bot.logger.info(t("log.genshinuid.etcimg_ver_access", img=img))
     primogems_img = await convert_img(primogems_img)
     a = Button("📄版本规划4.3", "版本规划4.3")
     b = Button("🔔今日材料", "今日材料")
@@ -67,7 +68,7 @@ async def send_primogems_data(bot: Bot, ev: Event):
     """,
 )
 async def send_img_data(bot: Bot, ev: Event):
-    await bot.logger.info("开始执行[图片][杂图]")
+    await bot.logger.info(t("log.genshinuid.etcimg_misc_start"))
     img = IMG_PATH / f"{ev.command}.jpg"
     if img.exists():
         a = Button("👾怪物血量表", "血量表")

@@ -1,0 +1,11 @@
+{
+  "include": ["GenshinUID"],
+  "extraPaths": [
+    "../../../",
+    "../gscore_mail"
+  ],
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "basic",
+  "reportMissingTypeStubs": false,
+  "reportMissingModuleSource": false
+}

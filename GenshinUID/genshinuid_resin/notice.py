@@ -1,5 +1,5 @@
 import datetime
-from typing import Dict, List, Tuple, Union, Sequence
+from typing import Set, Dict, List, Tuple, Union, Sequence
 
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
@@ -10,6 +10,7 @@ from gsuid_core.utils.database.models import Subscribe
 
 from ..utils.message import PREFIX
 from ..utils.mys_api import mys_api
+from .special_remind import get_special_email_map, send_resin_special_mail
 from ..genshinuid_config.gs_config import gsconfig
 
 MR_NOTICE = f"\n✅可发送[{PREFIX}mr]或者[{PREFIX}每日]来查看更多信息！\n"
@@ -54,8 +55,13 @@ async def send_notice_list():
     go_datas = await _to_dict(go_datas)
     transform_datas = await _to_dict(transform_datas)
     daily_datas = await _to_dict(daily_datas)
+    special_emails = await get_special_email_map()
+    mailed_uids: Set[str] = set()
 
-    for uid in datas:
+    # 开了邮箱提醒的 UID 先扫，邮箱通道优先于群/私聊
+    uid_order = [u for u in datas if u in special_emails] + [u for u in datas if u not in special_emails]
+
+    for uid in uid_order:
         # data = datas[uid]
         if uid:
             # 请求小组件源 或是战绩源
@@ -87,6 +93,19 @@ async def send_notice_list():
                             int(mg),
                         )
                         if res[0]:
+                            if mode == "resin" and uid in special_emails:
+                                if uid not in mailed_uids:
+                                    ok = await send_resin_special_mail(
+                                        special_emails[uid],
+                                        uid,
+                                        res[1],
+                                        str(_data.extra_message or ""),
+                                    )
+                                    if ok:
+                                        mailed_uids.add(uid)
+                                if uid in mailed_uids:
+                                    continue
+
                             if mode == "daily":
                                 mlist = [
                                     f"🚨 原神推送提醒 - UID{uid}",

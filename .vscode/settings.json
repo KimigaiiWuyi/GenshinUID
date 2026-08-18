@@ -10,10 +10,12 @@
     }
   },
   "python.autoComplete.extraPaths": [
-    "${workspaceFolder}/../../../../"
+    "${workspaceFolder}/../../../",
+    "${workspaceFolder}/../gscore_mail"
   ],
   "basedpyright.analysis.extraPaths": [
-    "${workspaceFolder}/../../../"
+    "${workspaceFolder}/../../../",
+    "${workspaceFolder}/../gscore_mail"
   ],
   "python.analysis.typeCheckingMode": "off",
 }

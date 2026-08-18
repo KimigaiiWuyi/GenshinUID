@@ -86,6 +86,7 @@ def parse_artifact_json(json_data: Dict) -> List[KnowledgePoint]:
             "title": f"{artifact_info.name}-基础信息",
             "content": artifact_content,
             "tags": ["圣遗物", "套装", artifact_info.name],
+            "entity": artifact_info.name,
             "_hash": "",
         }
     )
@@ -117,6 +118,7 @@ def parse_artifact_json(json_data: Dict) -> List[KnowledgePoint]:
                 "title": f"{artifact_info.name}-部位详情",
                 "content": suit_content,
                 "tags": ["圣遗物", "部位", artifact_info.name],
+                "entity": artifact_info.name,
                 "_hash": "",
             }
         )

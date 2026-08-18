@@ -267,6 +267,22 @@
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
+      },
+      {
+        "name": "邮箱提醒",
+        "desc": "体力溢出发到邮箱；不填则用 QQ 号@qq.com",
+        "eg": "开启邮箱提醒",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "邮箱提醒邮箱",
+        "desc": "修改邮箱提醒的收件邮箱",
+        "eg": "设置邮箱提醒 you@example.com",
+        "need_ck": true,
+        "need_sk": false,
+        "need_admin": false
       }
     ]
   },

@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from gsuid_core.sv import SV, get_plugin_available_prefix
 from gsuid_core.bot import Bot
@@ -10,6 +11,12 @@ from gsuid_core.utils.database.models import GsBind, GsUser
 
 from ..utils.message import PREFIX as P, UID_HINT
 from .draw_config_card import draw_config_img
+from ..genshinuid_resin.special_remind import (
+    SPECIAL_TASK,
+    extract_email,
+    default_qq_email,
+    is_email_remind_text,
+)
 
 sv_self_config = SV("原神配置")
 
@@ -72,6 +79,9 @@ async def send_config_ev(bot: Bot, ev: Event):
 
     config_name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text.replace("阈值", "")))
 
+    if is_email_remind_text(ev.text):
+        return await _set_special_remind_email(bot, ev)
+
     value = re.findall(r"\d+", ev.text)
     value = value[0] if value else None
 
@@ -127,9 +137,13 @@ async def send_config_ev(bot: Bot, ev: Event):
               - "推送"：推送总开关
               - "日常检查"：每日零点检查日常完成情况
               - "活动提醒"：活动即将结束时提醒
+              - "邮箱提醒"：体力溢出改走邮箱。可不带邮箱（默认 QQ 号@qq.com），也可指定，例如 开启邮箱提醒 a@b.c
     """,
 )
 async def open_switch_func(bot: Bot, ev: Event):
+    if is_email_remind_text(ev.text):
+        return await _switch_special_remind(bot, ev)
+
     user_id = ev.user_id
     config_name = ev.text
     if config_name.startswith(("体力", "宝钱", "派遣", "质变仪")):
@@ -231,6 +245,12 @@ async def open_switch_func(bot: Bot, ev: Event):
             else:
                 im += f"\n❌ 活动提醒推送 (可发送{P}开启活动提醒推送)"
 
+            special = await gs_subscribe.get_subscribe(SPECIAL_TASK, uid=uid)
+            if special and special[0].extra_message:
+                im += f"\n✅ 邮箱提醒 (发到 {special[0].extra_message}，体力溢出走邮件)"
+            else:
+                im += f"\n❌ 邮箱提醒 (可发送{P}开启邮箱提醒)"
+
     else:
         data = await gs_subscribe.get_subscribe(
             c_name,
@@ -250,3 +270,98 @@ async def open_switch_func(bot: Bot, ev: Event):
             im = f"🔨 [原神服务]\n❌ 未找到[UID{uid}]的{config_name}功能配置, 该功能可能未开启。"
 
     await bot.send(im)
+
+
+async def _require_uid_cookie(bot: Bot, ev: Event) -> Optional[str]:
+    uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
+    if uid is None:
+        await bot.send(UID_HINT)
+        return None
+    cookie = await GsUser.get_user_cookie_by_uid(uid)
+    if cookie is None:
+        await bot.send(
+            f"🔔 提示：你的当前UID{uid}暂未绑定Cookie~\n"
+            f"📎 请使用扫码登陆命令获取Cookie\n"
+            f"💡 若你想切换UID, 可以尝试命令：{P}切换UID"
+        )
+        return None
+    return uid
+
+
+async def _ensure_push_and_resin(ev: Event, uid: str) -> str:
+    extra = ""
+    if not await gs_subscribe.get_subscribe("[原神] 推送", uid=uid):
+        await gs_subscribe.add_subscribe("single", "[原神] 推送", ev, uid=uid)
+        extra += "\n✅ 已同时开启推送总开关。"
+    if not await gs_subscribe.get_subscribe("[原神] 体力", uid=uid):
+        await gs_subscribe.add_subscribe(
+            "single",
+            "[原神] 体力",
+            ev,
+            extra_message=str(PRIV_MAP["体力"]),
+            uid=uid,
+        )
+        extra += f"\n✅ 已同时开启体力推送（阈值 {PRIV_MAP['体力']}）。"
+    return extra
+
+
+async def _switch_special_remind(bot: Bot, ev: Event) -> None:
+    uid = await _require_uid_cookie(bot, ev)
+    if uid is None:
+        return
+
+    if "关闭" in ev.command:
+        data = await gs_subscribe.get_subscribe(SPECIAL_TASK, uid=uid)
+        if data:
+            await gs_subscribe.delete_subscribe("single", SPECIAL_TASK, ev, uid=uid)
+            await bot.send(f"🔨 [原神服务]\n✅ 已为[UID{uid}]关闭邮箱提醒，体力溢出将改回群/私聊推送。")
+        else:
+            await bot.send(f"🔨 [原神服务]\n❌ [UID{uid}]未开启邮箱提醒。")
+        return
+
+    email = extract_email(ev.text)
+    hint = ""
+    if email is None:
+        existed = await gs_subscribe.get_subscribe(SPECIAL_TASK, uid=uid)
+        if existed and existed[0].extra_message:
+            email = existed[0].extra_message
+        else:
+            email = default_qq_email(ev.user_id)
+            hint = f"\n💡 未指定邮箱，已使用 {email}。改邮箱请发：{P}设置邮箱提醒 你的邮箱"
+
+    await _enable_email_remind(bot, ev, uid, email, hint)
+
+
+async def _enable_email_remind(bot: Bot, ev: Event, uid: str, email: str, hint: str = "") -> None:
+    await gs_subscribe.add_subscribe(
+        "single",
+        SPECIAL_TASK,
+        ev,
+        extra_message=email,
+        uid=uid,
+    )
+    extra = await _ensure_push_and_resin(ev, uid)
+    await bot.send(
+        f"🔨 [原神服务]\n✅ 已为[UID{uid}]开启邮箱提醒。\n📧 体力溢出将发到 {email}，不再走群/私聊。{hint}{extra}"
+    )
+
+
+async def _set_special_remind_email(bot: Bot, ev: Event) -> None:
+    uid = await _require_uid_cookie(bot, ev)
+    if uid is None:
+        return
+    email = extract_email(ev.text)
+    if email is None:
+        email = default_qq_email(ev.user_id)
+    existed = await gs_subscribe.get_subscribe(SPECIAL_TASK, uid=uid)
+    if not existed:
+        await bot.send(f"🔨 [原神服务]\n❌ 请先开启邮箱提醒。\n🚩 例如: {P}开启邮箱提醒")
+        return
+    await gs_subscribe.update_subscribe_message(
+        "single",
+        SPECIAL_TASK,
+        ev,
+        extra_message=email,
+        uid=uid,
+    )
+    await bot.send(f"🔨 [原神服务]\n✅ 已为[UID{uid}]更新邮箱提醒收件箱为 {email}")

@@ -62,6 +62,7 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
             "title": f"{monster_info.name}-基础信息",
             "content": monster_content,
             "tags": ["怪物", monster_info.type, monster_info.name],
+            "entity": monster_info.name,
             "source": "plugin",
         }
     )
@@ -141,6 +142,7 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
                     "title": f"{monster_info.name}-属性与抗性",
                     "content": attr_content,
                     "tags": ["怪物", "属性", "抗性", monster_info.name],
+                    "entity": monster_info.name,
                     "source": "plugin",
                 }
             )

@@ -69,6 +69,7 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
             "title": f"{char_info.name}-基础档案",
             "content": profile_content,
             "tags": ["角色", "档案", char_info.name],
+            "entity": char_info.name,
             "_hash": "",
         }
     )
@@ -124,6 +125,7 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
             "title": f"{char_info.name}-技能与倍率",
             "content": "\n".join(skill_texts),
             "tags": ["角色", "技能", char_info.name],
+            "entity": char_info.name,
             "_hash": "",
         }
     )
@@ -152,6 +154,7 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
             "title": f"{char_info.name}-命之座",
             "content": "\n".join(const_texts),
             "tags": ["角色", "命之座", char_info.name],
+            "entity": char_info.name,
             "_hash": "",
         }
     )

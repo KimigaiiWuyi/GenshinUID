@@ -109,6 +109,7 @@ def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[
                 "title": f"{char_name}-角色攻略",
                 "content": adv_content,
                 "tags": tags,
+                "entity": char_name,
                 "_hash": "",
             }
         )

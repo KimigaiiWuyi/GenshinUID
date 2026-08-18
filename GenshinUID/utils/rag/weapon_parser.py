@@ -64,6 +64,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
             "title": f"{weapon_info.name}-基础信息",
             "content": weapon_content,
             "tags": ["武器", "基础信息", weapon_info.name],
+            "entity": weapon_info.name,
             "_hash": "",
         }
     )
@@ -94,6 +95,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
                 "title": f"{weapon_info.name}-基础属性",
                 "content": stats_content,
                 "tags": ["武器", "属性", weapon_info.name],
+                "entity": weapon_info.name,
                 "_hash": "",
             }
         )
@@ -156,6 +158,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
                 "title": f"{weapon_info.name}-主属性",
                 "content": main_prop_content,
                 "tags": main_prop_tags,
+                "entity": weapon_info.name,
                 "_hash": "",
             }
         )
@@ -195,6 +198,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
                     "title": f"{weapon_info.name}-精炼效果",
                     "content": affix_content,
                     "tags": ["武器", "精炼", weapon_info.name, affix_name],
+                    "entity": weapon_info.name,
                     "_hash": "",
                 }
             )
@@ -220,6 +224,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
                 "title": f"{weapon_info.name}-精炼效果",
                 "content": affix_content,
                 "tags": ["武器", "精炼", weapon_info.name],
+                "entity": weapon_info.name,
                 "_hash": "",
             }
         )
@@ -309,6 +314,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
                 "title": f"{weapon_info.name}-数值对比信息",
                 "content": comparison_content,
                 "tags": comparison_tags,
+                "entity": weapon_info.name,
                 "_hash": "",
             }
         )

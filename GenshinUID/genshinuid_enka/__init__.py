@@ -17,6 +17,7 @@ from .to_card import enka_to_card
 from .to_data import switch_api
 from .get_enka_img import draw_enka_img, get_full_char
 from ..utils.convert import get_uid
+from ..utils.mys_api import mys_api
 from ..utils.message import UID_HINT, GButton as Button
 from .draw_arti_rank import draw_arti_rank_img
 from .draw_char_info import draw_all_char_list
@@ -486,12 +487,19 @@ async def send_card_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     logger.info("[强制刷新]uid: {}".format(uid))
 
+    is_force = "强制刷新" in ev.command
     if "mys" in ev.command:
-        im = await mys_to_card(uid)
+        im = await mys_to_card(uid, force_refresh=is_force)
     elif "enka" in ev.command:
         im = await enka_to_card(uid)
     else:
-        if EnableCharCardByMys:
+        owner_ck = await mys_api.get_ck(uid, "OWNER")
+        if is_force and owner_ck is not None:
+            im = await mys_to_card(uid, force_refresh=True)
+            if not isinstance(im, Tuple):
+                logger.info(f"从米游社获取数据失败，尝试从enka获取。{im}")
+                im = await enka_to_card(uid)
+        elif EnableCharCardByMys:
             im = await mys_to_card(uid)
             if not isinstance(im, Tuple):
                 logger.info(t("log.genshinuid.enka_im_06dd12", im=im))

@@ -4,6 +4,7 @@ from datetime import datetime
 
 import aiofiles
 
+from gsuid_core.utils.cache import CACHE
 from gsuid_core.utils.error_reply import get_error
 
 from .to_card import pic_500, draw_enka_card
@@ -38,6 +39,25 @@ posMap = {
     "时之沙": "sands",
 }
 
+CHARACTER_CACHE_PREFIXES = (
+    "get_info_",
+    "get_character_",
+    "get_character_list_",
+    "get_character_detail_",
+    "get_char_detail_data_",
+)
+
+
+def clear_character_api_cache(uid: str):
+    """清除指定 UID 的角色 API 内存缓存。"""
+    uid_key = f"_{uid!r}"
+    for time_key, cache_data in list(CACHE.items()):
+        for cache_key in list(cache_data):
+            if cache_key.startswith(CHARACTER_CACHE_PREFIXES) and uid_key in cache_key:
+                del cache_data[cache_key]
+        if not cache_data:
+            del CACHE[time_key]
+
 
 def get_value(value: str):
     if not value:
@@ -45,7 +65,10 @@ def get_value(value: str):
     return float(value.replace("%", ""))
 
 
-async def mys_to_data(uid: str):
+async def mys_to_data(uid: str, force_refresh: bool = False):
+    if force_refresh:
+        clear_character_api_cache(uid)
+
     path = PLAYER_PATH / uid
     path.mkdir(parents=True, exist_ok=True)
 
@@ -308,8 +331,18 @@ async def mys_to_data(uid: str):
     return char_dict_list
 
 
-async def mys_to_card(uid: str) -> Union[str, bytes, Tuple[bytes, List[Dict]]]:
-    char_data_list = await mys_to_data(uid)
+async def refresh_all_char_cache(uid: str):
+    """使用用户自己的有效 Cookie 强制刷新全部角色缓存。"""
+    if await mys_api.get_ck(uid, "OWNER") is None:
+        return None
+    return await mys_to_data(uid, force_refresh=True)
+
+
+async def mys_to_card(
+    uid: str,
+    force_refresh: bool = False,
+) -> Union[str, bytes, Tuple[bytes, List[Dict]]]:
+    char_data_list = await mys_to_data(uid, force_refresh=force_refresh)
     if char_data_list == []:
         return await convert_img(pic_500)
     elif isinstance(char_data_list, str):

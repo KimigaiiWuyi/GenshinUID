@@ -13,6 +13,7 @@ from ..utils.buttons import a, b, c, s, t as btn_t, u, v, x, y
 from ..utils.convert import get_uid
 from ..utils.message import UID_HINT
 from .draw_roleinfo_card import draw_pic
+from ..genshinuid_enka.to_data_by_mys import refresh_all_char_cache
 
 sv_get_regtime = SV("查询注册时间")
 sv_get_info = SV("查询原神信息")
@@ -90,6 +91,12 @@ async def send_charlist_info(bot: Bot, ev: Event):
     if uid is None:
         return await bot.send(UID_HINT)
     logger.info(t("log.genshinuid.uid_uid_26a2eb", uid=uid))
+
+    refresh_result = await refresh_all_char_cache(uid)
+    if isinstance(refresh_result, list):
+        logger.info(f"[原神] [角色列表]已刷新 {len(refresh_result)} 个角色缓存")
+    elif refresh_result is not None:
+        logger.warning("[原神] [角色列表]用户 Cookie 无效或全角色缓存刷新失败")
 
     im = await draw_char_pic(uid)
     await bot.send_option(im, [[a, b, c], [btn_t, s, u], [v, x, y]])

@@ -11,12 +11,18 @@ from gsuid_core.utils.database.models import GsBind, GsUser
 
 from ..utils.message import PREFIX as P, UID_HINT
 from .draw_config_card import draw_config_img
-from ..genshinuid_resin.special_remind import (
-    SPECIAL_TASK,
-    extract_email,
-    default_qq_email,
-    is_email_remind_text,
-)
+
+
+def _remind():
+    from ..genshinuid_resin.special_remind import (
+        SPECIAL_TASK,
+        extract_email,
+        default_qq_email,
+        is_email_remind_text,
+    )
+
+    return SPECIAL_TASK, extract_email, default_qq_email, is_email_remind_text
+
 
 sv_self_config = SV("原神配置")
 
@@ -79,6 +85,7 @@ async def send_config_ev(bot: Bot, ev: Event):
 
     config_name = "".join(re.findall("[\u4e00-\u9fa5]", ev.text.replace("阈值", "")))
 
+    _, _, _, is_email_remind_text = _remind()
     if is_email_remind_text(ev.text):
         return await _set_special_remind_email(bot, ev)
 
@@ -141,6 +148,7 @@ async def send_config_ev(bot: Bot, ev: Event):
     """,
 )
 async def open_switch_func(bot: Bot, ev: Event):
+    SPECIAL_TASK, _extract, _default, is_email_remind_text = _remind()
     if is_email_remind_text(ev.text):
         return await _switch_special_remind(bot, ev)
 
@@ -306,6 +314,7 @@ async def _ensure_push_and_resin(ev: Event, uid: str) -> str:
 
 
 async def _switch_special_remind(bot: Bot, ev: Event) -> None:
+    SPECIAL_TASK, extract_email, default_qq_email, _is_email = _remind()
     uid = await _require_uid_cookie(bot, ev)
     if uid is None:
         return
@@ -333,6 +342,7 @@ async def _switch_special_remind(bot: Bot, ev: Event) -> None:
 
 
 async def _enable_email_remind(bot: Bot, ev: Event, uid: str, email: str, hint: str = "") -> None:
+    SPECIAL_TASK, _extract, _default, _is_email = _remind()
     await gs_subscribe.add_subscribe(
         "single",
         SPECIAL_TASK,
@@ -347,6 +357,7 @@ async def _enable_email_remind(bot: Bot, ev: Event, uid: str, email: str, hint: 
 
 
 async def _set_special_remind_email(bot: Bot, ev: Event) -> None:
+    SPECIAL_TASK, extract_email, default_qq_email, _is_email = _remind()
     uid = await _require_uid_cookie(bot, ev)
     if uid is None:
         return

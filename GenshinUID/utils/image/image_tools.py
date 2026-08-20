@@ -14,7 +14,6 @@ from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
 from ..fonts.genshin_fonts import gs_font_32, gs_font_36
 from ..resource.RESOURCE_PATH import CHAR_PATH, CU_BG_PATH, TEXT2D_PATH
-from ...genshinuid_config.gs_config import gsconfig
 
 ICON = Path(__file__).parent.parent.parent.parent / "ICON.png"
 FETTER_PATH = TEXT2D_PATH / "fetter"
@@ -362,6 +361,8 @@ async def get_color_bg(
     bg: Optional[str] = None,
     without_mask: bool = False,
 ) -> Image.Image:
+    from ...genshinuid_config.gs_config import gsconfig
+
     image = ""
     if bg and gsconfig.get_config("DefaultBaseBG").data:
         path = SP_BG_PATH / f"{bg}.jpg"

@@ -10,7 +10,6 @@ from .notice import send_notice_list
 from .resin_text import get_resin_text
 from ..utils.convert import get_uid
 from ..utils.message import UID_HINT
-from .draw_resin_card import get_resin_img
 from ..genshinuid_config.gs_config import gsconfig
 
 sv_get_resin = SV("查询体力")
@@ -85,6 +84,8 @@ async def send_daily_info_pic(bot: Bot, ev: Event):
     logger.info(t("log.genshinuid.msg_2f9be3"))
     user_id = ev.at if ev.at else ev.user_id
     logger.info(t("log.genshinuid.resin_pic_qq", user_id=user_id))
+
+    from .draw_resin_card import get_resin_img
 
     im = await get_resin_img(bot.bot_id, user_id)
     await bot.send(im)

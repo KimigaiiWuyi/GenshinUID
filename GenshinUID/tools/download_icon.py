@@ -22,10 +22,14 @@ DEFAULT_VERSION = "7.0"
 
 suffix = "png"
 
-# 角色资源模板：{} 填入 UI_AvatarIcon_ 后的英文 key，如 Alyosha / Odette
+# 角色资源模板：{} 填入英文 key
+# 普通角色：Alyosha / Odette 等，所有模板共用同一 key
+# 旅行者：立绘/头像/名片用 body_key（PlayerBoy / PlayerGirl），
+#         技能/命座用 skill_key（PlayerIce / PlayerWind ...）
 # 保存名特殊规则（见 resolve_char_save_name）：
 #   UI_AvatarIcon_{en}.png      -> {角色ID}.png        例: 10000148.png
 #   UI_Gacha_AvatarImg_{en}.png -> {角色中文名}.png    例: 阿罗夏.png
+#   旅行者立绘：PlayerBoy -> 空.png，PlayerGirl -> 旅行者.png
 #   其余保持远端文件名
 icon_list = [
     "Skill_E_{}_01." + suffix,
@@ -39,6 +43,7 @@ icon_list = [
     "UI_Talent_S_{}_05." + suffix,
     "UI_Talent_S_{}_06." + suffix,
     "UI_Talent_S_{}_07." + suffix,
+    "UI_Talent_S_{}_08." + suffix,
     "UI_Talent_U_{}_01." + suffix,
     "UI_Talent_U_{}_02." + suffix,
     "UI_Talent_C_{}_01." + suffix,
@@ -48,6 +53,48 @@ icon_list = [
     "UI_AvatarIcon_{}." + suffix,
     "UI_NameCardPic_{}_P." + suffix,
 ]
+
+# 立绘 / 头像 / 名片走身体 key；其余（技能、命座）走技能 key
+BODY_ICON_PREFIXES = (
+    "UI_Gacha_AvatarImg_",
+    "UI_AvatarIcon_",
+    "UI_NameCardIcon_",
+    "UI_NameCardPic_",
+)
+
+TRAVELER_BODY_KEYS = {"PlayerBoy", "PlayerGirl"}
+
+# charList.element / changelog id 后缀 -> 技能资源 key
+# 例: Ice / cryo -> PlayerIce，对应 UI_Talent_S_PlayerIce_07.png
+ELEMENT_TO_PLAYER_SKILL_KEY = {
+    "Ice": "PlayerIce",
+    "Cryo": "PlayerIce",
+    "Fire": "PlayerFire",
+    "Pyro": "PlayerFire",
+    "Water": "PlayerWater",
+    "Hydro": "PlayerWater",
+    "Wind": "PlayerWind",
+    "Anemo": "PlayerWind",
+    "Rock": "PlayerRock",
+    "Geo": "PlayerRock",
+    "Electric": "PlayerElectric",
+    "Electro": "PlayerElectric",
+    "Grass": "PlayerGrass",
+    "Dendro": "PlayerGrass",
+}
+ID_ELEM_TO_PLAYER_SKILL_KEY = {
+    "cryo": "PlayerIce",
+    "pyro": "PlayerFire",
+    "hydro": "PlayerWater",
+    "anemo": "PlayerWind",
+    "geo": "PlayerRock",
+    "electro": "PlayerElectric",
+    "dendro": "PlayerGrass",
+}
+TRAVELER_GACHA_SAVE = {
+    "PlayerBoy": "空.png",
+    "PlayerGirl": "旅行者.png",
+}
 
 # 手动兜底：若 API 不可用，可临时填写
 manual_char_list: List[str] = []
@@ -201,16 +248,57 @@ def avatar_icon_key(info: Dict[str, Any]) -> Optional[str]:
     """从角色数据得到下载用英文 key（UI_AvatarIcon_Xxx -> Xxx）。"""
     icon = str(info.get("icon") or "")
     if icon.startswith("UI_AvatarIcon_"):
-        key = icon[len("UI_AvatarIcon_") :]
-    elif info.get("route"):
+        return icon[len("UI_AvatarIcon_") :]
+    if info.get("route"):
         # route 如 "Kamisato Ayaka" / "Alyosha"，技能资源一般用末段或专用 key
-        key = str(info["route"]).split()[-1]
-    else:
-        return None
-    # 旅行者资源不是常规 Skill_E_PlayerBoy 体系，跳过
-    if key in {"PlayerBoy", "PlayerGirl"}:
-        return None
-    return key
+        return str(info["route"]).split()[-1]
+    return None
+
+
+def is_traveler_id(item_id: str) -> bool:
+    sid = str(item_id)
+    return sid.startswith("10000005") or sid.startswith("10000007")
+
+
+def traveler_numeric_id(item_id: str, info: Optional[Dict[str, Any]] = None) -> str:
+    """10000005-cryo -> 10000005，用于头像保存名。"""
+    sid = str(item_id or "")
+    if "-" in sid:
+        return sid.split("-", 1)[0]
+    raw = str((info or {}).get("id") or sid)
+    if "-" in raw:
+        return raw.split("-", 1)[0]
+    return raw or sid
+
+
+def traveler_skill_key(info: Dict[str, Any], item_id: str = "") -> Optional[str]:
+    """
+    旅行者技能/命座资源 key，如 PlayerIce。
+    立绘仍用 PlayerBoy / PlayerGirl，不能拿来拼 Skill_E / UI_Talent_S。
+    """
+    elem = str(info.get("element") or "").strip()
+    if elem:
+        hit = ELEMENT_TO_PLAYER_SKILL_KEY.get(elem) or ELEMENT_TO_PLAYER_SKILL_KEY.get(
+            elem[:1].upper() + elem[1:].lower()
+        )
+        if hit:
+            return hit
+    sid = str(item_id or info.get("id") or "")
+    if "-" in sid:
+        suffix = sid.rsplit("-", 1)[-1].lower()
+        if suffix in ID_ELEM_TO_PLAYER_SKILL_KEY:
+            return ID_ELEM_TO_PLAYER_SKILL_KEY[suffix]
+    return None
+
+
+def char_icon_fill_key(template: str, char: Dict[str, str]) -> str:
+    """模板 {} 填哪个 key：立绘/头像/名片用 body_key，技能/命座用 skill_key。"""
+    body = char.get("body_key") or char["key"]
+    skill = char.get("skill_key") or char["key"]
+    head = template.split("{", 1)[0]
+    if head.startswith(BODY_ICON_PREFIXES):
+        return body
+    return skill
 
 
 def safe_filename(name: str) -> str:
@@ -228,11 +316,13 @@ def resolve_char_save_name(
     remote_icon_name: str,
     char_id: str,
     char_name: str,
+    body_key: str = "",
 ) -> str:
     """
     角色资源保存名规则：
     - UI_AvatarIcon_*.png      -> {角色ID}.png       例 UI_AvatarIcon_Alyosha.png -> 10000148.png
     - UI_Gacha_AvatarImg_*.png -> {角色中文名}.png   例 UI_Gacha_AvatarImg_Alyosha.png -> 阿罗夏.png
+    - 旅行者立绘：PlayerBoy -> 空.png，PlayerGirl -> 旅行者.png（面板用这个文件名）
     - 其它资源保持远端文件名
     """
     base = remote_icon_name.split("/")[-1]
@@ -240,6 +330,8 @@ def resolve_char_save_name(
     if stem.startswith("UI_AvatarIcon_"):
         return f"{char_id}.png"
     if stem.startswith("UI_Gacha_AvatarImg_"):
+        if body_key in TRAVELER_GACHA_SAVE:
+            return TRAVELER_GACHA_SAVE[body_key]
         return f"{safe_filename(char_name)}.png"
     return base if base.endswith(".png") else f"{stem}.png"
 
@@ -308,32 +400,58 @@ def download(icon_name: str, url: str, out_dir: Optional[Path] = None):
         print("下载成功！")
 
 
-def download_char_icons(chars: Sequence[Dict[str, str]]):
+def download_char_icons(chars: Sequence[Dict[str, str]], vh: str = ""):
     """
-    chars: [{key, id, name}, ...]
-      key  = 英文资源 key（Alyosha）
-      id   = 角色 ID（10000148）
-      name = 中文名（阿罗夏）
+    chars: [{key, id, name, body_key, skill_key}, ...]
+      key       = 兼容字段，普通角色 = 英文资源 key（Alyosha）
+      body_key  = 立绘/头像 key（旅行者 PlayerBoy / PlayerGirl）
+      skill_key = 技能/命座 key（旅行者 PlayerIce）
+      id        = 角色 ID（10000148 / 旅行者 10000005）
+      name      = 中文名（阿罗夏）
     """
+    seen_skill: Set[str] = set()
+    seen_body: Set[str] = set()
     for char in chars:
-        en_key = char["key"]
+        body_key = char.get("body_key") or char["key"]
+        skill_key = char.get("skill_key") or char["key"]
         char_id = char["id"]
         char_name = char["name"]
-        print(f"==== 角色资源: {char_name} / {en_key} / {char_id} ====")
+        skip_skill = skill_key in seen_skill
+        skip_body = body_key in seen_body
+        if body_key != skill_key:
+            print(
+                f"==== 角色资源: {char_name} / {char_id} "
+                f"立绘={body_key} 技能={skill_key} ===="
+            )
+        else:
+            print(f"==== 角色资源: {char_name} / {body_key} / {char_id} ====")
+        if skip_skill:
+            print(f"技能资源 {skill_key} 已排队，跳过重复下载")
         for icon in icon_list:
+            head = icon.split("{", 1)[0]
+            is_body = head.startswith(BODY_ICON_PREFIXES)
+            if is_body and skip_body:
+                continue
+            if (not is_body) and skip_skill:
+                continue
             if icon.startswith("UI_NameCardPic"):
                 _title = ASSET_BASE + "/namecard"
             else:
                 _title = ASSET_BASE
+            en_key = char_icon_fill_key(icon, char)
             remote_name = icon.format(en_key)
-            save_name = resolve_char_save_name(remote_name, char_id, char_name)
-            url = f"{_title}/{remote_name}"
+            save_name = resolve_char_save_name(
+                remote_name, char_id, char_name, body_key=body_key
+            )
+            url = with_vh(f"{_title}/{remote_name}", vh)
             if save_name != remote_name:
                 print(f"{url}  ->  保存为 {save_name}")
             else:
                 print(url)
             if is_download:
                 download(save_name, url)
+        seen_skill.add(skill_key)
+        seen_body.add(body_key)
 
 
 def download_weapon_icons(
@@ -366,7 +484,7 @@ def resolve_updated_chars(
     avatar_ids: Sequence[str],
     avatar_items: Dict[str, Any],
 ) -> List[Dict[str, str]]:
-    """返回 [{key, id, name}, ...]，供下载与重命名使用。"""
+    """返回 [{key, id, name, body_key, skill_key}, ...]，供下载与重命名使用。"""
     chars: List[Dict[str, str]] = []
     seen: Set[str] = set()
     for aid in avatar_ids:
@@ -374,18 +492,50 @@ def resolve_updated_chars(
         if not info:
             print(f"角色 {aid} 不在列表中，跳过")
             continue
-        key = avatar_icon_key(info)
-        if not key:
-            print(f"角色 {aid}({info.get('name')}) 无可用 icon key（可能是旅行者），跳过")
+        body_key = avatar_icon_key(info)
+        if not body_key:
+            print(f"角色 {aid}({info.get('name')}) 无可用 icon key，跳过")
             continue
-        # 旅行者等复合 id 保留原样；纯数字 id 用列表里的 id
-        raw_id = info.get("id", aid)
-        char_id = str(aid) if "-" in str(aid) else str(raw_id)
-        char_name = str(info.get("name") or key)
-        if key not in seen:
-            seen.add(key)
-            chars.append({"key": key, "id": char_id, "name": char_name})
-            print(f"角色 {char_id} -> {char_name} / {key} (头像->{char_id}.png, 立绘->{char_name}.png)")
+
+        skill_key = body_key
+        char_id = str(info.get("id", aid))
+        if body_key in TRAVELER_BODY_KEYS or is_traveler_id(str(aid)):
+            skill = traveler_skill_key(info, str(aid))
+            if not skill:
+                print(
+                    f"角色 {aid}({info.get('name')}) 是旅行者但无法解析元素 key，"
+                    f"仅下载立绘/头像 ({body_key})"
+                )
+                skill_key = body_key
+            else:
+                skill_key = skill
+            char_id = traveler_numeric_id(str(aid), info)
+
+        char_name = str(info.get("name") or body_key)
+        uniq = f"{body_key}:{skill_key}"
+        if uniq in seen:
+            continue
+        seen.add(uniq)
+        chars.append(
+            {
+                "key": skill_key if skill_key not in TRAVELER_BODY_KEYS else body_key,
+                "id": char_id,
+                "name": char_name,
+                "body_key": body_key,
+                "skill_key": skill_key,
+            }
+        )
+        if body_key != skill_key:
+            gacha_save = TRAVELER_GACHA_SAVE.get(body_key, f"{char_name}.png")
+            print(
+                f"角色 {char_id} -> {char_name} / 立绘={body_key} 技能={skill_key} "
+                f"(头像->{char_id}.png, 立绘->{gacha_save})"
+            )
+        else:
+            print(
+                f"角色 {char_id} -> {char_name} / {body_key} "
+                f"(头像->{char_id}.png, 立绘->{char_name}.png)"
+            )
     return chars
 
 
@@ -472,16 +622,33 @@ def main(
         chars = resolve_updated_chars(avatar_ids, avatar_items)
         # manual_char_list 可填英文 key；缺 id/名时仅作 key 兜底
         if manual_char_list:
-            known = {c["key"] for c in chars}
+            known = {c.get("skill_key") or c["key"] for c in chars}
+            known |= {c.get("body_key") or c["key"] for c in chars}
             for c in manual_char_list:
                 if c not in known:
-                    chars.append({"key": c, "id": c, "name": c})
+                    chars.append(
+                        {
+                            "key": c,
+                            "id": c,
+                            "name": c,
+                            "body_key": c,
+                            "skill_key": c,
+                        }
+                    )
                     print(f"附加手动角色(仅 key，无重命名 id/名): {c}")
         if not chars:
             print("本版本无可用角色资源需要下载")
         else:
-            print("将下载角色: " + ", ".join(f"{c['name']}({c['id']}/{c['key']})" for c in chars))
-            download_char_icons(chars)
+            labels = []
+            for c in chars:
+                body = c.get("body_key") or c["key"]
+                skill = c.get("skill_key") or c["key"]
+                if body != skill:
+                    labels.append(f"{c['name']}({c['id']}/{body}+{skill})")
+                else:
+                    labels.append(f"{c['name']}({c['id']}/{body})")
+            print("将下载角色: " + ", ".join(labels))
+            download_char_icons(chars, vh=vh)
 
     if do_weapon:
         if force_remote_list:

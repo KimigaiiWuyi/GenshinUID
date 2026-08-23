@@ -4,7 +4,7 @@
     "../../../",
     "../gscore_mail"
   ],
-  "pythonVersion": "3.11",
+  "pythonVersion": "3.10",
   "typeCheckingMode": "basic",
   "reportMissingTypeStubs": false,
   "reportMissingModuleSource": false

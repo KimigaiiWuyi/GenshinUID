@@ -45,11 +45,6 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         "开启后会在群聊中推送当前群米游币任务完成情况",
         True,
     ),
-    "PrivateReport": GsBoolConfig(
-        "米游币任务完成私聊报告",
-        "关闭后将不再给主人推送当天米游币任务完成情况",
-        False,
-    ),
     "PrivateSignReport": GsBoolConfig(
         "签到私聊报告",
         "关闭后将不再给任何私聊用户推送当天签到任务完成情况",
@@ -76,29 +71,14 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
         "开启后每晚01:16将开始自动米游币任务",
         True,
     ),
-    "SchedGetDraw": GsBoolConfig(
-        "定时留影叙佳期",
-        "开启后每晚03:25将开始自动米游币任务",
-        True,
-    ),
     "SchedResinPush": GsBoolConfig(
         "定时检查体力",
         "开启后每隔半小时检查一次开启推送的人的体力状态",
         True,
     ),
-    "CrazyNotice": GsBoolConfig(
-        "催命模式",
-        "开启后当达到推送阈值将会一直推送",
-        False,
-    ),
     "OldPanle": GsBoolConfig(
         "旧面板",
         "会稍微增加面板访问速度,但会损失很多功能",
-        False,
-    ),
-    "ColorBG": GsBoolConfig(
-        "多彩面板",
-        "面板颜色不按照属性来渲染,而按照自定义颜色",
         False,
     ),
     "DefaultBaseBG": GsBoolConfig(

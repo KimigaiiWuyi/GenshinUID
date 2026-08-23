@@ -4,13 +4,13 @@ RAG注册主模块
 """
 
 import json
-from typing import Dict, List
+from typing import Dict, List, Callable
 
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
-from gsuid_core.ai_core.models import KnowledgePoint
 from gsuid_core.ai_core.register import ai_alias, ai_entity
 
+from .models import GsKnowledgePoint, make_kp
 from .weapon_parser import parse_weapon_json, build_weapon_global_summary_kp
 from .monster_parser import parse_monster_json, build_monster_global_summary_kp
 from .artifact_parser import parse_artifact_json, build_artifact_global_summary_kp
@@ -18,6 +18,14 @@ from ..map.GS_MAP_PATH import alias_data
 from .character_parser import parse_character_json, build_global_summary_kp
 from ..resource.RESOURCE_PATH import REL_DATA_PATH, CHAR_DATA_PATH, WEAPON_DATA_PATH, MONSTER_DATA_PATH
 from ...genshinuid_adv.get_adv import adv_lst
+
+
+def _call_entity(fn: Callable[..., object], payload: object) -> None:
+    fn(payload)
+
+
+def _publish(kp: GsKnowledgePoint) -> None:
+    _call_entity(ai_entity, kp)
 
 
 def register_aliases():
@@ -36,12 +44,12 @@ def add_aliases_to_tags(char_name: str, tags: List[str], aliases: Dict[str, List
     return tags
 
 
-def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[KnowledgePoint]:
+def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[GsKnowledgePoint]:
     """解析角色攻略数据为RAG知识块
 
     同时构建圣遗物反向索引：圣遗物 -> 适合该圣遗物的角色列表
     """
-    knowledge_points: List[KnowledgePoint] = []
+    knowledge_points: List[GsKnowledgePoint] = []
 
     # 圣遗物反向索引：圣遗物名称 -> 适合该圣遗物的角色列表
     artifact_to_chars: Dict[str, List[str]] = {}
@@ -101,17 +109,16 @@ def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[
 
         # 添加知识块
         knowledge_points.append(
-            {
-                "id": f"char_adv_{char_name}",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "character_adv",
-                "title": f"{char_name}-角色攻略",
-                "content": adv_content,
-                "tags": tags,
-                "entity": char_name,
-                "_hash": "",
-            }
+            make_kp(
+                id=f"char_adv_{char_name}",
+                title=f"{char_name}-角色攻略",
+                content=adv_content,
+                tags=tags,
+                type="knowledge",
+                category="character_adv",
+                entity=char_name,
+                _hash="",
+            )
         )
 
     # 生成圣遗物反向索引知识块
@@ -127,16 +134,15 @@ def parse_char_adv_json(json_data: Dict, aliases: Dict[str, List[str]]) -> List[
         reverse_content += f"\n## 统计信息\n- 共有 {len(unique_chars)} 个角色适合使用此圣遗物\n"
 
         knowledge_points.append(
-            {
-                "id": f"artifact_reverse_{artifact_name}",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "artifact_reverse_index",
-                "title": f"{artifact_name}-适合角色",
-                "content": reverse_content,
-                "tags": ["圣遗物", "反向索引", "角色推荐", artifact_name],
-                "_hash": "",
-            }
+            make_kp(
+                id=f"artifact_reverse_{artifact_name}",
+                title=f"{artifact_name}-适合角色",
+                content=reverse_content,
+                tags=["圣遗物", "反向索引", "角色推荐", artifact_name],
+                type="knowledge",
+                category="artifact_reverse_index",
+                _hash="",
+            )
         )
 
     return knowledge_points
@@ -149,7 +155,7 @@ def char_adv_register():
     try:
         # 注册角色攻略知识块
         for kp in parse_char_adv_json(adv_lst, aliases):
-            ai_entity(kp)
+            _publish(kp)
 
         logger.info(t("log.genshinuid.p0_9c5177", p0=len(adv_lst)))
 
@@ -184,12 +190,12 @@ def char_register():
                 # 添加别名到角色知识块标签
                 char_name = json_data.get("name", "")
                 kp["tags"] = add_aliases_to_tags(char_name, kp["tags"], aliases)
-                ai_entity(kp)
+                _publish(kp)
 
     # 生成并注册全局汇总知识块
     if all_characters_data:
         summary_kp = build_global_summary_kp(all_characters_data)
-        ai_entity(summary_kp)
+        _publish(summary_kp)
 
 
 def weapon_register():
@@ -210,12 +216,12 @@ def weapon_register():
             )
             # 注册武器详细知识块
             for kp in parse_weapon_json(json_data):
-                ai_entity(kp)
+                _publish(kp)
 
     # 生成并注册武器全局汇总知识块
     if all_weapons_data:
         weapon_summary_kp = build_weapon_global_summary_kp(all_weapons_data)
-        ai_entity(weapon_summary_kp)
+        _publish(weapon_summary_kp)
 
 
 def artifact_register():
@@ -239,7 +245,7 @@ def artifact_register():
                 )
                 # 注册圣遗物详细知识块
                 for kp in parse_artifact_json(json_data):
-                    ai_entity(kp)
+                    _publish(kp)
         except Exception as e:
             logger.warning(t("log.genshinuid.msg_fb7105", i=i, e=e))
             continue
@@ -247,7 +253,7 @@ def artifact_register():
     # 生成并注册圣遗物全局汇总知识块
     if all_artifacts_data:
         artifact_summary_kp = build_artifact_global_summary_kp(all_artifacts_data)
-        ai_entity(artifact_summary_kp)
+        _publish(artifact_summary_kp)
 
     logger.info(t("log.genshinuid.rag_p0_5ac7eb", p0=len(all_artifacts_data)))
 
@@ -271,7 +277,7 @@ def monster_register():
                 )
                 # 注册怪物详细知识块
                 for kp in parse_monster_json(json_data):
-                    ai_entity(kp)
+                    _publish(kp)
         except Exception as e:
             logger.warning(t("log.genshinuid.msg_1d0015", i=i, e=e))
             continue
@@ -279,7 +285,7 @@ def monster_register():
     # 生成并注册怪物全局汇总知识块
     if all_monsters_data:
         monster_summary_kp = build_monster_global_summary_kp(all_monsters_data)
-        ai_entity(monster_summary_kp)
+        _publish(monster_summary_kp)
 
     logger.info(t("log.genshinuid.rag_p0_2cc983", p0=len(all_monsters_data)))
 

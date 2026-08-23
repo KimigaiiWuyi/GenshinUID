@@ -14,7 +14,7 @@ async def reset_sv_config() -> str:
             config["sv"] = {}
         async with aiofiles.open(path, "w") as f:
             await f.write(json.dumps(config, indent=4))
-        gss.load_plugins()
+        await gss.load_plugins()
         return "成功重置配置文件！发送[gs重启]以应用配置..."
     else:
         return "未找到配置文件, 请尝试使用命令[gs重启]后重试..."

@@ -12,7 +12,6 @@ from .etc.MAP_PATH import COLOR_MAP, avatarName2SkillAdd
 from .mono.Character import Character
 from ..utils.map.GS_MAP_PATH import CharId2TalentIcon_data
 from ..utils.image.image_tools import (
-    CustomizeImage,
     get_star_png,
     get_weapon_affix_pic,
 )
@@ -363,10 +362,7 @@ async def get_bg_card(char_element: str, ex_len: int, char_img: Image.Image) -> 
         new_overlay_h = math.ceil(overlay_w / new_overlay_w * overlay_h)
         overlay = overlay.resize((new_overlay_w, new_overlay_h), Image.Resampling.LANCZOS)
         overlay = overlay.crop((0, 0, img_w, img_h))
-    if gsconfig.get_config("ColorBG").data and gsconfig.get_config("RandomPic").data:
-        bg_color = CustomizeImage.get_bg_color(char_img)
-    else:
-        bg_color = COLOR_MAP[char_element]
+    bg_color = COLOR_MAP[char_element]
     color_img = Image.new("RGBA", overlay.size, bg_color)
     return ImageChops.overlay(color_img, overlay)
 

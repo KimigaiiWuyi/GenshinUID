@@ -4,6 +4,7 @@ from .MAP_PATH import ATTR_MAP, dmgMap
 
 R_PATH = Path(__file__).parents[1]
 TEXT_PATH = R_PATH / "texture2D"
+RANK_TEXT = TEXT_PATH / "rank_img"
 
 SCORE_MAP = {
     "暴击率": 2,

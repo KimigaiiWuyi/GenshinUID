@@ -77,8 +77,11 @@ async def get_season_post_draw(uid: str, ev: Event) -> Union[str, bytes]:
         tp = ei.get("trans_point", {})
         parts.append(f"解锁锚点: {tp.get('cur_number', 'N/A')} (新增{tp.get('new_number', 0)})")
         # 探索信息
-        if ei.get("area_list"):
-            for area in ei["area_list"][:5]:
+        area_list = dict(ei).get("area_list")
+        if isinstance(area_list, list):
+            for area in area_list[:5]:
+                if not isinstance(area, dict):
+                    continue
                 parts.append(f"  {area.get('name', '?')}: 探索度{area.get('exploration_percentage', 0) / 10:.1f}%")
         # 游戏记录
         if gi:

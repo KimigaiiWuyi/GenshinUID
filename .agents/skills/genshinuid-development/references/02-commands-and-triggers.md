@@ -2,8 +2,7 @@
 
 > 返回 [SKILL.md](../SKILL.md)
 
-触发器写在各 `genshinuid_*/__init__.py`。完整 `to_ai` 清单见
-[`docs/ai_trigger_migration.md`](../../../../docs/ai_trigger_migration.md)（约 100 个活跃触发器）。
+触发器写在各 `genshinuid_*/__init__.py`。`to_ai` 写法见 [五、AI 集成](./05-ai-integration.md)。
 
 ## 2.1 选择触发器
 

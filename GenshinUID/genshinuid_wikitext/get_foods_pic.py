@@ -54,6 +54,7 @@ async def draw_foods_wiki_img(data: Food):
 
     _, _, _, y1 = img_test_draw.textbbox((0, 0), effect, gs_font_22)
     _, _, _, y2 = img_test_draw.textbbox((0, 0), desc, gs_font_22)
+    y1, y2 = int(y1), int(y2)
     w, h = 600, 750 + y1 + y2
 
     star_pic = get_star_png(data["rarity"])

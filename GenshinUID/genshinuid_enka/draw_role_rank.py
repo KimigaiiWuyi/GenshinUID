@@ -5,9 +5,9 @@ from PIL import Image, ImageDraw
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.ai_core.trigger_bridge import ai_return
 
+from .etc.etc import RANK_TEXT
 from ..utils.colors import get_color
 from ..utils.message import PREFIX
-from .draw_rank_list import RANK_TEXT
 from .get_akasha_data import _get_rank
 from ..utils.api.cv.request import _CvApi
 from ..utils.map.GS_MAP_PATH import icon2Name

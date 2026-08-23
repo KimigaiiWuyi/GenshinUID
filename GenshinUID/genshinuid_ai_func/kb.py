@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pydantic_ai import RunContext
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.ai_core.rag import query_knowledge
 from gsuid_core.ai_core.models import ToolContext
@@ -55,7 +56,7 @@ async def search_genshin_kb(
     if not text:
         return "请提供检索关键词"
     cap = min(max(limit, 1), 12)
-    logger.info(f"[原神·知识库] query={text!r} limit={cap}")
+    logger.info(t("log.genshinuid.kb_query", query=text, limit=cap))
     points = await query_knowledge(query=text, limit=cap, plugin_filter=["GenshinUID"])
     chunks: list[str] = []
     for point in points:

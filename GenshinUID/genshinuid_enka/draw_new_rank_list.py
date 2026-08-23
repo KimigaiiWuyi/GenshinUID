@@ -8,7 +8,7 @@ from gsuid_core.models import Event
 
 from .res import div, draw_ring, draw_new_title
 from .get_enka_img import get_char_data
-from .draw_role_rank import get_color
+from ..utils.colors import get_color
 from .get_akasha_data import _get_rank
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import mysData, weaponList

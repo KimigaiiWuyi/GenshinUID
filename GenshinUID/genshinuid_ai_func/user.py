@@ -6,6 +6,7 @@ from typing import Optional
 
 from pydantic_ai import RunContext
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.ai_core.models import ToolContext
 from gsuid_core.ai_core.register import ai_tools
@@ -373,7 +374,7 @@ async def get_user_genshin_char_detail(
     data = await get_char_data(target, char_name.strip())
     if isinstance(data, str):
         return data if data else CHAR_HINT.format(char_name)
-    logger.info(f"[原神·AI工具] char_detail uid={target} name={char_name!r}")
+    logger.info(t("log.genshinuid.ai_char_detail", uid=target, name=char_name))
     body = _format_char_detail(data)
     return (
         f"{body}\n"

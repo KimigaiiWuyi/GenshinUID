@@ -302,7 +302,12 @@ async def convert_ambr_to_talent(
         if "1" not in promote and 1 not in promote:
             logger.warning(t("log.genshinuid.ambr_no_promote", cid=cid, talent=i))
             continue
-        p1 = promote.get("1") or promote.get(1) or {}
+        p1 = promote.get("1") or {}
+        if not p1:
+            for pkey, pval in promote.items():
+                if str(pkey) == "1" and isinstance(pval, dict):
+                    p1 = pval
+                    break
         result[f"combat{index + 1}"] = {
             "name": skill.get("name", ""),
             "info": skill.get("description", ""),

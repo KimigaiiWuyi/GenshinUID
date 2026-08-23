@@ -3,10 +3,59 @@ RAG模块数据模型
 定义用于RAG系统的数据类
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, TypedDict
 from dataclasses import dataclass
+from typing_extensions import NotRequired
 
 from .constants import WEAPON_MAP, ELEMENT_MAP, WEAPON_TYPE_MAP, WeaponType
+
+
+class GsKnowledgePoint(TypedDict):
+    """插件知识块：Core KnowledgePoint 加上文档里的 type/category。"""
+
+    id: str
+    plugin: str
+    title: str
+    content: str
+    tags: List[str]
+    type: NotRequired[str]
+    category: NotRequired[str]
+    entity: NotRequired[str]
+    source: NotRequired[str]
+    _hash: NotRequired[str]
+
+
+def make_kp(
+    id: str,
+    title: str,
+    content: str,
+    tags: List[str],
+    *,
+    plugin: str = "genshin",
+    type: Optional[str] = None,
+    category: Optional[str] = None,
+    entity: Optional[str] = None,
+    source: Optional[str] = None,
+    _hash: Optional[str] = None,
+) -> GsKnowledgePoint:
+    point = GsKnowledgePoint(
+        id=id,
+        plugin=plugin,
+        title=title,
+        content=content,
+        tags=tags,
+    )
+    if type is not None:
+        point["type"] = type
+    if category is not None:
+        point["category"] = category
+    if entity is not None:
+        point["entity"] = entity
+    if source is not None:
+        point["source"] = source
+    if _hash is not None:
+        point["_hash"] = _hash
+    return point
 
 
 @dataclass

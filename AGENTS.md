@@ -18,7 +18,7 @@
 - UID：框架 **`GsBind`**（默认游戏即原神）。Cookie / Stoken：框架 **`GsUser`**。本插件无 Bind 表。
 - 面板：`genshinuid_enka/`（Enka / MiniGG / 米游社）。命座与武器效果：`enka/effect/*.json`。
 - 命令普遍带 `to_ai`；出图在数据层 `ai_return`。纯文本工具在 `genshinuid_ai_func/`。
-- 版本：`GenshinUID/version.py` 的 `GenshinUID_version` / `Genshin_version`（当前 `7.0.0`，与 `utils/map/data/*_7.0.0.json` 对齐）。`pyproject.toml` `[tool.poetry] version` 可能滞后。
+- 版本：`GenshinUID/version.py` 的 `GenshinUID_version` / `Genshin_version`（当前 `7.0.0`，与 `utils/map/data/*_7.0.0.json` 对齐）。`pyproject.toml` `[project] version` 与之保持一致。
 
 ## Repository map
 
@@ -28,9 +28,8 @@
 ├── pyproject.toml / ruff.toml / pyrightconfig.json
 ├── __init__.py / __nest__.py
 ├── locales/{zh-cn,en,ja}/logs.json    # i18n
-├── docs/                              # AI 改造笔记、update-enka-effects
 ├── tests/  test_output/
-├── .agents/skills/genshinuid-development/
+├── .agents/skills/                    # genshinuid-development / update-enka-effects
 └── GenshinUID/
     ├── __init__.py                    # 仅 Plugins(...)
     ├── __full__.py / version.py
@@ -52,10 +51,9 @@
 | `genshinuid_ann` / `_cale` / `_eventlist` | 公告、日历、活动卡池 |
 | `genshinuid_signin` / `_mysbbscoin` / `_mys` | 签到、米游币、娱乐 |
 | `genshinuid_gcg` / `_dailycost` / `_compute` / `_map` | 七圣、材料、背包、地图 |
-| `genshinuid_code` / `_get_code` / `_returnlist` / `_xkdata` / `_season_post` / `_etcimg` | 兑换码、未复刻、深渊库、季报、杂图 |
+| `genshinuid_code` / `_returnlist` / `_xkdata` / `_season_post` / `_etcimg` | 兑换码、未复刻、深渊使用率/队伍、季报、杂图 |
 | `genshinuid_config` / `_help` / `_status` / `_resource` / `_check` / `_data` / `_start` | 配置、帮助、资源、启动 |
 | `genshinuid_ai_func` | `@ai_tools`：catalog / kb / user |
-| `genshinuid_topup` / `_postdraw` | 历史功能，触发器侧基本停用 |
 
 `GsBind.insert_uid(..., group_id, 9)` 的 `9` 是 **`lenth_limit`（UID 字符串长度）**，不是绑定个数。
 
@@ -64,7 +62,7 @@
 | 任务 | 读 |
 |------|-----|
 | 本插件业务 | [genshinuid-development](.agents/skills/genshinuid-development/SKILL.md) |
-| 更新 `enka/effect` JSON | [update-enka-effects](./docs/skills/update-enka-effects/SKILL.md) |
+| 更新 `enka/effect` JSON | [update-enka-effects](.agents/skills/update-enka-effects/SKILL.md) |
 | 代码红线 | Core 根 [`AGENTS.md`](../../../AGENTS.md) §1–§4、§1.9 |
 
 单独 clone 时打开宿主 Core 的 `AGENTS.md`。
@@ -79,8 +77,8 @@ uv run ruff format --check GenshinUID tests
 uv run pytest tests -q
 ```
 
-`ruff.toml`：`line-length = 120`，排除 `GenshinUID/tools`。忽略 `pyproject.toml` 里遗留的 black 79。
-`pyrightconfig.json`：`include = ["GenshinUID"]`，`extraPaths` 指到 Core 根。
+`ruff.toml`：`line-length = 120`，排除 `GenshinUID/tools`。
+`pyrightconfig.json`：`include = ["GenshinUID"]`，`extraPaths` 指到 Core 根。依赖声明在 `pyproject.toml` `[project]`（uv / PEP 621）。
 effect 更新：`python GenshinUID/tools/update_effects.py -v 7.0`（走 update-enka-effects skill）。
 
 ## Code style
@@ -108,7 +106,7 @@ effect 更新：`python GenshinUID/tools/update_effects.py -v 7.0`（走 update-
 
 - 现有：`tests/test_logger_i18n.py`。新工具补 `tests/test_<module>.py`。
 - 禁止把真实 Cookie / UID 提交进仓库。
-- 改触发器对照 [`docs/ai_trigger_migration.md`](./docs/ai_trigger_migration.md)。不要无产品需求复活 `topup` / `postdraw`。
+- 改触发器对照 [`.agents/skills/genshinuid-development/references/05-ai-integration.md`](.agents/skills/genshinuid-development/references/05-ai-integration.md)。
 
 ## 本仓库结构约定
 
@@ -117,7 +115,7 @@ effect 更新：`python GenshinUID/tools/update_effects.py -v 7.0`（走 update-
 - 无 CK 时面板只有 Enka 展柜（最多 12 名），文案必须写明不是完整箱。
 - 配置：`gsconfig`；默认值变量名历史拼写 **`CONIFG_DEFAULT`**，不要无意义重命名。
 - 订阅任务名带 `[原神]`，走 `gs_subscribe`。
-- RAG：`utils/message.py` 副作用加载 `utils.rag`。检索 `plugin_filter=["GenshinUID"]`。
+- RAG：`utils/message.py` 副作用加载 `utils.rag.register`。检索 `plugin_filter=["GenshinUID"]`。
 - 路径单源：`utils/resource/RESOURCE_PATH.py`。
 
 ## 坑点

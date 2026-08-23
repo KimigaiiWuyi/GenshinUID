@@ -20,8 +20,6 @@
 
 允许 `try/except` 的只有 `_ai_return_*` 辅助函数。
 
-改造范围与清单：[`docs/ai_trigger_migration.md`](../../../../docs/ai_trigger_migration.md)、[`docs/AI_TRIGGER_CHANGES.md`](../../../../docs/AI_TRIGGER_CHANGES.md)。
-
 ## 5.3 `genshinuid_ai_func`
 
 `__init__.py` 显式 import `kb` / `user` / `catalog`，否则工具不会进注册表。

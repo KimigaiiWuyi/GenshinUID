@@ -13,8 +13,6 @@ from .get_guide import get_gs_guide
 from ..utils.message import GButton as Button
 from .get_bbs_post_guide import get_material_way_post
 from .get_new_abyss_data import get_review_data
-
-# from .get_abyss_data import get_review
 from ..utils.image.convert import convert_img
 from .draw_poetry_abyss_pic import draw_poetry_abyss_image
 from ..utils.map.name_covert import alias_to_char_name
@@ -156,7 +154,6 @@ async def send_abyss_review(bot: Bot, ev: Event):
             version = Genshin_version[:-2]
 
     im = await get_review_data(version, floor)
-    # im = await get_review(version)
 
     if isinstance(im, bytes):
         c = Button("♾️深渊概览", "深渊概览")

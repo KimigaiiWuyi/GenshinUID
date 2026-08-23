@@ -37,18 +37,18 @@ async def notice_cale():
             for act in act_list:
                 if act["status"] == 2 and act["countdown_seconds"] <= 172810 and not act["is_finished"]:
                     for _sub in active_datas[uid]:
-                        t = ""
+                        extra = ""
                         if act["type"] == "ActTypeHardChallengeSub":
-                            t = f"差{act['y'] - act['x']}"
+                            extra = f"差{act['y'] - act['x']}"
 
                         if act["type"] == "ActTypeExplore" and "explore_detail" in act and act["explore_detail"]:
                             ed = act["explore_detail"]
-                            t = f"{ed['explore_percent']}%"
+                            extra = f"{ed['explore_percent']}%"
 
                         mlist = [
                             f"🚨 活动推送提醒 - UID{uid}",
                             f"当前{act['name']}活动快要结束了!",
-                            f"你当前进度：未完成！{t}",
+                            f"你当前进度：未完成！{extra}",
                             f"还剩下{act['countdown_seconds'] // 60}分钟, 活动即将结束！",
                             f"你可以发送 {PREFIX}日历 查看活动详情！",
                         ]

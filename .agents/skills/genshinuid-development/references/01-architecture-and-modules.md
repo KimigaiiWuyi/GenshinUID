@@ -28,8 +28,7 @@ plugins/GenshinUID/
 │   ├── utils/                  # 横切
 │   └── tools/                  # 离线脚本（ruff 排除）
 ├── locales/                    # i18n
-├── docs/                       # 人类/Agent 专题
-└── .agents/skills/             # 本 SKILL
+└── .agents/skills/             # 本 SKILL / update-enka-effects
 ```
 
 ## 1.3 功能子包
@@ -61,9 +60,9 @@ plugins/GenshinUID/
 | `genshinuid_count` | 练度/毕业度 |
 | `genshinuid_compute` | 背包 |
 | `genshinuid_map` | 地图查询 |
-| `genshinuid_code` / `genshinuid_get_code` | 前瞻兑换码 |
+| `genshinuid_code` | 前瞻兑换码 |
 | `genshinuid_returnlist` | 未复刻天数 |
-| `genshinuid_xkdata` | 深渊数据库 |
+| `genshinuid_xkdata` | 深渊使用率 / 队伍（teyvat） |
 | `genshinuid_season_post` | 季报 |
 | `genshinuid_etcimg` | 版本规划/杂图 |
 | `genshinuid_config` | 用户开关与阈值 |
@@ -72,7 +71,6 @@ plugins/GenshinUID/
 | `genshinuid_check` / `genshinuid_data` | 缓存清理、v3 导入、重置配置 |
 | `genshinuid_start` | `on_core_start` |
 | `genshinuid_ai_func` | 纯数据 `@ai_tools` |
-| `genshinuid_topup` / `genshinuid_postdraw` | 历史功能，触发器侧基本注释掉 |
 
 ## 1.4 `utils/`
 
@@ -83,11 +81,10 @@ plugins/GenshinUID/
 | `mys_api.py` | `_MysApi()` 单例 `mys_api` |
 | `resource/RESOURCE_PATH.py` | 全部运行时路径 |
 | `map/` | 角色/武器/圣遗物/别名 JSON |
-| `api/mys` `api/hakush` `api/teyvat` `api/cv` | 各数据源 |
+| `api/hakush` `api/teyvat` `api/cv` | 各数据源 |
 | `rag/` | `ai_entity` / `ai_alias` 注册 |
 | `image/` | PIL 工具、公共 texture |
 | `fonts/` | 原神字体 |
-| `database.py` | 仅遗留 `GsData.db` 路径，**绑定表不在这里** |
 
 ## 1.5 请求主链路（面板）
 

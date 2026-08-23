@@ -4,8 +4,8 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.utils.image.convert import convert_img
 
+from .etc.etc import RANK_TEXT
 from .draw_normal import get_artifact_score_data, _get_single_artifact_img
-from .draw_rank_list import RANK_TEXT
 from .draw_role_rank import REGION_MAP, grey
 from ..utils.api.cv.request import _CvApi
 from ..utils.map.GS_MAP_PATH import icon2Name, artifact2attr

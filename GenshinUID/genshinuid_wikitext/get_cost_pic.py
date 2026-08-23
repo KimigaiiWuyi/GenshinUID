@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
@@ -37,16 +37,17 @@ async def get_char_cost_wiki_img(name: str) -> Union[str, bytes]:
     talent_data = await get_talent_info(name)
     if isinstance(data, int):
         return await get_error_img(data)
-    elif isinstance(data, List):
+    if isinstance(data, list):
         return await get_error_img(-400)
-    elif isinstance(talent_data, int):
+    if isinstance(talent_data, int):
         return await get_error_img(talent_data)
-    else:
-        char_name = talent_data["name"]
-        path = WIKI_COST_CHAR_PATH / f"{char_name}.jpg"
-        if path.exists():
-            async with aiofiles.open(path, "rb") as f:
-                return await f.read()
+    if data is None or talent_data is None:
+        return await get_error_img(-400)
+    char_name = talent_data["name"]
+    path = WIKI_COST_CHAR_PATH / f"{char_name}.jpg"
+    if path.exists():
+        async with aiofiles.open(path, "rb") as f:
+            return await f.read()
     img = await draw_char_cost_img(data, talent_data)
     return img
 

@@ -6,7 +6,12 @@ from PIL import Image, ImageDraw
 
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
-from gsuid_core.utils.api.mys.models import AbyssBattleAvatar
+from gsuid_core.utils.api.mys.models import (
+    AbyssBattleAvatar,
+    HardChallengeFloor,
+    HardChallengeMonster,
+    HardChallengeTeamAvatar,
+)
 from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.image.image_tools import get_avatar_with_ring
 
@@ -36,8 +41,8 @@ async def draw_hard_challenge_img(uid: str, ev: Event) -> Union[str, bytes]:
 
     # AI 注入：提取幽境危战数据
     try:
-        best = sdata.get("best", {})
-        challenge = sdata.get("challenge", [])
+        best = sdata.get("best")
+        challenge = sdata.get("challenge") or []
         if best:
             difficulty_map = {1: "普通", 2: "困难", 3: "极限"}
             diff = difficulty_map.get(best.get("difficulty", 0), "未知")
@@ -73,7 +78,7 @@ async def draw_hard_challenge_img(uid: str, ev: Event) -> Union[str, bytes]:
     if not best_data:
         return "你还没有挑战过[肃靖险乱]噢！(或需要等待数据同步后重试)"
 
-    challenge: List[Dict] = sdata["challenge"]
+    challenge: List[HardChallengeFloor] = sdata["challenge"]
 
     banner = Image.open(TEXT_PATH / "banner.png")
     medal = Image.open(TEXT_PATH / f"medal_{best_data['difficulty']}.png").resize((84, 84)).convert("RGBA")
@@ -88,9 +93,9 @@ async def draw_hard_challenge_img(uid: str, ev: Event) -> Union[str, bytes]:
         card_draw = ImageDraw.Draw(card)
         name: str = floor["name"]
         sec: int = floor["second"]
-        monster: Dict = floor["monster"]
+        monster: HardChallengeMonster = floor["monster"]
         best_avatar: List[Dict] = floor["best_avatar"]
-        teams: List[Dict] = floor["teams"]
+        teams: List[HardChallengeTeamAvatar] = floor["teams"]
 
         card_draw.text((59, 63), name, "white", gs_font_36, "lm")
         card_draw.text((79, 123), "战斗用时", "white", gs_font_26, "lm")

@@ -375,14 +375,6 @@
     "desc": "数据源由AKACV提供",
     "data": [
       {
-        "name": "开启排名系统",
-        "desc": "开启排名系统之后可正常使用",
-        "eg": "开启排名系统",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
         "name": "排名列表/统计",
         "desc": "查看自己的排名图片",
         "eg": "排名列表、排名统计",
@@ -694,14 +686,6 @@
         "need_admin": true
       },
       {
-        "name": "更新",
-        "desc": "可尝试强制更新",
-        "eg": "强行强制更新",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": true
-      },
-      {
         "name": "强制推送体力提醒",
         "desc": "强制推送全部体力信息",
         "eg": "强制推送体力提醒",
@@ -756,8 +740,16 @@
       },
       {
         "name": "深渊概览",
-        "desc": "从虚空数据库获取当期深渊完成率",
+        "desc": "当期深渊角色使用率统计",
         "eg": "深渊概览",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "深渊队伍",
+        "desc": "当期深渊热门队伍搭配",
+        "eg": "深渊队伍",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

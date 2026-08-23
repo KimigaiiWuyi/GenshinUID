@@ -1,4 +1,4 @@
-from gsuid_core.sv import SV, get_plugin_available_prefix
+from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
@@ -6,9 +6,8 @@ from gsuid_core.models import Event
 from gsuid_core.help.utils import register_help
 
 from .get_help import get_core_help
+from ..utils.message import PREFIX
 from ..utils.image.image_tools import get_ICON
-
-PREFIX = get_plugin_available_prefix("GenshinUID")
 
 sv_gs_help = SV("gs帮助")
 

@@ -5,14 +5,12 @@
 
 from typing import Dict, List
 
-from gsuid_core.ai_core.models import KnowledgePoint
-
 from .utils import clean_html_tags
-from .models import WeaponInfo
+from .models import WeaponInfo, GsKnowledgePoint, make_kp
 from .constants import WEAPON_MAP, FIGHT_PROP_MAP
 
 
-def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
+def parse_weapon_json(json_data: Dict) -> List[GsKnowledgePoint]:
     """
     解析武器JSON数据为RAG知识块
 
@@ -36,7 +34,7 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
         f"---\n"
     )
 
-    knowledge_points: List[KnowledgePoint] = []
+    knowledge_points: List[GsKnowledgePoint] = []
 
     # ==================== 块 1：武器基础信息 ====================
     weapon_content = (
@@ -56,17 +54,16 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
         weapon_content += f"\n## 武器故事\n{clean_html_tags(json_data.get('story', ''))}\n"
 
     knowledge_points.append(
-        {
-            "id": f"weapon_{weapon_info.id}_info",
-            "plugin": "genshin",
-            "type": "knowledge",
-            "category": "weapon_info",
-            "title": f"{weapon_info.name}-基础信息",
-            "content": weapon_content,
-            "tags": ["武器", "基础信息", weapon_info.name],
-            "entity": weapon_info.name,
-            "_hash": "",
-        }
+        make_kp(
+            id=f"weapon_{weapon_info.id}_info",
+            title=f"{weapon_info.name}-基础信息",
+            content=weapon_content,
+            tags=["武器", "基础信息", weapon_info.name],
+            type="knowledge",
+            category="weapon_info",
+            entity=weapon_info.name,
+            _hash="",
+        )
     )
 
     # ==================== 块 2：武器基础属性 ====================
@@ -87,17 +84,16 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
             stats_content += "\n"
 
         knowledge_points.append(
-            {
-                "id": f"weapon_{weapon_info.id}_stats",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "weapon_stats",
-                "title": f"{weapon_info.name}-基础属性",
-                "content": stats_content,
-                "tags": ["武器", "属性", weapon_info.name],
-                "entity": weapon_info.name,
-                "_hash": "",
-            }
+            make_kp(
+                id=f"weapon_{weapon_info.id}_stats",
+                title=f"{weapon_info.name}-基础属性",
+                content=stats_content,
+                tags=["武器", "属性", weapon_info.name],
+                type="knowledge",
+                category="weapon_stats",
+                entity=weapon_info.name,
+                _hash="",
+            )
         )
 
     # ==================== 块 3：武器主属性信息 ====================
@@ -150,17 +146,16 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
             main_prop_tags.extend(["精通", "元素反应"])
 
         knowledge_points.append(
-            {
-                "id": f"weapon_{weapon_info.id}_mainprop",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "weapon_mainprop",
-                "title": f"{weapon_info.name}-主属性",
-                "content": main_prop_content,
-                "tags": main_prop_tags,
-                "entity": weapon_info.name,
-                "_hash": "",
-            }
+            make_kp(
+                id=f"weapon_{weapon_info.id}_mainprop",
+                title=f"{weapon_info.name}-主属性",
+                content=main_prop_content,
+                tags=main_prop_tags,
+                type="knowledge",
+                category="weapon_mainprop",
+                entity=weapon_info.name,
+                _hash="",
+            )
         )
 
     # ==================== 块 4：武器精炼效果 ====================
@@ -190,17 +185,16 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
                     affix_content += f"### 精炼等阶 {r_level}\n{desc}\n\n"
 
             knowledge_points.append(
-                {
-                    "id": f"weapon_{weapon_info.id}_affix",
-                    "plugin": "genshin",
-                    "type": "knowledge",
-                    "category": "weapon_affix",
-                    "title": f"{weapon_info.name}-精炼效果",
-                    "content": affix_content,
-                    "tags": ["武器", "精炼", weapon_info.name, affix_name],
-                    "entity": weapon_info.name,
-                    "_hash": "",
-                }
+                make_kp(
+                    id=f"weapon_{weapon_info.id}_affix",
+                    title=f"{weapon_info.name}-精炼效果",
+                    content=affix_content,
+                    tags=["武器", "精炼", weapon_info.name, affix_name],
+                    type="knowledge",
+                    category="weapon_affix",
+                    entity=weapon_info.name,
+                    _hash="",
+                )
             )
 
     # 保留对旧格式 weaponAffix 的支持
@@ -216,17 +210,16 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
             affix_content += f"### R{level}：{name}\n{desc}\n\n"
 
         knowledge_points.append(
-            {
-                "id": f"weapon_{weapon_info.id}_affix",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "weapon_affix",
-                "title": f"{weapon_info.name}-精炼效果",
-                "content": affix_content,
-                "tags": ["武器", "精炼", weapon_info.name],
-                "entity": weapon_info.name,
-                "_hash": "",
-            }
+            make_kp(
+                id=f"weapon_{weapon_info.id}_affix",
+                title=f"{weapon_info.name}-精炼效果",
+                content=affix_content,
+                tags=["武器", "精炼", weapon_info.name],
+                type="knowledge",
+                category="weapon_affix",
+                entity=weapon_info.name,
+                _hash="",
+            )
         )
 
     # ==================== 块 5：武器数值对比信息 ====================
@@ -306,23 +299,22 @@ def parse_weapon_json(json_data: Dict) -> List[KnowledgePoint]:
         comparison_tags.append(f"{weapon_info.rank}星")
 
         knowledge_points.append(
-            {
-                "id": f"weapon_{weapon_info.id}_comparison",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "weapon_comparison",
-                "title": f"{weapon_info.name}-数值对比信息",
-                "content": comparison_content,
-                "tags": comparison_tags,
-                "entity": weapon_info.name,
-                "_hash": "",
-            }
+            make_kp(
+                id=f"weapon_{weapon_info.id}_comparison",
+                title=f"{weapon_info.name}-数值对比信息",
+                content=comparison_content,
+                tags=comparison_tags,
+                type="knowledge",
+                category="weapon_comparison",
+                entity=weapon_info.name,
+                _hash="",
+            )
         )
 
     return knowledge_points
 
 
-def build_weapon_global_summary_kp(all_weapons_data: List[Dict]) -> KnowledgePoint:
+def build_weapon_global_summary_kp(all_weapons_data: List[Dict]) -> GsKnowledgePoint:
     """生成武器全局汇总知识块"""
 
     # 按武器类型分类
@@ -399,19 +391,18 @@ def build_weapon_global_summary_kp(all_weapons_data: List[Dict]) -> KnowledgePoi
             summary_text += f"包含：{', '.join(sorted(names))}\n"
         summary_text += "\n"
 
-    return {
-        "id": "global_summary_all_weapons",
-        "plugin": "genshin",
-        "type": "knowledge",
-        "category": "weapon_summary",
-        "title": "原神全武器分类统计汇总",
-        "content": summary_text,
-        "tags": ["武器", "统计", "汇总", "类型", "星级", "主属性"],
-        "_hash": "",
-    }
+    return make_kp(
+        id="global_summary_all_weapons",
+        title="原神全武器分类统计汇总",
+        content=summary_text,
+        tags=["武器", "统计", "汇总", "类型", "星级", "主属性"],
+        type="knowledge",
+        category="weapon_summary",
+        _hash="",
+    )
 
 
-def build_weapon_comparison_summary_kp(all_weapons_data: List[Dict]) -> KnowledgePoint:
+def build_weapon_comparison_summary_kp(all_weapons_data: List[Dict]) -> GsKnowledgePoint:
     """生成武器数值对比汇总知识块，用于回答武器强度对比问题"""
 
     # 按星级分类的武器数值汇总
@@ -489,13 +480,12 @@ def build_weapon_comparison_summary_kp(all_weapons_data: List[Dict]) -> Knowledg
     comparison_text += "- 精炼等级R1→R5，效果提升约50-100%\n"
     comparison_text += "- 高精炼4星武器可媲美低精炼5星武器\n"
 
-    return {
-        "id": "global_weapon_comparison_summary",
-        "plugin": "genshin",
-        "type": "knowledge",
-        "category": "weapon_comparison_summary",
-        "title": "原神武器数值对比汇总",
-        "content": comparison_text,
-        "tags": ["武器", "对比", "数值", "强度", "攻击力", "副属性", "精炼"],
-        "_hash": "",
-    }
+    return make_kp(
+        id="global_weapon_comparison_summary",
+        title="原神武器数值对比汇总",
+        content=comparison_text,
+        tags=["武器", "对比", "数值", "强度", "攻击力", "副属性", "精炼"],
+        type="knowledge",
+        category="weapon_comparison_summary",
+        _hash="",
+    )

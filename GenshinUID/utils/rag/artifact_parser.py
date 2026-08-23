@@ -5,10 +5,8 @@
 
 from typing import Dict, List
 
-from gsuid_core.ai_core.models import KnowledgePoint
-
 from .utils import clean_html_tags
-from .models import ArtifactInfo
+from .models import ArtifactInfo, GsKnowledgePoint, make_kp
 
 # 圣遗物部位映射
 ARTIFACT_POS_MAP = {
@@ -20,7 +18,7 @@ ARTIFACT_POS_MAP = {
 }
 
 
-def parse_artifact_json(json_data: Dict) -> List[KnowledgePoint]:
+def parse_artifact_json(json_data: Dict) -> List[GsKnowledgePoint]:
     """
     解析圣遗物JSON数据为RAG知识块
 
@@ -41,7 +39,7 @@ def parse_artifact_json(json_data: Dict) -> List[KnowledgePoint]:
         f"【圣遗物情报】\n套装：{artifact_info.name} | ID：{artifact_info.id}\n星级：{artifact_info.max_level}星\n---\n"
     )
 
-    knowledge_points: List[KnowledgePoint] = []
+    knowledge_points: List[GsKnowledgePoint] = []
 
     # ==================== 块 1：圣遗物基础信息 ====================
     artifact_content = (
@@ -78,17 +76,16 @@ def parse_artifact_json(json_data: Dict) -> List[KnowledgePoint]:
                     artifact_content += f"- {src_name}\n"
 
     knowledge_points.append(
-        {
-            "id": f"artifact_{artifact_info.id}_info",
-            "plugin": "genshin",
-            "type": "knowledge",
-            "category": "artifact_info",
-            "title": f"{artifact_info.name}-基础信息",
-            "content": artifact_content,
-            "tags": ["圣遗物", "套装", artifact_info.name],
-            "entity": artifact_info.name,
-            "_hash": "",
-        }
+        make_kp(
+            id=f"artifact_{artifact_info.id}_info",
+            title=f"{artifact_info.name}-基础信息",
+            content=artifact_content,
+            tags=["圣遗物", "套装", artifact_info.name],
+            type="knowledge",
+            category="artifact_info",
+            entity=artifact_info.name,
+            _hash="",
+        )
     )
 
     # ==================== 块 2：圣遗物各部位详情 ====================
@@ -110,23 +107,22 @@ def parse_artifact_json(json_data: Dict) -> List[KnowledgePoint]:
             suit_content += f"- **最高等级**：{max_level}级\n\n"
 
         knowledge_points.append(
-            {
-                "id": f"artifact_{artifact_info.id}_suit",
-                "plugin": "genshin",
-                "type": "knowledge",
-                "category": "artifact_suit",
-                "title": f"{artifact_info.name}-部位详情",
-                "content": suit_content,
-                "tags": ["圣遗物", "部位", artifact_info.name],
-                "entity": artifact_info.name,
-                "_hash": "",
-            }
+            make_kp(
+                id=f"artifact_{artifact_info.id}_suit",
+                title=f"{artifact_info.name}-部位详情",
+                content=suit_content,
+                tags=["圣遗物", "部位", artifact_info.name],
+                type="knowledge",
+                category="artifact_suit",
+                entity=artifact_info.name,
+                _hash="",
+            )
         )
 
     return knowledge_points
 
 
-def build_artifact_global_summary_kp(all_artifacts_data: List[Dict]) -> KnowledgePoint:
+def build_artifact_global_summary_kp(all_artifacts_data: List[Dict]) -> GsKnowledgePoint:
     """生成圣遗物全局汇总知识块，用于回答统计类问题
 
     例如："有哪些5星圣遗物套装？"、"哪些圣遗物适合主C？"
@@ -152,13 +148,12 @@ def build_artifact_global_summary_kp(all_artifacts_data: List[Dict]) -> Knowledg
                 content += f"- {name}\n"
             content += "\n"
 
-    return {
-        "id": "artifact_global_summary",
-        "plugin": "genshin",
-        "type": "knowledge",
-        "category": "artifact_summary",
-        "title": "圣遗物全局汇总",
-        "content": content,
-        "tags": ["圣遗物", "汇总", "统计"],
-        "_hash": "",
-    }
+    return make_kp(
+        id="artifact_global_summary",
+        title="圣遗物全局汇总",
+        content=content,
+        tags=["圣遗物", "汇总", "统计"],
+        type="knowledge",
+        category="artifact_summary",
+        _hash="",
+    )

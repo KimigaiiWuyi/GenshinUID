@@ -2,7 +2,7 @@ import re
 from typing import Optional
 from pathlib import Path
 
-from bs4 import BeautifulSoup
+from bs4 import Tag, BeautifulSoup
 from PIL import Image, ImageOps, ImageDraw
 
 from .main import ann
@@ -93,11 +93,15 @@ async def ann_detail_card(ann_id):
     banner = content[0]["banner"]
     ann_img = banner if banner else ""
     for a in soup.find_all("a"):
-        a.string = ""
+        if isinstance(a, Tag):
+            a.string = ""
 
     msg_list = [ann_img]
     for img in soup.find_all("img"):
-        msg_list.append(img.get("src"))
+        if isinstance(img, Tag):
+            src = img.get("src")
+            if isinstance(src, str):
+                msg_list.append(src)
         # img.string = img.get('src')
 
     msg_list.extend(
@@ -124,7 +128,7 @@ async def ann_detail_card(ann_id):
             ) = split_text(msg)
             drow_height += x_drow_height
 
-    im = Image.new("RGB", (1080, drow_height), "#f9f6f2")
+    im = Image.new("RGB", (1080, int(drow_height)), "#f9f6f2")
     draw = ImageDraw.Draw(im)
     # 左上角开始
     x, y = 0, 0
@@ -200,7 +204,7 @@ def get_duanluo(text: str):
         line_height = max(height, line_height)
     if not duanluo.endswith("\n"):
         duanluo += "\n"
-    return duanluo, line_height, line_count
+    return duanluo, int(line_height), line_count
 
 
 def sub_ann(bot_id: str, group: str):

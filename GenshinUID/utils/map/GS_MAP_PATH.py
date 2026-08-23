@@ -43,6 +43,7 @@ class TS(TypedDict):
 
 charList: Dict[str, Dict[str, Any]] = {}
 weaponList: Dict[str, Dict[str, Any]] = {}
+reliquaryList: Dict[str, Dict[str, Any]] = {}
 avatarId2Name: Dict[str, str] = {}
 icon2Name: Dict[str, str] = {}
 artifact2attr: Dict[str, str] = {}
@@ -73,6 +74,9 @@ try:
 
     with open(MAP / weaponList_fileName, "r", encoding="UTF-8") as f:
         weaponList.update(msgjson.decode(f.read(), type=Dict))
+
+    with open(MAP / reliquaryList_fileName, "r", encoding="UTF-8") as f:
+        reliquaryList.update(msgjson.decode(f.read(), type=Dict))
 
     with open(MAP / avatarId2Name_fileName, "r", encoding="UTF-8") as f:
         avatarId2Name.update(msgjson.decode(f.read(), type=Dict[str, str]))

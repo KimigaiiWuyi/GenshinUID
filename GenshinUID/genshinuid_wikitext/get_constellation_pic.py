@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Tuple, Union
 
 import aiofiles
 from PIL import Image, ImageDraw
@@ -52,16 +52,17 @@ async def get_constellation_wiki_img(name: str) -> Union[str, bytes]:
     char_data = await get_character_info(name)
     if isinstance(data, int):
         return await get_error_img(data)
-    elif isinstance(char_data, int):
+    if isinstance(char_data, int):
         return await get_error_img(char_data)
-    elif isinstance(char_data, List):
+    if isinstance(char_data, list):
         return await get_error_img(-400)
-    else:
-        full_name = data["name"]
-        path = CONSTELLATION_PATH / f"{full_name}.jpg"
-        if path.exists():
-            async with aiofiles.open(path, "rb") as f:
-                return await f.read()
+    if data is None or char_data is None:
+        return await get_error_img(-400)
+    full_name = data["name"]
+    path = CONSTELLATION_PATH / f"{full_name}.jpg"
+    if path.exists():
+        async with aiofiles.open(path, "rb") as f:
+            return await f.read()
     img = await draw_constellation_wiki_img(data, char_data)
     return img
 
@@ -102,6 +103,7 @@ async def draw_single_constellation(
     img1 = Image.new("RGBA", (1, 1))
     img1_draw = ImageDraw.Draw(img1)
     _, _, _, y1 = img1_draw.textbbox((0, 0), effect, gs_font_20)
+    y1 = int(y1)
 
     y = 90 + y1
     if is_single:

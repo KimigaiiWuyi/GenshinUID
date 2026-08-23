@@ -1,7 +1,5 @@
 ci:
   autofix_commit_msg: "🚨 `pre-commit-ci`修复格式错误"
-  skip:
-    - "poetry-lock"
   autofix_prs: true
   autoupdate_branch: v4
   autoupdate_schedule: monthly
@@ -13,12 +11,3 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
-
-  - repo: https://github.com/python-poetry/poetry
-    rev: 1.8.0
-    hooks:
-      - id: poetry-check
-      - id: poetry-lock
-      - id: poetry-export
-        args: ["-f", "requirements.txt", "--without-hashes", "-o", "requirements.txt"]
-        verbose: true

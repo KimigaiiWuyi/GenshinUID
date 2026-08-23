@@ -91,6 +91,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
         # 计算长度
         img_draw = ImageDraw.Draw(img1)
         _, _, _, y1 = img_draw.textbbox((0, 0), pc1, gs_font_22)
+        y1 = int(y1)
         y2 = 0
         result_img, img_h = await get_base_img(y1, y2)
         result_img.paste(suitbar1, (63, 250 + 10), suitbar1)
@@ -105,6 +106,7 @@ async def draw_artifacts_wiki_img(data: Artifact) -> bytes:
         img_draw = ImageDraw.Draw(img1)
         _, _, _, y1 = img_draw.textbbox((0, 0), pc2, gs_font_22)
         _, _, _, y2 = img_draw.textbbox((0, 0), pc4, gs_font_22)
+        y1, y2 = int(y1), int(y2)
         result_img, img_h = await get_base_img(y1, y2)
         result_img.paste(suitbar2, (63, 250 + 10), suitbar2)
         result_img.paste(suitbar4, (63, 250 + y1 + 40), suitbar2)

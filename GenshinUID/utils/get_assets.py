@@ -39,9 +39,5 @@ async def _get_assets(name: str, type: Literal["ENKA", "AMBR"] = "AMBR") -> Opti
                         return None
 
 
-async def get_assets_from_enka(name: str) -> Optional[Image.Image]:
-    return await _get_assets(name, "ENKA")
-
-
 async def get_assets_from_ambr(name: str) -> Optional[Image.Image]:
     return await _get_assets(name, "AMBR")

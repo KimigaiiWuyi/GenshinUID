@@ -8,11 +8,7 @@ from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 
-from .draw_char_abyss import draw_char_abyss_info
 from .draw_teyvat_img import draw_teyvat_team_img, draw_teyvat_abyss_img
-
-# from .draw_abyss_total import TOTAL_IMG, draw_xk_abyss_img
-from .get_all_char_data import save_all_char_info, save_all_abyss_rank
 
 sv_get_abyss_database = SV("查询深渊数据库", priority=4)
 
@@ -21,14 +17,6 @@ sv_get_abyss_database = SV("查询深渊数据库", priority=4)
 async def scheduled_draw_abyss():
     await asyncio.sleep(random.randint(0, 60))
     await draw_teyvat_abyss_img()
-
-
-@scheduler.scheduled_job("interval", hours=11)
-async def scheduled_get_xk_data():
-    await asyncio.sleep(random.randint(0, 60))
-    await save_all_char_info()
-    await asyncio.sleep(random.randint(2, 60))
-    await save_all_abyss_rank()
 
 
 @sv_get_abyss_database.on_fullmatch(
@@ -65,21 +53,3 @@ async def send_abyss_team_pic(bot: Bot, ev: Event):
     img = await draw_teyvat_team_img()
     logger.info(t("log.genshinuid.msg_bdd204"))
     await bot.send(img)
-
-
-@sv_get_abyss_database.on_prefix(
-    ("角色深渊详情", "角色深渊"),
-    block=True,
-    to_ai="""查看指定角色的深渊使用详情数据
-
-    当用户说"角色深渊详情 甘雨"、"角色深渊 胡桃"时调用。
-    以图片形式返回该角色在深渊中的详细使用数据。
-
-    Args:
-        text: 角色名称，例如 "甘雨"、"胡桃"、"雷电将军"
-              支持角色昵称，例如 "雷神"、"小草神"
-    """,
-)
-async def send_char_abyss_pic(bot: Bot, ev: Event):
-    im = await draw_char_abyss_info(ev.text)
-    await bot.send(im)

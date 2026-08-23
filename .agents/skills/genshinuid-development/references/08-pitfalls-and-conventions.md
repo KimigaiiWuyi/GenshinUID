@@ -20,11 +20,10 @@
 5. **`OldPanle` 拼写**同样是历史键名，配置里不要「修正」成 Panel。
 6. **i18n**：改 `t("log.genshinuid.…")` 要改 `locales/{zh-cn,en,ja}/logs.json`。
 7. **`tools/` 排除 ruff**：生成物可乱，但 effect 更新流程走 skill，不要手搓 200 个空键。
-8. **启动钩子里注释掉的** `save_all_char_info` / 深渊爬虫不要擅自打开，会打米游社。
-9. **`topup` / `postdraw`** 触发器已停。复活需要产品确认 + 重新补 `to_ai`。
-10. **前缀缓存**：不要改 Core system prompt；本插件动态信息只进 `ai_return` / 工具返回。
-11. **帮助列数** `help_column` 是字符串配置，读取后转 int。
-12. **随机图 API** 失败要有面板底图兜底，不要抛到用户堆栈。
+8. **不要**在启动钩子里加全量角色/深渊爬虫（会打米游社）。
+9. **前缀缓存**：不要改 Core system prompt；本插件动态信息只进 `ai_return` / 工具返回。
+10. **帮助列数** `help_column` 是字符串配置，读取后转 int。
+11. **随机图 API** 失败要有面板底图兜底，不要抛到用户堆栈。
 
 ## 8.3 改完自查
 

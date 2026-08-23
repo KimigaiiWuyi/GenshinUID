@@ -31,6 +31,14 @@ from ..utils.resource.RESOURCE_PATH import (
 from ..utils.resource.generate_char_card import create_single_char_card
 
 TEXT_PATH = Path(__file__).parent / "texture2d"
+
+
+def _need(d: object, key: str) -> object:
+    if not isinstance(d, dict) or key not in d:
+        raise KeyError(key)
+    return d[key]
+
+
 DIFFICULTY_MAP = {
     1: "简单模式",
     2: "普通模式",
@@ -130,7 +138,9 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
         for _round in _round_data:
             round_data.append(_round)
 
-    fight_statisic = data["detail"]["fight_statisic"]
+    fight_statisic = _need(data["detail"], "fight_statisic")
+    if not isinstance(fight_statisic, dict):
+        raise KeyError("fight_statisic")
     stat_data = data["stat"]
 
     start_time = timestamp_to_str(float(data["schedule"]["start_time"]))
@@ -152,12 +162,15 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
         else:
             icon_name = "super_no.png"
     elif stat_data["difficulty_id"] == 5:
-        if stat_data["max_round_id"] == 10 and stat_data["tarot_finished_cnt"] == 2:
+        tarot_done = _need(stat_data, "tarot_finished_cnt")
+        if not isinstance(tarot_done, int):
+            raise KeyError("tarot_finished_cnt")
+        if stat_data["max_round_id"] == 10 and tarot_done == 2:
             icon_name = "moon_yes.png"
         else:
             icon_name = "moon_no.png"
         max_round = 12
-        earn_medal += stat_data["tarot_finished_cnt"]
+        earn_medal += tarot_done
     else:
         icon_name = "gold_no.png"
     icon = Image.open(TEXT_PATH / icon_name).convert("RGBA")
@@ -247,8 +260,10 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
     avatar_bonus = stat_data["avatar_bonus_num"]
     rent_cnt = stat_data["rent_cnt"]
     coin_num = stat_data["coin_num"]
-    tarot_cnt = stat_data["tarot_finished_cnt"]
+    tarot_cnt = _need(stat_data, "tarot_finished_cnt")
     total_time = fight_statisic["total_use_time"]
+    if not isinstance(total_time, int):
+        raise KeyError("total_use_time")
     total_time_str = f"{total_time // 60}分{total_time % 60}秒"
 
     status_draw.text(
@@ -305,8 +320,8 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
         round_id = r["round_id"]
         _medal = flower_yes if is_get_medal else flower_no
 
-        if r["is_tarot"]:
-            round_name = f"圣牌{r['tarot_serial_no']}"
+        if _need(r, "is_tarot"):
+            round_name = f"圣牌{_need(r, 'tarot_serial_no')}"
             stage_bg = "stage_moon"
         else:
             round_name = f"第{round_id}幕"
@@ -318,7 +333,10 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
         stage_draw.text((172, 63), round_name, "white", gs_font_28, "mm")
         stage.paste(_medal, (57, 38), _medal)
 
-        for bindex, buff in enumerate(r["splendour_buff"]["buffs"]):
+        splendour = _need(r, "splendour_buff")
+        if not isinstance(splendour, dict):
+            raise KeyError("splendour_buff")
+        for bindex, buff in enumerate(splendour["buffs"]):
             buff_image = Image.new("RGBA", (80, 80), (0, 0, 0, 0))
             buff_image_draw = ImageDraw.Draw(buff_image)
             buff_icon_url = buff["icon"]
@@ -338,11 +356,14 @@ async def draw_poetry_abyss_img(uid: str, ev: Event, active: Optional[int] = Non
 
             stage.paste(buff_image, (323 + 66 * bindex, 18), buff_image)
 
-        if len(r["enemies"]) == 1:
+        enemies = _need(r, "enemies")
+        if not isinstance(enemies, list):
+            raise KeyError("enemies")
+        if len(enemies) == 1:
             monster_bg = Image.new("RGBA", (75, 75), (0, 0, 0, 0))
-            monster_icon_url = r["enemies"][0]["icon"]
-            monster_icon_name = f"{r['enemies'][0]['name']}.png"
-            monster_icon_path = ICON_PATH / f"{r['enemies'][0]['name']}.png"
+            monster_icon_url = enemies[0]["icon"]
+            monster_icon_name = f"{enemies[0]['name']}.png"
+            monster_icon_path = ICON_PATH / f"{enemies[0]['name']}.png"
             if not monster_icon_path.exists():
                 await download(
                     monster_icon_url,

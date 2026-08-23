@@ -6,10 +6,10 @@ from gsuid_core.models import Event
 
 from .data_source import get_code_msg
 
-sv_zzz_code = SV("原神前瞻兑换码")
+sv_gs_code = SV("原神前瞻兑换码")
 
 
-@sv_zzz_code.on_fullmatch(
+@sv_gs_code.on_fullmatch(
     "兑换码",
     to_ai="""获取原神最新前瞻直播兑换码
 
@@ -23,7 +23,7 @@ sv_zzz_code = SV("原神前瞻兑换码")
 async def get_sign_func(bot: Bot, ev: Event):
     try:
         codes = await get_code_msg()
-    except Exception as e:
-        logger.opt(exception=e).error(t("log.genshinuid.code_fetch_fail"))
+    except Exception:
+        logger.exception(t("log.genshinuid.code_fetch_fail"))
         codes = "获取前瞻兑换码失败"
     await bot.send(codes)

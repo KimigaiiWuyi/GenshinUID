@@ -32,7 +32,6 @@
 - [@blue菌hehe](https://bbs.mihoyo.com/ys/accountCenter/postList?id=160367110) - 参考面板的**授权**使用
 - [@音尘绝LiuSXwww](https://bbs.mihoyo.com/ys/accountCenter/postList?id=271681956) - 怪物数据表的**授权**使用
 - [@Asgater](https://www.miyoushe.com/ys/accountCenter/postList?id=79695828) - 原牌图鉴的**授权**使用
-- [虚空数据库](https://akashadata.com/) - 深渊出场数据的**授权**使用
 - [@祈鸢ya](https://www.miyoushe.com/ys/accountCenter/postList?id=137101761) - 「4.6~」原石预估数据图片的**授权**使用
 - [@燕返晓归](https://www.miyoushe.com/ys/accountCenter/postList?id=184505932) - 材料收集路线图的**授权**使用
 - [@七月的休](https://www.miyoushe.com/ys/accountCenter/postList?id=218945821) - 「~4.5」原石预估数据图片的**授权**使用

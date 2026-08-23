@@ -1,7 +1,7 @@
 # 四、面板、伤害与 effect JSON
 
 > 返回 [SKILL.md](../SKILL.md)。版本更新效果文件请改走
-> [update-enka-effects](../../../../docs/skills/update-enka-effects/SKILL.md)。
+> [update-enka-effects](../../update-enka-effects/SKILL.md)。
 
 ## 4.1 模块职责
 
@@ -13,14 +13,14 @@
 | `get_enka_img.py` | 拉数据 + 画角色卡入口 |
 | `to_data.py` / `to_data_by_mys.py` / `to_card.py` | Enka / 米游社 → 内部卡片结构 |
 | `draw_char_card.py` `draw_char_info.py` 等 | PIL 出图 |
-| `dmg_calc/` `curve_calc/` `mono/` | 伤害与成长曲线 |
+| `dmg_calc/` `mono/` | 伤害计算 |
 | `effect/*.json` | 命座加技、武器/圣遗物/角色效果 DSL |
 | `etc/` | 静态表 |
 
 配置：
 
 - `OldPanle`：旧面板（更快，功能少）。
-- `ColorBG` / `DefaultBaseBG` / `RandomPic`：背景策略。
+- `DefaultBaseBG` / `RandomPic`：背景策略。
 - `RefreshDataList` 不在原神 config 里；原神刷新顺序在 enka 的 API 切换（`switch_api`）。
 
 ## 4.2 effect JSON
@@ -37,7 +37,7 @@
 | `dmg_map.json` | 参考面板，脚本只给 `[]` |
 | `value_attr.json` | 特殊属性启发式 |
 
-DSL 规则：`docs/skills/update-enka-effects/references/effect-dsl.md`。
+DSL 规则：`.agents/skills/update-enka-effects/references/effect-dsl.md`。
 取值一律取能吃满的上限；互斥效果在 `extra.note` 标明。
 
 更新命令（插件根）：

@@ -14,7 +14,7 @@ gsconfig = StringConfig("GenshinUID", CONFIG_PATH, CONIFG_DEFAULT)
 - 类型：`GsBoolConfig` / `GsStrConfig` / `GsTimeRConfig` / `GsDictConfig` / `GsListConfig`。
 - 用户命令：`genshinuid_config/__init__.py`（查看配置、设阈值、开关推送）。
 
-重要键（完整列表看源码）：`SignTime`、`SchedSignin`、`SchedResinPush`、`SchedMhyBBSCoin`、`CrazyNotice`、`WidgetResin`、`EnableAkasha`、`EnableCharCardByMys`、`GachaLogOrder`、`PicWiki`、`OldPanle`。
+重要键（完整列表看源码）：`SignTime`、`SchedSignin`、`SchedResinPush`、`SchedMhyBBSCoin`、`WidgetResin`、`EnableAkasha`、`EnableCharCardByMys`、`GachaLogOrder`、`PicWiki`、`OldPanle`。
 
 ## 6.2 数据库
 
@@ -23,8 +23,6 @@ gsconfig = StringConfig("GenshinUID", CONFIG_PATH, CONIFG_DEFAULT)
 - UID：框架 `GsBind`
 - Cookie：框架 `GsUser`
 - 推送状态：`gs_subscribe` 行，不是自建 Push 表
-
-`utils/database.py` 里的 `GsData.db` 路径是历史遗留，新代码不要用。
 
 ## 6.3 订阅（`gs_subscribe`）
 

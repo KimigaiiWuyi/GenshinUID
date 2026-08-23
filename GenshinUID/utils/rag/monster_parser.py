@@ -5,10 +5,8 @@
 
 from typing import Dict, List
 
-from gsuid_core.ai_core.models import KnowledgeBase
-
 from .utils import clean_html_tags
-from .models import MonsterInfo
+from .models import MonsterInfo, GsKnowledgePoint, make_kp
 
 # 怪物类型映射
 MONSTER_TYPE_MAP = {
@@ -18,7 +16,7 @@ MONSTER_TYPE_MAP = {
 }
 
 
-def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
+def parse_monster_json(json_data: Dict) -> List[GsKnowledgePoint]:
     """
     解析怪物JSON数据为RAG知识块
 
@@ -37,7 +35,7 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
     # 构建全局Header
     global_header = f"【怪物情报】\n怪物：{monster_info.name} | ID：{monster_info.id}\n类型：{monster_info.type}\n---\n"
 
-    knowledge_points: List[KnowledgeBase] = []
+    knowledge_points: List[GsKnowledgePoint] = []
 
     # ==================== 块 1：怪物基础信息 ====================
     monster_content = (
@@ -56,15 +54,14 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
         monster_content += f"\n## 描述\n{cleaned_desc}\n"
 
     knowledge_points.append(
-        {
-            "id": f"monster_{monster_info.id}_info",
-            "plugin": "genshin",
-            "title": f"{monster_info.name}-基础信息",
-            "content": monster_content,
-            "tags": ["怪物", monster_info.type, monster_info.name],
-            "entity": monster_info.name,
-            "source": "plugin",
-        }
+        make_kp(
+            id=f"monster_{monster_info.id}_info",
+            title=f"{monster_info.name}-基础信息",
+            content=monster_content,
+            tags=["怪物", monster_info.type, monster_info.name],
+            entity=monster_info.name,
+            source="plugin",
+        )
     )
 
     # ==================== 块 2：怪物属性与抗性 ====================
@@ -136,21 +133,20 @@ def parse_monster_json(json_data: Dict) -> List[KnowledgeBase]:
                                 attr_content += f"- **{item_name}**（{item_rank}星）\n"
 
             knowledge_points.append(
-                {
-                    "id": f"monster_{monster_info.id}_attr_{entry_id}",
-                    "plugin": "genshin",
-                    "title": f"{monster_info.name}-属性与抗性",
-                    "content": attr_content,
-                    "tags": ["怪物", "属性", "抗性", monster_info.name],
-                    "entity": monster_info.name,
-                    "source": "plugin",
-                }
+                make_kp(
+                    id=f"monster_{monster_info.id}_attr_{entry_id}",
+                    title=f"{monster_info.name}-属性与抗性",
+                    content=attr_content,
+                    tags=["怪物", "属性", "抗性", monster_info.name],
+                    entity=monster_info.name,
+                    source="plugin",
+                )
             )
 
     return knowledge_points
 
 
-def build_monster_global_summary_kp(all_monsters_data: List[Dict]) -> KnowledgeBase:
+def build_monster_global_summary_kp(all_monsters_data: List[Dict]) -> GsKnowledgePoint:
     """生成怪物全局汇总知识块，用于回答统计类问题
 
     例如："史莱姆有多少种？"、"所有精英敌人有哪些？"
@@ -180,11 +176,10 @@ def build_monster_global_summary_kp(all_monsters_data: List[Dict]) -> KnowledgeB
                 content += f"- ... 等共{len(names)}种\n"
             content += "\n"
 
-    return {
-        "id": "monster_global_summary",
-        "plugin": "genshin",
-        "title": "怪物全局汇总",
-        "content": content,
-        "tags": ["怪物", "汇总", "统计"],
-        "source": "plugin",
-    }
+    return make_kp(
+        id="monster_global_summary",
+        title="怪物全局汇总",
+        content=content,
+        tags=["怪物", "汇总", "统计"],
+        source="plugin",
+    )

@@ -5,14 +5,12 @@
 
 from typing import Dict, List
 
-from gsuid_core.ai_core.models import KnowledgePoint
-
 from .utils import clean_html_tags, format_birthday, determine_skill_type, build_skill_multiplier_table
-from .models import CharacterInfo
+from .models import CharacterInfo, GsKnowledgePoint, make_kp
 from .constants import WEAPON_MAP, ELEMENT_MAP
 
 
-def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
+def parse_character_json(json_data: Dict) -> List[GsKnowledgePoint]:
     """
     主解析函数：将角色 JSON 数据解析为 RAG 知识块
 
@@ -38,7 +36,7 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
         f"---\n"
     )
 
-    knowledge_points: List[KnowledgePoint] = []
+    knowledge_points: List[GsKnowledgePoint] = []
 
     # ==================== 块 1：基础档案 ====================
     fetter = json_data.get("fetter", {})
@@ -61,17 +59,16 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
     )
 
     knowledge_points.append(
-        {
-            "id": f"char_{char_info.id}_profile",
-            "plugin": "genshin",
-            "type": "knowledge",
-            "category": "profile",
-            "title": f"{char_info.name}-基础档案",
-            "content": profile_content,
-            "tags": ["角色", "档案", char_info.name],
-            "entity": char_info.name,
-            "_hash": "",
-        }
+        make_kp(
+            id=f"char_{char_info.id}_profile",
+            title=f"{char_info.name}-基础档案",
+            content=profile_content,
+            tags=["角色", "档案", char_info.name],
+            type="knowledge",
+            category="profile",
+            entity=char_info.name,
+            _hash="",
+        )
     )
 
     # ==================== 块 2：技能与天赋 ====================
@@ -117,17 +114,16 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
         skill_texts.append(skill_section)
 
     knowledge_points.append(
-        {
-            "id": f"char_{char_info.id}_skill",
-            "plugin": "genshin",
-            "type": "knowledge",
-            "category": "skill",
-            "title": f"{char_info.name}-技能与倍率",
-            "content": "\n".join(skill_texts),
-            "tags": ["角色", "技能", char_info.name],
-            "entity": char_info.name,
-            "_hash": "",
-        }
+        make_kp(
+            id=f"char_{char_info.id}_skill",
+            title=f"{char_info.name}-技能与倍率",
+            content="\n".join(skill_texts),
+            tags=["角色", "技能", char_info.name],
+            type="knowledge",
+            category="skill",
+            entity=char_info.name,
+            _hash="",
+        )
     )
 
     # ==================== 块 3：命之座 ====================
@@ -146,23 +142,22 @@ def parse_character_json(json_data: Dict) -> List[KnowledgePoint]:
         const_texts.append(f"## 第{i + 1}命：{c_name}\n\n{c_desc}\n\n")
 
     knowledge_points.append(
-        {
-            "id": f"char_{char_info.id}_constellation",
-            "plugin": "genshin",
-            "type": "knowledge",
-            "category": "constellation",
-            "title": f"{char_info.name}-命之座",
-            "content": "\n".join(const_texts),
-            "tags": ["角色", "命之座", char_info.name],
-            "entity": char_info.name,
-            "_hash": "",
-        }
+        make_kp(
+            id=f"char_{char_info.id}_constellation",
+            title=f"{char_info.name}-命之座",
+            content="\n".join(const_texts),
+            tags=["角色", "命之座", char_info.name],
+            type="knowledge",
+            category="constellation",
+            entity=char_info.name,
+            _hash="",
+        )
     )
 
     return knowledge_points
 
 
-def build_global_summary_kp(all_characters_data: List[Dict]) -> KnowledgePoint:
+def build_global_summary_kp(all_characters_data: List[Dict]) -> GsKnowledgePoint:
     """生成全局汇总知识块，用于回答统计类问题
 
     例如："单手剑角色有多少个？"、"所有火元素角色有哪些？"
@@ -239,13 +234,11 @@ def build_global_summary_kp(all_characters_data: List[Dict]) -> KnowledgePoint:
         summary_text += "\n"
 
     # 构建知识块
-    return {
-        "id": "global_summary_all_characters",
-        "plugin": "genshin",
-        "type": "knowledge",
-        "category": "summary",
-        "title": "原神全角色分类统计汇总",
-        "content": summary_text,
-        "tags": ["角色", "统计", "汇总", "武器", "元素", "星级"],
-        "_hash": "",
-    }
+    return make_kp(
+        id="global_summary_all_characters",
+        title="原神全角色分类统计汇总",
+        content=summary_text,
+        tags=["角色", "统计", "汇总", "武器", "元素", "星级"],
+        type="knowledge",
+        category="summary",
+    )

@@ -37,24 +37,26 @@ async def get_weapons_wiki_img(name: str) -> Union[str, bytes]:
     data = await get_weapon_info(name)
     if isinstance(data, int):
         return await get_error_img(data)
-    elif isinstance(data, List):
+    if isinstance(data, list):
         return await get_error_img(-400)
+    if data is None:
+        return await get_error_img(-400)
+    if int(data["rarity"]) < 3:
+        stats = await get_weapon_stats(name, 70)
     else:
-        if int(data["rarity"]) < 3:
-            stats = await get_weapon_stats(name, 70)
-        else:
-            stats = await get_weapon_stats(name, 90)
+        stats = await get_weapon_stats(name, 90)
 
     if isinstance(stats, int):
         return await get_error_img(stats)
-    elif isinstance(stats, List):
+    if isinstance(stats, list):
         return ", ".join(stats)
-    else:
-        weapon_name = data["name"]
-        path = WIKI_WEAPON_PATH / f"{weapon_name}.jpg"
-        if path.exists():
-            async with aiofiles.open(path, "rb") as f:
-                return await f.read()
+    if stats is None:
+        return await get_error_img(-400)
+    weapon_name = data["name"]
+    path = WIKI_WEAPON_PATH / f"{weapon_name}.jpg"
+    if path.exists():
+        async with aiofiles.open(path, "rb") as f:
+            return await f.read()
     img = await draw_weapons_wiki_img(data, stats)
     return img
 
@@ -85,6 +87,7 @@ async def draw_weapons_wiki_img(data: Weapon, stats: WeaponStats):
     effect_desc = get_str_size(effect_desc, gs_font_22, 490)
 
     _, _, _, y1 = img_test_draw.textbbox((0, 0), effect_desc, gs_font_22)
+    y1 = int(y1)
     w, h = 600, 1110 + y1
 
     star_pic = get_star_png(data["rarity"])

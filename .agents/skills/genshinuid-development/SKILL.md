@@ -20,7 +20,7 @@ description: >
 | 你的任务 | 该读的文档 |
 |----------|-----------|
 | **改 GenshinUID 业务**（命令 / 面板 / 绑定 / 出图 / AI） | **本 SKILL** |
-| 版本更新命座/武器/圣遗物效果 JSON | [update-enka-effects](../../../docs/skills/update-enka-effects/SKILL.md) |
+| 版本更新命座/武器/圣遗物效果 JSON | [update-enka-effects](../update-enka-effects/SKILL.md) |
 | 写通用 GsCore 插件 | Core `gscore-plugin-development` |
 | 改框架核心 | Core `gscore-development` |
 | 代码红线 | 本仓库 [`AGENTS.md`](../../../AGENTS.md) + Core 根 `AGENTS.md` |

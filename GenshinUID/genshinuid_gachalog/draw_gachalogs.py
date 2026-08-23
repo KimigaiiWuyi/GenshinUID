@@ -2,7 +2,7 @@ import json
 import random
 import asyncio
 import datetime
-from typing import List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -17,7 +17,7 @@ from ..utils.message import PREFIX
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import charList, weaponList
 from ..utils.map.name_covert import name_to_avatar_id
-from ..utils.image.image_tools import get_avatar, get_color_bg
+from ..utils.image.image_tools import add_footer, get_avatar, get_color_bg
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
     gs_font_28,
@@ -25,6 +25,7 @@ from ..utils.fonts.genshin_fonts import (
     gs_font_40,
     gs_font_62,
 )
+from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import CHAR_PATH, PLAYER_PATH, WEAPON_PATH
 
 TEXT_PATH = Path(__file__).parent / "texture2d"
@@ -140,6 +141,110 @@ def check_up(name: str, _time: str) -> bool:
                 return True
     else:
         return False
+
+
+# 两列画布：每列沿用原 950 宽标题/卡片栅格，总宽 1900
+IMG_W = 1900
+COL_W = 950
+HEADER_H = 540
+TITLE_BLOCK = 300
+CARD_ROW_H = 150
+CARD_COLS = 6
+CARD_X0 = 60
+CARD_DX = 138
+CARD_Y0 = 275
+BOTTOM_PAD = 40
+FOOTER_PAD = 60
+# 全部卡池五星总数超过该值才走两列，否则保持原来的 950 宽单列
+TWO_COL_MIN_FIVE = 41
+
+
+def _card_rows(total: int) -> int:
+    if total <= 0:
+        return 0
+    return 1 + (total - 1) // CARD_COLS
+
+
+def _pool_block_h(total: int) -> int:
+    """单个卡池占用的纵向高度：标题块 + 五星卡片行。"""
+    return TITLE_BLOCK + _card_rows(total) * CARD_ROW_H
+
+
+def _pack_two_columns(pools: List[str], heights: List[int]) -> Tuple[List[str], List[str]]:
+    """把卡池分到两列，使整体接近矩形。
+
+    卡池数量很少（通常 4 个），直接枚举全部非空划分，按优先级选：
+    1. 画布高度更小（min max(左高, 右高)）
+    2. 两列高度差更小
+    3. 最高的那个卡池放在左列（大池在左，小池堆右，例如 1+3）
+    4. 左列卡池数更少（同样高度时 1+3 优于 3+1）
+    列内保持传入时的相对顺序。
+    """
+    n = len(pools)
+    if n == 0:
+        return [], []
+    if n == 1:
+        return [pools[0]], []
+
+    tallest = max(range(n), key=lambda i: (heights[i], -i))
+    best_score = None
+    best_left: List[str] = []
+    best_right: List[str] = []
+
+    for mask in range(1, (1 << n) - 1):
+        left: List[str] = []
+        right: List[str] = []
+        h_l = 0
+        h_r = 0
+        n_left = 0
+        for i in range(n):
+            if mask & (1 << i):
+                left.append(pools[i])
+                h_l += heights[i]
+                n_left += 1
+            else:
+                right.append(pools[i])
+                h_r += heights[i]
+        score = (
+            max(h_l, h_r),
+            abs(h_l - h_r),
+            0 if (mask & (1 << tallest)) else 1,
+            n_left,
+        )
+        if best_score is None or score < best_score:
+            best_score = score
+            best_left = left
+            best_right = right
+
+    return best_left, best_right
+
+
+async def _compose_pool_title(pool_name: str, pool_data: dict, gacha_num: int) -> Image.Image:
+    title = Image.open(TEXT_PATH / "gahca_title.png")
+    if pool_name == "常驻祈愿":
+        level = await get_level_from_list(pool_data["avg"], [54, 61, 67, 73, 80])
+    elif pool_name == "武器祈愿":
+        level = await get_level_from_list(pool_data["avg_up"], [62, 75, 88, 99, 111])
+    else:
+        level = await get_level_from_list(pool_data["avg_up"], [74, 87, 99, 105, 120])
+
+    emo_pic = await random_emo_pic(level)
+    emo_pic = emo_pic.resize((154, 154))
+    title.paste(emo_pic, (703, 28), emo_pic)
+    title_draw = ImageDraw.Draw(title)
+    title_draw.text((778, 207), HOMO_TAG[level - 1], first_color, gs_font_36, "mm")
+    title_draw.text((69, 72), pool_name, first_color, gs_font_62, "lm")
+    if pool_data["time_range"]:
+        time_range = pool_data["time_range"]
+    else:
+        time_range = "暂未抽过卡!"
+    title_draw.text((68, 122), time_range, brown_color, gs_font_28, "lm")
+    title_draw.text((123, 176), str(pool_data["avg"]), first_color, gs_font_40, "mm")
+    title_draw.text((272, 176), str(pool_data["avg_up"]), first_color, gs_font_40, "mm")
+    title_draw.text((424, 176), str(gacha_num), first_color, gs_font_40, "mm")
+    title_draw.text((585, 176), str(pool_data["type"]), first_color, gs_font_40, "mm")
+    title_draw.text((383, 85), str(pool_data["remain"]), red_color, gs_font_28, "mm")
+    return title
 
 
 async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
@@ -290,124 +395,80 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         elif total_data[i]["all_time"] / 32000 >= gacha_data[f"{CHANGE_MAP[i]}_gacha_num"] * 2:
             total_data[i]["type"] = "仓鼠型"
 
-    # 常量偏移数据
-    single_y = 150
+    # 五星过少时保持原来的 950 宽单列；足够多再按占高分成两列
+    total_five = sum(total_data[name]["total"] for name in your_gacha_type_list)
+    pool_heights = [_pool_block_h(total_data[name]["total"]) for name in your_gacha_type_list]
+    height_map: Dict[str, int] = dict(zip(your_gacha_type_list, pool_heights))
+    newest_first = gsconfig.get_config("GachaLogOrder").data == "新到旧"
 
-    # 计算图片尺寸
-    normal_y = (1 + ((total_data["常驻祈愿"]["total"] - 1) // 6)) * single_y
-    char_y = (1 + ((total_data["角色祈愿"]["total"] - 1) // 6)) * single_y
-    weapon_y = (1 + ((total_data["武器祈愿"]["total"] - 1) // 6)) * single_y
-    new_y = (1 + ((total_data["新手祈愿"]["total"] - 1) // 6)) * single_y
-    mix_y = (1 + ((total_data["集录祈愿"]["total"] - 1) // 6)) * single_y
+    if total_five >= TWO_COL_MIN_FIVE:
+        left_pools, right_pools = _pack_two_columns(your_gacha_type_list, pool_heights)
+        col_h = max(
+            sum(height_map[n] for n in left_pools),
+            sum(height_map[n] for n in right_pools),
+            0,
+        )
+        canvas_w = IMG_W
+        header_x = (IMG_W - COL_W) // 2
+        if right_pools:
+            columns: Tuple[Tuple[List[str], int], ...] = (
+                (left_pools, 0),
+                (right_pools, COL_W),
+            )
+        else:
+            columns = ((left_pools, header_x),)
+    else:
+        col_h = sum(pool_heights)
+        canvas_w = COL_W
+        header_x = 0
+        columns = ((your_gacha_type_list, 0),)
 
-    # 获取背景图片各项参数
     char_pic = await get_avatar(ev, 320)
-
     avatar_title = Image.open(TEXT_PATH / "avatar_title.png")
     img = await get_color_bg(
-        950,
-        530 + len(your_gacha_type_list) * 300 + normal_y + char_y + weapon_y + new_y + mix_y,
+        canvas_w,
+        HEADER_H + col_h + BOTTOM_PAD + FOOTER_PAD,
+        top_ratio=0.15,
     )
-    img.paste(avatar_title, (0, 0), avatar_title)
-    img.paste(char_pic, (318, 83), char_pic)
+    img.paste(avatar_title, (header_x, 0), avatar_title)
+    img.paste(char_pic, (header_x + 318, 83), char_pic)
     img_draw = ImageDraw.Draw(img)
-    img_draw.text((475, 454), f"UID {uid}", first_color, gs_font_36, "mm")
+    img_draw.text((header_x + 475, 454), f"UID {uid}", first_color, gs_font_36, "mm")
 
-    # 处理title
-    # {'total': 0, 'avg': 0, 'remain': 0, 'list': []}
-    y_extend = 0
-    level = 3
-    for index, i in enumerate(your_gacha_type_list):
-        title = Image.open(TEXT_PATH / "gahca_title.png")
-        if i == "常驻祈愿":
-            level = await get_level_from_list(total_data[i]["avg"], [54, 61, 67, 73, 80])
-        else:
-            if i == "武器祈愿":
-                level = await get_level_from_list(total_data[i]["avg_up"], [62, 75, 88, 99, 111])
-            else:
-                level = await get_level_from_list(total_data[i]["avg_up"], [74, 87, 99, 105, 120])
-
-        emo_pic = await random_emo_pic(level)
-        emo_pic = emo_pic.resize((154, 154))
-        title.paste(emo_pic, (703, 28), emo_pic)
-        title_draw = ImageDraw.Draw(title)
-        # 欧非描述
-        title_draw.text((778, 207), HOMO_TAG[level - 1], first_color, gs_font_36, "mm")
-        # 卡池
-        title_draw.text((69, 72), i, first_color, gs_font_62, "lm")
-        # 抽卡时间
-        if total_data[i]["time_range"]:
-            time_range = total_data[i]["time_range"]
-        else:
-            time_range = "暂未抽过卡!"
-        title_draw.text((68, 122), time_range, brown_color, gs_font_28, "lm")
-        # 平均抽卡数量
-        title_draw.text(
-            (123, 176),
-            str(total_data[i]["avg"]),
-            first_color,
-            gs_font_40,
-            "mm",
-        )
-        # 平均up
-        title_draw.text(
-            (272, 176),
-            str(total_data[i]["avg_up"]),
-            first_color,
-            gs_font_40,
-            "mm",
-        )
-        # 抽卡总数
-        title_draw.text(
-            (424, 176),
-            str(gacha_data[f"{CHANGE_MAP[i]}_gacha_num"]),
-            first_color,
-            gs_font_40,
-            "mm",
-        )
-        # 抽卡类型
-        title_draw.text(
-            (585, 176),
-            str(total_data[i]["type"]),
-            first_color,
-            gs_font_40,
-            "mm",
-        )
-        # 已抽数
-        title_draw.text(
-            (383, 85),
-            str(total_data[i]["remain"]),
-            red_color,
-            gs_font_28,
-            "mm",
-        )
-        y_extend += (1 + ((total_data[your_gacha_type_list[index - 1]]["total"] - 1) // 6)) * 150 if index != 0 else 0
-        y = 540 + index * 300 + y_extend
-        img.paste(title, (0, y), title)
-        tasks = []
-        for item_index, item in enumerate(total_data[i]["list"]):
-            item_x = (item_index % 6) * 138 + 60
-            item_y = (item_index // 6) * 150 + y + 275
-            xy_point = (item_x, item_y)
-
-            if "item_type" not in item:
-                if item["item_id"] in charList:
-                    item["item_type"] = "角色"
-                else:
-                    item["item_type"] = "武器"
-
-            tasks.append(
-                _draw_card(
-                    img,
-                    xy_point,
-                    item["item_type"],
-                    item["name"],
-                    item["gacha_num"],
-                    item["is_up"],
-                )
+    for col_pools, col_x in columns:
+        y = HEADER_H
+        for pool_name in col_pools:
+            title = await _compose_pool_title(
+                pool_name,
+                total_data[pool_name],
+                gacha_data[f"{CHANGE_MAP[pool_name]}_gacha_num"],
             )
-        await asyncio.gather(*tasks)
-        tasks.clear()
+            img.paste(title, (col_x, y), title)
+            tasks = []
+            items = total_data[pool_name]["list"]
+            if newest_first:
+                items = list(reversed(items))
+            for item_index, item in enumerate(items):
+                item_x = col_x + (item_index % CARD_COLS) * CARD_DX + CARD_X0
+                item_y = (item_index // CARD_COLS) * CARD_ROW_H + y + CARD_Y0
+                if "item_type" not in item:
+                    if item["item_id"] in charList:
+                        item["item_type"] = "角色"
+                    else:
+                        item["item_type"] = "武器"
+                tasks.append(
+                    _draw_card(
+                        img,
+                        (item_x, item_y),
+                        item["item_type"],
+                        item["name"],
+                        item["gacha_num"],
+                        item["is_up"],
+                    )
+                )
+            if tasks:
+                await asyncio.gather(*tasks)
+            y += height_map[pool_name]
 
     # AI 注入：提取抽卡记录数据
     try:
@@ -440,6 +501,8 @@ async def draw_gachalogs_img(uid: str, ev: Event) -> Union[bytes, str]:
         ai_return("\n".join(parts))
     except Exception:
         pass
+
+    img = add_footer(img, canvas_w // 2, 0, True, 0.7)
 
     # 发送图片
     res = await convert_img(img)

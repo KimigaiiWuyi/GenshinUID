@@ -1,6 +1,11 @@
-"""
-GenshinUID AI Tools 注册模块
+"""GenshinUID 纯数据 AI 工具。
 
-原手动注册的AI工具已迁移至各触发器的 to_ai 参数，由 trigger_bridge 自动注册。
-本模块保留为空，仅作为包标识。
+触发器出图仍走各模块 to_ai；本包只向 Agent 暴露结构化文本数据，
+不注册「配队/攻略」一类场景特化工具。
 """
+
+from . import (
+    kb as _kb,  # noqa: F401
+    user as _user,  # noqa: F401
+    catalog as _catalog,  # noqa: F401
+)

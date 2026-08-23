@@ -76,6 +76,7 @@ def add_footer(
     w: int = 0,
     offset_y: int = 0,
     is_invert: bool = False,
+    opacity: float = 1.0,
 ):
     footer = get_footer()
     if is_invert:
@@ -89,6 +90,10 @@ def add_footer(
         footer = footer.resize(
             (w, int(footer.size[1] * w / footer.size[0])),
         )
+
+    if opacity < 1.0:
+        alpha = footer.getchannel("A").point(lambda p: int(p * opacity))
+        footer.putalpha(alpha)
 
     x, y = (
         int((img.size[0] - footer.size[0]) / 2),
@@ -332,7 +337,12 @@ async def draw_pic_with_ring(
     return img
 
 
-def crop_center_img(img: Image.Image, based_w: int, based_h: int) -> Image.Image:
+def crop_center_img(
+    img: Image.Image,
+    based_w: int,
+    based_h: int,
+    top_ratio: Optional[float] = None,
+) -> Image.Image:
     # 确定图片的长宽
     based_scale = "%.3f" % (based_w / based_h)
     w, h = img.size
@@ -348,9 +358,14 @@ def crop_center_img(img: Image.Image, based_w: int, based_h: int) -> Image.Image
     else:
         resize_img = img.resize((based_w, new_h), Image.Resampling.LANCZOS)
         x1 = 0
-        y1 = int(new_h / 2 - based_h / 2)
+        max_y1 = max(0, new_h - based_h)
+        if top_ratio is None:
+            y1 = int(new_h / 2 - based_h / 2)
+        else:
+            desired = int(new_h * top_ratio)
+            y1 = desired if desired <= max_y1 else 0
         x2 = based_w
-        y2 = int(new_h / 2 + based_h / 2)
+        y2 = y1 + based_h
     crop_img = resize_img.crop((x1, y1, x2, y2))
     return crop_img
 
@@ -360,6 +375,7 @@ async def get_color_bg(
     based_h: int,
     bg: Optional[str] = None,
     without_mask: bool = False,
+    top_ratio: Optional[float] = None,
 ) -> Image.Image:
     from ...genshinuid_config.gs_config import gsconfig
 
@@ -371,7 +387,7 @@ async def get_color_bg(
             image = Image.open(path2)
         elif path.exists():
             image = Image.open(path)
-    CI_img = CustomizeImage(image, based_w, based_h)
+    CI_img = CustomizeImage(image, based_w, based_h, top_ratio)
     img = CI_img.bg_img
     color = CI_img.bg_color
     if not without_mask:
@@ -397,8 +413,14 @@ async def get_simple_bg(based_w: int, based_h: int, image: Union[str, None, Imag
 
 
 class CustomizeImage:
-    def __init__(self, image: Union[str, Image.Image], based_w: int, based_h: int) -> None:
-        self.bg_img = self.get_image(image, based_w, based_h)
+    def __init__(
+        self,
+        image: Union[str, Image.Image],
+        based_w: int,
+        based_h: int,
+        top_ratio: Optional[float] = None,
+    ) -> None:
+        self.bg_img = self.get_image(image, based_w, based_h, top_ratio)
         self.bg_color = self.get_bg_color(self.bg_img, is_light=True)
         self.text_color = self.get_text_color(self.bg_color)
         self.highlight_color = self.get_highlight_color(self.bg_color)
@@ -407,7 +429,12 @@ class CustomizeImage:
         self.char_high_color = self.get_char_high_color(self.bg_color)
 
     @staticmethod
-    def get_image(image: Union[str, Image.Image], based_w: int, based_h: int) -> Image.Image:
+    def get_image(
+        image: Union[str, Image.Image],
+        based_w: int,
+        based_h: int,
+        top_ratio: Optional[float] = None,
+    ) -> Image.Image:
         # 获取背景图片
         if isinstance(image, Image.Image):
             edit_bg = image
@@ -418,7 +445,7 @@ class CustomizeImage:
             edit_bg = Image.open(path).convert("RGBA")
 
         # 确定图片的长宽
-        bg_img = crop_center_img(edit_bg, based_w, based_h)
+        bg_img = crop_center_img(edit_bg, based_w, based_h, top_ratio)
         return bg_img
 
     @staticmethod

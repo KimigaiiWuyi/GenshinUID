@@ -56,22 +56,34 @@ def _fit_bar_width(bar: Image.Image, width: int) -> Image.Image:
 def _char_grid_metrics(
     char_num: int,
     match_height: int | None,
-) -> tuple[int, int, int, int, int, int]:
-    """based_w, based_h, cols, card_w, card_h, pad_x"""
+) -> tuple[int, int, int, int, int, int, int, int]:
+    """based_w, based_h, cols, card_w, card_h, pad_x, head, foot"""
     if match_height is None:
         cols = CHAR_COLS_DEFAULT
         hang = 1 + (char_num - 1) // cols if char_num else 1
         based_h = hang * CHAR_CARD_H + CHAR_HEAD + CHAR_FOOT
-        return CHAR_CANVAS_W, based_h, cols, CHAR_CARD_W, CHAR_CARD_H, CHAR_PAD_X
+        return (
+            CHAR_CANVAS_W,
+            based_h,
+            cols,
+            CHAR_CARD_W,
+            CHAR_CARD_H,
+            CHAR_PAD_X,
+            CHAR_HEAD,
+            CHAR_FOOT,
+        )
 
-    avail_h = max(CHAR_CARD_H, match_height - CHAR_HEAD - CHAR_FOOT)
+    # 双列无横幅，底边留给整图 footer
+    head = CHAR_SIDE_PAD_X
+    foot = CHAR_FOOT
+    avail_h = max(CHAR_CARD_H, match_height - head - foot)
     max_rows = max(1, avail_h // CHAR_CARD_H)
     cols = max(1, math.ceil(char_num / max_rows) if char_num else 1)
     rows = max(1, math.ceil(char_num / cols) if char_num else 1)
     card_h = avail_h // rows
     card_w = round(card_h * CHAR_CARD_W / CHAR_CARD_H)
     based_w = CHAR_SIDE_PAD_X * 2 + cols * card_w + max(0, cols - 1) * CHAR_GAP_X
-    return based_w, match_height, cols, card_w, card_h, CHAR_SIDE_PAD_X
+    return based_w, match_height, cols, card_w, card_h, CHAR_SIDE_PAD_X, head, foot
 
 
 async def _load_char_datas(uid: str, raw_data: IndexData) -> list[MihoyoAvatar] | str | bytes:
@@ -120,16 +132,17 @@ async def _draw_char_pic(
 
     char_datas = await _prepare_char_datas(char_datas)
     char_num = len(char_datas)
-    based_w, based_h, cols, card_w, card_h, pad_x = _char_grid_metrics(char_num, match_height)
+    based_w, based_h, cols, card_w, card_h, pad_x, head, foot = _char_grid_metrics(char_num, match_height)
     target = (card_w, card_h)
 
     img = Image.new("RGBA", (based_w, based_h))
-    div_d = _fit_bar_width(Image.open(TEXT_PATH / "div_d.png"), based_w)
-    img.paste(div_d, (0, CHAR_DIV_Y), div_d)
+    if match_height is None:
+        div_d = _fit_bar_width(Image.open(TEXT_PATH / "div_d.png"), based_w)
+        img.paste(div_d, (0, CHAR_DIV_Y), div_d)
 
     rows = max(1, math.ceil(char_num / cols) if char_num else 1)
-    y_slack = based_h - CHAR_HEAD - CHAR_FOOT - rows * card_h
-    card_y0 = CHAR_HEAD + max(0, y_slack // 2)
+    y_slack = based_h - head - foot - rows * card_h
+    card_y0 = head + max(0, y_slack // 2)
 
     for index, char in enumerate(char_datas):
         char_star = char["rarity"]

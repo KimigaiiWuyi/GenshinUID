@@ -539,50 +539,69 @@ def resolve_updated_chars(
     return chars
 
 
-def download_namecard_pic(start: int = 10000002):
-    mapping_files = sorted(MAP_PATH.glob("enName2AvatarID_mapping_*.json"), reverse=True)
-    if not mapping_files:
-        print("未找到 enName2AvatarID_mapping，跳过 namecard 批量下载")
-        return
-    with open(mapping_files[0], encoding="utf-8") as f:
-        enmap: Dict[str, str] = json.load(f)
+# 这些角色没有专属名片
+NO_NAMECARD_BODY_KEYS = {
+    "PlayerBoy",
+    "PlayerGirl",
+    "MannequinBoy",
+    "MannequinGirl",
+}
+# 立绘 icon key 与名片资源 key 不一致
+NAMECARD_KEY_OVERRIDE = {
+    "Momoka": "Kirara",
+}
 
-    for _enname in enmap:
-        en = _enname.split(" ")[-1]
-        avatar_id = enmap[_enname]
-        if int(avatar_id) < start:
+
+def default_namecard_out() -> Path:
+    try:
+        from gsuid_core.data_store import get_res_path
+
+        out = get_res_path() / "GenshinUID" / "resource" / "char_namecard_pic"
+        out.mkdir(parents=True, exist_ok=True)
+        return out
+    except ImportError:
+        return OUT_PATH
+
+
+def download_namecard_pic(start: int = 10000002, vh: str = DEFAULT_VH):
+    """按 charList 下载全部角色 UI_NameCardPic_{en}_P.png，保存为 {角色ID}.png。"""
+    avatar_items = load_local_map("charList")
+    if not avatar_items:
+        print("未找到 charList，跳过 namecard 批量下载")
+        return
+
+    out_dir = default_namecard_out()
+    print(f"名片保存目录: {out_dir}")
+
+    seen: Set[str] = set()
+    for item_id, info in avatar_items.items():
+        if not isinstance(info, dict):
+            continue
+        char_id = traveler_numeric_id(str(item_id), info)
+        if not char_id.isdigit() or int(char_id) < start:
+            continue
+        if char_id in seen:
             continue
 
-        if en == "Jean":
-            en = "Qin"
-        elif en == "Baizhu":
-            en = "Baizhuer"
-        elif en == "Alhaitham":
-            en = "Alhatham"
-        elif en == "Jin":
-            en = "Yunjin"
-        elif en == "Miko":
-            en = "Yae"
-        elif en == "Heizou":
-            en = "Heizo"
-        elif en == "Amber":
-            en = "Ambor"
-        elif en == "Noelle":
-            en = "Noel"
-        elif en == "Yanfei":
-            en = "Feiyan"
-        elif en == "Shogun":
-            en = "Shougun"
-        elif en == "Lynette":
-            en = "Linette"
-        elif en == "Lyney":
-            en = "Liney"
-        elif en == "Tao":
-            en = "Hutao"
-        elif en == "Thoma":
-            en = "Tohma"
-        url = f"{ASSET_BASE}/UI_NameCardPic_{en}_P.{suffix}"
-        download(f"{avatar_id}.{suffix}", url)
+        body_key = avatar_icon_key(info)
+        char_name = str(info.get("name") or char_id)
+        if not body_key:
+            print(f"角色 {char_id}({char_name}) 无 icon key，跳过")
+            continue
+        if body_key in NO_NAMECARD_BODY_KEYS:
+            print(f"角色 {char_id}({char_name}) 无角色名片，跳过")
+            seen.add(char_id)
+            continue
+
+        seen.add(char_id)
+        en = NAMECARD_KEY_OVERRIDE.get(body_key, body_key)
+        remote_name = f"UI_NameCardPic_{en}_P.{suffix}"
+        url = with_vh(f"{ASSET_BASE}/namecard/{remote_name}", vh)
+        save_name = f"{char_id}.{suffix}"
+        print(f"==== 名片: {char_name} / {char_id} / {en} ====")
+        if is_download:
+            download(save_name, url, out_dir=out_dir)
+    print(f"名片处理完成，共 {len(seen)} 名角色")
 
 
 def main(
@@ -720,7 +739,7 @@ if __name__ == "__main__":
         is_download = False
 
     if args.namecard is not None:
-        download_namecard_pic(args.namecard)
+        download_namecard_pic(args.namecard, vh=args.vh)
     else:
         do_char = not args.weapon_only
         do_weapon = not args.char_only

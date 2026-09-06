@@ -7,6 +7,7 @@ from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.mys.models import IndexData, MihoyoAvatar
 
+from .char_score import char_total_score
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.map.name_covert import avatar_id_to_char_star
 from ..utils.image.image_tools import get_v4_bg
@@ -108,13 +109,7 @@ async def _prepare_char_datas(char_datas: list[MihoyoAvatar]) -> list[MihoyoAvat
                 rarity = 4
         char["rarity"] = min(int(rarity), 5)
 
-    prepared.sort(
-        key=lambda x: (
-            -x["rarity"],
-            -x["fetter"],
-            -x["actived_constellation_num"],
-        )
-    )
+    prepared.sort(key=char_total_score, reverse=True)
     return prepared
 
 

@@ -14,6 +14,7 @@ from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.mys.models import Stats, Offering, IndexData, MihoyoAvatar, WorldExploration
 from gsuid_core.utils.download_resource.download_image import get_image
 
+from .char_score import CHAR_SCORE_FLOOR, char_total_score
 from ..utils.colors import get_color
 from .draw_all_char import (
     TEXT_PATH as CHAR_TEXT,
@@ -58,23 +59,30 @@ EXPLORE_OFFER_X = 52
 
 # 地区探索：变高两列卡。上栏地区图，下栏大图标+条+供奉/子区域
 WORLD_COLS = 2
-WORLD_ROW_GAP = 26
+WORLD_ROW_GAP = 20
 WORLD_PAD_LEFT = 65
 WORLD_PAD_RIGHT = 62
 WORLD_GAP_X = 12
 WORLD_PAD_Y = 32
 WORLD_COL_W = (EXPLORE_W - WORLD_PAD_LEFT - WORLD_PAD_RIGHT - WORLD_GAP_X * (WORLD_COLS - 1)) // WORLD_COLS
-WORLD_BODY_H = 88
-WORLD_HEAD_H = WORLD_BODY_H
+WORLD_PAD = 14
+WORLD_GAP = 16
 WORLD_ICON = 70
-WORLD_ICON_X = 24
-WORLD_TEXT_X = 24
+WORLD_ICON_X = 36
+WORLD_TEXT_X = 36
+WORLD_TITLE_H = 20
+WORLD_TITLE_GAP = 4
 WORLD_HEAD_PAD = 24
+WORLD_HEAD_H = 88
+WORLD_BODY_H = 88
 WORLD_REP_W = 96
 WORLD_PCT_W = 78
 WORLD_BAR_X = 168
 WORLD_BAR_H = 22
 WORLD_BAR_W = WORLD_COL_W - WORLD_BAR_X - WORLD_PCT_W - 16
+WORLD_SUB_LABEL_W = 122
+WORLD_SUB_BAR_X = WORLD_BAR_X + WORLD_SUB_LABEL_W + 8
+WORLD_SUB_BAR_W = WORLD_COL_W - WORLD_SUB_BAR_X - WORLD_PCT_W - 16
 WORLD_CARD_PAD_BOT = 14
 WORLD_SUB_ICON = 28
 WORLD_TIP_W = 3
@@ -92,6 +100,7 @@ WORLD_CHIP_W = (WORLD_BAR_W - WORLD_OFFER_GAP) // WORLD_OFFER_COLS - 14
 WORLD_PCT_X = WORLD_COL_W - WORLD_HEAD_PAD
 WORLD_REP_BAR_W = 72
 WORLD_SUB_H = 40
+WORLD_SUB_BAR_H = 16
 WORLD_SUB_PAD = 8
 WORLD_BADGE_FG = "#10141c"
 WORLD_OFFER_BG = "rgba(255,255,255,0.10)"
@@ -99,7 +108,6 @@ WORLD_OFFER_FG = "#ffffff"
 WORLD_OFFER_EDGE = "rgba(255,255,255,0.22)"
 WORLD_I_DARK = "#0b1018"
 WORLD_TRACK_BG = "#0b1018"
-WORLD_CARD_BG = "#121826"
 WORLD_HEAD_DEFAULT = "#243044"
 WORLD_ACCENT_DEFAULT = "#5b8def"
 WORLD_BG_DIR = Path(__file__).parent / "texture2d" / "world_bg"
@@ -402,16 +410,68 @@ def _visible_children(children: list[WorldExploration]) -> list[WorldExploration
     return [child for child in children if child["exploration_percentage"] > 0]
 
 
-def _world_card_inner_h(world: WorldExploration, children: list[WorldExploration]) -> int:
-    h = WORLD_HEAD_H + WORLD_BODY_H + WORLD_CARD_PAD_BOT
-    n_off = len(_merged_offers(world, children))
-    if n_off > 2:
-        rows, _cell_w = _offer_grid(n_off)
-        h += WORLD_OFFER_PAD + rows * WORLD_OFFER_ROW
-    vis = _visible_children(children)
-    if vis:
-        h += WORLD_SUB_PAD + len(vis) * WORLD_SUB_H
+def _rep_label(world: WorldExploration, merged: list[Offering]) -> tuple[str, int] | None:
+    level = world["level"]
+    if level <= 0:
+        return None
+    if world["type"] == "Reputation":
+        return "声望", level
+    if world["type"] == "Offering" and not merged:
+        return "等阶", level
+    return None
+
+
+def _badge_rows(world: WorldExploration, merged: list[Offering]) -> int:
+    rows, _cell_w = _offer_grid(len(merged))
+    if rows == 0 and _world_statue(world) > 0:
+        return 1
+    return rows
+
+
+def _left_block_h(has_rep: bool) -> int:
+    h = WORLD_ICON + WORLD_TITLE_GAP + WORLD_TITLE_H
+    if has_rep:
+        h += WORLD_GAP + WORLD_BADGE_H
     return h
+
+
+def _world_frame(
+    world: WorldExploration,
+    children: list[WorldExploration],
+) -> tuple[int, int, int, int, int, int, list[Offering], list[WorldExploration]]:
+    merged = _merged_offers(world, children)
+    vis = _visible_children(children)
+    n_badge = _badge_rows(world, merged)
+    has_rep = _rep_label(world, merged) is not None
+    rel_after = WORLD_BAR_H + WORLD_GAP
+    rel_sub_y = rel_after
+    rel_last = WORLD_BAR_H
+    if vis:
+        rel_last = rel_sub_y + len(vis) * WORLD_SUB_H
+    if n_badge > 0:
+        rel_offer_y = (rel_last + WORLD_GAP) if vis else rel_after
+        rel_last = rel_offer_y + (n_badge - 1) * WORLD_OFFER_ROW + WORLD_BADGE_H
+    else:
+        rel_offer_y = rel_after
+    tip = WORLD_TIP_OVER + WORLD_TIP_OL
+    rel_y = tip + rel_last
+    left_h = _left_block_h(has_rep)
+    inner_h = max(rel_y, left_h) + WORLD_PAD * 2
+    right_y0 = (inner_h - rel_y) // 2
+    bar_y0 = right_y0 + tip
+    if left_h < rel_last and rel_last - left_h < WORLD_SUB_H * 2:
+        icon_y = bar_y0
+    else:
+        icon_y = (inner_h - left_h) // 2
+    bar_y = bar_y0
+    sub_y = bar_y0 + rel_sub_y
+    offer_y = bar_y0 + rel_offer_y
+    title_top = icon_y + WORLD_ICON + WORLD_TITLE_GAP
+    return inner_h, icon_y, title_top, bar_y, offer_y, sub_y, merged, vis
+
+
+def _world_card_inner_h(world: WorldExploration, children: list[WorldExploration]) -> int:
+    return _world_frame(world, children)[0]
 
 
 def _pack_world_cols(
@@ -755,32 +815,37 @@ def _rgba(rgb: tuple[int, int, int], alpha: float) -> str:
     return f"rgba({rgb[0]},{rgb[1]},{rgb[2]},{alpha})"
 
 
-def _header_art_uri(name: str) -> str:
+def _card_art_uri(name: str, height: int) -> str:
     if name not in _WORLD_BG_FILE:
         return ""
     path = WORLD_BG_DIR / _WORLD_BG_FILE[name]
     if not path.exists():
         return ""
-    key = f"worldbg:{name}:{WORLD_COL_W}x{WORLD_HEAD_H}"
+    key = f"worldbg:{name}:{WORLD_COL_W}x{height}"
     if key in _URI:
         return _URI[key]
     src = Image.open(path).convert("RGBA")
     iw, ih = src.size
-    scale = max(WORLD_COL_W / iw, WORLD_HEAD_H / ih)
+    scale = max(WORLD_COL_W / iw, height / ih)
     nw, nh = max(1, round(iw * scale)), max(1, round(ih * scale))
     resized = src.resize((nw, nh), Image.Resampling.LANCZOS)
     left = max(0, nw - WORLD_COL_W)
-    top = max(0, (nh - WORLD_HEAD_H) // 2)
-    crop = resized.crop((left, top, left + WORLD_COL_W, top + WORLD_HEAD_H))
-    veil = Image.new("RGBA", (WORLD_COL_W, WORLD_HEAD_H), (8, 12, 20, 72))
-    crop = Image.alpha_composite(crop, veil)
-    fade = Image.new("RGBA", (WORLD_COL_W, 1), (0, 0, 0, 0))
-    px = fade.load()
-    span = max(1, int(WORLD_COL_W * 0.58))
+    top = max(0, (nh - height) // 2)
+    crop = resized.crop((left, top, left + WORLD_COL_W, top + height))
+    crop = Image.alpha_composite(crop, Image.new("RGBA", (WORLD_COL_W, height), (8, 12, 20, 40)))
+    vfade = Image.new("RGBA", (1, height), (0, 0, 0, 0))
+    vpx = vfade.load()
+    for y in range(height):
+        t = y / max(1, height - 1)
+        vpx[0, y] = (6, 10, 18, round(36 + 150 * (t**1.05)))
+    crop = Image.alpha_composite(crop, vfade.resize((WORLD_COL_W, height), Image.Resampling.BILINEAR))
+    hfade = Image.new("RGBA", (WORLD_COL_W, 1), (0, 0, 0, 0))
+    hpx = hfade.load()
+    span = max(1, int(WORLD_COL_W * 0.42))
     for x in range(WORLD_COL_W):
-        alpha = 0 if x >= span else round(150 * (1 - x / span))
-        px[x, 0] = (6, 10, 18, alpha)
-    crop = Image.alpha_composite(crop, fade.resize((WORLD_COL_W, WORLD_HEAD_H), Image.Resampling.BILINEAR))
+        alpha = 0 if x >= span else round(110 * (1 - x / span))
+        hpx[x, 0] = (6, 10, 18, alpha)
+    crop = Image.alpha_composite(crop, hfade.resize((WORLD_COL_W, height), Image.Resampling.BILINEAR))
     uri = _png_uri(crop)
     _URI[key] = uri
     return uri
@@ -830,11 +895,14 @@ def _progress_row_html(
     percent: float,
     accent: str,
     pct_size: int = 18,
+    *,
+    bar_w: int | None = None,
 ) -> str:
+    width = WORLD_BAR_W if bar_w is None else bar_w
     fill = _pct_fill_css(accent)
-    fill_w = min(WORLD_BAR_W, max(0, round(percent * WORLD_BAR_W / 100)))
+    fill_w = min(width, max(0, round(percent * width / 100)))
     parts = [
-        _flat_bar_html(bar_x, bar_y, WORLD_BAR_W, bar_h, fill_w, fill),
+        _flat_bar_html(bar_x, bar_y, width, bar_h, fill_w, fill),
         _label(f"{percent:.1f}%", WORLD_PCT_X, bar_y + bar_h // 2, pct_size, WORLD_PCT_W, align="right"),
     ]
     if fill_w > 0:
@@ -930,96 +998,70 @@ async def _world_card_html(
     name = _world_short_name(world["name"])
     percent = world["exploration_percentage"] / 10
     statue = _world_statue(world)
-    level = world["level"]
-    world_type = world["type"]
+    (
+        _h,
+        icon_y,
+        title_top,
+        bar_y,
+        offer_y,
+        sub_y,
+        merged,
+        vis_children,
+    ) = _world_frame(world, children)
     icon_uri = await _icon_uri(_world_icon_url(world), (WORLD_ICON, WORLD_ICON))
-    art_uri = _header_art_uri(name)
+    art_uri = _card_art_uri(name, inner_h)
     head_bg = _header_bg(name)
     accent = _header_accent(name)
-    name_w = max(len(name) * 24 + 8, 56)
-    head_cy = WORLD_HEAD_H // 2
-    badge_top = (WORLD_HEAD_H - WORLD_BADGE_H) // 2
-    pct_x = WORLD_PCT_X
-    body_y = WORLD_HEAD_H
-    merged = _merged_offers(world, children)
-    head_offers = merged if len(merged) <= 2 else []
-    body_offers = merged if len(merged) > 2 else []
-    vis_children = _visible_children(children)
+    name_w = max(len(name) * WORLD_TITLE_H + 8, WORLD_ICON)
     offer_icon_fb = await _icon_uri(_world_icon_url(world), (WORLD_OFFER_ICON, WORLD_OFFER_ICON))
-    slot_h = WORLD_BODY_H + (0 if body_offers or vis_children else WORLD_CARD_PAD_BOT)
-    icon_y = body_y + (slot_h - WORLD_ICON) // 2
-    bar_y = body_y + (slot_h - WORLD_BAR_H) // 2
     parts: list[str] = [
         (
             f'<div style="position:absolute;left:{left}px;top:{top}px;'
             f"width:{WORLD_COL_W}px;height:{inner_h}px;border-radius:8px;"
-            f'background:{WORLD_CARD_BG};overflow:hidden">'
-        ),
-        (
-            f'<div style="position:absolute;left:0;top:0;width:{WORLD_COL_W}px;height:{WORLD_HEAD_H}px;'
-            f'background:{head_bg}"></div>'
+            f'background:{head_bg};overflow:hidden">'
         ),
     ]
     if art_uri:
-        parts.append(_abs_img(art_uri, 0, 0, WORLD_COL_W, WORLD_HEAD_H))
-    parts.append(
-        f'<div style="position:absolute;left:0;top:0;width:4px;height:{WORLD_HEAD_H}px;background:{accent}"></div>'
-    )
-    parts.append(_label(name, WORLD_TEXT_X, head_cy, 24, name_w, align="left"))
+        parts.append(_abs_img(art_uri, 0, 0, WORLD_COL_W, inner_h))
+    parts.append(f'<div style="position:absolute;left:0;top:0;width:4px;height:{inner_h}px;background:{accent}"></div>')
     parts.append(_abs_img(icon_uri, WORLD_ICON_X, icon_y, WORLD_ICON, WORLD_ICON))
+    parts.append(
+        _label(
+            name,
+            WORLD_ICON_X + WORLD_ICON // 2,
+            title_top + WORLD_TITLE_H // 2,
+            WORLD_TITLE_H,
+            name_w,
+            align="center",
+        )
+    )
     parts.append(_progress_row_html(WORLD_BAR_X, bar_y, WORLD_BAR_H, percent, accent))
+    rep = _rep_label(world, merged)
+    if rep is not None:
+        kind, rep_lv = rep
+        rep_left = WORLD_ICON_X + (WORLD_ICON - WORLD_REP_BAR_W) // 2
+        rep_top = title_top + WORLD_TITLE_H + WORLD_GAP
+        parts.append(
+            _rep_badge_html(
+                rep_left,
+                rep_top,
+                WORLD_REP_BAR_W,
+                accent,
+                kind,
+                rep_lv,
+                name,
+            )
+        )
 
-    cursor = WORLD_TEXT_X + name_w + 10
     if statue > 0:
         st_text = f"神像{statue}"
         st_w = _badge_w(st_text, 16)
-        parts.append(_glow_badge(cursor, badge_top, st_w, WORLD_BADGE_H, "#2190d4", st_text, size=16))
-        cursor += st_w + 12
-    if level > 0 and world_type == "Reputation":
-        parts.append(
-            _rep_badge_html(
-                pct_x - WORLD_REP_BAR_W,
-                badge_top,
-                WORLD_REP_BAR_W,
-                accent,
-                "声望",
-                level,
-                name,
-            )
-        )
-    elif level > 0 and world_type == "Offering" and not merged:
-        parts.append(
-            _rep_badge_html(
-                pct_x - WORLD_REP_BAR_W,
-                badge_top,
-                WORLD_REP_BAR_W,
-                accent,
-                "等阶",
-                level,
-                name,
-            )
-        )
-    if head_offers:
-        for i, offer in enumerate(head_offers):
-            ox = WORLD_BAR_X + i * (WORLD_CHIP_W + WORLD_OFFER_GAP)
-            parts.append(
-                await _offer_badge_html(
-                    ox,
-                    badge_top,
-                    offer,
-                    width=WORLD_CHIP_W,
-                    accent=accent,
-                    fallback_icon=offer_icon_fb,
-                )
-            )
-
-    y = body_y + WORLD_BODY_H
-    if body_offers:
-        y += WORLD_OFFER_PAD
-        rows, cell_w = _offer_grid(len(body_offers))
-        for i, offer in enumerate(body_offers):
+        parts.append(_glow_badge(WORLD_BAR_X, offer_y, st_w, WORLD_BADGE_H, "#2190d4", st_text, size=16))
+    if merged:
+        rows, cell_w = _offer_grid(len(merged))
+        for i, offer in enumerate(merged):
             ox = WORLD_BAR_X + (i % WORLD_OFFER_COLS) * (cell_w + WORLD_OFFER_GAP)
-            oy = y + (i // WORLD_OFFER_COLS) * WORLD_OFFER_ROW
+            oy = offer_y + (i // WORLD_OFFER_COLS) * WORLD_OFFER_ROW
             parts.append(
                 await _offer_badge_html(
                     ox,
@@ -1030,29 +1072,28 @@ async def _world_card_html(
                     fallback_icon=offer_icon_fb,
                 )
             )
-        y += rows * WORLD_OFFER_ROW
 
     if vis_children:
-        y += WORLD_SUB_PAD
-        sub_bar_h = 16
+        y = sub_y
         for child in vis_children:
-            cy = y + (WORLD_SUB_H - sub_bar_h) // 2
+            cy = y + (WORLD_SUB_H - WORLD_SUB_BAR_H) // 2
             cname = child["name"] if child["name"].startswith("沉玉谷·") else _world_short_name(child["name"])
             child_icon = await _icon_uri(_world_icon_url(child), (WORLD_SUB_ICON, WORLD_SUB_ICON))
             iy = y + (WORLD_SUB_H - WORLD_SUB_ICON) // 2
-            parts.append(_abs_img(child_icon, WORLD_TEXT_X, iy, WORLD_SUB_ICON, WORLD_SUB_ICON))
-            nx = WORLD_TEXT_X + WORLD_SUB_ICON + 6
-            cw = min(max(len(cname) * 15 + 4, 40), WORLD_BAR_X - nx - 8)
-            parts.append(_label(cname, nx, y + WORLD_SUB_H // 2, 15, cw, align="left"))
+            parts.append(_abs_img(child_icon, WORLD_BAR_X, iy, WORLD_SUB_ICON, WORLD_SUB_ICON))
+            nx = WORLD_BAR_X + WORLD_SUB_ICON + 6
+            cw = WORLD_SUB_LABEL_W - WORLD_SUB_ICON - 6
+            parts.append(_label(cname, nx, y + WORLD_SUB_H // 2, 14, cw, align="left"))
             child_accent = _header_accent(_world_short_name(child["name"]))
             parts.append(
                 _progress_row_html(
-                    WORLD_BAR_X,
+                    WORLD_SUB_BAR_X,
                     cy,
-                    sub_bar_h,
+                    WORLD_SUB_BAR_H,
                     child["exploration_percentage"] / 10,
                     child_accent,
                     16,
+                    bar_w=WORLD_SUB_BAR_W,
                 )
             )
             y += WORLD_SUB_H
@@ -1107,22 +1148,34 @@ def _char_card_html(char: MihoyoAvatar, card_w: int, card_h: int) -> str:
     talent = _talent_uri(char["actived_constellation_num"])
     fetter = _fetter_uri(char["fetter"])
 
+    dim = char_total_score(char) < CHAR_SCORE_FLOOR
+    wrap_op = ";opacity:0.85" if dim else ""
     parts: list[str] = [
-        f'<div style="position:relative;width:{card_w}px;height:{card_h}px">',
+        f'<div style="position:relative;width:{card_w}px;height:{card_h}px{wrap_op}">',
         _abs_img(bg, 0, 0, card_w, card_h),
         _abs_img(namecard, sx(32), sy(29), sx(NAMECARD_W), sy(NAMECARD_H)),
-        _abs_img(char_icon, sx(43), sy(35), sx(CHAR_ICON_SIZE), sy(CHAR_ICON_SIZE)),
-        _abs_img(weapon_bg, sx(343), sy(33), sx(WEAPON_BG_SIZE), sy(WEAPON_BG_SIZE)),
-        _abs_img(weapon_icon, sx(366), sy(55), sx(WEAPON_ICON_SIZE), sy(WEAPON_ICON_SIZE)),
-        _abs_img(fg, 0, 0, card_w, card_h),
-        _abs_img(talent, sx(273), sy(55), sx(TALENT_W), sy(TALENT_H)),
-        _abs_img(fetter, sx(273), sy(124), sx(FETTER_W), sy(FETTER_H)),
-        _label(f"Lv{char['level']}", sx(110), sy(261), fs30, sx(120)),
-        _label(weapon_name, sx(453), sy(264), fs28, sx(210)),
-        _label(f"Lv{weapon['level']}", sx(496), sy(212), fs28, sx(90)),
-        _label(str(weapon["affix_level"]), sx(513), sy(80), fs28, sx(40)),
-        "</div>",
     ]
+    if dim:
+        parts.append(
+            f'<div style="position:absolute;left:{sx(32)}px;top:{sy(29)}px;'
+            f"width:{sx(NAMECARD_W)}px;height:{sy(NAMECARD_H)}px;"
+            f'background:rgba(0,0,0,0.70)"></div>'
+        )
+    parts.extend(
+        [
+            _abs_img(char_icon, sx(43), sy(35), sx(CHAR_ICON_SIZE), sy(CHAR_ICON_SIZE)),
+            _abs_img(weapon_bg, sx(343), sy(33), sx(WEAPON_BG_SIZE), sy(WEAPON_BG_SIZE)),
+            _abs_img(weapon_icon, sx(366), sy(55), sx(WEAPON_ICON_SIZE), sy(WEAPON_ICON_SIZE)),
+            _abs_img(fg, 0, 0, card_w, card_h),
+            _abs_img(talent, sx(273), sy(55), sx(TALENT_W), sy(TALENT_H)),
+            _abs_img(fetter, sx(273), sy(124), sx(FETTER_W), sy(FETTER_H)),
+            _label(f"Lv{char['level']}", sx(110), sy(261), fs30, sx(120)),
+            _label(weapon_name, sx(453), sy(264), fs28, sx(210)),
+            _label(f"Lv{weapon['level']}", sx(496), sy(212), fs28, sx(90)),
+            _label(str(weapon["affix_level"]), sx(513), sy(80), fs28, sx(40)),
+            "</div>",
+        ]
+    )
     return "".join(parts)
 
 

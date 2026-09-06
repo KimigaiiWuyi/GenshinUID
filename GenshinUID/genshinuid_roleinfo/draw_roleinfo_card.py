@@ -1,25 +1,13 @@
 from typing import Union
 
-from PIL import Image
-
 from gsuid_core.models import Event
-from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.mys.models import IndexData, MihoyoAvatar
 from gsuid_core.ai_core.trigger_bridge import ai_return
-from gsuid_core.utils.image.image_tools import easy_alpha_composite
 
-from .draw_all_char import _draw_char_pic
+from .draw_all_char import _load_char_datas, _prepare_char_datas
+from .html_roleinfo import render_roleinfo_html
 from ..utils.mys_api import get_base_data
-from ..utils.image.image_tools import (
-    get_v4_bg,
-    add_footer,
-    get_avatar,
-    get_v4_title,
-)
-from ..genshinuid_collection.draw_new_collection_card import _draw_explore
-
-CHAR_SIDE_MIN = 21
-TITLE_TO_EXPLORE_Y = 650
+from ..utils.image.image_tools import get_avatar
 
 
 async def draw_pic(
@@ -28,24 +16,6 @@ async def draw_pic(
     raw_data: IndexData | None = None,
     char_datas: list[MihoyoAvatar] | None = None,
 ) -> Union[str, bytes]:
-    img = await _draw_pic(ev, uid, raw_data=raw_data, char_datas=char_datas)
-    if isinstance(img, (bytes, str)):
-        return img
-    elif isinstance(img, (bytearray, memoryview)):
-        return bytes(img)
-
-    bg = get_v4_bg(img.size[0], img.size[1])
-    bg.paste(img, (0, 0), img)
-
-    return await convert_img(bg)
-
-
-async def _draw_pic(
-    ev: Event,
-    uid: str,
-    raw_data: IndexData | None = None,
-    char_datas: list[MihoyoAvatar] | None = None,
-) -> Union[str, bytes, Image.Image]:
     if raw_data is None:
         loaded = await get_base_data(uid)
         if isinstance(loaded, (str, bytes)):
@@ -79,44 +49,14 @@ async def _draw_pic(
     except Exception:
         pass
 
-    explore_img = await _draw_explore(raw_data)
-    char_count = raw_data["stats"]["avatar_number"]
-    side_by_side = char_count >= CHAR_SIDE_MIN
-    match_height = TITLE_TO_EXPLORE_Y + explore_img.size[1] if side_by_side else None
+    if char_datas is None:
+        loaded_chars = await _load_char_datas(uid, raw_data)
+        if isinstance(loaded_chars, (str, bytes)):
+            return loaded_chars
+        elif isinstance(loaded_chars, (bytearray, memoryview)):
+            return bytes(loaded_chars)
+        char_datas = loaded_chars
 
-    char_img = await _draw_char_pic(
-        uid,
-        raw_data,
-        match_height=match_height,
-        char_datas=char_datas,
-    )
-    if isinstance(char_img, (bytes, str)):
-        return char_img
-    elif isinstance(char_img, (bytearray, memoryview)):
-        return bytes(char_img)
-
+    char_datas = await _prepare_char_datas(char_datas)
     char_pic = await get_avatar(ev, 377, False)
-    title_img = get_v4_title(char_pic, uid, raw_data)
-
-    if side_by_side:
-        left_w = max(title_img.size[0], explore_img.size[0])
-        left_h = TITLE_TO_EXPLORE_Y + explore_img.size[1]
-        img = Image.new("RGBA", (left_w + char_img.size[0], left_h))
-        img.paste(title_img, (0, 0), title_img)
-        img = easy_alpha_composite(img, explore_img, (0, TITLE_TO_EXPLORE_Y))
-        img = easy_alpha_composite(img, char_img, (left_w, 0))
-        return add_footer(img)
-
-    w = char_img.size[0]
-    h = char_img.size[1] + explore_img.size[1] + 560
-    o = 150
-
-    img = Image.new("RGBA", (w, h))
-    img.paste(title_img, (0, 0), title_img)
-    img = easy_alpha_composite(
-        img,
-        explore_img,
-        (-int((explore_img.size[0] - char_img.size[0]) / 2), 500 + o),
-    )
-    img = easy_alpha_composite(img, char_img, (0, 500 + explore_img.size[1] - 110 + o))
-    return add_footer(img)
+    return await render_roleinfo_html(uid, raw_data, char_datas, char_pic)

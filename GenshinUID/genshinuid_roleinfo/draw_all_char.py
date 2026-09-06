@@ -73,8 +73,8 @@ def _char_grid_metrics(
             CHAR_FOOT,
         )
 
-    # 双列无横幅，底边留给整图 footer
-    head = CHAR_SIDE_PAD_X
+    # 双列无横幅，底边留给整图 footer；顶边略留空，避免贴满
+    head = CHAR_SIDE_PAD_X + 18
     foot = CHAR_FOOT
     avail_h = max(CHAR_CARD_H, match_height - head - foot)
     max_rows = max(1, avail_h // CHAR_CARD_H)

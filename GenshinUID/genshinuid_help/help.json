@@ -35,16 +35,8 @@
         "need_admin": false
       },
       {
-        "name": "收集/sj",
-        "desc": "收集百分比,后可跟UID",
-        "eg": "收集100740568",
-        "need_ck": true,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
         "name": "探索/ts",
-        "desc": "探索百分比,后可跟UID",
+        "desc": "神瞳/宝箱/地区探索(查询左半),后可跟UID",
         "eg": "探索100740568",
         "need_ck": true,
         "need_sk": false,

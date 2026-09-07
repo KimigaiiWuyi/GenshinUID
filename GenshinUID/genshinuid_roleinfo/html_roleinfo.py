@@ -35,6 +35,8 @@ from ..utils.resource.RESOURCE_PATH import (
 from ..genshinuid_collection.draw_collection_card import TEXT_PATH as COLLECT_TEXT
 from ..genshinuid_collection.draw_new_collection_card import CMAP, DMAP, STCMAP
 
+WorldPacked = list[list[tuple[WorldExploration, list[WorldExploration], int]]]
+
 CHAR_SIDE_MIN = 21
 SIDE_CHAR_COLS = 6
 TITLE_TO_EXPLORE_Y = 650
@@ -219,6 +221,7 @@ _LEVEL_MAX: dict[str, int] = {
     "挪德卡莱": 10,
     "至冬": 10,
     "空之神殿": 9,
+    "神像": 10,
 }
 
 _CHILD_RANK: dict[str, int] = {
@@ -421,13 +424,6 @@ def _rep_label(world: WorldExploration, merged: list[Offering]) -> tuple[str, in
     return None
 
 
-def _badge_rows(world: WorldExploration, merged: list[Offering]) -> int:
-    rows, _cell_w = _offer_grid(len(merged))
-    if rows == 0 and _world_statue(world) > 0:
-        return 1
-    return rows
-
-
 def _left_block_h(has_rep: bool) -> int:
     h = WORLD_ICON + WORLD_TITLE_GAP + WORLD_TITLE_H
     if has_rep:
@@ -441,7 +437,9 @@ def _world_frame(
 ) -> tuple[int, int, int, int, int, int, list[Offering], list[WorldExploration]]:
     merged = _merged_offers(world, children)
     vis = _visible_children(children)
-    n_badge = _badge_rows(world, merged)
+    n_badge, _cell_w = _offer_grid(len(merged))
+    if n_badge == 0 and _world_statue(world) > 0:
+        n_badge = 1
     has_rep = _rep_label(world, merged) is not None
     rel_after = WORLD_BAR_H + WORLD_GAP
     rel_sub_y = rel_after
@@ -585,11 +583,6 @@ def _pill(
         f"justify-content:center;color:{color};font-size:{size}px;font-family:{FONT_CSS};"
         f'line-height:1">{html.escape(text)}</div>'
     )
-
-
-def _badge_w(text: str, size: int, icon: int = 0) -> int:
-    extra = 16 + icon + 6 if icon else 24
-    return extra + len(text) * size
 
 
 def _rect_badge(
@@ -811,10 +804,6 @@ def _hex_rgb(color: str) -> tuple[int, int, int]:
     return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
 
 
-def _rgba(rgb: tuple[int, int, int], alpha: float) -> str:
-    return f"rgba({rgb[0]},{rgb[1]},{rgb[2]},{alpha})"
-
-
 def _card_art_uri(name: str, height: int) -> str:
     if name not in _WORLD_BG_FILE:
         return ""
@@ -849,18 +838,6 @@ def _card_art_uri(name: str, height: int) -> str:
     uri = _png_uri(crop)
     _URI[key] = uri
     return uri
-
-
-def _glow_badge(left: int, top: int, width: int, height: int, accent: str, text: str, size: int = 16) -> str:
-    r, g, b = _hex_rgb(accent)
-    hi = (min(255, r + 70), min(255, g + 70), min(255, b + 70))
-    fill = f"rgb({hi[0]},{hi[1]},{hi[2]})"
-    return (
-        _i_rect(left - 8, top - 8, width + 16, height + 16, _rgba(hi, 0.18))
-        + _i_rect(left - 5, top - 5, width + 10, height + 10, _rgba(hi, 0.35))
-        + _i_rect(left - 2, top - 2, width + 4, height + 4, _rgba(hi, 0.7))
-        + _rect_badge(left, top, width, height, fill, text, size=size, color=WORLD_BADGE_FG)
-    )
 
 
 def _lighten_hex(color: str, factor: float) -> str:
@@ -997,7 +974,6 @@ async def _world_card_html(
 ) -> str:
     name = _world_short_name(world["name"])
     percent = world["exploration_percentage"] / 10
-    statue = _world_statue(world)
     (
         _h,
         icon_y,
@@ -1053,10 +1029,6 @@ async def _world_card_html(
             )
         )
 
-    if statue > 0:
-        st_text = f"神像{statue}"
-        st_w = _badge_w(st_text, 16)
-        parts.append(_glow_badge(WORLD_BAR_X, offer_y, st_w, WORLD_BADGE_H, "#2190d4", st_text, size=16))
     if merged:
         rows, cell_w = _offer_grid(len(merged))
         for i, offer in enumerate(merged):
@@ -1072,6 +1044,21 @@ async def _world_card_html(
                     fallback_icon=offer_icon_fb,
                 )
             )
+    statue = _world_statue(world)
+    if statue > 0:
+        rows, _cell_w = _offer_grid(len(merged))
+        last_y = offer_y if rows <= 1 else offer_y + (rows - 1) * WORLD_OFFER_ROW
+        parts.append(
+            _rep_badge_html(
+                WORLD_PCT_X - WORLD_REP_BAR_W,
+                last_y,
+                WORLD_REP_BAR_W,
+                accent,
+                "神像",
+                statue,
+                "神像",
+            )
+        )
 
     if vis_children:
         y = sub_y
@@ -1207,7 +1194,7 @@ def _char_section_html(
 
 async def _explore_html(
     raw_data: IndexData,
-    packed: list[list[tuple[WorldExploration, list[WorldExploration], int]]],
+    packed: WorldPacked,
     world_block_h: int,
 ) -> str:
     stats = raw_data["stats"]
@@ -1362,22 +1349,60 @@ img {{ display: block; }}
 """
 
 
-async def render_roleinfo_html(
-    uid: str,
-    raw_data: IndexData,
-    char_datas: list[MihoyoAvatar],
-    avatar: Image.Image,
-) -> bytes:
-    _ensure_ys_font()
+async def _html_to_img(width: int, height: int, bg_uri: str, inner: str) -> bytes:
+    page = _wrap_page(width, height, bg_uri, inner)
+    png = await render_html_to_bytes(
+        page,
+        max_width=width,
+        dpi=96,
+        default_font_size=16,
+        font_name="YuanShen",
+        allow_refit=True,
+        image_format="png",
+        lang="zh",
+        root_max_width=width,
+    )
+    return await convert_img(Image.open(BytesIO(png)))
+
+
+def _pack_explore(raw_data: IndexData) -> tuple[WorldPacked, int, int]:
     stats = raw_data["stats"]
-    char_num = len(char_datas)
-    side_by_side = stats["avatar_number"] >= CHAR_SIDE_MIN
     culus_n = len(_culus_pairs(stats))
     worlds = list(raw_data["world_explorations"])
     worlds.sort(key=lambda w: -w["id"])
     packed = _pack_world_cols(_group_worlds(worlds))
     world_block_h = _world_block_height(packed)
     explore_h = _explore_height(culus_n, world_block_h)
+    return packed, world_block_h, explore_h
+
+
+async def render_roleinfo_html(
+    uid: str,
+    raw_data: IndexData,
+    char_datas: list[MihoyoAvatar],
+    avatar: Image.Image,
+    *,
+    include_chars: bool = True,
+) -> bytes:
+    _ensure_ys_font()
+    packed, world_block_h, explore_h = _pack_explore(raw_data)
+    avatar_uri = _png_uri(avatar.convert("RGBA"))
+    title = _title_html(avatar_uri, uid, raw_data)
+    explore = await _explore_html(raw_data, packed, world_block_h)
+    title_explore = (
+        f'<div style="position:absolute;left:0;top:0">{title}</div>'
+        f'<div style="position:absolute;left:0;top:{TITLE_TO_EXPLORE_Y}px">{explore}</div>'
+    )
+
+    if not include_chars:
+        width = TITLE_W
+        height = TITLE_TO_EXPLORE_Y + explore_h
+        bg_uri = await _bg_jpeg_uri(width, height)
+        return await _html_to_img(width, height, bg_uri, title_explore)
+
+    stats = raw_data["stats"]
+    char_num = len(char_datas)
+    side_by_side = stats["avatar_number"] >= CHAR_SIDE_MIN
     match_height = TITLE_TO_EXPLORE_Y + explore_h if side_by_side else None
     based_w, based_h, cols, card_w, card_h, pad_x, head, foot = _char_grid_metrics(char_num, match_height)
     if side_by_side and cols > SIDE_CHAR_COLS:
@@ -1396,10 +1421,6 @@ async def render_roleinfo_html(
         width = based_w
         height = based_h + explore_h + 560
 
-    avatar_uri = _png_uri(avatar.convert("RGBA"))
-    bg_uri = await _bg_jpeg_uri(width, height)
-    title = _title_html(avatar_uri, uid, raw_data)
-    explore = await _explore_html(raw_data, packed, world_block_h)
     chars = _char_section_html(
         char_datas,
         side_by_side=side_by_side,
@@ -1413,29 +1434,10 @@ async def render_roleinfo_html(
     )
 
     if side_by_side:
-        inner = (
-            f'<div style="position:absolute;left:0;top:0">{title}</div>'
-            f'<div style="position:absolute;left:0;top:{TITLE_TO_EXPLORE_Y}px">{explore}</div>'
-            f'<div style="position:absolute;left:{TITLE_W}px;top:0">{chars}</div>'
-        )
+        inner = f'{title_explore}<div style="position:absolute;left:{TITLE_W}px;top:0">{chars}</div>'
     else:
         char_y = 500 + explore_h - 110 + 150
-        inner = (
-            f'<div style="position:absolute;left:0;top:0">{title}</div>'
-            f'<div style="position:absolute;left:0;top:{TITLE_TO_EXPLORE_Y}px">{explore}</div>'
-            f'<div style="position:absolute;left:0;top:{char_y}px">{chars}</div>'
-        )
+        inner = f'{title_explore}<div style="position:absolute;left:0;top:{char_y}px">{chars}</div>'
 
-    page = _wrap_page(width, height, bg_uri, inner)
-    png = await render_html_to_bytes(
-        page,
-        max_width=width,
-        dpi=96,
-        default_font_size=16,
-        font_name="YuanShen",
-        allow_refit=True,
-        image_format="png",
-        lang="zh",
-        root_max_width=width,
-    )
-    return await convert_img(Image.open(BytesIO(png)))
+    bg_uri = await _bg_jpeg_uri(width, height)
+    return await _html_to_img(width, height, bg_uri, inner)

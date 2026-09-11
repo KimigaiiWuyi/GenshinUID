@@ -53,10 +53,10 @@ def parse_build_leaderboards_payload(
     rows: list[BuildLeaderboardRow] = []
     for key, entry in calculations.items():
         if not isinstance(key, str):
-            return None
+            continue
         parsed = _parse_row(key, entry, decimals=decimals)
         if parsed is None:
-            return None
+            continue
         rows.append(parsed)
     return rows
 
@@ -222,7 +222,7 @@ def _parse_teammates(raw: object) -> list[Teammate] | None:
     for entry in raw:
         parsed = _parse_teammate(entry)
         if parsed is None:
-            return None
+            continue
         out.append(parsed)
     return out
 

@@ -19,6 +19,7 @@ TEAM_SLOTS = 4
 SIDE_LOADOUTS = 2
 SIDE_GAIN_LOADOUTS = 2
 SIDE_RANK_MAX = 3
+TEAM_WEAPON_LIMIT = 3
 DD_GAP = 8
 RANK_ROW_H = 64
 RANK_HEADER_H = 40
@@ -303,6 +304,41 @@ def pick_loadout_ids(
         if len(picked) >= limit:
             break
     return picked
+
+
+def _team_name(row: Mapping[str, object]) -> str:
+    return _as_str(row["name"] if "name" in row else "")
+
+
+def pick_team_rows(
+    rows: Sequence[Mapping[str, object]],
+    weapon_limit: int = TEAM_WEAPON_LIMIT,
+) -> list[Mapping[str, object]]:
+    """队伍榜：不同配队优先；最优那条队最多留 ``weapon_limit`` 把武器。"""
+    if weapon_limit <= 0 or not rows:
+        return []
+    best = _team_name(rows[0])
+    counts: dict[str, int] = {}
+    seen_weapon: dict[str, set[str]] = {}
+    out: list[Mapping[str, object]] = []
+    for row in rows:
+        name = _team_name(row)
+        if not name:
+            continue
+        cap = weapon_limit if name == best else 1
+        used = counts[name] if name in counts else 0
+        if used >= cap:
+            continue
+        wid = _weapon_id_of(row)
+        weapons = seen_weapon[name] if name in seen_weapon else set()
+        if wid and wid in weapons:
+            continue
+        out.append(row)
+        counts[name] = used + 1
+        if wid:
+            weapons.add(wid)
+            seen_weapon[name] = weapons
+    return out
 
 
 def match_calc_board(
@@ -642,13 +678,14 @@ def akasha_side_html(
     if compact and dist_html:
         dist_html = f'<div class="ddpair">{dist_html}</div>'
     selected = {_calc_key(_as_str(item["calculation_id"])) for item in board_list if "calculation_id" in item}
-    listing = _leaderboard_list(rows, selected, char_icons, weapon_icons, accent)
+    team_rows = pick_team_rows(rows)
+    listing = _leaderboard_list(team_rows, selected, char_icons, weapon_icons, accent)
     rank_list = pick_nearby_ranks(ranks if ranks is not None else [], self_uid)
     if target_height > 0:
         used = estimate_side_used(
             _max_dist_parts(dist_list[:SIDE_LOADOUTS]),
             [_gain_row_count(item) for item in board_list],
-            len(rows),
+            len(team_rows),
         )
         n_rank = count_rank_slots(target_height, used, len(rank_list))
         rank_list = rank_list[:n_rank]

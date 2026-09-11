@@ -179,10 +179,46 @@ def test_parse_rank_tilde_and_int_weapon_id() -> None:
     assert parsed[0]["top_pct"] == 12.0
 
 
+def test_parse_skips_stub_teammates_and_bad_rows() -> None:
+    payload = {
+        "data": {
+            "calculations": {
+                "good": {
+                    "short": "SOLO",
+                    "name": "Solo",
+                    "ranking": 10,
+                    "outOf": 100,
+                    "result": 1.0,
+                    "weapon": _WEAPON,
+                    "teammates": [
+                        {
+                            "character": {
+                                "name": "Xiao",
+                                "element": "Anemo",
+                                "rarity": 5,
+                                "icon": "x.png",
+                                "constellation": 0,
+                            }
+                        },
+                        {"character": {"name": "x"}},
+                    ],
+                },
+                "bad": {"short": 1},
+            }
+        }
+    }
+    parsed = parse_build_leaderboards_payload(payload)
+    assert parsed is not None
+    assert len(parsed) == 1
+    assert parsed[0]["calculation_id"] == "good"
+    assert len(parsed[0]["teammates"]) == 1
+    assert parsed[0]["teammates"][0]["character"]["name"] == "Xiao"
+
+
 def test_parse_rejects_bad_payload() -> None:
     assert parse_build_leaderboards_payload("nope") is None
     assert parse_build_leaderboards_payload({"data": []}) is None
-    assert parse_build_leaderboards_payload({"data": {"calculations": {"a": {}}}}) is None
+    assert parse_build_leaderboards_payload({"data": {"calculations": {"a": {}}}}) == []
 
 
 def test_extract_build_md5_current_then_fallback() -> None:

@@ -70,6 +70,8 @@ akasha_side_html = _MOD.akasha_side_html
 akasha_side_css = _MOD.akasha_side_css
 pick_priority_board = _MOD.pick_priority_board
 pick_loadout_ids = _MOD.pick_loadout_ids
+pick_team_rows = _MOD.pick_team_rows
+TEAM_WEAPON_LIMIT = _MOD.TEAM_WEAPON_LIMIT
 match_calc_board = _MOD.match_calc_board
 count_rank_slots = _MOD.count_rank_slots
 pick_nearby_ranks = _MOD.pick_nearby_ranks
@@ -298,6 +300,40 @@ def test_pick_loadout_ids_prefers_different_weapons() -> None:
     assert ids[0].startswith("1000012002")
     assert ids[1].startswith("1000012004")
     assert match_calc_board(rows, "1000012002170er") is not None
+
+
+def test_pick_team_rows_caps_same_team_weapons() -> None:
+    raw = json.loads((_ROOT / "test_output" / "gs_detail" / "akasha_lb_10000033.json").read_text(encoding="utf-8"))
+    parsed = parse_build_leaderboards_payload(raw)
+    assert parsed is not None
+    rows = list_visible_leaderboards(parsed)
+    assert len(rows) > TEAM_WEAPON_LIMIT
+    picked = pick_team_rows(rows)
+    assert len(picked) == TEAM_WEAPON_LIMIT
+    names = {row["name"] for row in picked if "name" in row}
+    assert len(names) == 1
+    wids = {
+        row["weapon"]["weaponId"]
+        for row in picked
+        if "weapon" in row and isinstance(row["weapon"], dict) and "weaponId" in row["weapon"]
+    }
+    assert len(wids) == TEAM_WEAPON_LIMIT
+
+
+def test_pick_team_rows_keeps_other_teams() -> None:
+    board, rows = _board_and_rows()
+    picked = pick_team_rows(rows)
+    labels = {row["name"] for row in picked if "name" in row}
+    assert "Lunar-Crystallize Team, Avg DMG" in labels or any("Lunar" in str(x) for x in labels)
+    html = akasha_side_html(
+        board,
+        rows,
+        accent="#b98cf5",
+        char_icons={},
+        weapon_icons={},
+    )
+    assert "月结晶队" in html
+    assert html.count("lbcard") <= len(rows)
 
 
 def test_side_html_two_loadouts() -> None:

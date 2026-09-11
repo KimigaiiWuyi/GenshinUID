@@ -43,7 +43,7 @@ gsconfig = StringConfig("GenshinUID", CONFIG_PATH, CONIFG_DEFAULT)
 @on_core_start
 async def all_start():
     await download_Oceanid()
-    await startup()              # 资源
+    await startup()  # 资源
     await create_all_char_card()
 ```
 

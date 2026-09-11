@@ -6,7 +6,7 @@ ci:
   autoupdate_commit_msg: "⬆️ `pre-commit-ci`自动升级"
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.1
+    rev: v0.16.6
     hooks:
       - id: ruff
         args: [--fix]

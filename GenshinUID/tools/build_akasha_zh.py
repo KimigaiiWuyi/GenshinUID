@@ -264,6 +264,29 @@ PHRASES: dict[str, str] = {
     "Thunderous Symphony Additional": "雷霆交响额外",
     "Thunderous Symphony": "雷霆交响",
     "Lunar-Charged": "月感电",
+    "Lunar-Crystallize": "月结晶",
+    "Lunar-Bloom": "月绽放",
+    "Stellar-Conduct": "星超导",
+    "Stellar Swirl": "星扩散",
+    "Sweeping Fire": "扫射",
+    "Condensed Beam": "冷凝射线",
+    "Prism Shot": "棱晶弹",
+    "Convective Inhibition Ray": "负温聚能光束",
+    "Bombardment": "轰炸",
+    "Charged Attack": "重击",
+    "Normal Attack": "普攻",
+    "Elemental Burst": "爆发",
+    "Elemental Skill": "战技",
+    "High Plunge": "高空下落",
+    "Hyperbloom": "超绽放",
+    "Aggravate": "激化",
+    "Overloaded": "超载",
+    "Overload": "超载",
+    "Pyronado": "旋火轮",
+    "Vape": "蒸发",
+    "Melt": "融化",
+    "Spread": "蔓激化",
+    "Plunge": "下落",
 }
 
 TYPES: dict[str, str] = {
@@ -276,39 +299,39 @@ TYPES: dict[str, str] = {
     "LCR": "月结晶",
     "LB": "月绽放",
     "A": "普攻",
+    "SSC": "星超导",
+    "SSW": "星扩散",
+    "B": "重击",
+    "A1": "固有1",
+    "ATK": "攻击",
+    "EM": "精通",
+    "ER": "充能",
+    "HP": "生命",
+    "HB": "治疗加成",
+    "Set": "套装",
 }
 
-PARTS: dict[str, str] = {
-    "Northland Spearstorm Avg DMG": "北国枪阵 · 平均伤害",
-    "Northland Spearstorm": "北国枪阵",
-    "Thunderous Symphony Additional Avg DMG": "雷霆交响额外 · 平均伤害",
-    "Thunderous Symphony Additional": "雷霆交响额外",
-    "Thunderous Symphony Avg DMG": "雷霆交响 · 平均伤害",
-    "Thunderous Symphony": "雷霆交响",
-    "Lunar-Charged DMG (60%)": "月感电伤害（60%）",
-    "Lunar-Charged DMG": "月感电伤害",
-    "Normal Attack 1 Avg DMG": "普攻一段 · 平均伤害",
-    "Normal Attack 2 Avg DMG": "普攻二段 · 平均伤害",
-    "Normal Attack 3 Avg DMG": "普攻三段 · 平均伤害",
-    "Normal Attack 4 Avg DMG": "普攻四段 · 平均伤害",
-    "Normal Attack 5 Avg DMG": "普攻五段 · 平均伤害",
-    "Burst Vape Avg DMG": "爆发蒸发 · 平均伤害",
-    "Burst Vape": "爆发蒸发",
-    "Stance Avg DMG": "近战姿态 · 平均伤害",
-    "Stance": "近战姿态",
-    "CA1 Avg DMG": "重击一段 · 平均伤害",
-    "CA2 Avg DMG": "重击二段 · 平均伤害",
-    "N1 Avg DMG": "普攻一段 · 平均伤害",
-    "N2 Avg DMG": "普攻二段 · 平均伤害",
-    "Riptide #1 Avg DMG": "断流·斩 一段 · 平均伤害",
-    "Riptide #2 Avg DMG": "断流·斩 二段 · 平均伤害",
-    "Elemental Burst DMG": "爆发伤害",
-    "Elemental Skill Cast DMG": "战技释放伤害",
-    "Gravity Ripple: Continuous DMG": "引力涟漪·持续伤害",
-    "Gravity Interference: Lunar-Crystallize DMG": "引力干涉·月结晶伤害",
-    "Lunar-Crystallize (30%) Avg DMG": "月结晶（30%）平均伤害",
-    "Lunar-Crystallize (5%) Avg DMG": "月结晶（5%）平均伤害",
-}
+PARTS_FILE = ROOT / "genshinuid_enka" / "akasha_parts_zh.json"
+HARVEST = ROOT.parent / "test_output" / "gs_detail" / "akasha_part_names.json"
+
+
+def load_parts() -> dict[str, str]:
+    raw = json.loads(PARTS_FILE.read_text(encoding="utf-8"))
+    parts = raw["parts"] if isinstance(raw, dict) and "parts" in raw else raw
+    if not isinstance(parts, dict):
+        raise SystemExit("akasha_parts_zh.json 缺少 parts")
+    out: dict[str, str] = {}
+    for key, val in parts.items():
+        if isinstance(key, str) and isinstance(val, str):
+            out[key] = val
+    if HARVEST.exists():
+        live = json.loads(HARVEST.read_text(encoding="utf-8"))
+        names = live["names"] if isinstance(live, dict) and "names" in live else []
+        if isinstance(names, list):
+            missing = sorted(n for n in names if isinstance(n, str) and n not in out)
+            if missing:
+                raise SystemExit(f"未翻译伤害分段 {len(missing)} 条:\n" + "\n".join(missing[:80]))
+    return out
 
 
 def main() -> None:
@@ -342,6 +365,7 @@ def main() -> None:
     missing_s = sorted(s for s in live_shorts if s not in SHORTS)
     if missing_s:
         raise SystemExit("未翻译简称:\n" + "\n".join(missing_s))
+    parts = load_parts()
     out = {
         "source": "https://akasha.cv/api/v2/leaderboards/categories",
         "phrases": dict(sorted(PHRASES.items(), key=lambda kv: -len(kv[0]))),
@@ -351,12 +375,12 @@ def main() -> None:
         "weapons": dict(sorted(weapons.items())),
         "chars": dict(sorted(chars.items())),
         "types": dict(sorted(TYPES.items())),
-        "parts": dict(sorted(PARTS.items())),
+        "parts": dict(sorted(parts.items())),
     }
     OUT.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
         f"wrote {OUT.name} names={len(NAMES)} shorts={len(SHORTS)} "
-        f"weapons={len(weapons)} chars={len(chars)}"
+        f"weapons={len(weapons)} chars={len(chars)} parts={len(parts)}"
     )
 
 

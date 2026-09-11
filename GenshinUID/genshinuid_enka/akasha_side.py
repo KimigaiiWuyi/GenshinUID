@@ -44,6 +44,9 @@ _TYPE_COLOR: dict[str, str] = {
     "LC": "#b98cf5",
     "LCR": "#9b7dff",
     "LB": "#77dd8f",
+    "SSC": "#8fb4d4",
+    "SSW": "#7fd0c4",
+    "B": "#ffb056",
 }
 _TYPE_KEY: dict[str, str] = {
     "NA": "A",
@@ -66,6 +69,8 @@ _AKEY_COLOR: dict[str, str] = {
 _RX_EN: tuple[tuple[str, str], ...] = (
     ("Lunar-Charged", "月感电"),
     ("Lunar-Crystallize", "月结晶"),
+    ("Stellar-Conduct", "星超导"),
+    ("Stellar Swirl", "星扩散"),
     ("Hyperbloom", "超绽放"),
     ("Electro-Charged", "感电"),
     ("Electrocharged", "感电"),
@@ -80,8 +85,23 @@ _RX_TYPE: dict[str, str] = {
     "LC": "月感电",
     "LCR": "月结晶",
     "LB": "月绽放",
+    "SSC": "星超导",
+    "SSW": "星扩散",
 }
-_RX_ZH = ("月感电", "月结晶", "月绽放", "超绽放", "烈绽放", "蒸发", "融化", "感电", "超载", "绽放")
+_RX_ZH = (
+    "月感电",
+    "月结晶",
+    "月绽放",
+    "星超导",
+    "星扩散",
+    "超绽放",
+    "烈绽放",
+    "蒸发",
+    "融化",
+    "感电",
+    "超载",
+    "绽放",
+)
 _REF_ZH = ("", "一", "二", "三", "四", "五")
 _REGION_BG: dict[str, str] = {
     "CN": "#ff3a3a",

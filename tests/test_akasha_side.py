@@ -206,6 +206,34 @@ def test_zh_covers_live_akasha_team_names() -> None:
     assert zh_text(next(iter(live_names))) != next(iter(live_names))
 
 
+def test_zh_sandrone_damage_parts() -> None:
+    assert zh_text("SSC") == "星超导"
+    assert zh_text("Sweeping Fire Avg DMG") == "扫射 · 平均伤害"
+    assert zh_text("Prism Shot Avg DMG") == "棱晶弹 · 平均伤害"
+    assert zh_text("Prism Shot Stellar-Conduct Avg DMG") == "棱晶弹星超导 · 平均伤害"
+    assert zh_text("Condensed Beam Stellar-Conduct Avg DMG") == "冷凝射线星超导 · 平均伤害"
+    assert zh_text("Bombardment Avg DMG") == "轰炸 · 平均伤害"
+    assert zh_text("Convective Inhibition Ray Avg DMG") == "负温聚能光束 · 平均伤害"
+    assert reaction_tag("Condensed Beam Stellar-Conduct Avg DMG", "SSC") == "星超导"
+
+
+def test_all_harvested_akasha_parts_translated() -> None:
+    harvest = _ROOT / "test_output" / "gs_detail" / "akasha_part_names.json"
+    raw = json.loads(harvest.read_text(encoding="utf-8"))
+    names = raw["names"]
+    assert isinstance(names, list)
+    leftover: list[str] = []
+    for name in names:
+        if not isinstance(name, str):
+            continue
+        zh = zh_text(name)
+        if zh == name:
+            leftover.append(name)
+    assert leftover == []
+    assert zh_text("Sweeping Fire Avg DMG") == "扫射 · 平均伤害"
+    assert zh_text("Musou no Hitotachi Avg DMG") == "梦想一刀 · 平均伤害"
+
+
 def test_top_pct_color_tiers() -> None:
     assert top_pct_color(0.4) == "#ef6b6b"
     assert top_pct_color(1) == "#ef6b6b"

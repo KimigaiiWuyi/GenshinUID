@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import html
 import json
-from typing import Mapping
+from typing import Mapping, Sequence
 from pathlib import Path
 
 SIDE_W = 640
@@ -270,7 +270,7 @@ def _weapon_id_of(row: Mapping[str, object]) -> str:
 
 
 def pick_loadout_ids(
-    rows: list[Mapping[str, object]],
+    rows: Sequence[Mapping[str, object]],
     limit: int = SIDE_LOADOUTS,
 ) -> list[str]:
     """按名次取最多 ``limit`` 套**不同武器**的榜 ID，用来对照伤害分布 / 副词条。"""
@@ -306,7 +306,7 @@ def pick_loadout_ids(
 
 
 def match_calc_board(
-    items: list[Mapping[str, object]],
+    items: Sequence[Mapping[str, object]],
     calc_id: str,
 ) -> Mapping[str, object] | None:
     """按榜 ID 取值；``170er`` 后缀只比前 10 位。"""

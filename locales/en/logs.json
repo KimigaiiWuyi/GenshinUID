@@ -6,6 +6,7 @@
   "log.genshinuid.adv_lst_1c832d": "Warning: character guide file not found {adv_lst}",
   "log.genshinuid.ai_char_detail": "[Genshin AI tool] char_detail uid={uid} name={name}",
   "log.genshinuid.akasha_header_header_7422a5": "[Akasha] header: {header}",
+  "log.genshinuid.akasha_side_cached": "[Akasha] side cached {uid}/{char_id}",
   "log.genshinuid.akasha_url_url_9d8655": "[Akasha] {url}",
   "log.genshinuid.akasha_url_url_9d8655_1": "[Akasha] {url}",
   "log.genshinuid.ambr_char_missing": "[AmbrData] character data not found: {cid}",

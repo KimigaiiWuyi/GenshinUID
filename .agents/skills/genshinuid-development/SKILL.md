@@ -59,8 +59,12 @@ description: >
 
 ## 验证命令
 
+改完必须全绿，否则不算完成（见本仓库 `AGENTS.md`「交付闸」）：
+
 ```sh
 # 插件根目录
 uv run ruff check GenshinUID tests
+uv run ruff format --check GenshinUID tests
 uv run pytest tests -q
+uv run basedpyright
 ```

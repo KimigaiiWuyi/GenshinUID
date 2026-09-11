@@ -69,13 +69,7 @@
 
 ## Setup commands
 
-在**本插件目录**执行。解释器指向 Core 根 `.venv`。
-
-```sh
-uv run ruff check GenshinUID tests
-uv run ruff format --check GenshinUID tests
-uv run pytest tests -q
-```
+在**本插件目录**执行。解释器指向 Core 根 `.venv`。检查命令见下「交付闸」——改完必须全绿，否则不算完成。
 
 Akasha 雷达平均（不拉 Core）：
 
@@ -114,6 +108,22 @@ Akasha 1% 平均：`python GenshinUID/tools/update_akasha_1p.py`（不拉 Core�
 - 现有：`tests/test_logger_i18n.py`。新工具补 `tests/test_<module>.py`。
 - 禁止把真实 Cookie / UID 提交进仓库。
 - 改触发器对照 [`.agents/skills/genshinuid-development/references/05-ai-integration.md`](.agents/skills/genshinuid-development/references/05-ai-integration.md)。
+- 日志必须走 `t()`，第一参必须是静态字符串 key（`log.genshinuid.<semantic>`）；改日志或 locale 必须跑 `tests/test_logger_i18n.py`。
+
+## 交付闸（改完必须过，否则不算完成）
+
+**每次改动在向用户宣告完成之前**，必须在本插件目录把下面全部跑绿。缺一项、失败一项都不许交付：
+
+```sh
+uv run ruff check GenshinUID tests
+uv run ruff format --check GenshinUID tests
+uv run pytest tests -q
+uv run basedpyright
+```
+
+- **CI / CD**：`.github/workflows/ci.yml` 含 Ruff（check + format）与 logger i18n（`tests/test_logger_i18n.py`）。`pytest tests` 已覆盖；若只改触及面，至少跑触及测试 **加上** `tests/test_logger_i18n.py`。GitHub CI 对应 job 必须全绿，未过关不许合并、不许宣称完成。
+- **pyright**：`basedpyright` 与 `pyright` 择一，用 **Core 根 `.venv`**（本插件 uv 环境没有 PIL 等宿主依赖），配置见 `pyrightconfig.json`（`basic`，`include=["GenshinUID"]`）。本次改动引入的标红必须按 §1.5 修掉；历史脏文件改到哪修到哪。禁止 `cast` / `type: ignore` / `Any` 糊弄。
+- 不要提交或宣称完成未过关的改动。
 
 ## 本仓库结构约定
 

@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Mapping
 from pathlib import Path
 from urllib.parse import quote
 
+from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
 from .akasha_side import SIDE_GAIN_LOADOUTS, match_calc_board, pick_loadout_ids
@@ -182,4 +183,4 @@ async def _dump_one(
     path = akasha_char_path(uid, char_id, root)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
-    logger.debug(f"akasha side cached {uid}/{char_id}")
+    logger.debug(t("log.genshinuid.akasha_side_cached", uid=uid, char_id=char_id))

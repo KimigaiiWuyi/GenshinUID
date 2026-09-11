@@ -33,3 +33,4 @@
 - [ ] 新 `@ai_tools` 被 `genshinuid_ai_func/__init__.py` import，docstring 紧贴 def，有 covers/aliases
 - [ ] 新素材路径进了 `RESOURCE_PATH.py`
 - [ ] `ruff check GenshinUID`（不含 tools）
+- [ ] 交付闸全绿：ruff / format / `pytest tests` / basedpyright（及 CI 的 i18n）

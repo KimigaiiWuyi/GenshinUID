@@ -18,11 +18,14 @@ SIDE_INNER = SIDE_W - SIDE_PAD * 2
 TEAM_SLOTS = 4
 SIDE_LOADOUTS = 2
 SIDE_GAIN_LOADOUTS = 2
-SIDE_RANK_MAX = 3
+SIDE_RANK_MAX = 24
 TEAM_WEAPON_LIMIT = 3
+TEAM_ROW_H = 72
+DIST_MIN_PARTS = 6
 DD_GAP = 8
-RANK_ROW_H = 64
+RANK_ROW_H = 60
 RANK_HEADER_H = 40
+RANK_TAIL_H = 36
 CALC_KEY_LEN = 10
 
 BODY_FONT = "'MiSans','YuanShen',sans-serif"
@@ -377,20 +380,19 @@ def _gain_row_count(board: Mapping[str, object]) -> int:
 
 def estimate_side_used(n_dist_parts: int, gain_rows: list[int], n_teams: int) -> int:
     """右列去掉全球榜之后的 CSS 高度。"""
-    h = 66 + 12 + 36
+    h = 66 + 12
     if n_dist_parts:
-        h += 32 + 8 + 96 + n_dist_parts * 18
-        h += 12
+        box = 16 + 24 + 6 + 14 + 22 + 4 + n_dist_parts * 18 + 26
+        h += 40 + box + 12
     if gain_rows:
-        h += 32 + 8
+        h += 40
         for i, n in enumerate(gain_rows):
             if i:
                 h += 8
-            h += 58 + n * 26
+            h += 62 + n * 26
         h += 12
     if n_teams:
-        h += 32 + 8 + n_teams * 72
-        h += 12
+        h += 40 + n_teams * TEAM_ROW_H + 12
     return h
 
 
@@ -462,15 +464,47 @@ def pick_nearby_ranks(
 
 
 def count_rank_slots(target_h: int, used_h: int, available: int) -> int:
-    leftover = target_h - used_h - RANK_HEADER_H
-    n = leftover // RANK_ROW_H
-    if n < 0:
-        n = 0
+    """按左列高度把全球榜塞满；余量向上取整，避免右列底下留空。"""
+    leftover = target_h - used_h - RANK_HEADER_H - RANK_TAIL_H
+    if leftover <= 0 or available <= 0:
+        return 0
+    n = (leftover + RANK_ROW_H - 1) // RANK_ROW_H
     if n > available:
         n = available
     if n > SIDE_RANK_MAX:
         n = SIDE_RANK_MAX
     return n
+
+
+def fit_side_counts(
+    target_h: int,
+    n_dist_parts: int,
+    gain_rows: list[int],
+    n_teams_avail: int,
+    n_ranks_avail: int,
+) -> tuple[int, int, int]:
+    """按左列高度裁队伍/拆分行，余量全给全球榜。返回 (拆分行, 队伍数, 排名数)。"""
+    n_parts = n_dist_parts
+    n_teams = n_teams_avail
+    if target_h <= 0:
+        n_rank = min(3, n_ranks_avail)
+        if n_rank < 0:
+            n_rank = 0
+        return n_parts, n_teams, n_rank
+    while True:
+        used = estimate_side_used(n_parts, gain_rows, n_teams)
+        if used <= target_h:
+            break
+        if n_teams > 0:
+            n_teams -= 1
+            continue
+        if n_parts > DIST_MIN_PARTS:
+            n_parts -= 1
+            continue
+        break
+    used = estimate_side_used(n_parts, gain_rows, n_teams)
+    n_rank = count_rank_slots(target_h, used, n_ranks_avail)
+    return n_parts, n_teams, n_rank
 
 
 def akasha_side_css(accent: str, side_w: int = SIDE_W) -> str:
@@ -669,26 +703,47 @@ def akasha_side_html(
             gain_blocks.append(f'<div class="spbox">{tab}</div>')
     table = "".join(gain_blocks)
     compact = len(dist_list) >= 2
+    selected = {_calc_key(_as_str(item["calculation_id"])) for item in board_list if "calculation_id" in item}
+    team_rows = pick_team_rows(rows)
+    gain_rows = [_gain_row_count(item) for item in board_list]
+    n_parts_cap = _max_dist_parts(dist_list[:SIDE_LOADOUTS])
+    raw_ranks = ranks if ranks is not None else []
+    if self_uid:
+        located = pick_nearby_ranks(raw_ranks, self_uid, limit=len(raw_ranks))
+    else:
+        located = raw_ranks
+    if target_height > 0:
+        n_parts_cap, n_teams, n_rank = fit_side_counts(
+            target_height,
+            n_parts_cap,
+            gain_rows,
+            len(team_rows),
+            len(located),
+        )
+        team_rows = team_rows[:n_teams]
+        if self_uid:
+            rank_list = pick_nearby_ranks(located, self_uid, limit=n_rank)
+        else:
+            rank_list = located[:n_rank]
+    elif self_uid:
+        rank_list = pick_nearby_ranks(located, self_uid, limit=3)
+    else:
+        rank_list = located[:3]
     dist_bits: list[str] = []
     for item in dist_list[:SIDE_LOADOUTS]:
-        block = _dist_html(item, accent, weapon_icons=weapon_icons, compact=compact)
+        block = _dist_html(
+            item,
+            accent,
+            weapon_icons=weapon_icons,
+            compact=compact,
+            max_parts=n_parts_cap,
+        )
         if block:
             dist_bits.append(block)
     dist_html = "".join(dist_bits)
     if compact and dist_html:
         dist_html = f'<div class="ddpair">{dist_html}</div>'
-    selected = {_calc_key(_as_str(item["calculation_id"])) for item in board_list if "calculation_id" in item}
-    team_rows = pick_team_rows(rows)
     listing = _leaderboard_list(team_rows, selected, char_icons, weapon_icons, accent)
-    rank_list = pick_nearby_ranks(ranks if ranks is not None else [], self_uid)
-    if target_height > 0:
-        used = estimate_side_used(
-            _max_dist_parts(dist_list[:SIDE_LOADOUTS]),
-            [_gain_row_count(item) for item in board_list],
-            len(team_rows),
-        )
-        n_rank = count_rank_slots(target_height, used, len(rank_list))
-        rank_list = rank_list[:n_rank]
     rank_html = _rank_list(rank_list, self_uid, section_icons if section_icons is not None else {})
     if not table and not listing and not dist_html and not rank_html:
         return ""
@@ -837,6 +892,7 @@ def _dist_html(
     *,
     weapon_icons: Mapping[str, str],
     compact: bool = False,
+    max_parts: int = 0,
 ) -> str:
     raw_parts = dist["parts"] if "parts" in dist else None
     result = _as_float(dist["result"] if "result" in dist else None)
@@ -852,7 +908,7 @@ def _dist_html(
     if formula_sum is None or formula_sum <= 0:
         formula_sum = result
     bar_w = (SIDE_INNER - DD_GAP) // 2 - 16 if compact else DD_BAR_W
-    rows: list[str] = []
+    parsed: list[tuple[float, float, str, str]] = []
     grouped: dict[str, float] = {}
     order: list[str] = []
     for part in parts:
@@ -861,12 +917,30 @@ def _dist_html(
         ptype = _as_str(part["type"] if "type" in part else "")
         if total is None or qty is None or total <= 0:
             continue
-        color = _type_color(ptype)
         raw_name = _as_str(part["name"] if "name" in part else "")
+        parsed.append((total, qty, ptype, raw_name))
+        if ptype in grouped:
+            grouped[ptype] = grouped[ptype] + total
+        else:
+            grouped[ptype] = total
+            order.append(ptype)
+    if not parsed:
+        return ""
+    list_parts = parsed
+    rest_total = 0.0
+    rest_qty = 0.0
+    if max_parts > 0 and len(parsed) > max_parts:
+        ordered = sorted(parsed, key=lambda item: item[0], reverse=True)
+        keep_n = max_parts - 1 if max_parts > 1 else max_parts
+        list_parts = ordered[:keep_n]
+        for total, qty, _ptype, _name in ordered[keep_n:]:
+            rest_total += total
+            rest_qty += qty
+    rows: list[str] = []
+    for total, qty, ptype, raw_name in list_parts:
+        color = _type_color(ptype)
         pname = _part_label(raw_name)
-        key = type_key(ptype)
-        rx = reaction_tag(raw_name, ptype)
-        prefix = f"{_akey_html(key)}{_rx_html(rx)}"
+        prefix = f"{_akey_html(type_key(ptype))}{_rx_html(reaction_tag(raw_name, ptype))}"
         alt = " alt" if len(rows) % 2 else ""
         rows.append(
             f'<div class="ddrow{alt}">'
@@ -875,13 +949,15 @@ def _dist_html(
             f'<span class="ddval" style="color:{color}">{_esc(fmt_result(total))}</span>'
             "</div>"
         )
-        if ptype in grouped:
-            grouped[ptype] = grouped[ptype] + total
-        else:
-            grouped[ptype] = total
-            order.append(ptype)
-    if not rows:
-        return ""
+    if rest_total > 0:
+        alt = " alt" if len(rows) % 2 else ""
+        rows.append(
+            f'<div class="ddrow{alt}">'
+            f'<span class="ddqty">{_esc(_fmt_qty(rest_qty))}×</span>'
+            f'<span class="ddnm">其他</span>'
+            f'<span class="ddval">{_esc(fmt_result(rest_total))}</span>'
+            "</div>"
+        )
     segs: list[str] = []
     used = 0
     n = len(order)

@@ -75,6 +75,9 @@ TEAM_WEAPON_LIMIT = _MOD.TEAM_WEAPON_LIMIT
 match_calc_board = _MOD.match_calc_board
 count_rank_slots = _MOD.count_rank_slots
 pick_nearby_ranks = _MOD.pick_nearby_ranks
+estimate_side_used = _MOD.estimate_side_used
+fit_side_counts = _MOD.fit_side_counts
+RANK_ROW_H = _MOD.RANK_ROW_H
 type_key = _MOD.type_key
 reaction_tag = _MOD.reaction_tag
 fmt_con = _MOD.fmt_con
@@ -412,7 +415,7 @@ def test_side_html_global_ranks() -> None:
     assert "17883" in html
     assert "data:face" in html
     assert "grcard on" in html
-    assert count_rank_slots(1700, 1400, 20) == SIDE_RANK_MAX
+    assert count_rank_slots(1700, 1400, 20) >= 3
     assert count_rank_slots(100, 200, 20) == 0
 
 
@@ -430,7 +433,7 @@ def test_type_key_and_reaction() -> None:
     assert fmt_ref(5) == "满精"
 
 
-def test_rank_slots_never_exceed_three() -> None:
+def test_rank_slots_fill_leftover_height() -> None:
     twenty = [{"rank": i, "uid": str(i)} for i in range(1, 21)]
     html = akasha_side_html(
         None,
@@ -441,7 +444,59 @@ def test_rank_slots_never_exceed_three() -> None:
         ranks=twenty,
         target_height=4000,
     )
-    assert html.count("grcard") == SIDE_RANK_MAX
+    n = html.count("grcard")
+    assert n >= 10
+    assert n <= 20
+    short = akasha_side_html(
+        None,
+        [],
+        accent="#b98cf5",
+        char_icons={},
+        weapon_icons={},
+        ranks=twenty,
+        target_height=200,
+    )
+    assert short.count("grcard") < n
+
+
+def test_fewer_teams_fill_more_ranks() -> None:
+    left = 1800
+    _p, few_teams, few_ranks = fit_side_counts(left, 6, [6, 6], 3, SIDE_RANK_MAX)
+    _p2, many_teams, many_ranks = fit_side_counts(left, 6, [6, 6], 8, SIDE_RANK_MAX)
+    assert few_teams == 3
+    assert many_teams == 8
+    assert few_ranks > many_ranks
+    assert few_ranks - many_ranks >= 4
+
+
+def test_fit_trims_overflow_teams() -> None:
+    n_parts, n_teams, n_rank = fit_side_counts(1400, 8, [6, 6], 12, 24)
+    used = estimate_side_used(n_parts, [6, 6], n_teams)
+    right = used
+    if n_rank:
+        right += _MOD.RANK_HEADER_H + n_rank * RANK_ROW_H + _MOD.RANK_TAIL_H
+    assert n_teams < 12
+    assert right <= 1400 + RANK_ROW_H
+    _p, keep_teams, fill_ranks = fit_side_counts(1800, 6, [6, 6], 3, 24)
+    assert keep_teams == 3
+    assert fill_ranks >= 3
+
+
+def test_height_fill_keeps_self_uid() -> None:
+    rows = [{"rank": i, "uid": str(i)} for i in range(1, 21)]
+    html = akasha_side_html(
+        None,
+        [],
+        accent="#b98cf5",
+        char_icons={},
+        weapon_icons={},
+        ranks=rows,
+        self_uid="10",
+        target_height=500,
+    )
+    assert "UID 10</span>" in html
+    assert html.count("grcard") < 20
+    assert html.count("grcard") >= 3
 
 
 def test_pick_nearby_ranks_windows_self() -> None:

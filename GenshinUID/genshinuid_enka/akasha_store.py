@@ -11,7 +11,7 @@ from urllib.parse import quote
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 
-from .akasha_side import SIDE_GAIN_LOADOUTS, match_calc_board, pick_loadout_ids
+from .akasha_side import SIDE_RANK_MAX, SIDE_GAIN_LOADOUTS, match_calc_board, pick_loadout_ids
 from ..utils.api.cv.api import (
     BUILD_LB_API,
     NEARBY_LB_API,
@@ -174,7 +174,7 @@ async def _dump_one(
     if calc_id and out_of > 0:
         gb_id = board_calculation_id(calc_id)
         thresh = f"{player_result + 0.01:.4f}"
-        gb_url = NEARBY_LB_API.format(quote(gb_id, safe=""), thresh, 5)
+        gb_url = NEARBY_LB_API.format(quote(gb_id, safe=""), thresh, SIDE_RANK_MAX)
         gb_raw = await api.get_json(gb_url)
         if not isinstance(gb_raw, int):
             payload["global"] = gb_raw

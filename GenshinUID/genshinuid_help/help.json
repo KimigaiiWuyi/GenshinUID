@@ -561,57 +561,41 @@
     "desc": "获取游戏信息",
     "data": [
       {
-        "name": "武器介绍",
-        "desc": "武器信息，可后跟数字",
-        "eg": "武器介绍天空、武器天空90",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
         "name": "角色介绍",
-        "desc": "角色信息，可后跟数字",
-        "eg": "角色介绍七七90、角色介绍真珠",
+        "desc": "角色卡片：简介/天赋/命座/材料",
+        "eg": "角色介绍雷神、角色介绍七七90",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "角色命座",
-        "desc": "角色命座和技能",
-        "eg": "角色命座6可莉",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "角色天赋",
-        "desc": "角色技能介绍",
-        "eg": "角色天赋4北斗",
+        "name": "武器介绍",
+        "desc": "武器卡片：属性/特效/材料",
+        "eg": "武器介绍护摩、武器介绍西风剑90",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
         "name": "圣遗物介绍",
-        "desc": "查询圣遗物",
-        "eg": "圣遗物介绍乐园",
+        "desc": "套装效果与五件部位",
+        "eg": "圣遗物介绍乐园、查圣遗物绝缘",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
         "name": "食物介绍",
-        "desc": "查询食物信息",
-        "eg": "食物介绍鸡",
+        "desc": "食物效果、简介与食材",
+        "eg": "食物介绍甜甜花酿鸡",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "角色材料",
-        "desc": "查询材料消耗",
-        "eg": "角色材料可莉",
+        "name": "原魔介绍",
+        "desc": "怪物简介、抗性与掉落",
+        "eg": "原魔介绍无相之雷、查原魔公子",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -628,22 +612,6 @@
         "name": "哪里有[资源]",
         "desc": "查找地图资源点",
         "eg": "哪里有甜甜花",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "原魔介绍",
-        "desc": "查询怪物信息",
-        "eg": "原魔介绍公子",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "武器材料",
-        "desc": "查询武器材料消耗",
-        "eg": "武器材料天空",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

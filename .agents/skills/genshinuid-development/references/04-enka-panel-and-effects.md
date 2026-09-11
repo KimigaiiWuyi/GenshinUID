@@ -92,6 +92,6 @@ GET /api/damageDistribution/{calculationId}/{uid}/{md5}
 实现：`utils/api/cv/damage_distribution.py` + `_CvApi.get_damage_distribution` / `get_damage_distribution_board`。
 缓存键是 `uid` + `md5`（一次拉全榜，换 `calculationId` 不重复打），1 小时，并发合并；errno 不缓存。
 
-右列 HTML 在 `akasha_side.py`（单测 spec-load，不要从 `html_char_card` 进）。`mys/enka强制刷新` **等** `_restore_cv_data` 把 `rank.json` 和每名角色的 `players/{uid}/akasha/{char_id}.json` 写完才返回；`gs查询` **只读盘、不打 Akasha**。没有该文件（旧缓存）就不画右列。伤害分布一行两套（图例小字居中；技能名前 A/E/Q/B/C 与蒸发等反应标）；副词条两套；队伍榜不同配队优先，最优那条队最多 3 把武器；全球排名取自己附近最多 3 条（`p=lt|{result}`），样式对齐 Akasha 列表。属性框正上方右对齐小灰字标 `dataTime`（缺字段就不画）。
+右列 HTML 在 `akasha_side.py`（单测 spec-load，不要从 `html_char_card` 进）。`mys/enka强制刷新` **等** `_restore_cv_data` 把 `rank.json` 和每名角色的 `players/{uid}/akasha/{char_id}.json` 写完才返回；`gs查询` **只读盘、不打 Akasha**。没有该文件（旧缓存）就不画右列。伤害分布一行两套（图例小字居中；技能名前 A/E/Q/B/C 与蒸发等反应标）；副词条两套；队伍榜不同配队优先，最优那条队最多 3 把武器；全球排名按左列高度动态塞自己附近的名次（刷新拉 24 条，`p=lt|{result}`）；队伍榜缩短后多出来的高度用排名补上，队伍/拆分过长则再裁到左列高度，左右列大致齐平。属性框正上方右对齐小灰字标 `dataTime`（缺字段就不画）。
 
 队名中文在 `genshinuid_enka/akasha_zh.json`，由 `https://akasha.cv/api/v2/leaderboards/categories` 全量抽出。更新：先拉分类 JSON，再跑 `python GenshinUID/tools/build_akasha_zh.py`。

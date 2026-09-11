@@ -113,6 +113,7 @@ def test_dump_then_load(tmp_path: Path) -> None:
         )
     )
     assert any("substatPriority" in u for u in api.urls)
+    assert any(f"size={_SIDE.SIDE_RANK_MAX}" in u for u in api.urls)
     loaded = load_akasha_side("u", "10000120", root=tmp_path)
     assert loaded is not None
     boards, rows, dists, ranks = loaded

@@ -30,6 +30,7 @@ CHAR_DATA_PATH = RESOURCE_PATH / "char_data"
 WEAPON_DATA_PATH = RESOURCE_PATH / "weapon_data"
 MONSTER_DATA_PATH = RESOURCE_PATH / "monster_data"
 REL_DATA_PATH = RESOURCE_PATH / "reliquary_data"
+FOOD_DATA_PATH = RESOURCE_PATH / "food_data"
 
 ABYSS_PATH = WIKI_PATH / "abyss_review"
 GUIDE_PATH = WIKI_PATH / "guide"
@@ -49,6 +50,14 @@ MZ_ICON_PATH = TEXT2D_PATH / "mz"
 HG_ICON_PATH = TEXT2D_PATH / "hg"
 DATA_PATH = MAIN_PATH / "data"
 PLAYER_PATH = MAIN_PATH / "players"
+WIKI_DATA_PATH = DATA_PATH / "wiki"
+WIKI_DATA_CHAR = WIKI_DATA_PATH / "char"
+WIKI_DATA_WEAPON = WIKI_DATA_PATH / "weapon"
+WIKI_DATA_REL = WIKI_DATA_PATH / "reliquary"
+WIKI_DATA_FOOD = WIKI_DATA_PATH / "food"
+WIKI_DATA_MONSTER = WIKI_DATA_PATH / "monster"
+WIKI_DATA_ICON = WIKI_DATA_PATH / "icon"
+WIKI_DATA_MONSTER_ICON = WIKI_DATA_PATH / "monster_icon"
 
 
 def init_dir():
@@ -92,6 +101,15 @@ def init_dir():
         WEAPON_DATA_PATH,
         MONSTER_DATA_PATH,
         REL_DATA_PATH,
+        FOOD_DATA_PATH,
+        WIKI_DATA_PATH,
+        WIKI_DATA_CHAR,
+        WIKI_DATA_WEAPON,
+        WIKI_DATA_REL,
+        WIKI_DATA_FOOD,
+        WIKI_DATA_MONSTER,
+        WIKI_DATA_ICON,
+        WIKI_DATA_MONSTER_ICON,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

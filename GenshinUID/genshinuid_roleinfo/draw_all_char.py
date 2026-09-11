@@ -15,6 +15,8 @@ from ..utils.fonts.genshin_fonts import gs_font_28, gs_font_30
 from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,
     WEAPON_PATH,
+    HG_ICON_PATH,
+    MZ_ICON_PATH,
     CHAR_NAMECARDPIC_PATH,
 )
 
@@ -155,8 +157,8 @@ async def _draw_char_pic(
         char_bg = Image.open(TEXT_PATH / f"char_bg{char_star}.png")
         weapon_bg = Image.open(TEXT_PATH / f"weapon{weapon_star}.png")
         char_icon = _open_rgba(CHAR_PATH / f"{char_id}.png", (256, 256))
-        talent_icon = Image.open(TEXT_PATH / "mz" / f"{char_talent}.png")
-        fetter_icon = Image.open(TEXT_PATH / "hg" / f"{char_fetter}.png")
+        talent_icon = Image.open(MZ_ICON_PATH / f"{char_talent}.png")
+        fetter_icon = Image.open(HG_ICON_PATH / f"{char_fetter}.png")
         weapon_icon = _open_rgba(WEAPON_PATH / f"{weapon_name}.png", (174, 174))
 
         char_card_path = CHAR_NAMECARDPIC_PATH / f"{char_id}.png"

@@ -30,6 +30,8 @@ from ..utils.resource.RESOURCE_PATH import (
     CHAR_PATH,
     ICON_PATH,
     WEAPON_PATH,
+    HG_ICON_PATH,
+    MZ_ICON_PATH,
     CHAR_NAMECARDPIC_PATH,
 )
 from ..genshinuid_collection.draw_collection_card import TEXT_PATH as COLLECT_TEXT
@@ -1097,16 +1099,16 @@ def _char_star(char: MihoyoAvatar) -> int:
 
 
 def _talent_uri(num: int) -> str:
-    path = CHAR_TEXT / "mz" / f"{num}.png"
+    path = MZ_ICON_PATH / f"{num}.png"
     if not path.exists():
-        path = CHAR_TEXT / "mz" / "0.png"
+        path = MZ_ICON_PATH / "0.png"
     return _file_uri(path)
 
 
 def _fetter_uri(num: int) -> str:
-    path = CHAR_TEXT / "hg" / f"{num}.png"
+    path = HG_ICON_PATH / f"{num}.png"
     if not path.exists():
-        path = CHAR_TEXT / "hg" / "0.png"
+        path = HG_ICON_PATH / "0.png"
     return _file_uri(path)
 
 

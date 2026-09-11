@@ -77,9 +77,16 @@ uv run ruff format --check GenshinUID tests
 uv run pytest tests -q
 ```
 
+Akasha 雷达平均（不拉 Core）：
+
+```sh
+python GenshinUID/tools/update_akasha_1p.py
+```
+
 `ruff.toml`：`line-length = 120`，排除 `GenshinUID/tools`。
 `pyrightconfig.json`：`include = ["GenshinUID"]`，`extraPaths` 指到 Core 根。依赖声明在 `pyproject.toml` `[project]`（uv / PEP 621）。
 effect 更新：`python GenshinUID/tools/update_effects.py -v 7.0`（走 update-enka-effects skill）。
+Akasha 1% 平均：`python GenshinUID/tools/update_akasha_1p.py`（不拉 Core，整文件替换 `effect/akasha_1p_avg.json`）。
 
 ## Code style
 
@@ -123,7 +130,7 @@ effect 更新：`python GenshinUID/tools/update_effects.py -v 7.0`（走 update-
 1. 本插件 `GsBind` 不要传 `game_name="zzz"`。
 2. UID 保持 9 位（`lenth_limit=9` 与 `\d{9}` 一致）。
 3. `EnableCharCardByMys` 开了可能验证码。
-4. 版本更新必须成套改 `version.py` + `utils/map/data/*_{ver}.json` + `update_effects.py`。
+4. 版本更新必须成套改 `version.py` + `utils/map/data/*_{ver}.json` + `update_effects.py`；Akasha 1% 平均另跑 `tools/update_akasha_1p.py`。
 5. `tools/` 不进 ruff；业务逻辑不要藏进去。
 6. 改 `t("log.genshinuid.…")` 要三份 locales 一起改。
 7. 配置键 `OldPanle` 是历史拼写。

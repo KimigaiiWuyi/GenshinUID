@@ -8,8 +8,10 @@ from gsuid_core.utils.cache import CACHE
 from gsuid_core.utils.error_reply import get_error
 
 from .to_card import pic_500, draw_enka_card
+from .to_data import _restore_cv_data
 from .etc.MAP_PATH import avatarName2SkillAdd
 from ..utils.mys_api import mys_api, get_base_data
+from .artifact_times import apply_substat_max_from_value
 from ..utils.image.convert import convert_img
 from ..utils.map.GS_MAP_PATH import (
     Id2PropId,
@@ -19,7 +21,10 @@ from ..utils.map.GS_MAP_PATH import (
     talentId2Name,
 )
 from ..utils.map.name_covert import avatarId_to_enName
+from ..genshinuid_config.gs_config import gsconfig
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
+
+is_enable_akasha = gsconfig.get_config("EnableAkasha").data
 
 elementMap = {
     "Anemo": 44,
@@ -261,13 +266,16 @@ async def mys_to_data(uid: str, force_refresh: bool = False):
             reliquarySubstats = []
             for su in sub_prop:
                 sub_prop_id = Id2PropId[str(su["property_type"])]
-                reliquarySubstats.append(
-                    {
-                        "appendPropId": sub_prop_id,
-                        "statName": propId2Name[sub_prop_id],
-                        "statValue": get_value(su["value"]),
-                    }
-                )
+                sub_row: dict[str, object] = {
+                    "appendPropId": sub_prop_id,
+                    "statName": propId2Name[sub_prop_id],
+                    "statValue": get_value(su["value"]),
+                }
+                if "times" in su:
+                    sub_row["times"] = su["times"]
+                reliquarySubstats.append(sub_row)
+            star = relic["rarity"] if "rarity" in relic and isinstance(relic["rarity"], int) else 5
+            apply_substat_max_from_value(reliquarySubstats, star)
 
             artifact_set_list.append(relic["set"]["name"])
             relic_list.append(
@@ -306,9 +314,13 @@ async def mys_to_data(uid: str, force_refresh: bool = False):
         if equipSets["set"].startswith("|"):
             equipSets["set"] = equipSets["set"][1:]
 
+        role = raw_data["role"]
         result = {
             "playerUid": uid,
-            "playerName": raw_data["role"]["nickname"],
+            "playerName": role["nickname"],
+            "playerLevel": role["level"] if "level" in role else 0,
+            "playerRegion": role["region"] if "region" in role else "",
+            "playerAvatar": role["game_head_icon"] if "game_head_icon" in role else "",
             "avatarId": avatar_id,
             "avatarName": avatar_name,
             "avatarFetter": base["fetter"],
@@ -327,6 +339,9 @@ async def mys_to_data(uid: str, force_refresh: bool = False):
         char_dict_list.append(result)
         async with aiofiles.open(path / f"{avatar_name}.json", "w", encoding="UTF-8") as file:
             await file.write(json.dumps(result, indent=4, ensure_ascii=False))
+
+    if is_enable_akasha:
+        await _restore_cv_data(uid, now)
 
     return char_dict_list
 

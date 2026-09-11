@@ -14,7 +14,9 @@ from gsuid_core.utils.api.enka.models import EnkaData
 from gsuid_core.utils.api.enka.request import get_enka_info
 
 from .draw_normal import get_artifact_score_data
+from .akasha_store import dump_akasha_sides
 from ..utils.message import UID_HINT
+from .artifact_times import apply_substat_affix, collect_affix_rolls
 from .mono.Character import Character
 from ..utils.ambr_to_minigg import convert_ambr_to_weapon
 from ..utils.api.cv.request import _CvApi
@@ -145,6 +147,11 @@ async def enka_to_dict(uid: str, enka_data: Optional[EnkaData] = None) -> Union[
         avatarId = char["avatarId"]
         char_data["playerUid"] = str(uid)
         char_data["playerName"] = enka_data["playerInfo"]["nickname"]
+        char_data["playerLevel"] = enka_data["playerInfo"]["level"]
+        if "worldLevel" in enka_data["playerInfo"]:
+            char_data["playerWorldLevel"] = enka_data["playerInfo"]["worldLevel"]
+        if "signature" in enka_data["playerInfo"]:
+            char_data["playerSignature"] = enka_data["playerInfo"]["signature"]
         char_data["avatarId"] = avatarId
         avatarName = avatarId2Name[str(char["avatarId"])]
         char_data["avatarName"] = avatarId2Name[str(char["avatarId"])]
@@ -330,6 +337,12 @@ async def enka_to_dict(uid: str, enka_data: Optional[EnkaData] = None) -> Union[
             for sub in artifact_temp["reliquarySubstats"]:
                 sub["statName"] = propId2Name[sub["appendPropId"]]
 
+            if "reliquary" in artifact and "appendPropIdList" in artifact["reliquary"]:
+                apply_substat_affix(
+                    artifact_temp["reliquarySubstats"],
+                    collect_affix_rolls(artifact["reliquary"]["appendPropIdList"]),
+                )
+
             # 加入单个圣遗物部件
             artifacts_info.append(artifact_temp)
 
@@ -371,7 +384,7 @@ async def enka_to_dict(uid: str, enka_data: Optional[EnkaData] = None) -> Union[
             await file.write(json.dumps(char_data, indent=4, ensure_ascii=False))
 
     if is_enable_akasha:
-        asyncio.create_task(_restore_cv_data(uid, now))
+        await _restore_cv_data(uid, now)
 
     return char_dict_list
 
@@ -395,8 +408,11 @@ async def _restore_cv_data(uid: str, now: str):
                 "maxDEF": 0,
             }
 
+            md5 = ""
             for j in data2["data"]:
                 if i["_id"] == j["_id"]:
+                    if "md5" in j and isinstance(j["md5"], str):
+                        md5 = j["md5"]
                     _value = 0
                     stats = {"critValue": j["critValue"]}
                     for k in j["stats"]:
@@ -420,6 +436,7 @@ async def _restore_cv_data(uid: str, now: str):
             rank_data[i["characterId"]] = {
                 "calculations": cal,
                 "time": now,
+                "md5": md5,
             }
         async with aiofiles.open(path, "w", encoding="UTF-8") as file:
             await file.write(
@@ -430,6 +447,8 @@ async def _restore_cv_data(uid: str, now: str):
                 )
             )
         logger.info(t("log.genshinuid.uid_uid_5068e3", uid=uid))
+    if rank_data:
+        await dump_akasha_sides(str(uid), rank_data, now)
 
 
 async def enka_to_data(uid: str, enka_data: Optional[EnkaData] = None) -> Union[dict, str]:

@@ -23,18 +23,28 @@ from .wiki_data import (
     FoodWiki,
     WikiItem,
     WeaponWiki,
+    FetterBlock,
     MonsterWiki,
     ArtifactWiki,
+    CharStoryWiki,
     parse_query,
-    char_ai_text,
     food_ai_text,
+    quote_ai_text,
+    story_ai_text,
     load_char_wiki,
     load_food_wiki,
     weapon_ai_text,
+    char_const_text,
+    load_char_story,
+    load_voice_file,
     monster_ai_text,
+    quote_line_text,
     artifact_ai_text,
+    char_talent_text,
     load_weapon_wiki,
     load_monster_wiki,
+    parse_voice_query,
+    char_material_text,
     load_artifact_wiki,
 )
 from ..utils.image.convert import convert_img
@@ -59,6 +69,8 @@ CHAR_W = 1280
 PAD = 12
 COL_GAP = 8
 CHAR_COL = (CHAR_W - PAD * 2 - COL_GAP) // 2
+CHAR_COL3 = (CHAR_W - PAD * 2 - COL_GAP * 2) // 3
+VOICE_SIDE = 8
 PAGE_BG_H = 900
 INNER_W = PAGE_W - PAD * 2
 HERO_H = 348
@@ -102,6 +114,8 @@ _RES_COLOR: dict[str, str] = {
 _COLOR_TAG = re.compile(r"<color=#([0-9A-Fa-f]{6,8})>(.*?)</color>", re.S)
 _ITALIC = re.compile(r"</?i>")
 _NUM_TOKEN = re.compile(r"-?\d+(?:\.\d+)?(?:%|秒)?(?:/-?\d+(?:\.\d+)?(?:%|秒)?)*")
+_STORY_NUM = re.compile(r"\d+(?:\.\d+)?%?")
+_QUOTE_RE = re.compile(r"「([^」]*)」|『([^』]*)』|“([^”]*)”|\"([^\"]*)\"")
 _STAT_PAIRS: tuple[tuple[str, str], ...] = tuple(
     sorted(
         (
@@ -228,6 +242,25 @@ def _mark_nums(text: str) -> str:
     return _NUM_TOKEN.sub(_wrap, escaped)
 
 
+def _mark_story_nums(escaped: str) -> str:
+    return _STORY_NUM.sub(lambda m: f'<span class="hi">{m.group(0)}</span>', escaped)
+
+
+def _mark_glow(text: str) -> str:
+    """故事正文：数字和「」/引号内文字略提亮。"""
+    parts: list[str] = []
+    pos = 0
+    for m in _QUOTE_RE.finditer(text):
+        parts.append(_mark_story_nums(_esc(text[pos : m.start()])))
+        inner = m.group(1) or m.group(2) or m.group(3) or m.group(4) or ""
+        open_ch = m.group(0)[0]
+        close_ch = m.group(0)[-1]
+        parts.append(f'{_esc(open_ch)}<span class="hi">{_mark_story_nums(_esc(inner))}</span>{_esc(close_ch)}')
+        pos = m.end()
+    parts.append(_mark_story_nums(_esc(text[pos:])))
+    return "".join(parts).replace("\n", "<br>")
+
+
 def _accent(element: str) -> str:
     if element in _ACCENT:
         return _ACCENT[element]
@@ -284,13 +317,19 @@ img {{ display:block; }}
 .mod {{ display:flex; flex-direction:column; gap:7px; padding:0 {PAD}px; }}
 .cols {{ display:flex; gap:{COL_GAP}px; padding:0 {PAD}px; align-items:flex-start; }}
 .col {{ width:{CHAR_COL}px; display:flex; flex-direction:column; gap:7px; min-width:0; }}
+.cols3 {{ display:flex; gap:{COL_GAP}px; padding:0 {PAD}px; align-items:flex-start; }}
+.col3 {{ width:{CHAR_COL3}px; display:flex; flex-direction:column; gap:7px; min-width:0; }}
 .toprow {{ display:flex; width:{width}px; align-items:stretch; gap:{COL_GAP}px;
   padding:10px {PAD}px 0; box-sizing:border-box; }}
 .topmats {{ width:{CHAR_COL}px; padding:0; display:flex; flex-direction:column;
   gap:7px; box-sizing:border-box; }}
+.topmats .panel {{ flex:1; }}
 .hero {{ position:relative; width:{CHAR_COL}px; min-height:{HERO_H}px; overflow:hidden;
   flex-shrink:0; align-self:stretch; border-radius:12px; background:{SURFACE};
   border:1px solid {HAIR}; border-top:1px solid {HAIR_TOP}; }}
+.herowide {{ position:relative; width:{width - PAD * 2}px; min-height:{HERO_H}px; overflow:hidden;
+  border-radius:12px; background:{SURFACE}; border:1px solid {HAIR};
+  border-top:1px solid {HAIR_TOP}; }}
 .herobg {{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   object-position:12% 10%; }}
 .heroin {{ position:absolute; left:250px; right:10px; bottom:10px; top:auto; width:auto;
@@ -388,6 +427,18 @@ img {{ display:block; }}
 .bigicon {{ width:220px; height:220px; object-fit:contain; margin:8px auto 0; }}
 .foot {{ display:flex; align-items:center; justify-content:center; height:16px; }}
 .foot img {{ width:360px; height:13px; opacity:0.45; }}
+.stitle {{ font-size:13px; font-weight:700; color:{GOLD}; margin-bottom:6px; }}
+.story {{ font-size:12px; line-height:1.7; color:{INK_2}; }}
+.hi {{ color:#f3ead2; }}
+.stips {{ font-size:10px; color:{INK_3}; margin-top:6px; }}
+.qrow {{ padding:7px 0; border-bottom:1px solid {HAIR}; }}
+.qrow:last-child {{ border-bottom:none; padding-bottom:0; }}
+.qrow:first-child {{ padding-top:0; }}
+.qhead {{ display:flex; align-items:center; gap:6px; }}
+.qidx {{ font-family:{NUM_FONT}; font-size:13px; font-weight:700; color:{GOLD};
+  min-width:18px; flex-shrink:0; }}
+.qtitle {{ font-size:12px; font-weight:700; color:{INK}; }}
+.qtext {{ font-size:11px; line-height:1.55; color:{INK_2}; margin-top:3px; }}
 """
 
 
@@ -507,7 +558,7 @@ def _elem_icon(element: str, css: int) -> str:
     return _icon(path, css)
 
 
-def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) -> str:
+def _char_chips(data: CharWiki) -> list[str]:
     chips = [
         f'<div class="chip gold">{_stars(data.rarity)}</div>',
         f'<div class="chip">{_esc(data.weapon)}</div>',
@@ -516,21 +567,40 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
     ]
     if data.cv:
         chips.append(f'<div class="chip">CV {_esc(data.cv)}</div>')
+    return chips
+
+
+def _char_stats_html(data: CharWiki) -> str:
     stats = [
         ("生命值", f"{data.hp:,}"),
         ("攻击力", f"{data.atk:,}"),
         ("防御力", f"{data.defense:,}"),
         (data.substat, data.substat_value),
     ]
-    stat_h = "".join(
+    return "".join(
         f'<div class="stat{" alt" if i % 2 else ""}"><div class="stnm">{_esc(n)}</div>'
         f'<div class="stv">{_stat_icon_html(_stat_key_in(n), 14)}{_esc(v)}</div></div>'
         for i, (n, v) in enumerate(stats)
         if n and n != "—"
     )
+
+
+def _char_hero_block(
+    data: CharWiki,
+    hero: str,
+    *,
+    with_stats: bool,
+    with_desc: bool,
+    box: str = "hero",
+) -> str:
     title = data.title or data.constellation
-    hero_block = (
-        '<div class="hero">'
+    extra = ""
+    if with_stats:
+        extra += f'<div class="stats">{_char_stats_html(data)}</div>'
+    if with_desc:
+        extra += f'<div class="hdesc">{_mark_glow(data.description)}</div>'
+    return (
+        f'<div class="{box}">'
         f'<img class="herobg" src="{hero}"/>'
         '<div class="heroin">'
         '<div class="htitle">'
@@ -538,15 +608,17 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
         f'<div class="hname">{_esc(data.name)}</div>'
         "</div>"
         f'<div class="hsub">{_esc(title)} · {_esc(data.constellation)} · {_esc(data.native)}</div>'
-        f'<div class="hchips">{"".join(chips)}</div>'
-        f'<div class="stats">{stat_h}</div>'
-        f'<div class="hdesc">{_esc(data.description)}</div>'
+        f'<div class="hchips">{"".join(_char_chips(data))}</div>'
+        f"{extra}"
         "</div></div>"
     )
-    combat = [t for t in data.talents if t.slot != "P"]
-    passive = [t for t in data.talents if t.slot == "P"]
-    t_bits: list[str] = []
-    for t in combat:
+
+
+def _combat_talent_html(data: CharWiki, icons: dict[str, str]) -> str:
+    bits: list[str] = []
+    for t in data.talents:
+        if t.slot == "P":
+            continue
         meta: list[str] = []
         if t.cooldown:
             meta.append(f"CD {t.cooldown}s")
@@ -558,7 +630,7 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
             for a, b in t.rows[:10]
         )
         src = icons[t.icon] if t.icon in icons else ""
-        t_bits.append(
+        bits.append(
             '<div class="trow">'
             f'<div class="tic">{_img("", src)}</div>'
             '<div class="tbody">'
@@ -571,10 +643,16 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
             f'<div class="tgrid">{grid}</div>'
             "</div></div>"
         )
-    p_bits: list[str] = []
-    for t in passive:
+    return "".join(bits)
+
+
+def _passive_html(data: CharWiki, icons: dict[str, str]) -> str:
+    bits: list[str] = []
+    for t in data.talents:
+        if t.slot != "P":
+            continue
         src = icons[t.icon] if t.icon in icons else ""
-        p_bits.append(
+        bits.append(
             '<div class="trow">'
             f'<div class="tic">{_img("", src)}</div>'
             '<div class="tbody">'
@@ -582,10 +660,14 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
             f'<div class="tdesc">{_rich_html(t.description)}</div>'
             "</div></div>"
         )
-    c_bits: list[str] = []
+    return "".join(bits) if bits else '<div class="fx">无</div>'
+
+
+def _const_html(data: CharWiki, icons: dict[str, str]) -> str:
+    bits: list[str] = []
     for c in data.consts:
         src = icons[c.icon] if c.icon in icons else ""
-        c_bits.append(
+        bits.append(
             '<div class="crow">'
             f'<div class="cic">{_img("", src)}</div>'
             '<div class="tbody">'
@@ -593,6 +675,10 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
             f'<div class="cdesc">{_rich_html(c.description)}</div>'
             "</div></div>"
         )
+    return "".join(bits)
+
+
+def _mat_blocks(data: CharWiki, icons: dict[str, str], accent: str) -> tuple[str, str]:
     mora_uri = icons["202"] if "202" in icons else ""
     item_uris = {it.item_id: (icons[it.item_id] if it.item_id in icons else "") for it in data.ascend_items}
     item_uris.update({it.item_id: (icons[it.item_id] if it.item_id in icons else "") for it in data.talent_items})
@@ -602,29 +688,39 @@ def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) ->
     extra_t: tuple[tuple[str, str, int], ...] = ()
     if data.mora_talent:
         extra_t = (("摩拉", mora_uri, data.mora_talent),)
+    ascend = (
+        _section("突破材料", "ASCENSION", accent, f"Lv.1→{data.level}")
+        + f'<div class="panel">{_items_html(data.ascend_items, item_uris, extra_a)}</div>'
+    )
+    talent = (
+        _section("天赋材料（一份 1→10）", "TALENT MAT", accent, "满级三份 ×3")
+        + f'<div class="panel">{_items_html(data.talent_items, item_uris, extra_t)}</div>'
+    )
+    return ascend, talent
+
+
+def _char_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) -> str:
     footer = _file_uri(FOOTER)
-    empty_p = '<div class="fx">无</div>'
+    ascend, talent = _mat_blocks(data, icons, accent)
     return "".join(
         [
             '<div class="toprow">',
-            hero_block,
+            _char_hero_block(data, hero, with_stats=True, with_desc=True),
             '<div class="topmats">',
-            _section("突破材料", "ASCENSION", accent, f"Lv.1→{data.level}"),
-            f'<div class="panel">{_items_html(data.ascend_items, item_uris, extra_a)}</div>',
-            _section("天赋材料（一份 1→10）", "TALENT MAT", accent, "满级三份 ×3"),
-            f'<div class="panel">{_items_html(data.talent_items, item_uris, extra_t)}</div>',
+            ascend,
+            talent,
             "</div>",
             "</div>",
             '<div class="cols">',
             '<div class="col">',
             _section("天赋", "TALENT", accent, "Lv.10"),
-            f'<div class="panel">{"".join(t_bits)}</div>',
+            f'<div class="panel">{_combat_talent_html(data, icons)}</div>',
             "</div>",
             '<div class="col">',
             _section("固有天赋", "PASSIVE", accent),
-            f'<div class="panel">{"".join(p_bits) if p_bits else empty_p}</div>',
+            f'<div class="panel">{_passive_html(data, icons)}</div>',
             _section("命座", "CONSTELLATION", accent, data.constellation),
-            f'<div class="panel">{"".join(c_bits)}</div>',
+            f'<div class="panel">{_const_html(data, icons)}</div>',
             "</div>",
             "</div>",
             f'<div class="foot">{_img("", footer)}</div>',
@@ -685,47 +781,46 @@ async def _render_page(accent: str, bg: str, inner: str, width: int = PAGE_W) ->
     return Image.open(BytesIO(png)).convert("RGBA")
 
 
-def _ai_return_char(data: CharWiki) -> None:
+def _ai_return_msg(text: str) -> None:
     try:
-        ai_return(char_ai_text(data))
+        ai_return(text)
     except Exception:
         return
 
 
 def _ai_return_weapon(data: WeaponWiki) -> None:
-    try:
-        ai_return(weapon_ai_text(data))
-    except Exception:
-        return
+    _ai_return_msg(weapon_ai_text(data))
 
 
 def _ai_return_artifact(data: ArtifactWiki) -> None:
-    try:
-        ai_return(artifact_ai_text(data))
-    except Exception:
-        return
+    _ai_return_msg(artifact_ai_text(data))
 
 
 def _ai_return_food(data: FoodWiki) -> None:
-    try:
-        ai_return(food_ai_text(data))
-    except Exception:
-        return
+    _ai_return_msg(food_ai_text(data))
 
 
 def _ai_return_monster(data: MonsterWiki) -> None:
-    try:
-        ai_return(monster_ai_text(data))
-    except Exception:
-        return
+    _ai_return_msg(monster_ai_text(data))
 
 
-async def render_char_card(text: str) -> str | bytes:
+def _ai_return_story(data: CharStoryWiki) -> None:
+    _ai_return_msg(story_ai_text(data))
+
+
+def _ai_return_voice(data: CharStoryWiki) -> None:
+    _ai_return_msg(quote_ai_text(data))
+
+
+async def _prepare_char(
+    text: str,
+    *,
+    need_icons: bool,
+) -> tuple[CharWiki, str, str, dict[str, str]] | str:
     name, level = parse_query(text)
     data = await load_char_wiki(name, level)
     if isinstance(data, str):
         return data
-    _ai_return_char(data)
     accent = _accent(data.element)
     splash = _load_splash(data.name, data.char_id, data.icon)
     if data.icon:
@@ -733,11 +828,116 @@ async def render_char_card(text: str) -> str | bytes:
         if path is not None and splash.size[0] < 80:
             splash = Image.open(path).convert("RGBA")
     hero = await _build_hero(splash, accent, PAGE_W, CHAR_HERO_H, CHAR_ART_W)
-    icons = await _collect_char_icons(data)
+    icons = await _collect_char_icons(data) if need_icons else {}
+    return data, hero, accent, icons
+
+
+async def render_char_card(text: str) -> str | bytes:
+    bundled = await _prepare_char(text, need_icons=True)
+    if isinstance(bundled, str):
+        return bundled
+    data, hero, accent, icons = bundled
     inner = _char_html(data, hero, accent, icons)
     bg = await _page_bg(CHAR_W)
     img = await _render_page(accent, bg, inner, CHAR_W)
     return await convert_img(img)
+
+
+def _talent_part_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) -> str:
+    footer = _file_uri(FOOTER)
+    return "".join(
+        [
+            '<div class="mod">',
+            _char_hero_block(data, hero, with_stats=False, with_desc=False, box="herowide"),
+            "</div>",
+            '<div class="mod">',
+            _section("固有天赋", "PASSIVE", accent),
+            f'<div class="panel">{_passive_html(data, icons)}</div>',
+            "</div>",
+            '<div class="mod">',
+            _section("天赋", "TALENT", accent, "Lv.10"),
+            f'<div class="panel">{_combat_talent_html(data, icons)}</div>',
+            "</div>",
+            f'<div class="foot">{_img("", footer)}</div>',
+        ]
+    )
+
+
+def _const_part_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) -> str:
+    footer = _file_uri(FOOTER)
+    return "".join(
+        [
+            '<div class="mod">',
+            _char_hero_block(data, hero, with_stats=False, with_desc=False, box="herowide"),
+            "</div>",
+            '<div class="mod">',
+            _section("命座", "CONSTELLATION", accent, data.constellation),
+            f'<div class="panel">{_const_html(data, icons)}</div>',
+            "</div>",
+            f'<div class="foot">{_img("", footer)}</div>',
+        ]
+    )
+
+
+def _mat_part_html(data: CharWiki, hero: str, accent: str, icons: dict[str, str]) -> str:
+    footer = _file_uri(FOOTER)
+    ascend, talent = _mat_blocks(data, icons, accent)
+    return "".join(
+        [
+            '<div class="toprow">',
+            _char_hero_block(data, hero, with_stats=False, with_desc=False),
+            '<div class="topmats">',
+            ascend,
+            talent,
+            "</div></div>",
+            f'<div class="foot">{_img("", footer)}</div>',
+        ]
+    )
+
+
+async def _render_char_part(
+    text: str,
+    *,
+    html_fn,
+    ai_fn,
+    width: int = CHAR_W,
+) -> str | bytes:
+    bundled = await _prepare_char(text, need_icons=True)
+    if isinstance(bundled, str):
+        _ai_return_msg(bundled)
+        return bundled
+    data, hero, accent, icons = bundled
+    _ai_return_msg(ai_fn(data))
+    inner = html_fn(data, hero, accent, icons)
+    bg = await _page_bg(width)
+    img = await _render_page(accent, bg, inner, width)
+    return await convert_img(img)
+
+
+async def render_char_talent_card(text: str) -> str | bytes:
+    return await _render_char_part(
+        text,
+        html_fn=_talent_part_html,
+        ai_fn=char_talent_text,
+        width=CHAR_COL + PAD * 2,
+    )
+
+
+async def render_char_const_card(text: str) -> str | bytes:
+    return await _render_char_part(
+        text,
+        html_fn=_const_part_html,
+        ai_fn=char_const_text,
+        width=CHAR_COL + PAD * 2,
+    )
+
+
+async def render_char_material_card(text: str) -> str | bytes:
+    return await _render_char_part(
+        text,
+        html_fn=_mat_part_html,
+        ai_fn=char_material_text,
+    )
 
 
 def _weapon_html(data: WeaponWiki, art: str, accent: str, icons: dict[str, str]) -> str:
@@ -769,7 +969,7 @@ def _weapon_html(data: WeaponWiki, art: str, accent: str, icons: dict[str, str])
             f'<div class="stv">{_stat_icon_html(_stat_key_in(data.substat), 14)}'
             f"{_esc(data.sub_base)} / {_esc(data.sub_max)}</div></div>",
             "</div>",
-            f'<div class="hdesc">{_esc(data.description)}</div>',
+            f'<div class="hdesc">{_mark_glow(data.description)}</div>',
             "</div></div>",
             '<div class="mod">',
             _section(data.effect_name or "武器特效", "REFINE R1–R5", accent),
@@ -807,6 +1007,7 @@ async def render_weapon_card(text: str) -> str | bytes:
     name, level = parse_query(text)
     data = await load_weapon_wiki(name, level)
     if isinstance(data, str):
+        _ai_return_msg(data)
         return data
     _ai_return_weapon(data)
     accent = GOLD
@@ -870,6 +1071,7 @@ async def render_artifact_card(text: str) -> str | bytes:
     name, _level = parse_query(text)
     data = await load_artifact_wiki(name)
     if isinstance(data, str):
+        _ai_return_msg(data)
         return data
     _ai_return_artifact(data)
     accent = GOLD
@@ -912,7 +1114,7 @@ def _food_html(data: FoodWiki, accent: str, cover: str, icons: dict[str, str]) -
             "</div>",
             '<div class="mod">',
             _section("介绍", "LORE", accent),
-            f'<div class="panel"><div class="fx">{_esc(data.description)}</div></div>',
+            f'<div class="panel"><div class="fx">{_mark_glow(data.description)}</div></div>',
             "</div>",
             '<div class="mod">',
             _section("食材", "RECIPE", accent),
@@ -927,6 +1129,7 @@ async def render_food_card(text: str) -> str | bytes:
     name, _level = parse_query(text)
     data = await load_food_wiki(name)
     if isinstance(data, str):
+        _ai_return_msg(data)
         return data
     _ai_return_food(data)
     accent = "#77dd8f"
@@ -1043,6 +1246,7 @@ async def render_monster_card(text: str) -> str | bytes:
     name, _level = parse_query(text)
     data = await load_monster_wiki(name)
     if isinstance(data, str):
+        _ai_return_msg(data)
         return data
     _ai_return_monster(data)
     accent = "#ec6a48"
@@ -1057,3 +1261,178 @@ async def render_monster_card(text: str) -> str | bytes:
     bg = await _page_bg()
     img = await _render_page(accent, bg, inner)
     return await convert_img(img)
+
+
+def _story_panel(block: FetterBlock) -> str:
+    tip = f'<div class="stips">{_esc(block.tips)}</div>' if block.tips else ""
+    body = _mark_glow(block.text)
+    return f'<div class="panel"><div class="stitle">{_esc(block.title)}</div><div class="story">{body}</div>{tip}</div>'
+
+
+def _pack_cols(items: list[str]) -> str:
+    left = items[0::2]
+    right = items[1::2]
+    return f'<div class="cols"><div class="col">{"".join(left)}</div><div class="col">{"".join(right)}</div></div>'
+
+
+def _fetter_hero(data: CharStoryWiki, hero: str) -> str:
+    chips = [
+        f'<div class="chip gold">{_stars(data.rarity)}</div>',
+        f'<div class="chip">{_esc(data.element_zh)}</div>',
+    ]
+    if data.title:
+        chips.append(f'<div class="chip">{_esc(data.title)}</div>')
+    return (
+        '<div class="hero">'
+        f'<img class="herobg" src="{hero}"/>'
+        '<div class="heroin">'
+        '<div class="htitle">'
+        f"{_img('helem', _elem_icon(data.element, 26))}"
+        f'<div class="hname">{_esc(data.name)}</div>'
+        "</div>"
+        f'<div class="hchips">{"".join(chips)}</div>'
+        "</div></div>"
+    )
+
+
+def _quote_row(idx: int, block: FetterBlock) -> str:
+    tip = f'<div class="stips">{_esc(block.tips)}</div>' if block.tips else ""
+    return (
+        '<div class="qrow">'
+        '<div class="qhead">'
+        f'<div class="qidx">{idx}</div>'
+        f'<div class="qtitle">{_esc(block.title)}</div>'
+        "</div>"
+        f'<div class="qtext">{_mark_glow(block.text)}</div>'
+        f"{tip}"
+        "</div>"
+    )
+
+
+def _pack_cols3(items: list[str]) -> str:
+    cols: list[list[str]] = [[], [], []]
+    for i, row in enumerate(items):
+        cols[i % 3].append(row)
+    bits: list[str] = []
+    for col in cols:
+        if not col:
+            continue
+        bits.append(f'<div class="col3"><div class="panel">{"".join(col)}</div></div>')
+    return f'<div class="cols3">{"".join(bits)}</div>'
+
+
+def _story_html(data: CharStoryWiki, hero: str, accent: str) -> str:
+    hero_block = _fetter_hero(data, hero)
+    stories = list(data.stories)
+    first = _story_panel(stories[0]) if stories else '<div class="panel"><div class="fx">暂无故事</div></div>'
+    rest = [_story_panel(b) for b in stories[1:]]
+    rest_html = _pack_cols(rest) if rest else ""
+    footer = _file_uri(FOOTER)
+    return "".join(
+        [
+            '<div class="toprow">',
+            hero_block,
+            '<div class="topmats">',
+            _section(stories[0].title if stories else "角色详细", "PROFILE", accent),
+            first,
+            "</div></div>",
+            '<div class="mod">',
+            _section("角色故事", "STORY", accent, str(len(stories))),
+            "</div>",
+            rest_html,
+            f'<div class="foot">{_img("", footer)}</div>',
+        ]
+    )
+
+
+async def render_story_card(text: str) -> str | bytes:
+    return await _render_fetter_card(text, "story")
+
+
+def _voice_html(data: CharStoryWiki, hero: str, accent: str) -> str:
+    quotes = list(data.quotes)
+    side_n = min(VOICE_SIDE, len(quotes))
+    side = [_quote_row(i, b) for i, b in enumerate(quotes[:side_n], 1)]
+    rest = [_quote_row(i, b) for i, b in enumerate(quotes[side_n:], side_n + 1)]
+    if side:
+        side_html = f'<div class="panel">{"".join(side)}</div>'
+    else:
+        side_html = '<div class="panel"><div class="fx">暂无语音</div></div>'
+    extra = f"{len(quotes)} · 「角色语音{_esc(data.name)}N」收听" if quotes else ""
+    rest_html = _pack_cols3(rest) if rest else ""
+    footer = _file_uri(FOOTER)
+    return "".join(
+        [
+            '<div class="toprow">',
+            _fetter_hero(data, hero),
+            '<div class="topmats">',
+            _section("语音", "VOICE", accent, extra),
+            side_html,
+            "</div></div>",
+            '<div class="mod">',
+            _section("角色语音", "LINES", accent, str(len(quotes))),
+            "</div>",
+            rest_html,
+            f'<div class="foot">{_img("", footer)}</div>',
+        ]
+    )
+
+
+async def _render_fetter_card(text: str, kind: str) -> str | bytes:
+    name, _level = parse_query(text)
+    data = await load_char_story(name)
+    if isinstance(data, str):
+        _ai_return_msg(data)
+        return data
+    if kind == "voice":
+        if not data.quotes:
+            msg = f"未找到角色「{data.name}」的语音。"
+            _ai_return_msg(msg)
+            return msg
+        _ai_return_voice(data)
+        inner_fn = _voice_html
+    else:
+        if not data.stories:
+            msg = f"未找到角色「{data.name}」的故事。"
+            _ai_return_msg(msg)
+            return msg
+        _ai_return_story(data)
+        inner_fn = _story_html
+    accent = _accent(data.element)
+    splash = _load_splash(data.name, data.char_id, data.icon)
+    if data.icon:
+        path = await _asset_path(data.icon)
+        if path is not None and splash.size[0] < 80:
+            splash = Image.open(path).convert("RGBA")
+    hero = await _build_hero(splash, accent, PAGE_W, CHAR_HERO_H, CHAR_ART_W)
+    inner = inner_fn(data, hero, accent)
+    bg = await _page_bg(CHAR_W)
+    img = await _render_page(accent, bg, inner, CHAR_W)
+    return await convert_img(img)
+
+
+async def render_voice_card(text: str) -> str | bytes:
+    return await _render_fetter_card(text, "voice")
+
+
+async def render_voice_audio(text: str) -> str | tuple[str, Path]:
+    name, index = parse_voice_query(text)
+    if index is None:
+        msg = "请在角色名后加上语音编号，例如「角色语音可莉3」。"
+        _ai_return_msg(msg)
+        return msg
+    data = await load_char_story(name)
+    if isinstance(data, str):
+        _ai_return_msg(data)
+        return data
+    if not data.quotes:
+        msg = f"未找到角色「{data.name}」的语音。"
+        _ai_return_msg(msg)
+        return msg
+    result = await load_voice_file(data, index)
+    if isinstance(result, str):
+        _ai_return_msg(result)
+        return result
+    path, block = result
+    _ai_return_msg(quote_line_text(data, block, index))
+    return f"{index}. {block.title}", path

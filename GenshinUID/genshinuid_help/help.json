@@ -562,8 +562,32 @@
     "data": [
       {
         "name": "角色介绍",
-        "desc": "角色卡片：简介/天赋/命座/材料",
+        "desc": "完整角色卡：简介/天赋/命座/材料",
         "eg": "角色介绍雷神、角色介绍七七90",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色天赋",
+        "desc": "普攻/战技/爆发与固有",
+        "eg": "角色天赋纳西妲、查天赋雷神",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色命座",
+        "desc": "C1–C6 名称与效果",
+        "eg": "角色命座申鹤、查命座雷神",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色材料",
+        "desc": "突破与天赋材料",
+        "eg": "角色材料可莉、角色材料雷神",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -595,7 +619,23 @@
       {
         "name": "原魔介绍",
         "desc": "怪物简介、抗性与掉落",
-        "eg": "原魔介绍无相之雷、查原魔公子",
+        "eg": "原魔介绍无相之雷、怪物介绍公子",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色故事",
+        "desc": "角色详细与好感故事",
+        "eg": "角色故事桑多涅、角色故事雷神",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "角色语音",
+        "desc": "语音台词卡；加编号发对应语音",
+        "eg": "角色语音可莉、角色语音可莉3",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

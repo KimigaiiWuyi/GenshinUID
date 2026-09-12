@@ -6,6 +6,7 @@ import re
 import json
 from pathlib import Path
 from dataclasses import dataclass
+from urllib.parse import unquote
 from collections.abc import Mapping, Callable, Awaitable
 
 import aiofiles
@@ -29,11 +30,13 @@ from ..utils.map.GS_MAP_PATH import (
     reliquaryList,
     ex_monster_data,
 )
-from ..utils.map.name_covert import name_to_avatar_id, alias_to_char_name
+from ..utils.map.name_covert import name_to_element, name_to_avatar_id, alias_to_char_name
 from ..utils.resource.RESOURCE_PATH import (
     WIKI_DATA_REL,
     WIKI_DATA_CHAR,
     WIKI_DATA_FOOD,
+    WIKI_DATA_VOICE,
+    WIKI_DATA_FETTER,
     WIKI_DATA_WEAPON,
     WIKI_DATA_MONSTER,
 )
@@ -41,8 +44,14 @@ from ..utils.resource.RESOURCE_PATH import (
 _SEED_DATA = Path(__file__).resolve().parents[1] / "tools" / "gs_data"
 _AMBR_FOOD_LIST = f"{AMBR_BASE_URL}/api/v2/chs/food"
 _AMBR_FOOD_URL = AMBR_BASE_URL + "/api/v2/chs/food/{}"
+_AMBR_FETTER_URL = AMBR_BASE_URL + "/api/v2/chs/avatarFetter/{}"
+_OBC_SEARCH = "https://api-static.mihoyo.com/common/blackboard/ys_obc/v1/search/content"
+_OBC_INFO = "https://api-static.mihoyo.com/common/blackboard/ys_obc/v1/content/info"
+_OBC_HEADER = {"User-Agent": "Mozilla/5.0"}
 _NUM_IN_TEXT = re.compile(r"\d+")
 _ZH_NAME = re.compile(r"[\u4e00-\u9fa5]+")
+_TRAIL_NUM = re.compile(r"(\d+)\s*$")
+_DATA_DATA_RE = re.compile(r'data-data="([^"]+)"')
 _PARAM_RE = re.compile(r"\{param(\d+):([A-Za-z0-9]+)\}")
 _COLOR_RE = re.compile(r"</?color(?:=#[0-9A-Fa-f]+)?[^>]*>")
 _HTML_RE = re.compile(r"<[^>]+>")
@@ -189,6 +198,27 @@ class CharWiki:
 
 
 @dataclass(frozen=True)
+class FetterBlock:
+    title: str
+    text: str
+    tips: str
+    audio: str = ""
+
+
+@dataclass(frozen=True)
+class CharStoryWiki:
+    char_id: str
+    name: str
+    title: str
+    element: str
+    element_zh: str
+    rarity: int
+    icon: str
+    stories: tuple[FetterBlock, ...]
+    quotes: tuple[FetterBlock, ...]
+
+
+@dataclass(frozen=True)
 class WeaponWiki:
     weapon_id: str
     name: str
@@ -284,6 +314,22 @@ def parse_query(text: str) -> tuple[str, int]:
         elif n == 1:
             level = 1
     return name, level
+
+
+def parse_voice_query(text: str) -> tuple[str, int | None]:
+    """抽出中文名；末尾 1–99 当语音编号（角色语音可莉3）。"""
+    name = "".join(_ZH_NAME.findall(text)).strip()
+    m = _TRAIL_NUM.search(text.strip())
+    if m is None:
+        return name, None
+    n = int(m.group(1))
+    if 1 <= n <= 99:
+        return name, n
+    return name, None
+
+
+def _norm_voice_title(title: str) -> str:
+    return title.replace("...", "…").replace("···", "…").replace("・", "·").replace("‧", "·").strip()
 
 
 def strip_ambr_text(text: str) -> str:
@@ -1165,6 +1211,119 @@ async def load_char_wiki(name: str, level: int) -> CharWiki | str:
     return parse_char_wiki(raw, level)
 
 
+def _parse_fetter_map(raw: Mapping[str, object]) -> tuple[FetterBlock, ...]:
+    items: list[tuple[int, FetterBlock]] = []
+    for key, val in raw.items():
+        if not isinstance(val, dict):
+            continue
+        title = _opt_str(val, "title")
+        text = strip_ambr_text(_opt_str(val, "text"))
+        if not title and not text:
+            continue
+        idx = int(key) if key.isdigit() else 99
+        items.append(
+            (
+                idx,
+                FetterBlock(
+                    title=title,
+                    text=text,
+                    tips=_opt_str(val, "tips"),
+                    audio=_opt_str(val, "audio"),
+                ),
+            )
+        )
+    items.sort(key=lambda x: x[0])
+    return tuple(block for _i, block in items)
+
+
+def parse_char_story(
+    raw: Mapping[str, object],
+    char_id: str,
+    header: CharWiki | None,
+) -> CharStoryWiki:
+    story_raw = _opt_map(raw, "story")
+    quote_raw = _opt_map(raw, "quotes")
+    stories = _parse_fetter_map(story_raw) if story_raw is not None else ()
+    quotes = _parse_fetter_map(quote_raw) if quote_raw is not None else ()
+    if header is not None:
+        return CharStoryWiki(
+            char_id=header.char_id,
+            name=header.name,
+            title=header.title,
+            element=header.element,
+            element_zh=header.element_zh,
+            rarity=header.rarity,
+            icon=header.icon,
+            stories=stories,
+            quotes=quotes,
+        )
+    return CharStoryWiki(
+        char_id=char_id,
+        name=char_id,
+        title="",
+        element="Cryo",
+        element_zh="冰",
+        rarity=5,
+        icon="",
+        stories=stories,
+        quotes=quotes,
+    )
+
+
+async def load_char_story(name: str) -> CharStoryWiki | str:
+    if not name:
+        return "请输入角色名。"
+    found = await resolve_char_id(name)
+    if isinstance(found, list):
+        if not found:
+            return f"未找到角色「{name}」。"
+        return _multi_msg("角色", found)
+    cid = found.split("-")[0]
+
+    async def _fetch(file_id: str) -> Mapping[str, object] | None:
+        return await _ambr_payload(_AMBR_FETTER_URL.format(file_id))
+
+    raw = await _load_id_json(cid, WIKI_DATA_FETTER, _fetch)
+    if raw is None:
+        return f"未找到角色「{name}」的故事数据。"
+    header: CharWiki | None = None
+    char_raw = await _load_id_json(found, WIKI_DATA_CHAR, get_ambr_char_data, "char")
+    if char_raw is not None:
+        header = parse_char_wiki(char_raw, 90)
+    if header is None:
+        alias = await alias_to_char_name(name)
+        en, zh = _element_pair(await name_to_element(alias))
+        header = CharWiki(
+            char_id=cid,
+            name=alias,
+            title="",
+            element=en,
+            element_zh=zh,
+            weapon="",
+            rarity=5,
+            region="",
+            birthday="",
+            constellation="",
+            native="",
+            cv="",
+            description="",
+            icon="",
+            level=90,
+            hp=0,
+            atk=0,
+            defense=0,
+            substat="",
+            substat_value="",
+            talents=(),
+            consts=(),
+            ascend_items=(),
+            talent_items=(),
+            mora_ascend=0,
+            mora_talent=0,
+        )
+    return parse_char_story(raw, cid, header)
+
+
 def _weapon_hits(name: str) -> list[tuple[str, str]]:
     exact: list[tuple[str, str]] = []
     part: list[tuple[str, str]] = []
@@ -1240,9 +1399,11 @@ def _pick_food_id(hits: list[str], items: Mapping[str, object]) -> str:
     best = hits[0]
     best_score = -1
     for hid in hits:
-        if hid not in items or not isinstance(items[hid], dict):
+        if hid not in items:
             continue
         entry = items[hid]
+        if not isinstance(entry, dict):
+            continue
         icon = _opt_str(entry, "icon")
         score = 0
         if icon and "Recipe" not in icon:
@@ -1364,22 +1525,72 @@ async def load_monster_wiki(name: str) -> MonsterWiki | str:
     return parse_monster_wiki(raw)
 
 
-def char_ai_text(data: CharWiki) -> str:
-    talent_n = "；".join(f"{t.slot} {t.name}" for t in data.talents if t.slot != "P")
-    cons = "；".join(f"C{c.index} {c.name}" for c in data.consts)
+def char_profile_text(data: CharWiki) -> str:
     return (
         f"原神角色 {data.name}（{data.title}）{data.rarity}星 {data.element_zh} {data.weapon}\n"
-        f"命之座 {data.constellation} 生日 {data.birthday} CV {data.cv} 地区 {data.region}\n"
-        f"Lv{data.level} HP {data.hp} 攻击 {data.atk} 防御 {data.defense} {data.substat} {data.substat_value}\n"
-        f"{data.description}\n天赋：{talent_n}\n命座：{cons}"
+        f"命之座 {data.constellation} 生日 {data.birthday} CV {data.cv} "
+        f"地区 {data.region} {data.native}\n"
+        f"Lv{data.level} HP {data.hp} 攻击 {data.atk} 防御 {data.defense} "
+        f"{data.substat} {data.substat_value}\n"
+        f"{strip_ambr_text(data.description)}"
+    )
+
+
+def char_talent_text(data: CharWiki) -> str:
+    lines = [f"原神角色 {data.name} 天赋："]
+    for t in data.talents:
+        extra: list[str] = []
+        if t.cooldown:
+            extra.append(f"CD{t.cooldown}s")
+        if t.cost:
+            extra.append(f"能量{t.cost}")
+        meta = f"（{' '.join(extra)}）" if extra else ""
+        lines.append(f"- {t.slot} {t.name}{meta}：{strip_ambr_text(t.description)}")
+        if t.rows:
+            rows = "；".join(f"{a} {b}" for a, b in t.rows[:10])
+            lines.append(f"  Lv10 {rows}")
+    return "\n".join(lines)
+
+
+def char_const_text(data: CharWiki) -> str:
+    lines = [f"原神角色 {data.name} 命座（{data.constellation}）："]
+    for c in data.consts:
+        lines.append(f"- C{c.index} {c.name}：{strip_ambr_text(c.description)}")
+    return "\n".join(lines)
+
+
+def char_material_text(data: CharWiki) -> str:
+    lines = [f"原神角色 {data.name} 养成材料："]
+    if data.ascend_items:
+        mats = "、".join(f"{i.name}×{i.count}" for i in data.ascend_items)
+        lines.append(f"突破：{mats}；摩拉 {data.mora_ascend}")
+    if data.talent_items:
+        mats = "、".join(f"{i.name}×{i.count}" for i in data.talent_items)
+        lines.append(f"天赋（一份1→10）：{mats}；摩拉 {data.mora_talent}；满级三份×3")
+    return "\n".join(lines)
+
+
+def char_ai_text(data: CharWiki) -> str:
+    return "\n".join(
+        [
+            char_profile_text(data),
+            char_talent_text(data),
+            char_const_text(data),
+            char_material_text(data),
+        ]
     )
 
 
 def weapon_ai_text(data: WeaponWiki) -> str:
+    mats = "、".join(f"{i.name}×{i.count}" for i in data.items)
+    extra = f"；摩拉 {data.mora}" if data.mora else ""
+    if data.ore:
+        extra += f"；精锻用魔矿 {data.ore}"
     return (
         f"原神武器 {data.name} {data.rarity}星 {data.weapon_type}\n"
         f"攻击力 {data.atk_base}/{data.atk_max} {data.substat} {data.sub_base}/{data.sub_max}\n"
-        f"{data.effect_name}：{data.effect}\n{data.description}"
+        f"{data.effect_name}：{data.effect}\n{data.description}\n"
+        f"突破材料：{mats}{extra}"
     )
 
 
@@ -1389,19 +1600,209 @@ def artifact_ai_text(data: ArtifactWiki) -> str:
         fx = f"1件套：{data.effect1}"
     else:
         fx = f"2件套：{data.effect2}\n4件套：{data.effect4}"
-    return f"原神圣遗物 {data.name} {stars}星\n{fx}"
+    pieces = "；".join(f"{p.slot} {p.name}" for p in data.pieces)
+    return f"原神圣遗物 {data.name} {stars}星\n{fx}\n部位：{pieces}"
 
 
 def food_ai_text(data: FoodWiki) -> str:
     ings = "、".join(f"{i.name}×{i.count}" for i in data.ingredients)
     return (
-        f"原神食物 {data.name} {data.rarity}星\n效果：{strip_ambr_text(data.effect)}\n材料：{ings}\n{data.description}"
+        f"原神食物 {data.name} {data.rarity}星 {data.kind} {data.source}\n"
+        f"效果：{strip_ambr_text(data.effect)}\n材料：{ings}\n{data.description}"
     )
 
 
 def monster_ai_text(data: MonsterWiki) -> str:
-    res = ""
-    if data.entries:
-        bits = [f"{lab} {val:.0%}" for lab, val in data.entries[0].resists]
-        res = "抗性 " + " ".join(bits)
-    return f"原神原魔 {data.name}（{data.special_name}）{data.kind}\n{data.description}\n{res}"
+    lines = [
+        f"原神原魔 {data.name}（{data.special_name}）{data.kind}",
+        data.description,
+    ]
+    for i, ent in enumerate(data.entries[:4]):
+        label = f"形态{i + 1}" if len(data.entries) > 1 else "抗性"
+        res = " ".join(f"{lab}{val:.0%}" for lab, val in ent.resists)
+        lines.append(f"{label}：{res}")
+        if ent.affixes:
+            aff = "；".join(f"{a.name}：{a.description}" for a in ent.affixes[:8])
+            lines.append(f"词缀：{aff}")
+        drops = [it.name for it in ent.rewards if it.rank >= 3 and not it.icon.startswith("UI_RelicIcon")]
+        uniq: list[str] = []
+        seen: set[str] = set()
+        for n in drops:
+            if n in {"摩拉", "冒险阅历", "好感经验"} or n in seen:
+                continue
+            seen.add(n)
+            uniq.append(n)
+        if uniq:
+            lines.append("掉落：" + "、".join(uniq))
+    return "\n".join(lines)
+
+
+def story_ai_text(data: CharStoryWiki) -> str:
+    lines = [f"原神角色故事 {data.name}（{data.title}）{data.rarity}星 {data.element_zh}"]
+    for block in data.stories:
+        tip = f"（{block.tips}）" if block.tips else ""
+        lines.append(f"- {block.title}{tip}：{block.text}")
+    return "\n".join(lines)
+
+
+def quote_ai_text(data: CharStoryWiki) -> str:
+    lines = [f"原神角色语音 {data.name}（{data.title}）{data.rarity}星 {data.element_zh}"]
+    for i, block in enumerate(data.quotes, 1):
+        tip = f"（{block.tips}）" if block.tips else ""
+        lines.append(f"{i}. {block.title}{tip}：{block.text}")
+    return "\n".join(lines)
+
+
+def quote_line_text(data: CharStoryWiki, block: FetterBlock, index: int) -> str:
+    tip = f"（{block.tips}）" if block.tips else ""
+    return f"原神角色语音 {data.name} {index}. {block.title}{tip}：{block.text}"
+
+
+def _parse_obc_voice_tab(html: str) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for blob in _DATA_DATA_RE.findall(html):
+        decoded = unquote(blob)
+        if "voiceTab" not in decoded:
+            continue
+        if not decoded.startswith("[") and not decoded.startswith("{"):
+            continue
+        raw = json.loads(decoded)
+        if not isinstance(raw, list):
+            continue
+        for part in raw:
+            if not isinstance(part, dict):
+                continue
+            if "partKey" not in part or part["partKey"] != "voiceTab":
+                continue
+            if "data" not in part or not isinstance(part["data"], dict):
+                continue
+            payload = part["data"]
+            if "attr" not in payload or not isinstance(payload["attr"], list):
+                continue
+            for lang in payload["attr"]:
+                if not isinstance(lang, dict):
+                    continue
+                if "name_" not in lang or lang["name_"] != "汉语":
+                    continue
+                if "items" not in lang or not isinstance(lang["items"], list):
+                    continue
+                for it in lang["items"]:
+                    if not isinstance(it, dict):
+                        continue
+                    title = it["name"] if "name" in it and isinstance(it["name"], str) else ""
+                    audio = it["audio"] if "audio" in it and isinstance(it["audio"], str) else ""
+                    if title and audio:
+                        out[title] = audio
+                return out
+    return out
+
+
+async def _obc_content_id(name: str) -> str | None:
+    async with AsyncClient(timeout=30) as client:
+        req = await client.get(
+            _OBC_SEARCH,
+            params={"app_sn": "ys_obc", "keyword": name},
+            headers=_OBC_HEADER,
+        )
+        raw = req.json()
+    if not isinstance(raw, dict) or "data" not in raw:
+        return None
+    payload = raw["data"]
+    if not isinstance(payload, dict) or "list" not in payload:
+        return None
+    items = payload["list"]
+    if not isinstance(items, list):
+        return None
+    role_id: str | None = None
+    for item in items:
+        if not isinstance(item, dict) or "id" not in item or "title" not in item:
+            continue
+        title = item["title"]
+        cid = str(item["id"])
+        if not isinstance(title, str):
+            continue
+        if title == name:
+            return cid
+        if role_id is not None or "channels" not in item or not isinstance(item["channels"], list):
+            continue
+        for ch in item["channels"]:
+            if isinstance(ch, dict) and "name" in ch and ch["name"] == "角色":
+                role_id = cid
+                break
+    return role_id
+
+
+async def _load_obc_voices(char_id: str, name: str) -> Mapping[str, str]:
+    path = WIKI_DATA_VOICE / f"{char_id}.json"
+    cached = await _read_json(path)
+    if cached is not None and "voices" in cached and isinstance(cached["voices"], dict):
+        out: dict[str, str] = {}
+        for key, val in cached["voices"].items():
+            if isinstance(key, str) and isinstance(val, str) and key and val:
+                out[key] = val
+        if out:
+            return out
+    cid = await _obc_content_id(name)
+    if cid is None:
+        return {}
+    async with AsyncClient(timeout=30) as client:
+        req = await client.get(
+            _OBC_INFO,
+            params={"app_sn": "ys_obc", "content_id": cid},
+            headers=_OBC_HEADER,
+        )
+        raw = req.json()
+    if not isinstance(raw, dict) or "data" not in raw:
+        return {}
+    payload = raw["data"]
+    if not isinstance(payload, dict) or "content" not in payload:
+        return {}
+    content = payload["content"]
+    if not isinstance(content, dict) or "contents" not in content:
+        return {}
+    parts = content["contents"]
+    if not isinstance(parts, list):
+        return {}
+    html_parts: list[str] = []
+    for part in parts:
+        if isinstance(part, dict) and "text" in part and isinstance(part["text"], str):
+            html_parts.append(part["text"])
+    voices = _parse_obc_voice_tab("".join(html_parts))
+    if voices:
+        await _write_json(path, {"content_id": cid, "voices": voices})
+    return voices
+
+
+def _match_voice_url(title: str, voices: Mapping[str, str]) -> str:
+    if title in voices:
+        return voices[title]
+    key = _norm_voice_title(title)
+    for t, url in voices.items():
+        if _norm_voice_title(t) == key:
+            return url
+    return ""
+
+
+async def load_voice_file(data: CharStoryWiki, index: int) -> tuple[Path, FetterBlock] | str:
+    if index < 1 or index > len(data.quotes):
+        return f"角色「{data.name}」没有第{index}条语音，共{len(data.quotes)}条。"
+    block = data.quotes[index - 1]
+    voices = await _load_obc_voices(data.char_id, data.name)
+    url = _match_voice_url(block.title, voices)
+    if not url:
+        return f"未找到角色「{data.name}」第{index}条「{block.title}」的语音文件。"
+    ext = ".mp3" if url.endswith(".mp3") else ".ogg"
+    code = block.audio if block.audio else str(index)
+    dest = WIKI_DATA_VOICE / data.char_id / f"{index:02d}_{code}{ext}"
+    if dest.exists() and dest.stat().st_size > 0:
+        return dest, block
+    try:
+        async with AsyncClient(timeout=30) as client:
+            req = await client.get(url, headers=_OBC_HEADER)
+        if req.status_code != 200 or len(req.content) < 100:
+            return f"下载角色「{data.name}」第{index}条语音失败。"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(req.content)
+        return dest, block
+    except Exception:
+        return f"下载角色「{data.name}」第{index}条语音失败。"

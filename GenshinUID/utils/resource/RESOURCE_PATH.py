@@ -58,6 +58,8 @@ WIKI_DATA_FOOD = WIKI_DATA_PATH / "food"
 WIKI_DATA_MONSTER = WIKI_DATA_PATH / "monster"
 WIKI_DATA_ICON = WIKI_DATA_PATH / "icon"
 WIKI_DATA_MONSTER_ICON = WIKI_DATA_PATH / "monster_icon"
+WIKI_DATA_FETTER = WIKI_DATA_PATH / "fetter"
+WIKI_DATA_VOICE = WIKI_DATA_PATH / "voice"
 
 
 def init_dir():
@@ -110,6 +112,8 @@ def init_dir():
         WIKI_DATA_MONSTER,
         WIKI_DATA_ICON,
         WIKI_DATA_MONSTER_ICON,
+        WIKI_DATA_FETTER,
+        WIKI_DATA_VOICE,
     ]:
         i.mkdir(parents=True, exist_ok=True)
 

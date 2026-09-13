@@ -198,6 +198,8 @@ def build_send_target(
         elif bot_id == "qqguild" and private:
             parent_id = extra_group_id
             channel = True
+        elif bot_id == "onebot" and private:
+            parent_id = extra_group_id
 
     if bot_id == "qqguild":
         channel = True

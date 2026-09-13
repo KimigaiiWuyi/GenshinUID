@@ -199,6 +199,24 @@ async def extract_pm(bot: Bot, event: Event) -> int:
     return 6
 
 
+def _onebot_temp_group_id(event: Event) -> str:
+    """读取 SnowLuma 群临时私聊携带的来源群号."""
+    if getattr(event, "sub_type", "") != "group":
+        return ""
+
+    extra = getattr(event, "model_extra", None) or {}
+    value = extra.get("group_id") if isinstance(extra, dict) else None
+
+    if value is None:
+        sender = getattr(event, "sender", None)
+        value = getattr(sender, "group_id", None)
+        if value is None:
+            sender_extra = getattr(sender, "model_extra", None) or {}
+            value = sender_extra.get("group_id") if isinstance(sender_extra, dict) else None
+
+    return str(value) if value is not None else ""
+
+
 async def build_message_receive(
     bot: Bot,
     event: Event,
@@ -209,6 +227,8 @@ async def build_message_receive(
     bot_id = infer_bot_id(bot, event, target)
     user_type: UserType = "direct" if target.private else "group"
     group_id = format_group_id(target, bot_id)
+    if not group_id and bot_id == "onebot" and target.private:
+        group_id = _onebot_temp_group_id(event) or None
     user_id = event.get_user_id()
     self_id = str(bot.self_id)
 

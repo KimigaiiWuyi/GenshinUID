@@ -192,8 +192,9 @@ async def send_gs(bot: Bot, msg: MessageSend) -> RecallId:
     if specials.node_items:
         # SnowLuma 的 send_private_forward_msg 不接受 group_id, 群临时私聊改为逐条发送
         if msg.bot_id == "onebot" and not (target.private and target.parent_id):
-            forward = UniMessage(nodes_to_reference(specials.node_items))
-            ids.extend(await _send_uni(bot, target, forward, specials, msg.bot_id))
+            ref = nodes_to_reference(specials.node_items)
+            if ref.children:
+                ids.extend(await _send_uni(bot, target, UniMessage(ref), specials, msg.bot_id))
         else:
             for node_uni in node_to_unimessages(specials.node_items):
                 ids.extend(await _send_uni(bot, target, node_uni, specials, msg.bot_id))

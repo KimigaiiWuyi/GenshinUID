@@ -539,18 +539,24 @@ def _one_gs_to_seg(
     return None
 
 
-def _node_to_uni(item: NodeItem | Message) -> UniMessage:
+def _node_item_to_gs(item: NodeItem | Message) -> Message:
     if isinstance(item, Message):
-        gs = item
-    else:
-        gs = Message(
-            type=item["type"] if "type" in item else None,
-            data=item["data"] if "data" in item else None,
-        )
+        return item
+    return Message(
+        type=item["type"] if "type" in item else None,
+        data=item["data"] if "data" in item else None,
+    )
+
+
+def _node_to_uni(item: NodeItem | Message) -> UniMessage:
+    gs = _node_item_to_gs(item)
+    # image_size 仅供 QQ 官方 bot markdown 使用, 合并转发里不能当成文本发出
+    if gs.type == "image_size":
+        return UniMessage()
     seg = _one_gs_to_seg(gs)
     if seg is None:
-        if gs.data is not None:
-            return UniMessage(str(gs.data))
+        if isinstance(gs.data, str) and gs.data:
+            return UniMessage(gs.data)
         return UniMessage()
     return UniMessage(seg)
 
@@ -611,18 +617,26 @@ def gs_to_uni(content: list[Message]) -> tuple[UniMessage, SendSpecials]:
 def nodes_to_reference(items: list[NodeItem | Message]) -> Reference:
     nodes: list[CustomNode] = []
     for item in items:
+        content = _node_to_uni(item)
+        if not content:
+            continue
         nodes.append(
             CustomNode(
                 uid="2854196310",
                 name="小助手",
-                content=_node_to_uni(item),
+                content=content,
             )
         )
     return Reference(nodes=nodes)
 
 
 def node_to_unimessages(items: list[NodeItem | Message]) -> list[UniMessage]:
-    return [_node_to_uni(item) for item in items]
+    result: list[UniMessage] = []
+    for item in items:
+        uni = _node_to_uni(item)
+        if uni:
+            result.append(uni)
+    return result
 
 
 def command_starts() -> set[str]:

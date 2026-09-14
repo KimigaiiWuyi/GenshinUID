@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import base64
 from io import BytesIO
-from typing import Iterable
+from typing import Literal, Iterable
 from pathlib import Path
 from dataclasses import field, dataclass
 
@@ -32,14 +32,17 @@ from nonebot_plugin_alconna.uniseg import (  # noqa: E402
 )
 from nonebot_plugin_alconna.uniseg.segment import Media  # noqa: E402
 
-from .tools import get_bytes_from_base64_str
+from .tools import existing_file_uri_path, get_bytes_from_base64_str
 from .types import NodeItem, BanPayload, ButtonPayload, TemplateMarkdown
 from .models import Message
 
 _LINK = "link://"
 _B64 = "base64://"
+_FILE = "file://"
+_FILE_PASSTHROUGH_BOTS = frozenset({"onebot", "onebot_v12", "milky"})
 _NODE_MARK = "[合并转发]"
 _NODE_MAX_DEPTH = 3
+_FileMediaKind = Literal["image", "record", "video"]
 
 
 @dataclass
@@ -429,6 +432,35 @@ def _decode_media(data: str) -> tuple[bytes | None, str | None]:
     return None, data
 
 
+def _media_from_file_uri(
+    kind: _FileMediaKind,
+    data: str,
+    bot_id: str,
+) -> Image | Voice | Video | None:
+    local = existing_file_uri_path(data)
+    if local is not None:
+        if kind == "image":
+            return Image(path=local)
+        if kind == "record":
+            return Voice(path=local)
+        return Video(path=local)
+    if bot_id and bot_id not in _FILE_PASSTHROUGH_BOTS:
+        logger.warning(f"[gsuid] 平台 {bot_id} 不支持 file:// 媒体, 已忽略")
+        return None
+    # url 无 hostname 时 Alconna 会补 https://, file:/// 必须写回原串
+    if kind == "image":
+        img = Image(url=data)
+        img.url = data
+        return img
+    if kind == "record":
+        voice = Voice(url=data)
+        voice.url = data
+        return voice
+    video = Video(url=data)
+    video.url = data
+    return video
+
+
 def _image_from_gs(data: str) -> Image:
     raw, url = _decode_media(data)
     if raw is not None:
@@ -513,24 +545,34 @@ def _buttons_to_keyboards(
 
 def _one_gs_to_seg(
     gs: Message,
+    bot_id: str = "",
 ) -> Text | Image | At | Reply | Voice | Video | File | None:
     if not gs.type or gs.data is None:
         return None
     if gs.type == "text":
         return Text(str(gs.data))
     if gs.type == "image":
-        return _image_from_gs(str(gs.data))
+        data = str(gs.data)
+        if data.startswith(_FILE):
+            return _media_from_file_uri("image", data, bot_id)
+        return _image_from_gs(data)
     if gs.type == "at":
         return At("user", str(gs.data))
     if gs.type in {"reply", "reply_id"}:
         return Reply(str(gs.data))
     if gs.type == "record":
-        raw, url = _decode_media(str(gs.data))
+        data = str(gs.data)
+        if data.startswith(_FILE):
+            return _media_from_file_uri("record", data, bot_id)
+        raw, url = _decode_media(data)
         if raw is not None:
             return Voice(raw=raw)
         return Voice(url=url)
     if gs.type == "video":
-        raw, url = _decode_media(str(gs.data))
+        data = str(gs.data)
+        if data.startswith(_FILE):
+            return _media_from_file_uri("video", data, bot_id)
+        raw, url = _decode_media(data)
         if raw is not None:
             return Video(raw=raw)
         return Video(url=url)
@@ -548,12 +590,12 @@ def _node_item_to_gs(item: NodeItem | Message) -> Message:
     )
 
 
-def _node_to_uni(item: NodeItem | Message) -> UniMessage:
+def _node_to_uni(item: NodeItem | Message, bot_id: str = "") -> UniMessage:
     gs = _node_item_to_gs(item)
     # image_size 仅供 QQ 官方 bot markdown 使用, 合并转发里不能当成文本发出
     if gs.type == "image_size":
         return UniMessage()
-    seg = _one_gs_to_seg(gs)
+    seg = _one_gs_to_seg(gs, bot_id)
     if seg is None:
         if isinstance(gs.data, str) and gs.data:
             return UniMessage(gs.data)
@@ -561,7 +603,7 @@ def _node_to_uni(item: NodeItem | Message) -> UniMessage:
     return UniMessage(seg)
 
 
-def gs_to_uni(content: list[Message]) -> tuple[UniMessage, SendSpecials]:
+def gs_to_uni(content: list[Message], bot_id: str = "") -> tuple[UniMessage, SendSpecials]:
     uni = UniMessage()
     specials = SendSpecials()
 
@@ -605,7 +647,7 @@ def gs_to_uni(content: list[Message]) -> tuple[UniMessage, SendSpecials]:
             continue
         if gs.type == "image_size":
             continue
-        seg = _one_gs_to_seg(gs)
+        seg = _one_gs_to_seg(gs, bot_id)
         if seg is not None:
             uni.append(seg)
         else:
@@ -614,10 +656,10 @@ def gs_to_uni(content: list[Message]) -> tuple[UniMessage, SendSpecials]:
     return uni, specials
 
 
-def nodes_to_reference(items: list[NodeItem | Message]) -> Reference:
+def nodes_to_reference(items: list[NodeItem | Message], bot_id: str = "") -> Reference:
     nodes: list[CustomNode] = []
     for item in items:
-        content = _node_to_uni(item)
+        content = _node_to_uni(item, bot_id)
         if not content:
             continue
         nodes.append(
@@ -630,10 +672,10 @@ def nodes_to_reference(items: list[NodeItem | Message]) -> Reference:
     return Reference(nodes=nodes)
 
 
-def node_to_unimessages(items: list[NodeItem | Message]) -> list[UniMessage]:
+def node_to_unimessages(items: list[NodeItem | Message], bot_id: str = "") -> list[UniMessage]:
     result: list[UniMessage] = []
     for item in items:
-        uni = _node_to_uni(item)
+        uni = _node_to_uni(item, bot_id)
         if uni:
             result.append(uni)
     return result

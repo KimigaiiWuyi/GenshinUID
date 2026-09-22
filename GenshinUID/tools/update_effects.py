@@ -821,12 +821,14 @@ def talent_to_combat(avatar: Dict[str, Any]) -> Optional[Dict[str, Any]]:
                 ordered_params.append(p)
 
         parameters: Dict[str, List[float]] = {}
-        for ig, para in enumerate(ordered_params):
+        for para in ordered_params:
             parameters[para] = []
+            # param1 → params[0]。按出现顺序取下标会在 param 不连续时串档。
+            param_index = int(para.replace("param", "")) - 1
             for level in sorted(promote.keys(), key=lambda x: int(x)):
                 params = (promote[level] or {}).get("params") or []
-                if ig < len(params):
-                    parameters[para].append(params[ig])
+                if 0 <= param_index < len(params):
+                    parameters[para].append(params[param_index])
                 else:
                     parameters[para].append(0.0)
 

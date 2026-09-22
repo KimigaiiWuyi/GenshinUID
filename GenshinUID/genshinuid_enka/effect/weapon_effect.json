@@ -7232,5 +7232,219 @@
       "time": 12,
       "extra": {}
     }
+  },
+  "新枝": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addAtk+18;stellarDmgBonus+24",
+        "2": "addAtk+22.5;stellarDmgBonus+30",
+        "3": "addAtk+27;stellarDmgBonus+36",
+        "4": "addAtk+31.5;stellarDmgBonus+42",
+        "5": "addAtk+36;stellarDmgBonus+48"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 6,
+      "extra": {
+        "note": "【互斥】默认辉映·星烁满3层：每层攻击6/7.5/9/10.5/12%与星烁增伤8/10/12/14/16%。非辉映为攻击4/5/6/7/8%×3加精通20/25/30/35/40×3",
+        "alt_base": {
+          "1": "addAtk+12;elementalMastery+60",
+          "2": "addAtk+15;elementalMastery+75",
+          "3": "addAtk+18;elementalMastery+90",
+          "4": "addAtk+21;elementalMastery+105",
+          "5": "addAtk+24;elementalMastery+120"
+        }
+      }
+    }
+  },
+  "银釭": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+104",
+        "2": "elementalMastery+130",
+        "3": "elementalMastery+156",
+        "4": "elementalMastery+182",
+        "5": "elementalMastery+208"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 12,
+      "extra": {
+        "note": "施放元素战技后12秒，每层精通52/65/78/91/104，满2层"
+      }
+    }
+  },
+  "蝶变": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "stellarSpreadDmgBonus+36",
+        "2": "stellarSpreadDmgBonus+45",
+        "3": "stellarSpreadDmgBonus+54",
+        "4": "stellarSpreadDmgBonus+63",
+        "5": "stellarSpreadDmgBonus+72"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 10,
+      "extra": {
+        "note": "【互斥】忠忱暴击 / 叛弃星扩散 / 丰获回能轮转，同时只生效一种。默认叛弃之风。丰获只回能，无面板属性",
+        "alt_crit": {
+          "1": "critDmg+56",
+          "2": "critDmg+72",
+          "3": "critDmg+88",
+          "4": "critDmg+104",
+          "5": "critDmg+120"
+        }
+      }
+    }
+  },
+  "凝雪沉心": {
+    "normal": {
+      "normal_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+80;stellarDmgBonus+24",
+        "2": "elementalMastery+100;stellarDmgBonus+30",
+        "3": "elementalMastery+120;stellarDmgBonus+36",
+        "4": "elementalMastery+140;stellarDmgBonus+42",
+        "5": "elementalMastery+160;stellarDmgBonus+48"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 0,
+      "extra": {
+        "note": "【互斥】默认辉映·星烁且冰/雷合计4人：每名精通20/25/30/35/40、星烁增伤6/7.5/9/10.5/12%。非辉映时冰精通与雷攻击共享这4个名额",
+        "alt_em": {
+          "1": "elementalMastery+96",
+          "2": "elementalMastery+120",
+          "3": "elementalMastery+144",
+          "4": "elementalMastery+168",
+          "5": "elementalMastery+192"
+        },
+        "alt_atk": {
+          "1": "addAtk+19.2",
+          "2": "addAtk+24",
+          "3": "addAtk+28.8",
+          "4": "addAtk+33.6",
+          "5": "addAtk+38.4"
+        }
+      }
+    }
+  },
+  "漩流颂歌": {
+    "normal": {
+      "normal_effect": {
+        "1": "healBonus+4",
+        "2": "healBonus+5",
+        "3": "healBonus+6",
+        "4": "healBonus+7",
+        "5": "healBonus+8"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "addHp+21;addAtk+42",
+        "2": "addHp+26.25;addAtk+52.5",
+        "3": "addHp+31.5;addAtk+63",
+        "4": "addHp+36.75;addAtk+73.5",
+        "5": "addHp+42;addAtk+84"
+      },
+      "group_effect": {
+        "1": "addAtk+42",
+        "2": "addAtk+52.5",
+        "3": "addAtk+63",
+        "4": "addAtk+73.5",
+        "5": "addAtk+84"
+      },
+      "time": 10,
+      "extra": {
+        "note": "治疗加成为常驻。蜜酿满3层，且冻结或星扩散后生命与攻击额外提高75%：生命4/5/6/7/8%×3×1.75，攻击上限8/10/12/14/16%×3×1.75。攻击给当前场上角色"
+      }
+    }
+  },
+  "柔风游弦": {
+    "normal": {
+      "normal_effect": {
+        "1": "energyRecharge+20",
+        "2": "energyRecharge+25",
+        "3": "energyRecharge+30",
+        "4": "energyRecharge+35",
+        "5": "energyRecharge+40"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "stellarDmgBonus+24",
+        "2": "stellarDmgBonus+30",
+        "3": "stellarDmgBonus+36",
+        "4": "stellarDmgBonus+42",
+        "5": "stellarDmgBonus+48"
+      },
+      "group_effect": {
+        "1": "stellarDmgBonus+24",
+        "2": "stellarDmgBonus+30",
+        "3": "stellarDmgBonus+36",
+        "4": "stellarDmgBonus+42",
+        "5": "stellarDmgBonus+48"
+      },
+      "time": 12,
+      "extra": {
+        "note": "充能常驻。战技或爆发叠满3层后全队星烁增伤，数值已是满层，不再乘3"
+      }
+    }
   }
 }

@@ -1,3387 +1,3387 @@
 [
     {
-        "descTextMapHash": 1573763994,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2403746527,
         "icon": "UI_DrinkIcon_1001_1",
         "id": 410001,
+        "descTextMapHash": 1573763994,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4192917273,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2403746527
+        "nameTextMapHash": 4192917273
     },
     {
-        "descTextMapHash": 3192446506,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2616409607,
         "icon": "UI_DrinkIcon_1002_1",
         "id": 410002,
+        "descTextMapHash": 3192446506,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 733247225,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2616409607
+        "nameTextMapHash": 733247225
     },
     {
-        "descTextMapHash": 1718620770,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 940123903,
         "icon": "UI_DrinkIcon_1003_1",
         "id": 410003,
+        "descTextMapHash": 1718620770,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3251800745,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 940123903
+        "nameTextMapHash": 3251800745
     },
     {
-        "descTextMapHash": 65921986,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 68398607,
+        "param": 1,
         "icon": "UI_DrinkIcon_1004_1",
         "id": 410004,
+        "descTextMapHash": 65921986,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 890772433,
-        "param": 1,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 68398607
+        "nameTextMapHash": 890772433
     },
     {
-        "descTextMapHash": 1772578642,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3245621823,
+        "param": 1,
         "icon": "UI_DrinkIcon_1005_1",
         "id": 410005,
+        "descTextMapHash": 1772578642,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2627303401,
-        "param": 1,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3245621823
+        "nameTextMapHash": 2627303401
     },
     {
-        "descTextMapHash": 2572977962,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2934589295,
+        "param": 1,
         "icon": "UI_DrinkIcon_1006_1",
         "id": 410006,
+        "descTextMapHash": 2572977962,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 368660313,
-        "param": 1,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2934589295
+        "nameTextMapHash": 368660313
     },
     {
-        "descTextMapHash": 1043259234,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2914491303,
+        "param": 1,
         "icon": "UI_DrinkIcon_1007_1",
         "id": 410007,
+        "descTextMapHash": 1043259234,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4241219113,
-        "param": 1,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2914491303
+        "nameTextMapHash": 4241219113
     },
     {
-        "descTextMapHash": 1657539546,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2208119679,
+        "param": 1,
         "icon": "UI_DrinkIcon_1008_1",
         "id": 410008,
+        "descTextMapHash": 1657539546,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2823491441,
-        "param": 1,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2208119679
+        "nameTextMapHash": 2823491441
     },
     {
-        "descTextMapHash": 984773306,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1125193335,
+        "param": 1,
         "icon": "UI_DrinkIcon_1009_1",
         "id": 410009,
+        "descTextMapHash": 984773306,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 578422633,
-        "param": 1,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1125193335
+        "nameTextMapHash": 578422633
     },
     {
-        "descTextMapHash": 297509458,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 718006855,
         "icon": "UI_DisplayItemIcon_410010",
         "id": 410010,
+        "descTextMapHash": 297509458,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1349879729,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 718006855
+        "nameTextMapHash": 1349879729
     },
     {
-        "descTextMapHash": 2659708706,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1336793951,
         "icon": "UI_DisplayItemIcon_410011",
         "id": 410011,
+        "descTextMapHash": 2659708706,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 294751129,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1336793951
+        "nameTextMapHash": 294751129
     },
     {
-        "descTextMapHash": 636199930,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4069399271,
         "icon": "UI_DisplayItemIcon_410012",
         "id": 410012,
+        "descTextMapHash": 636199930,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 52678433,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4069399271
+        "nameTextMapHash": 52678433
     },
     {
-        "descTextMapHash": 1417006738,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 2,
+        "typeDescTextMapHash": 136925919,
         "icon": "UI_DisplayItemIcon_410013",
         "id": 410013,
+        "descTextMapHash": 1417006738,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1799419889,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 136925919
+        "nameTextMapHash": 1799419889
     },
     {
-        "descTextMapHash": 4275504642,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1577555631,
         "icon": "UI_ItemIcon_120701",
         "id": 410014,
+        "descTextMapHash": 4275504642,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2166488977,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1577555631
+        "nameTextMapHash": 2166488977
     },
     {
-        "descTextMapHash": 1999759162,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1694223111,
         "icon": "UI_ItemIcon_120706",
         "id": 410015,
+        "descTextMapHash": 1999759162,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4145280985,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1694223111
+        "nameTextMapHash": 4145280985
     },
     {
-        "descTextMapHash": 2955131602,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2230952663,
         "icon": "UI_DisplayItemIcon_410016",
         "id": 410016,
+        "descTextMapHash": 2955131602,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 822588025,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2230952663
+        "nameTextMapHash": 822588025
     },
     {
-        "descTextMapHash": 2371429170,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1214744127,
         "icon": "UI_ItemIcon_109000",
         "id": 410017,
+        "descTextMapHash": 2371429170,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1280705105,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1214744127
+        "nameTextMapHash": 1280705105
     },
     {
-        "descTextMapHash": 1838009194,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4168266351,
         "icon": "UI_ItemIcon_118101",
         "id": 410018,
+        "descTextMapHash": 1838009194,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1704532865,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4168266351
+        "nameTextMapHash": 1704532865
     },
     {
-        "descTextMapHash": 4026425890,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2968121983,
         "icon": "UI_ItemIcon_118101",
         "id": 410019,
+        "descTextMapHash": 4026425890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2434320937,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2968121983
+        "nameTextMapHash": 2434320937
     },
     {
-        "descTextMapHash": 3580593738,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1823329119,
         "icon": "UI_DisplayItemIcon_410020",
         "id": 410020,
+        "descTextMapHash": 3580593738,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3995712353,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1823329119
+        "nameTextMapHash": 3995712353
     },
     {
-        "descTextMapHash": 3914096354,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1015736175,
         "icon": "UI_DisplayItemIcon_410021",
         "id": 410021,
+        "descTextMapHash": 3914096354,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 26425889,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1015736175
+        "nameTextMapHash": 26425889
     },
     {
-        "descTextMapHash": 1947791146,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 368812783,
         "icon": "UI_DisplayItemIcon_410022",
         "id": 410022,
+        "descTextMapHash": 1947791146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3965610833,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 368812783
+        "nameTextMapHash": 3965610833
     },
     {
-        "descTextMapHash": 54498154,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 980983655,
         "icon": "UI_DisplayItemIcon_410023",
         "id": 410023,
+        "descTextMapHash": 54498154,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 81021577,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 980983655
+        "nameTextMapHash": 81021577
     },
     {
-        "descTextMapHash": 677098274,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2298536959,
         "icon": "UI_ItemIcon_118101",
         "id": 410024,
+        "descTextMapHash": 677098274,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1589422009,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2298536959
+        "nameTextMapHash": 1589422009
     },
     {
-        "descTextMapHash": 887814746,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1592027871,
         "icon": "UI_DisplayItemIcon_410025",
         "id": 410025,
+        "descTextMapHash": 887814746,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3137996441,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1592027871
+        "nameTextMapHash": 3137996441
     },
     {
-        "descTextMapHash": 1349607202,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1962147679,
         "icon": "UI_DisplayItemIcon_410026",
         "id": 410026,
+        "descTextMapHash": 1349607202,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3027110673,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1962147679
+        "nameTextMapHash": 3027110673
     },
     {
-        "descTextMapHash": 914076394,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 4,
+        "typeDescTextMapHash": 643634159,
         "icon": "UI_DisplayItemIcon_410023",
         "id": 410027,
+        "descTextMapHash": 914076394,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2040764057,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 643634159
+        "nameTextMapHash": 2040764057
     },
     {
-        "descTextMapHash": 2729322154,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 2,
+        "typeDescTextMapHash": 18199047,
         "icon": "UI_DisplayItemIcon_410028",
         "id": 410028,
+        "descTextMapHash": 2729322154,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3270033209,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 18199047
+        "nameTextMapHash": 3270033209
     },
     {
-        "descTextMapHash": 2166676282,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 703120943,
         "icon": "UI_ItemIcon_118101",
         "id": 410029,
+        "descTextMapHash": 2166676282,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2718760657,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 703120943
+        "nameTextMapHash": 2718760657
     },
     {
-        "descTextMapHash": 3191178146,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3907140527,
         "icon": "UI_DisplayItemIcon_410030",
         "id": 410030,
+        "descTextMapHash": 3191178146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2050833097,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3907140527
+        "nameTextMapHash": 2050833097
     },
     {
-        "descTextMapHash": 3063182922,
         "displayType": "DEFAULT_ITEM",
+        "typeDescTextMapHash": 1352169999,
         "icon": "UI_DisplayItemIcon_410031",
         "id": 410031,
+        "descTextMapHash": 3063182922,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3081224721,
-        "typeDescTextMapHash": 1352169999
+        "nameTextMapHash": 3081224721
     },
     {
-        "descTextMapHash": 439985722,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1690645087,
         "icon": "UI_DisplayItemIcon_410031",
         "id": 410032,
+        "descTextMapHash": 439985722,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1030091489,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1690645087
+        "nameTextMapHash": 1030091489
     },
     {
-        "descTextMapHash": 320783226,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2299876975,
         "icon": "UI_DisplayItemIcon_410031",
         "id": 410033,
+        "descTextMapHash": 320783226,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2248787873,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2299876975
+        "nameTextMapHash": 2248787873
     },
     {
-        "descTextMapHash": 1368442690,
         "displayType": "DEFAULT_ITEM",
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1367433895,
         "icon": "UI_DisplayItemIcon_410031",
         "id": 410034,
+        "descTextMapHash": 1368442690,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3148767953,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1367433895
+        "nameTextMapHash": 3148767953
     },
     {
-        "descTextMapHash": 55983042,
         "displayType": "BARTENDER_ITEM",
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1078220575,
         "icon": "UI_DrinkIcon_1008_1",
         "id": 410035,
+        "descTextMapHash": 55983042,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3479658337,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1078220575
+        "nameTextMapHash": 3479658337
     },
     {
-        "descTextMapHash": 629015074,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1010293527,
+        "param": 10001,
         "icon": "UI_RelicIcon_10001_4",
         "id": 400000,
+        "descTextMapHash": 629015074,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3420004305,
-        "param": 10001,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1010293527
+        "nameTextMapHash": 3420004305
     },
     {
-        "descTextMapHash": 4146219754,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3946399631,
+        "param": 10001,
         "icon": "UI_RelicIcon_10001_4",
         "id": 400001,
+        "descTextMapHash": 4146219754,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1294083785,
-        "param": 10001,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3946399631
+        "nameTextMapHash": 1294083785
     },
     {
-        "descTextMapHash": 1851075306,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 328783719,
+        "param": 10001,
         "icon": "UI_RelicIcon_10001_4",
         "id": 400002,
+        "descTextMapHash": 1851075306,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 131837665,
-        "param": 10001,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 328783719
+        "nameTextMapHash": 131837665
     },
     {
-        "descTextMapHash": 3192339762,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1362490775,
+        "param": 10001,
         "icon": "UI_RelicIcon_10001_4",
         "id": 400003,
+        "descTextMapHash": 3192339762,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3143403633,
-        "param": 10001,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1362490775
+        "nameTextMapHash": 3143403633
     },
     {
-        "descTextMapHash": 480361466,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 310579055,
+        "param": 10001,
         "icon": "UI_RelicIcon_10001_4",
         "id": 400004,
+        "descTextMapHash": 480361466,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3685062329,
-        "param": 10001,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 310579055
+        "nameTextMapHash": 3685062329
     },
     {
-        "descTextMapHash": 2749484586,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 836643831,
+        "param": 10002,
         "icon": "UI_RelicIcon_10002_4",
         "id": 400005,
+        "descTextMapHash": 2749484586,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 938593057,
-        "param": 10002,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 836643831
+        "nameTextMapHash": 938593057
     },
     {
-        "descTextMapHash": 3182766746,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 1048402767,
+        "param": 10002,
         "icon": "UI_RelicIcon_10002_4",
         "id": 400006,
+        "descTextMapHash": 3182766746,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 687101577,
-        "param": 10002,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 1048402767
+        "nameTextMapHash": 687101577
     },
     {
-        "descTextMapHash": 1755017082,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3673807583,
+        "param": 10002,
         "icon": "UI_RelicIcon_10002_4",
         "id": 400007,
+        "descTextMapHash": 1755017082,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1424974385,
-        "param": 10002,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3673807583
+        "nameTextMapHash": 1424974385
     },
     {
-        "descTextMapHash": 384092578,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3191078935,
+        "param": 10002,
         "icon": "UI_RelicIcon_10002_4",
         "id": 400008,
+        "descTextMapHash": 384092578,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 50514161,
-        "param": 10002,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3191078935
+        "nameTextMapHash": 50514161
     },
     {
-        "descTextMapHash": 2871576234,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2442594207,
+        "param": 10002,
         "icon": "UI_RelicIcon_10002_4",
         "id": 400009,
+        "descTextMapHash": 2871576234,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 649075545,
-        "param": 10002,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2442594207
+        "nameTextMapHash": 649075545
     },
     {
-        "descTextMapHash": 509490850,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1428458071,
+        "param": 10003,
         "icon": "UI_RelicIcon_10003_4",
         "id": 400010,
+        "descTextMapHash": 509490850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2977125049,
-        "param": 10003,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1428458071
+        "nameTextMapHash": 2977125049
     },
     {
-        "descTextMapHash": 1341362034,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3960510423,
+        "param": 10003,
         "icon": "UI_RelicIcon_10003_4",
         "id": 400011,
+        "descTextMapHash": 1341362034,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2184536649,
-        "param": 10003,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3960510423
+        "nameTextMapHash": 2184536649
     },
     {
-        "descTextMapHash": 2057213722,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 292768687,
+        "param": 10003,
         "icon": "UI_RelicIcon_10003_4",
         "id": 400012,
+        "descTextMapHash": 2057213722,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2078239241,
-        "param": 10003,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 292768687
+        "nameTextMapHash": 2078239241
     },
     {
-        "descTextMapHash": 1019905370,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2057814271,
+        "param": 10003,
         "icon": "UI_RelicIcon_10003_4",
         "id": 400013,
+        "descTextMapHash": 1019905370,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3835475265,
-        "param": 10003,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2057814271
+        "nameTextMapHash": 3835475265
     },
     {
-        "descTextMapHash": 2693347034,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2605847319,
+        "param": 10003,
         "icon": "UI_RelicIcon_10003_4",
         "id": 400014,
+        "descTextMapHash": 2693347034,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2874887817,
-        "param": 10003,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2605847319
+        "nameTextMapHash": 2874887817
     },
     {
-        "descTextMapHash": 2103626498,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2714737335,
+        "param": 10004,
         "icon": "UI_RelicIcon_10004_4",
         "id": 400015,
+        "descTextMapHash": 2103626498,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2869581657,
-        "param": 10004,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2714737335
+        "nameTextMapHash": 2869581657
     },
     {
-        "descTextMapHash": 863787978,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 1623431863,
+        "param": 10004,
         "icon": "UI_RelicIcon_10004_4",
         "id": 400016,
+        "descTextMapHash": 863787978,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1812137,
-        "param": 10004,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 1623431863
+        "nameTextMapHash": 1812137
     },
     {
-        "descTextMapHash": 3483834890,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3854642991,
+        "param": 10004,
         "icon": "UI_RelicIcon_10004_4",
         "id": 400017,
+        "descTextMapHash": 3483834890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1218621281,
-        "param": 10004,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3854642991
+        "nameTextMapHash": 1218621281
     },
     {
-        "descTextMapHash": 601243858,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1457196543,
+        "param": 10004,
         "icon": "UI_RelicIcon_10004_4",
         "id": 400018,
+        "descTextMapHash": 601243858,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2271525049,
-        "param": 10004,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1457196543
+        "nameTextMapHash": 2271525049
     },
     {
-        "descTextMapHash": 2273465066,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 671580847,
+        "param": 10004,
         "icon": "UI_RelicIcon_10004_4",
         "id": 400019,
+        "descTextMapHash": 2273465066,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3824571961,
-        "param": 10004,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 671580847
+        "nameTextMapHash": 3824571961
     },
     {
-        "descTextMapHash": 1741939218,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1217424063,
+        "param": 10005,
         "icon": "UI_RelicIcon_10005_4",
         "id": 400020,
+        "descTextMapHash": 1741939218,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2245117657,
-        "param": 10005,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1217424063
+        "nameTextMapHash": 2245117657
     },
     {
-        "descTextMapHash": 2231586578,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 15839167,
+        "param": 10005,
         "icon": "UI_RelicIcon_10005_4",
         "id": 400021,
+        "descTextMapHash": 2231586578,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4251115017,
-        "param": 10005,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 15839167
+        "nameTextMapHash": 4251115017
     },
     {
-        "descTextMapHash": 3483389474,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1255070335,
+        "param": 10005,
         "icon": "UI_RelicIcon_10005_4",
         "id": 400022,
+        "descTextMapHash": 3483389474,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 694267465,
-        "param": 10005,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1255070335
+        "nameTextMapHash": 694267465
     },
     {
-        "descTextMapHash": 2145428786,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2509232519,
+        "param": 10005,
         "icon": "UI_RelicIcon_10005_4",
         "id": 400023,
+        "descTextMapHash": 2145428786,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1633954937,
-        "param": 10005,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2509232519
+        "nameTextMapHash": 1633954937
     },
     {
-        "descTextMapHash": 3853892426,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3180364655,
+        "param": 10005,
         "icon": "UI_RelicIcon_10005_4",
         "id": 400024,
+        "descTextMapHash": 3853892426,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3991638817,
-        "param": 10005,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3180364655
+        "nameTextMapHash": 3991638817
     },
     {
-        "descTextMapHash": 2709082986,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3232210623,
+        "param": 10006,
         "icon": "UI_RelicIcon_10006_4",
         "id": 400025,
+        "descTextMapHash": 2709082986,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1926817401,
-        "param": 10006,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3232210623
+        "nameTextMapHash": 1926817401
     },
     {
-        "descTextMapHash": 3447284530,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 816175791,
+        "param": 10006,
         "icon": "UI_RelicIcon_10006_4",
         "id": 400026,
+        "descTextMapHash": 3447284530,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 859453249,
-        "param": 10006,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 816175791
+        "nameTextMapHash": 859453249
     },
     {
-        "descTextMapHash": 4135353986,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3592968871,
+        "param": 10006,
         "icon": "UI_RelicIcon_10006_4",
         "id": 400027,
+        "descTextMapHash": 4135353986,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 194176849,
-        "param": 10006,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3592968871
+        "nameTextMapHash": 194176849
     },
     {
-        "descTextMapHash": 3908983242,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3510850999,
+        "param": 10006,
         "icon": "UI_RelicIcon_10006_4",
         "id": 400028,
+        "descTextMapHash": 3908983242,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3512197281,
-        "param": 10006,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3510850999
+        "nameTextMapHash": 3512197281
     },
     {
-        "descTextMapHash": 3470785098,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3315664695,
+        "param": 10006,
         "icon": "UI_RelicIcon_10006_4",
         "id": 400029,
+        "descTextMapHash": 3470785098,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3534800465,
-        "param": 10006,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3315664695
+        "nameTextMapHash": 3534800465
     },
     {
-        "descTextMapHash": 2968249210,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2183429759,
+        "param": 10007,
         "icon": "UI_RelicIcon_10007_4",
         "id": 400030,
+        "descTextMapHash": 2968249210,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1175029697,
-        "param": 10007,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2183429759
+        "nameTextMapHash": 1175029697
     },
     {
-        "descTextMapHash": 3032621890,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3438392215,
+        "param": 10007,
         "icon": "UI_RelicIcon_10007_4",
         "id": 400031,
+        "descTextMapHash": 3032621890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2341847945,
-        "param": 10007,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3438392215
+        "nameTextMapHash": 2341847945
     },
     {
-        "descTextMapHash": 2535347850,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 743080519,
+        "param": 10007,
         "icon": "UI_RelicIcon_10007_4",
         "id": 400032,
+        "descTextMapHash": 2535347850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2759952201,
-        "param": 10007,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 743080519
+        "nameTextMapHash": 2759952201
     },
     {
-        "descTextMapHash": 2367327402,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4145165703,
+        "param": 10007,
         "icon": "UI_RelicIcon_10007_4",
         "id": 400033,
+        "descTextMapHash": 2367327402,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2321770673,
-        "param": 10007,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4145165703
+        "nameTextMapHash": 2321770673
     },
     {
-        "descTextMapHash": 623792962,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1978850095,
+        "param": 10007,
         "icon": "UI_RelicIcon_10007_4",
         "id": 400034,
+        "descTextMapHash": 623792962,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4268243577,
-        "param": 10007,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1978850095
+        "nameTextMapHash": 4268243577
     },
     {
-        "descTextMapHash": 1812221770,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 806025967,
+        "param": 10008,
         "icon": "UI_RelicIcon_10008_4",
         "id": 400035,
+        "descTextMapHash": 1812221770,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 334829249,
-        "param": 10008,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 806025967
+        "nameTextMapHash": 334829249
     },
     {
-        "descTextMapHash": 846041898,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2868596623,
+        "param": 10008,
         "icon": "UI_RelicIcon_10008_4",
         "id": 400036,
+        "descTextMapHash": 846041898,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4151362449,
-        "param": 10008,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2868596623
+        "nameTextMapHash": 4151362449
     },
     {
-        "descTextMapHash": 3518785242,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1451178551,
+        "param": 10008,
         "icon": "UI_RelicIcon_10008_4",
         "id": 400037,
+        "descTextMapHash": 3518785242,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2183030649,
-        "param": 10008,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1451178551
+        "nameTextMapHash": 2183030649
     },
     {
-        "descTextMapHash": 1462100178,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3953991839,
+        "param": 10008,
         "icon": "UI_RelicIcon_10008_4",
         "id": 400038,
+        "descTextMapHash": 1462100178,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3748754585,
-        "param": 10008,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3953991839
+        "nameTextMapHash": 3748754585
     },
     {
-        "descTextMapHash": 3992792658,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2130458391,
+        "param": 10008,
         "icon": "UI_RelicIcon_10008_4",
         "id": 400039,
+        "descTextMapHash": 3992792658,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2727195289,
-        "param": 10008,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2130458391
+        "nameTextMapHash": 2727195289
     },
     {
-        "descTextMapHash": 2461922098,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3849654831,
+        "param": 10009,
         "icon": "UI_RelicIcon_10009_4",
         "id": 400040,
+        "descTextMapHash": 2461922098,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2705990425,
-        "param": 10009,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3849654831
+        "nameTextMapHash": 2705990425
     },
     {
-        "descTextMapHash": 2447644338,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 1002987375,
+        "param": 10009,
         "icon": "UI_RelicIcon_10009_4",
         "id": 400041,
+        "descTextMapHash": 2447644338,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1444729817,
-        "param": 10009,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 1002987375
+        "nameTextMapHash": 1444729817
     },
     {
-        "descTextMapHash": 3214957202,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2927748759,
+        "param": 10009,
         "icon": "UI_RelicIcon_10009_4",
         "id": 400042,
+        "descTextMapHash": 3214957202,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3863440113,
-        "param": 10009,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2927748759
+        "nameTextMapHash": 3863440113
     },
     {
-        "descTextMapHash": 3644274130,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1080478823,
+        "param": 10009,
         "icon": "UI_RelicIcon_10009_4",
         "id": 400043,
+        "descTextMapHash": 3644274130,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 634335649,
-        "param": 10009,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1080478823
+        "nameTextMapHash": 634335649
     },
     {
-        "descTextMapHash": 2071477962,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3941127719,
+        "param": 10009,
         "icon": "UI_RelicIcon_10009_4",
         "id": 400044,
+        "descTextMapHash": 2071477962,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2199672569,
-        "param": 10009,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3941127719
+        "nameTextMapHash": 2199672569
     },
     {
-        "descTextMapHash": 2508837826,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2278287335,
+        "param": 10010,
         "icon": "UI_RelicIcon_10010_4",
         "id": 400045,
+        "descTextMapHash": 2508837826,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3833300977,
-        "param": 10010,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2278287335
+        "nameTextMapHash": 3833300977
     },
     {
-        "descTextMapHash": 3413086082,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2054644463,
+        "param": 10010,
         "icon": "UI_RelicIcon_10010_4",
         "id": 400046,
+        "descTextMapHash": 3413086082,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 674805713,
-        "param": 10010,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2054644463
+        "nameTextMapHash": 674805713
     },
     {
-        "descTextMapHash": 3191948410,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3086151023,
+        "param": 10010,
         "icon": "UI_RelicIcon_10010_4",
         "id": 400047,
+        "descTextMapHash": 3191948410,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2472681721,
-        "param": 10010,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3086151023
+        "nameTextMapHash": 2472681721
     },
     {
-        "descTextMapHash": 2377860666,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2848992167,
+        "param": 10010,
         "icon": "UI_RelicIcon_10010_4",
         "id": 400048,
+        "descTextMapHash": 2377860666,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 927944529,
-        "param": 10010,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2848992167
+        "nameTextMapHash": 927944529
     },
     {
-        "descTextMapHash": 3649216074,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2285711119,
+        "param": 10010,
         "icon": "UI_RelicIcon_10010_4",
         "id": 400049,
+        "descTextMapHash": 3649216074,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2774587361,
-        "param": 10010,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2285711119
+        "nameTextMapHash": 2774587361
     },
     {
-        "descTextMapHash": 2410085954,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3615228759,
+        "param": 10011,
         "icon": "UI_RelicIcon_10011_4",
         "id": 400050,
+        "descTextMapHash": 2410085954,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 409348857,
-        "param": 10011,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3615228759
+        "nameTextMapHash": 409348857
     },
     {
-        "descTextMapHash": 1921365594,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 475280999,
+        "param": 10011,
         "icon": "UI_RelicIcon_10011_4",
         "id": 400051,
+        "descTextMapHash": 1921365594,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1975250465,
-        "param": 10011,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 475280999
+        "nameTextMapHash": 1975250465
     },
     {
-        "descTextMapHash": 4031421890,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2867495071,
+        "param": 10011,
         "icon": "UI_RelicIcon_10011_4",
         "id": 400052,
+        "descTextMapHash": 4031421890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1389083913,
-        "param": 10011,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2867495071
+        "nameTextMapHash": 1389083913
     },
     {
-        "descTextMapHash": 466564962,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2735891135,
+        "param": 10011,
         "icon": "UI_RelicIcon_10011_4",
         "id": 400053,
+        "descTextMapHash": 466564962,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4066303961,
-        "param": 10011,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2735891135
+        "nameTextMapHash": 4066303961
     },
     {
-        "descTextMapHash": 1870869242,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1343018879,
+        "param": 10011,
         "icon": "UI_RelicIcon_10011_4",
         "id": 400054,
+        "descTextMapHash": 1870869242,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3259256353,
-        "param": 10011,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1343018879
+        "nameTextMapHash": 3259256353
     },
     {
-        "descTextMapHash": 2959429138,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2209640303,
+        "param": 10012,
         "icon": "UI_RelicIcon_10012_4",
         "id": 400055,
+        "descTextMapHash": 2959429138,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 674552817,
-        "param": 10012,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2209640303
+        "nameTextMapHash": 674552817
     },
     {
-        "descTextMapHash": 3383981914,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2953025455,
+        "param": 10012,
         "icon": "UI_RelicIcon_10012_4",
         "id": 400056,
+        "descTextMapHash": 3383981914,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1163888369,
-        "param": 10012,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2953025455
+        "nameTextMapHash": 1163888369
     },
     {
-        "descTextMapHash": 69596946,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1938278087,
+        "param": 10012,
         "icon": "UI_RelicIcon_10012_4",
         "id": 400057,
+        "descTextMapHash": 69596946,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 681664001,
-        "param": 10012,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1938278087
+        "nameTextMapHash": 681664001
     },
     {
-        "descTextMapHash": 3987198450,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3772750063,
+        "param": 10012,
         "icon": "UI_RelicIcon_10012_4",
         "id": 400058,
+        "descTextMapHash": 3987198450,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4127294465,
-        "param": 10012,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3772750063
+        "nameTextMapHash": 4127294465
     },
     {
-        "descTextMapHash": 3269996138,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2293300111,
+        "param": 10012,
         "icon": "UI_RelicIcon_10012_4",
         "id": 400059,
+        "descTextMapHash": 3269996138,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2903046105,
-        "param": 10012,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2293300111
+        "nameTextMapHash": 2903046105
     },
     {
-        "descTextMapHash": 2723193666,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1845516023,
+        "param": 10013,
         "icon": "UI_RelicIcon_10013_4",
         "id": 400060,
+        "descTextMapHash": 2723193666,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3502112433,
-        "param": 10013,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1845516023
+        "nameTextMapHash": 3502112433
     },
     {
-        "descTextMapHash": 1561636754,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 1542196207,
+        "param": 10013,
         "icon": "UI_RelicIcon_10013_4",
         "id": 400061,
+        "descTextMapHash": 1561636754,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1773401049,
-        "param": 10013,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 1542196207
+        "nameTextMapHash": 1773401049
     },
     {
-        "descTextMapHash": 1261546778,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2289049831,
+        "param": 10013,
         "icon": "UI_RelicIcon_10013_4",
         "id": 400062,
+        "descTextMapHash": 1261546778,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2787251665,
-        "param": 10013,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2289049831
+        "nameTextMapHash": 2787251665
     },
     {
-        "descTextMapHash": 2293192522,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 587845471,
+        "param": 10013,
         "icon": "UI_RelicIcon_10013_4",
         "id": 400063,
+        "descTextMapHash": 2293192522,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1345130225,
-        "param": 10013,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 587845471
+        "nameTextMapHash": 1345130225
     },
     {
-        "descTextMapHash": 2950860642,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2998330335,
+        "param": 10013,
         "icon": "UI_RelicIcon_10013_4",
         "id": 400064,
+        "descTextMapHash": 2950860642,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 19715033,
-        "param": 10013,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2998330335
+        "nameTextMapHash": 19715033
     },
     {
-        "descTextMapHash": 394715722,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3212120919,
+        "param": 14001,
         "icon": "UI_RelicIcon_14001_4",
         "id": 400065,
+        "descTextMapHash": 394715722,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2957822793,
-        "param": 14001,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3212120919
+        "nameTextMapHash": 2957822793
     },
     {
-        "descTextMapHash": 615072586,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 4108575295,
+        "param": 14001,
         "icon": "UI_RelicIcon_14001_4",
         "id": 400066,
+        "descTextMapHash": 615072586,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1113153313,
-        "param": 14001,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 4108575295
+        "nameTextMapHash": 1113153313
     },
     {
-        "descTextMapHash": 48143306,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1280360175,
+        "param": 14001,
         "icon": "UI_RelicIcon_14001_4",
         "id": 400067,
+        "descTextMapHash": 48143306,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 461141697,
-        "param": 14001,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1280360175
+        "nameTextMapHash": 461141697
     },
     {
-        "descTextMapHash": 3058634266,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 970463127,
+        "param": 14001,
         "icon": "UI_RelicIcon_14001_4",
         "id": 400068,
+        "descTextMapHash": 3058634266,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 874178113,
-        "param": 14001,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 970463127
+        "nameTextMapHash": 874178113
     },
     {
-        "descTextMapHash": 1181711826,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 471183463,
+        "param": 14001,
         "icon": "UI_RelicIcon_14001_4",
         "id": 400069,
+        "descTextMapHash": 1181711826,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3044182401,
-        "param": 14001,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 471183463
+        "nameTextMapHash": 3044182401
     },
     {
-        "descTextMapHash": 411040634,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3841157727,
+        "param": 14002,
         "icon": "UI_RelicIcon_14002_4",
         "id": 400070,
+        "descTextMapHash": 411040634,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3111849857,
-        "param": 14002,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3841157727
+        "nameTextMapHash": 3111849857
     },
     {
-        "descTextMapHash": 3333592634,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 130762495,
+        "param": 14002,
         "icon": "UI_RelicIcon_14002_4",
         "id": 400071,
+        "descTextMapHash": 3333592634,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4202140537,
-        "param": 14002,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 130762495
+        "nameTextMapHash": 4202140537
     },
     {
-        "descTextMapHash": 888066890,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2739445487,
+        "param": 14002,
         "icon": "UI_RelicIcon_14002_4",
         "id": 400072,
+        "descTextMapHash": 888066890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1051998153,
-        "param": 14002,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2739445487
+        "nameTextMapHash": 1051998153
     },
     {
-        "descTextMapHash": 2212623330,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1108564823,
+        "param": 14002,
         "icon": "UI_RelicIcon_14002_4",
         "id": 400073,
+        "descTextMapHash": 2212623330,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 809005625,
-        "param": 14002,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1108564823
+        "nameTextMapHash": 809005625
     },
     {
-        "descTextMapHash": 2871838146,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1022811535,
+        "param": 14002,
         "icon": "UI_RelicIcon_14002_4",
         "id": 400074,
+        "descTextMapHash": 2871838146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2907139433,
-        "param": 14002,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1022811535
+        "nameTextMapHash": 2907139433
     },
     {
-        "descTextMapHash": 4223193690,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3855181351,
+        "param": 14003,
         "icon": "UI_RelicIcon_14003_4",
         "id": 400075,
+        "descTextMapHash": 4223193690,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3812264553,
-        "param": 14003,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3855181351
+        "nameTextMapHash": 3812264553
     },
     {
-        "descTextMapHash": 743260098,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 4168399599,
+        "param": 14003,
         "icon": "UI_RelicIcon_14003_4",
         "id": 400076,
+        "descTextMapHash": 743260098,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3077650225,
-        "param": 14003,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 4168399599
+        "nameTextMapHash": 3077650225
     },
     {
-        "descTextMapHash": 4004126402,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3257042727,
+        "param": 14003,
         "icon": "UI_RelicIcon_14003_4",
         "id": 400077,
+        "descTextMapHash": 4004126402,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 817784721,
-        "param": 14003,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3257042727
+        "nameTextMapHash": 817784721
     },
     {
-        "descTextMapHash": 3086353242,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2866509695,
+        "param": 14003,
         "icon": "UI_RelicIcon_14003_4",
         "id": 400078,
+        "descTextMapHash": 3086353242,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1862663065,
-        "param": 14003,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2866509695
+        "nameTextMapHash": 1862663065
     },
     {
-        "descTextMapHash": 3166642274,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1009827303,
+        "param": 14003,
         "icon": "UI_RelicIcon_14003_4",
         "id": 400079,
+        "descTextMapHash": 3166642274,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2705999297,
-        "param": 14003,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1009827303
+        "nameTextMapHash": 2705999297
     },
     {
-        "descTextMapHash": 4069632922,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2922338975,
+        "param": 14004,
         "icon": "UI_RelicIcon_14004_4",
         "id": 400080,
+        "descTextMapHash": 4069632922,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 191175537,
-        "param": 14004,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2922338975
+        "nameTextMapHash": 191175537
     },
     {
-        "descTextMapHash": 1013196706,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 4223864383,
+        "param": 14004,
         "icon": "UI_RelicIcon_14004_4",
         "id": 400081,
+        "descTextMapHash": 1013196706,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4251805641,
-        "param": 14004,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 4223864383
+        "nameTextMapHash": 4251805641
     },
     {
-        "descTextMapHash": 119747266,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3511055223,
+        "param": 14004,
         "icon": "UI_RelicIcon_14004_4",
         "id": 400082,
+        "descTextMapHash": 119747266,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2543704793,
-        "param": 14004,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3511055223
+        "nameTextMapHash": 2543704793
     },
     {
-        "descTextMapHash": 3098987474,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1768321967,
+        "param": 14004,
         "icon": "UI_RelicIcon_14004_4",
         "id": 400083,
+        "descTextMapHash": 3098987474,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3262423929,
-        "param": 14004,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1768321967
+        "nameTextMapHash": 3262423929
     },
     {
-        "descTextMapHash": 1422663682,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1754392615,
+        "param": 14004,
         "icon": "UI_RelicIcon_14004_4",
         "id": 400084,
+        "descTextMapHash": 1422663682,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3153452425,
-        "param": 14004,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1754392615
+        "nameTextMapHash": 3153452425
     },
     {
-        "descTextMapHash": 3119019954,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 450053679,
+        "param": 15001,
         "icon": "UI_RelicIcon_15001_4",
         "id": 400085,
+        "descTextMapHash": 3119019954,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 163914729,
-        "param": 15001,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 450053679
+        "nameTextMapHash": 163914729
     },
     {
-        "descTextMapHash": 1935007530,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3766626279,
+        "param": 15001,
         "icon": "UI_RelicIcon_15001_4",
         "id": 400086,
+        "descTextMapHash": 1935007530,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2701026001,
-        "param": 15001,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3766626279
+        "nameTextMapHash": 2701026001
     },
     {
-        "descTextMapHash": 1433091642,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1791393535,
+        "param": 15001,
         "icon": "UI_RelicIcon_15001_4",
         "id": 400087,
+        "descTextMapHash": 1433091642,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3675936345,
-        "param": 15001,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1791393535
+        "nameTextMapHash": 3675936345
     },
     {
-        "descTextMapHash": 3298131930,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2910709375,
+        "param": 15001,
         "icon": "UI_RelicIcon_15001_4",
         "id": 400088,
+        "descTextMapHash": 3298131930,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2063221481,
-        "param": 15001,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2910709375
+        "nameTextMapHash": 2063221481
     },
     {
-        "descTextMapHash": 1869990298,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 860733855,
+        "param": 15001,
         "icon": "UI_RelicIcon_15001_4",
         "id": 400089,
+        "descTextMapHash": 1869990298,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 802240673,
-        "param": 15001,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 860733855
+        "nameTextMapHash": 802240673
     },
     {
-        "descTextMapHash": 2171166466,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1916445559,
+        "param": 15002,
         "icon": "UI_RelicIcon_15002_4",
         "id": 400090,
+        "descTextMapHash": 2171166466,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3969436289,
-        "param": 15002,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1916445559
+        "nameTextMapHash": 3969436289
     },
     {
-        "descTextMapHash": 1109631986,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2764245663,
+        "param": 15002,
         "icon": "UI_RelicIcon_15002_4",
         "id": 400091,
+        "descTextMapHash": 1109631986,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3642628737,
-        "param": 15002,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2764245663
+        "nameTextMapHash": 3642628737
     },
     {
-        "descTextMapHash": 3580239650,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3553694415,
+        "param": 15002,
         "icon": "UI_RelicIcon_15002_4",
         "id": 400092,
+        "descTextMapHash": 3580239650,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3707638457,
-        "param": 15002,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3553694415
+        "nameTextMapHash": 3707638457
     },
     {
-        "descTextMapHash": 1293398922,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1817495503,
+        "param": 15002,
         "icon": "UI_RelicIcon_15002_4",
         "id": 400093,
+        "descTextMapHash": 1293398922,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2439964329,
-        "param": 15002,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1817495503
+        "nameTextMapHash": 2439964329
     },
     {
-        "descTextMapHash": 363841578,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 569300095,
+        "param": 15002,
         "icon": "UI_RelicIcon_15002_4",
         "id": 400094,
+        "descTextMapHash": 363841578,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3489672513,
-        "param": 15002,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 569300095
+        "nameTextMapHash": 3489672513
     },
     {
-        "descTextMapHash": 2934699754,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3104251463,
+        "param": 15003,
         "icon": "UI_RelicIcon_15003_4",
         "id": 400095,
+        "descTextMapHash": 2934699754,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2936488761,
-        "param": 15003,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3104251463
+        "nameTextMapHash": 2936488761
     },
     {
-        "descTextMapHash": 348901954,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2136846967,
+        "param": 15003,
         "icon": "UI_RelicIcon_15003_4",
         "id": 400096,
+        "descTextMapHash": 348901954,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 552894225,
-        "param": 15003,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2136846967
+        "nameTextMapHash": 552894225
     },
     {
-        "descTextMapHash": 706220890,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 11675511,
+        "param": 15003,
         "icon": "UI_RelicIcon_15003_4",
         "id": 400097,
+        "descTextMapHash": 706220890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3738083185,
-        "param": 15003,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 11675511
+        "nameTextMapHash": 3738083185
     },
     {
-        "descTextMapHash": 1223547546,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1609702335,
+        "param": 15003,
         "icon": "UI_RelicIcon_15003_4",
         "id": 400098,
+        "descTextMapHash": 1223547546,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 185641481,
-        "param": 15003,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1609702335
+        "nameTextMapHash": 185641481
     },
     {
-        "descTextMapHash": 4207966442,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3838229759,
+        "param": 15003,
         "icon": "UI_RelicIcon_15003_4",
         "id": 400099,
+        "descTextMapHash": 4207966442,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2334795033,
-        "param": 15003,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3838229759
+        "nameTextMapHash": 2334795033
     },
     {
-        "descTextMapHash": 4202359378,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1627459111,
+        "param": 15004,
         "icon": "UI_RelicIcon_15004_4",
         "id": 400100,
+        "descTextMapHash": 4202359378,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1362850481,
-        "param": 15004,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1627459111
+        "nameTextMapHash": 1362850481
     },
     {
-        "descTextMapHash": 3551404906,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 4030110567,
+        "param": 15004,
         "icon": "UI_RelicIcon_15004_4",
         "id": 400101,
+        "descTextMapHash": 3551404906,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2856774425,
-        "param": 15004,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 4030110567
+        "nameTextMapHash": 2856774425
     },
     {
-        "descTextMapHash": 3898958722,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1124247311,
+        "param": 15004,
         "icon": "UI_RelicIcon_15004_4",
         "id": 400102,
+        "descTextMapHash": 3898958722,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2839857713,
-        "param": 15004,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1124247311
+        "nameTextMapHash": 2839857713
     },
     {
-        "descTextMapHash": 3543757418,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2793061175,
+        "param": 15004,
         "icon": "UI_RelicIcon_15004_4",
         "id": 400103,
+        "descTextMapHash": 3543757418,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2487138265,
-        "param": 15004,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2793061175
+        "nameTextMapHash": 2487138265
     },
     {
-        "descTextMapHash": 4192098298,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2770744999,
+        "param": 15004,
         "icon": "UI_RelicIcon_15004_4",
         "id": 400104,
+        "descTextMapHash": 4192098298,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2938335841,
-        "param": 15004,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2770744999
+        "nameTextMapHash": 2938335841
     },
     {
-        "descTextMapHash": 2141029258,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2040913495,
+        "param": 15005,
         "icon": "UI_RelicIcon_15005_4",
         "id": 400105,
+        "descTextMapHash": 2141029258,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 461367881,
-        "param": 15005,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2040913495
+        "nameTextMapHash": 461367881
     },
     {
-        "descTextMapHash": 325718626,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3721187903,
+        "param": 15005,
         "icon": "UI_RelicIcon_15005_4",
         "id": 400106,
+        "descTextMapHash": 325718626,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1863932681,
-        "param": 15005,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3721187903
+        "nameTextMapHash": 1863932681
     },
     {
-        "descTextMapHash": 4242774874,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 4175953487,
+        "param": 15005,
         "icon": "UI_RelicIcon_15005_4",
         "id": 400107,
+        "descTextMapHash": 4242774874,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 959951473,
-        "param": 15005,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 4175953487
+        "nameTextMapHash": 959951473
     },
     {
-        "descTextMapHash": 3161780826,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2008943535,
+        "param": 15005,
         "icon": "UI_RelicIcon_15005_4",
         "id": 400108,
+        "descTextMapHash": 3161780826,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 77283065,
-        "param": 15005,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2008943535
+        "nameTextMapHash": 77283065
     },
     {
-        "descTextMapHash": 2394996082,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1220683919,
+        "param": 15005,
         "icon": "UI_RelicIcon_15005_4",
         "id": 400109,
+        "descTextMapHash": 2394996082,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4057189713,
-        "param": 15005,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1220683919
+        "nameTextMapHash": 4057189713
     },
     {
-        "descTextMapHash": 2713849762,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1008943007,
+        "param": 15006,
         "icon": "UI_RelicIcon_15006_4",
         "id": 400110,
+        "descTextMapHash": 2713849762,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1014415945,
-        "param": 15006,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1008943007
+        "nameTextMapHash": 1014415945
     },
     {
-        "descTextMapHash": 2151208778,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2014286807,
+        "param": 15006,
         "icon": "UI_RelicIcon_15006_4",
         "id": 400111,
+        "descTextMapHash": 2151208778,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 278145745,
-        "param": 15006,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2014286807
+        "nameTextMapHash": 278145745
     },
     {
-        "descTextMapHash": 2262195018,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 4220329983,
+        "param": 15006,
         "icon": "UI_RelicIcon_15006_4",
         "id": 400112,
+        "descTextMapHash": 2262195018,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3196015577,
-        "param": 15006,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 4220329983
+        "nameTextMapHash": 3196015577
     },
     {
-        "descTextMapHash": 1257951914,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 367408839,
+        "param": 15006,
         "icon": "UI_RelicIcon_15006_4",
         "id": 400113,
+        "descTextMapHash": 1257951914,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1377102577,
-        "param": 15006,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 367408839
+        "nameTextMapHash": 1377102577
     },
     {
-        "descTextMapHash": 1593977178,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 623423991,
+        "param": 15006,
         "icon": "UI_RelicIcon_15006_4",
         "id": 400114,
+        "descTextMapHash": 1593977178,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1174446209,
-        "param": 15006,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 623423991
+        "nameTextMapHash": 1174446209
     },
     {
-        "descTextMapHash": 4015439746,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1191599095,
+        "param": 15007,
         "icon": "UI_RelicIcon_15007_4",
         "id": 400115,
+        "descTextMapHash": 4015439746,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 913281913,
-        "param": 15007,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1191599095
+        "nameTextMapHash": 913281913
     },
     {
-        "descTextMapHash": 4253559402,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3694599743,
+        "param": 15007,
         "icon": "UI_RelicIcon_15007_4",
         "id": 400116,
+        "descTextMapHash": 4253559402,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2619393681,
-        "param": 15007,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3694599743
+        "nameTextMapHash": 2619393681
     },
     {
-        "descTextMapHash": 500920306,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2568124159,
+        "param": 15007,
         "icon": "UI_RelicIcon_15007_4",
         "id": 400117,
+        "descTextMapHash": 500920306,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3457597953,
-        "param": 15007,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2568124159
+        "nameTextMapHash": 3457597953
     },
     {
-        "descTextMapHash": 674938442,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3542861799,
+        "param": 15007,
         "icon": "UI_RelicIcon_15007_4",
         "id": 400118,
+        "descTextMapHash": 674938442,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3009732577,
-        "param": 15007,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3542861799
+        "nameTextMapHash": 3009732577
     },
     {
-        "descTextMapHash": 756821498,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3780183207,
+        "param": 15007,
         "icon": "UI_RelicIcon_15007_4",
         "id": 400119,
+        "descTextMapHash": 756821498,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2803937625,
-        "param": 15007,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3780183207
+        "nameTextMapHash": 2803937625
     },
     {
-        "descTextMapHash": 4182274578,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1192286815,
+        "param": 15008,
         "icon": "UI_RelicIcon_15008_4",
         "id": 400120,
+        "descTextMapHash": 4182274578,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2416827057,
-        "param": 15008,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1192286815
+        "nameTextMapHash": 2416827057
     },
     {
-        "descTextMapHash": 2534203066,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 912243639,
+        "param": 15008,
         "icon": "UI_RelicIcon_15008_4",
         "id": 400121,
+        "descTextMapHash": 2534203066,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2962238313,
-        "param": 15008,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 912243639
+        "nameTextMapHash": 2962238313
     },
     {
-        "descTextMapHash": 307809098,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1973818031,
+        "param": 15008,
         "icon": "UI_RelicIcon_15008_4",
         "id": 400122,
+        "descTextMapHash": 307809098,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3184746297,
-        "param": 15008,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1973818031
+        "nameTextMapHash": 3184746297
     },
     {
-        "descTextMapHash": 3212416978,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2404215415,
+        "param": 15008,
         "icon": "UI_RelicIcon_15008_4",
         "id": 400123,
+        "descTextMapHash": 3212416978,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3366606809,
-        "param": 15008,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2404215415
+        "nameTextMapHash": 3366606809
     },
     {
-        "descTextMapHash": 2425222234,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3189932455,
+        "param": 15008,
         "icon": "UI_RelicIcon_15008_4",
         "id": 400124,
+        "descTextMapHash": 2425222234,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1010593033,
-        "param": 15008,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3189932455
+        "nameTextMapHash": 1010593033
     },
     {
-        "descTextMapHash": 64424770,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3009112991,
+        "param": 15009,
         "icon": "UI_RelicIcon_15009_3",
         "id": 400125,
+        "descTextMapHash": 64424770,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3865669473,
-        "param": 15009,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3009112991
+        "nameTextMapHash": 3865669473
     },
     {
-        "descTextMapHash": 2741873514,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3175594783,
+        "param": 15009,
         "icon": "UI_RelicIcon_15009_3",
         "id": 400126,
+        "descTextMapHash": 2741873514,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2704833129,
-        "param": 15009,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3175594783
+        "nameTextMapHash": 2704833129
     },
     {
-        "descTextMapHash": 3932611578,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 119538487,
+        "param": 15009,
         "icon": "UI_RelicIcon_15009_3",
         "id": 400127,
+        "descTextMapHash": 3932611578,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3670092705,
-        "param": 15009,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 119538487
+        "nameTextMapHash": 3670092705
     },
     {
-        "descTextMapHash": 3901271538,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3185499367,
+        "param": 15009,
         "icon": "UI_RelicIcon_15009_3",
         "id": 400128,
+        "descTextMapHash": 3901271538,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2887662793,
-        "param": 15009,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3185499367
+        "nameTextMapHash": 2887662793
     },
     {
-        "descTextMapHash": 1132330906,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3141996407,
+        "param": 15009,
         "icon": "UI_RelicIcon_15009_3",
         "id": 400129,
+        "descTextMapHash": 1132330906,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3345040033,
-        "param": 15009,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3141996407
+        "nameTextMapHash": 3345040033
     },
     {
-        "descTextMapHash": 84645498,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2412881687,
+        "param": 15010,
         "icon": "UI_RelicIcon_15010_3",
         "id": 400130,
+        "descTextMapHash": 84645498,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 521235377,
-        "param": 15010,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2412881687
+        "nameTextMapHash": 521235377
     },
     {
-        "descTextMapHash": 2683512810,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 183673839,
+        "param": 15010,
         "icon": "UI_RelicIcon_15010_3",
         "id": 400131,
+        "descTextMapHash": 2683512810,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 98606657,
-        "param": 15010,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 183673839
+        "nameTextMapHash": 98606657
     },
     {
-        "descTextMapHash": 2156625514,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3136420847,
+        "param": 15010,
         "icon": "UI_RelicIcon_15010_3",
         "id": 400132,
+        "descTextMapHash": 2156625514,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2016136705,
-        "param": 15010,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3136420847
+        "nameTextMapHash": 2016136705
     },
     {
-        "descTextMapHash": 190056850,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 361285071,
+        "param": 15010,
         "icon": "UI_RelicIcon_15010_3",
         "id": 400133,
+        "descTextMapHash": 190056850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2272497849,
-        "param": 15010,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 361285071
+        "nameTextMapHash": 2272497849
     },
     {
-        "descTextMapHash": 1163445850,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3822185263,
+        "param": 15010,
         "icon": "UI_RelicIcon_15010_3",
         "id": 400134,
+        "descTextMapHash": 1163445850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3997002617,
-        "param": 15010,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3822185263
+        "nameTextMapHash": 3997002617
     },
     {
-        "descTextMapHash": 2906807914,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1139234735,
+        "param": 15011,
         "icon": "UI_RelicIcon_15011_3",
         "id": 400135,
+        "descTextMapHash": 2906807914,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4229223417,
-        "param": 15011,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1139234735
+        "nameTextMapHash": 4229223417
     },
     {
-        "descTextMapHash": 373586818,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3390977911,
+        "param": 15011,
         "icon": "UI_RelicIcon_15011_3",
         "id": 400136,
+        "descTextMapHash": 373586818,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 394047233,
-        "param": 15011,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3390977911
+        "nameTextMapHash": 394047233
     },
     {
-        "descTextMapHash": 2351179586,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 136480575,
+        "param": 15011,
         "icon": "UI_RelicIcon_15011_3",
         "id": 400137,
+        "descTextMapHash": 2351179586,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3023944209,
-        "param": 15011,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 136480575
+        "nameTextMapHash": 3023944209
     },
     {
-        "descTextMapHash": 3223656498,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2926955807,
+        "param": 15011,
         "icon": "UI_RelicIcon_15011_3",
         "id": 400138,
+        "descTextMapHash": 3223656498,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1884810337,
-        "param": 15011,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2926955807
+        "nameTextMapHash": 1884810337
     },
     {
-        "descTextMapHash": 1034794658,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2901824175,
+        "param": 15011,
         "icon": "UI_RelicIcon_15011_3",
         "id": 400139,
+        "descTextMapHash": 1034794658,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2019417977,
-        "param": 15011,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2901824175
+        "nameTextMapHash": 2019417977
     },
     {
-        "descTextMapHash": 1515860586,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2292866583,
+        "param": 15012,
         "icon": "UI_RelicIcon_15012_3",
         "id": 400140,
+        "descTextMapHash": 1515860586,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3575070305,
-        "param": 15012,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2292866583
+        "nameTextMapHash": 3575070305
     },
     {
-        "descTextMapHash": 3831222146,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3520790455,
+        "param": 15012,
         "icon": "UI_RelicIcon_15012_3",
         "id": 400141,
+        "descTextMapHash": 3831222146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3370719769,
-        "param": 15012,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3520790455
+        "nameTextMapHash": 3370719769
     },
     {
-        "descTextMapHash": 769617674,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2632976159,
+        "param": 15012,
         "icon": "UI_RelicIcon_15012_3",
         "id": 400142,
+        "descTextMapHash": 769617674,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 518034073,
-        "param": 15012,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2632976159
+        "nameTextMapHash": 518034073
     },
     {
-        "descTextMapHash": 1673768562,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4280574599,
+        "param": 15012,
         "icon": "UI_RelicIcon_15012_3",
         "id": 400143,
+        "descTextMapHash": 1673768562,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2033394601,
-        "param": 15012,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4280574599
+        "nameTextMapHash": 2033394601
     },
     {
-        "descTextMapHash": 2732987162,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1060136535,
+        "param": 15012,
         "icon": "UI_RelicIcon_15012_3",
         "id": 400144,
+        "descTextMapHash": 2732987162,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3215920913,
-        "param": 15012,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1060136535
+        "nameTextMapHash": 3215920913
     },
     {
-        "descTextMapHash": 1989934842,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1134771759,
+        "param": 15013,
         "icon": "UI_RelicIcon_15013_3",
         "id": 400145,
+        "descTextMapHash": 1989934842,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4120517297,
-        "param": 15013,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1134771759
+        "nameTextMapHash": 4120517297
     },
     {
-        "descTextMapHash": 1873758138,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 321779359,
+        "param": 15013,
         "icon": "UI_RelicIcon_15013_3",
         "id": 400146,
+        "descTextMapHash": 1873758138,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2294380041,
-        "param": 15013,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 321779359
+        "nameTextMapHash": 2294380041
     },
     {
-        "descTextMapHash": 3655925418,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1408397991,
+        "param": 15013,
         "icon": "UI_RelicIcon_15013_3",
         "id": 400147,
+        "descTextMapHash": 3655925418,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 793290745,
-        "param": 15013,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1408397991
+        "nameTextMapHash": 793290745
     },
     {
-        "descTextMapHash": 3619478802,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2143950863,
+        "param": 15013,
         "icon": "UI_RelicIcon_15013_3",
         "id": 400148,
+        "descTextMapHash": 3619478802,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1952579793,
-        "param": 15013,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2143950863
+        "nameTextMapHash": 1952579793
     },
     {
-        "descTextMapHash": 3057516250,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3245383655,
+        "param": 15013,
         "icon": "UI_RelicIcon_15013_3",
         "id": 400149,
+        "descTextMapHash": 3057516250,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3269152665,
-        "param": 15013,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3245383655
+        "nameTextMapHash": 3269152665
     },
     {
-        "descTextMapHash": 734805738,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 417519119,
+        "param": 15014,
         "icon": "UI_RelicIcon_15014_4",
         "id": 400150,
+        "descTextMapHash": 734805738,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1900192521,
-        "param": 15014,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 417519119
+        "nameTextMapHash": 1900192521
     },
     {
-        "descTextMapHash": 4110146538,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3074894807,
+        "param": 15014,
         "icon": "UI_RelicIcon_15014_4",
         "id": 400151,
+        "descTextMapHash": 4110146538,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3771481633,
-        "param": 15014,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3074894807
+        "nameTextMapHash": 3771481633
     },
     {
-        "descTextMapHash": 4215981602,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 942471999,
+        "param": 15014,
         "icon": "UI_RelicIcon_15014_4",
         "id": 400152,
+        "descTextMapHash": 4215981602,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3755964937,
-        "param": 15014,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 942471999
+        "nameTextMapHash": 3755964937
     },
     {
-        "descTextMapHash": 77612962,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4138913647,
+        "param": 15014,
         "icon": "UI_RelicIcon_15014_4",
         "id": 400153,
+        "descTextMapHash": 77612962,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1369877081,
-        "param": 15014,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4138913647
+        "nameTextMapHash": 1369877081
     },
     {
-        "descTextMapHash": 2300690850,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3896683999,
+        "param": 15014,
         "icon": "UI_RelicIcon_15014_4",
         "id": 400154,
+        "descTextMapHash": 2300690850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1181556057,
-        "param": 15014,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3896683999
+        "nameTextMapHash": 1181556057
     },
     {
-        "descTextMapHash": 3855673106,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 4236517895,
+        "param": 15015,
         "icon": "UI_RelicIcon_15015_4",
         "id": 400155,
+        "descTextMapHash": 3855673106,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 809664329,
-        "param": 15015,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 4236517895
+        "nameTextMapHash": 809664329
     },
     {
-        "descTextMapHash": 3271243442,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 509417103,
+        "param": 15015,
         "icon": "UI_RelicIcon_15015_4",
         "id": 400156,
+        "descTextMapHash": 3271243442,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1835597657,
-        "param": 15015,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 509417103
+        "nameTextMapHash": 1835597657
     },
     {
-        "descTextMapHash": 1975499402,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3318102983,
+        "param": 15015,
         "icon": "UI_RelicIcon_15015_4",
         "id": 400157,
+        "descTextMapHash": 1975499402,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3120788377,
-        "param": 15015,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3318102983
+        "nameTextMapHash": 3120788377
     },
     {
-        "descTextMapHash": 2036851362,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3725785079,
+        "param": 15015,
         "icon": "UI_RelicIcon_15015_4",
         "id": 400158,
+        "descTextMapHash": 2036851362,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3272236921,
-        "param": 15015,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3725785079
+        "nameTextMapHash": 3272236921
     },
     {
-        "descTextMapHash": 1637689554,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4153259263,
+        "param": 15015,
         "icon": "UI_RelicIcon_15015_4",
         "id": 400159,
+        "descTextMapHash": 1637689554,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1222882313,
-        "param": 15015,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4153259263
+        "nameTextMapHash": 1222882313
     },
     {
-        "descTextMapHash": 1416503186,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 863242167,
+        "param": 15016,
         "icon": "UI_RelicIcon_15016_4",
         "id": 400160,
+        "descTextMapHash": 1416503186,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 136617793,
-        "param": 15016,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 863242167
+        "nameTextMapHash": 136617793
     },
     {
-        "descTextMapHash": 1523147674,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3822145463,
+        "param": 15016,
         "icon": "UI_RelicIcon_15016_4",
         "id": 400161,
+        "descTextMapHash": 1523147674,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 741797641,
-        "param": 15016,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3822145463
+        "nameTextMapHash": 741797641
     },
     {
-        "descTextMapHash": 527025770,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3152843423,
+        "param": 15016,
         "icon": "UI_RelicIcon_15016_4",
         "id": 400162,
+        "descTextMapHash": 527025770,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3626539633,
-        "param": 15016,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3152843423
+        "nameTextMapHash": 3626539633
     },
     {
-        "descTextMapHash": 268669858,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1523506751,
+        "param": 15016,
         "icon": "UI_RelicIcon_15016_4",
         "id": 400163,
+        "descTextMapHash": 268669858,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2038917049,
-        "param": 15016,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1523506751
+        "nameTextMapHash": 2038917049
     },
     {
-        "descTextMapHash": 1227831634,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2595444807,
+        "param": 15016,
         "icon": "UI_RelicIcon_15016_4",
         "id": 400164,
+        "descTextMapHash": 1227831634,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2783513673,
-        "param": 15016,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2595444807
+        "nameTextMapHash": 2783513673
     },
     {
-        "descTextMapHash": 3415676538,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 241187423,
+        "param": 15017,
         "icon": "UI_RelicIcon_15017_4",
         "id": 400165,
+        "descTextMapHash": 3415676538,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 346769057,
-        "param": 15017,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 241187423
+        "nameTextMapHash": 346769057
     },
     {
-        "descTextMapHash": 2573778618,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 682234567,
+        "param": 15017,
         "icon": "UI_RelicIcon_15017_4",
         "id": 400166,
+        "descTextMapHash": 2573778618,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 277527489,
-        "param": 15017,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 682234567
+        "nameTextMapHash": 277527489
     },
     {
-        "descTextMapHash": 2802576034,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2929355399,
+        "param": 15017,
         "icon": "UI_RelicIcon_15017_4",
         "id": 400167,
+        "descTextMapHash": 2802576034,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2505371481,
-        "param": 15017,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2929355399
+        "nameTextMapHash": 2505371481
     },
     {
-        "descTextMapHash": 1073577954,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 56926847,
+        "param": 15017,
         "icon": "UI_RelicIcon_15017_4",
         "id": 400168,
+        "descTextMapHash": 1073577954,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3809967089,
-        "param": 15017,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 56926847
+        "nameTextMapHash": 3809967089
     },
     {
-        "descTextMapHash": 2890775890,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3793484935,
+        "param": 15017,
         "icon": "UI_RelicIcon_15017_4",
         "id": 400169,
+        "descTextMapHash": 2890775890,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3722036233,
-        "param": 15017,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3793484935
+        "nameTextMapHash": 3722036233
     },
     {
-        "descTextMapHash": 2600917778,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 292683511,
+        "param": 15018,
         "icon": "UI_RelicIcon_15018_4",
         "id": 400170,
+        "descTextMapHash": 2600917778,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2029367273,
-        "param": 15018,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 292683511
+        "nameTextMapHash": 2029367273
     },
     {
-        "descTextMapHash": 3867614874,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 858161751,
+        "param": 15018,
         "icon": "UI_RelicIcon_15018_4",
         "id": 400171,
+        "descTextMapHash": 3867614874,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3306032761,
-        "param": 15018,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 858161751
+        "nameTextMapHash": 3306032761
     },
     {
-        "descTextMapHash": 3672211258,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1921726223,
+        "param": 15018,
         "icon": "UI_RelicIcon_15018_4",
         "id": 400172,
+        "descTextMapHash": 3672211258,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 809378529,
-        "param": 15018,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1921726223
+        "nameTextMapHash": 809378529
     },
     {
-        "descTextMapHash": 3252228882,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 897987359,
+        "param": 15018,
         "icon": "UI_RelicIcon_15018_4",
         "id": 400173,
+        "descTextMapHash": 3252228882,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 588362505,
-        "param": 15018,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 897987359
+        "nameTextMapHash": 588362505
     },
     {
-        "descTextMapHash": 2930897090,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3904418255,
+        "param": 15018,
         "icon": "UI_RelicIcon_15018_4",
         "id": 400174,
+        "descTextMapHash": 2930897090,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3723958561,
-        "param": 15018,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3904418255
+        "nameTextMapHash": 3723958561
     },
     {
-        "descTextMapHash": 986681058,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1774260975,
+        "param": 15019,
         "icon": "UI_RelicIcon_15019_4",
         "id": 400175,
+        "descTextMapHash": 986681058,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1570486801,
-        "param": 15019,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1774260975
+        "nameTextMapHash": 1570486801
     },
     {
-        "descTextMapHash": 1155677730,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 464332391,
+        "param": 15019,
         "icon": "UI_RelicIcon_15019_4",
         "id": 400176,
+        "descTextMapHash": 1155677730,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2261709353,
-        "param": 15019,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 464332391
+        "nameTextMapHash": 2261709353
     },
     {
-        "descTextMapHash": 2216477434,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 489069071,
+        "param": 15019,
         "icon": "UI_RelicIcon_15019_4",
         "id": 400177,
+        "descTextMapHash": 2216477434,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3130904289,
-        "param": 15019,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 489069071
+        "nameTextMapHash": 3130904289
     },
     {
-        "descTextMapHash": 1198830474,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1142625255,
+        "param": 15019,
         "icon": "UI_RelicIcon_15019_4",
         "id": 400178,
+        "descTextMapHash": 1198830474,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 591245865,
-        "param": 15019,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1142625255
+        "nameTextMapHash": 591245865
     },
     {
-        "descTextMapHash": 2506921426,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3097466287,
+        "param": 15019,
         "icon": "UI_RelicIcon_15019_4",
         "id": 400179,
+        "descTextMapHash": 2506921426,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1623885257,
-        "param": 15019,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3097466287
+        "nameTextMapHash": 1623885257
     },
     {
-        "descTextMapHash": 1121669794,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2686120823,
+        "param": 15020,
         "icon": "UI_RelicIcon_15020_4",
         "id": 400180,
+        "descTextMapHash": 1121669794,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1616877081,
-        "param": 15020,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2686120823
+        "nameTextMapHash": 1616877081
     },
     {
-        "descTextMapHash": 241052490,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 746736279,
+        "param": 15020,
         "icon": "UI_RelicIcon_15020_4",
         "id": 400181,
+        "descTextMapHash": 241052490,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3418094369,
-        "param": 15020,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 746736279
+        "nameTextMapHash": 3418094369
     },
     {
-        "descTextMapHash": 405996418,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 1623605855,
+        "param": 15020,
         "icon": "UI_RelicIcon_15020_4",
         "id": 400182,
+        "descTextMapHash": 405996418,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 850845273,
-        "param": 15020,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 1623605855
+        "nameTextMapHash": 850845273
     },
     {
-        "descTextMapHash": 3944176594,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2473559927,
+        "param": 15020,
         "icon": "UI_RelicIcon_15020_4",
         "id": 400183,
+        "descTextMapHash": 3944176594,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3094700569,
-        "param": 15020,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2473559927
+        "nameTextMapHash": 3094700569
     },
     {
-        "descTextMapHash": 67217530,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4067910823,
+        "param": 15020,
         "icon": "UI_RelicIcon_15020_4",
         "id": 400184,
+        "descTextMapHash": 67217530,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4275646969,
-        "param": 15020,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4067910823
+        "nameTextMapHash": 4275646969
     },
     {
-        "descTextMapHash": 4184096594,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3126225823,
+        "param": 15021,
         "icon": "UI_RelicIcon_15021_4",
         "id": 400185,
+        "descTextMapHash": 4184096594,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2894909313,
-        "param": 15021,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3126225823
+        "nameTextMapHash": 2894909313
     },
     {
-        "descTextMapHash": 2649612234,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 339108855,
+        "param": 15021,
         "icon": "UI_RelicIcon_15021_4",
         "id": 400186,
+        "descTextMapHash": 2649612234,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1926476345,
-        "param": 15021,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 339108855
+        "nameTextMapHash": 1926476345
     },
     {
-        "descTextMapHash": 3418948130,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 3846032135,
+        "param": 15021,
         "icon": "UI_RelicIcon_15021_4",
         "id": 400187,
+        "descTextMapHash": 3418948130,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 104325993,
-        "param": 15021,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 3846032135
+        "nameTextMapHash": 104325993
     },
     {
-        "descTextMapHash": 2656783114,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3960686231,
+        "param": 15021,
         "icon": "UI_RelicIcon_15021_4",
         "id": 400188,
+        "descTextMapHash": 2656783114,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3800523561,
-        "param": 15021,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3960686231
+        "nameTextMapHash": 3800523561
     },
     {
-        "descTextMapHash": 706452650,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1220143591,
+        "param": 15021,
         "icon": "UI_RelicIcon_15021_4",
         "id": 400189,
+        "descTextMapHash": 706452650,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 151883809,
-        "param": 15021,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1220143591
+        "nameTextMapHash": 151883809
     },
     {
-        "descTextMapHash": 2458228282,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1408357055,
+        "param": 15022,
         "icon": "UI_RelicIcon_15022_4",
         "id": 400190,
+        "descTextMapHash": 2458228282,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2996061809,
-        "param": 15022,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1408357055
+        "nameTextMapHash": 2996061809
     },
     {
-        "descTextMapHash": 3843458626,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 2206350871,
+        "param": 15022,
         "icon": "UI_RelicIcon_15022_4",
         "id": 400191,
+        "descTextMapHash": 3843458626,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1945974489,
-        "param": 15022,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 2206350871
+        "nameTextMapHash": 1945974489
     },
     {
-        "descTextMapHash": 2436534266,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2286651911,
+        "param": 15022,
         "icon": "UI_RelicIcon_15022_4",
         "id": 400192,
+        "descTextMapHash": 2436534266,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2685761369,
-        "param": 15022,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2286651911
+        "nameTextMapHash": 2685761369
     },
     {
-        "descTextMapHash": 2859746986,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1740523519,
+        "param": 15022,
         "icon": "UI_RelicIcon_15022_4",
         "id": 400193,
+        "descTextMapHash": 2859746986,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1695606625,
-        "param": 15022,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1740523519
+        "nameTextMapHash": 1695606625
     },
     {
-        "descTextMapHash": 388124714,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 232768719,
+        "param": 15022,
         "icon": "UI_RelicIcon_15022_4",
         "id": 400194,
+        "descTextMapHash": 388124714,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2838070761,
-        "param": 15022,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 232768719
+        "nameTextMapHash": 2838070761
     },
     {
-        "descTextMapHash": 4275042146,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 3848990679,
+        "param": 15023,
         "icon": "UI_RelicIcon_15023_4",
         "id": 400195,
+        "descTextMapHash": 4275042146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3101521673,
-        "param": 15023,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 3848990679
+        "nameTextMapHash": 3101521673
     },
     {
-        "descTextMapHash": 2296665066,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3269622759,
+        "param": 15023,
         "icon": "UI_RelicIcon_15023_4",
         "id": 400196,
+        "descTextMapHash": 2296665066,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3930671849,
-        "param": 15023,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3269622759
+        "nameTextMapHash": 3930671849
     },
     {
-        "descTextMapHash": 946148258,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 815198855,
+        "param": 15023,
         "icon": "UI_RelicIcon_15023_4",
         "id": 400197,
+        "descTextMapHash": 946148258,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3925101401,
-        "param": 15023,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 815198855
+        "nameTextMapHash": 3925101401
     },
     {
-        "descTextMapHash": 1854399418,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2562228863,
+        "param": 15023,
         "icon": "UI_RelicIcon_15023_4",
         "id": 400198,
+        "descTextMapHash": 1854399418,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2893444793,
-        "param": 15023,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2562228863
+        "nameTextMapHash": 2893444793
     },
     {
-        "descTextMapHash": 145658362,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1041597679,
+        "param": 15023,
         "icon": "UI_RelicIcon_15023_4",
         "id": 400199,
+        "descTextMapHash": 145658362,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2011718905,
-        "param": 15023,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1041597679
+        "nameTextMapHash": 2011718905
     },
     {
-        "descTextMapHash": 1001543386,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2784978535,
+        "param": 15024,
         "icon": "UI_RelicIcon_15024_4",
         "id": 400200,
+        "descTextMapHash": 1001543386,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4053247593,
-        "param": 15024,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2784978535
+        "nameTextMapHash": 4053247593
     },
     {
-        "descTextMapHash": 1606292018,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 3215551199,
+        "param": 15024,
         "icon": "UI_RelicIcon_15024_4",
         "id": 400201,
+        "descTextMapHash": 1606292018,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1137032809,
-        "param": 15024,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 3215551199
+        "nameTextMapHash": 1137032809
     },
     {
-        "descTextMapHash": 2216948522,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 778138615,
+        "param": 15024,
         "icon": "UI_RelicIcon_15024_4",
         "id": 400202,
+        "descTextMapHash": 2216948522,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2410987305,
-        "param": 15024,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 778138615
+        "nameTextMapHash": 2410987305
     },
     {
-        "descTextMapHash": 3497083450,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1929956143,
+        "param": 15024,
         "icon": "UI_RelicIcon_15024_4",
         "id": 400203,
+        "descTextMapHash": 3497083450,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4187482001,
-        "param": 15024,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1929956143
+        "nameTextMapHash": 4187482001
     },
     {
-        "descTextMapHash": 495271050,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1570009599,
+        "param": 15024,
         "icon": "UI_RelicIcon_15024_4",
         "id": 400204,
+        "descTextMapHash": 495271050,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3295463889,
-        "param": 15024,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1570009599
+        "nameTextMapHash": 3295463889
     },
     {
-        "descTextMapHash": 3489609466,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 1634190111,
+        "param": 15025,
         "icon": "UI_RelicIcon_15025_4",
         "id": 400205,
+        "descTextMapHash": 3489609466,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3687571241,
-        "param": 15025,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 1634190111
+        "nameTextMapHash": 3687571241
     },
     {
-        "descTextMapHash": 535460626,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 4101151639,
+        "param": 15025,
         "icon": "UI_RelicIcon_15025_4",
         "id": 400206,
+        "descTextMapHash": 535460626,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3433391697,
-        "param": 15025,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 4101151639
+        "nameTextMapHash": 3433391697
     },
     {
-        "descTextMapHash": 1604667962,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2372386463,
+        "param": 15025,
         "icon": "UI_RelicIcon_15025_4",
         "id": 400207,
+        "descTextMapHash": 1604667962,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1232816025,
-        "param": 15025,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2372386463
+        "nameTextMapHash": 1232816025
     },
     {
-        "descTextMapHash": 2712030978,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2105905127,
+        "param": 15025,
         "icon": "UI_RelicIcon_15025_4",
         "id": 400208,
+        "descTextMapHash": 2712030978,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2468076273,
-        "param": 15025,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2105905127
+        "nameTextMapHash": 2468076273
     },
     {
-        "descTextMapHash": 1005725722,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1036894463,
+        "param": 15025,
         "icon": "UI_RelicIcon_15025_4",
         "id": 400209,
+        "descTextMapHash": 1005725722,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3089448137,
-        "param": 15025,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1036894463
+        "nameTextMapHash": 3089448137
     },
     {
-        "descTextMapHash": 2235777634,
+        "rankLevel": 1,
+        "typeDescTextMapHash": 2374699607,
+        "param": 15026,
         "icon": "UI_RelicIcon_15026_4",
         "id": 400210,
+        "descTextMapHash": 2235777634,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2960610193,
-        "param": 15026,
-        "rankLevel": 1,
-        "typeDescTextMapHash": 2374699607
+        "nameTextMapHash": 2960610193
     },
     {
-        "descTextMapHash": 2889453506,
+        "rankLevel": 2,
+        "typeDescTextMapHash": 1158812431,
+        "param": 15026,
         "icon": "UI_RelicIcon_15026_4",
         "id": 400211,
+        "descTextMapHash": 2889453506,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2570718145,
-        "param": 15026,
-        "rankLevel": 2,
-        "typeDescTextMapHash": 1158812431
+        "nameTextMapHash": 2570718145
     },
     {
-        "descTextMapHash": 1889215354,
+        "rankLevel": 3,
+        "typeDescTextMapHash": 2720685743,
+        "param": 15026,
         "icon": "UI_RelicIcon_15026_4",
         "id": 400212,
+        "descTextMapHash": 1889215354,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 763475961,
-        "param": 15026,
-        "rankLevel": 3,
-        "typeDescTextMapHash": 2720685743
+        "nameTextMapHash": 763475961
     },
     {
-        "descTextMapHash": 2600023850,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3005743711,
+        "param": 15026,
         "icon": "UI_RelicIcon_15026_4",
         "id": 400213,
+        "descTextMapHash": 2600023850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 55003889,
-        "param": 15026,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3005743711
+        "nameTextMapHash": 55003889
     },
     {
-        "descTextMapHash": 1291039922,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3514203431,
+        "param": 15026,
         "icon": "UI_RelicIcon_15026_4",
         "id": 400214,
+        "descTextMapHash": 1291039922,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1758613569,
-        "param": 15026,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3514203431
+        "nameTextMapHash": 1758613569
     },
     {
-        "descTextMapHash": 1755772762,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 830068375,
+        "param": 15027,
         "icon": "UI_RelicIcon_15027_4",
         "id": 400220,
+        "descTextMapHash": 1755772762,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1658883713,
-        "param": 15027,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 830068375
+        "nameTextMapHash": 1658883713
     },
     {
-        "descTextMapHash": 3940382986,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3196176855,
+        "param": 15027,
         "icon": "UI_RelicIcon_15027_4",
         "id": 400221,
+        "descTextMapHash": 3940382986,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2820678857,
-        "param": 15027,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3196176855
+        "nameTextMapHash": 2820678857
     },
     {
-        "descTextMapHash": 949475314,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 395783167,
+        "param": 15028,
         "icon": "UI_RelicIcon_15028_4",
         "id": 400230,
+        "descTextMapHash": 949475314,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1967437481,
-        "param": 15028,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 395783167
+        "nameTextMapHash": 1967437481
     },
     {
-        "descTextMapHash": 2836168714,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2577486127,
+        "param": 15028,
         "icon": "UI_RelicIcon_15028_4",
         "id": 400231,
+        "descTextMapHash": 2836168714,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3033880049,
-        "param": 15028,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2577486127
+        "nameTextMapHash": 3033880049
     },
     {
-        "descTextMapHash": 3158546090,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2284326807,
+        "param": 15029,
         "icon": "UI_RelicIcon_15029_4",
         "id": 400240,
+        "descTextMapHash": 3158546090,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2882286441,
-        "param": 15029,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2284326807
+        "nameTextMapHash": 2882286441
     },
     {
-        "descTextMapHash": 2282169506,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3901086767,
+        "param": 15029,
         "icon": "UI_RelicIcon_15029_4",
         "id": 400241,
+        "descTextMapHash": 2282169506,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2564370809,
-        "param": 15029,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3901086767
+        "nameTextMapHash": 2564370809
     },
     {
-        "descTextMapHash": 3411438250,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 66357871,
+        "param": 15030,
         "icon": "UI_RelicIcon_15030_4",
         "id": 400250,
+        "descTextMapHash": 3411438250,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2877398905,
-        "param": 15030,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 66357871
+        "nameTextMapHash": 2877398905
     },
     {
-        "descTextMapHash": 3425615090,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2871062863,
+        "param": 15030,
         "icon": "UI_RelicIcon_15030_4",
         "id": 400251,
+        "descTextMapHash": 3425615090,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3460952377,
-        "param": 15030,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2871062863
+        "nameTextMapHash": 3460952377
     },
     {
-        "descTextMapHash": 3497790018,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3160379287,
+        "param": 15031,
         "icon": "UI_RelicIcon_15031_4",
         "id": 400260,
+        "descTextMapHash": 3497790018,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 864628441,
-        "param": 15031,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3160379287
+        "nameTextMapHash": 864628441
     },
     {
-        "descTextMapHash": 1732637874,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2815235559,
+        "param": 15031,
         "icon": "UI_RelicIcon_15031_4",
         "id": 400261,
+        "descTextMapHash": 1732637874,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2520491057,
-        "param": 15031,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2815235559
+        "nameTextMapHash": 2520491057
     },
     {
-        "descTextMapHash": 438983338,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 15374999,
+        "param": 15032,
         "icon": "UI_RelicIcon_15032_4",
         "id": 400270,
+        "descTextMapHash": 438983338,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2210493321,
-        "param": 15032,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 15374999
+        "nameTextMapHash": 2210493321
     },
     {
-        "descTextMapHash": 1404120386,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 679653407,
+        "param": 15032,
         "icon": "UI_RelicIcon_15032_4",
         "id": 400271,
+        "descTextMapHash": 1404120386,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4007585225,
-        "param": 15032,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 679653407
+        "nameTextMapHash": 4007585225
     },
     {
-        "descTextMapHash": 1785600866,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 545487479,
+        "param": 15033,
         "icon": "UI_RelicIcon_15033_4",
         "id": 400280,
+        "descTextMapHash": 1785600866,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3758443329,
-        "param": 15033,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 545487479
+        "nameTextMapHash": 3758443329
     },
     {
-        "descTextMapHash": 233850090,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2576561631,
+        "param": 15033,
         "icon": "UI_RelicIcon_15033_4",
         "id": 400281,
+        "descTextMapHash": 233850090,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3740718281,
-        "param": 15033,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2576561631
+        "nameTextMapHash": 3740718281
     },
     {
-        "descTextMapHash": 3175609954,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1035909015,
+        "param": 15034,
         "icon": "UI_RelicIcon_15034_4",
         "id": 400290,
+        "descTextMapHash": 3175609954,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1267072625,
-        "param": 15034,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1035909015
+        "nameTextMapHash": 1267072625
     },
     {
-        "descTextMapHash": 1638541810,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3334660479,
+        "param": 15034,
         "icon": "UI_RelicIcon_15034_4",
         "id": 400291,
+        "descTextMapHash": 1638541810,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2930602401,
-        "param": 15034,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3334660479
+        "nameTextMapHash": 2930602401
     },
     {
-        "descTextMapHash": 1248861938,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2567144335,
+        "param": 15035,
         "icon": "UI_RelicIcon_15035_4",
         "id": 400300,
+        "descTextMapHash": 1248861938,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4065037225,
-        "param": 15035,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2567144335
+        "nameTextMapHash": 4065037225
     },
     {
-        "descTextMapHash": 2344571178,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3118372911,
+        "param": 15035,
         "icon": "UI_RelicIcon_15035_4",
         "id": 400301,
+        "descTextMapHash": 2344571178,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2152780953,
-        "param": 15035,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3118372911
+        "nameTextMapHash": 2152780953
     },
     {
-        "descTextMapHash": 2241557442,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4028425831,
+        "param": 15036,
         "icon": "UI_RelicIcon_15036_4",
         "id": 400310,
+        "descTextMapHash": 2241557442,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3939160945,
-        "param": 15036,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4028425831
+        "nameTextMapHash": 3939160945
     },
     {
-        "descTextMapHash": 2987118698,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1259727351,
+        "param": 15036,
         "icon": "UI_RelicIcon_15036_4",
         "id": 400311,
+        "descTextMapHash": 2987118698,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1310239873,
-        "param": 15036,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1259727351
+        "nameTextMapHash": 1310239873
     },
     {
-        "descTextMapHash": 2611090354,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 583795303,
+        "param": 15037,
         "icon": "UI_RelicIcon_15037_4",
         "id": 400320,
+        "descTextMapHash": 2611090354,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1221170705,
-        "param": 15037,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 583795303
+        "nameTextMapHash": 1221170705
     },
     {
-        "descTextMapHash": 2052566314,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1127902559,
+        "param": 15037,
         "icon": "UI_RelicIcon_15037_4",
         "id": 400321,
+        "descTextMapHash": 2052566314,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3615685729,
-        "param": 15037,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1127902559
+        "nameTextMapHash": 3615685729
     },
     {
-        "descTextMapHash": 2907723562,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2412780039,
+        "param": 15038,
         "icon": "UI_RelicIcon_15038_4",
         "id": 400330,
+        "descTextMapHash": 2907723562,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2321320633,
-        "param": 15038,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2412780039
+        "nameTextMapHash": 2321320633
     },
     {
-        "descTextMapHash": 1853024666,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2300084575,
+        "param": 15038,
         "icon": "UI_RelicIcon_15038_4",
         "id": 400331,
+        "descTextMapHash": 1853024666,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3345940881,
-        "param": 15038,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2300084575
+        "nameTextMapHash": 3345940881
     },
     {
-        "descTextMapHash": 881675026,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3847326615,
+        "param": 15039,
         "icon": "UI_RelicIcon_15039_4",
         "id": 400340,
+        "descTextMapHash": 881675026,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 576843625,
-        "param": 15039,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3847326615
+        "nameTextMapHash": 576843625
     },
     {
-        "descTextMapHash": 525743602,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3927829719,
+        "param": 15039,
         "icon": "UI_RelicIcon_15039_4",
         "id": 400341,
+        "descTextMapHash": 525743602,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3241968697,
-        "param": 15039,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3927829719
+        "nameTextMapHash": 3241968697
     },
     {
-        "descTextMapHash": 3579689818,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1166955287,
+        "param": 15040,
         "icon": "UI_RelicIcon_15040_4",
         "id": 400350,
+        "descTextMapHash": 3579689818,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 237737705,
-        "param": 15040,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1166955287
+        "nameTextMapHash": 237737705
     },
     {
-        "descTextMapHash": 3505827266,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3269223879,
+        "param": 15040,
         "icon": "UI_RelicIcon_15040_4",
         "id": 400351,
+        "descTextMapHash": 3505827266,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1881105873,
-        "param": 15040,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3269223879
+        "nameTextMapHash": 1881105873
     },
     {
-        "descTextMapHash": 3645590514,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1727755087,
+        "param": 15041,
         "icon": "UI_RelicIcon_15041_4",
         "id": 400360,
+        "descTextMapHash": 3645590514,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 542043121,
-        "param": 15041,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1727755087
+        "nameTextMapHash": 542043121
     },
     {
-        "descTextMapHash": 375608482,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2106941463,
+        "param": 15041,
         "icon": "UI_RelicIcon_15041_4",
         "id": 400361,
+        "descTextMapHash": 375608482,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1326528777,
-        "param": 15041,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2106941463
+        "nameTextMapHash": 1326528777
     },
     {
-        "descTextMapHash": 2751246098,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 674368367,
+        "param": 15042,
         "icon": "UI_RelicIcon_15042_4",
         "id": 400370,
+        "descTextMapHash": 2751246098,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1474644713,
-        "param": 15042,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 674368367
+        "nameTextMapHash": 1474644713
     },
     {
-        "descTextMapHash": 612914362,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 438304103,
+        "param": 15042,
         "icon": "UI_RelicIcon_15042_4",
         "id": 400371,
+        "descTextMapHash": 612914362,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2200161697,
-        "param": 15042,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 438304103
+        "nameTextMapHash": 2200161697
     },
     {
-        "descTextMapHash": 1667456994,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 2262318855,
+        "param": 15043,
         "icon": "UI_RelicIcon_15043_4",
         "id": 400380,
+        "descTextMapHash": 1667456994,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3195739953,
-        "param": 15043,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 2262318855
+        "nameTextMapHash": 3195739953
     },
     {
-        "descTextMapHash": 3357977762,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3686140015,
+        "param": 15043,
         "icon": "UI_RelicIcon_15043_4",
         "id": 400381,
+        "descTextMapHash": 3357977762,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2134679633,
-        "param": 15043,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3686140015
+        "nameTextMapHash": 2134679633
     },
     {
-        "descTextMapHash": 2060303098,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 4084150911,
+        "param": 15044,
         "icon": "UI_RelicIcon_15044_4",
         "id": 400390,
+        "descTextMapHash": 2060303098,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2451501657,
-        "param": 15044,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 4084150911
+        "nameTextMapHash": 2451501657
     },
     {
-        "descTextMapHash": 895887866,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1943176479,
+        "param": 15044,
         "icon": "UI_RelicIcon_15044_4",
         "id": 400391,
+        "descTextMapHash": 895887866,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 75815033,
-        "param": 15044,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1943176479
+        "nameTextMapHash": 75815033
     },
     {
-        "descTextMapHash": 797894522,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3964875655,
+        "param": 15045,
         "icon": "UI_RelicIcon_15045_4",
         "id": 400400,
+        "descTextMapHash": 797894522,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1975889457,
-        "param": 15045,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3964875655
+        "nameTextMapHash": 1975889457
     },
     {
-        "descTextMapHash": 1901924786,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3783050615,
+        "param": 15045,
         "icon": "UI_RelicIcon_15045_4",
         "id": 400401,
+        "descTextMapHash": 1901924786,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3092184297,
-        "param": 15045,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3783050615
+        "nameTextMapHash": 3092184297
     },
     {
-        "descTextMapHash": 1344192410,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 3950404215,
+        "param": 15046,
         "icon": "UI_RelicIcon_15046_4",
         "id": 400410,
+        "descTextMapHash": 1344192410,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3416538081,
-        "param": 15046,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 3950404215
+        "nameTextMapHash": 3416538081
     },
     {
-        "descTextMapHash": 3561929786,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4025751935,
+        "param": 15046,
         "icon": "UI_RelicIcon_15046_4",
         "id": 400411,
+        "descTextMapHash": 3561929786,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1104074233,
-        "param": 15046,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4025751935
+        "nameTextMapHash": 1104074233
     },
     {
-        "descTextMapHash": 3788672562,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 1859461847,
+        "param": 15047,
         "icon": "UI_RelicIcon_15047_4",
         "id": 400420,
+        "descTextMapHash": 3788672562,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 29705913,
-        "param": 15047,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 1859461847
+        "nameTextMapHash": 29705913
     },
     {
-        "descTextMapHash": 3730926138,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3463826143,
+        "param": 15047,
         "icon": "UI_RelicIcon_15047_4",
         "id": 400421,
+        "descTextMapHash": 3730926138,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1037528945,
-        "param": 15047,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3463826143
+        "nameTextMapHash": 1037528945
     },
     {
-        "descTextMapHash": 2633932386,
+        "rankLevel": 4,
+        "typeDescTextMapHash": 657664679,
+        "param": 15048,
         "icon": "UI_RelicIcon_15048_4",
         "id": 400430,
+        "descTextMapHash": 2633932386,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2522984417,
-        "param": 15048,
-        "rankLevel": 4,
-        "typeDescTextMapHash": 657664679
+        "nameTextMapHash": 2522984417
     },
     {
-        "descTextMapHash": 3810937730,
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3406921279,
+        "param": 15048,
         "icon": "UI_RelicIcon_15048_4",
         "id": 400431,
+        "descTextMapHash": 3810937730,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1924534793,
-        "param": 15048,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3406921279
+        "nameTextMapHash": 1924534793
     },
     {
-        "descTextMapHash": 454636058,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 342345639,
+        "param": 15001,
         "icon": "UI_DisplayItemIcon_419000",
         "id": 419000,
+        "descTextMapHash": 454636058,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3723237137,
-        "param": 15001,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 342345639
+        "nameTextMapHash": 3723237137
     },
     {
-        "descTextMapHash": 2373116570,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 447413943,
+        "param": 15003,
         "icon": "UI_DisplayItemIcon_419001",
         "id": 419001,
+        "descTextMapHash": 2373116570,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2012817969,
-        "param": 15003,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 447413943
+        "nameTextMapHash": 2012817969
     },
     {
-        "descTextMapHash": 2956261242,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3721492255,
+        "param": 15008,
         "icon": "UI_DisplayItemIcon_419002",
         "id": 419002,
+        "descTextMapHash": 2956261242,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4141792953,
-        "param": 15008,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3721492255
+        "nameTextMapHash": 4141792953
     },
     {
-        "descTextMapHash": 196022146,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 61171367,
+        "param": 15007,
         "icon": "UI_DisplayItemIcon_419003",
         "id": 419003,
+        "descTextMapHash": 196022146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3682852601,
-        "param": 15007,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 61171367
+        "nameTextMapHash": 3682852601
     },
     {
-        "descTextMapHash": 3264091922,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1613865839,
+        "param": 15005,
         "icon": "UI_DisplayItemIcon_419004",
         "id": 419004,
+        "descTextMapHash": 3264091922,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4017406953,
-        "param": 15005,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1613865839
+        "nameTextMapHash": 4017406953
     },
     {
-        "descTextMapHash": 1483428378,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 946182095,
+        "param": 14002,
         "icon": "UI_DisplayItemIcon_419005",
         "id": 419005,
+        "descTextMapHash": 1483428378,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2306601497,
-        "param": 14002,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 946182095
+        "nameTextMapHash": 2306601497
     },
     {
-        "descTextMapHash": 2933300866,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2238905327,
+        "param": 15002,
         "icon": "UI_DisplayItemIcon_419006",
         "id": 419006,
+        "descTextMapHash": 2933300866,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1750253545,
-        "param": 15002,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2238905327
+        "nameTextMapHash": 1750253545
     },
     {
-        "descTextMapHash": 1029758882,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 487894735,
+        "param": 14004,
         "icon": "UI_DisplayItemIcon_419007",
         "id": 419007,
+        "descTextMapHash": 1029758882,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3085240897,
-        "param": 14004,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 487894735
+        "nameTextMapHash": 3085240897
     },
     {
-        "descTextMapHash": 2858158594,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1316558815,
+        "param": 15014,
         "icon": "UI_DisplayItemIcon_419008",
         "id": 419008,
+        "descTextMapHash": 2858158594,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 740019729,
-        "param": 15014,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1316558815
+        "nameTextMapHash": 740019729
     },
     {
-        "descTextMapHash": 3059126994,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3621595055,
+        "param": 15015,
         "icon": "UI_DisplayItemIcon_419009",
         "id": 419009,
+        "descTextMapHash": 3059126994,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 840881833,
-        "param": 15015,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3621595055
+        "nameTextMapHash": 840881833
     },
     {
-        "descTextMapHash": 4114643626,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3181622071,
+        "param": 15006,
         "icon": "UI_DisplayItemIcon_419010",
         "id": 419010,
+        "descTextMapHash": 4114643626,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4182266577,
-        "param": 15006,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3181622071
+        "nameTextMapHash": 4182266577
     },
     {
-        "descTextMapHash": 3441853010,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 831473399,
+        "param": 14003,
         "icon": "UI_DisplayItemIcon_419011",
         "id": 419011,
+        "descTextMapHash": 3441853010,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2812873633,
-        "param": 14003,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 831473399
+        "nameTextMapHash": 2812873633
     },
     {
-        "descTextMapHash": 1651627786,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2318602951,
+        "param": 14001,
         "icon": "UI_DisplayItemIcon_419012",
         "id": 419012,
+        "descTextMapHash": 1651627786,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 570079177,
-        "param": 14001,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2318602951
+        "nameTextMapHash": 570079177
     },
     {
-        "descTextMapHash": 305711898,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2877555335,
+        "param": 15016,
         "icon": "UI_DisplayItemIcon_419013",
         "id": 419013,
+        "descTextMapHash": 305711898,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1215419345,
-        "param": 15016,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2877555335
+        "nameTextMapHash": 1215419345
     },
     {
-        "descTextMapHash": 3318925146,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2137625311,
+        "param": 15017,
         "icon": "UI_DisplayItemIcon_419014",
         "id": 419014,
+        "descTextMapHash": 3318925146,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2169426561,
-        "param": 15017,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2137625311
+        "nameTextMapHash": 2169426561
     },
     {
-        "descTextMapHash": 927019666,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 737318567,
+        "param": 15018,
         "icon": "UI_DisplayItemIcon_419015",
         "id": 419015,
+        "descTextMapHash": 927019666,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 957670377,
-        "param": 15018,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 737318567
+        "nameTextMapHash": 957670377
     },
     {
-        "descTextMapHash": 3866975882,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4018541399,
+        "param": 15019,
         "icon": "UI_DisplayItemIcon_419016",
         "id": 419016,
+        "descTextMapHash": 3866975882,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2867258081,
-        "param": 15019,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4018541399
+        "nameTextMapHash": 2867258081
     },
     {
-        "descTextMapHash": 2761754426,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1958253503,
+        "param": 15020,
         "icon": "UI_DisplayItemIcon_419017",
         "id": 419017,
+        "descTextMapHash": 2761754426,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 828872449,
-        "param": 15020,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1958253503
+        "nameTextMapHash": 828872449
     },
     {
-        "descTextMapHash": 3888068370,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3418012167,
+        "param": 15021,
         "icon": "UI_DisplayItemIcon_419018",
         "id": 419018,
+        "descTextMapHash": 3888068370,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 932899465,
-        "param": 15021,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3418012167
+        "nameTextMapHash": 932899465
     },
     {
-        "descTextMapHash": 3070672882,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2915021687,
+        "param": 15022,
         "icon": "UI_DisplayItemIcon_419019",
         "id": 419019,
+        "descTextMapHash": 3070672882,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 917349961,
-        "param": 15022,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2915021687
+        "nameTextMapHash": 917349961
     },
     {
-        "descTextMapHash": 734534506,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4215338855,
+        "param": 15023,
         "icon": "UI_DisplayItemIcon_419020",
         "id": 419020,
+        "descTextMapHash": 734534506,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 4239422409,
-        "param": 15023,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4215338855
+        "nameTextMapHash": 4239422409
     },
     {
-        "descTextMapHash": 2948078538,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4282603103,
+        "param": 15024,
         "icon": "UI_DisplayItemIcon_419021",
         "id": 419021,
+        "descTextMapHash": 2948078538,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3567329929,
-        "param": 15024,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4282603103
+        "nameTextMapHash": 3567329929
     },
     {
-        "descTextMapHash": 1079194554,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2287271559,
+        "param": 15025,
         "icon": "UI_DisplayItemIcon_419022",
         "id": 419022,
+        "descTextMapHash": 1079194554,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1490901657,
-        "param": 15025,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2287271559
+        "nameTextMapHash": 1490901657
     },
     {
-        "descTextMapHash": 3206495178,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3935745735,
+        "param": 15026,
         "icon": "UI_DisplayItemIcon_419023",
         "id": 419023,
+        "descTextMapHash": 3206495178,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 686559225,
-        "param": 15026,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3935745735
+        "nameTextMapHash": 686559225
     },
     {
-        "descTextMapHash": 1782898258,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3642172215,
+        "param": 15027,
         "icon": "UI_DisplayItemIcon_419024",
         "id": 419024,
+        "descTextMapHash": 1782898258,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1559428705,
-        "param": 15027,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3642172215
+        "nameTextMapHash": 1559428705
     },
     {
-        "descTextMapHash": 4110045978,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1824417455,
+        "param": 15028,
         "icon": "UI_DisplayItemIcon_419025",
         "id": 419025,
+        "descTextMapHash": 4110045978,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1618232937,
-        "param": 15028,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1824417455
+        "nameTextMapHash": 1618232937
     },
     {
-        "descTextMapHash": 1202018850,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2283704847,
+        "param": 15029,
         "icon": "UI_DisplayItemIcon_419026",
         "id": 419026,
+        "descTextMapHash": 1202018850,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3310898953,
-        "param": 15029,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2283704847
+        "nameTextMapHash": 3310898953
     },
     {
-        "descTextMapHash": 51120106,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 116937303,
+        "param": 15030,
         "icon": "UI_DisplayItemIcon_419027",
         "id": 419027,
+        "descTextMapHash": 51120106,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1832464281,
-        "param": 15030,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 116937303
+        "nameTextMapHash": 1832464281
     },
     {
-        "descTextMapHash": 3946520330,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 4277745439,
+        "param": 15031,
         "icon": "UI_DisplayItemIcon_419028",
         "id": 419028,
+        "descTextMapHash": 3946520330,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 212482665,
-        "param": 15031,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 4277745439
+        "nameTextMapHash": 212482665
     },
     {
-        "descTextMapHash": 4195990194,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1791365063,
+        "param": 15032,
         "icon": "UI_DisplayItemIcon_419029",
         "id": 419029,
+        "descTextMapHash": 4195990194,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 837974697,
-        "param": 15032,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1791365063
+        "nameTextMapHash": 837974697
     },
     {
-        "descTextMapHash": 269609642,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2137781983,
+        "param": 15033,
         "icon": "UI_DisplayItemIcon_419030",
         "id": 419030,
+        "descTextMapHash": 269609642,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2474608321,
-        "param": 15033,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2137781983
+        "nameTextMapHash": 2474608321
     },
     {
-        "descTextMapHash": 136740738,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1924781751,
+        "param": 15034,
         "icon": "UI_DisplayItemIcon_419031",
         "id": 419031,
+        "descTextMapHash": 136740738,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 159945345,
-        "param": 15034,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1924781751
+        "nameTextMapHash": 159945345
     },
     {
-        "descTextMapHash": 1244442266,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2473356223,
+        "param": 15035,
         "icon": "UI_DisplayItemIcon_419032",
         "id": 419032,
+        "descTextMapHash": 1244442266,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 195559193,
-        "param": 15035,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2473356223
+        "nameTextMapHash": 195559193
     },
     {
-        "descTextMapHash": 2068633154,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1389449839,
+        "param": 15036,
         "icon": "UI_DisplayItemIcon_419033",
         "id": 419033,
+        "descTextMapHash": 2068633154,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 228479825,
-        "param": 15036,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1389449839
+        "nameTextMapHash": 228479825
     },
     {
-        "descTextMapHash": 627160834,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 3632730743,
+        "param": 15037,
         "icon": "UI_DisplayItemIcon_419034",
         "id": 419034,
+        "descTextMapHash": 627160834,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1748269769,
-        "param": 15037,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 3632730743
+        "nameTextMapHash": 1748269769
     },
     {
-        "descTextMapHash": 3708340818,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1971037935,
+        "param": 15038,
         "icon": "UI_DisplayItemIcon_419035",
         "id": 419035,
+        "descTextMapHash": 3708340818,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 2932323177,
-        "param": 15038,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1971037935
+        "nameTextMapHash": 2932323177
     },
     {
-        "descTextMapHash": 2077853458,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 2316550879,
+        "param": 15039,
         "icon": "UI_DisplayItemIcon_419036",
         "id": 419036,
+        "descTextMapHash": 2077853458,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3769285321,
-        "param": 15039,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 2316550879
+        "nameTextMapHash": 3769285321
     },
     {
-        "descTextMapHash": 2633266994,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 471983711,
+        "param": 15040,
         "icon": "UI_DisplayItemIcon_419037",
         "id": 419037,
+        "descTextMapHash": 2633266994,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 3119243905,
-        "param": 15040,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 471983711
+        "nameTextMapHash": 3119243905
     },
     {
-        "descTextMapHash": 644259522,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 1701272191,
+        "param": 15041,
         "icon": "UI_DisplayItemIcon_419038",
         "id": 419038,
+        "descTextMapHash": 644259522,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 1215010329,
-        "param": 15041,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 1701272191
+        "nameTextMapHash": 1215010329
     },
     {
-        "descTextMapHash": 580029370,
         "displayType": "RELIQUARY_ITEM_SMELT",
+        "rankLevel": 5,
+        "typeDescTextMapHash": 162090967,
+        "param": 15042,
         "icon": "UI_DisplayItemIcon_419039",
         "id": 419039,
+        "descTextMapHash": 580029370,
         "itemType": "ITEM_DISPLAY",
-        "nameTextMapHash": 685434537,
-        "param": 15042,
-        "rankLevel": 5,
-        "typeDescTextMapHash": 162090967
+        "nameTextMapHash": 685434537
     }
 ]

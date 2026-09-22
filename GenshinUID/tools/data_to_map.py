@@ -598,10 +598,10 @@ async def save_char_talent_num():
 
 
 async def main():
-    # await download_new_file()
-    # await restore_mysData()
-    # await restore_ambr_data()
-    # await monster2map()
+    await download_new_file()
+    await restore_mysData()
+    await restore_ambr_data()
+    await monster2map()
     global raw_data
     try:
         with open(DATA_PATH / "TextMapCHS.json", "r", encoding="UTF-8") as f:
@@ -613,9 +613,9 @@ async def main():
     except FileNotFoundError:
         pass
 
-    # await avatarId2NameJson()
-    # await avatarName2ElementJson()
-    # await weaponHash2NameJson()
+    await avatarId2NameJson()
+    await avatarName2ElementJson()
+    await weaponHash2NameJson()
     await skillId2NameJson()
     await talentId2NameJson()
     await weaponHash2TypeJson()

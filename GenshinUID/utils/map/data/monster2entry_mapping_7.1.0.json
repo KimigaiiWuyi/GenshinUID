@@ -74999,6 +74999,487 @@
         "route": "Glacial Warden",
         "icon": "UI_MonsterIcon_Snegurochka_Male"
     },
+    "25135202": {
+        "id": 25135202,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "妖精-受三降影响特效",
+                "description": "通用的特效表现",
+                "abilityName": [
+                    "Monster_Fae_StarModeHandler"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010036,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010036,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 95.456,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": {
+            "102": {
+                "name": "冒险阅历",
+                "rank": 3,
+                "icon": "UI_ItemIcon_102",
+                "count": "200"
+            },
+            "105": {
+                "name": "好感经验",
+                "rank": 3,
+                "icon": "UI_ItemIcon_105"
+            },
+            "202": {
+                "name": "摩拉",
+                "rank": 3,
+                "icon": "UI_ItemIcon_202"
+            },
+            "104161": {
+                "name": "哀叙冰玉碎屑",
+                "rank": 2,
+                "icon": "UI_ItemIcon_104161"
+            },
+            "104162": {
+                "name": "哀叙冰玉断片",
+                "rank": 3,
+                "icon": "UI_ItemIcon_104162"
+            },
+            "104163": {
+                "name": "哀叙冰玉块",
+                "rank": 4,
+                "icon": "UI_ItemIcon_104163"
+            },
+            "104164": {
+                "name": "哀叙冰玉",
+                "rank": 5,
+                "icon": "UI_ItemIcon_104164"
+            },
+            "113092": {
+                "name": "游离者的裂甲",
+                "rank": 4,
+                "icon": "UI_ItemIcon_113092",
+                "count": "2.556"
+            },
+            "400022": {
+                "name": "战狂",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400023": {
+                "name": "战狂",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10005_4"
+            },
+            "400042": {
+                "name": "流放者",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400043": {
+                "name": "流放者",
+                "rank": 4,
+                "icon": "UI_RelicIcon_10009_4"
+            },
+            "400052": {
+                "name": "幸运儿",
+                "rank": 3,
+                "icon": "UI_RelicIcon_10011_4"
+            },
+            "400088": {
+                "name": "角斗士的终幕礼",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400089": {
+                "name": "角斗士的终幕礼",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15001_4"
+            },
+            "400098": {
+                "name": "流浪大地的乐团",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400099": {
+                "name": "流浪大地的乐团",
+                "rank": 5,
+                "icon": "UI_RelicIcon_15003_4"
+            },
+            "400147": {
+                "name": "祭冰之人",
+                "rank": 3,
+                "icon": "UI_RelicIcon_15013_3"
+            },
+            "400148": {
+                "name": "祭冰之人",
+                "rank": 4,
+                "icon": "UI_RelicIcon_15013_3"
+            }
+        },
+        "name": "游雪的护刃",
+        "route": "Guardian Blade of Drifting Snow",
+        "icon": "UI_MonsterIcon_Snegurochka_Contessa_02"
+    },
+    "25135203": {
+        "id": 25135203,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "妖精-受三降影响特效",
+                "description": "通用的特效表现",
+                "abilityName": [
+                    "Monster_Fae_StarModeHandler"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010036,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010036,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 366.768,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 95.456,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "游雪的护刃",
+        "route": "Guardian Blade of Drifting Snow",
+        "icon": "UI_MonsterIcon_Snegurochka_Contessa_02"
+    },
+    "25135204": {
+        "id": 25135204,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "妖精-受三降影响特效",
+                "description": "通用的特效表现",
+                "abilityName": [
+                    "Monster_Fae_StarModeHandler"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "TPS-怪通用逻辑标记",
+                "description": "TPS-怪通用逻辑标记GV_Entity_In_TheGrey",
+                "abilityName": [
+                    "MonsterAffix_TPS_Register_TheGrey"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": null,
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 109.725,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 90.11659,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "游雪的护刃",
+        "route": "Guardian Blade of Drifting Snow",
+        "icon": "UI_MonsterIcon_Snegurochka_Contessa_02"
+    },
+    "25135205": {
+        "id": 25135205,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "妖精-受三降影响特效",
+                "description": "通用的特效表现",
+                "abilityName": [
+                    "Monster_Fae_StarModeHandler"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "地脉挑战怪物成就屏蔽判定gv",
+                "description": "地脉挑战怪物成就屏蔽判定gv",
+                "abilityName": [
+                    "MonsterAffix_LeyLineChallenge_GeneralAchievementCheck"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010036,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010036,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 364.86932,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 95.456,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "游雪的护刃",
+        "route": "Guardian Blade of Drifting Snow",
+        "icon": "UI_MonsterIcon_Snegurochka_Contessa_02"
+    },
+    "25135206": {
+        "id": 25135206,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "妖精-受三降影响特效",
+                "description": "通用的特效表现",
+                "abilityName": [
+                    "Monster_Fae_StarModeHandler"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "地脉挑战怪物成就屏蔽判定gv",
+                "description": "地脉挑战怪物成就屏蔽判定gv",
+                "abilityName": [
+                    "MonsterAffix_LeyLineChallenge_GeneralAchievementCheck"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010036,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010036,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 364.86932,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 95.456,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.5,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "游雪的护刃",
+        "route": "Guardian Blade of Drifting Snow",
+        "icon": "UI_MonsterIcon_Snegurochka_Contessa_02"
+    },
+    "25135207": {
+        "id": 25135207,
+        "type": "MONSTER_BOSS",
+        "affix": [
+            {
+                "name": "妖精-受三降影响特效",
+                "description": "通用的特效表现",
+                "abilityName": [
+                    "Monster_Fae_StarModeHandler"
+                ],
+                "isCommon": null
+            },
+            {
+                "name": "地脉挑战怪物成就屏蔽判定gv",
+                "description": "地脉挑战怪物成就屏蔽判定gv",
+                "abilityName": [
+                    "MonsterAffix_LeyLineChallenge_GeneralAchievementCheck"
+                ],
+                "isCommon": null
+            }
+        ],
+        "hpDrops": [
+            {
+                "id": 22010036,
+                "hpPercent": 66
+            },
+            {
+                "id": 22010036,
+                "hpPercent": 33
+            }
+        ],
+        "prop": [
+            {
+                "propType": "FIGHT_PROP_BASE_HP",
+                "initValue": 364.86932,
+                "type": "GROW_CURVE_HP_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_ATTACK",
+                "initValue": 95.456,
+                "type": "GROW_CURVE_ATTACK_2"
+            },
+            {
+                "propType": "FIGHT_PROP_BASE_DEFENSE",
+                "initValue": 500,
+                "type": "GROW_CURVE_DEFENSE"
+            }
+        ],
+        "resistance": {
+            "critical": [
+                0,
+                0
+            ],
+            "fireSubHurt": 0.1,
+            "grassSubHurt": 0.1,
+            "waterSubHurt": 0.1,
+            "elecSubHurt": 0.1,
+            "windSubHurt": 0.1,
+            "iceSubHurt": 0.1,
+            "rockSubHurt": 0.1,
+            "physicalSubHurt": 0.1
+        },
+        "fundamentalForce": null,
+        "reward": null,
+        "name": "游雪的护刃",
+        "route": "Guardian Blade of Drifting Snow",
+        "icon": "UI_MonsterIcon_Snegurochka_Contessa_02"
+    },
     "25137001": {
         "id": 25137001,
         "type": "MONSTER_ORDINARY",

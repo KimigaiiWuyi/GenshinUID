@@ -5332,5 +5332,89 @@
         "6": "stellarElevate+25"
       }
     }
+  },
+  "沃雅妮莎": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "AnemoResist+-35",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "exAtk+0.8%hp",
+        "2": "stellarCritDmg+60",
+        "3": "",
+        "4": "addHp+60",
+        "5": "",
+        "6": "HydroDmgBonus+60;CryoDmgBonus+60;stellarElevate+25"
+      },
+      "group_skill": {
+        "50": "AnemoResist+-35",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "exAtk+0.8%hp",
+        "2": "stellarCritDmg+60",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "HydroDmgBonus+60;CryoDmgBonus+60;stellarElevate+25"
+      }
+    }
+  },
+  "薇斯纳": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "灵剑:dmgBonus+60;stellarBaseDmgBonus+14",
+        "70": "addAtk+24"
+      },
+      "fight_talent": {
+        "1": "stellarSpreadDmgBonus+20",
+        "2": "addAtk+40",
+        "3": "",
+        "4": "addAtk+48",
+        "5": "",
+        "6": "stellarElevate+20"
+      },
+      "group_skill": {
+        "50": "stellarBaseDmgBonus+14",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    }
   }
 }

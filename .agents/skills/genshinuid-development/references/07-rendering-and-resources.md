@@ -32,7 +32,7 @@ Wiki 可用图片版（配置 `PicWiki`）。不要无故引入 playwright。
 
 ## 7.3 地图数据
 
-`utils/map/data/`：`charList_{ver}.json`、`weaponList_*.json`、`char_alias.json` 等。
+`utils/map/data/`：`charList_{ver}.json`、`weaponList_*.json`、`char_alias.json`、`weapon_alias.json` 等。
 `ver` 与 `Genshin_version` 一致（如 `7.0.0`）。
 `GS_MAP_PATH.py` 负责加载。改版本必须成套更新，不要只改 `version.py`。
 

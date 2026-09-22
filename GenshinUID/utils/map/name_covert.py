@@ -3,12 +3,14 @@ from typing import Dict, Optional
 from .GS_MAP_PATH import (
     alias_data,
     avatarId2Name,
+    weapon_alias_data,
     avatarId2Star_data,
     avatarName2Element,
     weaponId2Name_data,
     avatarId2SkillList_data,
     enName_to_avatarId_data,
 )
+from .weapon_names import resolve_weapon_name, expand_signature_aliases
 
 
 async def weapon_id_to_name(weapon_id: str) -> str:
@@ -18,9 +20,21 @@ async def weapon_id_to_name(weapon_id: str) -> str:
         return "未知"
 
 
+def alias_to_weapon_name(weapon_name: str) -> str:
+    return resolve_weapon_name(weapon_name, weapon_alias_data, alias_data)
+
+
+def expanded_weapon_alias_data() -> Dict[str, list[str]]:
+    expanded: Dict[str, list[str]] = {}
+    for weapon, aliases in weapon_alias_data.items():
+        expanded[weapon] = expand_signature_aliases(list(aliases), alias_data)
+    return expanded
+
+
 async def name_to_weapon_id(weapon_name: str) -> str:
+    official = alias_to_weapon_name(weapon_name)
     for _id in weaponId2Name_data:
-        if weapon_name == weaponId2Name_data[_id]:
+        if official == weaponId2Name_data[_id]:
             return _id
     else:
         return "11509"

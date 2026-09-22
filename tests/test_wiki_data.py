@@ -143,6 +143,9 @@ def test_weapon_and_artifact_hits() -> None:
     assert homa[0][1] == "护摩之杖"
     sky = _weapon_hits("天空")
     assert len(sky) > 1
+    assert _weapon_hits("银缸")[0][1] == "银釭"
+    assert _weapon_hits("皇女专武")[0][1] == "幽夜华尔兹"
+    assert _weapon_hits("环穿之喙")[0][1] == "鹮穿之喙"
     paradise = _artifact_hits("乐园")
     assert len(paradise) == 1
     assert "乐园" in paradise[0][1]

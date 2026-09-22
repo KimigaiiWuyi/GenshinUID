@@ -71,7 +71,7 @@ async def send_char_materials(bot: Bot, ev: Event) -> None:
     返回一张武器卡片，含1/满级攻击与副词条、精炼特效、突破材料。
 
     Args:
-        text: 武器名称，可后跟 20–90 的等级，例如 "护摩之杖"、"西风剑90"
+        text: 武器正式名、简称、错字或「角色专武」，可后跟 20–90 的等级，例如 "护摩"、"银缸"、"皇女专武"
     """,
 )
 async def send_weapon(bot: Bot, ev: Event) -> None:

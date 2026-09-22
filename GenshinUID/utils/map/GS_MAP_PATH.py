@@ -59,6 +59,7 @@ talentId2Name: TS = {"Name": {}, "Icon": {}}
 weaponHash2Name: Dict[str, str] = {}
 weaponHash2Type: Dict[str, str] = {}
 alias_data: Dict[str, List[str]] = {}
+weapon_alias_data: Dict[str, List[str]] = {}
 avatarId2Star_data: Dict[str, str] = {}
 enName_to_avatarId_data: Dict[str, str] = {}
 ex_monster_data: Dict[str, Dict] = {}
@@ -122,6 +123,9 @@ try:
 
     with open(MAP / "char_alias.json", "r", encoding="UTF-8") as f:
         alias_data.update(msgjson.decode(f.read(), type=Dict[str, List[str]]))
+
+    with open(MAP / "weapon_alias.json", "r", encoding="UTF-8") as f:
+        weapon_alias_data.update(msgjson.decode(f.read(), type=Dict[str, List[str]]))
 
     with open(MAP / avatarId2Star_fileName, "r", encoding="utf8") as f:
         avatarId2Star_data.update(msgjson.decode(f.read(), type=Dict[str, str]))

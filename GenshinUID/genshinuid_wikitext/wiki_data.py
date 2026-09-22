@@ -30,7 +30,12 @@ from ..utils.map.GS_MAP_PATH import (
     reliquaryList,
     ex_monster_data,
 )
-from ..utils.map.name_covert import name_to_element, name_to_avatar_id, alias_to_char_name
+from ..utils.map.name_covert import (
+    name_to_element,
+    name_to_avatar_id,
+    alias_to_char_name,
+    alias_to_weapon_name,
+)
 from ..utils.resource.RESOURCE_PATH import (
     WIKI_DATA_REL,
     WIKI_DATA_CHAR,
@@ -1325,6 +1330,7 @@ async def load_char_story(name: str) -> CharStoryWiki | str:
 
 
 def _weapon_hits(name: str) -> list[tuple[str, str]]:
+    resolved = alias_to_weapon_name(name)
     exact: list[tuple[str, str]] = []
     part: list[tuple[str, str]] = []
     for kid, raw in weaponList.items():
@@ -1335,9 +1341,9 @@ def _weapon_hits(name: str) -> list[tuple[str, str]]:
         wname = raw["name"]
         if not isinstance(wname, str):
             continue
-        if wname == name:
+        if wname == resolved or wname == name:
             exact.append((str(kid), wname))
-        elif name in wname:
+        elif name in wname or (resolved != name and resolved in wname):
             part.append((str(kid), wname))
     if exact:
         return exact

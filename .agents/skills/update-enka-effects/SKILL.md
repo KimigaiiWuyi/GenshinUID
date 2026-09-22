@@ -4,7 +4,8 @@ description: >
   Update GenshinUID genshinuid_enka/effect JSON from yatta changelog (skill_add,
   weapon_effect, artifact_effect, char_effect, char_action, value_attr, dmg_map),
   then rebuild char_action with get_action.py, replace akasha_1p_avg.json
-  with update_akasha_1p.py, and download new icons with download_icon.py.
+  with update_akasha_1p.py, download new icons with download_icon.py,
+  and sync char_alias.json plus weapon_alias.json.
   Use when the user asks to update enka effects, skill_add, weapon_effect,
   artifact_effect, char_action, akasha 1% averages, version effect configs,
   更新面板效果, 更新命座加技, or runs /update-enka-effects.
@@ -36,13 +37,18 @@ python GenshinUID/tools/update_effects.py -v latest --include-skin
 Script path: `GenshinUID/tools/update_effects.py`  
 Report: `GenshinUID/genshinuid_enka/effect/_update_report_<ver>.md`
 
-Same version bump also runs these three. None is optional.
+Same version bump also runs these. None is optional.
 
 ```bash
 python GenshinUID/tools/get_action.py
 python GenshinUID/tools/update_akasha_1p.py
 python GenshinUID/tools/download_icon.py -v 7.0 --skip-skin
+python GenshinUID/tools/sync_char_alias.py
+python GenshinUID/tools/build_weapon_alias.py
 ```
+
+- `sync_char_alias.py` 只给 `char_alias.json` 补缺失的四星、五星键，已有条目不动。打印出来的名字只有正式名，必须再补错字和稳定称呼（不要用「少女」「女士」这类泛词）。
+- `build_weapon_alias.py` 按脚本里的表重写 `weapon_alias.json`：中文缩略、中文错字，以及「角色正式名专武」。不把角色昵称写进这份 JSON，也不写英文全称。查武器名和注册 `ai_alias` 时，`name_covert.alias_to_weapon_name` 用 `char_alias.json` 把「昵称专武」收成正式名。新专武确认是该角色的卡池武器后再写入 `SIGNATURE`，不确定就不要猜。
 
 - `get_action.py` has no flags. Use the Core interpreter (it imports map data and Ambr talent helpers). It rewrites each `char_action.json` entry it converts; a character that fails to convert keeps the previous entry.
 - `update_akasha_1p.py` does not import Core. It replaces `effect/akasha_1p_avg.json` wholesale. `--dry-run` only when the user asked to preview.
@@ -69,17 +75,18 @@ Read DSL rules in `references/effect-dsl.md`.
 2. Run `update_effects.py` (not dry-run unless user asked to preview).
 3. If a new character should score an existing talent row as 星超导 / 星扩散 / 月感电 / 月绽放 / 月结晶, add that row name to `extra` in `get_action.py` first. Skip when the talent already has its own reaction row with a separate multiplier.
 4. Run `get_action.py`, `update_akasha_1p.py`, and `download_icon.py -v <ver> --skip-skin`.
-5. Open the generated `_update_report_*.md`.
-6. **Must human-review**:
+5. Run `sync_char_alias.py`, then fill typos and nicknames for every name it prints. Run `build_weapon_alias.py` after updating its 专武 / 缩略 / 错字 tables for this version.
+6. Open the generated `_update_report_*.md`.
+7. **Must human-review**:
    - Any `weapon_effect` / `artifact_effect` with empty strings or incomplete fight buffs
    - Complex conditional weapons (stacks, team buffs, new reactions)
    - `char_effect` empty shells
    - `dmg_map` empty lists (reference panels)
    - `char_action` rows `get_action.py` cannot see (constellation-only flat hits). Add those only after the rebuild.
-7. Optionally refine DSL by hand using `references/effect-dsl.md` and yatta Chinese affix text (also cached under `GenshinUID/tools/gs_data/`).
-8. Do **not** invent multi-stack / team / reaction numbers without reading the affix text.
-9. For `skill_add`, trust the script; it maps **C3 then C5** (code uses talent count ≥3 and ≥5), not C6.
-10. After edits, summarize: new names, filled vs empty, files touched, and that all three scripts ran.
+8. Optionally refine DSL by hand using `references/effect-dsl.md` and yatta Chinese affix text (also cached under `GenshinUID/tools/gs_data/`).
+9. Do **not** invent multi-stack / team / reaction numbers without reading the affix text.
+10. For `skill_add`, trust the script; it maps **C3 then C5** (code uses talent count ≥3 and ≥5), not C6.
+11. After edits, summarize: new names, filled vs empty, files touched, alias keys added, and that the effect scripts plus both alias scripts ran.
 
 ## Related tools
 
@@ -116,5 +123,7 @@ Read DSL rules in `references/effect-dsl.md`.
 - [ ] `get_action.py` has rebuilt `char_action.json`
 - [ ] `update_akasha_1p.py` has replaced `akasha_1p_avg.json`
 - [ ] `download_icon.py -v <ver> --skip-skin` has run for the new characters and weapons
+- [ ] `sync_char_alias.py` has run, and every new character in `char_alias.json` has typos or a specific nickname, not only the official name
+- [ ] `build_weapon_alias.py` has run; new 专武 / 缩略 / 错字 are in the script tables, with no English full names
 - [ ] Mutual-exclusive items flagged in report / `extra.note`
 - [ ] Empty fight/4pc only when truly no panel stat

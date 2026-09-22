@@ -41,7 +41,7 @@
 
 `utils/rag/register.py`：
 
-- `ai_alias`：`char_alias.json`
+- `ai_alias`：`char_alias.json`、`weapon_alias.json`（正式名 → 别名列表）。版本更新时 `sync_char_alias.py` 补缺失角色，`build_weapon_alias.py` 重生武器别名（只收角色专武、中文缩略、中文错字）。
 - `ai_entity`：角色/武器/圣遗物/怪物/攻略知识块，数据来自 `CHAR_DATA_PATH` 等
 
 由 `utils/message.py` 顶层 import 触发注册。不要在 handler 里再注册一遍。

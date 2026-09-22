@@ -14,7 +14,7 @@ from .models import GsKnowledgePoint, make_kp
 from .weapon_parser import parse_weapon_json, build_weapon_global_summary_kp
 from .monster_parser import parse_monster_json, build_monster_global_summary_kp
 from .artifact_parser import parse_artifact_json, build_artifact_global_summary_kp
-from ..map.GS_MAP_PATH import alias_data
+from ..map.GS_MAP_PATH import alias_data, weapon_alias_data
 from .character_parser import parse_character_json, build_global_summary_kp
 from ..resource.RESOURCE_PATH import REL_DATA_PATH, CHAR_DATA_PATH, WEAPON_DATA_PATH, MONSTER_DATA_PATH
 from ...genshinuid_adv.get_adv import adv_lst
@@ -28,10 +28,17 @@ def _publish(kp: GsKnowledgePoint) -> None:
     _call_entity(ai_entity, kp)
 
 
-def register_aliases():
-    """注册角色别名"""
-    for main_name, alias_list in alias_data.items():
+def _register_alias_map(data: Dict[str, List[str]]) -> None:
+    for main_name, alias_list in data.items():
         ai_alias(main_name, alias_list)
+
+
+def register_aliases() -> None:
+    """注册角色与武器别名。专武的角色别名在这里展开，不写进 JSON。"""
+    from ..map.name_covert import expanded_weapon_alias_data
+
+    _register_alias_map(alias_data)
+    _register_alias_map(expanded_weapon_alias_data())
 
 
 def add_aliases_to_tags(char_name: str, tags: List[str], aliases: Dict[str, List[str]]) -> List[str]:
@@ -214,8 +221,10 @@ def weapon_register():
                     "rank": json_data.get("rank", 3),
                 }
             )
-            # 注册武器详细知识块
+            weapon_name = json_data["name"] if "name" in json_data and isinstance(json_data["name"], str) else ""
             for kp in parse_weapon_json(json_data):
+                if weapon_name:
+                    kp["tags"] = add_aliases_to_tags(weapon_name, kp["tags"], weapon_alias_data)
                 _publish(kp)
 
     # 生成并注册武器全局汇总知识块

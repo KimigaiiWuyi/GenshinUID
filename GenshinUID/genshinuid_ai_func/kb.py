@@ -48,7 +48,8 @@ async def search_genshin_kb(
 ) -> str:
     """检索原神知识库：天赋命座文本、武器特效、套装说明、怪物抗性、角色攻略。
 
-    问机制/攻略/抗性时调用。强制 plugin=GenshinUID，不混入其它游戏。
+    问机制/攻略/抗性/武器被动时调用，不要先 web_search。错字和简称会收成正式名。
+    点名的武器会附带图鉴精确条目（基础攻击、副词条、被动）。
     用户自己的练度走 get_user_genshin_char_list / char_detail；看面板图走「查询 角色名」。
 
     Args:
@@ -62,6 +63,7 @@ async def search_genshin_kb(
     text = expand_query_aliases(raw)
     cap = min(max(limit, 1), 12)
     logger.info(t("log.genshinuid.kb_query", query=text, limit=cap))
+    exact = await _exact_weapon_blocks(text)
     points = await query_knowledge(query=text, limit=cap, plugin_filter=_KB_PLUGINS)
     chunks: list[str] = []
     for point in points:
@@ -69,6 +71,41 @@ async def search_genshin_kb(
         if not isinstance(payload, dict):
             continue
         chunks.append(_payload_text(payload))
+    if exact:
+        chunks = exact + chunks
     if not chunks:
         return f"原神知识库未命中 {text!r}。可换角色全名、套装名或武器名再查。"
     return f"原神知识库命中 {len(chunks)} 条：\n\n" + "\n\n".join(chunks)
+
+
+async def _exact_weapon_blocks(text: str) -> list[str]:
+    """点名的武器走图鉴精确条目，避免向量把别的角色排到前面。"""
+    from ..utils.map.GS_MAP_PATH import weapon_alias_data
+    from ..genshinuid_wikitext.wiki_data import WeaponWiki, load_weapon_wiki
+
+    blocks: list[str] = []
+    seen: set[str] = set()
+    for part in text.split():
+        if part not in weapon_alias_data or part in seen:
+            continue
+        seen.add(part)
+        wiki = await load_weapon_wiki(part, 90)
+        if not isinstance(wiki, WeaponWiki):
+            continue
+        refine = wiki.effect
+        if wiki.refinements:
+            refine = wiki.refinements[0]
+            if len(wiki.refinements) >= 5:
+                refine = f"精1 {wiki.refinements[0]}；精5 {wiki.refinements[4]}"
+        if len(refine) > 500:
+            refine = refine[:500] + "…"
+        blocks.append(
+            f"### {wiki.name}（图鉴精确命中）\n"
+            f"{wiki.rarity}星 {wiki.weapon_type} "
+            f"攻击 {wiki.atk_base}/{wiki.atk_max} "
+            f"{wiki.substat} {wiki.sub_base}/{wiki.sub_max}\n"
+            f"{wiki.effect_name}：{refine}"
+        )
+        if len(blocks) >= 3:
+            break
+    return blocks

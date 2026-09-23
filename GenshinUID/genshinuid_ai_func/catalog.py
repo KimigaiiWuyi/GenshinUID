@@ -19,6 +19,7 @@ from ._common import (
     normalize_weapon_type,
 )
 from ..utils.map.GS_MAP_PATH import charList, weaponList, reliquaryList
+from ..utils.map.name_covert import alias_to_weapon_name
 
 _CTX = ["原神", "Genshin", "游戏"]
 _DOMAIN = "原神资料库"
@@ -107,11 +108,12 @@ async def filter_genshin_weapons(
     Args:
         weapon_type: 单手剑/双手剑/长柄武器/法器/弓。留空不限。
         star: 星级 3/4/5。留空不限。
-        name: 可选名称子串，如 "雾切"、"猎人之径"。
+        name: 正式名、简称、错字或子串，如 "雾切"、"银缸"、"猎人之径"。
     """
     _ = ctx
     want_wp = normalize_weapon_type(weapon_type) if weapon_type else ""
     keyword = name.strip()
+    resolved = alias_to_weapon_name(keyword) if keyword else ""
     rows: list[str] = ["| 武器 | 星 | 类型 | 副属性 |", "|---|---|---|---|"]
     count = 0
     for item in weaponList.values():
@@ -126,7 +128,7 @@ async def filter_genshin_weapons(
             continue
         if star is not None and rank != star:
             continue
-        if keyword and keyword not in wname:
+        if keyword and keyword not in wname and resolved != wname:
             continue
         prop = as_str(item["specialProp"]) if "specialProp" in item else ""
         rows.append(f"| {wname} | {rank} | {wp} | {prop} |")

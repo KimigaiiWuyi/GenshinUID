@@ -78,6 +78,8 @@ def test_signature_nickname_resolves_without_storing_it() -> None:
     )
     assert module.resolve_weapon_name("皇女专武", weapons, chars) == "幽夜华尔兹"
     assert module.resolve_weapon_name("万叶专武", weapons, chars) == "苍古自由之誓"
+    assert module.expand_name_tokens("银缸 武器", weapons, chars) == "银釭 武器"
+    assert module.expand_name_tokens("奥黛塔 银缸 风鹰剑", weapons, chars) == "奥黛塔 银釭 风鹰剑"
     expanded = module.expand_signature_aliases(["菲谢尔专武"], {"菲谢尔": ["皇女", "Fischl"]})
     assert "皇女专武" in expanded
     assert "Fischl专武" not in expanded

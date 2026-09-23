@@ -1,4 +1,4 @@
-"""原神知识库检索包装：强制 plugin=GenshinUID，避免被其它游戏知识淹没。"""
+"""原神知识库检索包装：只查本插件知识点，避免被其它游戏知识淹没。"""
 
 from __future__ import annotations
 
@@ -10,7 +10,11 @@ from gsuid_core.ai_core.rag import query_knowledge
 from gsuid_core.ai_core.models import ToolContext
 from gsuid_core.ai_core.register import ai_tools
 
+from ..utils.map.name_covert import expand_query_aliases
+
 _CTX = ["原神", "Genshin", "游戏"]
+# 知识点 plugin 字段历史值是 genshin；枢纽归属取插件目录名 GenshinUID。
+_KB_PLUGINS = ["GenshinUID", "genshin"]
 
 
 def _payload_text(payload: dict[str, object]) -> str:
@@ -52,12 +56,13 @@ async def search_genshin_kb(
         limit: 最多返回条数，默认 6，最大 12。
     """
     _ = ctx
-    text = query.strip()
-    if not text:
+    raw = query.strip()
+    if not raw:
         return "请提供检索关键词"
+    text = expand_query_aliases(raw)
     cap = min(max(limit, 1), 12)
     logger.info(t("log.genshinuid.kb_query", query=text, limit=cap))
-    points = await query_knowledge(query=text, limit=cap, plugin_filter=["GenshinUID"])
+    points = await query_knowledge(query=text, limit=cap, plugin_filter=_KB_PLUGINS)
     chunks: list[str] = []
     for point in points:
         payload = point.payload

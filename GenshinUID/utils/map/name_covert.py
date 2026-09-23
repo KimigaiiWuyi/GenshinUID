@@ -10,7 +10,7 @@ from .GS_MAP_PATH import (
     avatarId2SkillList_data,
     enName_to_avatarId_data,
 )
-from .weapon_names import resolve_weapon_name, expand_signature_aliases
+from .weapon_names import expand_name_tokens, resolve_weapon_name, expand_signature_aliases
 
 
 async def weapon_id_to_name(weapon_id: str) -> str:
@@ -22,6 +22,10 @@ async def weapon_id_to_name(weapon_id: str) -> str:
 
 def alias_to_weapon_name(weapon_name: str) -> str:
     return resolve_weapon_name(weapon_name, weapon_alias_data, alias_data)
+
+
+def expand_query_aliases(text: str) -> str:
+    return expand_name_tokens(text, weapon_alias_data, alias_data)
 
 
 def expanded_weapon_alias_data() -> Dict[str, list[str]]:

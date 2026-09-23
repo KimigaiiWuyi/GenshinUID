@@ -27,7 +27,7 @@
 | 模块 | 工具（名称以源码为准） | 域 |
 |------|------------------------|----|
 | `catalog.py` | `filter_genshin_chars` 等图鉴筛选 | `capability_domain="原神资料库"` |
-| `kb.py` | `search_genshin_kb` | 知识库，强制 `plugin_filter=["GenshinUID"]` |
+| `kb.py` | `search_genshin_kb` | 知识库。过滤 `GenshinUID` 与历史 `genshin`，查询先走武器/角色别名 |
 | `user.py` | UID 列表、账号概览、角色箱文本、单角色面板文本、圣遗物仓文本 | `capability_domain="原神面板"` |
 
 约定：

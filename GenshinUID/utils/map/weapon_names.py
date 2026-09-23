@@ -1,5 +1,6 @@
 """武器名解析。专武在 JSON 里只存「角色正式名专武」，昵称在这里展开。"""
 
+import re
 from typing import Dict
 
 SIGNATURE_SUFFIX = "专武"
@@ -64,3 +65,23 @@ def resolve_weapon_name(
                 if signature in aliases:
                     return weapon
     return weapon_name
+
+
+def expand_name_tokens(
+    text: str,
+    weapon_aliases: Dict[str, list[str]],
+    char_aliases: Dict[str, list[str]],
+) -> str:
+    """把查询里的独立词收成武器或角色正式名。不切进更长的词。"""
+    parts = [part for part in re.split(r"[\s,，、；;]+", text.strip()) if part]
+    if not parts:
+        return text
+    out: list[str] = []
+    for part in parts:
+        weapon = resolve_weapon_name(part, weapon_aliases, char_aliases)
+        if weapon != part:
+            out.append(weapon)
+            continue
+        char = unique_char_name(part, char_aliases)
+        out.append(char or part)
+    return " ".join(out)

@@ -1,26 +1,22 @@
-import re
-from typing import List
-
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
-from gsuid_core.segment import MessageSegment
 
-from ..version import Genshin_version
 from .get_guide import get_gs_guide
+from .html_endgame import build_abyss_image, build_leyline_image, build_roleplay_image
+from .endgame_query import period_shift, parse_abyss_args, parse_schedule_args
 from ..utils.message import GButton as Button
 from .get_bbs_post_guide import get_material_way_post
-from .get_new_abyss_data import get_review_data
 from ..utils.image.convert import convert_img
-from .draw_poetry_abyss_pic import draw_poetry_abyss_image
 from ..utils.map.name_covert import alias_to_char_name
 from ..utils.resource.RESOURCE_PATH import REF_PATH
 
 sv_char_guide = SV("查询角色攻略")
 sv_abyss_reviews = SV("查询深渊阵容", priority=2)
 sv_poetry_abyss_reviews = SV("查询剧诗深渊阵容", priority=3)
+sv_leyline_reviews = SV("查询幽境危战阵容", priority=3)
 sv_bbs_post_guide = SV("查询BBS攻略")
 
 
@@ -110,67 +106,119 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
         "剧诗深渊阵容",
         "剧诗信息",
         "新深渊信息",
+        "巨屎信息",
         "剧诗怪物",
         "新深渊怪物",
+        "上期剧诗信息",
+        "下期剧诗信息",
+        "上期新深渊信息",
+        "下期新深渊信息",
+        "上期巨屎信息",
+        "下期巨屎信息",
     ),
-    to_ai="""查看剧诗深渊（幻想真境剧诗）的版本信息和怪物阵容
+    covers=["剧诗信息", "幻想真境剧诗", "新深渊信息"],
+    to_ai="""查看幻想真境剧诗（新深渊）某一期的怪物阵容
 
-    当用户说"剧诗信息"、"新深渊怪物"、"剧诗深渊阵容"时调用。
-    以图片形式返回剧诗深渊的怪物阵容和版本信息。
+    当用户说"剧诗信息"、"新深渊信息"、"巨屎信息"、"8月的剧诗"时调用。
+    以图片返回各幕 Boss 和机制。这是版本阵容，不是某个 UID 的战斗记录。
+    返回文本里有日期到日程 id 的对照表，用它判断用户说的日期落在哪一期。
 
     Args:
-        text: 可选的版本号或筛选条件，留空显示当前版本
+        text: 日程 id、日期，或「上期」「下期」。上期/下期相对今天的当期。
+              "32" → 日程 32
+              "2026.8.1"、"2026-08-01" → 覆盖这一天的那一期
+              "下期"、"上期" → 相邻一期。用户说「下期剧诗信息」时 text 写「下期」
+              留空 → 当前开放的一期；怪物还没公布时改最近一期已公开阵容
     """,
 )
 async def send_poetry_abyss_review(bot: Bot, ev: Event):
-    im = await draw_poetry_abyss_image(ev.text.strip())
+    when, schedule_id = parse_schedule_args(ev.text)
+    shift = period_shift(ev.command, ev.text)
+    im = await build_roleplay_image(
+        "" if shift and not schedule_id else schedule_id, None if shift or schedule_id else when, shift
+    )
     logger.info(t("log.genshinuid.msg_09c19e"))
-    await bot.send(im)
+    if isinstance(im, bytes):
+        await bot.send_option(im, [Button("幽境信息", "幽境信息")])
+    else:
+        await bot.send(im)
+
+
+@sv_leyline_reviews.on_command(
+    (
+        "幽境信息",
+        "危战信息",
+        "上期幽境信息",
+        "下期幽境信息",
+        "上期危战信息",
+        "下期危战信息",
+    ),
+    covers=["幽境信息", "幽境危战", "危战信息"],
+    to_ai="""查看幽境危战某一期的关卡、怪物机制、血量和抗性
+
+    当用户说"幽境信息"、"危战信息"、"2026年1月的危战"时调用。
+    以图片返回最高难度三路怪物。这是版本阵容，不是某个 UID 的成绩。
+    返回文本里有日期到日程 id 的对照表，用它判断用户说的日期落在哪一期。
+
+    Args:
+        text: 日程 id、日期，或「上期」「下期」。上期/下期相对今天的当期。
+              "5269012" → 这一期
+              "2026.01.01"、"2026-1-1" → 覆盖这一天的那一期
+              "下期"、"上期" → 相邻一期。用户说「下期危战信息」时 text 写「下期」
+              留空 → 当前开放的一期，没有则用最近一期
+    """,
+)
+async def send_leyline_review(bot: Bot, ev: Event):
+    when, schedule_id = parse_schedule_args(ev.text)
+    shift = period_shift(ev.command, ev.text)
+    im = await build_leyline_image(
+        "" if shift and not schedule_id else schedule_id, None if shift or schedule_id else when, shift
+    )
+    if isinstance(im, bytes):
+        await bot.send_option(im, [Button("剧诗信息", "剧诗信息")])
+    else:
+        await bot.send(im)
 
 
 @sv_abyss_reviews.on_command(
-    ("版本深渊", "深渊阵容", "深渊怪物", "深渊信息"),
+    (
+        "版本深渊",
+        "深渊阵容",
+        "深渊怪物",
+        "深渊信息",
+        "上期深渊信息",
+        "下期深渊信息",
+        "上期版本深渊",
+        "下期版本深渊",
+    ),
     covers=["深渊怎么打", "深渊阵容"],
-    to_ai="""查看指定版本的深渊怪物阵容和信息
+    to_ai="""查看深境螺旋某一期、某一层的怪物阵容和血量
 
-    当用户说"版本深渊"、"深渊阵容"、"深渊怪物"、"深渊信息"时调用。
-    以图片形式返回指定版本和层数的深渊怪物配置。
+    当用户说"深渊信息"、"深渊信息11"、"8月10日的深渊12层"时调用。
+    以图片返回上下半怪物、buff 和血量。这是版本阵容，不是某个 UID 的成绩。
+    返回文本里有日期到日程 id 的对照表，用它判断用户说的日期落在哪一期。
 
     Args:
-        text: 格式为"[版本号] [层数]"，例如 "4.3 12"、"5.0 12"
-              留空显示当前版本12层
+        text: 层数、日期、日程 id，可组合。层数缺省 12。
+              "11" → 当期第 11 层
+              "11 2026.8.10" → 2026-08-10 那一期的第 11 层
+              "2026-08-10"、"2026/8/10" → 那一期的第 12 层
+              "20097" → 日程 20097 的第 12 层
+              "下期"、"上期 11" → 相对今天的相邻一期。用户说「下期深渊信息11」时 text 写「下期 11」
+              留空 → 最近一期第 12 层
     """,
 )
 async def send_abyss_review(bot: Bot, ev: Event):
-    floor = "12"
-    if not ev.text:
-        version = Genshin_version[:-2]
-    else:
-        if "." in ev.text:
-            num = ev.text.index(".")
-            version = ev.text[num - 1 : num + 2]  # noqa:E203
-            _deal = ev.text.replace(version, "").strip()
-            if _deal:
-                floor = re.findall(r"[0-9]+", _deal)[0]
-        else:
-            floor = ev.text
-            version = Genshin_version[:-2]
-
-    im = await get_review_data(version, floor)
-
+    floor, when, schedule_id = parse_abyss_args(ev.text)
+    shift = period_shift(ev.command, ev.text)
+    im = await build_abyss_image(
+        floor, None if shift else when, "" if shift and not schedule_id else schedule_id, shift
+    )
     if isinstance(im, bytes):
-        c = Button("♾️深渊概览", "深渊概览")
-        input_version = float(version)
-        now_version = float(Genshin_version[:-2])
-        if input_version <= now_version:
-            gv = Genshin_version.split(".")
-            adv_version = f"{gv[0]}.{int(gv[1]) + 1}"
-        else:
-            adv_version = now_version
-        d = Button(f"♾️版本深渊{adv_version}", f"深渊概览{adv_version}")
-        await bot.send_option(im, [c, d])
-    elif isinstance(im, List):
-        mes = [MessageSegment.text(str(msg)) for msg in im]  # type: ignore
-        await bot.send(MessageSegment.node(mes))
+        tail = f" {schedule_id}" if schedule_id else (f" {when.isoformat()}" if when else "")
+        await bot.send_option(
+            im,
+            [Button("第11层", f"深渊信息11{tail}"), Button("第12层", f"深渊信息12{tail}")],
+        )
     elif isinstance(im, str):
         await bot.send(im)

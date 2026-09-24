@@ -13,6 +13,8 @@ from gsuid_core.utils.api.ambr.request import get_ambr_icon
 from gsuid_core.utils.image.image_tools import get_color_bg
 
 from ..version import Genshin_version
+from .html_endgame import build_abyss_image
+from .lunaris_tower import TowerMonster, TowerFloorView
 from ..utils.map.GS_MAP_PATH import ex_monster_data, monster2entry_data
 from ..utils.fonts.genshin_fonts import (
     gs_font_24,
@@ -101,7 +103,9 @@ async def get_half_img(data: List, half: Literal["Upper", "Lower"]):
                 icon_name = md["icon"]
             elif "Name" in monster:
                 monster_name = monster["Name"]["CH"]
-                if wave_desc in monster2entry_data:
+                if "Icon" in monster and isinstance(monster["Icon"], str) and monster["Icon"]:
+                    icon_name = monster["Icon"]
+                elif wave_desc in monster2entry_data:
                     icon_name = monster2entry_data[wave_desc]["icon"]
                 else:
                     icon_name = "UI_AnimalIcon_Inu_Tanuki_01"
@@ -202,33 +206,32 @@ def change_js_to_python(js_code: str) -> Dict:
     return json.loads(python_code)
 
 
+def _half_waves(monsters: list[TowerMonster], buff: str) -> List:
+    packed = []
+    for monster in monsters:
+        packed.append(
+            {
+                "ID": 0,
+                "Num": monster["count"],
+                "Name": {"CH": monster["name"]},
+                "Icon": monster["icon"],
+            }
+        )
+    wave: Dict = {"Monsters": packed, "WaveDesc": 0}
+    if buff:
+        wave["ExtraDesc"] = {"CH": buff}
+    return [wave]
+
+
 async def get_review_data(version: str = Genshin_version[:3], floor: str = "12"):
-    js_path = Path(__file__).parent / "abyss.js"
-    js_code = js_path.read_text(encoding="UTF-8")
-    all_data = change_js_to_python(js_code)
+    _ = version
+    floor_no = int(floor) if floor.isdigit() else 12
+    return await build_abyss_image(floor_no)
 
-    """
-    all_data = await _get_data_from_url(
-        'https://homdgcat.wiki/gi/CH/database.js',
-        schedule_path,
-        86400,
-    )
-    """
 
-    schedule: List = all_data["_SpiralAbyssSchedule"]
-    for i in schedule:
-        if version in i["Name"]:
-            floors_data = i
-            break
-    else:
-        return None
-
-    floor_id = floors_data["Floors"][int(floor) - 9]
-
-    data = all_data["_SpiralAbyssFloorConfig"][str(floor_id)]
-    floor_buff = data["Disorder"].replace("<b>", "").replace("</b>", "")
-    floor_monster = data["Chambers"]
-
+async def _draw_lunaris_floor(view: TowerFloorView) -> bytes:
+    floor = str(view["floor"])
+    floor_buff = view["buff_desc"] or view["buff_name"]
     icon = Image.open(TEXT2D_PATH / "icon.png")
     img = await get_color_bg(1100, 4000, TEXT_PATH / "bg", True)
     img_draw = ImageDraw.Draw(img)
@@ -236,21 +239,21 @@ async def get_review_data(version: str = Genshin_version[:3], floor: str = "12")
     img_draw.rounded_rectangle((421, 272, 548, 310), 10, (144, 0, 0))
     img_draw.rounded_rectangle((570, 272, 772, 310), 10, (27, 82, 155))
 
-    img_draw.text((429, 239), floor_buff, (215, 215, 215), gs_font_26, "lm")
+    img_draw.text((429, 239), floor_buff[:42], (215, 215, 215), gs_font_26, "lm")
     img_draw.text((425, 175), f"深境螺旋 {floor}层", "white", gs_font_84, "lm")
 
-    img_draw.text((485, 291), f"版本{version}", "white", gs_font_28, "mm")
-    img_draw.text((670, 291), "数据 妮可少年", "white", gs_font_28, "mm")
+    img_draw.text((485, 291), view["open_time"][:10], "white", gs_font_28, "mm")
+    img_draw.text((670, 291), "数据 Lunaris", "white", gs_font_28, "mm")
 
     img.paste(icon, (45, 80), icon)
 
     level_h = 456
     temp = 0
-    for f_index, level in enumerate(floor_monster):
-        level_monster_lv = level["Level"]  # 72
-        level_name = level["Name"]  # '12-1'
-        upper = level["Upper"]
-        lower = level["Lower"]
+    for chamber in view["chambers"]:
+        level_monster_lv = chamber["level"]
+        level_name = chamber["name"]
+        upper = _half_waves(chamber["upper"], chamber["upper_buff"])
+        lower = _half_waves(chamber["lower"], chamber["lower_buff"])
 
         upper_img = await get_half_img(upper, "Upper")
         lower_img = await get_half_img(lower, "Lower")

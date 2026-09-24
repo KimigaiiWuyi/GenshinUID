@@ -14,9 +14,8 @@ from ..utils.map.name_covert import alias_to_char_name
 from ..utils.resource.RESOURCE_PATH import REF_PATH
 
 sv_char_guide = SV("查询角色攻略")
-sv_abyss_reviews = SV("查询深渊阵容", priority=2)
-sv_poetry_abyss_reviews = SV("查询剧诗深渊阵容", priority=3)
-sv_leyline_reviews = SV("查询幽境危战阵容", priority=3)
+# 「深渊信息」也命中旧命令「深渊」。新服务先跑并阻断，避免空返回。
+sv_version_lineup = SV("查询版本阵容", priority=1)
 sv_bbs_post_guide = SV("查询BBS攻略")
 
 
@@ -100,7 +99,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
         await bot.logger.warning(t("log.genshinuid.guide_ref_missing", name=name))
 
 
-@sv_poetry_abyss_reviews.on_command(
+@sv_version_lineup.on_command(
     (
         "剧诗版本深渊",
         "剧诗深渊阵容",
@@ -116,6 +115,7 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
         "上期巨屎信息",
         "下期巨屎信息",
     ),
+    block=True,
     covers=["剧诗信息", "幻想真境剧诗", "新深渊信息"],
     to_ai="""查看幻想真境剧诗（新深渊）某一期的怪物阵容
 
@@ -144,7 +144,7 @@ async def send_poetry_abyss_review(bot: Bot, ev: Event):
         await bot.send(im)
 
 
-@sv_leyline_reviews.on_command(
+@sv_version_lineup.on_command(
     (
         "幽境信息",
         "危战信息",
@@ -153,6 +153,7 @@ async def send_poetry_abyss_review(bot: Bot, ev: Event):
         "上期危战信息",
         "下期危战信息",
     ),
+    block=True,
     covers=["幽境信息", "幽境危战", "危战信息"],
     to_ai="""查看幽境危战某一期的关卡、怪物机制、血量和抗性
 
@@ -180,7 +181,7 @@ async def send_leyline_review(bot: Bot, ev: Event):
         await bot.send(im)
 
 
-@sv_abyss_reviews.on_command(
+@sv_version_lineup.on_command(
     (
         "版本深渊",
         "深渊阵容",
@@ -191,6 +192,7 @@ async def send_leyline_review(bot: Bot, ev: Event):
         "上期版本深渊",
         "下期版本深渊",
     ),
+    block=True,
     covers=["深渊怎么打", "深渊阵容"],
     to_ai="""查看深境螺旋某一期、某一层的怪物阵容和血量
 

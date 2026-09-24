@@ -43,6 +43,7 @@ async def send_bbs_post_guide(bot: Bot, ev: Event):
 
 @sv_char_guide.on_prefix(
     ("参考攻略", "攻略", "推荐"),
+    covers=["角色攻略", "原神攻略"],
     to_ai="""查询原神角色攻略图片
 
     当用户说"攻略 甘雨"、"参考攻略 雷电将军"、"推荐 胡桃"时调用。
@@ -55,6 +56,7 @@ async def send_bbs_post_guide(bot: Bot, ev: Event):
 )
 @sv_char_guide.on_suffix(
     ("攻略", "推荐"),
+    covers=["角色攻略", "原神攻略"],
     to_ai="""查询原神角色攻略图片
 
     当用户说"甘雨攻略"、"雷电将军推荐"时调用。
@@ -128,6 +130,7 @@ async def send_poetry_abyss_review(bot: Bot, ev: Event):
 
 @sv_abyss_reviews.on_command(
     ("版本深渊", "深渊阵容", "深渊怪物", "深渊信息"),
+    covers=["深渊怎么打", "深渊阵容"],
     to_ai="""查看指定版本的深渊怪物阵容和信息
 
     当用户说"版本深渊"、"深渊阵容"、"深渊怪物"、"深渊信息"时调用。

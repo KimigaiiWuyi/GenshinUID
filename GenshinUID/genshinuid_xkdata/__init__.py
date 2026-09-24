@@ -40,6 +40,7 @@ async def send_abyss_pic(bot: Bot, ev: Event):
 @sv_get_abyss_database.on_fullmatch(
     ("深渊队伍", "深渊队伍统计", "深渊队伍推荐", "深渊组队", "深渊配队"),
     block=True,
+    covers=["深渊怎么打", "深渊配队"],
     to_ai="""查看当前深渊的队伍推荐和组队统计图
 
     当用户说"深渊队伍"、"深渊配队"、"深渊组队推荐"时调用。

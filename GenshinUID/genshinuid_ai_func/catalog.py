@@ -146,7 +146,7 @@ async def filter_genshin_weapons(
     category="common",
     context_tags=_CTX,
     capability_domain=_DOMAIN,
-    covers=["查询原神圣遗物套装图鉴：2件/4件套效果"],
+    covers=["圣遗物套装", "套装效果"],
     aliases=["原神·圣遗物图鉴", "原神·套装效果"],
 )
 async def filter_genshin_artifact_sets(

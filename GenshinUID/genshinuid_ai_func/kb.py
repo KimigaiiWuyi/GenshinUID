@@ -37,7 +37,12 @@ def _payload_text(payload: dict[str, object]) -> str:
     context_tags=_CTX,
     capability_domain="原神资料库",
     covers=[
-        "检索原神知识库：角色档案/命座天赋、武器、圣遗物套装、怪物抗性、角色攻略",
+        "带什么圣遗物",
+        "圣遗物套装",
+        "原神角色配队",
+        "原神角色攻略",
+        "原神怪物抗性",
+        "原神武器被动",
     ],
     aliases=["原神·知识库", "原神·资料检索"],
 )

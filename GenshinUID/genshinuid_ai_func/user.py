@@ -36,7 +36,7 @@ from ..genshinuid_enka.get_enka_img import get_char_data
 _CTX = ["原神", "Genshin", "游戏"]
 _DOMAIN = "原神面板"
 _COVER_UID = ["查询当前用户已绑定的原神 UID 列表与默认号"]
-_COVER_PLAYER = ["查询原神账号冒险等阶、世界等级、成就、深渊层数、角色数量"]
+_COVER_PLAYER = ["原神冒险等阶", "原神世界等级", "原神成就", "深渊层数"]
 _COVER_BOX = [
     "查询原神角色列表文本：有 Cookie 为全角色箱，否则仅为展柜缓存（最多12名，非完整箱）",
 ]
@@ -160,7 +160,7 @@ def _format_enka_player(uid: str, info: dict[str, object]) -> str:
 async def get_user_genshin_player_info(ctx: RunContext[ToolContext], uid: str = "") -> str:
     """查询原神账号概览文本：冒险等阶、成就、深渊层数、神瞳宝箱、角色数量。
 
-    问「冒险等阶 / 成就多少 / 深渊打到哪」用本工具。要看角色面板图请走触发器「查询 角色名」。
+    问「冒险等阶 / 成就多少 / 深渊层数」用本工具。怎么打、阵容走深渊阵容工具。
     有 Cookie 走米游社全账号统计；否则读 Enka 名片缓存。
 
     Args:

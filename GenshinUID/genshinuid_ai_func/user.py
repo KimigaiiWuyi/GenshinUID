@@ -61,7 +61,7 @@ async def _need_uid(ctx: RunContext[ToolContext], uid: str) -> tuple[str, str]:
         return found, ""
     if raw:
         if not valid_uid(raw):
-            return "", "uid 须为 9 位数字"
+            return "", "uid 须为 9 到 10 位数字"
         return "", "该 UID 不属于当前用户（仅主人可查他人）"
     return "", UID_HINT
 
@@ -92,7 +92,7 @@ async def get_user_genshin_uids(
     uid_q = target_user_id or ev.user_id
     uid_list = await GsBind.get_uid_list_by_game(uid_q, ev.bot_id)
     if uid_list is None or not uid_list:
-        return f"user_id={uid_q} 未绑定原神 UID。提示用户发送 `{PREFIX}绑定uid` 后跟 9 位数字。"
+        return f"user_id={uid_q} 未绑定原神 UID。提示用户发送 `{PREFIX}绑定uid` 后跟 9 到 10 位数字。"
     default_uid = await GsBind.get_uid_by_game(uid_q, ev.bot_id)
     lines = [f"user_id={uid_q} 已绑定 {len(uid_list)} 个原神 UID:"]
     for item in uid_list:
@@ -164,7 +164,7 @@ async def get_user_genshin_player_info(ctx: RunContext[ToolContext], uid: str = 
     有 Cookie 走米游社全账号统计；否则读 Enka 名片缓存。
 
     Args:
-        uid: 9 位原神 UID。留空则用当前用户默认绑定。
+        uid: 9 到 10 位原神 UID。留空则用当前用户默认绑定。
     """
     target, err = await _need_uid(ctx, uid)
     if err:
@@ -221,7 +221,7 @@ async def get_user_genshin_char_list(ctx: RunContext[ToolContext], uid: str = ""
     无 Cookie：仅展柜缓存（complete=false，最多 12 名），不是账号全部角色。
 
     Args:
-        uid: 9 位原神 UID。留空则用当前用户默认绑定。
+        uid: 9 到 10 位原神 UID。留空则用当前用户默认绑定。
     """
     target, err = await _need_uid(ctx, uid)
     if err:
@@ -364,7 +364,7 @@ async def get_user_genshin_char_detail(
 
     Args:
         char_name: 角色名或别名，如 "胡桃"、"核桃"、"雷神"。
-        uid: 9 位原神 UID。留空则用当前用户默认绑定。
+        uid: 9 到 10 位原神 UID。留空则用当前用户默认绑定。
     """
     if not char_name.strip():
         return "请提供角色名"
@@ -402,7 +402,7 @@ async def get_user_genshin_artifacts(
     可按套装名过滤。要看出图请走触发器「圣遗物仓库」。
 
     Args:
-        uid: 9 位原神 UID。留空则用当前用户默认绑定。
+        uid: 9 到 10 位原神 UID。留空则用当前用户默认绑定。
         set_name: 可选套装名子串，如 "绝缘"、"魔女"。留空返回全部（截断到 limit）。
         limit: 最多返回条数，默认 40，最大 80。
     """

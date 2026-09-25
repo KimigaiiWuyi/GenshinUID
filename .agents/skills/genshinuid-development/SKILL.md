@@ -50,7 +50,7 @@ description: >
 
 - 前缀 `gs`；运行时 `PREFIX = get_plugin_available_prefix("GenshinUID")`。
 - 绑定 `GsBind`（框架表），Cookie `GsUser`。本插件无自己的 Bind 模型。
-- UID 抽取正则 `\d{9}`（`utils/convert.py::get_uid`）。
+- UID 抽取：`utils/convert.py::get_uid`，完整的 9～10 位数字。
 - 面板：`genshinuid_enka/`；无 CK 只有展柜最多 12 名。
 - 出图命令用 `to_ai` + 数据层 `ai_return`；纯文本用 `genshinuid_ai_func` 的 `@ai_tools`。
 - 知识库 `utils/rag/`。检索过滤要同时带 `GenshinUID` 和历史字段 `genshin`。

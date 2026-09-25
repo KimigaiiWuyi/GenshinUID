@@ -55,7 +55,7 @@
 | `genshinuid_config` / `_help` / `_status` / `_resource` / `_check` / `_data` / `_start` | 配置、帮助、资源、启动 |
 | `genshinuid_ai_func` | `@ai_tools`：catalog / kb / user |
 
-`GsBind.insert_uid(..., group_id, 9)` 的 `9` 是 **`lenth_limit`（UID 字符串长度）**，不是绑定个数。
+`GsBind.insert_uid(..., group_id, lenth_limit)` 的最后一个整数是 **UID 字符串长度**（精确相等），不是绑定个数。原神传 `len(uid)`，只接受 9 或 10 位。
 
 ## Skills
 
@@ -128,7 +128,7 @@ uv run basedpyright
 ## 本仓库结构约定
 
 - 嵌套加载：`__nest__.py` + `__full__.py`。内层 `__init__.py` **不要**手工 import 子包。
-- UID：`utils/convert.py::get_uid`，正则 `\d{9}`，支持 `@`。
+- UID：`utils/convert.py::get_uid`，完整的 9～10 位数字，支持 `@`。
 - 无 CK 时面板只有 Enka 展柜（最多 12 名），文案必须写明不是完整箱。
 - 配置：`gsconfig`；默认值变量名历史拼写 **`CONIFG_DEFAULT`**，不要无意义重命名。
 - 订阅任务名带 `[原神]`，走 `gs_subscribe`。
@@ -138,7 +138,7 @@ uv run basedpyright
 ## 坑点
 
 1. 本插件 `GsBind` 不要传 `game_name="zzz"`。
-2. UID 保持 9 位（`lenth_limit=9` 与 `\d{9}` 一致）。
+2. UID 为 9～10 位。绑定把实际长度传给 `lenth_limit`；`get_uid` 用同一范围，不能把 10 位截成前 9 位。
 3. `EnableCharCardByMys` 开了可能验证码。
 4. 版本更新必须成套改 `version.py` + `utils/map/data/*_{ver}.json` + `update_effects.py`；Akasha 1% 平均另跑 `tools/update_akasha_1p.py`。
 5. `tools/` 不进 ruff；业务逻辑不要藏进去。

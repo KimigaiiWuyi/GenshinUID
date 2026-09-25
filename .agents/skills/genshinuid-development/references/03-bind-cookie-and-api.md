@@ -7,16 +7,17 @@
 `genshinuid_user` 调框架：
 
 ```python
-await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, 9)
+await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, len(uid))
 await GsBind.switch_uid_by_game(qid, ev.bot_id, uid)
 await GsBind.delete_uid(qid, ev.bot_id, uid)
 ```
 
-原神是 `GsBind` 默认游戏，**不要**传 `game_name="zzz"`。位数 `9`。
+原神是 `GsBind` 默认游戏，**不要**传 `game_name="zzz"`。位数 9 或 10。
+框架 `lenth_limit` 是精确长度，所以传入 `len(uid)`。
 
 解析当前 UID：`utils/convert.py::get_uid`。
 
-- 文本里的 9 位数字优先，并从 `ev.text` 剥掉。
+- 文本里完整的 9～10 位数字优先，并从 `ev.text` 剥掉。更长或更短的数字串不截断。
 - 否则 `GsBind.get_uid_by_game(user_id, bot_id)`。
 - `@` 他人且不是 bot 自身 → 查被 @ 者。
 - 顺带把 `group_id` 写回绑定记录（推送用）。

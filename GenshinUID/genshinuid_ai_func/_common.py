@@ -8,6 +8,7 @@ from pathlib import Path
 from gsuid_core.models import Event
 from gsuid_core.utils.database.models import GsBind
 
+from ..utils.convert import is_genshin_uid
 from ..utils.map.GS_MAP_PATH import avatarName2Weapon
 from ..utils.resource.RESOURCE_PATH import PLAYER_PATH
 
@@ -97,7 +98,7 @@ def is_master(ev: Event | None) -> bool:
 def valid_uid(uid: str | None) -> bool:
     if uid is None:
         return False
-    return uid.isdigit() and len(uid) == 9
+    return is_genshin_uid(uid)
 
 
 def element_zh(raw: str) -> str:

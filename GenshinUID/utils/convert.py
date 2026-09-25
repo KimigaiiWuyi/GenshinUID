@@ -7,6 +7,29 @@ from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.utils.database.models import GsBind
 
+UID_LEN_MIN = 9
+UID_LEN_MAX = 10
+# 完整数字串才算 UID，避免把 10 位截成前 9 位。
+_UID_RE = re.compile(rf"(?<!\d)\d{{{UID_LEN_MIN},{UID_LEN_MAX}}}(?!\d)")
+
+
+def is_genshin_uid(uid: str) -> bool:
+    return uid.isdigit() and UID_LEN_MIN <= len(uid) <= UID_LEN_MAX
+
+
+def split_uid_from_text(text: str) -> tuple[str | None, str]:
+    matched = _UID_RE.search(text)
+    if matched is None:
+        return None, text
+    uid = matched.group(0)
+
+    def _repl(item: re.Match[str]) -> str:
+        if item.group(0) == uid:
+            return ""
+        return item.group(0)
+
+    return uid, _UID_RE.sub(_repl, text)
+
 
 @overload
 async def get_uid(bot: Bot, ev: Event) -> Optional[str]: ...
@@ -17,13 +40,9 @@ async def get_uid(bot: Bot, ev: Event, get_user_id: bool = True) -> Tuple[Option
 
 
 async def get_uid(bot: Bot, ev: Event, get_user_id: bool = False) -> Union[Optional[str], Tuple[Optional[str], str]]:
-    uid_data = re.findall(r"\d{9}", ev.text)
+    uid, ev.text = split_uid_from_text(ev.text)
     user_id = ev.at if ev.at and (ev.bot_id != ev.at and ev.bot_self_id != ev.at) else ev.user_id
-    if uid_data:
-        uid: Optional[str] = uid_data[0]
-        if uid:
-            ev.text = ev.text.replace(uid, "")
-    else:
+    if uid is None:
         data = await GsBind.select_data(user_id, ev.bot_id)
         if data is not None:
             if not data.group_id:

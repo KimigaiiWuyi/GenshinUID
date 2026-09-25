@@ -5,6 +5,7 @@ from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.database.models import GsBind
 
+from ..utils.convert import is_genshin_uid
 from ..utils.message import GButton as Button, send_diff_msg
 from .get_ck_help_msg import get_ck_help
 
@@ -25,11 +26,11 @@ sv_user_help = SV("绑定帮助")
     ),
     to_ai="""绑定、切换或删除原神UID
 
-    当用户说"绑定uid 100000000"、"切换uid 100000001"、"删除uid 100000000"时调用。
-    支持绑定多个UID并在之间切换。操作结果以文字形式返回。
+    当用户说"绑定uid 100000000"、"切换uid 1000000001"、"删除uid 100000000"时调用。
+    支持绑定多个UID并在之间切换。UID 为 9 到 10 位数字。操作结果以文字形式返回。
 
     Args:
-        text: 要操作的UID数字，纯数字，例如 "100000000"
+        text: 要操作的UID数字，9到10位纯数字，例如 "100000000" 或 "1000000001"
               - 绑定：将UID绑定到当前账号
               - 切换：切换到已绑定的某个UID
               - 删除：从绑定列表中移除该UID
@@ -53,13 +54,17 @@ async def send_link_uid_msg(bot: Bot, ev: Event):
     f = Button("❌删除uid", "删除uid")
 
     if "绑定" in ev.command:
-        data = await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, 9)
+        # 框架 lenth_limit 只接受一个精确长度，9 和 10 都要放行。
+        if is_genshin_uid(uid):
+            data = await GsBind.insert_uid(qid, ev.bot_id, uid, ev.group_id, len(uid))
+        else:
+            data = -1
         return await send_diff_msg(
             bot,
             data,
             {
                 0: f"绑定UID{uid}成功！",
-                -1: f"UID{uid}的位数不正确！",
+                -1: f"UID{uid}的位数不正确！须为9到10位数字。",
                 -2: f"UID{uid}已经绑定过了！",
                 -3: "你输入了错误的格式!",
             },

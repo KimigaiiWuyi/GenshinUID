@@ -91,7 +91,7 @@ plugins/GenshinUID/
 ```
 gs查询 胡桃
   → sv_get_enka / roleinfo 触发器
-  → get_uid(bot, ev)          # 9 位或 GsBind
+  → get_uid(bot, ev)          # 9～10 位或 GsBind
   → 读 players/{uid} 或拉 Enka/米游社
   → draw_*（数据层 ai_return）
   → bot.send(图)

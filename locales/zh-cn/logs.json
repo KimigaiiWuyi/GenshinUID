@@ -195,5 +195,9 @@
   "log.genshinuid.user_bind_start": "开始执行[绑定/解绑用户信息]",
   "log.genshinuid.user_id_p0_p1_512ea1": "[原神服务] [{user_id}]尝试[{p0}]了[{p1}]功能",
   "log.genshinuid.version_0c583a": "[导出抽卡记录] 版本v{version}开始保存文件...",
-  "log.genshinuid.version_a70d6a": "[导出抽卡记录] 版本v{version}开始执行..."
+  "log.genshinuid.version_a70d6a": "[导出抽卡记录] 版本v{version}开始执行...",
+  "log.genshinuid.usage_abyss_ok": "[深渊队伍] 使用率图已生成",
+  "log.genshinuid.usage_hard_ok": "[危战队伍] 使用率图已生成",
+  "log.genshinuid.usage_refresh": "[使用率] 已缓存 {kind}",
+  "log.genshinuid.usage_refresh_fail": "[使用率] 刷新 {kind} 失败"
 }

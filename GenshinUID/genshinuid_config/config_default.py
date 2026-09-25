@@ -104,7 +104,7 @@ CONIFG_DEFAULT: Dict[str, GSC] = {
     "help_column": GsStrConfig(
         "帮助图列数",
         "修改帮助图有多少列",
-        "6",
+        "4",
     ),
     "EnableCharCardByMys": GsBoolConfig(
         "从米游社获取面板替代Enka服务",

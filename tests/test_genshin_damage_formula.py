@@ -97,6 +97,8 @@ def test_abyss_and_damage_keywords_do_not_steal_each_other() -> None:
     _load("genshin_agent_profiles", "agents.py")
     try:
         assert match_capability_node("深渊怎么打") == "genshin_abyss_agent"
+        assert match_capability_node("深渊使用率") == "genshin_abyss_agent"
+        assert match_capability_node("危战概览") == "genshin_abyss_agent"
         assert match_capability_node("0+1的沃雅妮莎对丝柯克队伍提升有多少") == "genshin_damage_agent"
         assert match_capability_node("完全无关的闲聊你好呀") == ""
     finally:

@@ -51,6 +51,7 @@ HG_ICON_PATH = TEXT2D_PATH / "hg"
 DATA_PATH = MAIN_PATH / "data"
 PLAYER_PATH = MAIN_PATH / "players"
 WIKI_DATA_PATH = DATA_PATH / "wiki"
+USAGE_RANK_PATH = DATA_PATH / "usage_rank"
 WIKI_DATA_CHAR = WIKI_DATA_PATH / "char"
 WIKI_DATA_WEAPON = WIKI_DATA_PATH / "weapon"
 WIKI_DATA_REL = WIKI_DATA_PATH / "reliquary"
@@ -105,6 +106,7 @@ def init_dir():
         REL_DATA_PATH,
         FOOD_DATA_PATH,
         WIKI_DATA_PATH,
+        USAGE_RANK_PATH,
         WIKI_DATA_CHAR,
         WIKI_DATA_WEAPON,
         WIKI_DATA_REL,

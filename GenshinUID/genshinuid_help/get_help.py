@@ -34,7 +34,7 @@ async def get_core_help() -> Union[bytes, str]:
     if column_str.isdigit():
         column = int(column_str)
     else:
-        column = 6
+        column = 4
 
     return await get_new_help(
         plugin_name="GenshinUID",

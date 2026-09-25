@@ -195,5 +195,9 @@
   "log.genshinuid.user_bind_start": "Start [bind/unbind user]",
   "log.genshinuid.user_id_p0_p1_512ea1": "[Genshin service] [{user_id}] tried [{p0}] feature [{p1}]",
   "log.genshinuid.version_0c583a": "[Export gacha] Version v{version} starting file save...",
-  "log.genshinuid.version_a70d6a": "[Export gacha] Version v{version} starting..."
+  "log.genshinuid.version_a70d6a": "[Export gacha] Version v{version} starting...",
+  "log.genshinuid.usage_abyss_ok": "[Abyss teams] Usage image ready",
+  "log.genshinuid.usage_hard_ok": "[Stygian teams] Usage image ready",
+  "log.genshinuid.usage_refresh": "[Usage] Cached {kind}",
+  "log.genshinuid.usage_refresh_fail": "[Usage] Refresh {kind} failed"
 }

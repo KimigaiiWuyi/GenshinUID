@@ -195,5 +195,9 @@
   "log.genshinuid.user_bind_start": "[UIDバインド/解除]を開始",
   "log.genshinuid.user_id_p0_p1_512ea1": "[原神サービス] [{user_id}] が [{p0}] で [{p1}] 機能を試行",
   "log.genshinuid.version_0c583a": "[ガチャ履歴エクスポート] バージョン v{version} ファイル保存開始...",
-  "log.genshinuid.version_a70d6a": "[ガチャ履歴エクスポート] バージョン v{version} 実行開始..."
+  "log.genshinuid.version_a70d6a": "[ガチャ履歴エクスポート] バージョン v{version} 実行開始...",
+  "log.genshinuid.usage_abyss_ok": "[深淵編成] 使用率画像を生成した",
+  "log.genshinuid.usage_hard_ok": "[危戦編成] 使用率画像を生成した",
+  "log.genshinuid.usage_refresh": "[使用率] {kind} をキャッシュした",
+  "log.genshinuid.usage_refresh_fail": "[使用率] {kind} の更新に失敗"
 }

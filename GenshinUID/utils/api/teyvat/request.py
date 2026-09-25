@@ -23,6 +23,16 @@ class _TeyvatAPI:
         else:
             return -500
 
+    async def get_rank_payload(self, url: str) -> object | int:
+        data = await self._teyvat_request(url)
+        if isinstance(data, int):
+            return data
+        if isinstance(data, dict) and "code" in data and data["code"] == 200:
+            return data
+        if isinstance(data, dict) and "code" in data and isinstance(data["code"], int):
+            return data["code"]
+        return -500
+
     async def get_return_list(self) -> Union[TeyvatReturnList, int]:
         data = await self._teyvat_request(ReturnList_API)
         if isinstance(data, Dict) and "code" in data:

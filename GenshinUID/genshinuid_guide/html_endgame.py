@@ -29,7 +29,6 @@ PAGE_W = 680
 PAD = 12
 GAP = 8
 COL = (PAGE_W - PAD * 2 - GAP) // 2
-COL3 = (PAGE_W - PAD * 2 - GAP * 2) // 3
 INK = "#f2f5fb"
 INK_2 = "rgba(242,245,251,0.62)"
 INK_3 = "rgba(242,245,251,0.38)"
@@ -137,14 +136,16 @@ def _file_uri(path: Path) -> str:
     return uri
 
 
-def _css(accent: str) -> str:
+def _css(accent: str, page_w: int = PAGE_W) -> str:
+    col = (page_w - PAD * 2 - GAP) // 2
+    col3 = (page_w - PAD * 2 - GAP * 2) // 3
     return f"""
 * {{ box-sizing:border-box; margin:0; padding:0; }}
-body {{ width:{PAGE_W}px; font-family:{BODY_FONT}; color:{INK}; background:#05060b; }}
+body {{ width:{page_w}px; font-family:{BODY_FONT}; color:{INK}; background:#05060b; }}
 img {{ display:block; }}
-.shell {{ position:relative; width:{PAGE_W}px; }}
+.shell {{ position:relative; width:{page_w}px; }}
 .pagebg {{ position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; z-index:0; }}
-.page {{ position:relative; width:{PAGE_W}px; padding:{PAD}px 0 8px; display:flex;
+.page {{ position:relative; width:{page_w}px; padding:{PAD}px 0 8px; display:flex;
   flex-direction:column; gap:6px; }}
 .mod {{ display:flex; flex-direction:column; gap:4px; padding:0 {PAD}px; }}
 .hero {{ border-radius:14px; background:{SURFACE}; border:1px solid {HAIR};
@@ -167,10 +168,10 @@ img {{ display:block; }}
   border-radius:4px; padding:0 6px; height:16px; display:flex; align-items:center; }}
 .secr {{ margin-left:auto; font-family:{NUM_FONT}; font-size:13px; font-weight:700; color:{GOLD}; }}
 .cols {{ display:flex; gap:{GAP}px; align-items:stretch; }}
-.col {{ width:{COL}px; min-width:0; display:flex; }}
+.col {{ width:{col}px; min-width:0; display:flex; }}
 .col > .panel {{ flex:1; width:100%; }}
 .cols3 {{ display:flex; gap:{GAP}px; align-items:flex-start; }}
-.col3 {{ width:{COL3}px; min-width:0; }}
+.col3 {{ width:{col3}px; min-width:0; }}
 .panel {{ border-radius:12px; background:{SURFACE}; border:1px solid {HAIR};
   border-top:1px solid {HAIR_TOP}; padding:8px 8px 10px; }}
 .half {{ font-size:12px; font-weight:700; color:{GOLD}; margin-bottom:4px; }}
@@ -305,13 +306,13 @@ async def _recommend_html(raw: str, tag: str) -> str:
     return f'<div class="rec">{"".join(parts)}</div>'
 
 
-def _page(accent: str, bg: str, inner: str) -> str:
+def _page(accent: str, bg: str, inner: str, page_w: int = PAGE_W) -> str:
     footer = _file_uri(_FOOT)
     foot = f'<div class="foot"><img src="{footer}"/></div>' if footer else ""
     body = f'<div class="shell"><img class="pagebg" src="{bg}"/><div class="page">{inner}{foot}</div></div>'
     return (
         '<!DOCTYPE html><html><head><meta charset="utf-8">'
-        f"<style>{_css(accent)}</style></head><body>{body}</body></html>"
+        f"<style>{_css(accent, page_w)}</style></head><body>{body}</body></html>"
     )
 
 
@@ -324,9 +325,9 @@ def _ensure_font() -> None:
 
 
 @to_thread
-def _bg_uri() -> str:
+def _bg_uri(page_w: int = PAGE_W) -> str:
     src = Image.open(_BG).convert("RGB")
-    width = PAGE_W * SCALE
+    width = page_w * SCALE
     height = 1400 * SCALE
     scale = max(width / src.width, height / src.height)
     resized = src.resize((int(src.width * scale), int(src.height * scale)), Image.Resampling.LANCZOS)
@@ -341,19 +342,19 @@ def _bg_uri() -> str:
     return f"data:image/jpeg;base64,{base64.b64encode(buf.getvalue()).decode('ascii')}"
 
 
-async def _render(accent: str, inner: str) -> bytes:
+async def _render(accent: str, inner: str, page_w: int = PAGE_W) -> bytes:
     _ensure_font()
-    page = _page(accent, await _bg_uri(), inner)
+    page = _page(accent, await _bg_uri(page_w), inner, page_w)
     png = await render_html_to_bytes(
         page,
-        max_width=PAGE_W * SCALE,
+        max_width=page_w * SCALE,
         dpi=96 * SCALE,
         default_font_size=13,
         font_name="YuanShen",
         allow_refit=True,
         image_format="png",
         lang="zh",
-        root_max_width=PAGE_W,
+        root_max_width=page_w,
     )
     return await convert_img(Image.open(BytesIO(png)).convert("RGBA"))
 

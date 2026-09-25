@@ -21,7 +21,7 @@
       {
         "name": "[上期]幽境危战/yjwz",
         "desc": "肃靖险乱信息一览",
-        "eg": "新新深渊",
+        "eg": "幽境危战",
         "need_ck": true,
         "need_sk": false,
         "need_admin": false
@@ -492,17 +492,25 @@
         "need_admin": false
       },
       {
-        "name": "版本深渊",
-        "desc": "获取当前版本深渊阵容",
-        "eg": "版本深渊3.4",
+        "name": "深渊信息",
+        "desc": "某一期深渊的怪物和血量，别名版本深渊",
+        "eg": "深渊信息12",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "剧诗版本深渊",
-        "desc": "获取当前版本剧诗深渊阵容",
-        "eg": "剧诗版本深渊",
+        "name": "剧诗信息",
+        "desc": "某一期剧诗的怪物，别名剧诗版本深渊",
+        "eg": "剧诗信息",
+        "need_ck": false,
+        "need_sk": false,
+        "need_admin": false
+      },
+      {
+        "name": "危战信息",
+        "desc": "某一期幽境危战的怪物和机制",
+        "eg": "危战信息",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -708,16 +716,8 @@
       },
       {
         "name": "血量排行/血量表",
-        "desc": "常见怪物的血量排行",
-        "eg": "血量排行、血量表",
-        "need_ck": false,
-        "need_sk": false,
-        "need_admin": false
-      },
-      {
-        "name": "深渊血量排行",
-        "desc": "深渊的血量排行",
-        "eg": "深渊血量排行",
+        "desc": "怪物血量排行和血量表，深渊血量排行是同一张图",
+        "eg": "血量排行",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
@@ -739,17 +739,17 @@
         "need_admin": false
       },
       {
-        "name": "深渊概览",
-        "desc": "当期深渊角色使用率统计",
-        "eg": "深渊概览",
+        "name": "深渊队伍",
+        "desc": "当期深渊角色与队伍使用率，别名深渊概览。样本可能滞后",
+        "eg": "深渊队伍",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false
       },
       {
-        "name": "深渊队伍",
-        "desc": "当期深渊热门队伍搭配",
-        "eg": "深渊队伍",
+        "name": "危战队伍",
+        "desc": "当期危战角色与队伍使用率，别名危战概览。样本可能滞后",
+        "eg": "危战队伍",
         "need_ck": false,
         "need_sk": false,
         "need_admin": false

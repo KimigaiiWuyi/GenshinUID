@@ -61,3 +61,27 @@ def test_covering_id_uses_the_window() -> None:
     text = _mod.format_ranges("深渊", rows)
     assert "20096 2026-08-08~2026-08-25" in text
     assert "20097 2026-08-25~2026-09-16" in text
+
+
+def test_leyline_periods_follow_schedule_id() -> None:
+    """幽境危战各期时间互相重叠，7.1 比 7.0 先开。期数顺序只能看日程 id。"""
+    rows = [
+        {"id": "5269009", "begin": "2026-05-27 10:00:00", "end": "2026-07-08 09:59:59", "title": "6.6"},
+        {"id": "5269010", "begin": "2026-05-19 10:00:00", "end": "2026-06-16 03:59:59", "title": "6.7"},
+        {"id": "5269011", "begin": "2026-08-19 10:00:00", "end": "2026-09-30 09:59:59", "title": "7.0"},
+        {"id": "5269012", "begin": "2026-08-11 10:00:00", "end": "2026-09-08 03:59:59", "title": "7.1"},
+    ]
+    day = datetime.date(2026, 9, 27)
+    assert _mod.covering_id(rows, day) == "5269011"
+    assert _mod.neighbor_id(rows, day, 0) == "5269011"
+    assert _mod.neighbor_id(rows, day, -1) == "5269010"
+    assert _mod.neighbor_id(rows, day, 1) == "5269012"
+    assert _mod.choose_id(rows, today=day, when=None, pinned="", shift=1) == "5269012"
+    # 6.7 还没开的时候，下一期是 6.7
+    june = datetime.date(2026, 6, 1)
+    assert _mod.covering_id(rows, june) == "5269009"
+    assert _mod.neighbor_id(rows, june, 0) == "5269009"
+    assert _mod.neighbor_id(rows, june, 1) == "5269010"
+    text = _mod.format_ranges("幽境危战", rows)
+    assert text.index("5269010") < text.index("5269011")
+    assert text.index("5269011") < text.index("5269012")

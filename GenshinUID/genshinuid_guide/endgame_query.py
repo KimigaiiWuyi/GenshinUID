@@ -57,8 +57,13 @@ def _day(text: str) -> datetime.date:
     return datetime.datetime.strptime(text[:10], "%Y-%m-%d").date()
 
 
+def period_key(row: RangeRow) -> tuple[int, str, str]:
+    """期数顺序以日程 id 为准。幽境危战 id 递增但开始时间互相重叠、且和版本对不上。"""
+    return (int(row["id"]), row["begin"], row["id"])
+
+
 def covering_id(rows: list[RangeRow], day: datetime.date) -> str:
-    """日期落在哪一期。多期重叠时取开始更晚的。"""
+    """日期落在哪一期。多期重叠时取开始更晚的，也就是最近开过的那一期。"""
     found = ""
     found_begin = ""
     for row in rows:
@@ -79,8 +84,11 @@ def period_shift(command: str, text: str) -> int:
 
 
 def neighbor_id(rows: list[RangeRow], day: datetime.date, shift: int) -> str:
-    """当期是覆盖这一天的一期；没有则用已经开过的最近一期。再按开始时间走 shift 步。"""
-    ordered = sorted(rows, key=lambda row: (row["begin"], row["id"]))
+    """当期是覆盖这一天的一期；没有则用已经开过的最近一期。再按期数顺序走 shift 步。
+
+    步进按日程 id 排，不按开始时间。幽境危战各期时间互相重叠、按开始时间排会得到错误顺序。
+    """
+    ordered = sorted(rows, key=period_key)
     if not ordered:
         return ""
     current = covering_id(rows, day)
@@ -126,8 +134,8 @@ def choose_id(
 
 
 def format_ranges(kind: str, rows: list[RangeRow]) -> str:
-    ordered = sorted(rows, key=lambda row: row["begin"])
-    lines = [f"【{kind}日程对照】text 可写日期、id、上期或下期。上期/下期相对今天的当期。"]
+    ordered = sorted(rows, key=period_key)
+    lines = [f"【{kind}日程对照】text 可写日期、id、上期或下期。上期/下期按期数顺序相对今天的当期。"]
     for row in ordered:
         title = f" {row['title']}" if row["title"] else ""
         lines.append(f"{row['id']} {row['begin'][:10]}~{row['end'][:10]}{title}")

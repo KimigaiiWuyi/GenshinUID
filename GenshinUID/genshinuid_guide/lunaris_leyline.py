@@ -148,23 +148,6 @@ async def _body(schedule_id: str) -> dict[str, object] | None:
     return await fetch_json_object(f"{_HOST}/{schedule_id}.json")
 
 
-def pick_ley_id(rows: list[_LeyMeta], now: datetime.datetime) -> str:
-    current = ""
-    current_open: datetime.datetime | None = None
-    latest_id = ""
-    latest_open: datetime.datetime | None = None
-    for row in rows:
-        opened = datetime.datetime.strptime(row["start"], _TIME_FMT)
-        closed = datetime.datetime.strptime(row["end"], _TIME_FMT)
-        if opened <= now <= closed and (current_open is None or opened > current_open):
-            current = row["id"]
-            current_open = opened
-        if opened <= now and (latest_open is None or opened > latest_open):
-            latest_open = opened
-            latest_id = row["id"]
-    return current or latest_id
-
-
 def _slots(node: dict[str, object], key: str) -> list[str]:
     if key not in node:
         return []

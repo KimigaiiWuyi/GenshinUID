@@ -696,5 +696,8 @@ GenshinUID Help.xlsx
 testnb2/
 test_output/
 
+### Agent ###
+.commandcode/
+
 .VSCodeCounter
 .ruff_cache

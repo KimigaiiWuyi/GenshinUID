@@ -1,6 +1,7 @@
 """深渊日程与楼层来自 Lunaris，不再读打不开的 homdgcat database.js。"""
 
 import json
+import asyncio
 import hashlib
 import datetime
 from typing import TypedDict
@@ -44,6 +45,22 @@ class TowerFloorView(TypedDict):
     open_time: str
     close_time: str
     chambers: list[TowerChamber]
+
+
+class TowerTrendRow(TypedDict):
+    """某一期某层的上半 / 下半血量合计。current 标出正在看的那一期。"""
+
+    id: str
+    label: str
+    upper: float
+    lower: float
+    current: bool
+
+
+class TowerChamberHp(TypedDict):
+    name: str
+    upper: float
+    lower: float
 
 
 def plain_markup(text: str) -> str:
@@ -316,6 +333,158 @@ def _tower_ranges(listing: dict[str, ScheduleRow]) -> str:
     return format_ranges("深渊", rows)
 
 
+async def tower_context() -> tuple[str, dict[str, ScheduleRow]] | None:
+    """版本号 + 全部日程。取不到返回 None。"""
+    version_payload = await fetch_json_object(f"{_DATA}/version.json")
+    if version_payload is None or "version" not in version_payload:
+        return None
+    version = version_payload["version"]
+    if not isinstance(version, str) or not version:
+        return None
+    listing_raw = await fetch_json_object(f"{_DATA}/{version}/towerlist.json")
+    if listing_raw is None:
+        return None
+    return version, schedule_listing(listing_raw)
+
+
+def _half_total(monsters: list[TowerMonster]) -> float:
+    """数量 × 单只血量。Lunaris 的 firstHalfMonsters 是一条一条列的，count 是同名计数。"""
+    return float(sum(item["hp"] * item["count"] for item in monsters))
+
+
+def floor_totals(view: TowerFloorView) -> tuple[float, float]:
+    """整层上半 / 下半血量合计。"""
+    upper = 0.0
+    lower = 0.0
+    for chamber in view["chambers"]:
+        upper += _half_total(chamber["upper"])
+        lower += _half_total(chamber["lower"])
+    return upper, lower
+
+
+def chamber_hps(view: TowerFloorView) -> list[TowerChamberHp]:
+    """逐间上下半血量，给当期血量图用。"""
+    return [
+        TowerChamberHp(name=chamber["name"], upper=_half_total(chamber["upper"]), lower=_half_total(chamber["lower"]))
+        for chamber in view["chambers"]
+    ]
+
+
+# 单只怪血量的合理性上限。实测正常值 18万~750万（遗迹守卫 248万），
+# 留到 1 亿仍有 13 倍余量。Lunaris 偶尔把某只写成千倍（20092 遗迹守卫 2,481,645,770），
+# 这种期混进趋势会把纵轴拉爆、其余期全压成直线，只能整期剔掉。
+ABYSS_HP_CAP = 100_000_000
+
+
+def floor_is_plausible(view: TowerFloorView) -> bool:
+    """这一期的血量能不能进趋势图。"""
+    for chamber in view["chambers"]:
+        for monsters in (chamber["upper"], chamber["lower"]):
+            for item in monsters:
+                if item["hp"] > ABYSS_HP_CAP:
+                    return False
+    return True
+
+
+def _hp_cache_path() -> Path:
+    from ..utils.resource.RESOURCE_PATH import WIKI_DATA_PATH
+
+    return WIKI_DATA_PATH / "lunaris_tower_hp.json"
+
+
+async def _load_hp_cache() -> dict[str, tuple[float, float]]:
+    """历史期血量。开过的期不会再变，缓存下来就不再下载楼层正文。"""
+    path = _hp_cache_path()
+    if not path.exists():
+        return {}
+    async with aiofiles.open(path, encoding="utf-8") as file:
+        raw: object = json.loads(await file.read())
+    if not isinstance(raw, dict):
+        return {}
+    rows: dict[str, tuple[float, float]] = {}
+    for key, value in raw.items():
+        if not isinstance(key, str) or not isinstance(value, list) or len(value) != 2:
+            continue
+        first, second = value
+        if isinstance(first, (int, float)) and isinstance(second, (int, float)):
+            rows[key] = (float(first), float(second))
+    return rows
+
+
+async def _save_hp_cache(rows: dict[str, tuple[float, float]]) -> None:
+    path = _hp_cache_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    packed = {key: [value[0], value[1]] for key, value in rows.items()}
+    async with aiofiles.open(path, "w", encoding="utf-8") as file:
+        await file.write(json.dumps(packed, ensure_ascii=False))
+
+
+async def fetch_tower_trend(
+    schedule_id: str,
+    floor: int,
+    current: tuple[float, float],
+    count: int = 6,
+) -> list[TowerTrendRow]:
+    """近几期该层上下半血量合计，末期是 schedule_id 那一期。
+
+    只补历史期，当期由调用方从已经解析好的 view 传进来，保证是最新值。
+    """
+    from .endgame_query import RangeRow, period_key
+
+    context = await tower_context()
+    if context is None:
+        return []
+    version, listing = context
+    packed = [
+        RangeRow(id=sid, begin=row["openTime"], end=row["closeTime"], title=row["chsBuffName"])
+        for sid, row in listing.items()
+    ]
+    ordered = sorted(packed, key=period_key)
+    at = next((pos for pos, row in enumerate(ordered) if row["id"] == schedule_id), -1)
+    if at < 0:
+        return []
+    window = ordered[max(0, at - count + 1) : at + 1]
+    cache = await _load_hp_cache()
+    wanted = [row["id"] for row in window if row["id"] != schedule_id]
+    missing = [sid for sid in wanted if f"{sid}:{floor}" not in cache]
+    bodies = await asyncio.gather(*(fetch_json_object(f"{_DATA}/{version}/chs/tower/{sid}.json") for sid in missing))
+    dirty = False
+    for sid, body in zip(missing, bodies):
+        if body is None:
+            continue
+        parsed = parse_tower_floor(body, floor, sid, listing[sid])
+        if isinstance(parsed, str):
+            continue
+        if not floor_is_plausible(parsed):
+            continue  # 血量明显是脏数据，剔掉这期，别把纵轴拉爆
+        cache[f"{sid}:{floor}"] = floor_totals(parsed)
+        dirty = True
+    if dirty:
+        await _save_hp_cache(cache)
+    rows: list[TowerTrendRow] = []
+    # 旧缓存可能存着修复前写进去的脏数据，这里再挡一次，顺带让它自愈
+    stale = ABYSS_HP_CAP * 8
+    for row in window:
+        if row["id"] == schedule_id:
+            totals = current
+        else:
+            totals = cache.get(f"{row['id']}:{floor}", (0.0, 0.0))
+        if totals[0] > stale or totals[1] > stale:
+            continue
+        if totals[0] <= 0 and totals[1] <= 0:
+            continue
+        rows.append(
+            TowerTrendRow(
+                id=row["id"],
+                label=row["title"] or row["id"],
+                upper=totals[0],
+                lower=totals[1],
+                current=row["id"] == schedule_id,
+            )
+        )
+    return rows
+
+
 async def fetch_tower_floor(
     floor: int,
     when: datetime.date | None = None,
@@ -323,16 +492,10 @@ async def fetch_tower_floor(
     shift: int = 0,
 ) -> tuple[TowerFloorView | None, str, str]:
     """返回 (视图, 错误, 日程对照)。上期/下期相对今天，或相对 when。"""
-    version_payload = await fetch_json_object(f"{_DATA}/version.json")
-    if version_payload is None or "version" not in version_payload:
-        return None, "Lunaris 版本号取不到。", ""
-    version = version_payload["version"]
-    if not isinstance(version, str) or not version:
-        return None, "Lunaris 版本号取不到。", ""
-    listing_raw = await fetch_json_object(f"{_DATA}/{version}/towerlist.json")
-    if listing_raw is None:
-        return None, "Lunaris 深渊日程取不到。", ""
-    listing = schedule_listing(listing_raw)
+    context = await tower_context()
+    if context is None:
+        return None, "Lunaris 深渊版本号或日程取不到。", ""
+    version, listing = context
     ranges = _tower_ranges(listing)
     from .endgame_query import RangeRow, choose_id
 

@@ -5,6 +5,9 @@ from pathlib import Path
 
 import httpx
 import aiofiles
+from PIL import Image
+
+from gsuid_core.pool import to_thread
 
 from ..utils.resource.RESOURCE_PATH import (
     WIKI_DATA_PATH,
@@ -18,9 +21,14 @@ _LUNARIS_MONSTER = "https://api.lunaris.moe/data/assets/monster"
 _LEYLINE_ART = "https://api.lunaris.moe/data/assets/leyline"
 _SPRITE_ART = "https://api.lunaris.moe/data/assets/icons"
 _LEYLINE_DIR = WIKI_DATA_PATH / "leyline_icon"
+_ART_DIR = WIKI_DATA_PATH / "leyline_art"
 _SPRITE_DIR = WIKI_DATA_PATH / "lunaris_sprite"
 _PNG = b"\x89PNG\r\n\x1a\n"
 _GATE = asyncio.Semaphore(4)
+_ART_ALPHA_MIN = 24
+_ART_PAD_RATIO = 0.01
+# alpha 二值化的查表。写 lambda 会被 PIL 的重载推成 ImagePointTransform 而标红。
+_ALPHA_LUT: list[int] = [0] * _ART_ALPHA_MIN + [255] * (256 - _ART_ALPHA_MIN)
 
 
 def _png_name(icon: str) -> str:
@@ -98,6 +106,45 @@ async def leyline_icon_file(icon: str) -> Path | None:
     if saved is not None:
         return saved
     return await monster_icon_file(icon)
+
+
+@to_thread
+def _trim_art(source: Path, dest: Path) -> bool:
+    """把 1024 方形立绘裁到主体外接框。
+
+    原图四周有一圈透明边（横向最多占 16%），不裁的话版式只能按整张方图定位，
+    主体就会跟着卡的排版漂。裁完每张卡用同一个固定框，怪物落位才一致。
+    """
+    with Image.open(source) as raw:
+        image = raw.convert("RGBA")
+    box = image.getchannel("A").point(_ALPHA_LUT).getbbox()
+    if box is None:
+        return False
+    pad = int(max(image.size) * _ART_PAD_RATIO)
+    crop = (
+        max(box[0] - pad, 0),
+        max(box[1] - pad, 0),
+        min(box[2] + pad, image.width),
+        min(box[3] + pad, image.height),
+    )
+    if crop[2] - crop[0] < 8 or crop[3] - crop[1] < 8:
+        return False
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    image.crop(crop).save(dest, format="PNG")
+    return True
+
+
+async def leyline_art_file(icon: str) -> Path | None:
+    """危战立绘的裁剪版。裁剪缓存比源图旧就重裁。"""
+    source = await leyline_icon_file(icon)
+    if source is None:
+        return None
+    dest = _ART_DIR / f"{source.stem}.png"
+    if _png_ok(dest) and dest.stat().st_mtime >= source.stat().st_mtime:
+        return dest
+    if await _trim_art(source, dest):
+        return dest
+    return source
 
 
 async def sprite_icon_file(preset_id: str) -> Path | None:

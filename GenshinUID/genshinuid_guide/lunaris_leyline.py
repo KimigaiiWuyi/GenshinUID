@@ -1,13 +1,16 @@
 """幽境危战日程。列表缓存在 data 里，新 id 出现才会再下载。"""
 
 import json
+import asyncio
 import datetime
 from typing import TypedDict
+from pathlib import Path
 
 import aiofiles
 
-from .endgame_query import RangeRow, choose_id, format_ranges
+from .endgame_query import RangeRow, choose_id, period_key, format_ranges
 from .lunaris_tower import fetch_json_object
+from ..utils.resource.RESOURCE_PATH import WIKI_DATA_PATH
 
 _HOST = "https://lunaris.moe/data/leylinechallenge"
 _SEED = 5269001
@@ -66,6 +69,16 @@ class LeyView(TypedDict):
     lanes: list[LeyLane]
 
 
+class LeyTrendRow(TypedDict):
+    """某一期三只怪的血量合计。current 标出正在看的那一期。"""
+
+    id: str
+    label: str
+    n5: float
+    n6: float
+    current: bool
+
+
 class _LeyMeta(TypedDict):
     id: str
     start: str
@@ -102,10 +115,12 @@ def _float(node: dict[str, object], key: str) -> float:
     return 0.0
 
 
-def _cache_path():
-    from ..utils.resource.RESOURCE_PATH import WIKI_DATA_PATH
-
+def _cache_path() -> Path:
     return WIKI_DATA_PATH / "lunaris_leyline_index.json"
+
+
+def _trend_cache_path() -> Path:
+    return WIKI_DATA_PATH / "lunaris_leyline_hp.json"
 
 
 def _meta(payload: dict[str, object]) -> _LeyMeta | None:
@@ -330,3 +345,86 @@ async def fetch_leyline(
     if isinstance(parsed, str):
         return None, parsed, ranges
     return parsed, "", ranges
+
+
+def lane_totals(view: LeyView) -> tuple[float, float]:
+    """三条路 N5 / N6 血量合计，顺序固定是 (N5, N6)。"""
+    n5 = 0.0
+    n6 = 0.0
+    for lane in view["lanes"]:
+        for item in lane["hps"]:
+            if item["label"] == "N5":
+                n5 += item["hp"]
+            elif item["label"] == "N6":
+                n6 += item["hp"]
+    return n5, n6
+
+
+async def _load_hp_cache() -> dict[str, tuple[float, float]]:
+    """历史期血量。已经开过的期不会再变，缓存下来就不再下载那几百 KB 的正文。"""
+    path = _trend_cache_path()
+    if not path.exists():
+        return {}
+    async with aiofiles.open(path, encoding="utf-8") as file:
+        raw: object = json.loads(await file.read())
+    if not isinstance(raw, dict):
+        return {}
+    rows: dict[str, tuple[float, float]] = {}
+    for key, value in raw.items():
+        if not isinstance(key, str) or not isinstance(value, list) or len(value) != 2:
+            continue
+        first, second = value
+        if isinstance(first, (int, float)) and isinstance(second, (int, float)):
+            rows[key] = (float(first), float(second))
+    return rows
+
+
+async def _save_hp_cache(rows: dict[str, tuple[float, float]]) -> None:
+    path = _trend_cache_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    packed = {key: [value[0], value[1]] for key, value in rows.items()}
+    async with aiofiles.open(path, "w", encoding="utf-8") as file:
+        await file.write(json.dumps(packed, ensure_ascii=False))
+
+
+async def fetch_leyline_trend(schedule_id: str, current: tuple[float, float], count: int = 6) -> list[LeyTrendRow]:
+    """近几期三只怪 N5 / N6 总血量，末期是 schedule_id 那一期。
+
+    只补历史期，当期由调用方从已经解析好的 view 传进来，保证是最新值。
+    """
+    metas = await _load_index()
+    packed = [RangeRow(id=row["id"], begin=row["start"], end=row["end"], title=row["name"]) for row in metas]
+    ordered = sorted(packed, key=period_key)
+    at = next((pos for pos, row in enumerate(ordered) if row["id"] == schedule_id), -1)
+    if at < 0:
+        return []
+    window = ordered[max(0, at - count + 1) : at + 1]
+    cache = await _load_hp_cache()
+    missing = [row["id"] for row in window if row["id"] != schedule_id and row["id"] not in cache]
+    bodies = await asyncio.gather(*(_body(mid) for mid in missing))
+    dirty = False
+    for mid, body in zip(missing, bodies):
+        if body is None:
+            continue
+        parsed = parse_leyline(body)
+        if isinstance(parsed, str):
+            continue
+        cache[mid] = lane_totals(parsed)
+        dirty = True
+    if dirty:
+        await _save_hp_cache(cache)
+    rows: list[LeyTrendRow] = []
+    for row in window:
+        totals = current if row["id"] == schedule_id else cache.get(row["id"], (0.0, 0.0))
+        if totals[0] <= 0 and totals[1] <= 0:
+            continue
+        rows.append(
+            LeyTrendRow(
+                id=row["id"],
+                label=row["title"] or row["id"],
+                n5=totals[0],
+                n6=totals[1],
+                current=row["id"] == schedule_id,
+            )
+        )
+    return rows

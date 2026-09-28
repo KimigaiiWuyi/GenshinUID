@@ -17,9 +17,19 @@ from gsuid_core.utils.html_render import _ensure_renderer, render_html_to_bytes
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.ai_core.trigger_bridge import ai_return
 
-from .lunaris_icons import sprite_icon_file, leyline_icon_file, monster_icon_file
-from .lunaris_tower import TowerMonster, TowerFloorView, plain_markup, fetch_tower_floor
-from .lunaris_leyline import LeyView, fetch_leyline
+from .lunaris_icons import leyline_art_file, sprite_icon_file, monster_icon_file
+from .lunaris_tower import (
+    TowerMonster,
+    TowerTrendRow,
+    TowerFloorView,
+    chamber_hps,
+    floor_totals,
+    plain_markup,
+    fetch_tower_floor,
+    fetch_tower_trend,
+    floor_is_plausible,
+)
+from .lunaris_leyline import LeyView, LeyTrendRow, lane_totals, fetch_leyline, fetch_leyline_trend
 from .lunaris_roleplay import RoleView, fetch_roleplay
 from ..utils.fonts.genshin_fonts import FONT_ORIGIN_PATH
 from ..utils.resource.element_icon import element_icon_path
@@ -150,6 +160,32 @@ img {{ display:block; }}
 .mod {{ display:flex; flex-direction:column; gap:4px; padding:0 {PAD}px; }}
 .hero {{ border-radius:14px; background:{SURFACE}; border:1px solid {HAIR};
   border-top:1px solid {HAIR_TOP}; padding:16px 18px 14px; }}
+.herorow {{ display:flex; align-items:flex-start; gap:16px; }}
+.heromain {{ flex:1; min-width:0; }}
+.trend {{ width:246px; flex-shrink:0; padding:9px 10px 8px; border-radius:10px;
+  background:rgba(0,0,0,0.30); border:1px solid {HAIR}; }}
+.trend.wide {{ width:272px; }}
+.trendt {{ display:flex; align-items:baseline; gap:6px; font-size:11px; color:{INK_2}; }}
+.trendt2 {{ display:flex; align-items:baseline; gap:6px; margin-top:8px; padding-top:7px;
+  border-top:1px solid {HAIR}; font-size:11px; color:{INK_2}; }}
+.trenden {{ margin-left:auto; font-size:9px; letter-spacing:1px; color:{accent}; }}
+.trendsvg {{ display:block; height:86px; margin-top:4px; }}
+.trendlg {{ display:flex; align-items:center; gap:4px 7px; margin-top:3px; font-size:11px; color:{INK_2}; }}
+.trendlg span {{ display:inline-flex; align-items:center; height:15px; padding:0 5px; border-radius:3px;
+  font-size:9px; font-weight:700; color:#fff; }}
+.trendlg span.n5 {{ background:#7b4fd6; }}
+.trendlg span.n6 {{ background:#c4392d; }}
+.trendlg span.up {{ background:#2f7fc4; }}
+.trendlg span.dn {{ background:#b87426; }}
+.trendlg span.sep {{ width:1px; height:11px; padding:0; margin:0 2px; background:{HAIR}; border-radius:0; }}
+.trendlg b {{ font-family:{NUM_FONT}; font-size:12px; color:{GOLD}; margin-right:2px; }}
+.hpbars {{ display:flex; flex-direction:column; gap:4px; margin-top:6px; }}
+.hprow {{ display:flex; align-items:center; gap:4px; font-size:10px; color:{INK_2}; }}
+.hpname {{ width:28px; flex-shrink:0; font-family:{NUM_FONT}; }}
+.hptag {{ width:11px; flex-shrink:0; text-align:center; color:{INK_3}; }}
+.hpbar {{ height:7px; border-radius:3px; flex-shrink:0; }}
+.hprow b {{ width:40px; flex-shrink:0; text-align:right; white-space:nowrap;
+  font-family:{NUM_FONT}; font-size:10px; color:{GOLD}; }}
 .kicker {{ font-size:11px; letter-spacing:1.6px; color:{accent}; }}
 .hname {{ font-family:{NUM_FONT}; font-size:26px; font-weight:700; letter-spacing:1px; margin-top:4px; }}
 .hsub {{ margin-top:4px; font-size:14px; color:{GOLD}; }}
@@ -215,12 +251,16 @@ img {{ display:block; }}
 .ebox img {{ width:56px; height:56px; object-fit:contain; }}
 .ename {{ font-size:18px; font-weight:700; letter-spacing:1px; }}
 .stage {{ position:relative; overflow:hidden; padding:0; }}
-.bgart {{ position:absolute; top:-28%; right:calc(-18% + 250px); width:118%; height:118%; z-index:0;
-  object-fit:contain; object-position:right top; }}
+/* 固定 px 框。写成百分比会让 contain 的缩放跟着卡高变，怪物就一会儿大一会儿小、一会儿靠左一会儿靠右。
+   top 只敢到 -26px：裁剪后立绘顶部约 6% 是实心内容，再往上就削到头了。 */
+.artbox {{ position:absolute; left:-52px; top:-26px; width:492px; height:492px; z-index:0; }}
+.artbox img {{ width:100%; height:100%; object-fit:contain; object-position:50% 0%; }}
 .veil {{ position:absolute; left:0; right:0; top:0; bottom:0; z-index:1;
-  background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 22%,
-    rgba(0,0,0,0.72) 40%,rgba(0,0,0,0.92) 58%,rgba(0,0,0,0.94) 100%); }}
-.stagein {{ position:relative; z-index:2; padding:132px 12px 12px; }}
+  background:linear-gradient(90deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 30%,
+    rgba(0,0,0,0.46) 56%,rgba(0,0,0,0.8) 100%),
+    linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 18%,
+    rgba(0,0,0,0.72) 34%,rgba(0,0,0,0.92) 50%,rgba(0,0,0,0.94) 100%); }}
+.stagein {{ position:relative; z-index:2; padding:142px 12px 12px; }}
 .bname {{ font-size:30px; font-weight:700; font-style:italic; letter-spacing:0.8px; line-height:1.2;
   text-align:right; }}
 .hpair {{ display:flex; gap:16px; margin-top:6px; justify-content:flex-end; }}
@@ -261,13 +301,15 @@ def _monster_grid(rows: list[tuple[str, str, int, str]]) -> str:
     return f'<div class="igrid">{"".join(cells)}</div>'
 
 
-def _hero(kicker: str, title: str, sub: str, chips: str, desc: str) -> str:
+def _hero(kicker: str, title: str, sub: str, chips: str, desc: str, side: str = "", side_left: bool = False) -> str:
     body = f'<div class="hdesc">{desc}</div>' if desc else ""
-    return (
-        f'<div class="hero"><div class="kicker">{_esc(kicker)}</div>'
+    main = (
+        f'<div class="heromain"><div class="kicker">{_esc(kicker)}</div>'
         f'<div class="hname">{_esc(title)}</div>'
         f'<div class="hsub">{_esc(sub)}</div>{chips}{body}</div>'
     )
+    row = f"{side}{main}" if side_left else f"{main}{side}"
+    return f'<div class="hero"><div class="herorow">{row}</div></div>'
 
 
 _SPRITE = re.compile(r"\{SPRITE_PRESET#(\d+)\}", re.I)
@@ -366,7 +408,7 @@ async def _icons(names: list[str], leyline: bool) -> dict[str, str]:
             wanted.append(name)
 
     async def _one(name: str) -> tuple[str, str]:
-        path = await (leyline_icon_file(name) if leyline else monster_icon_file(name))
+        path = await (leyline_art_file(name) if leyline else monster_icon_file(name))
         return name, _file_uri(path) if path is not None else ""
 
     pairs = await asyncio.gather(*(_one(name) for name in wanted))
@@ -379,12 +421,25 @@ def _mon_bit(mon: TowerMonster) -> str:
     return f"{mon['name']}×{mon['count']}{tail}"
 
 
-def abyss_ai_text(view: TowerFloorView) -> str:
+def abyss_ai_text(view: TowerFloorView, trend: list[TowerTrendRow] | None = None) -> str:
     lines = [
         f"【深境螺旋 第{view['floor']}层】{view['buff_name']}",
         f"日程 {view['open_time'][:10]} ~ {view['close_time'][:10]}（{view['schedule_id']}）",
         plain_markup(view["buff_desc"]),
     ]
+    if chamber_hps(view):
+        upper, lower = floor_totals(view)
+        head = f"本层总血量：上半 {format_hp(upper)}、下半 {format_hp(lower)}，合计 {format_hp(upper + lower)}。"
+        rows = "；".join(
+            f"{item['name']} 上半 {format_hp(item['upper'])} / 下半 {format_hp(item['lower'])}"
+            for item in chamber_hps(view)
+        )
+        lines.append(f"{head} 逐间：{rows}")
+    if trend:
+        lines.append(
+            f"近 {len(trend)} 期上下半走势："
+            + "，".join(f"{row['label']} {format_hp(row['upper'])}/{format_hp(row['lower'])}" for row in trend)
+        )
     for chamber in view["chambers"]:
         upper = "、".join(_mon_bit(mon) for mon in chamber["upper"])
         lower = "、".join(_mon_bit(mon) for mon in chamber["lower"])
@@ -394,7 +449,7 @@ def abyss_ai_text(view: TowerFloorView) -> str:
     return "\n".join(line for line in lines if line)
 
 
-def _abyss_inner(view: TowerFloorView, icons: dict[str, str]) -> str:
+def _abyss_inner(view: TowerFloorView, icons: dict[str, str], trend: list[TowerTrendRow]) -> str:
     chips = _chips(
         [
             (view["open_time"][:10], False),
@@ -403,6 +458,7 @@ def _abyss_inner(view: TowerFloorView, icons: dict[str, str]) -> str:
             ("数据 Lunaris", True),
         ]
     )
+    bars = [(item["name"], item["upper"], item["lower"]) for item in chamber_hps(view)]
     blocks = [
         _hero(
             "SPIRAL ABYSS",
@@ -410,6 +466,8 @@ def _abyss_inner(view: TowerFloorView, icons: dict[str, str]) -> str:
             view["buff_name"],
             chips,
             markup_html(view["buff_desc"]),
+            _abyss_trend_block(trend, bars),
+            True,
         )
     ]
     for chamber in view["chambers"]:
@@ -454,10 +512,15 @@ async def build_abyss_image(
     if viewed is None:
         _ai_return_msg(_with_ranges(error, ranges))
         return error
-    _ai_return_msg(_with_ranges(abyss_ai_text(viewed), ranges))
     names = [mon["icon"] for chamber in viewed["chambers"] for mon in chamber["upper"] + chamber["lower"]]
     icons = await _icons(names, False)
-    return await _render("#e7c27a", _abyss_inner(viewed, icons))
+    trend = await fetch_tower_trend(
+        viewed["schedule_id"],
+        floor,
+        floor_totals(viewed) if floor_is_plausible(viewed) else (0.0, 0.0),
+    )
+    _ai_return_msg(_with_ranges(abyss_ai_text(viewed, trend), ranges))
+    return await _render("#e7c27a", _abyss_inner(viewed, icons, trend))
 
 
 def _element_lock(elements: list[str]) -> str:
@@ -557,11 +620,18 @@ async def build_roleplay_image(
     return await _render("#d4a4f5", _role_inner(viewed, icons))
 
 
-def leyline_ai_text(view: LeyView) -> str:
+def leyline_ai_text(view: LeyView, trend: list[LeyTrendRow] | None = None) -> str:
     lines = [
         f"【幽境危战 {view['schedule_id']}】{view['name']}",
         f"日程 {view['begin'][:10]} ~ {view['end'][:10]}，同栏为 N5 Lv105 与 N6 Lv110，机制取高难度",
     ]
+    if trend:
+        n5, n6 = lane_totals(view)
+        lines.append(
+            f"三只怪血量合计：N5 {format_hp(n5)}、N6 {format_hp(n6)}。"
+            f"近 {len(trend)} 期 N5/N6 走势："
+            + "，".join(f"{row['label']} {format_hp(row['n5'])}/{format_hp(row['n6'])}" for row in trend)
+        )
     for lane in view["lanes"]:
         bits = " ".join(f"{item['label']} Lv{item['level']} {format_hp(item['hp'])}" for item in lane["hps"])
         lines.append(f"{lane['name']} {bits}")
@@ -576,7 +646,176 @@ def leyline_ai_text(view: LeyView) -> str:
     return "\n".join(line for line in lines if line)
 
 
-async def _ley_inner(view: LeyView, icons: dict[str, str]) -> str:
+_TREND_LEFT = 6
+_TREND_RIGHT = 220
+_TREND_TOP = 4
+_TREND_BOTTOM = 58
+_SERIES_LEY = (("n5", "#8f6fe0", "#b39aee"), ("n6", "#e05545", "#f08a7e"))
+_SERIES_ABY = (("upper", "#4f9fe0", "#9fd0f2"), ("lower", "#e0913c", "#f2c48d"))
+
+
+def _hp_line_chart(
+    labels: list[str],
+    marks: list[int],
+    series: list[tuple[list[float], str, str]],
+    fill: str,
+    width: int = 226,
+) -> str:
+    """共用一根 0 起纵轴的折线。量纲一致才不误导，所以不给每条线单独归一。"""
+    if len(labels) < 2:
+        return ""
+    peak = max(max(values) for values, _stroke, _dot in series) * 1.14
+    if peak <= 0:
+        return ""
+    right = width - 6
+    step = (right - _TREND_LEFT) / (len(labels) - 1)
+    rise = _TREND_BOTTOM - _TREND_TOP
+
+    def spot(index: int, value: float) -> str:
+        x = _TREND_LEFT + step * index
+        y = _TREND_BOTTOM - rise * (value / peak)
+        return f"{x:.1f},{y:.1f}"
+
+    bits = [
+        '<defs><linearGradient id="trfill" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0" stop-color="{fill}" stop-opacity="0.30"/>'
+        f'<stop offset="1" stop-color="{fill}" stop-opacity="0"/></linearGradient></defs>',
+        f'<line x1="{_TREND_LEFT}" y1="{_TREND_BOTTOM}" x2="{right}" y2="{_TREND_BOTTOM}"'
+        f' stroke="rgba(255,255,255,0.14)" stroke-width="1"/>',
+    ]
+    # 面积铺在最高那条线下面
+    fill_values = max((values for values, _stroke, _dot in series), key=lambda item: item[-1])
+    top_points = " ".join(spot(index, fill_values[index]) for index in range(len(labels)))
+    bits.append(
+        f'<polygon points="{_TREND_LEFT},{_TREND_BOTTOM} {top_points} {right},{_TREND_BOTTOM}" fill="url(#trfill)"/>'
+    )
+    for index in marks:
+        x = _TREND_LEFT + step * index
+        bits.append(
+            f'<line x1="{x:.1f}" y1="{_TREND_TOP}" x2="{x:.1f}" y2="{_TREND_BOTTOM}"'
+            f' stroke="{GOLD}" stroke-opacity="0.45" stroke-width="1" stroke-dasharray="2 3"/>'
+        )
+    for values, stroke, _dot in series:
+        points = " ".join(spot(index, values[index]) for index in range(len(labels)))
+        bits.append(
+            f'<polyline points="{points}" fill="none" stroke="{stroke}" stroke-width="1.8"'
+            f' stroke-linejoin="round" stroke-linecap="round"/>'
+        )
+    for index, label in enumerate(labels):
+        x = _TREND_LEFT + step * index
+        for values, _stroke, dot in series:
+            y = _TREND_BOTTOM - rise * (values[index] / peak)
+            if index in marks:
+                bits.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.4" fill="{dot}" fill-opacity="0.28"/>')
+            bits.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.3" fill="{dot}"/>')
+        tint = GOLD if index in marks else INK_3
+        # 首尾标签改成贴边对齐，否则 text-anchor=middle 会被 viewBox 切掉半个字
+        anchor = "start" if index == 0 else "end" if index == len(labels) - 1 else "middle"
+        bits.append(
+            f'<text x="{x:.1f}" y="{_TREND_BOTTOM + 14}" font-size="9" fill="{tint}" text-anchor="{anchor}"'
+            f' font-family="{NUM_FONT}">{_esc(label)}</text>'
+        )
+    return f'<svg class="trendsvg" viewBox="0 0 {width} 76" width="{width}" height="76">{"".join(bits)}</svg>'
+
+
+def _period_label(text: str) -> str:
+    """深渊 buff 名带「之月」后缀，6 个三字标签横排在 226px 里会互相压到。"""
+    if len(text) > 2 and text.endswith("之月"):
+        return text[:-2]
+    return text
+
+
+def _compact_hp(value: float) -> str:
+    """逐间条上的短写法。小标题已经写了「血量」，这里不再重复 HP。"""
+    if value <= 0:
+        return "-"
+    if value >= 10000:
+        return f"{value / 10000:.1f}".rstrip("0").rstrip(".") + "万"
+    return str(int(value))
+
+
+def _hp_bars(rows: list[tuple[str, float, float]], top: str, bottom: str) -> str:
+    """当期逐间血量条。上半 / 下半并排，最长的一条铺满。"""
+    if not rows:
+        return ""
+    peak = max(max(upper, lower) for _name, upper, lower in rows)
+    if peak <= 0:
+        return ""
+    lines: list[str] = []
+    for name, upper, lower in rows:
+        cells: list[str] = []
+        for value, tag, color in ((upper, "上", top), (lower, "下", bottom)):
+            width = max(2.0, 44.0 * (value / peak))
+            cells.append(
+                f'<span class="hptag">{tag}</span>'
+                f'<span class="hpbar" style="width:{width:.1f}px;background:{color}"></span>'
+                f"<b>{_esc(_compact_hp(value))}</b>"
+            )
+        lines.append(f'<div class="hprow"><span class="hpname">{_esc(name)}</span>{"".join(cells)}</div>')
+    return f'<div class="hpbars">{"".join(lines)}</div>'
+
+
+def _ley_trend_block(rows: list[LeyTrendRow]) -> str:
+    """幽境：近几期三只怪 N5 / N6 总血量。"""
+    if len(rows) < 2:
+        return ""
+    labels = [_period_label(row["label"]) for row in rows]
+    marks = [index for index, row in enumerate(rows) if row["current"]]
+    svg = _hp_line_chart(
+        labels,
+        marks,
+        [([row[key] for row in rows], stroke, dot) for key, stroke, dot in _SERIES_LEY],
+        "#e05545",
+    )
+    if not svg:
+        return ""
+    last = rows[-1]
+    legend = (
+        f'<div class="trendlg"><span class="n5">N5</span><b>{_esc(format_hp(last["n5"]))}</b>'
+        f'<span class="sep"></span><span class="n6">N6</span><b>{_esc(format_hp(last["n6"]))}</b></div>'
+    )
+    return (
+        f'<div class="trend"><div class="trendt"><span>近 {len(rows)} 期 · 三怪总血量</span>'
+        f'<span class="trenden">TOTAL HP</span></div>{svg}{legend}</div>'
+    )
+
+
+def _abyss_trend_block(trend: list[TowerTrendRow], bars: list[tuple[str, float, float]]) -> str:
+    """深渊：近几期上下半折线 + 当期逐间血量条。"""
+    if len(trend) < 2 and not bars:
+        return ""
+    parts: list[str] = []
+    if len(trend) >= 2:
+        labels = [_period_label(row["label"]) for row in trend]
+        marks = [index for index, row in enumerate(trend) if row["current"]]
+        svg = _hp_line_chart(
+            labels,
+            marks,
+            [([row[key] for row in trend], stroke, dot) for key, stroke, dot in _SERIES_ABY],
+            "#e0913c",
+            252,
+        )
+        if svg:
+            last = trend[-1]
+            legend = (
+                f'<div class="trendlg"><span class="up">上半</span><b>{_esc(format_hp(last["upper"]))}</b>'
+                f'<span class="sep"></span><span class="dn">下半</span><b>{_esc(format_hp(last["lower"]))}</b></div>'
+            )
+            parts.append(
+                f'<div class="trendt"><span>近 {len(trend)} 期 · 上下半血量</span>'
+                f'<span class="trenden">TOTAL HP</span></div>{svg}{legend}'
+            )
+    if bars:
+        parts.append(
+            '<div class="trendt2"><span>当期逐间血量</span><span class="trenden">THIS FLOOR</span></div>'
+            + _hp_bars(bars, "#4f9fe0", "#e0913c")
+        )
+    if not parts:
+        return ""
+    return f'<div class="trend wide">{"".join(parts)}</div>'
+
+
+async def _ley_inner(view: LeyView, icons: dict[str, str], trend: list[LeyTrendRow]) -> str:
     chips = _chips(
         [
             (view["begin"][:10], False),
@@ -586,7 +825,7 @@ async def _ley_inner(view: LeyView, icons: dict[str, str]) -> str:
             (view["schedule_id"], False),
         ]
     )
-    blocks = [_hero("STYGIAN ONSLAUGHT", "幽境危战", view["name"], chips, "")]
+    blocks = [_hero("STYGIAN ONSLAUGHT", "幽境危战", view["name"], chips, "", _ley_trend_block(trend))]
     blocks.append(_section("N5 / N6", "HARD", ""))
     for lane in view["lanes"]:
         uri = icons[lane["icon"]] if lane["icon"] in icons else ""
@@ -600,7 +839,7 @@ async def _ley_inner(view: LeyView, icons: dict[str, str]) -> str:
             for badge in (" n5" if item["label"] == "N5" else " n6" if item["label"] == "N6" else "",)
         )
         title = f'<div class="bname">{_esc(lane["name"])}</div><div class="hpair">{hp_bits}</div>'
-        art = f'<img class="bgart" src="{uri}"/>' if uri else ""
+        art = f'<div class="artbox"><img src="{uri}"/></div>' if uri else ""
         veil = '<div class="veil"></div>' if uri else ""
         mech_html = "".join(
             f'<div class="mname">{_esc(mech["name"])}</div><div class="bdesc">{markup_html(mech["body"])}</div>'
@@ -626,6 +865,7 @@ async def build_leyline_image(
     if viewed is None:
         _ai_return_msg(_with_ranges(error, ranges))
         return error
-    _ai_return_msg(_with_ranges(leyline_ai_text(viewed), ranges))
     icons = await _icons([lane["icon"] for lane in viewed["lanes"]], True)
-    return await _render("#7dcea0", await _ley_inner(viewed, icons))
+    trend = await fetch_leyline_trend(viewed["schedule_id"], lane_totals(viewed))
+    _ai_return_msg(_with_ranges(leyline_ai_text(viewed, trend), ranges))
+    return await _render("#7dcea0", await _ley_inner(viewed, icons, trend))

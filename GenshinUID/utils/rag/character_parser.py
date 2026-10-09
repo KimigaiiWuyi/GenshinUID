@@ -10,6 +10,30 @@ from .models import CharacterInfo, GsKnowledgePoint, make_kp
 from .constants import WEAPON_MAP, ELEMENT_MAP
 
 
+def enhanced_effect_text(node: Dict[str, object]) -> str:
+    """强化后文案。与基础描述相同或为空时不写。"""
+    if "descriptionBuff" not in node:
+        return ""
+    buff = node["descriptionBuff"]
+    if not isinstance(buff, str) or not buff.strip():
+        return ""
+    base = node["description"] if "description" in node else ""
+    if not isinstance(base, str):
+        base = ""
+    if buff == base:
+        return ""
+    # 多数强化是在原文后追加；原文被改写时改贴完整效果。
+    if base and buff.startswith(base):
+        extra = clean_html_tags(buff[len(base) :])
+        if not extra:
+            return ""
+        return f"**完成对应任务或辉映变化后追加：**\n\n{extra}\n\n"
+    full = clean_html_tags(buff)
+    if not full:
+        return ""
+    return f"**完成对应任务或辉映变化后的完整效果：**\n\n{full}\n\n"
+
+
 def parse_character_json(json_data: Dict) -> List[GsKnowledgePoint]:
     """
     主解析函数：将角色 JSON 数据解析为 RAG 知识块
@@ -95,6 +119,7 @@ def parse_character_json(json_data: Dict) -> List[GsKnowledgePoint]:
         # 添加技能描述
         if t_desc:
             skill_section += f"{t_desc}\n\n"
+        skill_section += enhanced_effect_text(t)
 
         # 添加技能属性（冷却时间、能量消耗等）
         attr_parts = []
@@ -137,9 +162,13 @@ def parse_character_json(json_data: Dict) -> List[GsKnowledgePoint]:
         if not c:
             continue
 
-        c_name = c.get("name", f"第{i + 1}命")
-        c_desc = clean_html_tags(c.get("description", ""))
-        const_texts.append(f"## 第{i + 1}命：{c_name}\n\n{c_desc}\n\n")
+        if not isinstance(c, dict):
+            continue
+        raw_name = c["name"] if "name" in c else ""
+        c_name = raw_name if isinstance(raw_name, str) and raw_name else f"第{i + 1}命"
+        raw_desc = c["description"] if "description" in c else ""
+        c_desc = clean_html_tags(raw_desc) if isinstance(raw_desc, str) else ""
+        const_texts.append(f"## 第{i + 1}命：{c_name}\n\n{c_desc}\n\n{enhanced_effect_text(c)}")
 
     knowledge_points.append(
         make_kp(

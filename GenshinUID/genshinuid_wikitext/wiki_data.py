@@ -38,6 +38,7 @@ from ..utils.map.name_covert import (
 )
 from ..utils.resource.RESOURCE_PATH import (
     WIKI_DATA_REL,
+    CHAR_DATA_PATH,
     WIKI_DATA_CHAR,
     WIKI_DATA_FOOD,
     WIKI_DATA_VOICE,
@@ -170,6 +171,8 @@ class CharConst:
     name: str
     icon: str
     description: str
+    buff: str = ""
+    buff_replaces: bool = False
 
 
 @dataclass(frozen=True)
@@ -469,6 +472,23 @@ async def _write_json(path: Path, data: Mapping[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     async with aiofiles.open(path, "w", encoding="utf-8") as f:
         await f.write(json.dumps(data, ensure_ascii=False))
+
+
+def char_source_candidates(file_id: str) -> tuple[Path, Path, Path]:
+    """角色图鉴：资源目录优先，其次 wiki 缓存和仓库种子。"""
+    return (
+        CHAR_DATA_PATH / f"{file_id}.json",
+        WIKI_DATA_CHAR / f"{file_id}.json",
+        _SEED_DATA / "char" / f"{file_id}.json",
+    )
+
+
+async def _load_char_source(file_id: str) -> Mapping[str, object] | None:
+    for path in char_source_candidates(file_id):
+        cached = await _read_json(path)
+        if cached is not None:
+            return cached
+    return await _load_id_json(file_id, WIKI_DATA_CHAR, get_ambr_char_data, "char")
 
 
 async def _load_id_json(
@@ -821,6 +841,18 @@ def _parse_talents(talent_raw: Mapping[str, object]) -> tuple[tuple[CharTalent, 
     return tuple(out), cost_blocks
 
 
+def _const_buff(val: Mapping[str, object]) -> tuple[str, bool]:
+    """强化文案。第二项为真表示原文被改写，需要贴完整效果。"""
+    buff = _opt_str(val, "descriptionBuff")
+    base = _opt_str(val, "description")
+    if not buff.strip() or buff == base:
+        return "", False
+    if base and buff.startswith(base):
+        extra = ambr_keep_color(buff[len(base) :])
+        return (extra, False) if extra else ("", False)
+    return ambr_keep_color(buff), True
+
+
 def _parse_consts(raw: Mapping[str, object]) -> tuple[CharConst, ...]:
     items: list[tuple[int, Mapping[str, object]]] = []
     for key, val in raw.items():
@@ -835,12 +867,15 @@ def _parse_consts(raw: Mapping[str, object]) -> tuple[CharConst, ...]:
         name = _opt_str(val, "name")
         if not name:
             continue
+        buff, replaces = _const_buff(val)
         out.append(
             CharConst(
                 index=n,
                 name=name,
                 icon=_opt_str(val, "icon"),
                 description=ambr_keep_color(_opt_str(val, "description")),
+                buff=buff,
+                buff_replaces=replaces,
             )
         )
         n += 1
@@ -1210,7 +1245,7 @@ async def load_char_wiki(name: str, level: int) -> CharWiki | str:
         if not found:
             return f"未找到角色「{name}」。"
         return _multi_msg("角色", found)
-    raw = await _load_id_json(found, WIKI_DATA_CHAR, get_ambr_char_data, "char")
+    raw = await _load_char_source(found)
     if raw is None:
         return f"未找到角色「{name}」的图鉴数据。"
     return parse_char_wiki(raw, level)
@@ -1292,7 +1327,7 @@ async def load_char_story(name: str) -> CharStoryWiki | str:
     if raw is None:
         return f"未找到角色「{name}」的故事数据。"
     header: CharWiki | None = None
-    char_raw = await _load_id_json(found, WIKI_DATA_CHAR, get_ambr_char_data, "char")
+    char_raw = await _load_char_source(found)
     if char_raw is not None:
         header = parse_char_wiki(char_raw, 90)
     if header is None:
@@ -1562,6 +1597,10 @@ def char_const_text(data: CharWiki) -> str:
     lines = [f"原神角色 {data.name} 命座（{data.constellation}）："]
     for c in data.consts:
         lines.append(f"- C{c.index} {c.name}：{strip_ambr_text(c.description)}")
+        if not c.buff:
+            continue
+        label = "完整效果" if c.buff_replaces else "追加"
+        lines.append(f"  完成对应任务或辉映变化后{label}：{strip_ambr_text(c.buff)}")
     return "\n".join(lines)
 
 

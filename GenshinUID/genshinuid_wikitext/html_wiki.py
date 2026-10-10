@@ -391,6 +391,9 @@ img {{ display:block; }}
 .cic img {{ width:20px; height:20px; }}
 .cnm {{ font-size:12px; font-weight:700; color:{GOLD}; }}
 .cdesc {{ font-size:11px; line-height:1.4; color:{INK_2}; margin-top:2px; }}
+.cbuff {{ margin-top:6px; padding-top:5px; border-top:1px solid {HAIR}; }}
+.clab {{ font-size:10px; font-weight:700; color:{GOLD}; letter-spacing:0.2px; }}
+.cbuff .cdesc {{ margin-top:2px; }}
 .igrid {{ display:flex; flex-wrap:wrap; gap:8px; }}
 .icell {{ width:72px; display:flex; flex-direction:column; align-items:center; gap:3px; }}
 .ibox {{ width:52px; height:52px; border-radius:10px; background:rgba(0,0,0,0.38);
@@ -663,6 +666,13 @@ def _passive_html(data: CharWiki, icons: dict[str, str]) -> str:
     return "".join(bits) if bits else '<div class="fx">无</div>'
 
 
+def _const_buff_html(buff: str, replaces: bool) -> str:
+    if not buff:
+        return ""
+    label = "完成对应任务或辉映变化后的完整效果" if replaces else "完成对应任务或辉映变化后追加"
+    return f'<div class="cbuff"><div class="clab">{label}</div><div class="cdesc">{_rich_html(buff)}</div></div>'
+
+
 def _const_html(data: CharWiki, icons: dict[str, str]) -> str:
     bits: list[str] = []
     for c in data.consts:
@@ -673,6 +683,7 @@ def _const_html(data: CharWiki, icons: dict[str, str]) -> str:
             '<div class="tbody">'
             f'<div class="cnm">C{c.index} {_esc(c.name)}</div>'
             f'<div class="cdesc">{_rich_html(c.description)}</div>'
+            f"{_const_buff_html(c.buff, c.buff_replaces)}"
             "</div></div>"
         )
     return "".join(bits)

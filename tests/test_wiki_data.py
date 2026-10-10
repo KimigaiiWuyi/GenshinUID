@@ -76,6 +76,38 @@ def test_merge_refinements_joins_numbers() -> None:
     assert "8%/10%/12%/14%/16%" in out
 
 
+def test_const_buff_keeps_suffix_and_rewrite() -> None:
+    consts = _MOD._parse_consts(
+        {
+            "1": {
+                "id": 1,
+                "name": "缠忆君影梦相见",
+                "description": "每点精通0.04%。",
+                "descriptionBuff": "每点精通0.04%。\n此外抗性降低20%。",
+            },
+            "3": {
+                "id": 3,
+                "name": "泉轻流花暖",
+                "description": "恢复5点能量。",
+                "descriptionBuff": "额外治疗并恢复5点能量。",
+            },
+        }
+    )
+    suffix, rewritten = consts
+    assert suffix.buff_replaces is False
+    assert "抗性降低20%" in suffix.buff
+    assert rewritten.buff_replaces is True
+    assert "额外治疗" in rewritten.buff
+
+
+def test_char_source_prefers_resource_dir() -> None:
+    resource, cache, seed = _MOD.char_source_candidates("10000109")
+    assert resource.parent.name == "char_data"
+    assert cache.parent.parent.name == "wiki"
+    assert seed.parent.parent.name == "gs_data"
+    assert resource.name == cache.name == seed.name == "10000109.json"
+
+
 def test_strip_ambr_color() -> None:
     raw = "<color=#FFD780FF>雷罚恶曜之眼</color>造成<color=#FFACFFFF>雷元素伤害</color>。"
     assert strip_ambr_text(raw) == "雷罚恶曜之眼造成雷元素伤害。"

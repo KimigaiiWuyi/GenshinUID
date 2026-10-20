@@ -18,11 +18,15 @@ sv_hard_abyss_rank = SV("查询幽境危战排行榜", priority=2)
 @sv_hard_abyss.on_command(
     (
         "查询幽境危战",
+        "查询危战",
+        "查询幽境",
         "幽境危战",
         "肃靖险乱",
         "新新深渊",
         "三路深渊",
         "yjwz",
+        "幽境",
+        "危战",
     ),
     block=True,
     to_ai="""查询原神幽境危战（三路深渊）战斗信息

@@ -194,11 +194,21 @@ async def convert_ambr_to_weapon(
     effect_name = effect["name"]
     effect_up = effect["upgrade"]
     upgrade = raw_data["upgrade"]
-    baseatk = upgrade["prop"][0]["initValue"]
-    basesp = upgrade["prop"][-1]["initValue"]
-    if "propType" in upgrade["prop"][1]:
-        substat = PROP_MAP[upgrade["prop"][1]["propType"]]
+    props = upgrade["prop"]
+    base_prop = props[0]
+    baseatk = base_prop["initValue"]
+    # 1星/2星武器的 prop 只有基础攻击，没有副词条。
+    if len(props) > 1:
+        sub_prop = props[1]
+        basesp = sub_prop["initValue"]
+        sp_curve_type = sub_prop["type"]
+        if "propType" in sub_prop:
+            substat = PROP_MAP[sub_prop["propType"]]
+        else:
+            substat = "无副词条"
     else:
+        basesp = 0.0
+        sp_curve_type = None
         substat = "无副词条"
     result = {
         "name": raw_data["name"],
@@ -222,14 +232,16 @@ async def convert_ambr_to_weapon(
     else:
         if index != 0:
             result["effectTemplateRaw"] = result[f"r{index + 1}"]["description"]
-    atk_curve_type = upgrade["prop"][0]["type"]
-    sp_curve_type = upgrade["prop"][1]["type"]
+    atk_curve_type = base_prop["type"]
     atk_curve = WEAPON_GROW_CURVE["90"]["curveInfos"][atk_curve_type]
-    sp_curve = WEAPON_GROW_CURVE["90"]["curveInfos"][sp_curve_type]
     atk_promoto = upgrade["promote"][-1]["addProps"]["FIGHT_PROP_BASE_ATTACK"]
 
     result["attack"] = atk_curve * baseatk + atk_promoto
-    result["specialized"] = sp_curve * basesp
+    if sp_curve_type is None:
+        result["specialized"] = 0.0
+    else:
+        sp_curve = WEAPON_GROW_CURVE["90"]["curveInfos"][sp_curve_type]
+        result["specialized"] = sp_curve * basesp
 
     return cast(ConvertWeapon, result)
 

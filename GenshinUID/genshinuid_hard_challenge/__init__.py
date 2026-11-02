@@ -20,10 +20,17 @@ sv_hard_abyss_rank = SV("查询幽境危战排行榜", priority=2)
         "查询幽境危战",
         "查询危战",
         "查询幽境",
+        "查询上期幽境危战",
+        "查询上期危战",
         "幽境危战",
+        "上期幽境危战",
+        "上期危战",
+        "上期幽境",
         "肃靖险乱",
+        "上期肃靖险乱",
         "新新深渊",
         "三路深渊",
+        "sqyjwz",
         "yjwz",
         "幽境",
         "危战",
@@ -31,7 +38,7 @@ sv_hard_abyss_rank = SV("查询幽境危战排行榜", priority=2)
     block=True,
     to_ai="""查询原神幽境危战（三路深渊）战斗信息
 
-    当用户说"幽境危战"、"新新深渊"、"三路深渊"时调用。
+    当用户说"幽境危战"、"上期幽境危战"、"新新深渊"、"三路深渊"时调用。
     以图片形式返回幽境危战的战斗详情。需要用户已绑定UID。
 
     Args:
@@ -49,7 +56,8 @@ async def send_hard_abyss_info(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     logger.info(t("log.genshinuid.hard_uid", uid=uid))
 
-    im = await draw_hard_challenge_img(uid, ev)
+    schedule_index = 1 if "上期" in ev.command or "sq" in ev.command else 0
+    im = await draw_hard_challenge_img(uid, ev, schedule_index)
 
     await bot.send(im)
 

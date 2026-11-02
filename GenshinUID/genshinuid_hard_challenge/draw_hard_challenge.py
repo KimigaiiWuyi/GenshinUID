@@ -31,13 +31,17 @@ from ..genshinuid_abyss.draw_abyss_card import _draw_char_card
 TEXT_PATH = Path(__file__).parent / "texture2d"
 
 
-async def draw_hard_challenge_img(uid: str, ev: Event) -> Union[str, bytes]:
+async def draw_hard_challenge_img(uid: str, ev: Event, schedule_index: int = 0) -> Union[str, bytes]:
     data = await mys_api.get_hard_challenge_data(uid)
     if isinstance(data, int):
         return get_error(data)
 
-    schedule = data["data"][0]["schedule"]
-    sdata = data["data"][0]["single"]
+    entries = data["data"]
+    if schedule_index >= len(entries):
+        return "暂无幽境危战数据~" if schedule_index == 0 else "还没有上期幽境危战的数据~"
+    entry = entries[schedule_index]
+    schedule = entry["schedule"]
+    sdata = entry["single"]
 
     # AI 注入：提取幽境危战数据
     try:

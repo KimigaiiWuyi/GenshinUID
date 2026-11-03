@@ -5416,5 +5416,89 @@
         "6": ""
       }
     }
+  },
+  "米提亚": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "elementalMastery+120;stellarBaseDmgBonus+14",
+        "70": "critRate+20"
+      },
+      "fight_talent": {
+        "1": "critDmg+40",
+        "2": "elementalMastery+234;CryoResist+-20;ElectroResist+-20",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "stellarElevate+20"
+      },
+      "group_skill": {
+        "50": "elementalMastery+120;stellarBaseDmgBonus+14",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "critDmg+40",
+        "2": "elementalMastery+234;CryoResist+-20;ElectroResist+-20",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "stellarElevate+20"
+      }
+    }
+  },
+  "瓦列里": {
+    "normal": {
+      "normal_skill": {
+        "50": "",
+        "70": ""
+      },
+      "normal_talent": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": ""
+      }
+    },
+    "fight": {
+      "fight_skill": {
+        "50": "",
+        "70": ""
+      },
+      "fight_talent": {
+        "1": "",
+        "2": "elementalMastery+100",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "臼炮直射·抵近轰击:dmgBonus+100;雷霰重弹:dmgBonus+100;stellarCritDmg+40"
+      },
+      "group_skill": {
+        "50": "",
+        "70": ""
+      },
+      "group_talent": {
+        "1": "",
+        "2": "elementalMastery+100",
+        "3": "",
+        "4": "",
+        "5": "",
+        "6": "stellarCritDmg+40"
+      }
+    }
   }
 }

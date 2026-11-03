@@ -1,6 +1,6 @@
 [project]
 name = "GenshinUID"
-version = "7.0.0"
+version = "7.2.0"
 description = "基于GsCore的原神面板查询/原神Wiki/米社签到/树脂提醒插件"
 authors = [{ name = "KimigaiiWuyi", email = "444835641@qq.com" }]
 license = { text = "GPL-3.0-or-later" }

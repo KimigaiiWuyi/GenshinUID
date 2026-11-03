@@ -5,8 +5,8 @@
     "variantAvg": "https://akasha.cv/api/charts/calculations/{calculationId}?variant={variant}",
     "note": "avgStats is the arithmetic mean of the top 1% bucket for that leaderboard. Same for every player."
   },
-  "fetchedAt": "2026-09-22T22:02:37Z",
-  "count": 514,
+  "fetchedAt": "2026-11-03T12:54:19Z",
+  "count": 527,
   "leaderboards": [
     {
       "characterId": 10000002,
@@ -8440,20 +8440,20 @@
       "refinement": 1,
       "calculationId": "1000007300",
       "avgStats": {
-        "maxHp": 16131.519452751883,
-        "atk": 1284.0015923763071,
-        "def": 709.0498423720896,
-        "elementalMastery": 722.3519443744898,
-        "energyRecharge": 1.0964574765306385,
+        "maxHp": 16085.69755468281,
+        "atk": 1275.2666493606641,
+        "def": 705.4714195114875,
+        "elementalMastery": 727.863379221019,
+        "energyRecharge": 1.1037694494735926,
         "healingBonus": 0.0,
-        "critRate": 0.5931105712389182,
-        "critDamage": 1.6775627371725028,
-        "dendroDamageBonus": 0.8562096556204389
+        "critRate": 0.605197663283327,
+        "critDamage": 1.6863401713489574,
+        "dendroDamageBonus": 0.8482904092578087
       },
       "score": {
-        "avg": 52127.07622201195,
-        "min": 50714.57802569092,
-        "max": 59252.76464163556
+        "avg": 52665.83459444039,
+        "min": 50921.79819488397,
+        "max": 63908.13029131332
       }
     },
     {
@@ -8467,20 +8467,20 @@
       "refinement": 1,
       "calculationId": "1000007301",
       "avgStats": {
-        "maxHp": 16113.749589446761,
-        "atk": 1365.7036098691133,
-        "def": 705.9612905038506,
-        "elementalMastery": 565.4805795076528,
-        "energyRecharge": 1.092034825533452,
+        "maxHp": 16069.02833579527,
+        "atk": 1353.637694590859,
+        "def": 704.2515480955454,
+        "elementalMastery": 575.8366668227666,
+        "energyRecharge": 1.0982936374311576,
         "healingBonus": 0.0,
-        "critRate": 0.6250950784392472,
-        "critDamage": 2.14117181078662,
-        "dendroDamageBonus": 0.3966363454313662
+        "critRate": 0.6303191228241829,
+        "critDamage": 2.161436165439416,
+        "dendroDamageBonus": 0.37847982747499165
       },
       "score": {
-        "avg": 46192.23192687045,
-        "min": 44993.66201513621,
-        "max": 52384.37369067058
+        "avg": 46826.747831312125,
+        "min": 45380.65147269628,
+        "max": 56477.24450337886
       }
     },
     {
@@ -8494,20 +8494,20 @@
       "refinement": 1,
       "calculationId": "1000007302",
       "avgStats": {
-        "maxHp": 16141.45232832145,
-        "atk": 1370.6773323029158,
-        "def": 707.7737354542329,
-        "elementalMastery": 541.521720042418,
-        "energyRecharge": 1.1010908867322853,
+        "maxHp": 16112.0789872383,
+        "atk": 1359.761747070793,
+        "def": 705.866521215357,
+        "elementalMastery": 551.0401779207259,
+        "energyRecharge": 1.1071057719624322,
         "healingBonus": 0.0,
-        "critRate": 0.7952909213821976,
-        "critDamage": 1.7564956406326047,
-        "dendroDamageBonus": 0.4615686941801524
+        "critRate": 0.8085991148342404,
+        "critDamage": 1.7428184578390513,
+        "dendroDamageBonus": 0.45094739476952317
       },
       "score": {
-        "avg": 44902.584758192665,
-        "min": 43742.97968205664,
-        "max": 50845.157416893955
+        "avg": 45091.1773902315,
+        "min": 43722.60336470594,
+        "max": 54434.338390739606
       }
     },
     {
@@ -8521,20 +8521,20 @@
       "refinement": 1,
       "calculationId": "1000007303",
       "avgStats": {
-        "maxHp": 16112.665195309466,
-        "atk": 1283.8243890329813,
-        "def": 705.9107503799539,
-        "elementalMastery": 874.7902956513701,
-        "energyRecharge": 1.0933952043261508,
+        "maxHp": 16064.875739942747,
+        "atk": 1274.717980416522,
+        "def": 703.6766053375804,
+        "elementalMastery": 881.8869493147675,
+        "energyRecharge": 1.0971908209036025,
         "healingBonus": 0.0,
-        "critRate": 0.5936371471491296,
-        "critDamage": 1.645076983037957,
-        "dendroDamageBonus": 0.6143528082435157
+        "critRate": 0.6060806696543123,
+        "critDamage": 1.6574478034442819,
+        "dendroDamageBonus": 0.5987894957403158
       },
       "score": {
-        "avg": 43735.806377710804,
-        "min": 42623.12596712152,
-        "max": 49211.75777103233
+        "avg": 44423.9114182016,
+        "min": 42993.11949774065,
+        "max": 52985.04903569268
       }
     },
     {
@@ -8548,20 +8548,20 @@
       "refinement": 1,
       "calculationId": "1000007304",
       "avgStats": {
-        "maxHp": 16132.804339147937,
-        "atk": 1369.5056628962284,
-        "def": 706.342232947254,
-        "elementalMastery": 649.3575824176795,
-        "energyRecharge": 1.0940013690720036,
+        "maxHp": 16085.644937026662,
+        "atk": 1357.2101778680938,
+        "def": 704.6059735780008,
+        "elementalMastery": 657.4373117746027,
+        "energyRecharge": 1.0984944911122625,
         "healingBonus": 0.0,
-        "critRate": 0.614379724018629,
-        "critDamage": 2.073394115546568,
-        "dendroDamageBonus": 0.35707504280031704
+        "critRate": 0.6196992687719767,
+        "critDamage": 2.1072048925765774,
+        "dendroDamageBonus": 0.3286286778563034
       },
       "score": {
-        "avg": 36836.818839744745,
-        "min": 35818.484068837206,
-        "max": 42276.6755155487
+        "avg": 37537.175929284254,
+        "min": 36256.88562456674,
+        "max": 45712.13603140829
       }
     },
     {
@@ -8575,20 +8575,20 @@
       "refinement": 1,
       "calculationId": "1000007305",
       "avgStats": {
-        "maxHp": 16121.64221542305,
-        "atk": 1369.447036717354,
-        "def": 705.5214096515084,
-        "elementalMastery": 620.902410377108,
-        "energyRecharge": 1.0966375502141332,
+        "maxHp": 16093.839364732072,
+        "atk": 1358.3820099830966,
+        "def": 704.0864875488472,
+        "elementalMastery": 634.528826645078,
+        "energyRecharge": 1.1012221218061828,
         "healingBonus": 0.0,
-        "critRate": 0.8149570495221506,
-        "critDamage": 1.6675630844699412,
-        "dendroDamageBonus": 0.43113138158433356
+        "critRate": 0.8271232505438261,
+        "critDamage": 1.663706541666773,
+        "dendroDamageBonus": 0.40087640741194663
       },
       "score": {
-        "avg": 35084.78029183498,
-        "min": 34125.9591093524,
-        "max": 40538.35574586242
+        "avg": 35512.92311349697,
+        "min": 34332.29067504875,
+        "max": 42844.504088748195
       }
     },
     {
@@ -8602,20 +8602,20 @@
       "refinement": 1,
       "calculationId": "1000007306",
       "avgStats": {
-        "maxHp": 16046.715960954325,
-        "atk": 1328.9891451501169,
-        "def": 700.8785492665105,
-        "elementalMastery": 849.2289795822328,
-        "energyRecharge": 1.0873171386848193,
+        "maxHp": 16028.668213356274,
+        "atk": 1310.509809733141,
+        "def": 699.2686764254711,
+        "elementalMastery": 858.6105669727422,
+        "energyRecharge": 1.091771865981797,
         "healingBonus": 0.0,
-        "critRate": 0.5751886362885701,
-        "critDamage": 1.5944704718162483,
-        "dendroDamageBonus": 0.6117390922483494
+        "critRate": 0.5874331370708791,
+        "critDamage": 1.5957269623482129,
+        "dendroDamageBonus": 0.6009511181611729
       },
       "score": {
-        "avg": 20260.638743599524,
-        "min": 19736.765150514246,
-        "max": 22652.837471879768
+        "avg": 20541.859278685155,
+        "min": 19882.7540526966,
+        "max": 24709.877867734336
       }
     },
     {
@@ -8629,20 +8629,20 @@
       "refinement": 1,
       "calculationId": "1000007307",
       "avgStats": {
-        "maxHp": 16088.137974136587,
-        "atk": 1427.399591375868,
-        "def": 701.3855964551043,
-        "elementalMastery": 632.5432093676665,
-        "energyRecharge": 1.0911345712428386,
+        "maxHp": 16045.535140943655,
+        "atk": 1405.4852873664381,
+        "def": 701.0552336020074,
+        "elementalMastery": 639.819319168495,
+        "energyRecharge": 1.095066941187133,
         "healingBonus": 0.0,
-        "critRate": 0.5912311666975023,
-        "critDamage": 2.0295047137712086,
-        "dendroDamageBonus": 0.3001939527509197
+        "critRate": 0.5972757678844439,
+        "critDamage": 2.057489205894264,
+        "dendroDamageBonus": 0.27849307052024525
       },
       "score": {
-        "avg": 16821.875132655827,
-        "min": 16311.840248972247,
-        "max": 19186.809254694643
+        "avg": 17010.41713968833,
+        "min": 16414.35495379577,
+        "max": 21700.797280781375
       }
     },
     {
@@ -8656,20 +8656,20 @@
       "refinement": 1,
       "calculationId": "1000007308",
       "avgStats": {
-        "maxHp": 16067.977512895215,
-        "atk": 1431.0704026690596,
-        "def": 700.7774763560654,
-        "elementalMastery": 606.1379657571167,
-        "energyRecharge": 1.090606771466088,
+        "maxHp": 16041.33033012504,
+        "atk": 1408.753627716168,
+        "def": 699.8283272490511,
+        "elementalMastery": 620.8795315093506,
+        "energyRecharge": 1.0954957897980162,
         "healingBonus": 0.0,
-        "critRate": 0.7974562406259015,
-        "critDamage": 1.6137990107397595,
-        "dendroDamageBonus": 0.370254909199729
+        "critRate": 0.8112757454408771,
+        "critDamage": 1.6032796261999482,
+        "dendroDamageBonus": 0.34135575900114884
       },
       "score": {
-        "avg": 15991.114739063081,
-        "min": 15530.70104276454,
-        "max": 18377.942814055667
+        "avg": 16101.523562520655,
+        "min": 15555.44150304028,
+        "max": 19616.2732367077
       }
     },
     {
@@ -14237,37 +14237,37 @@
       "refinement": 1,
       "calculationId": "1000011200",
       "avgStats": {
-        "maxHp": 19002.85319682415,
-        "atk": 2355.38113730978,
-        "def": 806.5776388781808,
-        "elementalMastery": 19.62581149629897,
-        "energyRecharge": 1.1223094332180041,
+        "maxHp": 19121.76197468085,
+        "atk": 2368.747085655403,
+        "def": 805.7944679799667,
+        "elementalMastery": 20.21454249875412,
+        "energyRecharge": 1.1514305518988845,
         "healingBonus": 0.0,
-        "critRate": 0.81653300390502,
-        "critDamage": 2.424713612900243,
-        "cryoDamageBonus": 0.30001047440715184
+        "critRate": 0.7908867470548763,
+        "critDamage": 2.4080123964257036,
+        "cryoDamageBonus": 0.2838921851095224
       },
       "score": {
-        "avg": 826137.2371599572,
-        "min": 808992.023712045,
-        "max": 890971.4924802913
+        "avg": 808414.1899762998,
+        "min": 787449.2882064305,
+        "max": 914182.1015465218
       },
       "defaultVariant": "150er",
       "defaultVariantAvgStats": {
-        "maxHp": 18687.043110682993,
-        "atk": 2269.148865417248,
-        "def": 773.8667688009433,
-        "elementalMastery": 8.65857145562899,
-        "energyRecharge": 1.5519309786640616,
+        "maxHp": 18785.013582276082,
+        "atk": 2337.7021211765978,
+        "def": 779.4168106990569,
+        "elementalMastery": 14.501312699923565,
+        "energyRecharge": 1.554867518370245,
         "healingBonus": 0.0,
-        "critRate": 0.7993047840958154,
-        "critDamage": 2.2605547645722197,
-        "cryoDamageBonus": 0.29561905114838105
+        "critRate": 0.7790323917509314,
+        "critDamage": 2.267234300540454,
+        "cryoDamageBonus": 0.20242886808161514
       },
       "defaultVariantScore": {
-        "avg": 752096.2037548485,
-        "min": 732818.1017588407,
-        "max": 797318.2379087715
+        "avg": 737588.3491052979,
+        "min": 719975.3477697328,
+        "max": 815106.2453455867
       }
     },
     {
@@ -14281,37 +14281,37 @@
       "refinement": 1,
       "calculationId": "1000011201",
       "avgStats": {
-        "maxHp": 21748.380518677495,
-        "atk": 2478.8874272680423,
-        "def": 805.8725440011565,
-        "elementalMastery": 19.00340312682453,
-        "energyRecharge": 1.1221413704592689,
+        "maxHp": 21856.590793523068,
+        "atk": 2465.8681172578213,
+        "def": 804.3655787085054,
+        "elementalMastery": 20.000758137419833,
+        "energyRecharge": 1.1512942116943683,
         "healingBonus": 0.0,
-        "critRate": 0.8155387632447273,
-        "critDamage": 2.4105565455393316,
-        "cryoDamageBonus": 0.24389529061083778
+        "critRate": 0.7895198656707116,
+        "critDamage": 2.403253633617946,
+        "cryoDamageBonus": 0.2496237139461117
       },
       "score": {
-        "avg": 764772.39187272,
-        "min": 748763.549306398,
-        "max": 820917.5337060579
+        "avg": 748665.2619261295,
+        "min": 728888.9143078229,
+        "max": 847501.1091761801
       },
       "defaultVariant": "150er",
       "defaultVariantAvgStats": {
-        "maxHp": 21416.245625071162,
-        "atk": 2391.7366443362935,
-        "def": 769.2703943666137,
-        "elementalMastery": 12.987619046777251,
-        "energyRecharge": 1.5519309777886225,
+        "maxHp": 21496.047976558086,
+        "atk": 2434.8059264776894,
+        "def": 778.9445502794426,
+        "elementalMastery": 14.291415789170944,
+        "energyRecharge": 1.5558821575601585,
         "healingBonus": 0.0,
-        "critRate": 0.7981928790827565,
-        "critDamage": 2.2505619081398436,
-        "cryoDamageBonus": 0.22904762185116673
+        "critRate": 0.7770981648821088,
+        "critDamage": 2.2625279087911987,
+        "cryoDamageBonus": 0.16505979553167074
       },
       "defaultVariantScore": {
-        "avg": 693589.0994730642,
-        "min": 673889.6130567814,
-        "max": 739204.0649728569
+        "avg": 681614.7596782619,
+        "min": 664774.6757368455,
+        "max": 751768.2057704753
       }
     },
     {
@@ -14325,37 +14325,37 @@
       "refinement": 1,
       "calculationId": "1000011202",
       "avgStats": {
-        "maxHp": 19047.308809498096,
-        "atk": 2488.7692155071477,
-        "def": 809.3231254260704,
-        "elementalMastery": 20.358115157460933,
-        "energyRecharge": 1.5077811617379204,
+        "maxHp": 19146.886642582765,
+        "atk": 2463.6984743624066,
+        "def": 808.2923077862552,
+        "elementalMastery": 21.59041019211312,
+        "energyRecharge": 1.5185470895705064,
         "healingBonus": 0.0,
-        "critRate": 0.8173021134640008,
-        "critDamage": 1.8810188497511378,
-        "cryoDamageBonus": 0.1845549757871256
+        "critRate": 0.8008353939912733,
+        "critDamage": 1.870828699287211,
+        "cryoDamageBonus": 0.20332989903883583
       },
       "score": {
-        "avg": 634207.9492437032,
-        "min": 619707.9955205346,
-        "max": 676378.5353620454
+        "avg": 625234.4538819671,
+        "min": 608482.6493768597,
+        "max": 711876.8688870379
       },
       "defaultVariant": "150er",
       "defaultVariantAvgStats": {
-        "maxHp": 18975.56760246581,
-        "atk": 2507.0622769465276,
-        "def": 798.6598926329616,
-        "elementalMastery": 16.716907883173633,
-        "energyRecharge": 1.6066263311435578,
+        "maxHp": 19003.984884146867,
+        "atk": 2462.5453475848644,
+        "def": 797.2515807344595,
+        "elementalMastery": 18.53449334359688,
+        "energyRecharge": 1.616364214258771,
         "healingBonus": 0.0,
-        "critRate": 0.8113533082732437,
-        "critDamage": 1.8690546076784735,
-        "cryoDamageBonus": 0.14081579084121054
+        "critRate": 0.7954273157798042,
+        "critDamage": 1.8549524699088344,
+        "cryoDamageBonus": 0.17868051226822274
       },
       "defaultVariantScore": {
-        "avg": 624179.6615620294,
-        "min": 610209.610131684,
-        "max": 676235.9676791622
+        "avg": 614766.370351741,
+        "min": 598953.7780019713,
+        "max": 705726.70725558
       }
     },
     {
@@ -14369,37 +14369,37 @@
       "refinement": 5,
       "calculationId": "1000011203",
       "avgStats": {
-        "maxHp": 19295.25882533156,
-        "atk": 2299.2932954352323,
-        "def": 816.6524299272494,
-        "elementalMastery": 26.314345454931953,
-        "energyRecharge": 1.1638492244687544,
+        "maxHp": 19293.25156618031,
+        "atk": 2284.6907681586104,
+        "def": 815.3851706860518,
+        "elementalMastery": 26.264291137243333,
+        "energyRecharge": 1.1845779111248018,
         "healingBonus": 0.0,
-        "critRate": 0.9236052546317388,
-        "critDamage": 2.02065288121212,
-        "cryoDamageBonus": 0.3569947680562303
+        "critRate": 0.9184511573276801,
+        "critDamage": 1.9968848400698374,
+        "cryoDamageBonus": 0.37797186828587215
       },
       "score": {
-        "avg": 673858.3065356008,
-        "min": 656862.2403061046,
-        "max": 728249.773938395
+        "avg": 670279.8042213054,
+        "min": 652644.2252959821,
+        "max": 767820.7405402352
       },
       "defaultVariant": "150er",
       "defaultVariantAvgStats": {
-        "maxHp": 19027.58689178904,
-        "atk": 2261.306370755319,
-        "def": 782.942258436475,
-        "elementalMastery": 23.478809540064688,
-        "energyRecharge": 1.5612905041467193,
+        "maxHp": 18956.049119576106,
+        "atk": 2250.666848622035,
+        "def": 790.7449446920944,
+        "elementalMastery": 20.32848104895344,
+        "energyRecharge": 1.5638885493652352,
         "healingBonus": 0.0,
-        "critRate": 0.8755809719020788,
-        "critDamage": 1.9939309560887384,
-        "cryoDamageBonus": 0.27738095543557145
+        "critRate": 0.8841846233501918,
+        "critDamage": 1.9082167750886327,
+        "cryoDamageBonus": 0.31407560464621065
       },
       "defaultVariantScore": {
-        "avg": 630623.0544777903,
-        "min": 618405.9598257889,
-        "max": 657961.3396227598
+        "avg": 623849.0020267755,
+        "min": 606721.6308181693,
+        "max": 721902.7774734653
       }
     },
     {
@@ -14413,37 +14413,37 @@
       "refinement": 5,
       "calculationId": "1000011204",
       "avgStats": {
-        "maxHp": 19015.73897101395,
-        "atk": 2229.705628734738,
-        "def": 809.6033606938397,
-        "elementalMastery": 20.406963357024846,
-        "energyRecharge": 1.4327455592781446,
+        "maxHp": 19133.26057455799,
+        "atk": 2228.880400583859,
+        "def": 806.6469543487879,
+        "elementalMastery": 20.425837602287068,
+        "energyRecharge": 1.4569193619860934,
         "healingBonus": 0.0,
-        "critRate": 0.78088169513285,
-        "critDamage": 1.8323089019492396,
-        "cryoDamageBonus": 0.2186282746912251
+        "critRate": 0.7590418372117245,
+        "critDamage": 1.8193083805045651,
+        "cryoDamageBonus": 0.20757732171760704
       },
       "score": {
-        "avg": 554341.7452926316,
-        "min": 541056.4003393177,
-        "max": 592125.5686441965
+        "avg": 542959.0065480209,
+        "min": 527803.745303586,
+        "max": 627597.9398894542
       },
       "defaultVariant": "150er",
       "defaultVariantAvgStats": {
-        "maxHp": 18822.85435954573,
-        "atk": 2252.3189557088654,
-        "def": 790.8422893721621,
-        "elementalMastery": 15.669699191107563,
-        "energyRecharge": 1.586260168100501,
+        "maxHp": 18934.30378052132,
+        "atk": 2227.2062429905777,
+        "def": 791.1592195463302,
+        "elementalMastery": 17.12257946913394,
+        "energyRecharge": 1.5943862499575254,
         "healingBonus": 0.0,
-        "critRate": 0.7599992669897568,
-        "critDamage": 1.8163060169141936,
-        "cryoDamageBonus": 0.15855639234912788
+        "critRate": 0.7516883808790649,
+        "critDamage": 1.790906446775334,
+        "cryoDamageBonus": 0.17652640493348543
       },
       "defaultVariantScore": {
-        "avg": 539332.3793910118,
-        "min": 525739.5812497892,
-        "max": 580717.4326164372
+        "avg": 529038.3899064668,
+        "min": 514949.2742719236,
+        "max": 604403.495010978
       }
     },
     {
@@ -14457,37 +14457,37 @@
       "refinement": 5,
       "calculationId": "1000011205",
       "avgStats": {
-        "maxHp": 18983.605806848525,
-        "atk": 2166.8431130077483,
-        "def": 805.6820889792185,
-        "elementalMastery": 20.626649210993286,
-        "energyRecharge": 1.4334932033515988,
+        "maxHp": 19136.925160356677,
+        "atk": 2177.9337567825896,
+        "def": 807.0518062305443,
+        "elementalMastery": 20.713711314318587,
+        "energyRecharge": 1.4529402595281455,
         "healingBonus": 0.0,
-        "critRate": 0.7822675586707013,
-        "critDamage": 1.847731937918034,
-        "cryoDamageBonus": 0.27796858936370167
+        "critRate": 0.7597333964952447,
+        "critDamage": 1.8284641579920626,
+        "cryoDamageBonus": 0.26001546659930963
       },
       "score": {
-        "avg": 608802.2937605785,
-        "min": 594302.6389965806,
-        "max": 654606.0054817904
+        "avg": 596036.7768495753,
+        "min": 579963.9148575068,
+        "max": 683553.6974869034
       },
       "defaultVariant": "150er",
       "defaultVariantAvgStats": {
-        "maxHp": 18850.55648187151,
-        "atk": 2206.195877346426,
-        "def": 790.651750232894,
-        "elementalMastery": 14.828270634158963,
-        "energyRecharge": 1.5850902430513056,
+        "maxHp": 18936.32599126289,
+        "atk": 2176.8951132199927,
+        "def": 791.2448916034386,
+        "elementalMastery": 16.993035649908972,
+        "energyRecharge": 1.593055506210187,
         "healingBonus": 0.0,
-        "critRate": 0.7603233273665708,
-        "critDamage": 1.8200511300609847,
-        "cryoDamageBonus": 0.21336842314690227
+        "critRate": 0.753321087474549,
+        "critDamage": 1.7977905218836636,
+        "cryoDamageBonus": 0.228829419031104
       },
       "defaultVariantScore": {
-        "avg": 591491.9160698612,
-        "min": 578148.8512094757,
-        "max": 627119.0489570312
+        "avg": 580740.0231460043,
+        "min": 565795.5719894764,
+        "max": 662455.8640473407
       }
     },
     {
@@ -15416,20 +15416,20 @@
       "refinement": 1,
       "calculationId": "1000012500",
       "avgStats": {
-        "maxHp": 38601.77845348568,
-        "atk": 1003.6978124903494,
-        "def": 574.9940917153194,
-        "elementalMastery": 69.12021157373212,
-        "energyRecharge": 1.3441424744732406,
+        "maxHp": 38636.38271386432,
+        "atk": 1002.9678824185462,
+        "def": 573.6144587684073,
+        "elementalMastery": 69.70879746318671,
+        "energyRecharge": 1.3408671768662164,
         "healingBonus": 0.0,
-        "critRate": 0.8043862338838411,
-        "critDamage": 2.574893747994607,
-        "hydroDamageBonus": 6.671438897308519e-05
+        "critRate": 0.8037688014522829,
+        "critDamage": 2.5858022951863404,
+        "hydroDamageBonus": 0.00016857590977487037
       },
       "score": {
-        "avg": 969332.1606448329,
-        "min": 945104.922449912,
-        "max": 1087756.293071704
+        "avg": 973020.365821584,
+        "min": 948396.2623976254,
+        "max": 1090495.827981456
       },
       "defaultVariant": "160er",
       "defaultVariantAvgStats": {
@@ -15941,35 +15941,35 @@
       "refinement": 1,
       "calculationId": "1000012512",
       "avgStats": {
-        "maxHp": 39233.246416272705,
-        "atk": 1006.7849262811188,
-        "def": 577.4461037666798,
-        "elementalMastery": 138.98442285024478,
-        "energyRecharge": 1.148570311269539,
+        "maxHp": 39260.793112507745,
+        "atk": 1005.7113211724879,
+        "def": 576.2197022638683,
+        "elementalMastery": 139.1328882133932,
+        "energyRecharge": 1.1479989407668418,
         "healingBonus": 0.0,
-        "critRate": 0.7495906927280962,
-        "critDamage": 2.6224609233142413
+        "critRate": 0.7490957071168298,
+        "critDamage": 2.630243506547245
       },
       "score": {
-        "avg": 943966.2718192709,
-        "min": 920542.1085141065,
-        "max": 1049389.676940483
+        "avg": 946433.1348149789,
+        "min": 922770.5982909253,
+        "max": 1075169.6421297037
       },
       "defaultVariant": "160er",
       "defaultVariantAvgStats": {
-        "maxHp": 36382.13656670099,
-        "atk": 991.567054687662,
-        "def": 562.9412952663181,
-        "elementalMastery": 127.33233293260795,
-        "energyRecharge": 1.6694692430741989,
+        "maxHp": 36390.84902359566,
+        "atk": 991.2930874927561,
+        "def": 562.4650046496299,
+        "elementalMastery": 127.46053440086628,
+        "energyRecharge": 1.668809873746863,
         "healingBonus": 0.0,
-        "critRate": 0.7356555255335883,
-        "critDamage": 2.4173948494842863
+        "critRate": 0.7354203156514787,
+        "critDamage": 2.4235381711063164
       },
       "defaultVariantScore": {
-        "avg": 829452.0058604218,
-        "min": 809374.1257573947,
-        "max": 915603.385822325
+        "avg": 831062.5422608684,
+        "min": 810590.3027431014,
+        "max": 931501.3795130359
       }
     },
     {
@@ -15983,36 +15983,36 @@
       "refinement": 5,
       "calculationId": "1000012513",
       "avgStats": {
-        "maxHp": 43094.05260374088,
-        "atk": 974.6718047867681,
-        "def": 580.1565454388657,
-        "elementalMastery": 135.20596481851194,
-        "energyRecharge": 1.1514183137542804,
+        "maxHp": 43138.329377256334,
+        "atk": 973.6696877300243,
+        "def": 579.1680191108842,
+        "elementalMastery": 135.84315084830658,
+        "energyRecharge": 1.1492323296836557,
         "healingBonus": 0.0,
-        "critRate": 0.7209148627060277,
-        "critDamage": 1.8633950675106294,
-        "hydroDamageBonus": 6.555993257273495e-05
+        "critRate": 0.7221182000271029,
+        "critDamage": 1.8658382304146364,
+        "hydroDamageBonus": 5.5370723199738586e-05
       },
       "score": {
-        "avg": 690655.0252281255,
-        "min": 672087.5583787499,
-        "max": 774127.7105926501
+        "avg": 692772.9867811408,
+        "min": 673866.8254036063,
+        "max": 801473.4840086382
       },
       "defaultVariant": "160er",
       "defaultVariantAvgStats": {
-        "maxHp": 39475.69888866049,
-        "atk": 959.4839270224201,
-        "def": 564.6114116385122,
-        "elementalMastery": 123.13442466259808,
-        "energyRecharge": 1.673733096649495,
+        "maxHp": 39561.93218768454,
+        "atk": 959.4860022562982,
+        "def": 563.9659986317151,
+        "elementalMastery": 123.17593716556433,
+        "energyRecharge": 1.673296927402872,
         "healingBonus": 0.0,
-        "critRate": 0.6960971549972959,
-        "critDamage": 1.7610363560693576
+        "critRate": 0.6975456411726759,
+        "critDamage": 1.7580550196408729
       },
       "defaultVariantScore": {
-        "avg": 601644.4611588907,
-        "min": 586503.8360244699,
-        "max": 677965.2243068804
+        "avg": 602774.7138429625,
+        "min": 587562.1944882295,
+        "max": 689083.181677419
       }
     },
     {
@@ -16026,35 +16026,35 @@
       "refinement": 5,
       "calculationId": "1000012514",
       "avgStats": {
-        "maxHp": 37373.74643620335,
-        "atk": 973.8618950336313,
-        "def": 579.2899077148402,
-        "elementalMastery": 133.90970712908072,
-        "energyRecharge": 1.6080473587225195,
+        "maxHp": 37400.12529723226,
+        "atk": 972.8402636286194,
+        "def": 578.2314478936535,
+        "elementalMastery": 134.3647680152336,
+        "energyRecharge": 1.6070082444947908,
         "healingBonus": 0.0,
-        "critRate": 0.7185333020628745,
-        "critDamage": 1.8463933521506304
+        "critRate": 0.7198888749710377,
+        "critDamage": 1.8502747799294472
       },
       "score": {
-        "avg": 603187.565112285,
-        "min": 586553.2740083053,
-        "max": 678774.2946906472
+        "avg": 605116.7550724082,
+        "min": 588045.2750577733,
+        "max": 700171.1295602997
       },
       "defaultVariant": "180er",
       "defaultVariantAvgStats": {
-        "maxHp": 36499.58279904277,
-        "atk": 961.7004412176726,
-        "def": 566.1608677029685,
-        "elementalMastery": 124.45963861440467,
-        "energyRecharge": 1.872578712906122,
+        "maxHp": 36509.632409638536,
+        "atk": 960.7863653867652,
+        "def": 565.0244273172921,
+        "elementalMastery": 123.67703699574753,
+        "energyRecharge": 1.8733441685612757,
         "healingBonus": 0.0,
-        "critRate": 0.6935279610042062,
-        "critDamage": 1.7665168605572696
+        "critRate": 0.6950203746264912,
+        "critDamage": 1.7731852023714283
       },
       "defaultVariantScore": {
-        "avg": 563342.2720749913,
-        "min": 547930.86487827,
-        "max": 656469.6896845059
+        "avg": 564809.4485969777,
+        "min": 549406.6631957085,
+        "max": 635693.0243842247
       }
     },
     {
@@ -16068,37 +16068,37 @@
       "refinement": 5,
       "calculationId": "1000012515",
       "avgStats": {
-        "maxHp": 37491.511881713384,
-        "atk": 926.4811188898589,
-        "def": 589.2011058603631,
-        "elementalMastery": 145.35193345938686,
-        "energyRecharge": 1.1866197585541023,
+        "maxHp": 37517.84567094946,
+        "atk": 925.9901574952149,
+        "def": 588.6946016621938,
+        "elementalMastery": 145.03283310845868,
+        "energyRecharge": 1.184022157249413,
         "healingBonus": 0.0,
-        "critRate": 0.9083324941379831,
-        "critDamage": 1.9869062629718826,
-        "hydroDamageBonus": 0.0006554149167670886
+        "critRate": 0.9096624637728693,
+        "critDamage": 1.991219666592681,
+        "hydroDamageBonus": 0.0009411904583882619
       },
       "score": {
-        "avg": 847336.6867316085,
-        "min": 826997.7796137778,
-        "max": 954184.9881203742
+        "avg": 848585.4977718802,
+        "min": 828087.4475371158,
+        "max": 972090.2892673034
       },
       "defaultVariant": "160er",
       "defaultVariantAvgStats": {
-        "maxHp": 34939.15375850025,
-        "atk": 915.6190796778814,
-        "def": 578.0388835421078,
-        "elementalMastery": 130.9006584252343,
-        "energyRecharge": 1.681430958863366,
+        "maxHp": 35046.926123116216,
+        "atk": 913.7811105655767,
+        "def": 577.3131036005012,
+        "elementalMastery": 130.69608265320673,
+        "energyRecharge": 1.6807555113313222,
         "healingBonus": 0.0,
-        "critRate": 0.8652370872846226,
-        "critDamage": 1.8478786077304525,
-        "hydroDamageBonus": 0.00038134206931219315
+        "critRate": 0.8655020211864869,
+        "critDamage": 1.8473302813560337,
+        "hydroDamageBonus": 0.0006554149166128693
       },
       "defaultVariantScore": {
-        "avg": 761675.3945947925,
-        "min": 741377.314102254,
-        "max": 865186.0294780396
+        "avg": 762685.3047491726,
+        "min": 742680.1636790126,
+        "max": 851613.3285068445
       }
     },
     {
@@ -16399,6 +16399,450 @@
       }
     },
     {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "Double Pyro, Avg DMG",
+      "short": "PYRO",
+      "weapon": "Gest of the Mighty Wolf",
+      "weaponId": "12515",
+      "refinement": 1,
+      "calculationId": "1000012800",
+      "avgStats": {
+        "maxHp": 18489.434314664995,
+        "atk": 2530.4137386074,
+        "def": 888.7855125056719,
+        "elementalMastery": 27.498851914409798,
+        "energyRecharge": 1.0674453003421187,
+        "healingBonus": 0.0,
+        "critRate": 0.8006526557436133,
+        "critDamage": 2.5240611034366967,
+        "pyroDamageBonus": 0.11343036516496556,
+        "anemoDamageBonus": 0.002631116710976788
+      },
+      "score": {
+        "avg": 3330455.6073092916,
+        "min": 3284835.1050730105,
+        "max": 3547977.8924469138
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "Double Pyro, Avg DMG",
+      "short": "PYRO",
+      "weapon": "Wolf's Gravestone",
+      "weaponId": "12502",
+      "refinement": 1,
+      "calculationId": "1000012801",
+      "avgStats": {
+        "maxHp": 18602.256286386062,
+        "atk": 3039.8103626065385,
+        "def": 897.8988817085067,
+        "elementalMastery": 28.42601000136422,
+        "energyRecharge": 1.079481060350812,
+        "healingBonus": 0.0,
+        "critRate": 0.621222981677178,
+        "critDamage": 2.22616524681957,
+        "pyroDamageBonus": 0.21019699095583252,
+        "anemoDamageBonus": 0.0032158093134454203
+      },
+      "score": {
+        "avg": 2322941.43039833,
+        "min": 2276222.8120292085,
+        "max": 2551503.855221137
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "Double Pyro, Avg DMG",
+      "short": "PYRO",
+      "weapon": "A Thousand Blazing Suns",
+      "weaponId": "12514",
+      "refinement": 1,
+      "calculationId": "1000012802",
+      "avgStats": {
+        "maxHp": 18550.50491790232,
+        "atk": 2707.089697977637,
+        "def": 894.3438980071584,
+        "elementalMastery": 26.738281029017006,
+        "energyRecharge": 1.075085200520992,
+        "healingBonus": 0.0,
+        "critRate": 0.6864773727137841,
+        "critDamage": 2.324538458774769,
+        "pyroDamageBonus": 0.18154705337017496,
+        "anemoDamageBonus": 0.002631116706136763
+      },
+      "score": {
+        "avg": 2706708.309633444,
+        "min": 2659122.208480434,
+        "max": 2945679.284801731
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "Double Pyro, Avg DMG",
+      "short": "PYRO",
+      "weapon": "Serpent Spine",
+      "weaponId": "12409",
+      "refinement": 5,
+      "calculationId": "1000012803",
+      "avgStats": {
+        "maxHp": 18506.540781956053,
+        "atk": 2306.5755026369925,
+        "def": 889.7941596844249,
+        "elementalMastery": 27.239943516733863,
+        "energyRecharge": 1.0678440457727247,
+        "healingBonus": 0.0,
+        "critRate": 0.7652710370723355,
+        "critDamage": 2.511639083780302,
+        "pyroDamageBonus": 0.0894579683964636,
+        "anemoDamageBonus": 0.0026311167087020074
+      },
+      "score": {
+        "avg": 2817043.8645153106,
+        "min": 2774493.9465856086,
+        "max": 3037738.202761873
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "Double Pyro, Avg DMG",
+      "short": "PYRO",
+      "weapon": "Tidal Shadow",
+      "weaponId": "12425",
+      "refinement": 5,
+      "calculationId": "1000012804",
+      "avgStats": {
+        "maxHp": 18587.055462497672,
+        "atk": 2530.324775973608,
+        "def": 897.3341808099111,
+        "elementalMastery": 28.551775374390367,
+        "energyRecharge": 1.0791803074880306,
+        "healingBonus": 0.0,
+        "critRate": 0.6214163944709399,
+        "critDamage": 2.227097492780644,
+        "pyroDamageBonus": 0.1999648704079643,
+        "anemoDamageBonus": 0.0032158093132126724
+      },
+      "score": {
+        "avg": 2058488.1992699855,
+        "min": 2017235.2566391781,
+        "max": 2259246.821257632
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "Double Pyro, Avg DMG",
+      "short": "PYRO",
+      "weapon": "Redhorn Stonethresher",
+      "weaponId": "12510",
+      "refinement": 1,
+      "calculationId": "1000012805",
+      "avgStats": {
+        "maxHp": 18681.509103013323,
+        "atk": 2265.1884049303308,
+        "def": 1133.5948229316784,
+        "elementalMastery": 30.17806768677459,
+        "energyRecharge": 1.0819626788946977,
+        "healingBonus": 0.0,
+        "critRate": 0.7050795692853011,
+        "critDamage": 2.8804062762020153,
+        "pyroDamageBonus": 0.1584516955136656,
+        "anemoDamageBonus": 0.001754077809469887
+      },
+      "score": {
+        "avg": 2542700.9085433637,
+        "min": 2485118.4127643537,
+        "max": 2791702.618015246
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "C2 Double Pyro, Avg DMG",
+      "short": "C2 PYRO",
+      "weapon": "Gest of the Mighty Wolf",
+      "weaponId": "12515",
+      "refinement": 1,
+      "calculationId": "1000012806",
+      "avgStats": {
+        "maxHp": 18494.440659556854,
+        "atk": 2566.840746433367,
+        "def": 888.5376220800329,
+        "elementalMastery": 27.11130486112171,
+        "energyRecharge": 1.0679699553454693,
+        "healingBonus": 0.0,
+        "critRate": 0.8005944374826431,
+        "critDamage": 2.527574842418284,
+        "pyroDamageBonus": 0.07074780507809099,
+        "anemoDamageBonus": 0.004969887120951068
+      },
+      "score": {
+        "avg": 4425887.668511644,
+        "min": 4364708.184994545,
+        "max": 4692495.410591298
+      },
+      "defaultVariant": "c2",
+      "defaultVariantAvgStats": {
+        "maxHp": 18378.88930405622,
+        "atk": 2574.2582527894983,
+        "def": 876.2290982737219,
+        "elementalMastery": 20.838167948790865,
+        "energyRecharge": 1.0727755793105664,
+        "healingBonus": 0.0,
+        "critRate": 0.8022381897618034,
+        "critDamage": 2.6061648824320263,
+        "pyroDamageBonus": 0.07114503924247328,
+        "anemoDamageBonus": 0.01067175584935878
+      },
+      "defaultVariantScore": {
+        "avg": 4533001.158817679,
+        "min": 4487777.256933721,
+        "max": 4674860.723571956
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "C2 Double Pyro, Avg DMG",
+      "short": "C2 PYRO",
+      "weapon": "Wolf's Gravestone",
+      "weaponId": "12502",
+      "refinement": 1,
+      "calculationId": "1000012807",
+      "avgStats": {
+        "maxHp": 18577.663185797097,
+        "atk": 3079.0728356620984,
+        "def": 897.9289964800398,
+        "elementalMastery": 28.6804767542536,
+        "energyRecharge": 1.0787946738851497,
+        "healingBonus": 0.0,
+        "critRate": 0.6230192803044493,
+        "critDamage": 2.2319028879335314,
+        "anemoDamageBonus": 0.008770389035787952,
+        "pyroDamageBonus": 0.16137515857664864
+      },
+      "score": {
+        "avg": 3116973.9461868666,
+        "min": 3056587.0369791635,
+        "max": 3436562.0869987058
+      },
+      "defaultVariant": "c2",
+      "defaultVariantAvgStats": {
+        "maxHp": 18429.07479447136,
+        "atk": 3144.9770312050036,
+        "def": 885.1410233142864,
+        "elementalMastery": 24.379236604518514,
+        "energyRecharge": 1.0921542058587128,
+        "healingBonus": 0.0,
+        "critRate": 0.5509404777972298,
+        "critDamage": 2.43840152630885,
+        "pyroDamageBonus": 0.1316183222775191,
+        "anemoDamageBonus": 0.014229007681709923
+      },
+      "defaultVariantScore": {
+        "avg": 3141689.6663877144,
+        "min": 3091278.944871383,
+        "max": 3299497.1241420577
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "C2 Double Pyro, Avg DMG",
+      "short": "C2 PYRO",
+      "weapon": "A Thousand Blazing Suns",
+      "weaponId": "12514",
+      "refinement": 1,
+      "calculationId": "1000012808",
+      "avgStats": {
+        "maxHp": 18546.964774072338,
+        "atk": 2753.554376049053,
+        "def": 894.2690305468722,
+        "elementalMastery": 27.273557063324677,
+        "energyRecharge": 1.0753407212836426,
+        "healingBonus": 0.0,
+        "critRate": 0.6883900451878734,
+        "critDamage": 2.3289850709367284,
+        "pyroDamageBonus": 0.12950941166356397,
+        "anemoDamageBonus": 0.007308657524463612
+      },
+      "score": {
+        "avg": 3635855.528681926,
+        "min": 3574396.3679666757,
+        "max": 3963445.556070408
+      },
+      "defaultVariant": "c2",
+      "defaultVariantAvgStats": {
+        "maxHp": 18456.20000635314,
+        "atk": 2839.1514181667685,
+        "def": 882.0817291389272,
+        "elementalMastery": 21.585496151741093,
+        "energyRecharge": 1.084738938151599,
+        "healingBonus": 0.0,
+        "critRate": 0.6467587984443463,
+        "critDamage": 2.478029770422232,
+        "pyroDamageBonus": 0.08893129885353436,
+        "anemoDamageBonus": 0.007114503828648854
+      },
+      "defaultVariantScore": {
+        "avg": 3693935.92224489,
+        "min": 3640057.24602645,
+        "max": 3864251.4778161277
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "C2 Double Pyro, Avg DMG",
+      "short": "C2 PYRO",
+      "weapon": "Serpent Spine",
+      "weaponId": "12409",
+      "refinement": 5,
+      "calculationId": "1000012809",
+      "avgStats": {
+        "maxHp": 18514.70109204815,
+        "atk": 2334.244202871796,
+        "def": 889.3358715295358,
+        "elementalMastery": 27.223870745602667,
+        "energyRecharge": 1.0699929166095186,
+        "healingBonus": 0.0,
+        "critRate": 0.7649659554648106,
+        "critDamage": 2.5138335629990918,
+        "pyroDamageBonus": 0.054084065867255324,
+        "anemoDamageBonus": 0.004677540817178169
+      },
+      "score": {
+        "avg": 3805387.833454098,
+        "min": 3747403.9578228244,
+        "max": 4073467.695722538
+      },
+      "defaultVariant": "c2",
+      "defaultVariantAvgStats": {
+        "maxHp": 18475.440634300227,
+        "atk": 2355.6020764020027,
+        "def": 879.7534696046646,
+        "elementalMastery": 23.916717579978524,
+        "energyRecharge": 1.069460311553317,
+        "healingBonus": 0.0,
+        "critRate": 0.7687481132952346,
+        "critDamage": 2.5853412195005503,
+        "pyroDamageBonus": 0.04624427550756488,
+        "anemoDamageBonus": 0.0035572519182595417
+      },
+      "defaultVariantScore": {
+        "avg": 3904985.0012381393,
+        "min": 3855845.0429839767,
+        "max": 4073467.695722538
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "C2 Double Pyro, Avg DMG",
+      "short": "C2 PYRO",
+      "weapon": "Tidal Shadow",
+      "weaponId": "12425",
+      "refinement": 5,
+      "calculationId": "1000012810",
+      "avgStats": {
+        "maxHp": 18580.07912577177,
+        "atk": 2561.8574337481023,
+        "def": 896.9793282877152,
+        "elementalMastery": 28.586863202502016,
+        "energyRecharge": 1.07835985578597,
+        "healingBonus": 0.0,
+        "critRate": 0.622797636603217,
+        "critDamage": 2.233195108714512,
+        "anemoDamageBonus": 0.00906273533640464,
+        "pyroDamageBonus": 0.15435884732784
+      },
+      "score": {
+        "avg": 2757402.371470668,
+        "min": 2704561.8221398722,
+        "max": 3042322.4505382213
+      },
+      "defaultVariant": "c2",
+      "defaultVariantAvgStats": {
+        "maxHp": 18422.320505730328,
+        "atk": 2625.6918737049423,
+        "def": 881.3527169136244,
+        "elementalMastery": 24.895267130803408,
+        "energyRecharge": 1.0908687095950806,
+        "healingBonus": 0.0,
+        "critRate": 0.5511778825431171,
+        "critDamage": 2.4404793891412804,
+        "pyroDamageBonus": 0.11738931445470992,
+        "anemoDamageBonus": 0.014229007681709923
+      },
+      "defaultVariantScore": {
+        "avg": 2779904.3886707434,
+        "min": 2735220.9893945837,
+        "max": 2915990.8691106495
+      }
+    },
+    {
+      "characterId": 10000128,
+      "characterName": "Varka",
+      "element": "Anemo",
+      "leaderboard": "C2 Double Pyro, Avg DMG",
+      "short": "C2 PYRO",
+      "weapon": "Redhorn Stonethresher",
+      "weaponId": "12510",
+      "refinement": 1,
+      "calculationId": "1000012811",
+      "avgStats": {
+        "maxHp": 18674.008413385116,
+        "atk": 2289.172044745293,
+        "def": 1133.126228092141,
+        "elementalMastery": 29.910445347914244,
+        "energyRecharge": 1.0822959285488347,
+        "healingBonus": 0.0,
+        "critRate": 0.7068529066875329,
+        "critDamage": 2.8807991242347653,
+        "anemoDamageBonus": 0.0052622334325815555,
+        "pyroDamageBonus": 0.12600125603595233
+      },
+      "score": {
+        "avg": 3384286.270204696,
+        "min": 3309797.476055571,
+        "max": 3787380.0477495734
+      },
+      "defaultVariant": "c2",
+      "defaultVariantAvgStats": {
+        "maxHp": 18521.015496902874,
+        "atk": 2363.973337127607,
+        "def": 1112.1707158752426,
+        "elementalMastery": 22.58206103756943,
+        "energyRecharge": 1.0986313054291759,
+        "healingBonus": 0.0,
+        "critRate": 0.5930801729806143,
+        "critDamage": 3.1907061097343097,
+        "pyroDamageBonus": 0.08181679477987022,
+        "anemoDamageBonus": 0.010671755808282444
+      },
+      "defaultVariantScore": {
+        "avg": 3330742.0684716864,
+        "min": 3265423.705001326,
+        "max": 3519101.082160039
+      }
+    },
+    {
       "characterId": 10000130,
       "characterName": "Linnea",
       "element": "Geo",
@@ -16500,6 +16944,32 @@
         "avg": 945482.6847265472,
         "min": 926295.0276255375,
         "max": 1020232.5522842085
+      }
+    },
+    {
+      "characterId": 10000130,
+      "characterName": "Linnea",
+      "element": "Geo",
+      "leaderboard": "Moonsign Carry Team, Avg DMG",
+      "short": "LUNAR",
+      "weapon": "Covenant of Frost and Snow",
+      "weaponId": "15436",
+      "refinement": 5,
+      "calculationId": "1000013004",
+      "avgStats": {
+        "maxHp": 15384.149346475528,
+        "atk": 1012.8455317390908,
+        "def": 2995.867717760803,
+        "elementalMastery": 114.24664881192366,
+        "energyRecharge": 1.0709441156786328,
+        "healingBonus": 0.0,
+        "critRate": 0.8255850987243943,
+        "critDamage": 1.6660339029308815
+      },
+      "score": {
+        "avg": 896758.959452073,
+        "min": 880076.7744683803,
+        "max": 975565.5817967054
       }
     },
     {

@@ -7446,5 +7446,36 @@
         "note": "充能常驻。战技或爆发叠满3层后全队星烁增伤，数值已是满层，不再乘3"
       }
     }
+  },
+  "秘星典谕": {
+    "normal": {
+      "normal_effect": {
+        "1": "critDmg+24",
+        "2": "critDmg+30",
+        "3": "critDmg+36",
+        "4": "critDmg+42",
+        "5": "critDmg+48"
+      }
+    },
+    "fight": {
+      "fight_effect": {
+        "1": "elementalMastery+120;stellarCritDmg+36",
+        "2": "elementalMastery+150;stellarCritDmg+45",
+        "3": "elementalMastery+180;stellarCritDmg+54",
+        "4": "elementalMastery+210;stellarCritDmg+63",
+        "5": "elementalMastery+240;stellarCritDmg+72"
+      },
+      "group_effect": {
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": "",
+        "5": ""
+      },
+      "time": 20,
+      "extra": {
+        "note": "默认满层：精通=基础值+炬中法度3层(每层基础值一半)；暴伤仅对星超导反应生效，DSL仅通用stellarCritDmg"
+      }
+    }
   }
 }

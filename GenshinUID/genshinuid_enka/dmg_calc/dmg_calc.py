@@ -23,7 +23,7 @@ async def get_char_dmg_percent(char: Character) -> Dict:
     without_talent = await fight.get_dmg_dict(char.char_name, True)
     percent = 0
     char.seq_str = "无匹配"
-    if char.char_name in dmgMap:
+    if char.char_name in dmgMap and dmgMap[char.char_name]:
         std = await get_char_std(char.card_prop, char.char_name)
         if std["skill"]:
             value = 0

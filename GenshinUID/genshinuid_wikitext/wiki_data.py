@@ -59,6 +59,7 @@ _ZH_NAME = re.compile(r"[\u4e00-\u9fa5]+")
 _TRAIL_NUM = re.compile(r"(\d+)\s*$")
 _DATA_DATA_RE = re.compile(r'data-data="([^"]+)"')
 _PARAM_RE = re.compile(r"\{param(\d+):([A-Za-z0-9]+)\}")
+_LINK_RE = re.compile(r"\{/?LINK(?:#[^}]*)?\}", re.IGNORECASE)
 _COLOR_RE = re.compile(r"</?color(?:=#[0-9A-Fa-f]+)?[^>]*>")
 _HTML_RE = re.compile(r"<[^>]+>")
 _REFINE_NUM = re.compile(r"\d+(?:\.\d+)?%?")
@@ -342,6 +343,7 @@ def _norm_voice_title(title: str) -> str:
 
 def strip_ambr_text(text: str) -> str:
     raw = text.replace("\\n", "\n")
+    raw = _LINK_RE.sub("", raw)
     raw = _COLOR_RE.sub("", raw)
     raw = _HTML_RE.sub("", raw)
     return raw.strip()
@@ -349,6 +351,7 @@ def strip_ambr_text(text: str) -> str:
 
 def ambr_keep_color(text: str) -> str:
     raw = text.replace("\\n", "\n")
+    raw = _LINK_RE.sub("", raw)
     raw = re.sub(r"</?i>", "", raw)
     return raw.strip()
 
@@ -1096,10 +1099,10 @@ def parse_artifact_wiki(raw: Mapping[str, object]) -> ArtifactWiki:
     if affix is not None:
         texts = [v for v in affix.values() if isinstance(v, str)]
         if len(texts) == 1:
-            effect1 = texts[0]
+            effect1 = strip_ambr_text(texts[0])
         elif len(texts) >= 2:
-            effect2 = texts[0]
-            effect4 = texts[1]
+            effect2 = strip_ambr_text(texts[0])
+            effect4 = strip_ambr_text(texts[1])
     pieces: list[ArtifactPiece] = []
     suit = _opt_map(raw, "suit")
     if suit is not None:

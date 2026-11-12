@@ -234,3 +234,29 @@ def test_obc_voice_tab_and_title_match() -> None:
     assert voices["初次见面…"] == "https://x.mp3"
     assert _match_voice_url("初次见面...", voices) == "https://x.mp3"
     assert _match_voice_url("没有这条", voices) == ""
+
+
+def test_link_tags_stripped_from_wiki_text() -> None:
+    raw = (
+        "{LINK#N11360001}递变信标{/LINK}的携带上限提升至5枚。"
+        "施放元素战技{LINK#S11362}律定·变量侦测{/LINK}时，额外创造一枚。"
+    )
+    expected = "递变信标的携带上限提升至5枚。施放元素战技律定·变量侦测时，额外创造一枚。"
+    assert strip_ambr_text(raw) == expected
+    assert _MOD.ambr_keep_color(raw) == expected
+
+
+def test_rich_html_strips_link_tags_and_escapes() -> None:
+    spec_html = spec_from_file_location(f"{_PKG}.html_wiki", _WIKI / "html_wiki.py")
+    assert spec_html is not None and spec_html.loader is not None
+    mod_html = module_from_spec(spec_html)
+    sys.modules[f"{_PKG}.html_wiki"] = mod_html
+    spec_html.loader.exec_module(mod_html)
+
+    raw = "{LINK#N11360001}递变信标{/LINK}的携带上限提升至5枚。"
+    rendered = mod_html._rich_html(raw)
+    assert "{LINK" not in rendered
+    assert "{/LINK}" not in rendered
+    assert "递变信标" in rendered
+    assert "11360001" not in rendered
+    assert '<b class="num">5</b>枚' in rendered

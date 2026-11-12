@@ -111,6 +111,7 @@ _RES_COLOR: dict[str, str] = {
     "岩": "#e5a93f",
     "草": "#77dd8f",
 }
+_LINK_TAG = re.compile(r"\{/?LINK(?:#[^}]*)?\}", re.IGNORECASE)
 _COLOR_TAG = re.compile(r"<color=#([0-9A-Fa-f]{6,8})>(.*?)</color>", re.S)
 _ITALIC = re.compile(r"</?i>")
 _NUM_TOKEN = re.compile(r"-?\d+(?:\.\d+)?(?:%|秒)?(?:/-?\d+(?:\.\d+)?(?:%|秒)?)*")
@@ -273,7 +274,8 @@ def _rgba(color: str, alpha: float) -> str:
 
 
 def _rich_html(text: str) -> str:
-    raw = _ITALIC.sub("", text.replace("\\n", "\n"))
+    raw = _LINK_TAG.sub("", text.replace("\\n", "\n"))
+    raw = _ITALIC.sub("", raw)
     plain = _COLOR_TAG.sub(lambda m: m.group(2), raw)
     return _mark_nums(plain).replace("\n", "<br>")
 

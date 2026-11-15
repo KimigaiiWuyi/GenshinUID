@@ -121,3 +121,41 @@ def init_dir():
 
 
 init_dir()
+
+
+def _register_backup_hints() -> None:
+    # 宿主 Core 无该模块（旧版本）时跳过，不报错
+    try:
+        from gsuid_core.utils.backup.hints import register_backup_path
+    except ImportError:
+        return
+    register_backup_path(
+        "GenshinUID",
+        PLAYER_PATH,
+        "user_data",
+        "按 UID 存档的抽卡记录、面板与圣遗物仓",
+    )
+    register_backup_path("GenshinUID", CONFIG_PATH, "config", "插件配置", default_selected=True)
+    register_backup_path("GenshinUID", CU_BG_PATH, "config", "自定义背景图")
+    register_backup_path("GenshinUID", CU_CHBG_PATH, "config", "自定义角色背景图")
+    register_backup_path(
+        "GenshinUID",
+        RESOURCE_PATH,
+        "regenerable",
+        "图片素材，可用「下载全部资源」命令重新下载",
+    )
+    register_backup_path(
+        "GenshinUID",
+        WIKI_PATH,
+        "regenerable",
+        "攻略 Wiki 数据，可用「下载全部资源」命令重新下载",
+    )
+    register_backup_path(
+        "GenshinUID",
+        DATA_PATH,
+        "regenerable",
+        "地图与榜单数据，可用「下载全部资源」命令重新下载",
+    )
+
+
+_register_backup_hints()

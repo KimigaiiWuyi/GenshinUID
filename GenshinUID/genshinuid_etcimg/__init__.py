@@ -4,6 +4,7 @@ from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
 from gsuid_core.i18n import t
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..version import Genshin_version
 from ..utils.message import GButton as Button
@@ -34,11 +35,16 @@ async def send_primogems_data(bot: Bot, ev: Event):
         if path.exists():
             img = f"{ev.text}.png"
         else:
+            ai_return(f"【版本规划】未找到 {ev.text} 版本的原石预估图。")
             return
     else:
         img = f"{Genshin_version[:3]}.png"
     primogems_img = PRIMOGEMS_DATA_PATH / img
+    if not primogems_img.exists():
+        ai_return(f"【版本规划】未找到 {img} 原石预估图。")
+        return
     await bot.logger.info(t("log.genshinuid.etcimg_ver_access", img=img))
+    ai_return(f"【版本原石预估图】已发送 {primogems_img.stem} 版本规划/原石预估静态参考图。")
     primogems_img = await convert_img(primogems_img)
     a = Button("📄版本规划4.3", "版本规划4.3")
     b = Button("🔔今日材料", "今日材料")
@@ -71,10 +77,12 @@ async def send_img_data(bot: Bot, ev: Event):
     await bot.logger.info(t("log.genshinuid.etcimg_misc_start"))
     img = IMG_PATH / f"{ev.command}.jpg"
     if img.exists():
+        ai_return(f"【参考图】已发送「{ev.command}」静态参考数据图。")
         a = Button("👾怪物血量表", "血量表")
         b = Button("👾怪物抗性表", "抗性表")
         c = Button("👾怪物血量排行", "血量排行")
         d = Button("🤖伤害乘区", "伤害乘区")
         await bot.send_option(await convert_img(img), [a, b, c, d])
     else:
+        ai_return(f"【参考图】本地未找到「{ev.command}」参考图。")
         return

@@ -5,7 +5,18 @@ from gsuid_core.models import Event
 sv_wiki_text = SV("原神WIKI图鉴")
 
 
-@sv_wiki_text.on_prefix(("角色介绍", "角色资料", "查角色"))
+@sv_wiki_text.on_prefix(
+    ("角色介绍", "角色资料", "查角色"),
+    covers=["原神角色图鉴", "角色基础属性与技能概览图"],
+    to_ai="""查询原神角色图鉴综合卡片（基础属性/突破材料/技能/命座概览）
+
+    当用户说"角色介绍 纳西妲"、"角色资料 芙宁娜"、"查角色 雷神"时调用。
+    返回角色图鉴综合卡片并附带结构化文字摘要。
+
+    Args:
+        text: 角色名称或简称，可后跟 20-90 等级，例如 "纳西妲"、"雷神 90"
+    """,
+)
 async def send_char(bot: Bot, ev: Event) -> None:
     from .html_wiki import render_char_card
 

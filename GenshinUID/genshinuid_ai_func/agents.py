@@ -1,5 +1,7 @@
 """原神深渊配队与伤害计算两个专职代理。主人格只委派，不自己算。"""
 
+from dataclasses import fields as dataclass_fields
+
 from gsuid_core.ai_core.agent_node import TASK_BASICS_PACK, AgentNode, register_agent_node
 
 _BOX_TOOLS = [
@@ -8,6 +10,8 @@ _BOX_TOOLS = [
     "get_user_genshin_char_list",
     "get_user_genshin_char_detail",
     "get_user_genshin_artifacts",
+    "calc_genshin_char_ascension_gaps",
+    "get_genshin_material_sources",
     "search_genshin_kb",
     "filter_genshin_chars",
     "filter_genshin_artifact_sets",
@@ -89,8 +93,15 @@ _DAMAGE_PROMPT = """你是「原神伤害计算代理」。无人格。数字只
 """
 
 
+def _register_agent_with_shared(node: AgentNode, shared: list[str]) -> None:
+    # 兼容尚未合入 AgentNode.shared_tool_names 的旧版 Core；新版 Core 上共享只读工具。
+    if any(f.name == "shared_tool_names" for f in dataclass_fields(AgentNode)):
+        setattr(node, "shared_tool_names", list(shared))
+    register_agent_node(node)
+
+
 def register_genshin_agents() -> None:
-    register_agent_node(
+    _register_agent_with_shared(
         AgentNode(
             node_id="genshin_abyss_agent",
             display_name="原神深渊配队",
@@ -140,9 +151,10 @@ def register_genshin_agents() -> None:
             ],
             source="plugin",
             plugin="GenshinUID",
-        )
+        ),
+        _BOX_TOOLS,
     )
-    register_agent_node(
+    _register_agent_with_shared(
         AgentNode(
             node_id="genshin_damage_agent",
             display_name="原神伤害计算",
@@ -157,7 +169,8 @@ def register_genshin_agents() -> None:
             ],
             source="plugin",
             plugin="GenshinUID",
-        )
+        ),
+        _BOX_TOOLS,
     )
 
 

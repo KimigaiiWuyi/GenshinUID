@@ -1,9 +1,11 @@
 import re
-from typing import Optional
+from typing import Mapping, Optional, Sequence
 from pathlib import Path
 
 from bs4 import Tag, BeautifulSoup
 from PIL import Image, ImageOps, ImageDraw
+
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .main import ann
 from .util import filter_list
@@ -79,7 +81,37 @@ async def ann_list_card() -> bytes:
     tip = "*可以使用 原神公告#0000(右上角ID) 来查看详细内容, 例子: 原神公告#2434"
     draw_text_by_line(bg, (0, bg.height - 35), tip, gs_font_18, "#767779", 1000, True)
 
+    _ai_return_ann_list(ann_list)
+
     return await convert_img(bg)
+
+
+def _ai_return_ann_list(ann_list: Sequence[Mapping[str, object]]) -> None:
+    try:
+        ai_lines = ["【原神官方公告列表】"]
+        for data in ann_list:
+            label = "活动公告" if "type_id" in data and data["type_id"] == 1 else "游戏公告"
+            ai_lines.append(f"## {label}")
+            items = data["list"] if "list" in data and isinstance(data["list"], list) else []
+            for info in items[:15]:
+                if isinstance(info, dict) and "ann_id" in info and "subtitle" in info:
+                    ai_lines.append(f"  - #{info['ann_id']} {info['subtitle']}")
+        ai_return("\n".join(ai_lines))
+    except Exception:
+        pass
+
+
+def _ai_return_ann_detail(ann_id: object, content: Sequence[Mapping[str, object]], msg_list: Sequence[str]) -> None:
+    try:
+        first = content[0] if content else {}
+        title = str(first["title"]) if "title" in first else str(ann_id)
+        plain_parts = [m.strip() for m in msg_list if m and not m.strip().endswith(("jpg", "png")) and m.strip()]
+        body = "\n".join(plain_parts)
+        if len(body) > 1500:
+            body = body[:1500] + "…"
+        ai_return(f"【原神公告 #{ann_id} {title}】\n{body}")
+    except Exception:
+        pass
 
 
 async def ann_detail_card(ann_id):
@@ -107,6 +139,8 @@ async def ann_detail_card(ann_id):
     msg_list.extend(
         [BeautifulSoup(x.get_text("").replace("<<", ""), "lxml").get_text() + "\n" for x in soup.find_all("p")]
     )
+
+    _ai_return_ann_detail(ann_id, content, msg_list)
 
     drow_height = 0
     for msg in msg_list:

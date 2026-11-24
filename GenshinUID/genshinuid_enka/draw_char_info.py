@@ -1,8 +1,10 @@
 import json
-from typing import Dict, Union
+from typing import Dict, Union, Sequence
 
 import aiofiles
 from PIL import Image, ImageDraw, ImageChops
+
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .etc.etc import TEXT_PATH, get_all_artifacts_value
 from .draw_normal import get_artifact_score_data
@@ -518,6 +520,31 @@ async def draw_char_info(char: Character) -> Image.Image:
     return img
 
 
+def _ai_return_showcase_list(
+    uid: str,
+    player_name: str,
+    total_cached: int,
+    sorted_items: Sequence[tuple[float, Character]],
+) -> None:
+    try:
+        ai_lines = [
+            f"【UID {uid} ({player_name}) 角色展柜橱窗】共缓存 {total_cached} 名角色"
+            f"（展柜缓存非全箱，展示前 {min(8, len(sorted_items))} 名）："
+        ]
+        for pct_val, ch in sorted_items[:8]:
+            w = ch.card_prop["weaponInfo"] if "weaponInfo" in ch.card_prop else {}
+            w_name = w["weaponName"] if isinstance(w, dict) and "weaponName" in w else "-"
+            cr = float(ch.fight_prop["critRate"]) * 100 if "critRate" in ch.fight_prop else 0.0
+            cd = float(ch.fight_prop["critDmg"]) * 100 if "critDmg" in ch.fight_prop else 0.0
+            ai_lines.append(
+                f"  {ch.char_name}: Lv{ch.char_level} {ch.char_talent}命 {w_name} "
+                f"双暴{cr:.1f}%/{cd:.1f}% 伤害评级{pct_val:.1f}%"
+            )
+        ai_return("\n".join(ai_lines))
+    except Exception:
+        pass
+
+
 async def draw_all_char_list(uid: str) -> Union[str, bytes]:
     uid_fold = PLAYER_PATH / str(uid)
     char_file_list = uid_fold.glob("*")
@@ -548,6 +575,8 @@ async def draw_all_char_list(uid: str) -> Union[str, bytes]:
         key=lambda item: item[0],
         reverse=True,
     )
+
+    _ai_return_showcase_list(uid, player_name, len(char_list), sorted_items)
 
     sorted_dict = {k: v for k, v in sorted_items}
 

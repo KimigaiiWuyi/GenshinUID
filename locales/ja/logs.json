@@ -54,6 +54,7 @@
   "log.genshinuid.hard_uid": "[幽境危戦] uid: {uid}",
   "log.genshinuid.item_d387de": "[ガチャ履歴インポート] データ形式エラー! {item}",
   "log.genshinuid.json_d2e26b": "JSON 解析エラー: {e}",
+  "log.genshinuid.kb_offline_fallback": "[原神·知識ベース] ベクトル検索に失敗したためローカル図鑑へフォールバック: {e}",
   "log.genshinuid.kb_query": "[原神·知識ベース] query={query} limit={limit}",
   "log.genshinuid.lelaer_gacha_url": "[lelaer] {url}",
   "log.genshinuid.mail_fail": "[原神メール通知] 送信失敗 UID{uid} -> {email}: {message}",

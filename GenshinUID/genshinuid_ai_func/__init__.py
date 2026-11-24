@@ -6,4 +6,5 @@ from . import (
     agents as _agents,  # noqa: F401
     damage as _damage,  # noqa: F401
     catalog as _catalog,  # noqa: F401
+    materials as _materials,  # noqa: F401
 )

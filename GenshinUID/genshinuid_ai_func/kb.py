@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import httpx
+import httpx2
 from pydantic_ai import RunContext
 
 from gsuid_core.i18n import t
@@ -15,6 +17,8 @@ from ..utils.map.name_covert import expand_query_aliases
 _CTX = ["原神", "Genshin", "游戏"]
 # 知识点 plugin 字段历史值是 genshin；枢纽归属取插件目录名 GenshinUID。
 _KB_PLUGINS = ["GenshinUID", "genshin"]
+# 向量库/嵌入服务不可用时的外部网络与运行时异常（用于降级本地图鉴检索）。
+_KB_OFFLINE_ERRORS = (httpx.HTTPError, httpx2.HTTPError, TimeoutError, OSError, RuntimeError)
 
 
 def _payload_text(payload: dict[str, object]) -> str:
@@ -69,8 +73,14 @@ async def search_genshin_kb(
     cap = min(max(limit, 1), 12)
     logger.info(t("log.genshinuid.kb_query", query=text, limit=cap))
     exact = await _exact_weapon_blocks(text)
-    points = await query_knowledge(query=text, limit=cap, plugin_filter=_KB_PLUGINS)
     chunks: list[str] = []
+    qdrant_offline = False
+    try:
+        points = await query_knowledge(query=text, limit=cap, plugin_filter=_KB_PLUGINS)
+    except _KB_OFFLINE_ERRORS as exc:
+        logger.warning(t("log.genshinuid.kb_offline_fallback", e=exc))
+        points = []
+        qdrant_offline = True
     for point in points:
         payload = point.payload
         if not isinstance(payload, dict):
@@ -78,9 +88,128 @@ async def search_genshin_kb(
         chunks.append(_payload_text(payload))
     if exact:
         chunks = exact + chunks
+    if not chunks or qdrant_offline:
+        local_blocks = await _local_kb_fallback(text, cap)
+        if local_blocks:
+            chunks = [*chunks, *local_blocks][:cap]
     if not chunks:
         return f"原神知识库未命中 {text!r}。可换角色全名、套装名或武器名再查。"
-    return f"原神知识库命中 {len(chunks)} 条：\n\n" + "\n\n".join(chunks)
+    suffix = "（向量库离线，已使用本地图鉴离线索引）" if qdrant_offline else ""
+    return f"原神知识库命中 {len(chunks)} 条{suffix}：\n\n" + "\n\n".join(chunks)
+
+
+async def _local_kb_fallback(text: str, limit: int) -> list[str]:
+    """向量库不可用或未命中时，直接查本地内置角色/圣遗物/怪物/材料数据。"""
+    from .materials import search_local_materials_text
+    from ..utils.map.GS_MAP_PATH import charList, reliquaryList, monster2entry_data
+    from ..utils.map.name_covert import alias_to_char_name
+    from ..genshinuid_adv.get_adv import adv_lst
+    from ..genshinuid_wikitext.wiki_data import CharWiki, load_char_wiki
+
+    blocks: list[str] = []
+    tokens = [tok.strip() for tok in text.split() if len(tok.strip()) >= 2]
+    if not tokens and text.strip():
+        tokens = [text.strip()]
+
+    # 1. 角色本地图鉴（基础属性、突破/天赋材料、技能与命座摘要、攻略配装）
+    matched_chars: list[str] = []
+    known_chars = {
+        str(v["name"]) for v in charList.values() if isinstance(v, dict) and "name" in v and isinstance(v["name"], str)
+    }
+    for tok in tokens:
+        cand = await alias_to_char_name(tok)
+        if cand in known_chars and cand not in matched_chars:
+            matched_chars.append(cand)
+        else:
+            for cname in known_chars:
+                if cname in tok and cname not in matched_chars:
+                    matched_chars.append(cname)
+        if len(matched_chars) >= 2:
+            break
+
+    for cname in matched_chars:
+        wiki = await load_char_wiki(cname, 90)
+        if isinstance(wiki, CharWiki):
+            asc = "、".join(f"{it.name}×{it.count}" for it in wiki.ascend_items[:8])
+            tal = " / ".join(f"{s.slot}:{s.name}" for s in wiki.talents[:4])
+            con = "；".join(f"{c.index}命-{c.name}" for c in wiki.consts[:6])
+            body_lines = [
+                f"### {wiki.name}（本地图鉴精确命中）",
+                f"{wiki.rarity}星 {wiki.element_zh} {wiki.weapon} 地区:{wiki.region} "
+                f"90级突破属性:{wiki.substat} {wiki.substat_value}",
+                f"90级基础：生命{wiki.hp} 攻击{wiki.atk} 防御{wiki.defense}",
+            ]
+            if asc:
+                body_lines.append(f"1→90级突破总材料：{asc}（突破摩拉 {wiki.mora_ascend:,}）")
+            if tal:
+                body_lines.append(f"技能：{tal}")
+            if con:
+                body_lines.append(f"命座：{con}")
+            if cname in adv_lst and isinstance(adv_lst[cname], dict):
+                adv = adv_lst[cname]
+                art_sets = adv["artifact"] if "artifact" in adv and isinstance(adv["artifact"], list) else []
+                if art_sets:
+                    plans = " / ".join("+".join(str(x) for x in s) for s in art_sets[:3] if isinstance(s, list))
+                    body_lines.append(f"推荐圣遗物：{plans}")
+            blocks.append("\n".join(body_lines))
+
+    # 2. 圣遗物套装
+    for entry in reliquaryList.values():
+        if len(blocks) >= limit:
+            break
+        if not isinstance(entry, dict) or "name" not in entry or not isinstance(entry["name"], str):
+            continue
+        aname = entry["name"]
+        if any(tok in aname or aname in text for tok in tokens):
+            affix = entry["affixList"] if "affixList" in entry and isinstance(entry["affixList"], dict) else {}
+            effs = [str(v) for v in affix.values() if isinstance(v, str)]
+            desc = "\n".join(f"- {e}" for e in effs[:2])
+            blocks.append(f"### {aname}（本地圣遗物图鉴）\n{desc}")
+
+    # 3. 怪物抗性与掉落
+    seen_monsters: set[str] = set()
+    for entry in monster2entry_data.values():
+        if len(blocks) >= limit:
+            break
+        if not isinstance(entry, dict) or "name" not in entry or not isinstance(entry["name"], str):
+            continue
+        mname = entry["name"]
+        if mname in seen_monsters:
+            continue
+        if any(tok in mname or mname in text for tok in tokens):
+            seen_monsters.add(mname)
+            res = entry["resistance"] if "resistance" in entry and isinstance(entry["resistance"], dict) else {}
+            res_map = (
+                ("物", "physicalSubHurt"),
+                ("火", "fireSubHurt"),
+                ("水", "waterSubHurt"),
+                ("雷", "elecSubHurt"),
+                ("冰", "iceSubHurt"),
+                ("风", "windSubHurt"),
+                ("岩", "rockSubHurt"),
+                ("草", "grassSubHurt"),
+            )
+            res_bits = [
+                f"{lbl}{int(round(float(res[k]) * 100))}%"
+                for lbl, k in res_map
+                if k in res and isinstance(res[k], (int, float))
+            ]
+            rew = entry["reward"] if "reward" in entry and isinstance(entry["reward"], dict) else {}
+            drops = [
+                str(v["name"]) for v in rew.values() if isinstance(v, dict) and "name" in v and str(v["name"]) != "摩拉"
+            ]
+            line = f"### {mname}（本地怪物图鉴）"
+            if res_bits:
+                line += "\n抗性：" + " ".join(res_bits)
+            if drops:
+                line += "\n主要掉落：" + "、".join(drops[:8])
+            blocks.append(line)
+
+    # 4. 本地材料与采集地索引
+    if len(blocks) < limit:
+        blocks.extend(search_local_materials_text(text, limit=limit - len(blocks)))
+
+    return blocks[:limit]
 
 
 async def _exact_weapon_blocks(text: str) -> list[str]:

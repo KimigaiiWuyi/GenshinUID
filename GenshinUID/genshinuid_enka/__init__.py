@@ -270,6 +270,7 @@ async def send_original_pic(bot: Bot, ev: Event):
         path = TEMP_PATH / f"{ev.reply}.jpg"
         if path.exists():
             logger.info(t("log.genshinuid.enka_orig_pic", path=path))
+            ai_return("【面板原图】已发送对应面板的高清立绘原图。")
             with open(path, "rb") as f:
                 await bot.send(f.read())
 
@@ -389,6 +390,7 @@ async def contrast_char_info(bot: Bot, ev: Event):
     for index, img in enumerate(img_list):
         base_img.paste(img, (950 * index, 0), img)
 
+    ai_return(f"【面板对比图】已并排对比 {len(img_list)} 组配置：{' vs '.join(contrast_list)}（各面板数值见上方）。")
     await bot.send(await convert_img(base_img))
 
 

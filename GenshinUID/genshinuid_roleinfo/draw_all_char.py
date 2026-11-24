@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.utils.error_reply import get_error_img
 from gsuid_core.utils.image.convert import convert_img
 from gsuid_core.utils.api.mys.models import IndexData, MihoyoAvatar
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .char_score import char_total_score
 from ..utils.mys_api import mys_api, get_base_data
@@ -115,11 +116,33 @@ async def _prepare_char_datas(char_datas: list[MihoyoAvatar]) -> list[MihoyoAvat
     return prepared
 
 
+def _ai_return_char_list(uid: str, char_datas: list[MihoyoAvatar]) -> None:
+    try:
+        total = len(char_datas)
+        lv90 = sum(1 for c in char_datas if c["level"] >= 90)
+        below90 = total - lv90
+        parts = [
+            f"【UID {uid} 全角色箱】共 {total} 名角色（已满90级 {lv90} 名，未满90级 {below90} 名）",
+        ]
+        for char in char_datas:
+            weapon = char["weapon"]
+            w_desc = f"{weapon['name']} Lv{weapon['level']} 精{weapon['affix_level']}"
+            parts.append(
+                f"  {char['name']} ({char['rarity']}★ {char['element']}): "
+                f"Lv{char['level']} {char['actived_constellation_num']}命 好感{char['fetter']} | {w_desc}"
+            )
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
+
+
 async def _draw_char_pic(
     uid: str,
     raw_data: IndexData,
     match_height: int | None = None,
     char_datas: list[MihoyoAvatar] | None = None,
+    *,
+    emit_ai: bool = False,
 ) -> Image.Image | str | bytes:
     if char_datas is None:
         loaded = await _load_char_datas(uid, raw_data)
@@ -128,6 +151,8 @@ async def _draw_char_pic(
         char_datas = loaded
 
     char_datas = await _prepare_char_datas(char_datas)
+    if emit_ai:
+        _ai_return_char_list(uid, char_datas)
     char_num = len(char_datas)
     based_w, based_h, cols, card_w, card_h, pad_x, head, foot = _char_grid_metrics(char_num, match_height)
     target = (card_w, card_h)
@@ -202,7 +227,7 @@ async def draw_char_pic(uid: str) -> str | bytes:
     if isinstance(raw_data, (str, bytes, bytearray, memoryview)):
         return raw_data
 
-    img = await _draw_char_pic(uid, raw_data)
+    img = await _draw_char_pic(uid, raw_data, emit_ai=True)
     if isinstance(img, (bytes, str)):
         return img
     elif isinstance(img, (bytearray, memoryview)):

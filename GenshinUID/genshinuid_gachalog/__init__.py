@@ -5,6 +5,7 @@ from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.segment import MessageSegment
 from gsuid_core.utils.database.models import GsBind
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .lelaer_tools import (
     get_gachaurl,
@@ -205,7 +206,11 @@ async def export_gachalogurl(bot: Bot, ev: Event):
         return await bot.send(UID_HINT)
     im = await get_gachaurl(uid)
     if isinstance(im, bytes):
+        ai_return(f"【UID {uid} 抽卡记录导出链接】已发送抽卡记录导出链接二维码图片。")
         return await bot.send(im)
     if isinstance(im, (bytearray, memoryview)):
+        ai_return(f"【UID {uid} 抽卡记录导出链接】已发送抽卡记录导出链接二维码图片。")
         return await bot.send(bytes(im))
+    if isinstance(im, str):
+        ai_return(f"【UID {uid} 抽卡记录导出链接】已通过私聊合并转发发送导出链接。")
     await bot.send(MessageSegment.node([MessageSegment.text(im)]))

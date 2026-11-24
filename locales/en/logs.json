@@ -54,6 +54,7 @@
   "log.genshinuid.hard_uid": "[dire straits] uid: {uid}",
   "log.genshinuid.item_d387de": "[Import gacha] Invalid data format! {item}",
   "log.genshinuid.json_d2e26b": "JSON parse error: {e}",
+  "log.genshinuid.kb_offline_fallback": "[Genshin knowledge] Vector KB unavailable, falling back to local index: {e}",
   "log.genshinuid.kb_query": "[Genshin knowledge] query={query} limit={limit}",
   "log.genshinuid.lelaer_gacha_url": "[lelaer] {url}",
   "log.genshinuid.mail_fail": "[Genshin mail reminder] send failed UID{uid} -> {email}: {message}",

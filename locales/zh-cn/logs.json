@@ -54,6 +54,7 @@
   "log.genshinuid.hard_uid": "[幽境危战] uid: {uid}",
   "log.genshinuid.item_d387de": "[导入抽卡记录] 数据格式错误!{item}",
   "log.genshinuid.json_d2e26b": "JSON解析错误：{e}",
+  "log.genshinuid.kb_offline_fallback": "[原神·知识库] 向量库检索不可用，降级本地图鉴索引: {e}",
   "log.genshinuid.kb_query": "[原神·知识库] query={query} limit={limit}",
   "log.genshinuid.lelaer_gacha_url": "[lelaer] {url}",
   "log.genshinuid.mail_fail": "[原神邮箱提醒] 邮件发送失败 UID{uid} -> {email}: {message}",

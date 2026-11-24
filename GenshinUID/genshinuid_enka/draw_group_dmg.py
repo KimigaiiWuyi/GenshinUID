@@ -1,6 +1,8 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Union, Mapping, Sequence
 
 from PIL import Image, ImageDraw
+
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .etc.etc import TEXT_PATH
 from .mono.SEQ import ALL_SEQ, SEQ_ARG
@@ -55,6 +57,29 @@ def _f(value: float, is_float: bool = True) -> str:
 
 def _p(value: float) -> str:
     return "{:.2f}%".format(value * 100)
+
+
+def _ai_return_group_dmg(
+    uid: str,
+    char_list: Sequence[Character],
+    all_avgdmg: float,
+    all_critdmg: float,
+    avg_dps: float,
+    all_time: float,
+    ac_len: int,
+    dmg_info: Mapping[str, float],
+) -> None:
+    try:
+        team_names = " + ".join(c.char_name for c in char_list)
+        contrib = " / ".join(f"{k}:{_f(v)}" for k, v in dmg_info.items())
+        ai_return(
+            f"【UID {uid} 队伍伤害模拟】阵容：{team_names}\n"
+            f"总期望伤害：{_f(all_avgdmg)}｜总暴击伤害：{_f(all_critdmg)}｜"
+            f"平均DPS：{_f(avg_dps)}（{_f(all_time)}秒，{ac_len}个动作）\n"
+            f"各角色期望贡献：{contrib}"
+        )
+    except Exception:
+        pass
 
 
 async def draw_group_dmg_img(uid: str, char_list: List[Character]) -> Union[Image.Image, str]:
@@ -159,6 +184,8 @@ async def draw_group_dmg_img(uid: str, char_list: List[Character]) -> Union[Imag
     img_draw.text((650, 236), f"{_f(all_critdmg)}", "white", gs_font_44, "lm")
     img_draw.text((390, 333), f"{_f(avg_dps)}", "white", gs_font_44, "lm")
     img_draw.text((650, 333), f"{_f(all_time)}秒内", "white", gs_font_44, "lm")
+
+    _ai_return_group_dmg(uid, char_list, all_avgdmg, all_critdmg, avg_dps, all_time, ac_len, dmg_info)
 
     # img = await convert_img(img)
     return img

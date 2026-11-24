@@ -3,6 +3,7 @@ from gsuid_core.bot import Bot
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .get_guide import get_gs_guide
 from .html_endgame import build_abyss_image, build_leyline_image, build_roleplay_image
@@ -11,12 +12,25 @@ from ..utils.message import GButton as Button
 from .get_bbs_post_guide import get_material_way_post
 from ..utils.image.convert import convert_img
 from ..utils.map.name_covert import alias_to_char_name
+from ..genshinuid_ai_func.materials import search_local_materials_text
 from ..utils.resource.RESOURCE_PATH import REF_PATH
 
 sv_char_guide = SV("查询角色攻略")
 # 「深渊信息」也命中旧命令「深渊」。新服务先跑并阻断，避免空返回。
 sv_version_lineup = SV("查询版本阵容", priority=1)
 sv_bbs_post_guide = SV("查询BBS攻略")
+
+
+def _ai_return_bbs_guide(name: str, result: object) -> None:
+    try:
+        hits = search_local_materials_text(name, limit=2)
+        hint = ("\n" + "\n".join(hits)) if hits else ""
+        if isinstance(result, str):
+            ai_return(result + hint)
+        else:
+            ai_return(f"【材料采集路线攻略】已发送「{name}」的米游社采集路线图文攻略。{hint}")
+    except Exception:
+        pass
 
 
 @sv_bbs_post_guide.on_suffix(
@@ -33,6 +47,7 @@ sv_bbs_post_guide = SV("查询BBS攻略")
 async def send_bbs_post_guide(bot: Bot, ev: Event):
     name = ev.text.strip().replace("材料", "").replace("采集", "")
     result = await get_material_way_post(name)
+    _ai_return_bbs_guide(name, result)
     await bot.send(result)
 
 
@@ -67,10 +82,15 @@ async def send_guide_pic(bot: Bot, ev: Event):
 
     if im:
         await bot.logger.info(t("log.genshinuid.guide_ok", name=name))
+        resolved = await alias_to_char_name(name)
+        ai_return(
+            f"【角色攻略图】已发送「{resolved}」的攻略参考图（静态一图流攻略，详细配装文本可查 search_genshin_kb）。"
+        )
         a = Button(f"🎴参考面板{name}", f"参考面板{name}")
         await bot.send_option(im, [a])
     else:
         await bot.logger.warning(t("log.genshinuid.guide_missing", name=name))
+        ai_return(f"【角色攻略图】未找到「{name}」的攻略图资源，可改用 search_genshin_kb 查该角色配装攻略。")
 
 
 @sv_char_guide.on_prefix(
@@ -94,9 +114,11 @@ async def send_bluekun_pic(bot: Bot, ev: Event):
     if img.exists():
         img = await convert_img(img)
         await bot.logger.info(t("log.genshinuid.guide_ref_ok", name=name))
+        ai_return(f"【角色参考面板】已发送「{name}」的毕业参考面板图。")
         await bot.send_option(img, [Button(f"🎴{name}攻略", f"{name}攻略")])
     else:
         await bot.logger.warning(t("log.genshinuid.guide_ref_missing", name=name))
+        ai_return(f"【角色参考面板】本地未找到「{name}」的参考面板图资源。")
 
 
 @sv_version_lineup.on_command(

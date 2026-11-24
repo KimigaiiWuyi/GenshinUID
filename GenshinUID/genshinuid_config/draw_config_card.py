@@ -1,5 +1,5 @@
 import asyncio
-from typing import Union
+from typing import Union, Sequence
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.database.models import GsBind, GsUser
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .gs_config import gsconfig
 from ..utils.image.convert import convert_img
@@ -20,6 +21,16 @@ config_off = Image.open(TEXT_PATH / "config_off.png")
 
 first_color = (20, 20, 20)
 second_color = (57, 57, 57)
+
+
+def _ai_return_config(uid_num: int, cookie_num: int, stoken_num: int, switches: Sequence[str]) -> None:
+    try:
+        ai_return(
+            f"【原神全局功能配置】绑定UID数 {uid_num}｜Cookie数 {cookie_num}｜Stoken数 {stoken_num}\n"
+            + "\n".join(switches)
+        )
+    except Exception:
+        pass
 
 
 async def draw_config_img(bot_id: str) -> Union[bytes, str]:
@@ -52,11 +63,15 @@ async def draw_config_img(bot_id: str) -> Union[bytes, str]:
 
     tasks = []
     index = 0
+    ai_switches: list[str] = []
     for name in gsconfig:
         if isinstance(gsconfig[name].data, bool):
             tasks.append(_draw_config_line(img, name, index))
+            ai_switches.append(f"  - {gsconfig[name].title}: {'开启' if gsconfig[name].data else '关闭'}")
             index += 1
     await asyncio.gather(*tasks)
+
+    _ai_return_config(uid_num, cookie_num, stoken_num, ai_switches)
 
     res = await convert_img(img)
     logger.info(t("log.genshinuid.msg_d7a840"))

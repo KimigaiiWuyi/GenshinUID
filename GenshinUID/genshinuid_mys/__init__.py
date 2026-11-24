@@ -1,4 +1,5 @@
 import asyncio
+from typing import Sequence
 
 from gsuid_core.sv import SV
 from gsuid_core.bot import Bot
@@ -13,6 +14,14 @@ from .get_meme_card import get_meme_img
 
 sv_find_task = SV("查询游戏攻略")
 sv_fun = SV("娱乐功能")
+
+
+def _ai_return_region_tasks(region: str, groups: Sequence[Sequence[object]]) -> None:
+    try:
+        flat = [str(x) for group in groups for x in group]
+        ai_return(f"【原神 {region} 区域任务列表】\n" + "\n".join(flat[:30]))
+    except Exception:
+        pass
 
 
 @sv_find_task.on_prefix(
@@ -31,6 +40,7 @@ sv_fun = SV("娱乐功能")
 async def send_task_adv(bot: Bot, ev: Event):
     if ev.text in ["须弥", "层岩", "海岛"]:
         im = await get_region_task(ev.text)
+        _ai_return_region_tasks(ev.text, im)
         for i in im:
             mes = [MessageSegment.text(_msg) for _msg in i]
             await bot.send(MessageSegment.node(mes))
@@ -56,6 +66,7 @@ async def send_task_adv(bot: Bot, ev: Event):
 )
 async def send_meme_card(bot: Bot, ev: Event):
     await bot.logger.info(t("log.genshinuid.mys_meme_start"))
+    ai_return("【原神表情包】已随机抽取并发送一张原神表情包图片（娱乐图片，无需 read_image）。")
     await bot.send(await get_meme_img())
 
 

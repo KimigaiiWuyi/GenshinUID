@@ -1,7 +1,7 @@
 import json
 import asyncio
 from io import BytesIO
-from typing import Union
+from typing import Union, Sequence
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -26,6 +26,7 @@ from gsuid_core.utils.api.mys.models import (
     ArchonProgress,
 )
 from gsuid_core.utils.database.models import GsBind, GsUser
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.mys_api import mys_api
 from ..utils.image.convert import convert_img
@@ -114,10 +115,13 @@ async def get_resin_img(bot_id: str, user_id: str):
             return "请先绑定一个可用CK & UID再来查询哦~"
         # 开始绘图任务
         task = []
+        ai_blocks: list[str] = []
         img = Image.new("RGBA", (700 * len(useable_uid_list), 1300), (0, 0, 0, 0))
         for uid_index, uid in enumerate(useable_uid_list):
-            task.append(_draw_all_resin_img(img, uid, uid_index))
+            task.append(_draw_all_resin_img(img, uid, uid_index, ai_blocks))
         await asyncio.gather(*task)
+        if ai_blocks:
+            ai_return("\n".join(ai_blocks))
         res = await convert_img(img)
         logger.info(t("log.genshinuid.msg_3501d9"))
     except TypeError:
@@ -127,8 +131,8 @@ async def get_resin_img(bot_id: str, user_id: str):
     return res
 
 
-async def _draw_all_resin_img(img: Image.Image, uid: str, index: int):
-    resin_img = await draw_resin_img(uid)
+async def _draw_all_resin_img(img: Image.Image, uid: str, index: int, ai_blocks: list[str] | None = None):
+    resin_img = await draw_resin_img(uid, ai_blocks=ai_blocks)
     resin_img = resin_img.convert("RGBA")
     img.paste(resin_img, (700 * index, 0), resin_img)
 
@@ -194,7 +198,41 @@ async def _get_error_img(retcode: int):
     return Image.open(bio)
 
 
-async def draw_resin_img(uid: str) -> Image.Image:
+def _ai_return_resin_card(
+    uid: str,
+    name: str,
+    resin_str: str,
+    resin_recovery_time: str,
+    home_coin_str: str,
+    task_str: str,
+    is_task_reward: bool,
+    weekly_half_str: str,
+    transformer_str: str,
+    archon_str: str,
+    is_sign: str,
+    expeditions: Sequence[Expedition],
+    ai_blocks: list[str] | None,
+) -> None:
+    try:
+        exp_done = sum(1 for c in expeditions if c["avatar_side_icon"] and c["status"] == "Finished")
+        exp_total = sum(1 for c in expeditions if c["avatar_side_icon"])
+        sign_zh = "已签到" if is_sign == "ok" else ("未签到" if is_sign == "no" else "未知")
+        task_reward_zh = "已领额外奖励" if is_task_reward else "未领额外奖励"
+        summary = (
+            f"【UID {uid} ({name}) 实时便笺】树脂 {resin_str}（回满剩余 {resin_recovery_time}）｜"
+            f"洞天宝钱 {home_coin_str}｜委托 {task_str}({task_reward_zh})｜"
+            f"周本减半 {weekly_half_str}｜参量质变仪 {transformer_str}｜"
+            f"探索派遣 待收取 {exp_done}/{exp_total}｜今日米游社签到 {sign_zh}｜魔神任务 {archon_str}"
+        )
+        if ai_blocks is not None:
+            ai_blocks.append(summary)
+        else:
+            ai_return(summary)
+    except Exception:
+        pass
+
+
+async def draw_resin_img(uid: str, *, ai_blocks: list[str] | None = None) -> Image.Image:
     img = Image.open(TEXT_PATH / "bg.png")
 
     # 获取数据
@@ -389,5 +427,21 @@ async def draw_resin_img(uid: str) -> Image.Image:
 
     sign_pic = Image.open(TEXT_PATH / f"sign_{is_sign}.png")
     img.paste(sign_pic, (275, 500), sign_pic)
+
+    _ai_return_resin_card(
+        uid,
+        name,
+        resin_str,
+        resin_recovery_time,
+        home_coin_str,
+        task_str,
+        is_task_reward,
+        weekly_half_str,
+        transformer_str,
+        archon_str,
+        is_sign,
+        daily_data["expeditions"],
+        ai_blocks,
+    )
 
     return img

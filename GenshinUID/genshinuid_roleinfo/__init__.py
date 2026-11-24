@@ -73,10 +73,12 @@ async def send_role_info(bot: Bot, ev: Event):
 
 @sv_get_info.on_command(
     ("角色列表"),
-    to_ai="""查询原神全部角色列表
+    covers=["原神全角色列表图", "角色箱卡片出图"],
+    to_ai="""查询原神全部角色列表并出图
 
-    当用户说"角色列表"、"有哪些角色"、"我有哪些角色"时调用。
-    以图片形式返回当前UID拥有的全部角色列表。需要用户已绑定UID。
+    当用户说"角色列表"、"看看我有哪些角色图"且要看出图时调用。
+    以图片形式返回当前UID拥有的全部角色列表并附带全部角色等级/命座/武器文本。需要用户已绑定UID。
+    若只查文本或统计升90级缺多少材料，优先用 get_user_genshin_char_list / calc_genshin_char_ascension_gaps。
 
     Args:
         text: 无需参数，留空即可

@@ -31,12 +31,14 @@ async def sign_at_night():
     "签到",
     to_ai="""执行米游社原神每日签到
 
-    当用户说"签到"、"我要签到"、"领取签到奖励"时调用。
+    当用户说"签到"、"我要签到"、"领取签到奖励"、"原神每日签到"时调用。
     需要用户已绑定原神UID。签到结果以文字形式返回。
 
     Args:
         text: 无需参数，留空即可
     """,
+    covers=["原神每日签到", "米游社原神签到", "领取米游社游戏签到奖励"],
+    aliases=["原神·每日签到", "米游社·原神签到"],
 )
 async def get_sign_func(bot: Bot, ev: Event):
     logger.info(t("log.genshinuid.signin_qq", user_id=ev.user_id))

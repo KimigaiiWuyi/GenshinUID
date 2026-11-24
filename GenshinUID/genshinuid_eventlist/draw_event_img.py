@@ -1,12 +1,14 @@
+import json
 from io import BytesIO
 from re import findall
-from typing import List, Literal
+from typing import List, Literal, Mapping, Sequence
 from pathlib import Path
 
 import aiofiles
 from PIL import Image, ImageDraw
 from httpx import get
 
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.api.ambr.request import get_ambr_event_info
 
 from ..version import Genshin_version
@@ -18,6 +20,8 @@ from ..utils.resource.RESOURCE_PATH import TEMP_PATH
 TEXT_PATH = Path(__file__).parent / "texture2d"
 EVENT_IMG_PATH = TEMP_PATH / "event.jpg"
 GACHA_IMG_PATH = TEMP_PATH / "gacha.jpg"
+EVENT_SUMMARY_PATH = TEMP_PATH / "event_summary.json"
+GACHA_SUMMARY_PATH = TEMP_PATH / "gacha_summary.json"
 
 PATTERN = r"<[a-zA-Z]+.*?>([\s\S]*?)</[a-zA-Z]*?>"
 
@@ -168,6 +172,7 @@ class DrawEventList:
 
         base_img = base_img.convert("RGB")
         base_img.save(EVENT_IMG_PATH, format="JPEG", subsampling=0, quality=90)
+        _save_event_summary(EVENT_SUMMARY_PATH, "活动列表", self.normal_event)
         base_img = await convert_img(base_img)
         if isinstance(base_img, bytes):
             return base_img
@@ -238,11 +243,41 @@ class DrawEventList:
 
         base_img = base_img.convert("RGB")
         base_img.save(GACHA_IMG_PATH, format="JPEG", subsampling=0, quality=90)
+        _save_event_summary(GACHA_SUMMARY_PATH, "卡池列表", self.gacha_event)
         base_img = await convert_img(base_img)
         if isinstance(base_img, bytes):
             return base_img
         else:
             return bytes(base_img)
+
+
+def _save_event_summary(path: Path, title: str, items: Sequence[Mapping[str, object]]) -> None:
+    rows: list[str] = []
+    for item in items:
+        if "full_name" not in item or "start_time" not in item or "end_time" not in item:
+            continue
+        raw_st = item["start_time"]
+        raw_et = item["end_time"]
+        st = " ".join(str(x) for x in raw_st) if isinstance(raw_st, list) else str(raw_st)
+        et = " ".join(str(x) for x in raw_et) if isinstance(raw_et, list) else str(raw_et)
+        rows.append(f"- {item['full_name']}（{st} ~ {et}）")
+    try:
+        path.write_text(json.dumps({"title": title, "rows": rows}, ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass
+
+
+def _ai_return_event_summary(path: Path, title: str) -> None:
+    try:
+        if path.exists():
+            data = json.loads(path.read_text(encoding="utf-8"))
+            rows = data["rows"] if isinstance(data, dict) and "rows" in data else []
+            if isinstance(rows, list) and rows:
+                ai_return(f"【原神{title}】共 {len(rows)} 项：\n" + "\n".join(str(r) for r in rows))
+                return
+        ai_return(f"【原神{title}】已发送当前{title}图片。")
+    except Exception:
+        pass
 
 
 async def get_all_event_img():
@@ -255,16 +290,22 @@ async def get_all_event_img():
 async def get_event_img(event_type: Literal["EVENT", "GACHA"]) -> bytes:
     if event_type == "EVENT":
         if EVENT_IMG_PATH.exists():
+            _ai_return_event_summary(EVENT_SUMMARY_PATH, "活动列表")
             async with aiofiles.open(EVENT_IMG_PATH, "rb") as f:
                 return await f.read()
     else:
         if GACHA_IMG_PATH.exists():
+            _ai_return_event_summary(GACHA_SUMMARY_PATH, "卡池列表")
             async with aiofiles.open(GACHA_IMG_PATH, "rb") as f:
                 return await f.read()
 
     event_list = DrawEventList()
     await event_list.get_event_data()
     if event_type == "EVENT":
-        return await event_list.get_and_save_event_img()
+        img = await event_list.get_and_save_event_img()
+        _ai_return_event_summary(EVENT_SUMMARY_PATH, "活动列表")
+        return img
     else:
-        return await event_list.get_and_save_gacha_img()
+        img = await event_list.get_and_save_gacha_img()
+        _ai_return_event_summary(GACHA_SUMMARY_PATH, "卡池列表")
+        return img

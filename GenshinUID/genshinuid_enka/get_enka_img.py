@@ -1,12 +1,13 @@
 import re
 import json
-from typing import Dict, List, Tuple, Union, Optional
+from typing import Dict, List, Tuple, Union, Optional, Sequence
 
 from PIL import Image
 
 from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.utils.error_reply import CHAR_HINT
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .to_card import draw_enka_card
 from ..utils.message import PREFIX
@@ -142,6 +143,15 @@ async def get_char_data(uid: str, char_name: str, enable_self: bool = True) -> U
     return char_data
 
 
+def _ai_return_showcase_names(uid: str, char_list: Sequence[str]) -> None:
+    try:
+        ai_return(
+            f"【UID {uid} 展柜角色缓存】共 {len(char_list)} 名（仅展柜缓存，非全角色箱）：" + "、".join(char_list)
+        )
+    except Exception:
+        pass
+
+
 async def get_showcase(uid: str) -> Union[bytes, str]:
     player_path = PLAYER_PATH / str(uid)
     char_file_list = player_path.glob("*")
@@ -152,6 +162,7 @@ async def get_showcase(uid: str) -> Union[bytes, str]:
             char_list.append(file_name.split(".")[0])
     if char_list == []:
         return f"您还没有已缓存的角色噢~\n请先使用[{PREFIX}强制刷新]命令缓存~"
+    _ai_return_showcase_names(uid, char_list)
     img = await draw_enka_card(uid=uid, char_list=char_list)
     return img
 

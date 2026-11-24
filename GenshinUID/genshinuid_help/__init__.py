@@ -4,12 +4,25 @@ from gsuid_core.i18n import t
 from gsuid_core.logger import logger
 from gsuid_core.models import Event
 from gsuid_core.help.utils import register_help
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
-from .get_help import get_core_help
+from .get_help import get_core_help, get_help_data
 from ..utils.message import PREFIX
 from ..utils.image.image_tools import get_ICON
 
 sv_gs_help = SV("gs帮助")
+
+
+async def _ai_return_help() -> None:
+    try:
+        help_data = await get_help_data()
+        lines = ["【GenshinUID 插件帮助功能一览】"]
+        for cat, info in help_data.items():
+            cmds = [item["name"] for item in info["data"]] if isinstance(info, dict) and "data" in info else []
+            lines.append(f"- {cat}：{'、'.join(cmds)}")
+        ai_return("\n".join(lines))
+    except Exception:
+        pass
 
 
 @sv_gs_help.on_fullmatch(
@@ -25,6 +38,7 @@ sv_gs_help = SV("gs帮助")
 )
 async def send_help_img(bot: Bot, ev: Event):
     logger.info(t("log.genshinuid.gs_bf50ca"))
+    await _ai_return_help()
     im = await get_core_help()
     await bot.send(im)
 

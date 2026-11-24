@@ -1,10 +1,11 @@
 import asyncio
-from typing import Dict, Union
+from typing import Dict, Union, Mapping
 from pathlib import Path
 
 from PIL import Image, ImageDraw
 
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .res import div, draw_ring, draw_new_title
 from .get_enka_img import get_char_data
@@ -188,6 +189,31 @@ async def draw_single_rank(
     img.paste(rank_bar, (0, 700 + index * 90), rank_bar)
 
 
+async def _ai_return_rank_list(uid: str, sort_rank_data: Mapping[str, Mapping[str, object]]) -> None:
+    try:
+        ai_lines = [f"【UID {uid} Akasha 角色排名列表】共 {len(sort_rank_data)} 名角色："]
+        for cid, citem in list(sort_rank_data.items())[:15]:
+            calcs = citem["calculations"] if "calculations" in citem else None
+            fit = calcs["fit"] if isinstance(calcs, dict) and "fit" in calcs else None
+            if not isinstance(fit, dict):
+                continue
+            cname = await avatar_id_to_name(cid)
+            ranking = int(fit["ranking"]) if "ranking" in fit else 0
+            outof = int(fit["outOf"]) if "outOf" in fit else 0
+            pct = (ranking / outof * 100) if outof else 0.0
+            variant = fit["variant"] if "variant" in fit else None
+            label = (
+                variant["displayName"]
+                if isinstance(variant, dict) and "displayName" in variant
+                else (fit["short"] if "short" in fit else "")
+            )
+            result = int(fit["result"]) if "result" in fit else 0
+            ai_lines.append(f"  - {cname}: 全球前 {pct:.1f}% (#{ranking}/{outof}) | 方案:{label} 伤害:{result}")
+        ai_return("\n".join(ai_lines))
+    except Exception:
+        pass
+
+
 async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
     rank_data: Union[Dict[str, Dict[str, Dict]], str] = await _get_rank(uid)
     if isinstance(rank_data, str):
@@ -211,6 +237,8 @@ async def draw_rank_img(ev: Event, uid: str) -> Union[bytes, str]:
             reverse=False,
         )
     )
+
+    await _ai_return_rank_list(uid, sort_rank_data)
 
     tasks = []
     for index, (char_id, char_data_item) in enumerate(sort_rank_data.items()):

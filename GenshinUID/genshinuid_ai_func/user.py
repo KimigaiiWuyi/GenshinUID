@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Mapping, Optional
+from dataclasses import dataclass
 
 from pydantic_ai import RunContext
 
@@ -11,7 +12,7 @@ from gsuid_core.logger import logger
 from gsuid_core.ai_core.models import ToolContext
 from gsuid_core.ai_core.register import ai_tools
 from gsuid_core.utils.error_reply import UID_HINT, CHAR_HINT
-from gsuid_core.utils.api.mys.models import IndexData, MihoyoAvatar
+from gsuid_core.utils.api.mys.models import MihoyoAvatar
 from gsuid_core.utils.database.models import GsBind
 
 from ._common import (
@@ -101,26 +102,69 @@ async def get_user_genshin_uids(
     return "\n".join(lines)
 
 
-def _format_index_player(uid: str, data: IndexData) -> str:
-    role = data["role"]
-    stats = data["stats"]
+@dataclass(frozen=True)
+class CharBoxItem:
+    """统一后的用户角色箱条目（米游社全箱优先，Enka 展柜缓存补齐）。"""
+
+    char_id: str
+    name: str
+    rarity: int
+    element: str
+    weapon_type: str
+    level: int
+    constellation: int
+    fetter: int
+    weapon_desc: str
+
+
+def _m_int(mapping: Mapping[str, object], key: str, default: int = 0) -> int:
+    return as_int(mapping[key]) if key in mapping else default
+
+
+def _m_str(mapping: Mapping[str, object], key: str, default: str = "") -> str:
+    return as_str(mapping[key]) if key in mapping else default
+
+
+def _format_index_player(uid: str, data: Mapping[str, object]) -> str:
+    raw_role = data["role"] if "role" in data else {}
+    raw_stats = data["stats"] if "stats" in data else {}
+    role: Mapping[str, object] = raw_role if isinstance(raw_role, Mapping) else {}
+    stats: Mapping[str, object] = raw_stats if isinstance(raw_stats, Mapping) else {}
+    oculus_specs = (
+        ("风", "anemoculus_number"),
+        ("岩", "geoculus_number"),
+        ("雷", "electroculus_number"),
+        ("草", "dendroculus_number"),
+        ("水", "hydroculus_number"),
+        ("火", "pyroculus_number"),
+        ("冰", "cryoculus_number"),
+    )
+    oculus_bits = [f"{label}{_m_int(stats, key)}" for label, key in oculus_specs if key in stats]
+    chest_specs = (
+        ("普通", "common_chest_number"),
+        ("精致", "exquisite_chest_number"),
+        ("珍贵", "precious_chest_number"),
+        ("华丽", "luxurious_chest_number"),
+    )
+    chest_bits = [f"{label}{_m_int(stats, key)}" for label, key in chest_specs if key in stats]
     lines = [
         f"UID {uid} 账号概览 [source=mys_index]",
-        f"昵称：{role['nickname']}  冒险等阶：{role['level']}  服务器：{role['region']}",
-        f"活跃天数：{stats['active_day_number']}  成就：{stats['achievement_number']}  "
-        f"角色数：{stats['avatar_number']}  满好感：{stats['full_fetter_avatar_num']}",
-        f"深渊：{stats['spiral_abyss']}",
-        f"神瞳：风{stats['anemoculus_number']} 岩{stats['geoculus_number']} "
-        f"雷{stats['electroculus_number']} 草{stats['dendroculus_number']} "
-        f"水{stats['hydroculus_number']} 火{stats['pyroculus_number']} "
-        f"冰{stats['cryoculus_number']}",
-        f"宝箱：普通{stats['common_chest_number']} 精致{stats['exquisite_chest_number']} "
-        f"珍贵{stats['precious_chest_number']} 华丽{stats['luxurious_chest_number']}",
+        f"昵称：{_m_str(role, 'nickname', '-')}  冒险等阶：{_m_int(role, 'level')}  "
+        f"服务器：{_m_str(role, 'region', '-')}",
+        f"活跃天数：{_m_int(stats, 'active_day_number')}  成就：{_m_int(stats, 'achievement_number')}  "
+        f"角色数：{_m_int(stats, 'avatar_number')}  满好感：{_m_int(stats, 'full_fetter_avatar_num')}",
+        f"深渊：{_m_str(stats, 'spiral_abyss', '-')}",
     ]
-    homes = data["homes"]
-    if homes:
-        home = homes[0]
-        lines.append(f"尘歌壶：{home['name']} 信任等阶{home['level']} 仙力{home['comfort_num']}")
+    if oculus_bits:
+        lines.append("神瞳：" + " ".join(oculus_bits))
+    if chest_bits:
+        lines.append("宝箱：" + " ".join(chest_bits))
+    homes = data["homes"] if "homes" in data and isinstance(data["homes"], list) else []
+    if homes and isinstance(homes[0], dict):
+        home: Mapping[str, object] = homes[0]
+        lines.append(
+            f"尘歌壶：{_m_str(home, 'name', '-')} 信任等阶{_m_int(home, 'level')} 仙力{_m_int(home, 'comfort_num')}"
+        )
     return "\n".join(lines)
 
 
@@ -178,21 +222,30 @@ async def get_user_genshin_player_info(ctx: RunContext[ToolContext], uid: str = 
     return f"UID {target} 暂无账号概览。未绑 Cookie 时请先 `{PREFIX}强制刷新` 拉 Enka 展柜。"
 
 
-def _row_from_mys(avatar: MihoyoAvatar) -> str:
+def _item_from_mys(avatar: MihoyoAvatar) -> CharBoxItem:
     name = avatar["name"]
-    return (
-        f"| {name} | {avatar['rarity']} | {element_zh(avatar['element'])} | "
-        f"{char_weapon_type(name)} | Lv{avatar['level']} | "
-        f"{avatar['actived_constellation_num']}命 | 好感{avatar['fetter']} | - |"
+    cid = str(avatar["id"]) if "id" in avatar else ""
+    return CharBoxItem(
+        char_id=cid,
+        name=name,
+        rarity=avatar["rarity"],
+        element=element_zh(avatar["element"]),
+        weapon_type=char_weapon_type(name),
+        level=avatar["level"],
+        constellation=avatar["actived_constellation_num"],
+        fetter=avatar["fetter"],
+        weapon_desc="-",
     )
 
 
-def _row_from_card(card: dict[str, object]) -> str:
+def _item_from_card(card: dict[str, object]) -> CharBoxItem:
     name = as_str(card["avatarName"]) if "avatarName" in card else "?"
+    cid = as_str(card["avatarId"]) if "avatarId" in card else ""
     element = element_zh(as_str(card["avatarElement"])) if "avatarElement" in card else "-"
-    level = as_str(card["avatarLevel"]) if "avatarLevel" in card else "?"
+    level = as_int(card["avatarLevel"]) if "avatarLevel" in card else 0
     talent = card["talentList"] if "talentList" in card and isinstance(card["talentList"], list) else []
     fetter = as_int(card["avatarFetter"]) if "avatarFetter" in card else 0
+    rarity = as_int(card["avatarRarity"]) if "avatarRarity" in card else 0
     weapon = "-"
     weapon_info = card["weaponInfo"] if "weaponInfo" in card and isinstance(card["weaponInfo"], dict) else None
     wtype = char_weapon_type(name)
@@ -203,7 +256,61 @@ def _row_from_card(card: dict[str, object]) -> str:
         if "weaponType" in weapon_info:
             wtype = weapon_type_zh(as_str(weapon_info["weaponType"]))
         weapon = f"{wname} Lv{wlv} 精{affix}" if wname else "-"
-    return f"| {name} | - | {element} | {wtype} | Lv{level} | {len(talent)}命 | 好感{fetter} | {weapon} |"
+    return CharBoxItem(
+        char_id=cid,
+        name=name,
+        rarity=rarity,
+        element=element,
+        weapon_type=wtype,
+        level=level,
+        constellation=len(talent),
+        fetter=fetter,
+        weapon_desc=weapon,
+    )
+
+
+def _row_from_item(item: CharBoxItem) -> str:
+    star = str(item.rarity) if item.rarity > 0 else "-"
+    lv = str(item.level) if item.level > 0 else "?"
+    return (
+        f"| {item.name} | {star} | {item.element} | {item.weapon_type} | "
+        f"Lv{lv} | {item.constellation}命 | 好感{item.fetter} | {item.weapon_desc} |"
+    )
+
+
+async def collect_user_char_box(uid: str) -> tuple[str, list[CharBoxItem]]:
+    """拉取用户角色箱（有 Cookie 返回米游社全箱，否则返回本地 Enka 展柜缓存）。"""
+    items: list[CharBoxItem] = []
+    seen: set[str] = set()
+    source = "none"
+
+    raw = await get_base_data(uid)
+    if isinstance(raw, dict) and "avatars" in raw:
+        avatars = raw["avatars"]
+        if isinstance(avatars, list) and avatars:
+            source = "mys_index"
+            for avatar in avatars:
+                if not isinstance(avatar, dict) or "name" not in avatar:
+                    continue
+                item = _item_from_mys(avatar)
+                if item.name in seen:
+                    continue
+                seen.add(item.name)
+                items.append(item)
+
+    for path in list_cached_char_paths(uid):
+        card = load_json_obj(path)
+        if card is None or "avatarName" not in card:
+            continue
+        item = _item_from_card(card)
+        if item.name in seen:
+            continue
+        seen.add(item.name)
+        items.append(item)
+        if source == "none":
+            source = "enka_showcase"
+
+    return source, items
 
 
 @ai_tools(
@@ -228,31 +335,8 @@ async def get_user_genshin_char_list(ctx: RunContext[ToolContext], uid: str = ""
         return err
     header = "| 角色 | 星 | 元素 | 武器类型 | 等级 | 命座 | 好感 | 武器 |"
     sep = "|---|---|---|---|---|---|---|---|"
-    rows: list[str] = []
-    seen: set[str] = set()
-    source = "cache"
-
-    raw = await get_base_data(target)
-    if isinstance(raw, dict) and "avatars" in raw:
-        avatars = raw["avatars"]
-        if isinstance(avatars, list) and avatars:
-            source = "mys_index"
-            for avatar in avatars:
-                if not isinstance(avatar, dict) or "name" not in avatar:
-                    continue
-                name = str(avatar["name"])
-                seen.add(name)
-                rows.append(_row_from_mys(avatar))
-
-    for path in list_cached_char_paths(target):
-        card = load_json_obj(path)
-        if card is None or "avatarName" not in card:
-            continue
-        name = as_str(card["avatarName"])
-        if name in seen:
-            continue
-        seen.add(name)
-        rows.append(_row_from_card(card))
+    source, items = await collect_user_char_box(target)
+    rows = [_row_from_item(item) for item in items]
 
     if not rows:
         return (

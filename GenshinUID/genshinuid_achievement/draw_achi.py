@@ -1,3 +1,4 @@
+from typing import Mapping, Sequence
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -5,6 +6,7 @@ from PIL import Image, ImageDraw
 from gsuid_core.models import Event
 from gsuid_core.utils.error_reply import get_error
 from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from ..utils.mys_api import mys_api, get_base_data
 from ..utils.image.image_tools import (
@@ -20,6 +22,27 @@ from ..utils.resource.RESOURCE_PATH import ACHI_ICON_PATH
 TEXT_PATH = Path(__file__).parent / "texture2d"
 
 
+def _ai_return_achi(uid: str, raw_data: Mapping[str, object], data: Sequence[Mapping[str, object]]) -> None:
+    try:
+        stats = raw_data["stats"] if "stats" in raw_data and isinstance(raw_data["stats"], dict) else {}
+        total_achi = stats["achievement_number"] if "achievement_number" in stats else 0
+        valid: list[tuple[int, Mapping[str, object]]] = [
+            (int(a["percentage"]), a) for a in data if "percentage" in a and isinstance(a["percentage"], (int, float))
+        ]
+        full_cnt = sum(1 for pct, _ in valid if pct >= 100)
+        parts = [f"【UID {uid} 成就一览】总成就 {total_achi}｜共 {len(data)} 个专辑（已100%完成 {full_cnt} 个）"]
+        incomplete = sorted([(pct, a) for pct, a in valid if pct < 100], key=lambda x: x[0])
+        for pct, a in incomplete[:15]:
+            name = str(a["name"]) if "name" in a else "未知专辑"
+            finish = a["finish_num"] if "finish_num" in a else "?"
+            parts.append(f"  {name}: 已完成 {finish} ({pct}%)")
+        if len(incomplete) > 15:
+            parts.append(f"  ...其余 {len(incomplete) - 15} 个未满专辑详见图片")
+        ai_return("\n".join(parts))
+    except Exception:
+        pass
+
+
 async def draw_achi_img(ev: Event, uid: str):
     data = await mys_api.get_achievement_info(uid)
     if isinstance(data, int):
@@ -30,6 +53,8 @@ async def draw_achi_img(ev: Event, uid: str):
         return raw_data
     elif isinstance(raw_data, (bytearray, memoryview)):
         return bytes(raw_data)
+
+    _ai_return_achi(uid, raw_data, data)
 
     char_pic = await get_avatar(ev, 377, False)
     title_img = get_v4_title(char_pic, uid, raw_data)

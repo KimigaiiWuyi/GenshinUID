@@ -1,11 +1,12 @@
 import json
-from typing import Dict, Union, Optional
+from typing import Dict, Union, Mapping, Optional, Sequence
 from decimal import Decimal
 
 import aiofiles
 from PIL import Image, ImageDraw
 
 from gsuid_core.models import Event
+from gsuid_core.ai_core.trigger_bridge import ai_return
 
 from .start import refresh_player_list
 from .etc.etc import TEXT_PATH
@@ -37,6 +38,58 @@ async def get_artifacts_lib_data(uid: str) -> Optional[Dict]:
                 data = json.loads(await file.read())
 
     return data
+
+
+def _ai_return_artifacts_lib(
+    uid: str,
+    num: int,
+    all_page: int,
+    all_num: int,
+    full_rank: int,
+    can_use: int,
+    use_percent: Decimal,
+    high_cv: int,
+    high_percent: Decimal,
+    avg_value: float,
+    avg_cv: float,
+    lst: Sequence[Mapping[str, object]],
+) -> None:
+    try:
+        ai_lines = [
+            f"【UID {uid} 圣遗物仓库】第 {num}/{all_page} 页｜共 {all_num} 件"
+            f"（+20 共 {full_rank} 件，可用 {can_use} 件/{use_percent:.1f}%，"
+            f"高双暴≥44.5分 {high_cv} 件/{high_percent:.1f}%，均分 {avg_value}，均双暴 {avg_cv}）",
+        ]
+        for idx, art in enumerate(lst, start=1):
+            main_raw = art["reliquaryMainstat"] if "reliquaryMainstat" in art else None
+            main_s = (
+                f"{main_raw['statName']}+{main_raw['statValue']}"
+                if isinstance(main_raw, dict) and "statName" in main_raw and "statValue" in main_raw
+                else "-"
+            )
+            subs_raw = art["reliquarySubstats"] if "reliquarySubstats" in art else None
+            subs = (
+                "/".join(
+                    f"{s['statName']}+{s['statValue']}"
+                    for s in subs_raw
+                    if isinstance(s, dict) and "statName" in s and "statValue" in s
+                )
+                if isinstance(subs_raw, list)
+                else ""
+            )
+            piece = art["aritifactPieceName"] if "aritifactPieceName" in art else ""
+            sets = art["aritifactSetsName"] if "aritifactSetsName" in art else ""
+            lv = art["aritifactLevel"] if "aritifactLevel" in art else "?"
+            cv = float(art["cv_score"]) if "cv_score" in art and isinstance(art["cv_score"], (int, float)) else 0.0
+            val = (
+                float(art["value_score"])
+                if "value_score" in art and isinstance(art["value_score"], (int, float))
+                else 0.0
+            )
+            ai_lines.append(f"  #{idx} {piece} {sets} +{lv} 主:{main_s} 副:{subs} (双暴{cv:.1f} 评分{val:.1f})")
+        ai_return("\n".join(ai_lines))
+    except Exception:
+        pass
 
 
 async def draw_lib(ev: Event, uid: str, num: int) -> Union[bytes, str]:
@@ -77,6 +130,21 @@ async def draw_lib(ev: Event, uid: str, num: int) -> Union[bytes, str]:
 
     if num > all_page:
         return f"[UID{uid}] 圣遗物仓库没有 {num} 页!\n最多为 {all_page} 页!"
+
+    _ai_return_artifacts_lib(
+        uid,
+        num,
+        all_page,
+        all_num,
+        full_rank,
+        can_use,
+        use_percent,
+        high_cv,
+        high_percent,
+        avg_value,
+        avg_cv,
+        lst,
+    )
 
     bg = Image.open(TEXT_PATH / "artifacts_lib_bg.png")
     avatar_img = await get_avatar(ev, 280)

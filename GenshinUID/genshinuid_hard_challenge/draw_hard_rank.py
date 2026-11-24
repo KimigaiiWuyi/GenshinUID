@@ -1,6 +1,9 @@
+from typing import Mapping
+
 from PIL import Image, ImageDraw
 
 from gsuid_core.utils.image.convert import convert_img
+from gsuid_core.ai_core.trigger_bridge import ai_return
 from gsuid_core.utils.image.image_tools import crop_center_img
 
 from .draw_hard_challenge import TEXT_PATH
@@ -30,6 +33,26 @@ achievement_MAP = {
 }
 
 
+def _ai_return_hard_rank(raw_data: Mapping[str, object], count: int) -> None:
+    try:
+        entries = raw_data["data"] if "data" in raw_data and isinstance(raw_data["data"], list) else []
+        ai_rows = [f"【幽境危战全服排行榜】总数据 {count} 条（前 {min(15, len(entries))} 名）："]
+        for idx, sitem in enumerate(entries[:15], start=1):
+            if not isinstance(sitem, dict) or "playerInfo" not in sitem or not isinstance(sitem["playerInfo"], dict):
+                continue
+            pi = sitem["playerInfo"]
+            nick = pi["nickname"] if "nickname" in pi else "?"
+            reg = pi["region"] if "region" in pi else "?"
+            s_idx = pi["stygianIndex"] if "stygianIndex" in pi else "?"
+            s_sec = pi["stygianSeconds"] if "stygianSeconds" in pi else "?"
+            ar = pi["level"] if "level" in pi else "?"
+            achi = pi["finishAchievementNum"] if "finishAchievementNum" in pi else "?"
+            ai_rows.append(f"  #{idx} {nick}[{reg}] 难度N{s_idx} 用时{s_sec}s (AR{ar}·成就{achi})")
+        ai_return("\n".join(ai_rows))
+    except Exception:
+        pass
+
+
 async def draw_hard_rank():
     # https://akasha.cv/api/accounts?sort=playerInfo.stygianScore&order=-1&size=20&page=1&filter=&uids=&fromId=
     if not is_enable_akasha:
@@ -43,6 +66,8 @@ async def draw_hard_rank():
 
     raw_data = data[0]
     count: int = data[1]
+
+    _ai_return_hard_rank(raw_data, count)
 
     bg = Image.open(TEXT_PATH / "bg.jpg").convert("RGBA")
     img = crop_center_img(bg, 950, 2350)

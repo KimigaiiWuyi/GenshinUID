@@ -109,7 +109,7 @@ async def char_id_to_compute_dict(
 
     n = 0
     for skill_id in skill_list:
-        if skill_id.endswith(("1", "2", "9")):
+        if skill_id.endswith(("1", "2", "9")) and n < len(skill_level):
             skill_data.append(
                 {
                     "id": skill_id,

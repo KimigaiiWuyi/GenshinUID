@@ -28,9 +28,34 @@ def _publish(kp: GsKnowledgePoint) -> None:
     _call_entity(ai_entity, kp)
 
 
+# 日常聊天高频泛词，不写入 AI 实体别名路由表，避免普通闲聊误锁原神插件
+_GENERIC_CHAT_ALIAS_STOPWORDS: frozenset[str] = frozenset(
+    {
+        "点赞",
+        "倒霉",
+        "摸鱼",
+        "厨师",
+        "律师",
+        "护士",
+        "无聊",
+        "太阳",
+        "偶像",
+        "矿工",
+        "大姐",
+        "团长",
+        "富婆",
+        "主角",
+        "男主",
+        "女主",
+    }
+)
+
+
 def _register_alias_map(data: Dict[str, List[str]]) -> None:
     for main_name, alias_list in data.items():
-        ai_alias(main_name, alias_list)
+        filtered = [a for a in alias_list if a not in _GENERIC_CHAT_ALIAS_STOPWORDS]
+        if filtered:
+            ai_alias(main_name, filtered)
 
 
 def register_aliases() -> None:

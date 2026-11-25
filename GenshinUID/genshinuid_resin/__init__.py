@@ -54,6 +54,8 @@ async def send_daily_info(bot: Bot, ev: Event):
     Args:
         text: 无需参数，留空即可
     """,
+    timeout=1800.0,
+    background=True,
 )
 async def force_notice_job(bot: Bot, ev: Event):
     await bot.send("🔨 [原神服务]\n🌱 开始执行强制推送体力提醒!")

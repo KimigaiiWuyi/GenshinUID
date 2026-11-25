@@ -32,20 +32,27 @@ sv_get_mysbbs = SV("米游币获取")
     """,
     covers=["米游社社区签到", "米游社浏览点赞分享", "米游币任务", "自动刷米游币"],
     aliases=["原神·米游币", "米游社·每日任务"],
+    timeout=600.0,
+    background=True,
 )
 async def send_mihoyo_coin(bot: Bot, ev: Event):
     await bot.send("开始操作……")
     uid = await GsBind.get_uid_by_game(ev.user_id, ev.bot_id)
     if uid is None:
         return await bot.send(UID_HINT)
-    stoken = await GsUser.get_user_stoken_by_uid(uid)
+    user_data = await GsUser.select_data_by_uid(uid)
+    stoken = user_data.stoken if user_data and user_data.stoken else await GsUser.get_user_stoken_by_uid(uid)
     if stoken is None:
         return await bot.send(
             f"🔔 提示：你的当前UID{uid}暂未绑定Stoken~\n"
             f"📎 请使用扫码登陆命令获取Stoken\n"
             f"🚩 或者查看帮助文档获取绑定方式"
         )
-    im = await mihoyo_coin(stoken)
+    im = await mihoyo_coin(
+        stoken,
+        device_id=user_data.device_id if user_data else None,
+        device_fp=user_data.fp if user_data else None,
+    )
     await bot.send(im)
 
 
@@ -59,6 +66,8 @@ async def send_mihoyo_coin(bot: Bot, ev: Event):
     Args:
         text: 无需参数，留空即可
     """,
+    timeout=1800.0,
+    background=True,
 )
 async def bbs_recheck(bot: Bot, ev: Event):
     await bot.send("已开始执行!可能需要较久时间!")

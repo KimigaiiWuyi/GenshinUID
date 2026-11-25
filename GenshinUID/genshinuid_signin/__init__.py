@@ -59,6 +59,8 @@ async def get_sign_func(bot: Bot, ev: Event):
     Args:
         text: 无需参数，留空即可
     """,
+    timeout=1800.0,
+    background=True,
 )
 async def recheck(bot: Bot, ev: Event):
     logger.info(t("log.genshinuid.msg_145d21"))

@@ -1,8 +1,10 @@
+import json
 import random
 import asyncio
 from copy import deepcopy
-from typing import Dict, Literal
+from typing import Dict, Literal, Optional
 
+import httpx
 from httpx import AsyncClient
 
 from gsuid_core.i18n import t
@@ -84,21 +86,30 @@ mihoyobbs_List = [
 
 
 class MihoyoBBSCoin:
-    def __init__(self, stoken: str):
+    def __init__(
+        self,
+        stoken: str,
+        device_id: Optional[str] = None,
+        device_fp: Optional[str] = None,
+    ):
         self.postsList = []
-        self.headers = {
+        self.headers: Dict[str, str] = {
             "DS": get_web_ds_token(),
-            "cookie": stoken,
+            "Cookie": stoken,
             "x-rpc-client_type": "2",
             "x-rpc-app_version": mys_version,
-            "x-rpc-sys_version": "6.0.1",
+            "x-rpc-sys_version": "14",
             "x-rpc-channel": "miyousheluodi",
-            "x-rpc-device_id": random_hex(32),
+            "x-rpc-device_id": device_id or random_hex(32),
             "x-rpc-device_name": random_text(random.randint(1, 10)),
             "x-rpc-device_model": "Mi 10",
+            "x-rpc-verify_key": "bll8iq97cem8",
+            "x-rpc-csm_source": "myself",
             "Referer": "https://app.mihoyo.com",
-            "User-Agent": "okhttp/4.8.0",
+            "User-Agent": "okhttp/4.9.3",
         }
+        if device_fp:
+            self.headers["x-rpc-device_fp"] = device_fp
         self.Task_do = {
             "bbs_Sign": False,
             "bbs_Read_posts": False,
@@ -111,22 +122,40 @@ class MihoyoBBSCoin:
         self.Today_getcoins = 0
         self.Today_have_getcoins = 0  # 这个变量以后可能会用上, 先留着了
         self.Have_coins = 0
+        self._abort_msg: Optional[str] = None
 
     async def task_run(self):
+        self._abort_msg = None
         await self.load_mihoyo_bbs_list_use()
         start = await self.get_tasks_list()
+        if self._abort_msg:
+            return self._abort_msg
+        if (
+            self.Task_do["bbs_Sign"]
+            and self.Task_do["bbs_Read_posts"]
+            and self.Task_do["bbs_Like_posts"]
+            and self.Task_do["bbs_Share"]
+        ):
+            return "\n".join(
+                [
+                    start,
+                    "SignM已经完成过了~",
+                    "ReadM已经完成过了~",
+                    "LikeM任务已经完成过了~",
+                    "ShareM已经完成过了~",
+                ]
+            )
         self.postsList = await self.get_list()
         read = await self.read_posts()
         share = await self.share_post()
         like = await self.like_posts()
         sign = await self.signing()
         if start and sign and read and like and share:
-            im = "\n".join([start, sign, read, like, share])
-            return im
-        else:
-            return "失败, 米游社币任务执行出错了~"
+            return "\n".join([start, sign, read, like, share])
+        return "失败, 米游社币任务执行出错了~"
 
     async def load_mihoyo_bbs_list_use(self):
+        self.mihoyobbs_List_Use = []
         for i in range(1, 10):
             for k in mihoyobbs_List:
                 if i == int(k["id"]):
@@ -140,50 +169,63 @@ class MihoyoBBSCoin:
             BBS_TASKS.get(),
             self.headers,
         )
-        if "err" in data["message"] or data["retcode"] == -100:
+        retcode = data.get("retcode")
+        msg = str(data.get("message", ""))
+        if retcode == -100 or "err" in msg.lower():
             logger.error(t("log.genshinuid.cookie_cookie_f6e063"))
-            return "你的Cookies已失效。"
+            self._abort_msg = "失败, 你的Cookies/Stoken已失效，请重新扫码登录。"
+            return self._abort_msg
+        task_data = data.get("data")
+        if retcode != 0 or not isinstance(task_data, dict):
+            self._abort_msg = f"失败, 获取米游币任务列表出错(retcode={retcode}): {msg}"
+            return self._abort_msg
+
+        self.Today_getcoins = int(task_data.get("can_get_points", 0))
+        self.Today_have_getcoins = int(task_data.get("already_received_points", 0))
+        self.Have_coins = int(task_data.get("total_points", 0))
+        # 如果当日可获取米游币数量为0直接判断全部任务都完成了
+        if self.Today_getcoins == 0:
+            self.Task_do["bbs_Sign"] = True
+            self.Task_do["bbs_Read_posts"] = True
+            self.Task_do["bbs_Like_posts"] = True
+            self.Task_do["bbs_Share"] = True
         else:
-            self.Today_getcoins = data["data"]["can_get_points"]
-            self.Today_have_getcoins = data["data"]["already_received_points"]
-            self.Have_coins = data["data"]["total_points"]
-            # 如果当日可获取米游币数量为0直接判断全部任务都完成了
-            if self.Today_getcoins == 0:
-                self.Task_do["bbs_Sign"] = True
-                self.Task_do["bbs_Read_posts"] = True
-                self.Task_do["bbs_Like_posts"] = True
-                self.Task_do["bbs_Share"] = True
+            states = task_data.get("states") or []
+            # 如果第0个大于或等于62则直接判定任务没做
+            if states and states[0]["mission_id"] >= 62:
+                logger.info(t("log.genshinuid.p0_04807b", p0=self.Today_getcoins))
             else:
-                # 如果第0个大于或等于62则直接判定任务没做
-                if data["data"]["states"][0]["mission_id"] >= 62:
-                    logger.info(t("log.genshinuid.p0_04807b", p0=self.Today_getcoins))
-                    pass
-                else:
-                    logger.info(t("log.genshinuid.p0_e523b0", p0=self.Today_getcoins))
-                    for i in data["data"]["states"]:
-                        # 58是讨论区签到
-                        if i["mission_id"] == 58:
-                            if i["is_get_award"]:
-                                self.Task_do["bbs_Sign"] = True
-                        # 59是看帖子
-                        elif i["mission_id"] == 59:
-                            if i["is_get_award"]:
-                                self.Task_do["bbs_Read_posts"] = True
-                            else:
-                                self.Task_do["bbs_Read_posts_num"] -= i["happened_times"]
-                        # 60是给帖子点赞
-                        elif i["mission_id"] == 60:
-                            if i["is_get_award"]:
-                                self.Task_do["bbs_Like_posts"] = True
-                            else:
-                                self.Task_do["bbs_Like_posts_num"] -= i["happened_times"]
-                        # 61是分享帖子
-                        elif i["mission_id"] == 61:
-                            if i["is_get_award"]:
-                                self.Task_do["bbs_Share"] = True
-                                # 分享帖子, 是最后一个任务, 到这里了下面都是一次性任务, 直接跳出循环
-                                break
-            return "今日完成情况!"
+                logger.info(t("log.genshinuid.p0_e523b0", p0=self.Today_getcoins))
+                for i in states:
+                    # 58是讨论区签到
+                    if i["mission_id"] == 58:
+                        if i["is_get_award"]:
+                            self.Task_do["bbs_Sign"] = True
+                    # 59是看帖子
+                    elif i["mission_id"] == 59:
+                        if i["is_get_award"]:
+                            self.Task_do["bbs_Read_posts"] = True
+                        else:
+                            self.Task_do["bbs_Read_posts_num"] = max(
+                                0,
+                                self.Task_do["bbs_Read_posts_num"] - i["happened_times"],
+                            )
+                    # 60是给帖子点赞
+                    elif i["mission_id"] == 60:
+                        if i["is_get_award"]:
+                            self.Task_do["bbs_Like_posts"] = True
+                        else:
+                            self.Task_do["bbs_Like_posts_num"] = max(
+                                0,
+                                self.Task_do["bbs_Like_posts_num"] - i["happened_times"],
+                            )
+                    # 61是分享帖子
+                    elif i["mission_id"] == 61:
+                        if i["is_get_award"]:
+                            self.Task_do["bbs_Share"] = True
+                            # 分享帖子是最后一个日常任务，后面均为一次性任务
+                            break
+        return "今日完成情况!"
 
     # 获取要帖子列表
     async def get_list(self) -> list:
@@ -194,17 +236,17 @@ class MihoyoBBSCoin:
             BBS_LIST.format(self.mihoyobbs_List_Use[0]["forumId"]),
             self.headers,
         )
-
-        if len(data["data"]["list"]) >= 10:
-            limit = 10
-        else:
-            limit = len(data["data"]["list"])
+        list_data = data.get("data")
+        if data.get("retcode") != 0 or not isinstance(list_data, dict):
+            return temp_list
+        posts = list_data.get("list") or []
+        limit = min(10, len(posts))
 
         for n in range(limit):
             temp_list.append(
                 [
-                    data["data"]["list"][n]["post"]["post_id"],
-                    data["data"]["list"][n]["post"]["subject"],
+                    posts[n]["post"]["post_id"],
+                    posts[n]["post"]["subject"],
                 ]
             )
 
@@ -215,125 +257,148 @@ class MihoyoBBSCoin:
     async def signing(self):
         if self.Task_do["bbs_Sign"]:
             return "SignM已经完成过了~"
-        else:
-            logger.info(t("log.genshinuid.msg_0005c2"))
-            header = deepcopy(self.headers)
-            for i in self.mihoyobbs_List_Use:
-                data = await self._request(
-                    "POST",
-                    BBS_SIGN.get(),
-                    header,
-                    {"gids": int(i["id"])},
-                )
-                if "err" not in data["message"]:
-                    await asyncio.sleep(random.randint(2, 8))
-                else:
-                    logger.warning(t("log.genshinuid.game_id_p0_d62c87", p0=i["id"]))
-                    await asyncio.sleep(random.randint(9, 30))
-                    continue
-            return "SignM:完成!"
+        logger.info(t("log.genshinuid.msg_0005c2"))
+        header = deepcopy(self.headers)
+        ok_count = 0
+        for i in self.mihoyobbs_List_Use:
+            data = await self._request(
+                "POST",
+                BBS_SIGN.get(),
+                header,
+                {"gids": int(i["id"])},
+            )
+            retcode = data.get("retcode", -1)
+            msg = str(data.get("message", ""))
+            if retcode == -100:
+                logger.error(t("log.genshinuid.cookie_cookie_f6e063"))
+                return "SignM:失败(登录失效)"
+            if retcode in (0, 1008) and "err" not in msg.lower():
+                ok_count += 1
+                await asyncio.sleep(random.randint(2, 8))
+            else:
+                logger.warning(t("log.genshinuid.game_id_p0_d62c87", p0=i["id"]))
+                await asyncio.sleep(random.randint(9, 30))
+        return "SignM:完成!" if ok_count > 0 else "SignM:失败!"
 
     # 看帖子
     async def read_posts(self):
         if self.Task_do["bbs_Read_posts"]:
             return "ReadM已经完成过了~"
-        else:
-            logger.info(t("log.genshinuid.msg_cc41b8"))
-            num_ok = 0
-            for i in range(self.Task_do["bbs_Read_posts_num"]):
-                data = await self._request(
-                    "GET",
-                    BBS_DETAIL.format(self.postsList[i][0]),
-                    self.headers,
-                )
-                if data["message"] == "OK":
-                    num_ok += 1
-                await asyncio.sleep(random.randint(4, 13))
-            return "ReadM:成功!Read:{}!".format(str(num_ok))
+        if not self.postsList:
+            return "ReadM:失败(未获取到帖子列表)"
+        logger.info(t("log.genshinuid.msg_cc41b8"))
+        num_ok = 0
+        count = min(self.Task_do["bbs_Read_posts_num"], len(self.postsList))
+        for i in range(count):
+            data = await self._request(
+                "GET",
+                BBS_DETAIL.format(self.postsList[i][0]),
+                self.headers,
+            )
+            if data.get("retcode") == -100:
+                return "ReadM:失败(登录失效)"
+            if data.get("retcode") == 0 or data.get("message") == "OK":
+                num_ok += 1
+            await asyncio.sleep(random.randint(4, 13))
+        return "ReadM:成功!Read:{}!".format(str(num_ok))
 
     # 点赞
     async def like_posts(self):
         if self.Task_do["bbs_Like_posts"]:
             return "LikeM任务已经完成过了~"
-        else:
-            logger.info(t("log.genshinuid.msg_bec7e3"))
-            num_ok = 0
-            num_cancel = 0
-            for i in range(self.Task_do["bbs_Like_posts_num"]):
-                data = await self._request(
-                    "POST",
-                    BBS_LIKE.get(),
-                    self.headers,
-                    {
-                        "post_id": self.postsList[i][0],
-                        "is_cancel": False,
-                    },
-                )
-                if data["message"] == "OK":
-                    num_ok += 1
-                # 判断取消点赞是否打开
-                if True:
-                    await asyncio.sleep(random.randint(4, 13))
-                    data = await self._request(
-                        "POST",
-                        BBS_LIKE.get(),
-                        self.headers,
-                        {
-                            "post_id": self.postsList[i][0],
-                            "is_cancel": True,
-                        },
-                    )
-                    if data["message"] == "OK":
-                        num_cancel += 1
-                await asyncio.sleep(random.randint(4, 13))
-            return f"LikeM:完成!like:{num_ok}, dislike:{num_cancel}!"
+        if not self.postsList:
+            return "LikeM:失败(未获取到帖子列表)"
+        logger.info(t("log.genshinuid.msg_bec7e3"))
+        num_ok = 0
+        num_cancel = 0
+        count = min(self.Task_do["bbs_Like_posts_num"], len(self.postsList))
+        for i in range(count):
+            data = await self._request(
+                "POST",
+                BBS_LIKE.get(),
+                self.headers,
+                {
+                    "post_id": self.postsList[i][0],
+                    "is_cancel": False,
+                },
+            )
+            if data.get("retcode") == -100:
+                return "LikeM:失败(登录失效)"
+            if data.get("retcode") == 0 or data.get("message") == "OK":
+                num_ok += 1
+            await asyncio.sleep(random.randint(4, 13))
+            data = await self._request(
+                "POST",
+                BBS_LIKE.get(),
+                self.headers,
+                {
+                    "post_id": self.postsList[i][0],
+                    "is_cancel": True,
+                },
+            )
+            if data.get("retcode") == -100:
+                return "LikeM:失败(登录失效)"
+            if data.get("retcode") == 0 or data.get("message") == "OK":
+                num_cancel += 1
+            await asyncio.sleep(random.randint(4, 13))
+        return f"LikeM:完成!like:{num_ok}, dislike:{num_cancel}!"
 
     # 分享操作
     async def share_post(self):
         if self.Task_do["bbs_Share"]:
             return "ShareM已经完成过了~"
-        else:
-            logger.info(t("log.genshinuid.msg_45c37c"))
-            for _ in range(4):
-                data = await self._request(
-                    "GET",
-                    BBS_SHARE.format(self.postsList[0][0]),
-                    self.headers,
-                )
-                if data["message"] == "OK":
-                    return "ShareM:完成!"
-                else:
-                    await asyncio.sleep(random.randint(4, 13))
-            await asyncio.sleep(random.randint(5, 15))
+        if not self.postsList:
+            return "ShareM:失败(未获取到帖子列表)"
+        logger.info(t("log.genshinuid.msg_45c37c"))
+        for _ in range(4):
+            data = await self._request(
+                "GET",
+                BBS_SHARE.format(self.postsList[0][0]),
+                self.headers,
+            )
+            if data.get("retcode") == -100:
+                return "ShareM:失败(登录失效)"
+            if data.get("retcode") == 0 or data.get("message") == "OK":
+                return "ShareM:完成!"
+            await asyncio.sleep(random.randint(4, 13))
+        return "ShareM:失败!"
 
     async def _request(
         self,
         method: Literal["GET", "POST"],
         url: str,
-        header: Dict,
-        data: Dict = {},
+        header: Dict[str, str],
+        data: Optional[Dict] = None,
     ) -> Dict:
-        for _ in range(2):
-            import json
-
+        payload = data if data is not None else {}
+        res_data: Dict = {"retcode": -999, "message": "请求未返回数据"}
+        for attempt in range(2):
             if BBS_SIGN.get() in url:
-                header["DS"] = get_ds_token("", data, "22")
+                header["DS"] = get_ds_token("", payload, "22")
             else:
                 header["DS"] = get_web_ds_token()
-            async with AsyncClient(timeout=None) as client:
-                data_str = json.dumps(data)
-                logger.trace(method, url, data_str, header)
-                req = await client.request(
-                    method=method,
-                    url=url,
-                    data=data_str,  # type: ignore
-                    headers=header,
-                )
-                res_data = req.json()
-                logger.debug(res_data)
-            if res_data["retcode"] == 1034:
-                await mys_api._upass(self.headers, True)
-                continue
-            else:
+            data_str = json.dumps(payload) if method == "POST" else None
+            try:
+                async with AsyncClient(timeout=15.0) as client:
+                    logger.trace(method, url, data_str, header)
+                    req = await client.request(
+                        method=method,
+                        url=url,
+                        content=data_str,
+                        headers=header,
+                    )
+                    res_data = req.json()
+                    logger.debug(res_data)
+            except (httpx.HTTPError, ValueError) as exc:
+                res_data = {"retcode": -999, "message": f"网络请求失败: {exc}"}
+                if attempt == 0:
+                    await asyncio.sleep(1)
+                    continue
                 break
+            if res_data.get("retcode") == 1034:
+                challenge = await mys_api._upass(deepcopy(header), True)
+                if challenge:
+                    header["x-rpc-challenge"] = challenge
+                continue
+            break
         return res_data

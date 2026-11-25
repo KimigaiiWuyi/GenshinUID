@@ -1,3 +1,5 @@
+from typing import Optional
+
 from gsuid_core.subscribe import gs_subscribe
 from gsuid_core.utils.database.models import GsUser
 
@@ -6,9 +8,13 @@ from ..genshinuid_config.gs_config import gsconfig
 
 
 async def coin_task(uid: str):
-    stoken = await GsUser.get_user_attr_by_uid(uid, "stoken")
-    if stoken:
-        im = await mihoyo_coin(stoken)
+    user_data = await GsUser.select_data_by_uid(uid)
+    if user_data and user_data.stoken:
+        im = await mihoyo_coin(
+            user_data.stoken,
+            device_id=user_data.device_id,
+            device_fp=user_data.fp,
+        )
     else:
         im = "失败, 未绑定stoken，无法获取米游币!"
     return im
@@ -32,7 +38,11 @@ async def all_daily_mihoyo_bbs_coin():
             await event.send(im)
 
 
-async def mihoyo_coin(stoken: str):
-    get_coin = MihoyoBBSCoin(stoken)
+async def mihoyo_coin(
+    stoken: str,
+    device_id: Optional[str] = None,
+    device_fp: Optional[str] = None,
+):
+    get_coin = MihoyoBBSCoin(stoken, device_id=device_id, device_fp=device_fp)
     im = await get_coin.task_run()
     return im

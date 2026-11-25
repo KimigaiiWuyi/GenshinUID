@@ -184,6 +184,8 @@ async def send_arti_rank_pic(bot: Bot, ev: Event):
     Args:
         text: 无需参数，留空即可
     """,
+    timeout=1800.0,
+    background=True,
 )
 async def send_fresh_all_list(bot: Bot, ev: Event):
     await bot.send("开始执行...可能时间较久, 执行完成会有提示, 请勿重复执行!")

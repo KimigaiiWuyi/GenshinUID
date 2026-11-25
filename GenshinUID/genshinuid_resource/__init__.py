@@ -19,6 +19,8 @@ sv_download_config = SV("gs下载资源", pm=2)
     Args:
         text: 无需参数，留空即可
     """,
+    timeout=1800.0,
+    background=True,
 )
 async def send_download_resource_msg(bot: Bot, ev: Event):
     await bot.send("正在开始下载~可能需要较久的时间!")

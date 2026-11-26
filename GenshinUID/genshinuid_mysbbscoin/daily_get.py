@@ -14,6 +14,9 @@ async def coin_task(uid: str):
             user_data.stoken,
             device_id=user_data.device_id,
             device_fp=user_data.fp,
+            device_info=user_data.device_info,
+            uid=uid,
+            mys_id=user_data.mys_id,
         )
     else:
         im = "失败, 未绑定stoken，无法获取米游币!"
@@ -42,7 +45,17 @@ async def mihoyo_coin(
     stoken: str,
     device_id: Optional[str] = None,
     device_fp: Optional[str] = None,
+    device_info: Optional[str] = None,
+    uid: Optional[str] = None,
+    mys_id: Optional[str] = None,
 ):
-    get_coin = MihoyoBBSCoin(stoken, device_id=device_id, device_fp=device_fp)
+    get_coin = MihoyoBBSCoin(
+        stoken,
+        device_id=device_id,
+        device_fp=device_fp,
+        device_info=device_info,
+        uid=uid,
+        mys_id=mys_id,
+    )
     im = await get_coin.task_run()
     return im

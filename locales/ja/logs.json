@@ -200,5 +200,8 @@
   "log.genshinuid.usage_abyss_ok": "[深淵編成] 使用率画像を生成した",
   "log.genshinuid.usage_hard_ok": "[危戦編成] 使用率画像を生成した",
   "log.genshinuid.usage_refresh": "[使用率] {kind} をキャッシュした",
-  "log.genshinuid.usage_refresh_fail": "[使用率] {kind} の更新に失敗"
+  "log.genshinuid.usage_refresh_fail": "[使用率] {kind} の更新に失敗",
+  "log.genshinuid.bbs_req_trace": "[ミホヨコイン] リクエスト {method} {url}",
+  "log.genshinuid.bbs_stoken_upgraded": "[ミホヨコイン] {uid} の BBS 用 stoken を昇格した",
+  "log.genshinuid.bbs_stoken_upgrade_fail": "[ミホヨコイン] BBS 用 stoken の昇格に失敗 (retcode={retcode})"
 }

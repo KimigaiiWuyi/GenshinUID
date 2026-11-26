@@ -200,5 +200,8 @@
   "log.genshinuid.usage_abyss_ok": "[深渊队伍] 使用率图已生成",
   "log.genshinuid.usage_hard_ok": "[危战队伍] 使用率图已生成",
   "log.genshinuid.usage_refresh": "[使用率] 已缓存 {kind}",
-  "log.genshinuid.usage_refresh_fail": "[使用率] 刷新 {kind} 失败"
+  "log.genshinuid.usage_refresh_fail": "[使用率] 刷新 {kind} 失败",
+  "log.genshinuid.bbs_req_trace": "[米游币] 请求 {method} {url}",
+  "log.genshinuid.bbs_stoken_upgraded": "[米游币] 已为 {uid} 自动升级米游社作用域 stoken",
+  "log.genshinuid.bbs_stoken_upgrade_fail": "[米游币] 自动升级米游社作用域 stoken 失败(retcode={retcode})"
 }

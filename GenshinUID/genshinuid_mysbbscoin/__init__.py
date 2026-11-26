@@ -52,6 +52,9 @@ async def send_mihoyo_coin(bot: Bot, ev: Event):
         stoken,
         device_id=user_data.device_id if user_data else None,
         device_fp=user_data.fp if user_data else None,
+        device_info=user_data.device_info if user_data else None,
+        uid=uid,
+        mys_id=user_data.mys_id if user_data else None,
     )
     await bot.send(im)
 

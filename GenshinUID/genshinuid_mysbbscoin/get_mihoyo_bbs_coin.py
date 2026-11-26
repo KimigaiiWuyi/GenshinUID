@@ -20,10 +20,10 @@ from gsuid_core.utils.api.mys.api import (
 from gsuid_core.utils.api.mys.tools import (
     random_hex,
     mys_version,
-    random_text,
     get_ds_token,
     get_web_ds_token,
 )
+from gsuid_core.utils.database.models import GsUser
 
 from ..utils.mys_api import mys_api
 
@@ -91,20 +91,35 @@ class MihoyoBBSCoin:
         stoken: str,
         device_id: Optional[str] = None,
         device_fp: Optional[str] = None,
+        device_info: Optional[str] = None,
+        uid: Optional[str] = None,
+        mys_id: Optional[str] = None,
     ):
+        self.stoken = stoken
+        self.device_id = device_id or random_hex(32)
+        self.device_fp = device_fp
+        self.device_info = device_info
+        self.uid = uid
+        self.mys_id = mys_id
+        self._stoken_upgraded = False
+        brand, model_name, sys_version, _ = mys_api._parse_device_info(device_info or "")
+
         self.postsList = []
         self.headers: Dict[str, str] = {
             "DS": get_web_ds_token(),
             "Cookie": stoken,
             "x-rpc-client_type": "2",
             "x-rpc-app_version": mys_version,
-            "x-rpc-sys_version": "14",
+            "x-rpc-sys_version": sys_version,
             "x-rpc-channel": "miyousheluodi",
-            "x-rpc-device_id": device_id or random_hex(32),
-            "x-rpc-device_name": random_text(random.randint(1, 10)),
-            "x-rpc-device_model": "Mi 10",
+            "x-rpc-device_id": self.device_id,
+            "x-rpc-device_name": f"{brand} {model_name}",
+            "x-rpc-device_model": model_name,
+            "x-rpc-h265_supported": "1",
             "x-rpc-verify_key": "bll8iq97cem8",
-            "x-rpc-csm_source": "myself",
+            "x-rpc-csm_source": "discussion",
+            "Content-Type": "application/json; charset=UTF-8",
+            "Host": "bbs-api.miyoushe.com",
             "Referer": "https://app.mihoyo.com",
             "User-Agent": "okhttp/4.9.3",
         }
@@ -123,6 +138,33 @@ class MihoyoBBSCoin:
         self.Today_have_getcoins = 0  # 这个变量以后可能会用上, 先留着了
         self.Have_coins = 0
         self._abort_msg: Optional[str] = None
+
+    async def _try_upgrade_stoken(self) -> bool:
+        """遇到 -100 时尝试将存量 HYP 启动器 stoken 升级为米游社 App 作用域并回写数据库。"""
+        if self._stoken_upgraded:
+            return False
+        self._stoken_upgraded = True
+        upgraded = await mys_api.exchange_hyp_stoken_to_bbs_stoken(
+            stoken="",
+            mys_id=self.mys_id or "",
+            full_sk=self.stoken,
+            device_id=self.device_id,
+            device_fp=self.device_fp,
+            device_info=self.device_info,
+        )
+        if isinstance(upgraded, int):
+            logger.warning(t("log.genshinuid.bbs_stoken_upgrade_fail", retcode=upgraded))
+            return False
+
+        self.stoken = upgraded["app_cookie"]
+        self.headers["Cookie"] = self.stoken
+        target_mys_id = upgraded["uid"] or self.mys_id
+        if target_mys_id:
+            await GsUser.update_data_by_xx({"mys_id": target_mys_id}, stoken=self.stoken)
+        elif self.uid:
+            await GsUser.update_data_by_uid_without_bot_id(self.uid, None, stoken=self.stoken)
+        logger.info(t("log.genshinuid.bbs_stoken_upgraded", uid=self.uid or target_mys_id or ""))
+        return True
 
     async def task_run(self):
         self._abort_msg = None
@@ -155,11 +197,7 @@ class MihoyoBBSCoin:
         return "失败, 米游社币任务执行出错了~"
 
     async def load_mihoyo_bbs_list_use(self):
-        self.mihoyobbs_List_Use = []
-        for i in range(1, 10):
-            for k in mihoyobbs_List:
-                if i == int(k["id"]):
-                    self.mihoyobbs_List_Use.append(k)
+        self.mihoyobbs_List_Use = list(mihoyobbs_List)
 
     # 获取任务列表, 用来判断做了哪些任务
     async def get_tasks_list(self):
@@ -171,6 +209,14 @@ class MihoyoBBSCoin:
         )
         retcode = data.get("retcode")
         msg = str(data.get("message", ""))
+        if retcode == -100 and await self._try_upgrade_stoken():
+            data = await self._request(
+                "GET",
+                BBS_TASKS.get(),
+                self.headers,
+            )
+            retcode = data.get("retcode")
+            msg = str(data.get("message", ""))
         if retcode == -100 or "err" in msg.lower():
             logger.error(t("log.genshinuid.cookie_cookie_f6e063"))
             self._abort_msg = "失败, 你的Cookies/Stoken已失效，请重新扫码登录。"
@@ -380,7 +426,7 @@ class MihoyoBBSCoin:
             data_str = json.dumps(payload) if method == "POST" else None
             try:
                 async with AsyncClient(timeout=15.0) as client:
-                    logger.trace(method, url, data_str, header)
+                    logger.trace(t("log.genshinuid.bbs_req_trace", method=method, url=url))
                     req = await client.request(
                         method=method,
                         url=url,

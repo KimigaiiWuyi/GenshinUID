@@ -200,5 +200,8 @@
   "log.genshinuid.usage_abyss_ok": "[Abyss teams] Usage image ready",
   "log.genshinuid.usage_hard_ok": "[Stygian teams] Usage image ready",
   "log.genshinuid.usage_refresh": "[Usage] Cached {kind}",
-  "log.genshinuid.usage_refresh_fail": "[Usage] Refresh {kind} failed"
+  "log.genshinuid.usage_refresh_fail": "[Usage] Refresh {kind} failed",
+  "log.genshinuid.bbs_req_trace": "[BBSCoin] Request {method} {url}",
+  "log.genshinuid.bbs_stoken_upgraded": "[BBSCoin] Upgraded BBS-scoped stoken for {uid}",
+  "log.genshinuid.bbs_stoken_upgrade_fail": "[BBSCoin] Failed to upgrade BBS-scoped stoken (retcode={retcode})"
 }

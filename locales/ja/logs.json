@@ -203,5 +203,6 @@
   "log.genshinuid.usage_refresh_fail": "[使用率] {kind} の更新に失敗",
   "log.genshinuid.bbs_req_trace": "[ミホヨコイン] リクエスト {method} {url}",
   "log.genshinuid.bbs_stoken_upgraded": "[ミホヨコイン] {uid} の BBS 用 stoken を昇格した",
-  "log.genshinuid.bbs_stoken_upgrade_fail": "[ミホヨコイン] BBS 用 stoken の昇格に失敗 (retcode={retcode})"
+  "log.genshinuid.bbs_stoken_upgrade_fail": "[ミホヨコイン] BBS 用 stoken の昇格に失敗 (retcode={retcode})",
+  "log.genshinuid.bbs_fp_refreshed": "[ミホヨコイン] {uid} の独立デバイス指紋を再取得し再登録した"
 }

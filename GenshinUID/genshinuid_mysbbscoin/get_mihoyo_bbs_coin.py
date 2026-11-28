@@ -27,6 +27,10 @@ from gsuid_core.utils.database.models import GsUser
 
 from ..utils.mys_api import mys_api
 
+# 旧版 generate_fake_fp 静态 oaid 导致多账号碰撞的共享指纹
+_LEGACY_SHARED_FAKE_FP = "38d7f191c78a0"
+_DEFAULT_DEVICE_INFO = "OnePlus/PHK110/OP5913L1:14/SKQ1.221119.001"
+
 mihoyobbs_List = [
     {
         "id": "1",
@@ -102,6 +106,7 @@ class MihoyoBBSCoin:
         self.uid = uid
         self.mys_id = mys_id
         self._stoken_upgraded = False
+        self._device_repaired = False
         brand, model_name, sys_version, _ = mys_api._parse_device_info(device_info or "")
 
         self.postsList = []
@@ -139,6 +144,34 @@ class MihoyoBBSCoin:
         self.Have_coins = 0
         self._abort_msg: Optional[str] = None
 
+    async def _persist_user_fields(self, target_mys_id: Optional[str] = None, **fields: str) -> None:
+        mys_id = target_mys_id or self.mys_id
+        if mys_id:
+            await GsUser.update_data_by_xx({"mys_id": mys_id}, **fields)
+        elif self.uid:
+            await GsUser.update_data_by_uid_without_bot_id(self.uid, None, **fields)
+
+    async def _sync_device_binding(self, force_refresh_fp: bool = False) -> bool:
+        """为未绑真机的账号刷新独立 fp，并向米游社登记当前 stoken 的设备绑定。"""
+        need_fp = not self.device_info and (
+            force_refresh_fp or not self.device_fp or self.device_fp == _LEGACY_SHARED_FAKE_FP
+        )
+        if need_fp:
+            seed_id, seed_time = mys_api.get_seed()
+            new_fp = await mys_api.generate_fake_fp(self.device_id, seed_id, seed_time)
+            self.device_fp = new_fp
+            self.headers["x-rpc-device_fp"] = new_fp
+            await self._persist_user_fields(fp=new_fp, device_id=self.device_id)
+        if not self.device_fp:
+            return False
+        res = await mys_api.device_login_and_save(
+            self.device_id,
+            self.device_fp,
+            self.device_info or _DEFAULT_DEVICE_INFO,
+            self.stoken,
+        )
+        return not isinstance(res, int)
+
     async def _try_upgrade_stoken(self) -> bool:
         """遇到 -100 时尝试将存量 HYP 启动器 stoken 升级为米游社 App 作用域并回写数据库。"""
         if self._stoken_upgraded:
@@ -159,10 +192,11 @@ class MihoyoBBSCoin:
         self.stoken = upgraded["app_cookie"]
         self.headers["Cookie"] = self.stoken
         target_mys_id = upgraded["uid"] or self.mys_id
-        if target_mys_id:
-            await GsUser.update_data_by_xx({"mys_id": target_mys_id}, stoken=self.stoken)
-        elif self.uid:
-            await GsUser.update_data_by_uid_without_bot_id(self.uid, None, stoken=self.stoken)
+        self.mys_id = target_mys_id or self.mys_id
+        await self._persist_user_fields(target_mys_id=target_mys_id, stoken=self.stoken)
+        # 新签发社区 stoken 补做一次设备登录登记，避免次日风控或掉线
+        self._device_repaired = True
+        await self._sync_device_binding()
         logger.info(t("log.genshinuid.bbs_stoken_upgraded", uid=self.uid or target_mys_id or ""))
         return True
 
@@ -304,17 +338,34 @@ class MihoyoBBSCoin:
         if self.Task_do["bbs_Sign"]:
             return "SignM已经完成过了~"
         logger.info(t("log.genshinuid.msg_0005c2"))
-        header = deepcopy(self.headers)
         ok_count = 0
+        hit_1034 = False
         for i in self.mihoyobbs_List_Use:
             data = await self._request(
                 "POST",
                 BBS_SIGN.get(),
-                header,
+                deepcopy(self.headers),
                 {"gids": int(i["id"])},
             )
             retcode = data.get("retcode", -1)
             msg = str(data.get("message", ""))
+            if (
+                retcode == 1034
+                and not self._device_repaired
+                and not self.device_info
+                and (not self.device_fp or self.device_fp == _LEGACY_SHARED_FAKE_FP)
+            ):
+                self._device_repaired = True
+                if await self._sync_device_binding(force_refresh_fp=True):
+                    logger.info(t("log.genshinuid.bbs_fp_refreshed", uid=self.uid or self.mys_id or ""))
+                    data = await self._request(
+                        "POST",
+                        BBS_SIGN.get(),
+                        deepcopy(self.headers),
+                        {"gids": int(i["id"])},
+                    )
+                    retcode = data.get("retcode", -1)
+                    msg = str(data.get("message", ""))
             if retcode == -100:
                 logger.error(t("log.genshinuid.cookie_cookie_f6e063"))
                 return "SignM:失败(登录失效)"
@@ -322,9 +373,15 @@ class MihoyoBBSCoin:
                 ok_count += 1
                 await asyncio.sleep(random.randint(2, 8))
             else:
+                if retcode == 1034:
+                    hit_1034 = True
                 logger.warning(t("log.genshinuid.game_id_p0_d62c87", p0=i["id"]))
                 await asyncio.sleep(random.randint(9, 30))
-        return "SignM:完成!" if ok_count > 0 else "SignM:失败!"
+        if ok_count > 0:
+            return "SignM:完成!"
+        if hit_1034:
+            return "SignM:失败(触发验证码1034)"
+        return "SignM:失败!"
 
     # 看帖子
     async def read_posts(self):
@@ -442,9 +499,11 @@ class MihoyoBBSCoin:
                     continue
                 break
             if res_data.get("retcode") == 1034:
-                challenge = await mys_api._upass(deepcopy(header), True)
-                if challenge:
-                    header["x-rpc-challenge"] = challenge
-                continue
+                if attempt == 0:
+                    challenge = await mys_api._upass(deepcopy(header), True)
+                    if challenge:
+                        header["x-rpc-challenge"] = challenge
+                        continue
+                break
             break
         return res_data

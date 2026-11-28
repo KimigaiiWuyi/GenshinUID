@@ -54,13 +54,13 @@ def test_get_tasks_list_auto_upgrades_hyp_stoken_and_persists(
         stoken=old_stoken,
         device_id="a" * 32,
         device_fp="0123456789abc",
-        device_info="OnePlus/IN2020/14/5",
+        device_info="TestBrand/TestModel/TestDev:14/TEST.001",
         uid="100000001",
         mys_id="10000001",
     )
 
-    assert coin.headers["x-rpc-device_name"] == "OnePlus IN2020"
-    assert coin.headers["x-rpc-device_model"] == "IN2020"
+    assert coin.headers["x-rpc-device_name"] == "TestBrand TestModel"
+    assert coin.headers["x-rpc-device_model"] == "TestModel"
     assert coin.headers["x-rpc-sys_version"] == "14"
     assert coin.headers["x-rpc-verify_key"] == "bll8iq97cem8"
     assert coin.headers["Host"] == "bbs-api.miyoushe.com"
@@ -68,6 +68,7 @@ def test_get_tasks_list_auto_upgrades_hyp_stoken_and_persists(
 
     seen_cookies: List[str] = []
     upgrade_calls: List[Tuple[str, str, Optional[str], Optional[str], Optional[str]]] = []
+    device_login_calls: List[Tuple[str, str, str, str]] = []
     db_updates: List[Tuple[Dict[str, str], Dict[str, str]]] = []
 
     async def fake_request(
@@ -112,6 +113,15 @@ def test_get_tasks_list_auto_upgrades_hyp_stoken_and_persists(
             "app_cookie": new_stoken,
         }
 
+    async def fake_device_login(
+        device_id: str,
+        device_fp: str,
+        device_info: str,
+        cookie: str,
+    ) -> Dict[str, object]:
+        device_login_calls.append((device_id, device_fp, device_info, cookie))
+        return {"retcode": 0, "message": "OK", "data": {}}
+
     async def fake_update_by_xx(by: Dict[str, str], **kwargs: str) -> int:
         db_updates.append((by, kwargs))
         return 0
@@ -123,6 +133,12 @@ def test_get_tasks_list_auto_upgrades_hyp_stoken_and_persists(
         fake_exchange,
         raising=False,
     )
+    monkeypatch.setattr(
+        _bbs_mod.mys_api,
+        "device_login_and_save",
+        fake_device_login,
+        raising=False,
+    )
     monkeypatch.setattr(GsUser, "update_data_by_xx", fake_update_by_xx)
 
     res = asyncio.run(coin.get_tasks_list())
@@ -131,7 +147,10 @@ def test_get_tasks_list_auto_upgrades_hyp_stoken_and_persists(
     assert coin._abort_msg is None
     assert seen_cookies == [old_stoken, new_stoken]
     assert upgrade_calls == [
-        ("10000001", old_stoken, "a" * 32, "0123456789abc", "OnePlus/IN2020/14/5"),
+        ("10000001", old_stoken, "a" * 32, "0123456789abc", "TestBrand/TestModel/TestDev:14/TEST.001"),
+    ]
+    assert device_login_calls == [
+        ("a" * 32, "0123456789abc", "TestBrand/TestModel/TestDev:14/TEST.001", new_stoken),
     ]
     assert coin.stoken == new_stoken
     assert coin.headers["Cookie"] == new_stoken
@@ -144,6 +163,72 @@ def test_get_tasks_list_auto_upgrades_hyp_stoken_and_persists(
     assert coin.Task_do["bbs_Read_posts_num"] == 5
     assert coin.Task_do["bbs_Like_posts"] is True
     assert coin.Task_do["bbs_Share"] is False
+
+
+def test_signing_refreshes_legacy_shared_fp_on_1034_and_avoids_blind_retry(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    coin = MihoyoBBSCoin(
+        stoken="stuid=10000001;stoken=v2_fake_bbs_token;mid=fake_mid_0001",
+        device_id="d" * 32,
+        device_fp="38d7f191c78a0",
+        device_info=None,
+        uid="100000001",
+        mys_id="10000001",
+    )
+    coin.mihoyobbs_List_Use = [mihoyobbs_List[0]]
+
+    seen_fps: List[str] = []
+    db_updates: List[Tuple[Dict[str, str], Dict[str, str]]] = []
+    device_logins: List[Tuple[str, str]] = []
+
+    async def fake_request(
+        method: Literal["GET", "POST"],
+        url: str,
+        header: Dict[str, str],
+        data: Optional[Dict[str, object]] = None,
+    ) -> Dict[str, object]:
+        fp = header["x-rpc-device_fp"]
+        seen_fps.append(fp)
+        if fp == "38d7f191c78a0":
+            return {"retcode": 1034, "message": "", "data": None}
+        return {"retcode": 0, "message": "OK", "data": {"points": 30}}
+
+    async def fake_generate_fp(device_id: str, seed_id: str, seed_time: str) -> str:
+        _ = (device_id, seed_id, seed_time)
+        return "fp_unique_001"
+
+    async def fake_device_login(
+        device_id: str,
+        device_fp: str,
+        device_info: str,
+        cookie: str,
+    ) -> Dict[str, object]:
+        _ = (device_info, cookie)
+        device_logins.append((device_id, device_fp))
+        return {"retcode": 0, "message": "OK", "data": {}}
+
+    async def fake_update_by_xx(by: Dict[str, str], **kwargs: str) -> int:
+        db_updates.append((by, kwargs))
+        return 0
+
+    async def fake_sleep(delay: float) -> None:
+        _ = delay
+
+    monkeypatch.setattr(coin, "_request", fake_request)
+    monkeypatch.setattr(_bbs_mod.mys_api, "generate_fake_fp", fake_generate_fp, raising=False)
+    monkeypatch.setattr(_bbs_mod.mys_api, "device_login_and_save", fake_device_login, raising=False)
+    monkeypatch.setattr(GsUser, "update_data_by_xx", fake_update_by_xx)
+    monkeypatch.setattr(_bbs_mod.asyncio, "sleep", fake_sleep)
+
+    result = asyncio.run(coin.signing())
+
+    assert result == "SignM:完成!"
+    assert seen_fps == ["38d7f191c78a0", "fp_unique_001"]
+    assert coin.device_fp == "fp_unique_001"
+    assert coin.headers["x-rpc-device_fp"] == "fp_unique_001"
+    assert device_logins == [("d" * 32, "fp_unique_001")]
+    assert db_updates == [({"mys_id": "10000001"}, {"fp": "fp_unique_001", "device_id": "d" * 32})]
 
 
 def test_task_run_aborts_cleanly_when_stoken_upgrade_fails(
